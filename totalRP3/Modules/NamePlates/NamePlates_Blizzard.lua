@@ -144,6 +144,7 @@ function TRP3_BlizzardNamePlates:OnModuleEnable()
 	self.initializedNameplates = {};
 
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
+	TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(TRP3_NamePlatesUtil.IsNameOnlyModePreferred());
 
 	hooksecurefunc("CompactUnitFrame_SetUpFrame", function(...) return self:OnUnitFrameSetUp(...); end);
 	hooksecurefunc(NamePlateDriverFrame, "UpdateNamePlateOptions", function() return self:OnUpdateNamePlateOptions(); end);
@@ -379,7 +380,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	-- spuriously disappear if name only mode isn't enabled because of our
 	-- visibility overrides on the level frame widget.
 
-	local isNameOnly = (GetCVar("nameplateShowOnlyNames") ~= "0");
+	local isNameOnly = TRP3_NamePlatesUtil.IsNameOnlyModeEnabled();
 
 	if unitframe.LevelFrame and isNameOnly then
 		unitframe.LevelFrame:SetShown(unitframe.healthBar:IsShown());

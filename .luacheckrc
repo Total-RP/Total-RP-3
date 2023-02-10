@@ -200,6 +200,13 @@ stds.wow = {
 			},
 		},
 
+		C_CVar = {
+			fields = {
+				"GetCVarBool",
+				"SetCVar",
+			},
+		},
+
 		C_FriendList = {
 			fields = {
 				"IsFriend",

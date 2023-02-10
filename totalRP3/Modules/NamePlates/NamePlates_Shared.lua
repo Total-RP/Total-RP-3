@@ -65,6 +65,29 @@ function TRP3_NamePlatesUtil.GetUnitCharacterID(unitToken)
 	return characterID;
 end
 
+function TRP3_NamePlatesUtil.IsNameOnlyModePreferred()
+	return TRP3_API.configuration.getValue("NamePlates_EnableNameOnlyMode");
+end
+
+function TRP3_NamePlatesUtil.SetNameOnlyModePreferred(preferred)
+	TRP3_API.configuration.setValue("NamePlates_EnableNameOnlyMode", preferred);
+end
+
+function TRP3_NamePlatesUtil.IsNameOnlyModeEnabled()
+	return C_CVar.GetCVarBool("nameplateShowOnlyNames");
+end
+
+function TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(enabled)
+	-- Effective configuration of the name-only mode state acts as a latch;
+	-- we only ever enable the cvar based on the users' preferred state at
+	-- load, and won't subsequently disable it until the user reloads the UI.
+
+	if enabled then
+		C_CVar.SetCVar("nameplateShowOnlyNames", "1");
+	end
+end
+
+
 --
 -- Configuration Data
 --
@@ -149,7 +172,33 @@ TRP3_NamePlatesUtil.Configuration = {
 		key = "NamePlates_EnableClassColorFallback",
 		default = true,
 	},
+
+	EnableNameOnlyMode = {
+		key = "NamePlates_EnableNameOnlyMode",
+		default = false,
+	},
 };
+
+local function UpdateNameOnlyModeCheckButton(button)
+	-- The checkbutton for name-only mode is a faux tri-state checkbutton
+	-- to deal with changes in 10.0.5 where the name-only mode cvar no longer
+	-- persists across client restarts.
+	--
+	-- Internally we store a desired preference for name-only mode in our
+	-- saved variables and assign this to the cvar on load. For the UI however
+	-- we visually track the current "effective" state of the cvar, which may
+	-- be set by other installed addons.
+	--
+	-- If name-only mode is currently active from any addon, we'll display the
+	-- checkbutton in a checked state. If the user didn't enable name-only
+	-- mode through our settings, the check will be desaturated.
+
+	local preferredState = TRP3_NamePlatesUtil.IsNameOnlyModePreferred();
+	local effectiveState = TRP3_NamePlatesUtil.IsNameOnlyModeEnabled();
+
+	button:SetChecked(effectiveState);
+	button:GetCheckedTexture():SetDesaturated(preferredState ~= effectiveState);
+end
 
 function TRP3_NamePlatesUtil.GenerateConfigurationPage()
 	return {
@@ -306,16 +355,32 @@ function TRP3_NamePlatesUtil.GenerateConfigurationPage()
 				title = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY,
 				help = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP,
 				OnShow = function(button)
-					button:SetChecked(GetCVar("nameplateShowOnlyNames") ~= "0");
+					UpdateNameOnlyModeCheckButton(button);
 				end,
 				OnClick = function(button)
-					local value = button:GetChecked() and "1" or "0";
-					local current = GetCVar("nameplateShowOnlyNames");
+					-- When updating our setting we need to invert the current
+					-- state of our internal tracking variable for name-only
+					-- mode and *not* rely on the checked state of the button,
+					-- as the checked state is a visual representation of the
+					-- effective name-only state only.
 
-					if current ~= value then
-						SetCVar("nameplateShowOnlyNames", value);
-						TRP3_API.popup.showConfirmPopup(L.CO_UI_RELOAD_WARNING, ReloadUI);
+					local preferredState = TRP3_NamePlatesUtil.IsNameOnlyModePreferred();
+					local desiredState = not preferredState;
+					local effectiveState = TRP3_NamePlatesUtil.IsNameOnlyModeEnabled();
+
+					if desiredState ~= preferredState then
+						TRP3_NamePlatesUtil.SetNameOnlyModePreferred(desiredState);
 					end
+
+					if desiredState ~= effectiveState then
+						if desiredState then
+							TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(desiredState);
+						else
+							TRP3_API.popup.showConfirmPopup(L.CO_UI_RELOAD_WARNING, ReloadUI);
+						end
+					end
+
+					UpdateNameOnlyModeCheckButton(button);
 				end,
 			},
 		}
