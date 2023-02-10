@@ -12,18 +12,13 @@ local MODULE_REGISTRATION = {};
 local MODULE_ACTIVATION;
 local hasBeenInit = false;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame,
-	TRP3_API.ui.tooltip.setTooltipAll;
+local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
 local registerMenu = TRP3_API.navigation.menu.registerMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local CreateFrame = CreateFrame;
-local callModuleFunction;
-local moduleHotReload;
 local initModule;
 local startModule;
-local disableModule;
 local onModuleStarted;
-local moduleStatusText;
 
 TRP3_API.module.status = {
 	MISSING_DEPENDENCY = 0,
@@ -111,14 +106,14 @@ end
 --- Check a module dependency
 -- Return true if dependency is OK.
 local function checkModuleDependency(_, dependency)
-	local dependency_id = dependency[1]
-	local dependency_version = dependency[2]
+	local dependency_id = dependency[1];
+	local dependency_version = dependency[2];
 
 	if dependency_version ~= "external" then
 		return MODULE_REGISTRATION[dependency_id] and MODULE_REGISTRATION[dependency_id].version >= dependency_version and
 			MODULE_ACTIVATION[dependency_id] ~= false;
 	else
-		return GetAddOnEnableState(nil, dependency_id) == 2
+		return GetAddOnEnableState(nil, dependency_id) == 2;
 	end
 end
 
@@ -157,8 +152,7 @@ local function handleModuleError(module, err)
 		return;
 	end
 
-	DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while loading module \"%s\": |r%s"):format(tostring(module.id)
-		, tostring(err)), 1, 1, 1);
+	DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while loading module \"%s\": |r%s"):format(tostring(module.id), tostring(err)), 1, 1, 1);
 end
 
 --- Invokes a given module function with any additional given parameters,
@@ -178,13 +172,13 @@ end
 --  @param ...      Additional arguments to pass to the function.
 --
 --  @return true if no error occurred, false and an error message if not.
-function callModuleFunction(module, funcName, ...)
+local function callModuleFunction(module, funcName, ...)
 	-- In debug mode, pass the error information through the global error
 	-- handler. This will flag it in BugSack or any other error reporter,
 	-- but will allow the loading process to continue.
 	local ok, err, message;
 	if Globals.DEBUG_MODE then
-		Log.log("Calling module function: " .. module.id .. "." .. funcName)
+		Log.log("Calling module function: " .. module.id .. "." .. funcName);
 		ok, err, message = xpcall(module[funcName], CallErrorHandler, ...);
 	else
 		-- In release builds swallow the error via pcall. We'll forward it
@@ -254,7 +248,7 @@ end
 function startModule(module)
 	-- Disregard failed modules and yield their current error information.
 	if module.status ~= MODULE_STATUS.OK then
-		return false, module.error
+		return false, module.error;
 	end
 
 	-- No need to do anything if the lifecycle function isn't present.
@@ -282,7 +276,7 @@ end
 --  failure has occurred.
 --
 --  @param module The module to disable.
-function disableModule(module)
+local function disableModule(module)
 	-- No need to do anything if the lifecycle function isn't present.
 	if module.onDisable == nil then
 		return true;
@@ -306,7 +300,7 @@ local function moduleInit()
 	TRP3_ConfigurationModuleTitle:SetText(loc.CO_MODULES);
 end
 
-function moduleStatusText(statusCode)
+local function moduleStatusText(statusCode)
 	if statusCode == MODULE_STATUS.OK then
 		return "|cff00ff00" .. loc.CO_MODULES_STATUS_1;
 	elseif statusCode == MODULE_STATUS.DISABLED then
@@ -351,11 +345,11 @@ local function getModuleTooltip(module)
 	local message = "";
 
 	if module.description and module.description:len() > 0 then
-		message = message .. "|cffffff00" .. module.description .. "\n\n"
+		message = message .. "|cffffff00" .. module.description .. "\n\n";
 	end
 
 	if module.hotReload then
-		message = message .. loc.CO_MODULES_SUPPORTS_HOTRELOAD .. "|r\n\n"
+		message = message .. loc.CO_MODULES_SUPPORTS_HOTRELOAD .. "|r\n\n";
 	end
 
 	message = message .. getModuleHint_TRP(module) .. "\n\n" .. getModuleHint_Deps(module);
@@ -367,23 +361,74 @@ local function getModuleTooltip(module)
 	return message;
 end
 
+-- There's a lot of reused code from onModuleStarted() and this can probably be simplified significantly
+-- This function reloads the module frame to show it's new state after enabling/disabling a module that supports hot reload
+-- Should only be called (currently) from onActionSelected()
+-- To assist people from the future, here's a quick run down on how to make a module hot-reloadable
+-- In your 'registerModule' parameters, ensure that you set 'hotReload' to true and define an 'onDisable' callback
+-- Make sure your `onStart` callback is self-sufficient and doesn't depend on any other state or on a UI reload to work properly
+-- In your `onDisable` callback make sure you clean up after yourself and don't leave unnecessary baggage lying around
+-- FIXME: When modules are loaded, if hotReload is set to true, there's no check for whether `onDisable` is defined.
+local function moduleHotReload(frame, value)
+	local module = frame.module;
+
+	Log.log("Hot reloading module: " .. module.id)
+	module.status = MODULE_STATUS.OK
+	if MODULE_ACTIVATION[module.id] == nil then
+		MODULE_ACTIVATION[module.id] = true;
+		if module.autoEnable ~= nil then
+			MODULE_ACTIVATION[module.id] = module.autoEnable;
+		end
+	end
+	if MODULE_ACTIVATION[module.id] == false then
+		module.status = MODULE_STATUS.DISABLED;
+	else
+		-- Check TRP requirement
+		if not checkModuleTRPVersion(module.id) then
+			module.status = MODULE_STATUS.OUT_TO_DATE_TRP3;
+			-- Check dependencies
+		elseif module.requiredDeps then
+			if not checkModuleDependencies(module.id) then
+				module.status = MODULE_STATUS.MISSING_DEPENDENCY;
+			end
+		end
+	end
+
+	if value == 1 then
+		disableModule(module);
+	elseif value == 2 then
+		startModule(module);
+	end
+
+	-- Update module status on it's frame in the settings menu
+	_G[frame:GetName() .. "Status"]:SetText(loc.CO_MODULES_STATUS:format(moduleStatusText(module.status)));
+	setTooltipForSameFrame(_G[frame:GetName() .. "Info"], "BOTTOMRIGHT", 0, 0, module.name, getModuleTooltip(module));
+
+	-- Update module frame color based on activation status
+	if module.status == MODULE_STATUS.OK then
+		frame:SetBackdropBorderColor(0, 1, 0);
+	else
+		frame:SetBackdropBorderColor(1, 1, 1);
+	end
+end
+
 local function onActionSelected(value, button)
 	local module = button:GetParent().module;
 	if value == 1 then
 		MODULE_ACTIVATION[module.id] = false;
 
 		if module.hotReload then
-			moduleHotReload(button:GetParent(), value) -- this handles reloading the module display when hot reloading, also calls disableModule()
+			moduleHotReload(button:GetParent(), value); -- this handles reloading the module display when hot reloading, also calls disableModule()
 		else
-			ReloadUI()
+			ReloadUI();
 		end
 
 	elseif value == 2 then
 		MODULE_ACTIVATION[module.id] = true;
 		if module.hotReload then
-			moduleHotReload(button:GetParent(), value) -- this handles reloading the module display when hot reloading, also calls startModule()
+			moduleHotReload(button:GetParent(), value); -- this handles reloading the module display when hot reloading, also calls startModule()
 		else
-			ReloadUI()
+			ReloadUI();
 		end
 	end
 end
@@ -413,8 +458,7 @@ function onModuleStarted()
 	local previous;
 	for _, moduleID in pairs(sortedID) do
 		local module = modules[moduleID];
-		local frame = CreateFrame("Frame", "TRP3_ConfigurationModule_" .. i, TRP3_ConfigurationModuleContainer,
-			"TRP3_ConfigurationModuleFrame");
+		local frame = CreateFrame("Frame", "TRP3_ConfigurationModule_" .. i, TRP3_ConfigurationModuleContainer, "TRP3_ConfigurationModuleFrame");
 		frame.module = module;
 		frame:SetPoint("LEFT", 0, 0);
 		frame:SetPoint("RIGHT", 0, 0);
@@ -438,57 +482,6 @@ function onModuleStarted()
 		setTooltipAll(actionButton, "BOTTOMLEFT", 10, 10, loc.CM_ACTIONS);
 		actionButton:SetScript("OnClick", onActionClicked);
 		i = i + 1;
-	end
-end
-
--- There's a lot of reused code from onModuleStarted() and this can probably be simplified significantly
--- This function reloads the module frame to show it's new state after enabling/disabling a module that supports hot reload
--- Should only be called (currently) from onActionSelected()
--- To assist people from the future, here's a quick run down on how to make a module hot-reloadable
--- In your 'registerModule' parameters, ensure that you set 'hotReload' to true and define an 'onDisable' callback
--- Make sure your `onStart` callback is self-sufficient and doesn't depend on any other state or on a UI reload to work properly
--- In your `onDisable` callback make sure you clean up after yourself and don't leave unnecessary baggage lying around
--- FIXME: When modules are loaded, if hotReload is set to true, there's no check for whether `onDisable` is defined.
-function moduleHotReload(frame, value)
-	local module = frame.module
-
-	Log.log("Hot reloading module: " .. module.id)
-	module.status = MODULE_STATUS.OK
-	if MODULE_ACTIVATION[module.id] == nil then
-		MODULE_ACTIVATION[module.id] = true
-		if module.autoEnable ~= nil then
-			MODULE_ACTIVATION[module.id] = module.autoEnable
-		end
-	end
-	if MODULE_ACTIVATION[module.id] == false then
-		module.status = MODULE_STATUS.DISABLED
-	else
-		-- Check TRP requirement
-		if not checkModuleTRPVersion(module.id) then
-			module.status = MODULE_STATUS.OUT_TO_DATE_TRP3
-			-- Check dependencies
-		elseif module.requiredDeps then
-			if not checkModuleDependencies(module.id) then
-				module.status = MODULE_STATUS.MISSING_DEPENDENCY
-			end
-		end
-	end
-
-	if value == 1 then
-		disableModule(module)
-	elseif value == 2 then
-		startModule(module)
-	end
-
-	-- Update module status on it's frame in the settings menu
-	_G[frame:GetName() .. "Status"]:SetText(loc.CO_MODULES_STATUS:format(moduleStatusText(module.status)));
-	setTooltipForSameFrame(_G[frame:GetName() .. "Info"], "BOTTOMRIGHT", 0, 0, module.name, getModuleTooltip(module));
-
-	-- Update module frame color based on activation status
-	if module.status == MODULE_STATUS.OK then
-		frame:SetBackdropBorderColor(0, 1, 0);
-	else
-		frame:SetBackdropBorderColor(1, 1, 1);
 	end
 end
 
@@ -520,7 +513,7 @@ TRP3_API.module.init = function()
 			-- Check TRP requirement
 			if not checkModuleTRPVersion(moduleID) then
 				module.status = MODULE_STATUS.OUT_TO_DATE_TRP3;
-				-- Check dependencies
+			-- Check dependencies
 			elseif module.requiredDeps then
 				if not checkModuleDependencies(moduleID) then
 					module.status = MODULE_STATUS.MISSING_DEPENDENCY;

@@ -527,7 +527,6 @@ Possible status:
 	CO_MODULES_SHOWERROR = "Show error",
 	CO_MODULES_DISABLE = "Disable module",
 	CO_MODULES_ENABLE = "Enable module",
-	CO_MODULES_SUPPORTS_HOTRELOAD = "This module supports hot reload.",
 	CO_TOOLBAR = "Frames settings",
 	CO_TOOLBAR_CONTENT = "Toolbar settings",
 	CO_TOOLBAR_ICON_SIZE = "Icons size",
@@ -1311,22 +1310,22 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
 	NAMEPLATES_CONFIG_VISIBILITY_HEADER = "Visibility settings",
 	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT = "Disable customizations when in combat",
-	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP = "If checked, disables nameplate customizations while you are in combat.\n\nThis may require you to toggle your nameplates to take effect.",
+	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP = "If checked, disables nameplate customizations while you are in combat.",
 	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER = "Disable customizations when OOC",
-	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP = "If checked, disables all nameplate customizations while you are out of character.\n\nThis may require you to toggle your nameplates to take effect.",
+	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP = "If checked, disables all nameplate customizations while you are out of character.",
 	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS = "Disable customizations on OOC units",
-	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP = "If checked, disables nameplate customizations on units that are out of character.\n\nThis may require you to toggle your nameplates to take effect.",
+	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP = "If checked, disables nameplate customizations on units that are out of character.",
 	NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS = "Hide non-roleplay units",
 	NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP = "If checked, hides the nameplates of player and companion units that do not have roleplay profiles.",
 	NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS = "Hide out of character units",
-	NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP = "If checked, hides the nameplates of units that are currently out of character.\n\nThis may require you to toggle your nameplates to take effect.",
+	NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP = "If checked, hides the nameplates of units that are currently out of character.",
 	NAMEPLATES_CONFIG_ELEMENT_HEADER = "Customization settings",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAMES = "Show custom names",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAMES_HELP = "If checked, replaces the name shown on nameplates.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS = "Show custom name colors",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS_HELP = "If checked, overrides the color of name texts with the class color of a units' profile.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS = "Show custom health colors",
-	NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP = "If checked, overrides the color of health bars with the class color of a units' profile.\n\nThis may require you to toggle your nameplates to take effect.",
+	NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP = "If checked, overrides the color of health bars with the class color of a units' profile.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_TITLES = "Show prefix titles",
 	NAMEPLATES_CONFIG_CUSTOMIZE_TITLES_HELP = "If checked, shows the short title of a unit on nameplates before their name.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES = "Show full length titles",
@@ -1354,11 +1353,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	KUI_NAMEPLATES_MODULE_NAME = "Kui Nameplates",
 	KUI_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Kui nameplates.",
 	KUI_NAMEPLATES_WARN_OUTDATED_MODULE = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
-
-	PLATER_NAMEPLATES_MODULE_NAME = "Plater Nameplates",
-	PLATER_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Plater nameplates.",
-	PLATER_NAMEPLATES_WARN_OUTDATED_MODULE = "|cffa8deffPlater|r Nameplates is outdated.",
-	PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR = "An error occured while importing the Plater mod.",
 
 	CONFIG_COMMS_SETTINGS_HEADER = "Communications settings",
 	CONFIG_COMMS_QUEUE_POOL_COUNT = "Queue pool size",
@@ -1481,12 +1475,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed potential taint issues leading to blocked actions.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	WHATS_NEW_25_5 = [[# Changelog version 2.4.4
 
 ## Fixed
@@ -1495,6 +1483,18 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed "Import profile" popup not properly resetting after importing a profile.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	CO_MODULES_SUPPORTS_HOTRELOAD = "This module supports hot reload.",
+	NAMEPLATES_CONFIG_REQUIRES_TOGGLE = "This may require you to toggle your nameplates to take effect.",
+	PLATER_NAMEPLATES_MODULE_NAME = "Plater Nameplates",
+	PLATER_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Plater nameplates.",
+	PLATER_NAMEPLATES_WARN_OUTDATED_MODULE = "|cffa8deffPlater|r Nameplates is outdated.",
+	PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR = "An error occured while importing the Plater mod.",
 
 };
 
@@ -1645,8 +1645,7 @@ function TRP3_API.locale.getLocale(localeID)
 	local locale = TRP3_API.loc:GetLocale(localeID);
 
 	TRP3_API.utils.log.log([[DEPRECATED USAGE OF TRP3_API.locale.getLocale(localeID) TO ADD LOCALIZATION KEYS.
-Please use TRP3_API.loc:GetLocale(localeID) and locale:AddText(key, value) to insert localization strings.]],
-		TRP3_API.utils.log.level.WARNING)
+Please use TRP3_API.loc:GetLocale(localeID) and locale:AddText(key, value) to insert localization strings.]], TRP3_API.utils.log.level.WARNING)
 
 	return {
 		localeContent = setmetatable({}, {
