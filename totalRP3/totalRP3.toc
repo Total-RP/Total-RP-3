@@ -31,6 +31,7 @@ Libs\LibCompress\lib.xml
 Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\LibDBIcon-1.0\lib.xml
 Libs\LibDeflate\lib.xml
+Libs\LibDropDownExtension\LibDropDownExtension.lua
 Libs\LibMSP\LibMSP.xml
 Libs\LibRPMedia\LibRPMedia-1.0.xml
 Libs\MSA-DropDownMenu-1.0\MSA-DropDownMenu-1.0.xml

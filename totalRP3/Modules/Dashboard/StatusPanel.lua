@@ -113,9 +113,9 @@ end
 -- Calling this function will close any active dropdown menus.
 function DashboardStatusMenuMixin:InitializeMenu()
 	MSA_DropDownMenu_SetWidth(self, 170);
-	MSA_DropDownMenu_Initialize(self, function(_, ...)
-		-- Lazy binding as the method we're calling should be overridden.
-		self:OnMenuInitialize(...)
+	MSA_DropDownMenu_SetInitializeFunction(self, function(_, ...)
+		self:OnMenuInitialize(...);
+		self:RefreshMenu();
 	end);
 
 	MSA_DropDownMenu_SetSelectedValue(self, self:GetSelectedMenuItem());
