@@ -26,6 +26,7 @@ local ignoreID = TRP3_API.register.ignoreID;
 local buildZoneText = Utils.str.buildZoneText;
 local setupEditBoxesNavigation = TRP3_API.ui.frame.setupEditBoxesNavigation;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
+local getRelationList = TRP3_API.register.relation.getRelationList;
 
 local showIconBrowser = function(callback, selectedIcon)
 	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback, nil, nil, selectedIcon});
@@ -1371,17 +1372,14 @@ local function onActionClicked(button)
 	if context.profile.link and tsize(context.profile.link) > 0 then
 		tinsert(values, { loc.REG_PLAYER_IGNORE:format(tsize(context.profile.link)), 2 });
 	end
+	local relations = getRelationList(true);
+	local relationValues = {};
+	for _, relation in ipairs(relations) do
+		tinsert(relationValues, {relation.name or loc["REG_RELATION_"..relation.id], relation.id});
+	end
 	tinsert(values, {
 		loc.REG_RELATION,
-		{
-			{ loc.REG_RELATION_NONE, RELATIONS.NONE },
-			{ loc.REG_RELATION_UNFRIENDLY, RELATIONS.UNFRIENDLY },
-			{ loc.REG_RELATION_NEUTRAL, RELATIONS.NEUTRAL },
-			{ loc.REG_RELATION_BUSINESS, RELATIONS.BUSINESS },
-			{ loc.REG_RELATION_FRIEND, RELATIONS.FRIEND },
-			{ loc.REG_RELATION_LOVE, RELATIONS.LOVE },
-			{ loc.REG_RELATION_FAMILY, RELATIONS.FAMILY },
-		},
+		relationValues,
 	});
 	displayDropDown(button, values, onActionSelected, 0, true);
 end

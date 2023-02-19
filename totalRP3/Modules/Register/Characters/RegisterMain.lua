@@ -836,6 +836,7 @@ function TRP3_API.register.init()
 	TRP3_API.register.inits.glanceInit();
 	TRP3_API.register.inits.miscInit();
 	TRP3_API.register.inits.notesInit();
+	TRP3_API.register.inits.relationsInit();
 
 	TRP3_API.register.inits.dataExchangeInit();
 	wipe(TRP3_API.register.inits);
