@@ -757,8 +757,23 @@ function TRP3_API.register.init()
 	local refreshMenu = TRP3_API.navigation.menu.rebuildMenu;
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
 		onInformationUpdated(profileID, dataType);
+
+		local menuItemID;
+		local menuItemText;
+
 		if unitID == Globals.player_id and (not dataType or dataType == "characteristics") then
-			currentPlayerMenu.text = get("player/characteristics/FN") or Globals.player;
+			menuItemID = "main_12_player_character";
+			menuItemText = get("player/characteristics/FN") or Globals.player;
+		elseif profileID then
+			local player = AddOn_TotalRP3.Player.CreateFromProfileID(profileID);
+
+			menuItemID = TRP3_API.register.MENU_LIST_ID_TAB .. profileID;
+			menuItemText = player:GetFirstName() or player:GetName();
+		end
+
+		if menuItemID and menuItemText and TRP3_API.navigation.menu.isMenuRegistered(menuItemID) then
+			local menuItem = TRP3_API.navigation.menu.getMenuItem(menuItemID);
+			menuItem.text = menuItemText;
 			refreshMenu();
 		end
 	end);
