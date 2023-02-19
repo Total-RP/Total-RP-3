@@ -240,19 +240,19 @@ function TRP3_NamePlatesUtil.GenerateConfigurationPage()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_DISABLE_IN_COMBAT,
-				help = L.NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP,
+				help = L.NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
 				configKey = "NamePlates_DisableInCombat",
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER,
-				help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP,
+				help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
 				configKey = "NamePlates_DisableOutOfCharacter",
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS,
-				help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP,
+				help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
 				configKey = "NamePlates_DisableOutOfCharacterUnits",
 			},
 			{
@@ -264,7 +264,7 @@ function TRP3_NamePlatesUtil.GenerateConfigurationPage()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS,
-				help = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP,
+				help = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
 				configKey = "NamePlates_HideOutOfCharacterUnits",
 			},
 			{
@@ -286,7 +286,7 @@ function TRP3_NamePlatesUtil.GenerateConfigurationPage()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS,
-				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP,
+				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
 				configKey = "NamePlates_CustomizeHealthColors",
 			},
 			{
