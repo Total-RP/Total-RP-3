@@ -764,7 +764,7 @@ function TRP3_API.register.init()
 		if unitID == Globals.player_id and (not dataType or dataType == "characteristics") then
 			menuItemID = "main_12_player_character";
 			menuItemText = get("player/characteristics/FN") or Globals.player;
-		elseif profileID then
+		elseif TRP3_API.register.getProfileOrNil(profileID) then
 			local player = AddOn_TotalRP3.Player.CreateFromProfileID(profileID);
 
 			menuItemID = TRP3_API.register.MENU_LIST_ID_TAB .. profileID;
