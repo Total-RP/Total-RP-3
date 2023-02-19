@@ -1493,6 +1493,10 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 ]],
 
+
+CO_LOCATION_SHOW_OUT_OF_CHARACTER = "Show out of character players",
+CO_LOCATION_SHOW_OUT_OF_CHARACTER_TT = "If checked, show map pins for all players that are marked as out of character.",
+
 };
 
 -- Use Ellyb to generate the Localization system

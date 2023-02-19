@@ -22,6 +22,7 @@ local CONFIG_ENABLE_MAP_LOCATION = "register_map_location";
 local CONFIG_DISABLE_MAP_LOCATION_ON_OOC = "register_map_location_ooc";
 local CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE = "register_map_location_disable_war_mode";
 local CONFIG_SHOW_DIFFERENT_WAR_MODES = "register_map_location_show_war_modes";
+local CONFIG_ROLEPLAY_STATUS_VISIBILITY = "register_map_location_status_visibility";
 
 local player = AddOn_TotalRP3.Player.GetCurrentUser()
 
@@ -42,12 +43,31 @@ local function shouldAnswerToLocationRequest()
 	return true;
 end
 
+local RoleplayStatusVisibility = {
+	ShowAll = true,
+	ShowInCharacter = false,
+};
+
+local function ShouldShowRoleplayStatus(roleplayStatus)
+	local preferredVisibility = getConfigValue(CONFIG_ROLEPLAY_STATUS_VISIBILITY);
+	local shouldShowStatus;
+
+	if roleplayStatus == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
+		shouldShowStatus = (preferredVisibility ~= RoleplayStatusVisibility.ShowInCharacter);
+	else
+		shouldShowStatus = true;
+	end
+
+	return shouldShowStatus;
+end
+
 TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 
 	registerConfigKey(CONFIG_ENABLE_MAP_LOCATION, true);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_OOC, false);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE, false);
 	registerConfigKey(CONFIG_SHOW_DIFFERENT_WAR_MODES, false);
+	registerConfigKey(CONFIG_ROLEPLAY_STATUS_VISIBILITY, RoleplayStatusVisibility.ShowInCharacter);
 
 	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
@@ -90,6 +110,13 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 			dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 		});
 	end
+	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc.CO_LOCATION_SHOW_OUT_OF_CHARACTER,
+		help = loc.CO_LOCATION_SHOW_OUT_OF_CHARACTER_TT,
+		configKey = CONFIG_ROLEPLAY_STATUS_VISIBILITY,
+		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
+	});
 
 
 	local SCAN_COMMAND = "C_SCAN";
@@ -142,15 +169,19 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 				end
 				local x, y = Map.getPlayerCoordinates();
 				if x and y then
-					broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, (not TRP3_ClientFeatures.WarMode) or C_PvP.IsWarModeActive());
+					local hasWarModeActive = (not TRP3_ClientFeatures.WarMode) or C_PvP.IsWarModeActive();
+					local roleplayStatus = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayStatus();
+
+					broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, hasWarModeActive, roleplayStatus);
 				end
 			end
 		end
 	end)
 
-	broadcast.registerP2PCommand(SCAN_COMMAND, function(sender, x, y, hasWarModeActive)
-		-- Booleans received from commands are strings, need to cast to boolean
-		hasWarModeActive = hasWarModeActive == "true"
+	broadcast.registerP2PCommand(SCAN_COMMAND, function(sender, x, y, hasWarModeActive, roleplayStatus)
+		-- Parameters received from commands are strings, need to cast to appropriate types
+		hasWarModeActive = (hasWarModeActive == "true");
+		roleplayStatus = tonumber(roleplayStatus);
 		local checkWarMode;
 
 		-- If the option to show people in different War Mode is not enabled we will filter them out from the result
@@ -158,9 +189,15 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 			checkWarMode = hasWarModeActive;
 		end
 
-		if Map.playerCanSeeTarget(sender, checkWarMode) then
+		if not roleplayStatus then
+			-- Compatibility for old network clients; assume they're in-character.
+			roleplayStatus = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
+		end
+
+		if Map.playerCanSeeTarget(sender, checkWarMode) and ShouldShowRoleplayStatus(roleplayStatus) then
 			playerMapScanner:OnScanDataReceived(sender, x, y, {
-				hasWarModeActive = hasWarModeActive
+				hasWarModeActive = hasWarModeActive,
+				roleplayStatus = roleplayStatus,
 			})
 		end
 	end)
