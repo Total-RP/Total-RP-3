@@ -1259,6 +1259,9 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	REG_PLAYER_NOTES_ACCOUNT = "Common notes",
 	REG_PLAYER_NOTES_ACCOUNT_HELP = "These private notes are tied to your account and will be shared with all of your profiles.",
 
+	BINDING_NAME_TRP3_OPEN_TARGET_PROFILE = "Open target profile",
+	BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS = "Toggle character status",
+
 	REG_COMPANION_BIND_TO_PET = "Pet",
 	UI_PET_BROWSER_ACCEPT = "Assign",
 	UI_PET_BROWSER_EMPTY_TEXT = "You have no pets that can be assigned a profile.",
@@ -1307,7 +1310,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 	NAMEPLATES_CONFIG_MENU_TITLE = "Nameplates",
 	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
-	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
+	
 	NAMEPLATES_CONFIG_VISIBILITY_HEADER = "Visibility settings",
 	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT = "Disable customizations when in combat",
 	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP = "If checked, disables nameplate customizations while you are in combat.",
@@ -1491,6 +1494,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 	CO_MODULES_SUPPORTS_HOTRELOAD = "This module supports hot reload.",
 	NAMEPLATES_CONFIG_REQUIRES_TOGGLE = "This may require you to toggle your nameplates to take effect.",
+	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
 	PLATER_NAMEPLATES_MODULE_NAME = "Plater Nameplates",
 	PLATER_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Plater nameplates.",
 	PLATER_NAMEPLATES_WARN_OUTDATED_MODULE = "|cffa8deffPlater|r Nameplates is outdated.",
