@@ -593,6 +593,9 @@ Possible status:
 	CO_CHAT_MAIN_EMOTE = "Emote detection",
 	CO_CHAT_MAIN_EMOTE_USE = "Use emote detection",
 	CO_CHAT_MAIN_EMOTE_PATTERN = "Emote detection pattern",
+	CO_CHAT_MAIN_SPEECH = "Speech detection",
+	CO_CHAT_MAIN_SPEECH_USE = "Use speech detection",
+	CO_CHAT_MAIN_SPEECH_USE_TT = "Text surrounded by quotation marks will be colored as if written in /say.",
 	CO_CHAT_MAIN_OOC = "OOC detection",
 	CO_CHAT_MAIN_OOC_USE = "Use OOC detection",
 	CO_CHAT_MAIN_OOC_PATTERN = "OOC detection pattern",
@@ -1310,7 +1313,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 	NAMEPLATES_CONFIG_MENU_TITLE = "Nameplates",
 	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
-	
+
 	NAMEPLATES_CONFIG_VISIBILITY_HEADER = "Visibility settings",
 	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT = "Disable customizations when in combat",
 	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP = "If checked, disables nameplate customizations while you are in combat.",
