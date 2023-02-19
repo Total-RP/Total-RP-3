@@ -1307,7 +1307,7 @@ local function show(targetType, targetID, targetMode)
 				if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER then
 					writeTooltipForCharacter(targetID, originalTexts, targetType);
 					if showRelationColor() and targetID ~= Globals.player_id and not isIDIgnored(targetID) and IsUnitIDKnown(targetID) and hasProfile(targetID) then
-						ui_CharacterTT:SetBorderColor(getRelationColors(hasProfile(targetID)));
+						ui_CharacterTT:SetBorderColor(getRelationColors(hasProfile(targetID)):GetRGBAsBytes());
 					end
 					if shouldHideGameTooltip() and not (isIDIgnored(targetID) or unitIDIsFilteredForMatureContent(targetID)) then
 						GameTooltip:Hide();
