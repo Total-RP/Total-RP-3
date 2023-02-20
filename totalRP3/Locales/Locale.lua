@@ -1502,6 +1502,8 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	PLATER_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Plater nameplates.",
 	PLATER_NAMEPLATES_WARN_OUTDATED_MODULE = "|cffa8deffPlater|r Nameplates is outdated.",
 	PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR = "An error occured while importing the Plater mod.",
+	CO_LOCATION_SHOW_OUT_OF_CHARACTER = "Show out of character players",
+	CO_LOCATION_SHOW_OUT_OF_CHARACTER_TT = "If checked, show map pins for all players that are marked as out of character.",
 
 };
 

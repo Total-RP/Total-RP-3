@@ -4,10 +4,6 @@
 local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
 
---{{{ Lua imports
-local huge = math.huge;
---}}}
-
 --{{{ Total RP 3 imports
 local loc = TRP3_API.loc;
 --}}}
@@ -35,40 +31,49 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(poiInfo.sender);
 	local hasWarModeActive = poiInfo.hasWarModeActive;
 	local shouldDifferentiateBetweenWarModes = getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES);
-	local hasSameWarModeAsPlayer = (not TRP3_ClientFeatures.WarMode) or hasWarModeActive == C_PvP.IsWarModeActive()
+	local hasSameWarModeAsPlayer = (not TRP3_ClientFeatures.WarMode) or hasWarModeActive == C_PvP.IsWarModeActive();
 
-	local displayData = {};
-
-	displayData.sender = poiInfo.sender;
-	displayData.playerName = player:GenerateFormattedName(TRP3_PlayerNameFormat.Plain);
-	displayData.playerNameColored = player:GenerateFormattedName(TRP3_PlayerNameFormat.Colored);
-	displayData.playerNameFancy = player:GenerateFormattedName(TRP3_PlayerNameFormat.Fancy);
+	local displayData = {
+		categoryName = nil,
+		categoryPriority = nil,
+		iconAtlas = nil,
+		iconColor = nil,
+		opacity = 1.0,
+		playerName = player:GenerateFormattedName(TRP3_PlayerNameFormat.Plain),
+		playerNameColored = player:GenerateFormattedName(TRP3_PlayerNameFormat.Colored),
+		playerNameFancy = player:GenerateFormattedName(TRP3_PlayerNameFormat.Fancy),
+		sender = poiInfo.sender,
+		sortOrder = 0,
+	};
 
 	if player:IsCurrentUser() then
 		-- Special case when seeing ourselves on the map (DEBUG)
 		displayData.iconAtlas = "PlayerPartyBlip";
 		displayData.iconColor = Ellyb.ColorManager.CYAN;
 		displayData.categoryName = loc.REG_RELATION .. ": " .. Ellyb.ColorManager.CYAN("SELF");
-		displayData.categoryPriority = huge;
+		displayData.categoryPriority = math.huge;
 	elseif shouldDifferentiateBetweenWarModes and not hasSameWarModeAsPlayer then
 		-- Swap out the atlas for this marker, show it in red, low opacity, and in a special category
 		displayData.iconAtlas = "PlayerPartyBlip";
 		displayData.iconColor = Ellyb.ColorManager.GREY;
-		displayData.opacity = 0.5
+		displayData.opacity = math.min(0.5, displayData.opacity);
 		displayData.categoryName = Ellyb.ColorManager.RED(loc.REG_LOCATION_DIFFERENT_WAR_MODE);
 		displayData.categoryPriority = -1;
 	else
 		local relation = player:GetRelationshipWithPlayer()
 		if relation ~= TRP3_API.register.relation.NONE then
 			local relationshipColor = TRP3_API.register.relation.getColor(relation);
-			-- Swap out the atlas for this marker.
 			displayData.iconAtlas = "PlayerPartyBlip";
 			displayData.iconColor = relationshipColor;
-
-			-- Store the relationship on the marker itself as the category.
 			displayData.categoryName = loc.REG_RELATION .. ": " .. relationshipColor(loc:GetText("REG_RELATION_".. relation));
-			displayData.categoryPriority = TRP3_API.globals.RELATIONS_ORDER[relation] or huge;
+			displayData.categoryPriority = TRP3_API.globals.RELATIONS_ORDER[relation] or math.huge;
 		end
+	end
+
+	if poiInfo.roleplayStatus == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
+		-- OOC characters will be suffixed with an OOC indicator and faded.
+		displayData.opacity = math.min(0.5, displayData.opacity);
+		displayData.playerNameFancy = string.format("%2$s |cffff0000(%1$s)|r", loc.CM_OOC, displayData.playerNameFancy);
 	end
 
 	return displayData
@@ -90,6 +95,7 @@ function TRP3_PlayerMapPinMixin:Decorate(displayData)
 	self.categoryName = displayData.categoryName;
 	self.categoryPriority = displayData.categoryPriority;
 	self.sortName = displayData.playerName;
+	self.sortOrder = displayData.sortOrder;
 
 	if displayData.iconColor then
 		self.Texture:SetVertexColor(displayData.iconColor:GetRGBA());

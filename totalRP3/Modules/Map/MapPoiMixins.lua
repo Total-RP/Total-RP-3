@@ -45,9 +45,7 @@ local GroupedCoalescedMapPinMixin = {};
 local WHITE = Ellyb.ColorManager.WHITE;
 local TOOLTIP_CATEGORY_SEPARATOR = [[|TInterface\Common\UI-TooltipDivider-Transparent:8:128:0:0:8:8:0:128:0:8:255:255:255|t]];
 
---- Custom sorting function that compares entries. The resulting order is
----  in order of their category priority (descending), or if equal, their
----  sortable name equivalent (ascending).
+--- Custom sorting function that compares entries.
 local function sortMarkerEntries(a, b)
 	local categoryA = a.categoryPriority or math.huge;
 	local categoryB = b.categoryPriority or math.huge;
@@ -58,11 +56,21 @@ local function sortMarkerEntries(a, b)
 		categoryB = "";
 	end
 
+	if categoryA ~= categoryB then
+		return categoryA < categoryB;
+	end
+
+	local orderA = a.sortOrder or 0;
+	local orderB = b.sortOrder or 0;
+
+	if orderA ~= orderB then
+		return orderA < orderB;
+	end
+
 	local nameA = a.sortName or "";
 	local nameB = b.sortName or "";
 
-	return (categoryA < categoryB)
-		or (categoryA == categoryB and nameA < nameB);
+	return nameA < nameB;
 end
 
 local function ExecuteOnAllPins(map, func)
