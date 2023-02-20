@@ -566,7 +566,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["NAMEPLATES_CONFIG_ICON_SIZE"] = "Tamanho de ícone",
 	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "Configura o tamanho dos ícones exibidos nas placas de nome se  a opção |cffffff00Mostrar ícones|r estiver ativo.",
 	["NAMEPLATES_CONFIG_MENU_TITLE"] = "placa de nome",
-	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Por favor note que apenas as placas de nome da |cff449fe0Blizzard|r e |cff9966ffKui|r são atualmente suportadas. Consulte a dica de ajuda em cada configuração abaixo para informações adicionais.",
+	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Por favor note que apenas as placas de nome da |cff449fe0Blizzard|r, |cff9966ffKui|r e |cffa8deffPlater|r são atualmente suportadas. Consulte a dica de ajuda em cada configuração abaixo para informações adicionais.",
 	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "Configurações das placas de nome",
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Configurações de exibição",
 	["NAMEPLATES_MODULE_ACTIVE_STATUS"] = "Módulo |cff00ff00Ativo|r (%1$s|r)",

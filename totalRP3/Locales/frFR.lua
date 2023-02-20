@@ -594,7 +594,7 @@ Ajoute un bouton à votre barre d'outils pour activer ou désactiver votre affic
 	["NAMEPLATES_CONFIG_ICON_SIZE"] = "Taille d'icone",
 	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "Configure la taille des icones affichées sur les barres d'infos si l'option |cffffff00Afficher icones|r est activée.",
 	["NAMEPLATES_CONFIG_MENU_TITLE"] = "Barres d'info",
-	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Veuillez noter que seules les barres d'infos |cff449fe0Blizzard|r et |cff9966ffKui|r sont actuellement supportées. Réferez-vous aux bulles d'aide de chaque paramètre ci-dessous pour plus d'information.",
+	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Veuillez noter que seules les barres d'infos |cff449fe0Blizzard|r, |cff9966ffKui|r et |cffa8deffPlater|r sont actuellement supportées. Réferez-vous aux bulles d'aide de chaque paramètre ci-dessous pour plus d'information.",
 	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "Paramètres de barres d'info",
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Paramètres de visibilité",
 	["NAMEPLATES_MODULE_ACTIVE_STATUS"] = "Module |cff00ff00actif|r (%1$s|r)",

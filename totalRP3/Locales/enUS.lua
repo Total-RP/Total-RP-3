@@ -266,6 +266,8 @@ This option is particularly useful to avoid abuses of the location system to tra
 This option is particularly useful to avoid abuses of the location system to track you.]=],
 	["CO_LOCATION_SHOW_DIFFERENT_WAR_MODES"] = "Show players in different War Mode",
 	["CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT"] = "Players who are currently in the zone but have a different War Mode status than you will be shown on the map, with a lower opacity and a special icon in the tooltip.",
+	["CO_LOCATION_SHOW_OUT_OF_CHARACTER"] = "Show out of character players",
+	["CO_LOCATION_SHOW_OUT_OF_CHARACTER_TT"] = "If checked, show map pins for all players that are marked as out of character.",
 	["CO_MAP_BUTTON"] = "Map scan button",
 	["CO_MAP_BUTTON_POS"] = "Scan button anchor on map",
 	["CO_MINIMAP_BUTTON"] = "Minimap button",
@@ -288,6 +290,7 @@ This option is particularly useful to avoid abuses of the location system to tra
 	["CO_MODULES_STATUS_3"] = "Total RP 3 update required",
 	["CO_MODULES_STATUS_4"] = "Error on initialization",
 	["CO_MODULES_STATUS_5"] = "Error on startup",
+	["CO_MODULES_SUPPORTS_HOTRELOAD"] = "This module supports hot reload.",
 	["CO_MODULES_TT_DEP"] = [=[
 %s- %s (version %s)|r]=],
 	["CO_MODULES_TT_DEPS"] = "Dependencies",
@@ -623,8 +626,9 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	["NAMEPLATES_CONFIG_ICON_SIZE"] = "Icon size",
 	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "Configures the size of icons displayed on nameplates if the |cffffff00Show icons|r option is enabled.",
 	["NAMEPLATES_CONFIG_MENU_TITLE"] = "Nameplates",
-	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Please note that only |cff449fe0Blizzard|r and |cff9966ffKui|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
+	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
 	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "Nameplate settings",
+	["NAMEPLATES_CONFIG_REQUIRES_TOGGLE"] = "This may require you to toggle your nameplates to take effect.",
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Visibility settings",
 	["NAMEPLATES_MODULE_ACTIVE_STATUS"] = "Module |cff00ff00active|r (%1$s|r)",
 	["NAMEPLATES_MODULE_DESCRIPTION"] = "Enables the customization of nameplates with information obtained from roleplay profiles.",
@@ -661,6 +665,10 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	["OPTION_ENABLED_TOAST"] = "Option enabled",
 	["PATTERN_ERROR"] = "Error in pattern.",
 	["PATTERN_ERROR_TAG"] = "Error in pattern : unclosed text tag.",
+	["PLATER_NAMEPLATES_MODULE_DESCRIPTION"] = "Enables the customization of Plater nameplates.",
+	["PLATER_NAMEPLATES_MODULE_NAME"] = "Plater Nameplates",
+	["PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR"] = "An error occured while importing the Plater mod.",
+	["PLATER_NAMEPLATES_WARN_OUTDATED_MODULE"] = "|cffa8deffPlater|r Nameplates is outdated.",
 	["PR_CO_BATTLE"] = "Battle pet",
 	["PR_CO_COUNT"] = "%s pets/mounts bound to this profile.",
 	["PR_CO_EMPTY"] = "No companion profile",
@@ -1489,6 +1497,23 @@ Total RP is not responsible for links leading to harmful content.]=],
 - Fixed tooltipData error showing since 10.0.2.
 - Fixed map scan not working on WotLK Classic.
 - Fixed potential taint issues leading to blocked actions.
+
+]=],
+	["WHATS_NEW_25_6"] = [=[# Changelog version 2.4.5
+
+## Added
+
+- Added Plater support for RP nameplates customization. Thanks to Ghost for this addition.
+- OOC characters are now hidden from the map scan.
+  - You can re-enable them by checking "Show out of character players" in Register settings > Location settings. Pins with only OOC characters will appear faded.
+  - Only players from this version onwards are recognized as OOC, so this may take some time to be accurate.
+
+## Fixed
+
+- Re-enabled right-click menu options (with the exception of the IC/OOC status toggle).
+- Fixed dashboard dropdowns not showing the correct selected values.
+- Fixed name-only nameplates setting not persisting upon logout.
+- Fixed an issue with profiles showing as Unknown in the directory quick entries if the profile was received for the first time.
 
 ]=]
 }
