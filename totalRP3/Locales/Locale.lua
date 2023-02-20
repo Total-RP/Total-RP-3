@@ -593,6 +593,9 @@ Possible status:
 	CO_CHAT_MAIN_EMOTE = "Emote detection",
 	CO_CHAT_MAIN_EMOTE_USE = "Use emote detection",
 	CO_CHAT_MAIN_EMOTE_PATTERN = "Emote detection pattern",
+	CO_CHAT_MAIN_SPEECH = "Speech detection",
+	CO_CHAT_MAIN_SPEECH_USE = "Use speech detection",
+	CO_CHAT_MAIN_SPEECH_USE_TT = "Text surrounded by quotation marks will be colored as if written in /say.",
 	CO_CHAT_MAIN_OOC = "OOC detection",
 	CO_CHAT_MAIN_OOC_USE = "Use OOC detection",
 	CO_CHAT_MAIN_OOC_PATTERN = "OOC detection pattern",
@@ -1310,7 +1313,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 	NAMEPLATES_CONFIG_MENU_TITLE = "Nameplates",
 	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
-	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r and |cff9966ffKui|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
+
 	NAMEPLATES_CONFIG_VISIBILITY_HEADER = "Visibility settings",
 	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT = "Disable customizations when in combat",
 	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP = "If checked, disables nameplate customizations while you are in combat.",
@@ -1478,12 +1481,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed potential taint issues leading to blocked actions.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	WHATS_NEW_25_5 = [[# Changelog version 2.4.4
 
 ## Fixed
@@ -1493,9 +1490,20 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 ]],
 
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
 
-CO_LOCATION_SHOW_OUT_OF_CHARACTER = "Show out of character players",
-CO_LOCATION_SHOW_OUT_OF_CHARACTER_TT = "If checked, show map pins for all players that are marked as out of character.",
+	CO_MODULES_SUPPORTS_HOTRELOAD = "This module supports hot reload.",
+	NAMEPLATES_CONFIG_REQUIRES_TOGGLE = "This may require you to toggle your nameplates to take effect.",
+	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
+	PLATER_NAMEPLATES_MODULE_NAME = "Plater Nameplates",
+	PLATER_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Plater nameplates.",
+	PLATER_NAMEPLATES_WARN_OUTDATED_MODULE = "|cffa8deffPlater|r Nameplates is outdated.",
+	PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR = "An error occured while importing the Plater mod.",
+	CO_LOCATION_SHOW_OUT_OF_CHARACTER = "Show out of character players",
+	CO_LOCATION_SHOW_OUT_OF_CHARACTER_TT = "If checked, show map pins for all players that are marked as out of character.",
 
 };
 
