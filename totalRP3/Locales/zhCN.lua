@@ -574,7 +574,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["NAMEPLATES_CONFIG_ICON_SIZE"] = "图标大小",
 	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "如果|cffffff00显示图标|r功能启动，调整姓名版上图标的大小。",
 	["NAMEPLATES_CONFIG_MENU_TITLE"] = "姓名版",
-	["NAMEPLATES_CONFIG_PAGE_HELP"] = "请注意目前只支持|cff449fe0暴雪|r和|cff9966ffKui|r姓名版。请阅读设置选项下方的说明来了解如何设置。",
+	["NAMEPLATES_CONFIG_PAGE_HELP"] = "请注意目前只支持|cff449fe0暴雪|r，|cff9966ffKui|r和|cffa8deffPlater|r姓名版。请阅读设置选项下方的说明来了解如何设置。",
 	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "姓名版设置",
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "可见度设置",
 	["NAMEPLATES_MODULE_ACTIVE_STATUS"] = "模块|cff00ff00启动|r (%1$s|r)",
