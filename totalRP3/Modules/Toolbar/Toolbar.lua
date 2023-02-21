@@ -1,42 +1,101 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
+local loc = TRP3_API.loc;
+local color = Utils.str.color;
+
+local CONFIG_ICON_SIZE = "toolbar_icon_size";
+local CONFIG_ICON_MAX_PER_LINE = "toolbar_max_per_line";
+local CONFIG_CONTENT_PREFIX = "toolbar_content_";
+local CONFIG_HIDE_TITLE = "toolbar_hide_title";
+local CONFIG_TOOLBAR_VISIBILITY = "toolbar_visibility";
+
+local ToolbarVisibilityOption = {
+	AlwaysShow = 1,
+	OnlyShowInCharacter = 2,
+	AlwaysHidden = 3,
+};
+
+local ToolbarMixin = {};
+
+function ToolbarMixin:OnLoad()
+	self.manualVisibility = nil;
+
+	TRP3_API.Events.registerCallback("CONFIGURATION_CHANGED", GenerateClosure(self.OnConfigurationChanged, self));
+	TRP3_API.Events.registerCallback("REGISTER_DATA_UPDATED", GenerateClosure(self.OnRegisterDataUpdated, self));
+
+	self:UpdateVisibility();
+end
+
+function ToolbarMixin:OnRegisterDataUpdated(characterID)
+	if characterID == TRP3_API.globals.player_id then
+		self:UpdateVisibility();
+	end
+end
+
+function ToolbarMixin:OnConfigurationChanged(key)
+	if key == CONFIG_TOOLBAR_VISIBILITY then
+		self.manualVisibility = nil;
+		self:UpdateVisibility();
+	end
+end
+
+function ToolbarMixin:Toggle()
+	if self.manualVisibility == nil and self:IsVisibilityDynamic() then
+		TRP3_API.utils.message.displayMessage(TRP3_API.Ellyb.ColorManager.ORANGE(loc.CO_TOOLBAR_LOCKOUT));
+	end
+
+	self.manualVisibility = not self:IsShown();
+	self:UpdateVisibility();
+
+	if self:IsShown() then
+		TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPEN);
+	else
+		TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_CLOSE);
+	end
+end
+
+function ToolbarMixin:IsVisibilityDynamic()
+	local configuredVisibility = TRP3_API.configuration.getValue(CONFIG_TOOLBAR_VISIBILITY);
+	return configuredVisibility == ToolbarVisibilityOption.OnlyShowInCharacter;
+end
+
+function ToolbarMixin:UpdateVisibility()
+	local configuredVisibility = TRP3_API.configuration.getValue(CONFIG_TOOLBAR_VISIBILITY);
+	local shouldShow;
+
+	if self.manualVisibility ~= nil then
+		shouldShow = self.manualVisibility;
+	elseif configuredVisibility == ToolbarVisibilityOption.AlwaysHidden then
+		shouldShow = false;
+	elseif configuredVisibility == ToolbarVisibilityOption.OnlyShowInCharacter then
+		shouldShow = AddOn_TotalRP3.Player.GetCurrentUser():IsInCharacter();
+	else
+		shouldShow = true;
+	end
+
+	self:SetShown(shouldShow);
+end
+
 local toolbar;
 
 -- Always build UI on init. Because maybe other modules would like to anchor it on start.
 local function onInit()
-	toolbar = CreateFrame("Frame", "TRP3_Toolbar", UIParent, "TRP3_ToolbarTemplate");
+	toolbar = Mixin(CreateFrame("Frame", "TRP3_Toolbar", UIParent, "TRP3_ToolbarTemplate"), ToolbarMixin);
 end
 
 local function onStart()
-
 	-- Public accessor
 	TRP3_API.toolbar = {};
 
 	local LDBObjects = {};
 
 	-- imports
-	local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-	local loc = TRP3_API.loc;
-	local color = Utils.str.color;
-	local assert, pairs, tinsert, table, math  = assert, pairs, tinsert, table, math;
 	local toolbarContainer, mainTooltip = TRP3_ToolbarContainer, TRP3_MainTooltip;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
 	local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForFrame;
 	local refreshTooltip = TRP3_API.ui.tooltip.refresh;
-
-	local CONFIG_ICON_SIZE = "toolbar_icon_size";
-	local CONFIG_ICON_MAX_PER_LINE = "toolbar_max_per_line";
-	local CONFIG_CONTENT_PREFIX = "toolbar_content_";
-	local CONFIG_HIDE_TITLE = "toolbar_hide_title";
-	local CONFIG_TOOLBAR_VISIBILITY = "toolbar_visibility";
-
-	local ToolbarVisibilityOption = {
-		AlwaysShow = 1,
-		OnlyShowInCharacter = 2,
-		AlwaysHidden = 3,
-	};
-	local ToolbarSessionVisibility = nil;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Toolbar Logic
@@ -305,14 +364,6 @@ local function onStart()
 			CONFIG_HIDE_TITLE,
 		}, buildToolbar);
 
-		local ShouldShowToolbar;
-
-		local function ResetToolbarVisibility(newValue, _)
-			setConfigValue(CONFIG_TOOLBAR_VISIBILITY, newValue);
-			ToolbarSessionVisibility = nil;
-			toolbar:SetShown(ShouldShowToolbar());
-		end
-
 		-- Build configuration page
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
@@ -328,7 +379,6 @@ local function onStart()
 				{loc.CO_TOOLBAR_VISIBILITY_2, ToolbarVisibilityOption.OnlyShowInCharacter},
 				{loc.CO_TOOLBAR_VISIBILITY_3, ToolbarVisibilityOption.AlwaysHidden}
 			},
-			listCallback = ResetToolbarVisibility,
 			configKey = CONFIG_TOOLBAR_VISIBILITY,
 			listCancel = true,
 		});
@@ -380,50 +430,12 @@ local function onStart()
 		end
 
 		buildToolbar();
-
-		function ShouldShowToolbar()
-			local preferredVisibility = getConfigValue(CONFIG_TOOLBAR_VISIBILITY);
-
-			if ToolbarSessionVisibility ~= nil then
-				return ToolbarSessionVisibility;
-			elseif preferredVisibility == ToolbarVisibilityOption.AlwaysHidden then
-				return false;
-			elseif preferredVisibility == ToolbarVisibilityOption.OnlyShowInCharacter then
-				local player = AddOn_TotalRP3.Player.GetCurrentUser();
-				return player:IsInCharacter();
-			else
-				return true;
-			end
-		end
-
-		toolbar:SetShown(ShouldShowToolbar());
-
-		TRP3_API.events.listenToEvent(TRP3_API.events.REGISTER_DATA_UPDATED, function(unitID, _)
-			if unitID ~= Globals.player_id or getConfigValue(CONFIG_TOOLBAR_VISIBILITY) ~= ToolbarVisibilityOption.OnlyShowInCharacter then
-				return;
-			end
-
-			toolbar:SetShown(ShouldShowToolbar());
-		end)
+		toolbar:OnLoad();
 	end);
 
 	function TRP3_API.toolbar.switch()
-		if ToolbarSessionVisibility == nil and getConfigValue(CONFIG_TOOLBAR_VISIBILITY) == ToolbarVisibilityOption.OnlyShowInCharacter then
-			local message = TRP3_API.Ellyb.ColorManager.ORANGE(loc.CO_TOOLBAR_LOCKOUT);
-			Utils.message.displayMessage(message);
-			ToolbarSessionVisibility = true;
-		elseif ToolbarSessionVisibility ~= nil then
-			ToolbarSessionVisibility = not ToolbarSessionVisibility;
-		end
-		if toolbar:IsVisible() then
-			toolbar:Hide();
-			TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPEN);
-		else
-			TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_CLOSE);
-			toolbar:Show();
-		end
+		toolbar:Toggle();
 	end
-
 end
 
 local MODULE_STRUCTURE = {
