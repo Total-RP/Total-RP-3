@@ -1509,6 +1509,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	CO_TOOLBAR_VISIBILITY_1 = "Always show",
 	CO_TOOLBAR_VISIBILITY_2 = "Only show in-character",
 	CO_TOOLBAR_VISIBILITY_3 = "Always hidden",
+	CO_TOOLBAR_LOCKOUT = "Your toolbar visibility is now being controlled by the |cff00ff00minimap button|r and the |cff00ff00/trp3 switch toolbar|r slash command. To re-enable automatic hiding, reload your UI with |cff00ff00/reload|r.",
 };
 
 -- Use Ellyb to generate the Localization system

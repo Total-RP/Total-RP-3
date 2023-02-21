@@ -36,6 +36,7 @@ local function onStart()
 		OnlyShowInCharacter = 2,
 		AlwaysHidden = 3,
 	};
+	local ToolbarSessionVisibility = nil;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Toolbar Logic
@@ -304,6 +305,14 @@ local function onStart()
 			CONFIG_HIDE_TITLE,
 		}, buildToolbar);
 
+		local ShouldShowToolbar;
+
+		local function ResetToolbarVisibility(newValue, _)
+			setConfigValue(CONFIG_TOOLBAR_VISIBILITY, newValue);
+			ToolbarSessionVisibility = nil;
+			toolbar:SetShown(ShouldShowToolbar());
+		end
+
 		-- Build configuration page
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
@@ -318,6 +327,7 @@ local function onStart()
 				{loc.CO_TOOLBAR_VISIBILITY_2, ToolbarVisibilityOption.OnlyShowInCharacter},
 				{loc.CO_TOOLBAR_VISIBILITY_3, ToolbarVisibilityOption.AlwaysHidden}
 			},
+			listCallback = ResetToolbarVisibility,
 			configKey = CONFIG_TOOLBAR_VISIBILITY,
 			listCancel = true,
 		});
@@ -370,10 +380,12 @@ local function onStart()
 
 		buildToolbar();
 
-		local function ShouldShowToolbar()
+		function ShouldShowToolbar()
 			local preferredVisibility = getConfigValue(CONFIG_TOOLBAR_VISIBILITY);
 
-			if preferredVisibility == ToolbarVisibilityOption.AlwaysHidden then
+			if ToolbarSessionVisibility ~= nil then
+				return ToolbarSessionVisibility;
+			elseif preferredVisibility == ToolbarVisibilityOption.AlwaysHidden then
 				return false;
 			elseif preferredVisibility == ToolbarVisibilityOption.OnlyShowInCharacter then
 				local player = AddOn_TotalRP3.Player.GetCurrentUser();
@@ -395,6 +407,13 @@ local function onStart()
 	end);
 
 	function TRP3_API.toolbar.switch()
+		if ToolbarSessionVisibility == nil and getConfigValue(CONFIG_TOOLBAR_VISIBILITY) == ToolbarVisibilityOption.OnlyShowInCharacter then
+			local message = TRP3_API.Ellyb.ColorManager.ORANGE(loc.CO_TOOLBAR_LOCKOUT);
+			Utils.message.displayMessage(message);
+			ToolbarSessionVisibility = true;
+		elseif ToolbarSessionVisibility ~= nil then
+			ToolbarSessionVisibility = not ToolbarSessionVisibility;
+		end
 		if toolbar:IsVisible() then
 			toolbar:Hide();
 			TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPEN);
