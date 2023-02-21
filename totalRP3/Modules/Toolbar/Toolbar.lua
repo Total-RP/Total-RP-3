@@ -383,14 +383,14 @@ local function onStart()
 			end
 		end
 
-		toolbar:SetShown(ShouldShowToolbar())
+		toolbar:SetShown(ShouldShowToolbar());
 
 		TRP3_API.events.listenToEvent(TRP3_API.events.REGISTER_DATA_UPDATED, function(unitID, _)
 			if unitID ~= Globals.player_id or getConfigValue(CONFIG_TOOLBAR_VISIBILITY) ~= ToolbarVisibilityOption.OnlyShowInCharacter then
 				return;
 			end
 
-			toolbar:SetShown(ShouldShowToolbar())
+			toolbar:SetShown(ShouldShowToolbar());
 		end)
 	end);
 
