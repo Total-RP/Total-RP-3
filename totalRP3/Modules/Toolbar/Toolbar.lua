@@ -313,7 +313,6 @@ local function onStart()
 			inherit = "TRP3_ConfigDropDown",
 			widgetName = "TRP3_ConfigToolbarVisibility",
 			title = loc.CO_TOOLBAR_VISIBILITY,
-			help = loc.CO_TOOLBAR_VISIBILITY_HELP,
 			listContent = {
 				{loc.CO_TOOLBAR_VISIBILITY_1, ToolbarVisibilityOption.AlwaysShow},
 				{loc.CO_TOOLBAR_VISIBILITY_2, ToolbarVisibilityOption.OnlyShowInCharacter},
@@ -371,25 +370,27 @@ local function onStart()
 
 		buildToolbar();
 
-		local player = AddOn_TotalRP3.Player.GetCurrentUser();
-		local toolbarVisibility = getConfigValue(CONFIG_TOOLBAR_VISIBILITY);
+		local function ShouldShowToolbar()
+			local preferredVisibility = getConfigValue(CONFIG_TOOLBAR_VISIBILITY);
 
-		if toolbarVisibility == ToolbarVisibilityOption.OnlyShowInCharacter and player:IsInCharacter() or toolbarVisibility == ToolbarVisibilityOption.AlwaysShow then
-			toolbar:Show();
-		else
-			toolbar:Hide();
+			if preferredVisibility == ToolbarVisibilityOption.AlwaysHidden then
+				return false;
+			elseif preferredVisibility == ToolbarVisibilityOption.OnlyShowInCharacter then
+				local player = AddOn_TotalRP3.Player.GetCurrentUser();
+				return player:IsInCharacter();
+			else
+				return true;
+			end
 		end
+
+		toolbar:SetShown(ShouldShowToolbar())
 
 		TRP3_API.events.listenToEvent(TRP3_API.events.REGISTER_DATA_UPDATED, function(unitID, _)
 			if unitID ~= Globals.player_id or getConfigValue(CONFIG_TOOLBAR_VISIBILITY) ~= ToolbarVisibilityOption.OnlyShowInCharacter then
 				return;
 			end
 
-			if player:IsInCharacter() then
-				toolbar:Show();
-			else
-				toolbar:Hide();
-			end
+			toolbar:SetShown(ShouldShowToolbar())
 		end)
 	end);
 
