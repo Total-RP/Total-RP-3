@@ -376,7 +376,7 @@ local function onStart()
 		end
 
 		TRP3_API.events.listenToEvent(TRP3_API.events.REGISTER_DATA_UPDATED, function(unitID, _)
-			if unitID ~= Globals.player_id or toolbarVisibility ~= 2 then return end
+			if unitID ~= Globals.player_id or getConfigValue(CONFIG_TOOLBAR_VISIBILITY) ~= 2 then return end
 
 			if player:IsInCharacter() then toolbar:Show() else toolbar:Hide() end
 		end)
