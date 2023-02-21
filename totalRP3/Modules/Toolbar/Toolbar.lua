@@ -35,7 +35,7 @@ local function onStart()
 		AlwaysShow = 1,
 		OnlyShowInCharacter = 2,
 		AlwaysHidden = 3,
-	}
+	};
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Toolbar Logic
@@ -371,31 +371,31 @@ local function onStart()
 
 		buildToolbar();
 
-		local player = AddOn_TotalRP3.Player.GetCurrentUser()
-		local toolbarVisibility = getConfigValue(CONFIG_TOOLBAR_VISIBILITY)
+		local player = AddOn_TotalRP3.Player.GetCurrentUser();
+		local toolbarVisibility = getConfigValue(CONFIG_TOOLBAR_VISIBILITY);
 
 		if toolbarVisibility == ToolbarVisibilityOption.OnlyShowInCharacter and player:IsInCharacter() or toolbarVisibility == ToolbarVisibilityOption.AlwaysShow then
-			toolbar:Show()
+			toolbar:Show();
 		else
-			toolbar:Hide()
+			toolbar:Hide();
 		end
 
 		TRP3_API.events.listenToEvent(TRP3_API.events.REGISTER_DATA_UPDATED, function(unitID, _)
 			if unitID ~= Globals.player_id or getConfigValue(CONFIG_TOOLBAR_VISIBILITY) ~= ToolbarVisibilityOption.OnlyShowInCharacter then
-				return
+				return;
 			end
 
 			if player:IsInCharacter() then
-				toolbar:Show()
+				toolbar:Show();
 			else
-				toolbar:Hide()
+				toolbar:Hide();
 			end
 		end)
 	end);
 
 	function TRP3_API.toolbar.switch()
 		if toolbar:IsVisible() then
-			toolbar:Hide()
+			toolbar:Hide();
 			TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPEN);
 		else
 			TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_CLOSE);
