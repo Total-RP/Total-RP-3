@@ -28,7 +28,7 @@ local function onStart()
 	local CONFIG_ICON_SIZE = "toolbar_icon_size";
 	local CONFIG_ICON_MAX_PER_LINE = "toolbar_max_per_line";
 	local CONFIG_CONTENT_PREFIX = "toolbar_content_";
-	local CONFIG_SHOW_ON_LOGIN = "toolbar_show_on_login";
+	local CONFIG_TOOLBAR_VISIBILITY = "toolbar_visiblity";
 	local CONFIG_HIDE_TITLE = "toolbar_hide_title";
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -275,7 +275,7 @@ local function onStart()
 		setConfigValue(CONFIG_TOOLBAR_POS_A, "TOP");
 		setConfigValue(CONFIG_TOOLBAR_POS_X, 0);
 		setConfigValue(CONFIG_TOOLBAR_POS_Y, -30);
-		setConfigValue(CONFIG_SHOW_ON_LOGIN, true);
+		setConfigValue(CONFIG_TOOLBAR_VISIBILITY, 1);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -287,7 +287,7 @@ local function onStart()
 
 		TRP3_ToolbarTopFrameText:SetText(Globals.addon_name);
 
-		registerConfigKey(CONFIG_SHOW_ON_LOGIN, true);
+		registerConfigKey(CONFIG_TOOLBAR_VISIBILITY, 1);
 		registerConfigKey(CONFIG_ICON_SIZE, 25);
 		registerConfigKey(CONFIG_ICON_MAX_PER_LINE, 7);
 		registerConfigKey(CONFIG_HIDE_TITLE, false);
@@ -304,10 +304,17 @@ local function onStart()
 			title = loc.CO_TOOLBAR_CONTENT,
 		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
-			inherit = "TRP3_ConfigCheck",
-			title = loc.CO_TOOLBAR_SHOW_ON_LOGIN,
-			help = loc.CO_TOOLBAR_SHOW_ON_LOGIN_HELP,
-			configKey = CONFIG_SHOW_ON_LOGIN,
+			inherit = "TRP3_ConfigDropDown",
+			widgetName = "TRP3_ConfigToolbarVisibility",
+			title = loc.CO_TOOLBAR_VISIBILITY,
+			help = loc.CO_TOOLBAR_VISIBILITY_HELP,
+			listContent = {
+				{loc.CO_TOOLBAR_VISIBILITY_1, 1},
+				{loc.CO_TOOLBAR_VISIBILITY_2, 2},
+				{loc.CO_TOOLBAR_VISIBILITY_3, 3}
+			},
+			configKey = CONFIG_TOOLBAR_VISIBILITY,
+			listCancel = true,
 		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
@@ -358,10 +365,21 @@ local function onStart()
 
 		buildToolbar();
 
-		if not getConfigValue(CONFIG_SHOW_ON_LOGIN) then
-			toolbar:Hide();
+		local player = AddOn_TotalRP3.Player.GetCurrentUser()
+		local toolbarVisibility = getConfigValue(CONFIG_TOOLBAR_VISIBILITY)
+
+		-- visibility: 1 = show on login, 2 = only show in-character, 3 = hide toolbar
+		if toolbarVisibility == 2 and player:IsInCharacter() or toolbarVisibility == 1 then
+			toolbar:Show()
+		else
+			toolbar:Hide()
 		end
 
+		TRP3_API.events.listenToEvent(TRP3_API.events.REGISTER_DATA_UPDATED, function(unitID, _)
+			if unitID ~= Globals.player_id or toolbarVisibility ~= 2 then return end
+
+			if player:IsInCharacter() then toolbar:Show() else toolbar:Hide() end
+		end)
 	end);
 
 	function TRP3_API.toolbar.switch()
