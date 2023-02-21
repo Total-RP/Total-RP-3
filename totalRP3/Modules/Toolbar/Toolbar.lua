@@ -322,6 +322,7 @@ local function onStart()
 			inherit = "TRP3_ConfigDropDown",
 			widgetName = "TRP3_ConfigToolbarVisibility",
 			title = loc.CO_TOOLBAR_VISIBILITY,
+			help = loc.CO_TOOLBAR_VISIBILITY_HELP,
 			listContent = {
 				{loc.CO_TOOLBAR_VISIBILITY_1, ToolbarVisibilityOption.AlwaysShow},
 				{loc.CO_TOOLBAR_VISIBILITY_2, ToolbarVisibilityOption.OnlyShowInCharacter},
