@@ -23,31 +23,29 @@ function ToolbarMixin:OnLoad()
 	self.manualVisibility = nil;
 
 	TRP3_API.Events.registerCallback("CONFIGURATION_CHANGED", GenerateClosure(self.OnConfigurationChanged, self));
-	TRP3_API.Events.registerCallback("REGISTER_DATA_UPDATED", GenerateClosure(self.OnRegisterDataUpdated, self));
+	TRP3_API.Events.registerCallback("ROLEPLAY_STATUS_CHANGED", GenerateClosure(self.OnRoleplayStatusChanged, self));
 
 	self:UpdateVisibility();
 end
 
-function ToolbarMixin:OnRegisterDataUpdated(characterID)
-	if characterID == TRP3_API.globals.player_id then
+function ToolbarMixin:OnRoleplayStatusChanged()
+	local configuredVisibility = TRP3_API.configuration.getValue(CONFIG_TOOLBAR_VISIBILITY);
+
+	if configuredVisibility == ToolbarVisibilityOption.OnlyShowInCharacter then
 		self:UpdateVisibility();
 	end
 end
 
 function ToolbarMixin:OnConfigurationChanged(key)
 	if key == CONFIG_TOOLBAR_VISIBILITY then
-		self.manualVisibility = nil;
 		self:UpdateVisibility();
 	end
 end
 
 function ToolbarMixin:Toggle()
-	if self.manualVisibility == nil and self:IsVisibilityDynamic() then
-		TRP3_API.utils.message.displayMessage(TRP3_API.Ellyb.ColorManager.ORANGE(loc.CO_TOOLBAR_LOCKOUT));
-	end
-
-	self.manualVisibility = not self:IsShown();
+	self.forcedVisibility = not self:IsShown();
 	self:UpdateVisibility();
+	self.forcedVisibility = nil;
 
 	if self:IsShown() then
 		TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPEN);
@@ -56,17 +54,12 @@ function ToolbarMixin:Toggle()
 	end
 end
 
-function ToolbarMixin:IsVisibilityDynamic()
-	local configuredVisibility = TRP3_API.configuration.getValue(CONFIG_TOOLBAR_VISIBILITY);
-	return configuredVisibility == ToolbarVisibilityOption.OnlyShowInCharacter;
-end
-
 function ToolbarMixin:UpdateVisibility()
 	local configuredVisibility = TRP3_API.configuration.getValue(CONFIG_TOOLBAR_VISIBILITY);
 	local shouldShow;
 
-	if self.manualVisibility ~= nil then
-		shouldShow = self.manualVisibility;
+	if self.forcedVisibility ~= nil then
+		shouldShow = self.forcedVisibility;
 	elseif configuredVisibility == ToolbarVisibilityOption.AlwaysHidden then
 		shouldShow = false;
 	elseif configuredVisibility == ToolbarVisibilityOption.OnlyShowInCharacter then
