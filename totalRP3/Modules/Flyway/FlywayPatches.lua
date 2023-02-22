@@ -140,3 +140,16 @@ TRP3_API.flyway.patches["12"] = function()
 		TRP3_MatureFilter.whitelist = nil;
 	end
 end
+
+TRP3_API.flyway.patches["13"] = function()
+	-- Migrate the toolbar show on login setting to the new display conditions
+	if TRP3_Configuration then
+		if TRP3_Configuration["toolbar_show_on_login"] then
+			TRP3_Configuration["toolbar_visibility"] = 1; -- AlwaysShow
+		else
+			TRP3_Configuration["toolbar_visibility"] = 3; -- AlwaysHide
+		end
+
+		TRP3_Configuration["toolbar_show_on_login"] = nil;
+	end
+end
