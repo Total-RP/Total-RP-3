@@ -61,6 +61,12 @@ local Events = {
 	-- Arg2 : Target mode (Character, pet, battle pet ...)
 	MOUSE_OVER_CHANGED = "MOUSE_OVER_CHANGED",
 
+	-- Notification for when the players' current roleplay status has changed.
+	--
+	-- This event will be fired at an arbitrary point during the processing
+	-- of the REGISTER_DATA_UPDATED event. Users must not make assumptions
+	-- about the ordering of callbacks between these two events. This event
+	-- should not be triggered manually by any code.
 	ROLEPLAY_STATUS_CHANGED = "ROLEPLAY_STATUS_CHANGED",
 };
 
@@ -112,13 +118,6 @@ Events.fireEvent = Events.triggerEvent;
 
 TRP3_API.Events = Events;
 TRP3_API.events = Events;
-
--- The ROLEPLAY_STATUS_CHANGED event is a filter of REGISTER_DATA_UPDATED and
--- will be triggered at an arbitrary point during the processing of the
--- REGISTER_DATA_UPDATED event.
---
--- Do *not* rely on any specific ordering of callbacks registered between these
--- events.
 
 do
 	local status = nil;
