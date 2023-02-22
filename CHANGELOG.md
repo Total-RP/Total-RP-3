@@ -1,3 +1,19 @@
+# Changelog version 2.4.5
+
+## Added
+
+- Added Plater support for RP nameplates customization. Thanks to Ghost for this addition.
+- OOC characters are now hidden from the map scan.
+  - You can re-enable them by checking "Show out of character players" in Register settings > Location settings. Pins with only OOC characters will appear faded.
+  - Only players from this version onwards are recognized as OOC, so this may take some time to be accurate.
+
+## Fixed
+
+- Re-enabled right-click menu options (with the exception of the IC/OOC status toggle).
+- Fixed dashboard dropdowns not showing the correct selected values.
+- Fixed name-only nameplates setting not persisting upon logout.
+- Fixed an issue with profiles showing as Unknown in the directory quick entries if the profile was received for the first time.
+
 # Changelog version 2.4.4
 
 ## Fixed
