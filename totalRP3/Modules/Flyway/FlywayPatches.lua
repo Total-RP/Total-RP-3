@@ -145,9 +145,9 @@ TRP3_API.flyway.patches["13"] = function()
 	-- Migrate the toolbar show on login setting to the new display conditions
 	if TRP3_Configuration then
 		if TRP3_Configuration["toolbar_show_on_login"] then
-			TRP3_Configuration["toolbar_visibility"] = 1; -- AlwaysShow
+			TRP3_Configuration["toolbar_visibility"] = TRP3_ToolbarVisibilityOption.AlwaysShow;
 		else
-			TRP3_Configuration["toolbar_visibility"] = 3; -- AlwaysHide
+			TRP3_Configuration["toolbar_visibility"] = TRP3_ToolbarVisibilityOption.AlwaysHidden;
 		end
 
 		TRP3_Configuration["toolbar_show_on_login"] = nil;

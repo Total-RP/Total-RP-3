@@ -11,7 +11,7 @@ local CONFIG_CONTENT_PREFIX = "toolbar_content_";
 local CONFIG_HIDE_TITLE = "toolbar_hide_title";
 local CONFIG_TOOLBAR_VISIBILITY = "toolbar_visibility";
 
-local ToolbarVisibilityOption = {
+TRP3_ToolbarVisibilityOption = {
 	AlwaysShow = 1,
 	OnlyShowInCharacter = 2,
 	AlwaysHidden = 3,
@@ -31,7 +31,7 @@ end
 function ToolbarMixin:OnRoleplayStatusChanged()
 	local configuredVisibility = TRP3_API.configuration.getValue(CONFIG_TOOLBAR_VISIBILITY);
 
-	if configuredVisibility == ToolbarVisibilityOption.OnlyShowInCharacter then
+	if configuredVisibility == TRP3_ToolbarVisibilityOption.OnlyShowInCharacter then
 		self:UpdateVisibility();
 	end
 end
@@ -60,9 +60,9 @@ function ToolbarMixin:UpdateVisibility()
 
 	if self.forcedVisibility ~= nil then
 		shouldShow = self.forcedVisibility;
-	elseif configuredVisibility == ToolbarVisibilityOption.AlwaysHidden then
+	elseif configuredVisibility == TRP3_ToolbarVisibilityOption.AlwaysHidden then
 		shouldShow = false;
-	elseif configuredVisibility == ToolbarVisibilityOption.OnlyShowInCharacter then
+	elseif configuredVisibility == TRP3_ToolbarVisibilityOption.OnlyShowInCharacter then
 		shouldShow = AddOn_TotalRP3.Player.GetCurrentUser():IsInCharacter();
 	else
 		shouldShow = true;
@@ -338,7 +338,7 @@ local function onStart()
 		setConfigValue(CONFIG_TOOLBAR_POS_A, "TOP");
 		setConfigValue(CONFIG_TOOLBAR_POS_X, 0);
 		setConfigValue(CONFIG_TOOLBAR_POS_Y, -30);
-		setConfigValue(CONFIG_TOOLBAR_VISIBILITY, ToolbarVisibilityOption.AlwaysShow);
+		setConfigValue(CONFIG_TOOLBAR_VISIBILITY, TRP3_ToolbarVisibilityOption.AlwaysShow);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -350,7 +350,7 @@ local function onStart()
 
 		TRP3_ToolbarTopFrameText:SetText(Globals.addon_name);
 
-		registerConfigKey(CONFIG_TOOLBAR_VISIBILITY, ToolbarVisibilityOption.AlwaysShow);
+		registerConfigKey(CONFIG_TOOLBAR_VISIBILITY, TRP3_ToolbarVisibilityOption.AlwaysShow);
 		registerConfigKey(CONFIG_ICON_SIZE, 25);
 		registerConfigKey(CONFIG_ICON_MAX_PER_LINE, 7);
 		registerConfigKey(CONFIG_HIDE_TITLE, false);
@@ -372,9 +372,9 @@ local function onStart()
 			title = loc.CO_TOOLBAR_VISIBILITY,
 			help = loc.CO_TOOLBAR_VISIBILITY_HELP,
 			listContent = {
-				{loc.CO_TOOLBAR_VISIBILITY_1, ToolbarVisibilityOption.AlwaysShow},
-				{loc.CO_TOOLBAR_VISIBILITY_2, ToolbarVisibilityOption.OnlyShowInCharacter},
-				{loc.CO_TOOLBAR_VISIBILITY_3, ToolbarVisibilityOption.AlwaysHidden}
+				{loc.CO_TOOLBAR_VISIBILITY_1, TRP3_ToolbarVisibilityOption.AlwaysShow},
+				{loc.CO_TOOLBAR_VISIBILITY_2, TRP3_ToolbarVisibilityOption.OnlyShowInCharacter},
+				{loc.CO_TOOLBAR_VISIBILITY_3, TRP3_ToolbarVisibilityOption.AlwaysHidden}
 			},
 			configKey = CONFIG_TOOLBAR_VISIBILITY,
 			listCancel = true,
