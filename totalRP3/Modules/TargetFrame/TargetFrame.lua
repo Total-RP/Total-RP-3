@@ -379,6 +379,8 @@ local function onStart()
 			onTargetChanged();
 		end
 	end);
+
+	TRP3_API.Events.registerCallback("ROLEPLAY_STATUS_CHANGED", onTargetChanged);
 end
 
 local MODULE_STRUCTURE = {
