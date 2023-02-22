@@ -288,20 +288,24 @@ local function onStart()
 	end
 	TRP3_API.toolbar.updateToolbarButton = updateToolbarButton;
 
-
-	local toolbarModelRefreshFrame = CreateFrame("Frame");
-
-	-- We create a frame that will take care of refreshing the model of the buttons every half second
-	-- It will also refresh the databroker plugin
-	TRP3_API.ui.frame.createRefreshOnFrame(toolbarModelRefreshFrame, 0.5, function()
+	local function RefreshToolbarButtons()
 		for _, buttonStructure in pairs(buttonStructures) do
 			if buttonStructure.onModelUpdate then
-				buttonStructure.onModelUpdate(buttonStructure)
+				buttonStructure:onModelUpdate();
 				refreshLDBPLugin(buttonStructure);
 			end
 		end
-	end)
 
+		for _, uiButton in pairs(uiButtons) do
+			uiButton.TimeSinceLastUpdate = math.huge;
+		end
+	end
+
+	-- Holding off on making toolbutton updates more flexible for now in favour
+	-- of *just* relying on periodic updates and a few hand-selected callbacks.
+
+	C_Timer.NewTicker(0.5, RefreshToolbarButtons);
+	TRP3_API.Events.registerCallback("ROLEPLAY_STATUS_CHANGED", RefreshToolbarButtons);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Position
