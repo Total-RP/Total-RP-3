@@ -20,8 +20,6 @@ TRP3_ToolbarVisibilityOption = {
 local ToolbarMixin = {};
 
 function ToolbarMixin:OnLoad()
-	self.manualVisibility = nil;
-
 	TRP3_API.Events.registerCallback("CONFIGURATION_CHANGED", GenerateClosure(self.OnConfigurationChanged, self));
 	TRP3_API.Events.registerCallback("ROLEPLAY_STATUS_CHANGED", GenerateClosure(self.OnRoleplayStatusChanged, self));
 
