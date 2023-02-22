@@ -1415,57 +1415,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	SLASH_CMD_SET_SUCCESS = "Successfully updated the %1$q field for your current profile.",
 	MACRO_RPSTATUS_INVALID = "Unknown roleplay status: %s",
 	UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE = "|cffffcc00Note: |r Due to issues with Edit Mode in patch 10.0.0 the unit popups module has been |cffff0000disabled|r. Sorry for any inconvenience!",
-	WHATS_NEW_25_1 = [[# Changelog version 2.4
-
-## Added
-
-- Added support for Retail 10.0.0.
-- Added 2 new command lines for use in macros:
-  - /trp3 set: Allows you to set a profile field to a given value.
-  - /trp3 location: Allows you to control whether or not you appear on the map scan.
-- Added macro conditionals for the 2 aforementioned command lines:
-  - [ic], [ooc], [rpstatus:{status}] - IC/OOC status
-  - [loc:{location name}], [location:{location name}] - Current location
-  - [profile:{profile name}] - Current profile name
-  - Regular macro conditionals are also supported
-
-## Fixed
-
-- Fixed an issue with the color picker not working in WotLK Classic.
-- Fixed an issue with water elemental pets not being valid targets to bind a companion profile to in WotLK Classic.
-- More tooltip cleanup.
-
-## Removed
-
-- Removed temporarily right-click menu options in Retail due to a conflict with Edit Mode that can prevent the use of abilities in combat. They will be re-added once the conflict has been resolved.
-
-]],
-	WHATS_NEW_25_2 = [[# Changelog version 2.4.1
-
-## Added
-
-- Added support for Retail 10.0.2.
-- Added 5 icons, 68 images and 218 musics from patch 10.0.2 and before.
-- Added the ability to right-click a pin after a map scan to open someone's profile.
-
-## Fixed
-
-- Fixed the "Hide immediately instead of fading" tooltip setting.
-- Fixed another issue with water elemental pets not being valid targets to bind a companion profile to in WotLK Classic
-- Fixed an issue with colorblind mode preventing companion tooltips from displaying.
-
-]],
-	WHATS_NEW_25_3 = [[# Changelog version 2.4.2
-
-## Fixed
-
-- Fixed missing dracthyr default profile icon.
-- Fixed companion profiles not working properly on the second pet from Animal Companion talent.
-- Fixed companion profiles on water elementals in WotLK Classic (for real this time).
-- Fixed broadcast channel order setting being checked before configuration was set up.
-- Fixed an issue with chat links that could lead to blocked actions.
-
-]],
 	WHATS_NEW_25_4 = [[# Changelog version 2.4.3
 
 ## Added
@@ -1504,6 +1453,23 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR = "An error occured while importing the Plater mod.",
 	CO_LOCATION_SHOW_OUT_OF_CHARACTER = "Show out of character players",
 	CO_LOCATION_SHOW_OUT_OF_CHARACTER_TT = "If checked, show map pins for all players that are marked as out of character.",
+	WHATS_NEW_25_6 = [[# Changelog version 2.4.5
+
+## Added
+
+- Added Plater support for RP nameplates customization. Thanks to Ghost for this addition.
+- OOC characters are now hidden from the map scan.
+  - You can re-enable them by checking "Show out of character players" in Register settings > Location settings. Pins with only OOC characters will appear faded.
+  - Only players from this version onwards are recognized as OOC, so this may take some time to be accurate.
+
+## Fixed
+
+- Re-enabled right-click menu options (with the exception of the IC/OOC status toggle).
+- Fixed dashboard dropdowns not showing the correct selected values.
+- Fixed name-only nameplates setting not persisting upon logout.
+- Fixed an issue with profiles showing as Unknown in the directory quick entries if the profile was received for the first time.
+
+]],
 
 };
 
