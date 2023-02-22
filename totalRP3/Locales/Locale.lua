@@ -1505,12 +1505,11 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	CO_LOCATION_SHOW_OUT_OF_CHARACTER = "Show out of character players",
 	CO_LOCATION_SHOW_OUT_OF_CHARACTER_TT = "If checked, show map pins for all players that are marked as out of character.",
 
-	CO_TOOLBAR_VISIBILITY = "Toolbar Visibility",
+	CO_TOOLBAR_VISIBILITY = "Display conditions",
 	CO_TOOLBAR_VISIBILITY_HELP = "Configures the conditions under which the toolbar should be shown.|n|nThe visibility of the toolbar can be forcefully toggled by running the |cff00ff00/trp switch toolbar|r slash command or by right-clicking the minimap button, which will persist until either logout or a UI reload.",
 	CO_TOOLBAR_VISIBILITY_1 = "Always show",
 	CO_TOOLBAR_VISIBILITY_2 = "Only show in-character",
 	CO_TOOLBAR_VISIBILITY_3 = "Always hidden",
-	CO_TOOLBAR_LOCKOUT = "Your toolbar visibility is now being controlled by the |cff00ff00minimap button|r and the |cff00ff00/trp3 switch toolbar|r slash command. To re-enable automatic hiding, reload your UI with |cff00ff00/reload|r.",
 };
 
 -- Use Ellyb to generate the Localization system
