@@ -14,7 +14,6 @@ local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
 local Events = TRP3_API.events;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local getProfiles = TRP3_API.profile.getProfiles;
-local gsub = string.gsub;
 
 -- These functions get replaced by the proper TRP3 ones once the addon has finished loading
 local function getPlayerCompleteName()
@@ -91,7 +90,7 @@ TRP3_API.register.relation.getRelation = getRelation;
 
 local function getRelationText(profileID)
 	local relation = getRelation(profileID);
-	if relation == getRelation("NONE") then
+	if relation.id == getRelation().id then
 		return "";
 	end
 	return relation.name or loc:GetText("REG_RELATION_"..relation.id);
@@ -103,9 +102,7 @@ local function getRelationTooltipText(profileID, profile)
 	local description = getRelation(profileID).description or loc:GetText("REG_RELATION_" .. getRelation(profileID).id .. "_TT");
 	local player = getPlayerCompleteName(true);
 	local target = getCompleteName(profile.characteristics or EMPTY, UNKNOWN, true);
-	local playerIdentifier = "{"..loc.REG_RELATION_REPLACE_PLAYER.."}";
-	local targetIdentifier = "{"..loc.REG_RELATION_REPLACE_TARGET.."}";
-	return gsub(description, playerIdentifier, player):gsub(targetIdentifier, target):format(player, target) -- we do the format for backwards compatibility with slow-to update translations
+	return description:format(player, target)
 end
 TRP3_API.register.relation.getRelationTooltipText = getRelationTooltipText;
 
@@ -151,7 +148,7 @@ local buildConfigPageElements
 local function onActionSelected(relationID)
 	local relation = getRelationInfo(relationID)
 	if not relation.inUse then
-		TRP3_API.popup.showConfirmPopup(loc.REG_RELATION_DELETE_CONFIRM_TITLE, function()
+		TRP3_API.popup.showConfirmPopup(loc.CO_RELATIONS_DELETE_WARNING:format(getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id))), function()
 			local relationList = getRelationList()
 			TRP3_API.configuration.setValue("register_relation_list", relationList)
 			TRP3_API.configuration.removeElementFromPageByTitle("main_config_relations", getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id)))
@@ -194,21 +191,27 @@ buildConfigPageElements = function ()
 										TRP3_API.popup.ICONS,
 										{},
 										{function(relationIcon)
-											relationList[relationID] = {
+											local playerIdentifier = "{"..loc.REG_RELATION_REPLACE_PLAYER.."}";
+											local targetIdentifier = "{"..loc.REG_RELATION_REPLACE_TARGET.."}";
+											local unlocalisedPlayer = '{player}';
+											local unlocalisedTarget = '{target}';
+											local description = relationTT:gsub(unlocalisedPlayer,'%%1$s'):gsub(unlocalisedTarget, '%%2$s'):gsub(playerIdentifier, '%%1$s'):gsub(targetIdentifier, '%%2$s');
+											local relation = {
 												id = relationID,
 												name = relationTitle,
-												description = relationTT,
+												description = description,
 												texture = relationIcon,
 												color = Color(red, green, blue):GenerateHexadecimalColor(),
 												order = 0,
 												inUse = false,
 											};
+											relationList[relationID] = relation
 											TRP3_API.configuration.setValue("register_relation_list", relationList);
 											TRP3_API.configuration.insertElementIntoPage("main_config_relations", {
 												inherit = "TRP3_ConfigurationRelationsFrame",
-												title = getColor(relationList[relationID])(relationList[relationID].name or loc:GetText("REG_RELATION_"..relationList[relationID].id)),
-												text = relationList[relationID].description or loc:GetText( "REG_RELATION_" .. relationList[relationID].id .. "_TT"),
-												icon = relationList[relationID].texture,
+												title = getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id)),
+												text = relation.description:format("{"..loc.REG_RELATION_REPLACE_PLAYER.."}", "{"..loc.REG_RELATION_REPLACE_TARGET.."}"),
+												icon = relation.texture,
 												OnClick = function(button)
 													local values = {};
 													checkRelationUse()
@@ -235,7 +238,7 @@ buildConfigPageElements = function ()
 		table.insert(relationElements, {
 			inherit = "TRP3_ConfigurationRelationsFrame",
 			title = getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id)),
-			text = loc:GetText(relation.description or "REG_RELATION_" .. relation.id .. "_TT"),
+			text = loc:GetText(relation.description or "REG_RELATION_" .. relation.id .. "_TT"):format("{"..loc.REG_RELATION_REPLACE_PLAYER.."}", "{"..loc.REG_RELATION_REPLACE_TARGET.."}"),
 			icon = relation.texture,
 			OnClick = function(button)
 				local values = {};

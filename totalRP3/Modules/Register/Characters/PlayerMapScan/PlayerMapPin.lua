@@ -61,7 +61,7 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 		displayData.categoryPriority = -1;
 	else
 		local relation = player:GetRelationshipWithPlayer()
-		if relation.id ~= TRP3_API.register.relation.getRelationInfo('NONE').id then
+		if relation.id ~= TRP3_API.register.relation.getRelationInfo().id then
 			local relationshipColor = TRP3_API.register.relation.getColor(relation);
 			displayData.iconAtlas = "PlayerPartyBlip";
 			displayData.iconColor = relationshipColor;

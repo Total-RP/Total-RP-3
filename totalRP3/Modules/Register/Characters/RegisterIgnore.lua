@@ -9,13 +9,6 @@ local hasProfile = TRP3_API.register.hasProfile;
 local getProfile, getUnitID = TRP3_API.register.getProfile, TRP3_API.utils.str.getUnitID;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local characters, blockList = {}, {};
-local tinsert = tinsert;
-local Relation = TRP3_API.register.relation
-local setRelation = Relation.setRelation
-local getRelationList = Relation.getRelationList
-local getRelationText = Relation.getRelationText
-local getRelationTexture = Relation.getRelationTexture
-local getRelationTooltipText = Relation.getRelationTooltipText
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Ignore list
@@ -77,14 +70,14 @@ end
 local function onRelationSelected(value)
 	local unitID = getUnitID("target");
 	if hasProfile(unitID) then
-		setRelation(hasProfile(unitID), value);
+		TRP3_API.register.relation.setRelation(hasProfile(unitID), value);
 		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), "characteristics");
 	end
 end
 
 local function onTargetButtonClicked(_, _, _, button)
 	local values = {};
-	local relations = getRelationList();
+	local relations = TRP3_API.register.relation.getRelationList();
 	for _, thisRelation in pairs(relations) do
 		tinsert(values, {thisRelation.name or loc["REG_RELATION_" .. thisRelation.id], thisRelation.id})
 	end
@@ -129,9 +122,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			onClick = onTargetButtonClicked,
 			adapter = function(buttonStructure, unitID)
 				local profileID = hasProfile(unitID);
-				buttonStructure.tooltip = loc.REG_RELATION .. ": " .. getRelationText(profileID);
-				buttonStructure.tooltipSub = "|cff00ff00" .. getRelationTooltipText(profileID, getProfile(profileID)) .. "\n" .. loc.REG_RELATION_TARGET;
-				buttonStructure.icon = getRelationTexture(profileID);
+				buttonStructure.tooltip = loc.REG_RELATION .. ": " .. TRP3_API.register.relation.getRelationText(profileID);
+				buttonStructure.tooltipSub = "|cff00ff00" .. TRP3_API.register.relation.getRelationTooltipText(profileID, getProfile(profileID)) .. "\n" .. loc.REG_RELATION_TARGET;
+				buttonStructure.icon = TRP3_API.register.relation.getRelationTexture(profileID);
 			end,
 		});
 	end
