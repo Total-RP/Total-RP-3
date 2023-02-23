@@ -1,35 +1,92 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
+local loc = TRP3_API.loc;
+local color = Utils.str.color;
+
+local CONFIG_ICON_SIZE = "toolbar_icon_size";
+local CONFIG_ICON_MAX_PER_LINE = "toolbar_max_per_line";
+local CONFIG_CONTENT_PREFIX = "toolbar_content_";
+local CONFIG_HIDE_TITLE = "toolbar_hide_title";
+local CONFIG_TOOLBAR_VISIBILITY = "toolbar_visibility";
+
+TRP3_ToolbarVisibilityOption = {
+	AlwaysShow = 1,
+	OnlyShowInCharacter = 2,
+	AlwaysHidden = 3,
+};
+
+local ToolbarMixin = {};
+
+function ToolbarMixin:OnLoad()
+	TRP3_API.Events.registerCallback("CONFIGURATION_CHANGED", GenerateClosure(self.OnConfigurationChanged, self));
+	TRP3_API.Events.registerCallback("ROLEPLAY_STATUS_CHANGED", GenerateClosure(self.OnRoleplayStatusChanged, self));
+
+	self:UpdateVisibility();
+end
+
+function ToolbarMixin:OnRoleplayStatusChanged()
+	local configuredVisibility = TRP3_API.configuration.getValue(CONFIG_TOOLBAR_VISIBILITY);
+
+	if configuredVisibility == TRP3_ToolbarVisibilityOption.OnlyShowInCharacter then
+		self:UpdateVisibility();
+	end
+end
+
+function ToolbarMixin:OnConfigurationChanged(key)
+	if key == CONFIG_TOOLBAR_VISIBILITY then
+		self:UpdateVisibility();
+	end
+end
+
+function ToolbarMixin:Toggle()
+	self.forcedVisibility = not self:IsShown();
+	self:UpdateVisibility();
+	self.forcedVisibility = nil;
+
+	if self:IsShown() then
+		TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPEN);
+	else
+		TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_CLOSE);
+	end
+end
+
+function ToolbarMixin:UpdateVisibility()
+	local configuredVisibility = TRP3_API.configuration.getValue(CONFIG_TOOLBAR_VISIBILITY);
+	local shouldShow;
+
+	if self.forcedVisibility ~= nil then
+		shouldShow = self.forcedVisibility;
+	elseif configuredVisibility == TRP3_ToolbarVisibilityOption.AlwaysHidden then
+		shouldShow = false;
+	elseif configuredVisibility == TRP3_ToolbarVisibilityOption.OnlyShowInCharacter then
+		shouldShow = AddOn_TotalRP3.Player.GetCurrentUser():IsInCharacter();
+	else
+		shouldShow = true;
+	end
+
+	self:SetShown(shouldShow);
+end
+
 local toolbar;
 
 -- Always build UI on init. Because maybe other modules would like to anchor it on start.
 local function onInit()
-	toolbar = CreateFrame("Frame", "TRP3_Toolbar", UIParent, "TRP3_ToolbarTemplate");
+	toolbar = Mixin(CreateFrame("Frame", "TRP3_Toolbar", UIParent, "TRP3_ToolbarTemplate"), ToolbarMixin);
 end
 
 local function onStart()
-
 	-- Public accessor
 	TRP3_API.toolbar = {};
 
 	local LDBObjects = {};
 
 	-- imports
-	local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-	local loc = TRP3_API.loc;
-	local color = Utils.str.color;
-	local assert, pairs, tinsert, table, math  = assert, pairs, tinsert, table, math;
 	local toolbarContainer, mainTooltip = TRP3_ToolbarContainer, TRP3_MainTooltip;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
 	local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForFrame;
 	local refreshTooltip = TRP3_API.ui.tooltip.refresh;
-
-	local CONFIG_ICON_SIZE = "toolbar_icon_size";
-	local CONFIG_ICON_MAX_PER_LINE = "toolbar_max_per_line";
-	local CONFIG_CONTENT_PREFIX = "toolbar_content_";
-	local CONFIG_SHOW_ON_LOGIN = "toolbar_show_on_login";
-	local CONFIG_HIDE_TITLE = "toolbar_hide_title";
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Toolbar Logic
@@ -229,20 +286,24 @@ local function onStart()
 	end
 	TRP3_API.toolbar.updateToolbarButton = updateToolbarButton;
 
-
-	local toolbarModelRefreshFrame = CreateFrame("Frame");
-
-	-- We create a frame that will take care of refreshing the model of the buttons every half second
-	-- It will also refresh the databroker plugin
-	TRP3_API.ui.frame.createRefreshOnFrame(toolbarModelRefreshFrame, 0.5, function()
+	local function RefreshToolbarButtons()
 		for _, buttonStructure in pairs(buttonStructures) do
 			if buttonStructure.onModelUpdate then
-				buttonStructure.onModelUpdate(buttonStructure)
+				buttonStructure:onModelUpdate();
 				refreshLDBPLugin(buttonStructure);
 			end
 		end
-	end)
 
+		for _, uiButton in pairs(uiButtons) do
+			uiButton.TimeSinceLastUpdate = math.huge;
+		end
+	end
+
+	-- Holding off on making toolbutton updates more flexible for now in favour
+	-- of *just* relying on periodic updates and a few hand-selected callbacks.
+
+	C_Timer.NewTicker(0.5, RefreshToolbarButtons);
+	TRP3_API.Events.registerCallback("ROLEPLAY_STATUS_CHANGED", RefreshToolbarButtons);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Position
@@ -275,7 +336,7 @@ local function onStart()
 		setConfigValue(CONFIG_TOOLBAR_POS_A, "TOP");
 		setConfigValue(CONFIG_TOOLBAR_POS_X, 0);
 		setConfigValue(CONFIG_TOOLBAR_POS_Y, -30);
-		setConfigValue(CONFIG_SHOW_ON_LOGIN, true);
+		setConfigValue(CONFIG_TOOLBAR_VISIBILITY, TRP3_ToolbarVisibilityOption.AlwaysShow);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -287,7 +348,7 @@ local function onStart()
 
 		TRP3_ToolbarTopFrameText:SetText(Globals.addon_name);
 
-		registerConfigKey(CONFIG_SHOW_ON_LOGIN, true);
+		registerConfigKey(CONFIG_TOOLBAR_VISIBILITY, TRP3_ToolbarVisibilityOption.AlwaysShow);
 		registerConfigKey(CONFIG_ICON_SIZE, 25);
 		registerConfigKey(CONFIG_ICON_MAX_PER_LINE, 7);
 		registerConfigKey(CONFIG_HIDE_TITLE, false);
@@ -304,10 +365,17 @@ local function onStart()
 			title = loc.CO_TOOLBAR_CONTENT,
 		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
-			inherit = "TRP3_ConfigCheck",
-			title = loc.CO_TOOLBAR_SHOW_ON_LOGIN,
-			help = loc.CO_TOOLBAR_SHOW_ON_LOGIN_HELP,
-			configKey = CONFIG_SHOW_ON_LOGIN,
+			inherit = "TRP3_ConfigDropDown",
+			widgetName = "TRP3_ConfigToolbarVisibility",
+			title = loc.CO_TOOLBAR_VISIBILITY,
+			help = loc.CO_TOOLBAR_VISIBILITY_HELP,
+			listContent = {
+				{loc.CO_TOOLBAR_VISIBILITY_1, TRP3_ToolbarVisibilityOption.AlwaysShow},
+				{loc.CO_TOOLBAR_VISIBILITY_2, TRP3_ToolbarVisibilityOption.OnlyShowInCharacter},
+				{loc.CO_TOOLBAR_VISIBILITY_3, TRP3_ToolbarVisibilityOption.AlwaysHidden}
+			},
+			configKey = CONFIG_TOOLBAR_VISIBILITY,
+			listCancel = true,
 		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
@@ -357,23 +425,12 @@ local function onStart()
 		end
 
 		buildToolbar();
-
-		if not getConfigValue(CONFIG_SHOW_ON_LOGIN) then
-			toolbar:Hide();
-		end
-
+		toolbar:OnLoad();
 	end);
 
 	function TRP3_API.toolbar.switch()
-		if toolbar:IsVisible() then
-			toolbar:Hide()
-			TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPEN);
-		else
-			TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_CLOSE);
-			toolbar:Show();
-		end
+		toolbar:Toggle();
 	end
-
 end
 
 local MODULE_STRUCTURE = {

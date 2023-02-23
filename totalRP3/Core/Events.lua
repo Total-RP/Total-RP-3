@@ -60,6 +60,14 @@ local Events = {
 	-- Arg1 : Target ID
 	-- Arg2 : Target mode (Character, pet, battle pet ...)
 	MOUSE_OVER_CHANGED = "MOUSE_OVER_CHANGED",
+
+	-- Notification for when the players' current roleplay status has changed.
+	--
+	-- This event will be fired at an arbitrary point during the processing
+	-- of the REGISTER_DATA_UPDATED event. Users must not make assumptions
+	-- about the ordering of callbacks between these two events. This event
+	-- should not be triggered manually by any code.
+	ROLEPLAY_STATUS_CHANGED = "ROLEPLAY_STATUS_CHANGED",
 };
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -110,3 +118,18 @@ Events.fireEvent = Events.triggerEvent;
 
 TRP3_API.Events = Events;
 TRP3_API.events = Events;
+
+do
+	local status = nil;
+
+	local function OnRegisterDataUpdated()
+		local current = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayStatus();
+
+		if status ~= current then
+			status = current;
+			eventsDispatcher:TriggerEvent("ROLEPLAY_STATUS_CHANGED", status);
+		end
+	end
+
+	eventsDispatcher:RegisterCallback("REGISTER_DATA_UPDATED", OnRegisterDataUpdated);
+end

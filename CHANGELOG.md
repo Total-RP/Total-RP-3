@@ -3,6 +3,7 @@
 ## Added
 
 - Added Plater support for RP nameplates customization. Thanks to Ghost for this addition.
+- The TRP toolbar can now be set to only show while in character with the Toolbar display conditions setting (replacing Toolbar show on login).
 - OOC characters are now hidden from the map scan.
   - You can re-enable them by checking "Show out of character players" in Register settings > Location settings. Pins with only OOC characters will appear faded.
   - Only players from this version onwards are recognized as OOC, so this may take some time to be accurate.

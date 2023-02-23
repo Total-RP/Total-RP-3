@@ -243,7 +243,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				end
 			end,
 			onModelUpdate = function(buttonStructure)
-				if get("player/character/RP") == 1 then
+				if AddOn_TotalRP3.Player.GetCurrentUser():IsInCharacter() then
 					buttonStructure.tooltip  = rpTextOn;
 					buttonStructure.tooltipSub = rpText3;
 					buttonStructure.icon = RP_ICON;

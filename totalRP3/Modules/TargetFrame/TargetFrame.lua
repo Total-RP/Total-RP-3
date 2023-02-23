@@ -306,9 +306,9 @@ local function onStart()
 			title = loc.CO_TARGETFRAME_USE,
 			help = loc.CO_TARGETFRAME_USE_TT,
 			listContent = {
-				{loc.CO_TARGETFRAME_USE_1, 1},
-				{loc.CO_TARGETFRAME_USE_2, 2},
-				{loc.CO_TARGETFRAME_USE_3, 3}
+				{loc.CO_TOOLBAR_VISIBILITY_1, 1},
+				{loc.CO_TOOLBAR_VISIBILITY_2, 2},
+				{loc.CO_TOOLBAR_VISIBILITY_3, 3}
 			},
 			configKey = CONFIG_TARGET_USE,
 			listWidth = nil,
@@ -379,6 +379,8 @@ local function onStart()
 			onTargetChanged();
 		end
 	end);
+
+	TRP3_API.Events.registerCallback("ROLEPLAY_STATUS_CHANGED", onTargetChanged);
 end
 
 local MODULE_STRUCTURE = {
