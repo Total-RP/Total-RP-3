@@ -394,6 +394,15 @@ function Config.removeElementFromPageByTitle(pageID, title)
 	Config.refreshPage(pageID)
 end
 
+function Config.updateElementByTitle(pageID, title, field, value)
+	for i, element in pairs(registeredConfiPage[pageID].elements) do
+		if element.title == title then
+			registeredConfiPage[pageID].elements[i][field] = value;
+		end
+	end
+	Config.refreshPage(pageID)
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

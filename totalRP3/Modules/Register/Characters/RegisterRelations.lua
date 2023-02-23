@@ -43,7 +43,12 @@ local DEFAULT_RELATIONS = {
 	LOVE = { id = "LOVE", order = 1, texture = TRP3_InterfaceIcons.RelationLove, color = Ellyb.ColorManager.PINK:GenerateHexadecimalColor() },
 	FAMILY = { id = "FAMILY", order = 0, texture = TRP3_InterfaceIcons.RelationFamily, color = Ellyb.Color.CreateFromRGBA(1, 0.75, 0, 1):GenerateHexadecimalColor() },
 };
-
+local ACTIONS = {
+	DELETE= 'DEL',
+	UPDATE_TOOLTIP= 'UTT',
+	UPDATE_ICON= 'UIC',
+	UPDATE_COLOR= 'UCO',
+}
 
 --getRelationList function should get relations stored in config, or default relations if none are stored
 local function getRelationList()
@@ -145,13 +150,50 @@ local function checkRelationUse()
 end
 local buildConfigPageElements
 
-local function onActionSelected(relationID)
+local function onActionSelected(selectedAction)
+	local action = selectedAction:sub(1, 3)
+	local relationID = selectedAction:sub(4)
 	local relation = getRelationInfo(relationID)
-	if not relation.inUse then
+	local orginalRelation = getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id))
+	local playerIdentifier = "{"..loc.REG_RELATION_REPLACE_PLAYER.."}";
+	local targetIdentifier = "{"..loc.REG_RELATION_REPLACE_TARGET.."}";
+	if action==ACTIONS.UPDATE_TOOLTIP then
+		TRP3_API.popup.showTextInputPopup(loc.CO_RELATIONS_UPDATE_DESCRIPTION:format(orginalRelation,loc.REG_RELATION_REPLACE_PLAYER, loc.REG_RELATION_REPLACE_TARGET), function(tooltip)
+			if tooltip == "" then
+				return TRP3_API.popup.showAlertPopup(loc.CO_RELATIONS_UPDATE_DESCRIPTION_ERROR:format(orginalRelation))
+			end
+			local unlocalisedPlayer = '{player}';
+			local unlocalisedTarget = '{target}';
+			relation.description = tooltip:gsub(unlocalisedPlayer,'%%1$s'):gsub(unlocalisedTarget, '%%2$s'):gsub(playerIdentifier, '%%1$s'):gsub(targetIdentifier, '%%2$s')
+			TRP3_API.configuration.setValue("register_relation_list", getRelationList())
+			TRP3_API.configuration.updateElementByTitle("main_config_relations", orginalRelation, "text", tooltip)
+		end, function()  end, relation.description:format(playerIdentifier, targetIdentifier))
+	elseif action==ACTIONS.UPDATE_ICON then
+		TRP3_API.popup.showPopup(
+			TRP3_API.popup.ICONS,
+			{},
+			{function(relationIcon)
+				relation.texture = relationIcon
+				TRP3_API.configuration.setValue("register_relation_list", getRelationList())
+				TRP3_API.configuration.updateElementByTitle("main_config_relations", orginalRelation, "icon", relationIcon)
+			end}
+		)
+	elseif action==ACTIONS.UPDATE_COLOR then
+		TRP3_API.popup.showPopup(
+				TRP3_API.popup.COLORS,
+				{},
+				{function(red, green, blue)
+					local color = Color(red, green, blue)
+					relation.color = color:GenerateHexColor()
+					TRP3_API.configuration.setValue("register_relation_list", getRelationList())
+					TRP3_API.configuration.updateElementByTitle("main_config_relations", orginalRelation, "title", getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id)))
+				end, Ellyb.Color(relation.color):GetRGBAsBytes() }
+		)
+	elseif not relation.inUse and action==ACTIONS.DELETE then
 		TRP3_API.popup.showConfirmPopup(loc.CO_RELATIONS_DELETE_WARNING:format(getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id))), function()
 			local relationList = getRelationList()
 			TRP3_API.configuration.setValue("register_relation_list", relationList)
-			TRP3_API.configuration.removeElementFromPageByTitle("main_config_relations", getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id)))
+			TRP3_API.configuration.removeElementFromPageByTitle("main_config_relations", orginalRelation)
 			relationList[relationID] = nil
 		end)
 	end
@@ -216,14 +258,16 @@ buildConfigPageElements = function ()
 													local values = {};
 													checkRelationUse()
 													if not relationList[relationID].inUse then
-														table.insert(values, {loc.CO_RELATIONS_DELETE, relationID});
+														table.insert(values, {loc.CO_RELATIONS_UPDATE_MENU_DELETE, ACTIONS.DELETE..relationID});
 													end
+													table.insert(values, {loc.CO_RELATIONS_UPDATE_MENU_DESCRIPTION, ACTIONS.UPDATE_TOOLTIP..relationID});
+													table.insert(values, {loc.CO_RELATIONS_UPDATE_MENU_ICON, ACTIONS.UPDATE_ICON..relationID});
+													table.insert(values, {loc.CO_RELATIONS_UPDATE_MENU_COLOR, ACTIONS.UPDATE_COLOR..relationID});
 													displayDropDown(button, values, onActionSelected, 0, true);
 												end,
 											}, -2);
 
 										end}
-
 								);
 							end);
 						end}
@@ -244,8 +288,11 @@ buildConfigPageElements = function ()
 				local values = {};
 				checkRelationUse()
 				if not relation.inUse then
-					table.insert(values, {loc.CO_RELATIONS_DELETE, relation.id});
+					table.insert(values, {loc.CO_RELATIONS_UPDATE_MENU_DELETE, ACTIONS.DELETE..relation.id});
 				end
+				table.insert(values, {loc.CO_RELATIONS_UPDATE_MENU_DESCRIPTION, ACTIONS.UPDATE_TOOLTIP..relation.id});
+				table.insert(values, {loc.CO_RELATIONS_UPDATE_MENU_ICON, ACTIONS.UPDATE_ICON..relation.id});
+				table.insert(values, {loc.CO_RELATIONS_UPDATE_MENU_COLOR, ACTIONS.UPDATE_COLOR..relation.id});
 				displayDropDown(button, values, onActionSelected, 0, true);
 			end,
 		});
