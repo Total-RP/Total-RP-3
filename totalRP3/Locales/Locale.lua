@@ -1481,7 +1481,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS = "Disable customizations on NPC units",
 	NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS_HELP = "If checked, disables nameplate customizations on non-playable character units.",
 	NAMEPLATES_CONFIG_MAX_NAME_CHARS = "Maximum name length",
-	NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP = "The maximum number of characters to display for names. Names exceeding this length will be cropped.",
+	NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP = "The maximum number of characters to display for names and short titles. Names exceeding this length will be cropped.",
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS = "Maximum title length",
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP = "The maximum number of characters to display for full titles. Titles exceeding this length will be cropped.",
 };
