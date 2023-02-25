@@ -49,62 +49,6 @@ local function SafeSet(table, key, value)
 	end
 end
 
-local function ShouldDisableOutOfCharacter()
-	return TRP3_API.configuration.getValue("NamePlates_DisableOutOfCharacter");
-end
-
-local function ShouldDisableOutOfCharacterUnits()
-	return TRP3_API.configuration.getValue("NamePlates_DisableOutOfCharacterUnits");
-end
-
-local function ShouldDisableInCombat()
-	return TRP3_API.configuration.getValue("NamePlates_DisableInCombat");
-end
-
-local function ShouldHideNonRoleplayUnits()
-	return TRP3_API.configuration.getValue("NamePlates_HideNonRoleplayUnits");
-end
-
-local function ShouldHideOutOfCharacterUnits()
-	return TRP3_API.configuration.getValue("NamePlates_HideOutOfCharacterUnits");
-end
-
-local function ShouldCustomizeNames()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeNames");
-end
-
-local function ShouldCustomizeNameColors()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeNameColors");
-end
-
-local function ShouldCustomizeTitles()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeTitles");
-end
-
-local function ShouldCustomizeIcons()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeIcons");
-end
-
-local function ShouldCustomizeHealthColors()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeHealthColors");
-end
-
-local function ShouldCustomizeRoleplayStatus()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeRoleplayStatus");
-end
-
-local function ShouldCustomizeFullTitles()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeFullTitles");
-end
-
-local function ShouldRequestProfiles()
-	return TRP3_API.configuration.getValue("NamePlates_EnableActiveQuery");
-end
-
-local function ShouldUseClassColorFallback()
-	return TRP3_API.configuration.getValue("NamePlates_EnableClassColorFallback");
-end
-
 local function GetUnitRoleplayStatus(unitToken)
 	local player;
 
@@ -149,11 +93,11 @@ local function ShouldCustomizeUnitNamePlate(unitToken)
 		return false;  -- Unit can't have a roleplay profile.
 	elseif UnitIsUnit(unitToken, "player") then
 		return false;  -- Never decorate personal nameplates.
-	elseif ShouldDisableInCombat() and isInCombat then
+	elseif TRP3_NamePlatesSettings.DisableInCombat and isInCombat then
 		return false;  -- Player is in (or about to enter) combat.
-	elseif ShouldDisableOutOfCharacter() and IsUnitOutOfCharacter("player") then
+	elseif TRP3_NamePlatesSettings.DisableOutOfCharacter and IsUnitOutOfCharacter("player") then
 		return false;  -- Player is currently OOC.
-	elseif ShouldDisableOutOfCharacterUnits() and IsUnitOutOfCharacter(unitToken) then
+	elseif TRP3_NamePlatesSettings.DisableOutOfCharacterUnits and IsUnitOutOfCharacter(unitToken) then
 		return false;  -- Unit is currently OOC.
 	else
 		return true;
@@ -177,7 +121,7 @@ end
 local function GetCharacterColorForDisplay(player, classToken)
 	local color = player:GetCustomColorForDisplay();
 
-	if not color and ShouldUseClassColorFallback() then
+	if not color and TRP3_NamePlatesSettings.EnableClassColorFallback then
 		color = TRP3_API.Ellyb.ColorManager[classToken];
 	end
 
@@ -192,11 +136,11 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 		local classToken = UnitClassBase(unitToken);
 
 		do  -- Names/Titles
-			if ShouldCustomizeNames() then
+			if TRP3_NamePlatesSettings.CustomizeNames then
 				displayInfo.name = player:GetRoleplayingName();
 			end
 
-			if ShouldCustomizeTitles() then
+			if TRP3_NamePlatesSettings.CustomizeTitles then
 				local prefix = player:GetTitle();
 
 				if prefix then
@@ -204,17 +148,17 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 				end
 			end
 
-			if ShouldCustomizeFullTitles() then
+			if TRP3_NamePlatesSettings.CustomizeFullTitles then
 				displayInfo.fullTitle = player:GetFullTitle();
 			end
 		end
 
 		do  -- Colors
-			if ShouldCustomizeHealthColors() then
+			if TRP3_NamePlatesSettings.CustomizeHealthColors then
 				displayInfo.shouldColorHealth = true;
 			end
 
-			if ShouldCustomizeNameColors() then
+			if TRP3_NamePlatesSettings.CustomizeNameColors then
 				displayInfo.shouldColorName = true;
 			end
 
@@ -229,21 +173,21 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 		end
 
 		do  -- Additional Indicators
-			if ShouldCustomizeIcons() then
+			if TRP3_NamePlatesSettings.CustomizeIcons then
 				displayInfo.icon = player:GetCustomIcon();
 			end
 
-			if ShouldCustomizeRoleplayStatus() then
+			if TRP3_NamePlatesSettings.CustomizeRoleplayStatus then
 				displayInfo.roleplayStatus = player:GetRoleplayStatus();
 			end
 		end
 
-		if ShouldHideOutOfCharacterUnits() then
+		if TRP3_NamePlatesSettings.HideOutOfCharacterUnits then
 			displayInfo.shouldHide = displayInfo.shouldHide or not player:IsInCharacter();
 		end
 	else
 		-- Unit has no profile and so is a non-roleplay unit.
-		displayInfo.shouldHide = ShouldHideNonRoleplayUnits();
+		displayInfo.shouldHide = TRP3_NamePlatesSettings.HideNonRoleplayUnits;
 	end
 
 	return displayInfo;
@@ -256,21 +200,21 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 
 	if profile and profile.data then
 		do  -- Names/Titles
-			if ShouldCustomizeNames() then
+			if TRP3_NamePlatesSettings.CustomizeNames then
 				displayInfo.name = profile.data.NA;
 			end
 
-			if ShouldCustomizeTitles() then
+			if TRP3_NamePlatesSettings.CustomizeTitles then
 				displayInfo.fullTitle = profile.data.TI;
 			end
 		end
 
 		do  -- Colors
-			if ShouldCustomizeHealthColors() then
+			if TRP3_NamePlatesSettings.CustomizeHealthColors then
 				displayInfo.shouldColorHealth = true;
 			end
 
-			if ShouldCustomizeNameColors() then
+			if TRP3_NamePlatesSettings.CustomizeNameColors then
 				displayInfo.shouldColorName = true;
 			end
 
@@ -285,17 +229,17 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 		end
 
 		do  -- Additional Indicators
-			if ShouldCustomizeIcons() then
+			if TRP3_NamePlatesSettings.CustomizeIcons then
 				displayInfo.icon = profile.data.IC;
 			end
 
-			if ShouldHideOutOfCharacterUnits() then
+			if TRP3_NamePlatesSettings.HideOutOfCharacterUnits then
 				displayInfo.shouldHide = displayInfo.shouldHide or IsUnitOutOfCharacter(unitToken);
 			end
 		end
 	else
 		-- Unit has no profile and so is a non-roleplay unit.
-		displayInfo.shouldHide = ShouldHideNonRoleplayUnits();
+		displayInfo.shouldHide = TRP3_NamePlatesSettings.HideNonRoleplayUnits;
 	end
 
 	return displayInfo;
@@ -316,14 +260,8 @@ function TRP3_NamePlates:OnModuleInitialize()
 
 	self.callbacks.OnUsed = function() self:OnModuleUsed(); end;
 
-	-- Register configuration keys and the settings page early on so that
-	-- everything can access it.
-
-	for _, setting in pairs(TRP3_NamePlatesUtil.Configuration) do
-		TRP3_API.configuration.registerConfigKey(setting.key, setting.default);
-	end
-
-	TRP3_API.configuration.registerConfigurationPage(TRP3_NamePlatesUtil.GenerateConfigurationPage());
+	TRP3_NamePlatesUtil.RegisterSettings();
+	TRP3_NamePlatesUtil.LoadSettings();
 end
 
 function TRP3_NamePlates:OnModuleEnable()
@@ -392,7 +330,8 @@ function TRP3_NamePlates:OnPlayerRegenEnabled()
 end
 
 function TRP3_NamePlates:OnConfigurationChanged(key)
-	if string.find(key, "^NamePlates_") then
+	if TRP3_NamePlatesUtil.IsValidSetting(key) then
+		TRP3_NamePlatesUtil.LoadSettings();
 		self:UpdateAllNamePlates();
 	end
 end
@@ -443,7 +382,7 @@ function TRP3_NamePlates:UpdateNamePlateForUnit(unitToken)
 end
 
 function TRP3_NamePlates:RequestUnitProfile(unitToken)
-	if ShouldRequestProfiles() then
+	if TRP3_NamePlatesSettings.EnableActiveQuery then
 		self.requests:EnqueueUnitQuery(unitToken);
 	else
 		self.requests:DequeueUnitQuery(unitToken);

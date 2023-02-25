@@ -92,6 +92,13 @@ TRP3_ClientFeatures = {
 	WaterElementalWorkaround = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE),
 };
 
+TRP3_OOCIndicatorStyle = {
+	-- The constants here are chosen for backwards compatibility with our
+	-- existing settings which used the strings "ICON" and "TEXT".
+	Icon = "ICON",
+	Text = "TEXT",
+};
+
 --- RELATIONS is a list of (backwards-compatible) relationship IDs.
 local RELATIONS = {
 	UNFRIENDLY = "UNFRIENDLY",
