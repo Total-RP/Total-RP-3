@@ -54,14 +54,14 @@ function TRP3_KuiNamePlates:OnModuleEnable()
 
 	self.plugin = KuiNameplates:NewPlugin("TotalRP3", 250);
 	self.plugin.Create = function(_, ...) return self:OnNamePlateCreate(...); end;
-	self.plugin.Show = function(_, ...) return self:OnNamePlateShow(...); end;
-	self.plugin.HealthUpdate = function(_, ...) return self:OnNamePlateHealthUpdate(...); end;
-	self.plugin.HealthColourChange = function(_, ...) return self:OnNamePlateHealthColourChange(...); end;
-	self.plugin.GlowColourChange = function(_, ...) return self:OnNamePlateGlowColourChange(...); end;
-	self.plugin.GainedTarget = function(_, ...) return self:OnNamePlateGainedTarget(...); end;
-	self.plugin.LostTarget = function(_, ...) return self:OnNamePlateLostTarget(...); end;
-	self.plugin.Combat = function(_, ...) return self:OnNamePlateCombat(...); end;
-	self.plugin.Hide = function(_, ...) return self:OnNamePlateHide(...); end;
+	self.plugin.Show = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.HealthUpdate = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.HealthColourChange = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.GlowColourChange = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.GainedTarget = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.LostTarget = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.Combat = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.Hide = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
 
 	self.plugin:RegisterMessage("Create");
 	self.plugin:RegisterMessage("Show");
@@ -119,38 +119,6 @@ function TRP3_KuiNamePlates:OnNamePlateCreate(nameplate)
 	end
 
 	self.initialized[nameplateKey] = true;
-end
-
-function TRP3_KuiNamePlates:OnNamePlateShow(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNamePlateHealthUpdate(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNamePlateHealthColourChange(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNamePlateGlowColourChange(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNamePlateGainedTarget(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNamePlateLostTarget(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNamePlateCombat(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNamePlateHide(nameplate)
-	self:UpdateNamePlate(nameplate);
 end
 
 function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
