@@ -1486,6 +1486,8 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP = "The maximum number of characters to display for names and prefix titles. Names exceeding this length will be cropped.",
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS = "Maximum title length",
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP = "The maximum number of characters to display for full titles. Titles exceeding this length will be cropped.",
+	NAMEPLATES_CONFIG_MODULE_STATUS = "Module status",
+	NAMEPLATES_CONFIG_MODULE_STATUS_HELP = "Nameplate decorations can be globally enabled or disabled from the |cff00ff00Modules status|r page.",
 };
 
 -- Use Ellyb to generate the Localization system

@@ -2,7 +2,6 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local TRP3_API = select(2, ...);
-local L = TRP3_API.loc;
 
 local displayInfoPool = {};
 local playerCharacterPool = setmetatable({}, { __mode = "kv" });
@@ -89,7 +88,9 @@ local function IsUnitOutOfCharacter(unitToken)
 end
 
 local function ShouldCustomizeUnitNamePlate(unitToken)
-	if not unitToken then
+	if not TRP3_NamePlates:IsEnabled() then
+		return false;  -- Module is disabled.
+	elseif not unitToken then
 		return false;  -- Unit is invalid.
 	elseif UnitIsUnit(unitToken, "player") then
 		return false;  -- Never decorate personal nameplates.
@@ -282,54 +283,64 @@ end
 -- Public API will be added to the AddOn_TotalRP3 table at a later date.
 --
 
-local TRP3_NamePlates = {};
+TRP3_NamePlates = TRP3_Addon:NewModule("NamePlates");
 
-function TRP3_NamePlates:OnModuleInitialize()
+function TRP3_NamePlates:OnInitialize()
 	self.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(self);
-	self.unitCharacterIDs = {};
+	self.requests = CreateAndInitFromMixin(TRP3_NamePlatesRequestManagerMixin);
 	self.displayInfoFilters = {};
+	self.unitCharacterIDs = {};
 
-	self.callbacks.OnUsed = function() self:OnModuleUsed(); end;
+	-- Settings are registered on initialization so that there's a UI element
+	-- through which users can at least see if nameplates are working.
 
 	TRP3_NamePlatesUtil.RegisterSettings();
+
+	-- The nameplates module is disabled by default on initialization and will
+	-- be enabled upon the first registration of an OnNamePlateDataUpdated
+	-- callback.
+
+	self.callbacks.OnUsed = function(_, _, event) self:OnEventUsed(event); end
+	self.callbacks.OnUnused = function(_, _, event) self:OnEventUnused(event); end
+	self:SetEnabledState(false);
+end
+
+function TRP3_NamePlates:OnEnable()
+	local HANDLER_ID = tostring(self);
+
+	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_ADDED", GenerateClosure(self.OnNamePlateUnitAdded, self), HANDLER_ID);
+	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_REMOVED", GenerateClosure(self.OnNamePlateUnitRemoved, self), HANDLER_ID);
+	TRP3_API.Ellyb.GameEvents.registerCallback("UNIT_NAME_UPDATE", GenerateClosure(self.OnUnitNameUpdate, self), HANDLER_ID);
+	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_REGEN_DISABLED", GenerateClosure(self.OnPlayerRegenDisabled, self), HANDLER_ID);
+	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_REGEN_ENABLED", GenerateClosure(self.OnPlayerRegenEnabled, self), HANDLER_ID);
+
+	TRP3_API.Events.registerCallback("CONFIGURATION_CHANGED", GenerateClosure(self.OnConfigurationChanged, self), HANDLER_ID);
+	TRP3_API.Events.registerCallback("REGISTER_DATA_UPDATED", GenerateClosure(self.OnRegisterDataUpdated, self), HANDLER_ID);
+
 	TRP3_NamePlatesUtil.LoadSettings();
-end
-
-function TRP3_NamePlates:OnModuleEnable()
-	-- External code can define the below global before the PLAYER_LOGIN event
-	-- fires to disable all of our integrations.
-
-	if TRP3_DISABLE_NAMEPLATES then
-		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
-	end
-
-	self.moduleEnabled = true;
-	self:ActivateModule();
-end
-
-function TRP3_NamePlates:OnModuleUsed()
-	self.moduleUsed = true;
-	self:ActivateModule();
-end
-
-function TRP3_NamePlates:ActivateModule()
-	if self.moduleActivated or (not self.moduleEnabled or not self.moduleUsed) then
-		return;
-	end
-
-	self.moduleActivated = true;
-	self.requests = CreateAndInitFromMixin(TRP3_NamePlatesRequestManagerMixin);
-
-	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_ADDED", function(...) return self:OnNamePlateUnitAdded(...); end);
-	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_REMOVED", function(...) return self:OnNamePlateUnitRemoved(...); end);
-	TRP3_API.Ellyb.GameEvents.registerCallback("UNIT_NAME_UPDATE", function(...) return self:OnUnitNameUpdate(...); end);
-	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_REGEN_DISABLED", function(...) return self:OnPlayerRegenDisabled(...); end);
-	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_REGEN_ENABLED", function(...) return self:OnPlayerRegenEnabled(...); end);
-
-	TRP3_API.Events.registerCallback("CONFIGURATION_CHANGED", function(...) return self:OnConfigurationChanged(...); end);
-	TRP3_API.Events.registerCallback("REGISTER_DATA_UPDATED", function(...) return self:OnRegisterDataUpdated(...); end);
 
 	self:UpdateAllNamePlates();
+end
+
+function TRP3_NamePlates:OnDisable()
+	local HANDLER_ID = tostring(self);
+
+	TRP3_API.Ellyb.GameEvents.unregisterCallback(HANDLER_ID);
+	TRP3_API.Events.unregisterCallback(HANDLER_ID);
+
+	self:UpdateAllNamePlates();
+end
+
+function TRP3_NamePlates:OnEventUsed(event)
+	if event == "OnNamePlateDataUpdated" then
+		self:Enable();
+	end
+end
+
+function TRP3_NamePlates:OnEventUnused(event)
+	if event == "OnNamePlateDataUpdated" then
+		self:Disable();
+	end
 end
 
 function TRP3_NamePlates:OnNamePlateUnitAdded(unitToken)
@@ -462,19 +473,3 @@ function TRP3_NamePlates:UpdateCharacterIDForUnit(unitToken)
 	SafeSet(self.unitCharacterIDs, unitToken, characterID);
 	SafeSet(self.unitCharacterIDs, characterID, unitToken);
 end
-
---
--- Module Registration
---
-
-TRP3_API.module.registerModule({
-	id = "trp3_nameplates",
-	name = L.NAMEPLATES_MODULE_NAME,
-	description = L.NAMEPLATES_MODULE_DESCRIPTION,
-	version = 1,
-	minVersion = 92,
-	onInit = function() return TRP3_NamePlates:OnModuleInitialize(); end,
-	onStart = function() return TRP3_NamePlates:OnModuleEnable(); end,
-});
-
-_G.TRP3_NamePlates = TRP3_NamePlates;

@@ -84,7 +84,7 @@ TRP3_API.module.registerModule({
 	description = L.PLATER_NAMEPLATES_MODULE_DESCRIPTION,
 	version = 1,
 	minVersion = 0,
-	requiredDeps = { { "trp3_nameplates", 1 }, { PlaterAddonName, "external" } }, -- by replacing the version with "external", we can specify other addons as a dependency for our module
+	requiredDeps = { { PlaterAddonName, "external" } },
 	hotReload = true,
 	onInit = function() return TRP3_PlaterNamePlates:OnModuleInitialize(); end,
 	onStart = function() return TRP3_PlaterNamePlates:OnModuleEnable(); end,

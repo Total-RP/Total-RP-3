@@ -323,7 +323,6 @@ TRP3_API.module.registerModule({
 	description = L.KUI_NAMEPLATES_MODULE_DESCRIPTION,
 	version = 1,
 	minVersion = 92,
-	requiredDeps = { { "trp3_nameplates", 1 } },
 	onInit = function() return TRP3_KuiNamePlates:OnModuleInitialize(); end,
 	onStart = function() return TRP3_KuiNamePlates:OnModuleEnable(); end,
 });
