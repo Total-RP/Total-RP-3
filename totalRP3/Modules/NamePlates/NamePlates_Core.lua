@@ -204,7 +204,7 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 	end
 
 	if displayInfo.fullTitle then
-		displayInfo.fullTitle = TRP3_NamePlatesUtil.GenerateCroppedTitleText(displayInfo.name);
+		displayInfo.fullTitle = TRP3_NamePlatesUtil.GenerateCroppedTitleText(displayInfo.fullTitle);
 	end
 
 	return displayInfo;
@@ -264,7 +264,7 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 	end
 
 	if displayInfo.fullTitle then
-		displayInfo.fullTitle = TRP3_NamePlatesUtil.GenerateCroppedTitleText(displayInfo.name);
+		displayInfo.fullTitle = TRP3_NamePlatesUtil.GenerateCroppedTitleText(displayInfo.fullTitle);
 	end
 
 	return displayInfo;
