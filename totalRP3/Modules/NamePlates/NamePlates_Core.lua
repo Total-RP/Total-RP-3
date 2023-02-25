@@ -20,6 +20,8 @@ local function GetOrCreateDisplayInfo(unitToken)
 	displayInfo.icon = nil;
 	displayInfo.name = nil;
 	displayInfo.roleplayStatus = nil;
+	displayInfo.shortenedFullTitle = nil;
+	displayInfo.shortenedName = nil;
 	displayInfo.shouldColorHealth = nil;
 	displayInfo.shouldColorName = nil;
 	displayInfo.shouldHide = nil;
@@ -192,6 +194,14 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 		displayInfo.shouldHide = TRP3_NamePlatesSettings.HideNonRoleplayUnits;
 	end
 
+	if displayInfo.name then
+		displayInfo.shortenedName = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesSettings.MaximumNameLength);
+	end
+
+	if displayInfo.fullTitle then
+		displayInfo.shortenedFullTitle = TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesSettings.MaximumTitleLength);
+	end
+
 	return displayInfo;
 end
 
@@ -242,6 +252,14 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 	else
 		-- Unit has no profile and so is a non-roleplay unit.
 		displayInfo.shouldHide = TRP3_NamePlatesSettings.HideNonRoleplayUnits;
+	end
+
+	if displayInfo.name then
+		displayInfo.shortenedName = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesSettings.MaximumNameLength);
+	end
+
+	if displayInfo.fullTitle then
+		displayInfo.shortenedFullTitle = TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesSettings.MaximumTitleLength);
 	end
 
 	return displayInfo;

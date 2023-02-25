@@ -260,8 +260,8 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 	local overrideColor;
 
 	if displayInfo then
-		if displayInfo.name then
-			overrideText = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesSettings.MaximumNameLength);
+		if displayInfo.shortenedName then
+			overrideText = displayInfo.shortenedName;
 		end
 
 		-- No cropping occurs after this point.
@@ -351,7 +351,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	local unitframe = nameplate.UnitFrame;
 	local unitToken = nameplate.namePlateUnitToken;
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
-	local displayText = displayInfo and displayInfo.fullTitle or nil;
+	local displayText = displayInfo and displayInfo.shortenedFullTitle or nil;
 	local shouldHide = displayInfo and displayInfo.shouldHide or false;
 
 	-- Hide the full title widget if no title is to be displayed, or if the
@@ -366,7 +366,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	end
 
 	if displayText then
-		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesSettings.MaximumTitleLength));
+		nameplate.TRP3_Title:SetText(displayText);
 		nameplate.TRP3_Title:Show();
 	else
 		nameplate.TRP3_Title:Hide();

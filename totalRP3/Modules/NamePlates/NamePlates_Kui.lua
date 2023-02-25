@@ -127,11 +127,7 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 	end
 
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
-	local displayText;
-
-	if displayInfo and displayInfo.name then
-		displayText = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesSettings.MaximumNameLength);
-	end
+	local displayText = displayInfo and displayInfo.shortenedName or nil;
 
 	if displayText then
 		nameplate.NameText:SetText(displayText);
@@ -213,7 +209,7 @@ end
 
 function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
-	local displayText = displayInfo and displayInfo.fullTitle or nil;
+	local displayText = displayInfo and displayInfo.shortenedFullTitle or nil;
 	local displayFont = nameplate.GuildText:GetFont();
 	local shouldHide = displayInfo and displayInfo.shouldHide or false;
 
@@ -228,7 +224,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 	if displayText and displayFont then
 		nameplate.TRP3_Title:SetFont(nameplate.GuildText:GetFont());
 		nameplate.TRP3_Title:SetTextColor(nameplate.GuildText:GetTextColor());
-		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayText, TRP3_NamePlatesSettings.MaximumTitleLength));
+		nameplate.TRP3_Title:SetText(displayText);
 		nameplate.TRP3_Title:Show();
 
 		nameplate.GuildText:ClearAllPoints();
