@@ -5,8 +5,6 @@ local TRP3_API = select(2, ...);
 
 local TRP3_NamePlatesUtil = {};
 
-TRP3_NamePlatesUtil.MAX_NAME_CHARS = 30;
-TRP3_NamePlatesUtil.MAX_TITLE_CHARS = 30;
 TRP3_NamePlatesUtil.OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15:15|t";
 
 function TRP3_NamePlatesUtil.GetPreferredIconSize()

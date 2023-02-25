@@ -162,7 +162,7 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 	local displayText;
 
 	if displayInfo and displayInfo.name then
-		displayText = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
+		displayText = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesSettings.MaximumNameLength);
 	end
 
 	if displayText then
@@ -260,7 +260,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 	if displayText and displayFont then
 		nameplate.TRP3_Title:SetFont(nameplate.GuildText:GetFont());
 		nameplate.TRP3_Title:SetTextColor(nameplate.GuildText:GetTextColor());
-		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayText, TRP3_NamePlatesUtil.MAX_TITLE_CHARS));
+		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayText, TRP3_NamePlatesSettings.MaximumTitleLength));
 		nameplate.TRP3_Title:Show();
 
 		nameplate.GuildText:ClearAllPoints();

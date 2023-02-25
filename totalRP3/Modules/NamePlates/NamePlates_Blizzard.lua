@@ -261,7 +261,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 
 	if displayInfo then
 		if displayInfo.name then
-			overrideText = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
+			overrideText = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesSettings.MaximumNameLength);
 		end
 
 		-- No cropping occurs after this point.
@@ -366,7 +366,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	end
 
 	if displayText then
-		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesUtil.MAX_TITLE_CHARS));
+		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesSettings.MaximumTitleLength));
 		nameplate.TRP3_Title:Show();
 	else
 		nameplate.TRP3_Title:Hide();
