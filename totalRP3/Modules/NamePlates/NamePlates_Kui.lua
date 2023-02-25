@@ -127,7 +127,7 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 	end
 
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
-	local displayText = displayInfo and displayInfo.shortenedName or nil;
+	local displayText = displayInfo and displayInfo.name or nil;
 
 	if displayText then
 		nameplate.NameText:SetText(displayText);
@@ -209,7 +209,7 @@ end
 
 function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
-	local displayText = displayInfo and displayInfo.shortenedFullTitle or nil;
+	local displayText = displayInfo and displayInfo.fullTitle or nil;
 	local displayFont = nameplate.GuildText:GetFont();
 	local shouldHide = displayInfo and displayInfo.shouldHide or false;
 
