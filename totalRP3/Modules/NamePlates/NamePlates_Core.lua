@@ -201,11 +201,11 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 	end
 
 	if displayInfo.name then
-		displayInfo.shortenedName = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesSettings.MaximumNameLength);
+		displayInfo.shortenedName = TRP3_NamePlatesUtil.GenerateCroppedNameText(displayInfo.name);
 	end
 
 	if displayInfo.fullTitle then
-		displayInfo.shortenedFullTitle = TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesSettings.MaximumTitleLength);
+		displayInfo.shortenedFullTitle = TRP3_NamePlatesUtil.GenerateCroppedTitleText(displayInfo.name);
 	end
 
 	return displayInfo;
@@ -261,11 +261,11 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 	end
 
 	if displayInfo.name then
-		displayInfo.shortenedName = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesSettings.MaximumNameLength);
+		displayInfo.shortenedName = TRP3_NamePlatesUtil.GenerateCroppedNameText(displayInfo.name);
 	end
 
 	if displayInfo.fullTitle then
-		displayInfo.shortenedFullTitle = TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesSettings.MaximumTitleLength);
+		displayInfo.shortenedFullTitle = TRP3_NamePlatesUtil.GenerateCroppedTitleText(displayInfo.name);
 	end
 
 	return displayInfo;

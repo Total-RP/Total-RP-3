@@ -7,6 +7,14 @@ local TRP3_NamePlatesUtil = {};
 
 TRP3_NamePlatesUtil.OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15:15|t";
 
+function TRP3_NamePlatesUtil.GenerateCroppedNameText(name)
+	return TRP3_API.utils.str.crop(name, TRP3_NamePlatesSettings.MaximumNameLength);
+end
+
+function TRP3_NamePlatesUtil.GenerateCroppedTitleText(fullTitle)
+	return TRP3_API.utils.str.crop(fullTitle, TRP3_NamePlatesSettings.MaximumTitleLength);
+end
+
 function TRP3_NamePlatesUtil.GetPreferredIconSize()
 	local size = TRP3_NamePlatesSettings.IconSize;
 	return size, size;
