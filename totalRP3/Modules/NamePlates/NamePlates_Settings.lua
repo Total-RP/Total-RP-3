@@ -24,6 +24,7 @@ local DefaultSettings = {
 	DisableInCombat = false,
 	DisableOutOfCharacter = false,
 	DisableOutOfCharacterUnits = false,
+	DisableNonPlayableUnits = false,
 	EnableActiveQuery = true,
 	EnableClassColorFallback = true,
 	EnableNameOnlyMode = false,
@@ -131,6 +132,12 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				title = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS,
 				help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
 				configKey = MapSettingToConfigKey("DisableOutOfCharacterUnits"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS,
+				help = L.NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
+				configKey = MapSettingToConfigKey("DisableNonPlayableUnits"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

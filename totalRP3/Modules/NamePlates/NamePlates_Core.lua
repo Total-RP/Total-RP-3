@@ -89,14 +89,16 @@ local function IsUnitOutOfCharacter(unitToken)
 end
 
 local function ShouldCustomizeUnitNamePlate(unitToken)
-	if not unitToken or (not UnitIsPlayer(unitToken) and not UnitIsOtherPlayersPet(unitToken)) then
-		return false;  -- Unit can't have a roleplay profile.
+	if not unitToken then
+		return false  -- Unit is invalid.
 	elseif UnitIsUnit(unitToken, "player") then
 		return false;  -- Never decorate personal nameplates.
 	elseif TRP3_NamePlatesSettings.DisableInCombat and isInCombat then
 		return false;  -- Player is in (or about to enter) combat.
 	elseif TRP3_NamePlatesSettings.DisableOutOfCharacter and IsUnitOutOfCharacter("player") then
 		return false;  -- Player is currently OOC.
+	elseif TRP3_NamePlatesSettings.DisableNonPlayableUnits and (not UnitIsPlayer(unitToken) and not UnitIsOtherPlayersPet(unitToken)) then
+		return false;  -- NPC unit decorations are disabled.
 	elseif TRP3_NamePlatesSettings.DisableOutOfCharacterUnits and IsUnitOutOfCharacter(unitToken) then
 		return false;  -- Unit is currently OOC.
 	else
@@ -245,6 +247,12 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 	return displayInfo;
 end
 
+local function GetNonPlayableUnitDisplayInfo(unitToken)
+	local displayInfo = GetOrCreateDisplayInfo(unitToken);
+	displayInfo.shouldHide = TRP3_NamePlatesSettings.HideNonRoleplayUnits;
+	return displayInfo;
+end
+
 --
 -- Note that the contents of the TRP3_NamePlates table is intended for private
 -- internal use by the addon and shouldn't be assumed stable.
@@ -257,6 +265,7 @@ local TRP3_NamePlates = {};
 function TRP3_NamePlates:OnModuleInitialize()
 	self.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(self);
 	self.unitCharacterIDs = {};
+	self.displayInfoFilters = {};
 
 	self.callbacks.OnUsed = function() self:OnModuleUsed(); end;
 
@@ -349,17 +358,41 @@ function TRP3_NamePlates:OnRegisterDataUpdated(characterID)
 	end
 end
 
+function TRP3_NamePlates:RegisterDisplayInfoFilter(filter)
+	-- Display info filters can be used by external addons to modify the
+	-- data for a nameplate after we've pulled profile data for it and before
+	-- any nameplate decorators have received it.
+	--
+	-- The filter function will be invoked with the unit token ("nameplate3")
+	-- and the display info table as parameters. The filter does not need to
+	-- return any values, and may modify any fields in the display info table
+	-- to change how the nameplate will be shown.
+
+	table.insert(self.displayInfoFilters, filter);
+end
+
 function TRP3_NamePlates:GetUnitDisplayInfo(unitToken)
 	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
 	local characterID = TRP3_NamePlatesUtil.GetUnitCharacterID(unitToken);
+	local displayInfo;
 
 	if not ShouldCustomizeUnitNamePlate(unitToken) then
-		return nil;  -- Customizations disabled for this unit.
+		displayInfo = nil;  -- Customizations disabled for this unit.
 	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
-		return GetCharacterUnitDisplayInfo(unitToken, characterID);
+		displayInfo = GetCharacterUnitDisplayInfo(unitToken, characterID);
 	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
-		return GetCompanionUnitDisplayInfo(unitToken, characterID);
+		displayInfo = GetCompanionUnitDisplayInfo(unitToken, characterID);
+	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.NPC then
+		displayInfo = GetNonPlayableUnitDisplayInfo(unitToken);
 	end
+
+	if displayInfo then
+		for _, filter in ipairs(self.displayInfoFilters) do
+			securecallfunction(filter, unitToken, displayInfo);
+		end
+	end
+
+	return displayInfo;
 end
 
 function TRP3_NamePlates:UpdateAllNamePlates()
