@@ -1478,6 +1478,8 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES = "Show first names only",
+	NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES_HELP = "If checked, only show the first names rather than full names.|n|nThis can only be applied to player units, and will not work with profiles received from other roleplay addons.",
 	NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS = "Disable customizations on NPC units",
 	NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS_HELP = "If checked, disables nameplate customizations on non-playable character units.",
 	NAMEPLATES_CONFIG_MAX_NAME_CHARS = "Maximum name length",

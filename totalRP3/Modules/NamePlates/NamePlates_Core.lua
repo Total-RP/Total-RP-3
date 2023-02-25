@@ -141,7 +141,13 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 
 		do  -- Names/Titles
 			if TRP3_NamePlatesSettings.CustomizeNames then
-				displayInfo.name = player:GetRoleplayingName();
+				if TRP3_NamePlatesSettings.CustomizeFirstNames then
+					displayInfo.name = player:GetFirstName();
+				end
+
+				if not displayInfo.name or displayInfo.name == "" then
+					displayInfo.name = player:GetRoleplayingName();
+				end
 			end
 
 			if TRP3_NamePlatesSettings.CustomizeTitles then

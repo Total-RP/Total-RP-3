@@ -14,6 +14,7 @@ local L = TRP3_API.loc;
 TRP3_NamePlatesSettings = nil;
 
 local DefaultSettings = {
+	CustomizeFirstNames = false,
 	CustomizeFullTitles = false,
 	CustomizeHealthColors = true,
 	CustomizeIcons = false,
@@ -162,6 +163,13 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_NAMES,
 				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_NAMES_HELP,
 				configKey = MapSettingToConfigKey("CustomizeNames"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES,
+				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES_HELP,
+				configKey = MapSettingToConfigKey("CustomizeFirstNames"),
+				dependentOnOptions = { MapSettingToConfigKey("CustomizeNames") },
 			},
 			{
 				inherit = "TRP3_ConfigSlider",
