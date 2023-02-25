@@ -90,7 +90,7 @@ end
 
 local function ShouldCustomizeUnitNamePlate(unitToken)
 	if not unitToken then
-		return false  -- Unit is invalid.
+		return false;  -- Unit is invalid.
 	elseif UnitIsUnit(unitToken, "player") then
 		return false;  -- Never decorate personal nameplates.
 	elseif TRP3_NamePlatesSettings.DisableInCombat and isInCombat then
