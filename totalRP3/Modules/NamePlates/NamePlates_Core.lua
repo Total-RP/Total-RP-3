@@ -358,11 +358,19 @@ function TRP3_NamePlates:OnEventUnused(event)
 end
 
 function TRP3_NamePlates:OnNamePlateUnitAdded(unitToken)
+	if UnitIsUnit(unitToken, "target") then
+		self:UpdateNamePlateTargetUnit();
+	end
+
 	self:UpdateCharacterIDForUnit(unitToken);
 	self:UpdateNamePlateForUnit(unitToken);
 end
 
 function TRP3_NamePlates:OnNamePlateUnitRemoved(unitToken)
+	if UnitIsUnit(unitToken, "target") then
+		self:UpdateNamePlateTargetUnit();
+	end
+
 	self.requests:DequeueUnitQuery(unitToken);
 	self:ClearCharacterIDForUnit(unitToken);
 	self:UpdateNamePlateForUnit(unitToken);
@@ -385,15 +393,14 @@ function TRP3_NamePlates:OnPlayerEnteringWorld()
 end
 
 function TRP3_NamePlates:OnPlayerTargetChanged()
-	if self.currentNamePlateTargetUnit then
-		self:UpdateNamePlateForUnit(self.currentNamePlateTargetUnit);
+	if self.namePlateTargetToken then
+		self:UpdateNamePlateForUnit(self.namePlateTargetToken);
 	end
 
-	local nameplate = C_NamePlate.GetNamePlateForUnit("target");
-	self.currentNamePlateTargetUnit = nameplate and nameplate.namePlateUnitToken or nil;
+	self:UpdateNamePlateTargetUnit();
 
-	if self.currentNamePlateTargetUnit then
-		self:UpdateNamePlateForUnit(self.currentNamePlateTargetUnit);
+	if self.namePlateTargetToken then
+		self:UpdateNamePlateForUnit(self.namePlateTargetToken);
 	end
 end
 
@@ -471,6 +478,13 @@ function TRP3_NamePlates:UpdateNamePlateForUnit(unitToken)
 		local displayInfo = self:GetUnitDisplayInfo(unitToken);
 		self.callbacks:Fire("OnNamePlateDataUpdated", nameplate, unitToken, displayInfo);
 	end
+end
+
+function TRP3_NamePlates:UpdateNamePlateTargetUnit()
+	local nameplate = C_NamePlate.GetNamePlateForUnit("target");
+	local unitToken = nameplate and nameplate.namePlateUnitToken or nil;
+
+	self.namePlateTargetToken = unitToken;
 end
 
 function TRP3_NamePlates:RequestUnitProfile(unitToken)
