@@ -653,7 +653,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	-- Target
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	if showTarget() and UnitName(targetType .. "target") then
+	if showTarget() and UnitExists(targetType .. "target") then
 		local name = UnitName(targetType .. "target");
 		local targetTargetID = getUnitID(targetType .. "target");
 		if targetTargetID then
