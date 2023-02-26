@@ -5,7 +5,7 @@ local TRP3_API = select(2, ...);
 
 local displayInfoPool = {};
 local playerCharacterPool = setmetatable({}, { __mode = "kv" });
-local isInCombat = InCombatLockdown();
+local isInCombat = nil;
 
 local function GetOrCreateDisplayInfo(unitToken)
 	if not displayInfoPool[unitToken] then
@@ -313,8 +313,8 @@ function TRP3_NamePlates:OnEnable()
 	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_ADDED", GenerateClosure(self.OnNamePlateUnitAdded, self), HANDLER_ID);
 	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_REMOVED", GenerateClosure(self.OnNamePlateUnitRemoved, self), HANDLER_ID);
 	TRP3_API.Ellyb.GameEvents.registerCallback("UNIT_NAME_UPDATE", GenerateClosure(self.OnUnitNameUpdate, self), HANDLER_ID);
-	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_REGEN_DISABLED", GenerateClosure(self.OnPlayerRegenDisabled, self), HANDLER_ID);
-	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_REGEN_ENABLED", GenerateClosure(self.OnPlayerRegenEnabled, self), HANDLER_ID);
+	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_REGEN_DISABLED", GenerateClosure(self.OnCombatStatusChanged, self), HANDLER_ID);
+	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_REGEN_ENABLED", GenerateClosure(self.OnCombatStatusChanged, self), HANDLER_ID);
 	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_ENTERING_WORLD", GenerateClosure(self.OnPlayerEnteringWorld, self), HANDLER_ID);
 
 	TRP3_API.Events.registerCallback("CONFIGURATION_CHANGED", GenerateClosure(self.OnConfigurationChanged, self), HANDLER_ID);
@@ -322,6 +322,7 @@ function TRP3_NamePlates:OnEnable()
 
 	TRP3_NamePlatesUtil.LoadSettings();
 
+	self:OnCombatStatusChanged();
 	self:UpdateAllNamePlates();
 end
 
@@ -364,13 +365,8 @@ function TRP3_NamePlates:OnUnitNameUpdate(unitToken)
 	end
 end
 
-function TRP3_NamePlates:OnPlayerRegenDisabled()
-	isInCombat = true;
-	self:UpdateAllNamePlates();
-end
-
-function TRP3_NamePlates:OnPlayerRegenEnabled()
-	isInCombat = false;
+function TRP3_NamePlates:OnCombatStatusChanged()
+	isInCombat = InCombatLockdown();
 	self:UpdateAllNamePlates();
 end
 
