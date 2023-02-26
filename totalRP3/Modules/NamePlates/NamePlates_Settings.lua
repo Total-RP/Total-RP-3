@@ -92,26 +92,6 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				title = L.NAMEPLATES_CONFIG_PAGE_HELP,
 			},
 			{
-				inherit = "TRP3_ConfigButton",
-				title = L.NAMEPLATES_CONFIG_MODULE_STATUS,
-				help = L.NAMEPLATES_CONFIG_MODULE_STATUS_HELP,
-				OnShow = function(button)
-					local element = button:GetParent();
-					local title = _G[element:GetName() .. "Title"];
-					local addon = TRP3_NAMEPLATES_ADDON;
-
-					-- Hack pending config UI rework. We don't actually want a
-					-- button and really just want a dynamic fontstring.
-					button:SetAlpha(0);
-
-					if TRP3_NamePlates:IsEnabled() then
-						title:SetFormattedText(L.NAMEPLATES_MODULE_ACTIVE_STATUS, (select(2, GetAddOnInfo(addon)) or addon));
-					else
-						title:SetText(L.NAMEPLATES_MODULE_INACTIVE_STATUS);
-					end
-				end,
-			},
-			{
 				inherit = "TRP3_ConfigH1",
 				title = L.NAMEPLATES_CONFIG_VISIBILITY_HEADER,
 			},

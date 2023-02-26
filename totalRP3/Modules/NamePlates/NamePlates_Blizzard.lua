@@ -95,8 +95,6 @@ local TRP3_BlizzardNamePlates = {};
 function TRP3_BlizzardNamePlates:OnModuleInitialize()
 	if not IsAddOnLoaded("Blizzard_NamePlates") then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
-	elseif TRP3_NAMEPLATES_ADDON ~= nil then
-		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 	end
 
 	-- Quick hack to make these nameplates "cowardly"; if any of the below
@@ -128,18 +126,6 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 end
 
 function TRP3_BlizzardNamePlates:OnModuleEnable()
-	-- Note this below logic for the TRP3_NAMEPLATES_ADDON global is special
-	-- in this decorator; as Blizzard plates are the "default" we check if
-	-- at this point any other decorator has set the global.
-	--
-	-- For a more normal case, see the Kui logic.
-
-	if TRP3_NAMEPLATES_ADDON ~= nil then
-		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
-	else
-		TRP3_NAMEPLATES_ADDON = "Blizzard_NamePlates";
-	end
-
 	self.unitDisplayInfo = {};
 	self.initializedNameplates = {};
 

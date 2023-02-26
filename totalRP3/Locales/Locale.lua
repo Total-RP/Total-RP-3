@@ -1349,10 +1349,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY = "Hide bars on |cff449fe0Blizzard|r nameplates",
 	NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP = "If checked, this enables the use of name-only mode for |cff449fe0Blizzard|r nameplates.|n|nIn this mode, all nameplates will have their health bars hidden, including those of enemy units and other players with or without roleplay profiles.|n|nThis option requires a UI reload to take effect.",
 
-	NAMEPLATES_MODULE_DISABLE_WARNING = "Disabling the nameplates module will prevent any nameplate customizations from being made. A user interface reload is required for this to take effect.|n|n|cffff0000Warning: |rOnce disabled, this module can only be re-enabled from the |cffffcc00Modules status|r page.|n|nAre you sure you want to disable this module?",
-	NAMEPLATES_MODULE_ACTIVE_STATUS = "Module |cff00ff00active|r (%1$s|r)",
-	NAMEPLATES_MODULE_INACTIVE_STATUS = "Module |cffff9900inactive|r (no addon found)",
-
 	BLIZZARD_NAMEPLATES_MODULE_NAME = "Blizzard Nameplates",
 	BLIZZARD_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Blizzard's default nameplates.",
 
@@ -1486,8 +1482,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP = "The maximum number of characters to display for names and prefix titles. Names exceeding this length will be cropped.",
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS = "Maximum title length",
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP = "The maximum number of characters to display for full titles. Titles exceeding this length will be cropped.",
-	NAMEPLATES_CONFIG_MODULE_STATUS = "Module status",
-	NAMEPLATES_CONFIG_MODULE_STATUS_HELP = "Nameplate decorations can be globally enabled or disabled from the |cff00ff00Modules status|r page.",
 };
 
 -- Use Ellyb to generate the Localization system

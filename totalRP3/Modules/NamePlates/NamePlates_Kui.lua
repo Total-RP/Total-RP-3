@@ -19,16 +19,7 @@ function TRP3_KuiNamePlates:OnModuleInitialize()
 	elseif not KuiNameplatesCore or KuiNameplates.layout ~= KuiNameplatesCore then
 		-- For now we only support the "Core" layout for Kui.
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
-	elseif TRP3_NAMEPLATES_ADDON ~= nil then
-		-- Another nameplate decorator module met its own activation criteria.
-		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 	end
-
-	-- Define TRP3_NAMEPLATES_ADDON now to claim decoration rights. This
-	-- should be sanity checked on OnModuleEnable to make sure someone else
-	-- didn't trample over it.
-
-	TRP3_NAMEPLATES_ADDON = "Kui_Nameplates";
 
 	-- Disable our (old) Kui nameplate module explicitly, we'll also tell
 	-- users that they can disable it.
@@ -40,13 +31,6 @@ function TRP3_KuiNamePlates:OnModuleInitialize()
 end
 
 function TRP3_KuiNamePlates:OnModuleEnable()
-	-- Sanity check TRP3_NAMEPLATES_ADDON to ensure that we remain the chosen
-	-- decorator addon, since it may get trampled by external code.
-
-	if TRP3_NAMEPLATES_ADDON ~= "Kui_Nameplates" then
-		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
-	end
-
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
 
 	self.unitDisplayInfo = {};

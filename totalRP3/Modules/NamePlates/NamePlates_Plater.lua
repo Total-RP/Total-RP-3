@@ -16,11 +16,7 @@ TRP3_PlaterNamePlates = {}; -- magic public table
 function TRP3_PlaterNamePlates:OnModuleInitialize()
 	if GetAddOnEnableState(nil, PlaterAddonName) ~= 2 then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
-	elseif TRP3_NAMEPLATES_ADDON ~= nil then
-		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 	end
-
-	TRP3_NAMEPLATES_ADDON = PlaterAddonName;
 
 	if self.PlaterMod then
 		Plater.RecompileScript(self.PlaterMod);
@@ -34,7 +30,6 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 
 	Plater = _G.Plater;
 
-	-- Setting the global TRP3_NAMEPLATES_ADDON is done via the mod and should not be set here.
 	local success, scriptAdded, _ = Plater.ImportScriptString(importString, false);
 
 	-- If the mod was not installed (is already up to date) then find the installed mod object so we can still control it
@@ -58,9 +53,6 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 	scriptAdded.Enabled = true;
 
 	Plater.RecompileScript(scriptAdded);
-
-	TRP3_NAMEPLATES_ADDON = PlaterAddonName;
-
 	Plater.ForceTickOnAllNameplates();
 
 	self.PlaterMod = scriptAdded;
@@ -68,10 +60,6 @@ end
 
 function TRP3_PlaterNamePlates:OnModuleDisable()
 	self.PlaterMod.Enabled = false;
-
-	if TRP3_NAMEPLATES_ADDON == PlaterAddonName then
-		TRP3_NAMEPLATES_ADDON = nil;
-	end
 end
 
 --
