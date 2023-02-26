@@ -109,6 +109,14 @@ local function ShouldCustomizeUnitNamePlate(unitToken)
 	end
 end
 
+local function ShouldHideNonRoleplayUnit(unitToken)
+	if TRP3_NamePlatesSettings.ShowTargetUnit and UnitIsUnit(unitToken, "target") then
+		return false;
+	else
+		return TRP3_NamePlatesSettings.HideNonRoleplayUnits;
+	end
+end
+
 local function GetCompanionColorForDisplay(colorHexString)
 	if not colorHexString then
 		return nil;
@@ -198,7 +206,7 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 		end
 	else
 		-- Unit has no profile and so is a non-roleplay unit.
-		displayInfo.shouldHide = TRP3_NamePlatesSettings.HideNonRoleplayUnits;
+		displayInfo.shouldHide = ShouldHideNonRoleplayUnit(unitToken);
 	end
 
 	if displayInfo.name then
@@ -258,7 +266,7 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 		end
 	else
 		-- Unit has no profile and so is a non-roleplay unit.
-		displayInfo.shouldHide = TRP3_NamePlatesSettings.HideNonRoleplayUnits;
+		displayInfo.shouldHide = ShouldHideNonRoleplayUnit(unitToken);
 	end
 
 	if displayInfo.name then
@@ -274,7 +282,7 @@ end
 
 local function GetNonPlayableUnitDisplayInfo(unitToken)
 	local displayInfo = GetOrCreateDisplayInfo(unitToken);
-	displayInfo.shouldHide = TRP3_NamePlatesSettings.HideNonRoleplayUnits;
+	displayInfo.shouldHide = ShouldHideNonRoleplayUnit(unitToken);
 	return displayInfo;
 end
 
@@ -316,6 +324,7 @@ function TRP3_NamePlates:OnEnable()
 	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_REGEN_DISABLED", GenerateClosure(self.OnCombatStatusChanged, self), HANDLER_ID);
 	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_REGEN_ENABLED", GenerateClosure(self.OnCombatStatusChanged, self), HANDLER_ID);
 	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_ENTERING_WORLD", GenerateClosure(self.OnPlayerEnteringWorld, self), HANDLER_ID);
+	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_TARGET_CHANGED", GenerateClosure(self.OnPlayerTargetChanged, self), HANDLER_ID);
 
 	TRP3_API.Events.registerCallback("CONFIGURATION_CHANGED", GenerateClosure(self.OnConfigurationChanged, self), HANDLER_ID);
 	TRP3_API.Events.registerCallback("REGISTER_DATA_UPDATED", GenerateClosure(self.OnRegisterDataUpdated, self), HANDLER_ID);
@@ -323,6 +332,7 @@ function TRP3_NamePlates:OnEnable()
 	TRP3_NamePlatesUtil.LoadSettings();
 
 	self:OnCombatStatusChanged();
+	self:OnPlayerTargetChanged();
 	self:UpdateAllNamePlates();
 end
 
@@ -372,6 +382,19 @@ end
 
 function TRP3_NamePlates:OnPlayerEnteringWorld()
 	self:UpdateAllNamePlates();
+end
+
+function TRP3_NamePlates:OnPlayerTargetChanged()
+	if self.currentNamePlateTargetUnit then
+		self:UpdateNamePlateForUnit(self.currentNamePlateTargetUnit);
+	end
+
+	local nameplate = C_NamePlate.GetNamePlateForUnit("target");
+	self.currentNamePlateTargetUnit = nameplate and nameplate.namePlateUnitToken or nil;
+
+	if self.currentNamePlateTargetUnit then
+		self:UpdateNamePlateForUnit(self.currentNamePlateTargetUnit);
+	end
 end
 
 function TRP3_NamePlates:OnConfigurationChanged(key)

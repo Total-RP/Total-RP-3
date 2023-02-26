@@ -36,6 +36,7 @@ local DefaultSettings = {
 	MaximumNameLength = 30,
 	MaximumTitleLength = 30,
 	PreferredOOCIndicator = TRP3_OOCIndicatorStyle.Text,
+	ShowTargetUnit = true,
 };
 
 local function MapSettingToConfigKey(field)
@@ -137,6 +138,12 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				title = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS,
 				help = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
 				configKey = MapSettingToConfigKey("HideOutOfCharacterUnits"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_SHOW_TARGET_UNIT,
+				help = L.NAMEPLATES_CONFIG_SHOW_TARGET_UNIT_HELP,
+				configKey = MapSettingToConfigKey("ShowTargetUnit"),
 			},
 			{
 				inherit = "TRP3_ConfigH1",
