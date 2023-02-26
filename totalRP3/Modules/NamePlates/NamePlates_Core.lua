@@ -96,6 +96,8 @@ local function ShouldCustomizeUnitNamePlate(unitToken)
 		return false;  -- Never decorate personal nameplates.
 	elseif TRP3_NamePlatesSettings.DisableInCombat and isInCombat then
 		return false;  -- Player is in (or about to enter) combat.
+	elseif TRP3_NamePlatesSettings.DisableInInstances and IsInInstance() then
+		return false;   -- Player is in instanced content.
 	elseif TRP3_NamePlatesSettings.DisableOutOfCharacter and IsUnitOutOfCharacter("player") then
 		return false;  -- Player is currently OOC.
 	elseif TRP3_NamePlatesSettings.DisableNonPlayableUnits and (not UnitIsPlayer(unitToken) and not UnitIsOtherPlayersPet(unitToken)) then
@@ -313,6 +315,7 @@ function TRP3_NamePlates:OnEnable()
 	TRP3_API.Ellyb.GameEvents.registerCallback("UNIT_NAME_UPDATE", GenerateClosure(self.OnUnitNameUpdate, self), HANDLER_ID);
 	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_REGEN_DISABLED", GenerateClosure(self.OnPlayerRegenDisabled, self), HANDLER_ID);
 	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_REGEN_ENABLED", GenerateClosure(self.OnPlayerRegenEnabled, self), HANDLER_ID);
+	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_ENTERING_WORLD", GenerateClosure(self.OnPlayerEnteringWorld, self), HANDLER_ID);
 
 	TRP3_API.Events.registerCallback("CONFIGURATION_CHANGED", GenerateClosure(self.OnConfigurationChanged, self), HANDLER_ID);
 	TRP3_API.Events.registerCallback("REGISTER_DATA_UPDATED", GenerateClosure(self.OnRegisterDataUpdated, self), HANDLER_ID);
@@ -368,6 +371,10 @@ end
 
 function TRP3_NamePlates:OnPlayerRegenEnabled()
 	isInCombat = false;
+	self:UpdateAllNamePlates();
+end
+
+function TRP3_NamePlates:OnPlayerEnteringWorld()
 	self:UpdateAllNamePlates();
 end
 

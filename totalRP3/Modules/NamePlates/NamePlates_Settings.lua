@@ -23,6 +23,7 @@ local DefaultSettings = {
 	CustomizeRoleplayStatus = false,
 	CustomizeTitles = true,
 	DisableInCombat = false,
+	DisableInInstances = true,
 	DisableNonPlayableUnits = false,
 	DisableOutOfCharacter = false,
 	DisableOutOfCharacterUnits = false,
@@ -100,6 +101,12 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				title = L.NAMEPLATES_CONFIG_DISABLE_IN_COMBAT,
 				help = L.NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
 				configKey = MapSettingToConfigKey("DisableInCombat"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES,
+				help = L.NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
+				configKey = MapSettingToConfigKey("DisableInInstances"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
