@@ -307,6 +307,7 @@ TRP3_API.module.registerModule({
 	description = L.KUI_NAMEPLATES_MODULE_DESCRIPTION,
 	version = 1,
 	minVersion = 92,
+	requiredDeps = { {"Kui_Nameplates", "external"}, {"Kui_Nameplates_Core", "external"} },
 	onInit = function() return TRP3_KuiNamePlates:OnModuleInitialize(); end,
 	onStart = function() return TRP3_KuiNamePlates:OnModuleEnable(); end,
 });
