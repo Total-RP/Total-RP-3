@@ -3,7 +3,7 @@
 
 ---@type TRP3_API
 local addonName, TRP3_API = ...;
-local Ellyb = Ellyb(addonName);
+local Ellyb = TRP3_API.Ellyb;
 
 -- Lua imports
 local strformat = string.format;

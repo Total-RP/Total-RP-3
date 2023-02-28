@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Ellyb = Ellyb(...);
+local Ellyb = TRP3_API.Ellyb;
 
 -- Imports.
 local Enums = AddOn_TotalRP3.Enums;

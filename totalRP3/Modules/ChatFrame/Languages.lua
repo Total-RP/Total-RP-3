@@ -2,7 +2,7 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local AddOn_TotalRP3 = AddOn_TotalRP3;
-local Ellyb = Ellyb(...)
+local Ellyb = TRP3_API.Ellyb
 local Languages = {};
 AddOn_TotalRP3.Languages = Languages;
 

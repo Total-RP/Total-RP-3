@@ -3,7 +3,7 @@
 
 ---@type TRP3_API
 local addonName, TRP3_API = ...;
-local Ellyb = Ellyb(addonName);
+local Ellyb = TRP3_API.Ellyb;
 
 -- Ellyb imports
 local Class = Ellyb.Class;

@@ -3,7 +3,7 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = Ellyb(...);
+local Ellyb = TRP3_API.Ellyb;
 
 -- imports
 local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.loc, TRP3_API.utils, TRP3_API.events;

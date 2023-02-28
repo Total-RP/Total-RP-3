@@ -1,5 +1,5 @@
----@type Ellyb
-local Ellyb = Ellyb:GetInstance(...);
+local TRP3_API = select(2, ...);
+local Ellyb = TRP3_API.Ellyb;
 
 --- Helpers to handle one or more promises
 local Promises = {};

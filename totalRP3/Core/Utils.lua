@@ -3,7 +3,7 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = Ellyb(...);
+local Ellyb = TRP3_API.Ellyb;
 local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
 
 -- Public accessor

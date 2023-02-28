@@ -1,6 +1,6 @@
 local addOnName = ...;
----@type Ellyb
-local Ellyb = Ellyb(addOnName);
+local TRP3_API = select(2, ...);
+local Ellyb = TRP3_API.Ellyb;
 
 if Ellyb.Logger then
 	return
@@ -94,7 +94,7 @@ function Logger:GetLogHeader(logLevel)
 end
 
 function Logger:Log(level, message, ...)
-	if not Ellyb:IsDebugModeEnabled() then
+	if not TRP3_API.globals or not TRP3_API.globals.DEBUG_MODE then
 		return;
 	elseif DLAPI then
 		WriteToDebugLogAddOn(self, level, message, ...);
