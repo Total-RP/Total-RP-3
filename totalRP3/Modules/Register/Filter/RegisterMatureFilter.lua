@@ -4,8 +4,6 @@
 ---@type TRP3_API
 local _, TRP3_API = ...;
 
-local Ellyb = TRP3_API.Ellyb;
-
 local function onStart()
 
 	-- TRP3 API imports
@@ -630,11 +628,6 @@ local function onStart()
 			end
 		end
 	end);
-
-	-- TODO: Remove these deprecation warning wrappers in a future major version.
-	TRP3_API.register.mature_filter.whitelistProfileID = Ellyb.DeprecationWarnings.wrapFunction(addProfileIdToSafeList, "TRP3_API.register.mature_filter.whitelistProfileID", "TRP3_API.register.mature_filter.addProfileIdToSafeList");
-	TRP3_API.register.mature_filter.whitelistProfileByUnitIDConfirm = Ellyb.DeprecationWarnings.wrapFunction(presentAddUnitToSafeListPopup, "TRP3_API.register.mature_filter.whitelistProfileByUnitIDConfirm", "TRP3_API.register.mature_filter.presentAddUnitToSafeListPopup");
-	TRP3_API.register.mature_filter.isProfileWhitelisted = Ellyb.DeprecationWarnings.wrapFunction(isProfileSafeListed, "TRP3_API.register.mature_filter.isProfileWhitelisted", "TRP3_API.register.mature_filter.isProfileSafeListed");
 end
 
 local MODULE_STRUCTURE = {

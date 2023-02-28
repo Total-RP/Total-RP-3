@@ -30,17 +30,6 @@ function MapScanner:initialize(scanID)
 	TRP3_API.MapScannersManager.register(self);
 end
 
----@deprecated scanIcon now HAS to be an instance of Ellyb.Icon
-function MapScanner:__newindex(key, value)
-	if key == "scanIcon" then
-		if not value or not value.class or not value.class.name == "Icon" then
-			Ellyb.DeprecationWarnings.warn("MapScanner.scanIcon now requires an instance of an Ellyb.Icon");
-			value = Ellyb.Icon(value);
-		end
-	end
-	rawset(self, key, value)
-end
-
 function MapScanner:GetID()
 	return _private[self].scanID;
 end
@@ -50,7 +39,7 @@ function MapScanner:GetDataProviderTemplate()
 end
 
 function MapScanner:OnScanDataReceived(sender, x, y, poiInfo)
-	local poiInfoCopy = Ellyb.Tables.copy(poiInfo or {});
+	local poiInfoCopy = CopyTable(poiInfo or {});
 
 	poiInfoCopy.sender = sender;
 	poiInfoCopy.position = CreateVector2D(x, y);

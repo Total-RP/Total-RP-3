@@ -411,6 +411,7 @@ stds.wow = {
 		"IsInInstance",
 		"IsInRaid",
 		"IsItemInRange",
+		"IsMacClient",
 		"IsMounted",
 		"IsShiftKeyDown",
 		"IsSpellKnown",

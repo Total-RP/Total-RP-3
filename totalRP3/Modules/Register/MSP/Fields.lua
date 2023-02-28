@@ -139,7 +139,7 @@ local PS_CUSTOM_FORMAT = "[trait value=\"%.2f\""
 
 module.TryRegisterField("PS", {
 	Serialize = function(traits)
-		local out = Ellyb.Tables.getTempTable();
+		local out = {};
 		for i = 1, #traits do
 			-- Start writing out this trait.
 			local trait = traits[i];
@@ -188,7 +188,6 @@ module.TryRegisterField("PS", {
 
 		-- Join all the resulting traits into a single string.
 		local traitString = table.concat(out, "\n");
-		Ellyb.Tables.releaseTempTable(out);
 
 		return traitString;
 	end,

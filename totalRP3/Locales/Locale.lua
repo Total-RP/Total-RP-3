@@ -1510,7 +1510,7 @@ function Locale.init()
 end
 
 -- Backward compatibility with older use of Total RP 3's Locale module
-Locale.getText = Ellyb.Functions.bind(TRP3_API.loc.GetText, TRP3_API.loc);
+Locale.getText = GenerateClosure(TRP3_API.loc.GetText, TRP3_API.loc);
 
 ---generateFrenchDeterminerForText
 ---@param text string @ The text containing the |2 tag to replace with the appropriate determiner

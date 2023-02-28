@@ -420,7 +420,7 @@ local function companionProfileSelectionList(unitID, targetType, _, button)
 		end
 		tinsert(list, {loc.REG_COMPANION_TF_CREATE, 2});
 		local profileList = getPlayerCompanionProfilesAsList(companionID);
-		if not Ellyb.Tables.isEmpty(profileList) then
+		if next(profileList) ~= nil then
 			tinsert(list, {loc.REG_COMPANION_TF_BOUND_TO, profileList});
 		end
 

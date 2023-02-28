@@ -16,11 +16,11 @@ function Log:initialize(level, ...)
 	_private[self] = {};
 	_private[self].date = time();
 	_private[self].level = level;
-	_private[self].args = { ... };
+	_private[self].args = { tostringall(...) };
 end
 
 function Log:GetText()
-	return Ellyb.Strings.convertTableToString(_private[self].args);
+	return table.concat(_private[self].args, " ");
 end
 
 function Log:GetLevel()

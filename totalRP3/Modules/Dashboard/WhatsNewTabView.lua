@@ -10,7 +10,6 @@ local tconcat = table.concat;
 
 -- Ellyb imports
 local Class = Ellyb.Class;
-local Functions = Ellyb.Functions;
 
 -- Total RP 3 imports
 local Configuration = TRP3_API.configuration;
@@ -47,10 +46,10 @@ end
 
 --- Mapping of URL handlers to register and unregister with this view.
 local URL_HANDLERS = {
-	right_click_profile = Functions.bind(toggleSetting, "CONFIG_RIGHT_CLICK_OPEN_PROFILE"),
-	companion_speeches = Functions.bind(toggleSetting, "chat_npcspeech_replacement"),
-	default_color_picker = Functions.bind(toggleSetting, "default_color_picker"),
-	disable_chat_ooc = Functions.bind(toggleSetting, "chat_disable_ooc"),
+	right_click_profile = GenerateClosure(toggleSetting, "CONFIG_RIGHT_CLICK_OPEN_PROFILE"),
+	companion_speeches = GenerateClosure(toggleSetting, "chat_npcspeech_replacement"),
+	default_color_picker = GenerateClosure(toggleSetting, "default_color_picker"),
+	disable_chat_ooc = GenerateClosure(toggleSetting, "chat_disable_ooc"),
 	open_mature_filter_settings = function()
 		Navigation.menu.selectMenu("main_91_config_main_config_register");
 	end,

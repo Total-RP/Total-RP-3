@@ -578,7 +578,7 @@ function TRP3_API.profile.init()
 	end);
 
 	-- Export/Import
-	local exportWarningText = TRP3_API.Ellyb.System.IsMac() and loc.PR_EXPORT_WARNING_MAC or loc.PR_EXPORT_WARNING_WINDOWS;
+	local exportWarningText = IsMacClient() and loc.PR_EXPORT_WARNING_MAC or loc.PR_EXPORT_WARNING_WINDOWS;
 	TRP3_ProfileExport.title:SetText(loc.PR_EXPORT_PROFILE);
 	TRP3_ProfileExport.warning:SetText(TRP3_API.Ellyb.ColorManager.RED(loc.PR_EXPORT_WARNING_TITLE) .. "\n" .. exportWarningText);
 	TRP3_ProfileImport.title:SetText(loc.PR_IMPORT_PROFILE);

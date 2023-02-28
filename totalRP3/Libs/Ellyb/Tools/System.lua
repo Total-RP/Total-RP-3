@@ -11,28 +11,7 @@ local loc = Ellyb.loc;
 local System = {};
 Ellyb.System = System;
 
----@return boolean isMac @ Returns true if the client is running on a Mac
-function System:IsMac()
-	return IsMacClient();
-end
-
-function System:IsTestBuild()
-	return IsTestBuild();
-end
-
-function System:IsTrialAccount()
-	return IsTrialAccount();
-end
-
-function System:IsClassic()
-	return WOW_PROJECT_ID == Ellyb.Enum.GAME_CLIENT_TYPES.CLASSIC;
-end
-
-function System:IsRetail()
-	return WOW_PROJECT_ID == Ellyb.Enum.GAME_CLIENT_TYPES.RETAIL;
-end
-
-local SHORTCUT_SEPARATOR = System:IsMac() and "-" or " + ";
+local SHORTCUT_SEPARATOR = IsMacClient() and "-" or " + ";
 
 System.MODIFIERS = {
 	CTRL = loc.MODIFIERS_CTRL,

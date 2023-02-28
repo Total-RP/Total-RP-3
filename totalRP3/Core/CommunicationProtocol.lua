@@ -39,21 +39,14 @@ local subSystemsDispatcher = Ellyb.EventsDispatcher();
 local subSystemsOnProgressDispatcher = Ellyb.EventsDispatcher();
 local internalMessageIDToChompSessionIDMatching = {};
 
--- Deprecated TODO Remove
-local messageIDDispatcher = Ellyb.EventsDispatcher();
-
-local DEPRECATED_MESSAGE_PRIORITY = [[Deprecated usage of message priority "%s". Use "%s" instead.]];
 --[[ Deprecated ]] local function CTLToChompPriority(priority)
 	if priority == "BULK" then
-		Ellyb.DeprecationWarnings.warn(DEPRECATED_MESSAGE_PRIORITY:format("BULK", PRIORITIES.LOW));
 		priority = PRIORITIES.LOW
 	end
 	if priority == "NORMAL" then
-		Ellyb.DeprecationWarnings.warn(DEPRECATED_MESSAGE_PRIORITY:format("NORMAL", PRIORITIES.MEDIUM));
 		priority = PRIORITIES.MEDIUM
 	end
 	if priority == "ALERT" then
-		Ellyb.DeprecationWarnings.warn(DEPRECATED_MESSAGE_PRIORITY:format("ALERT", PRIORITIES.HIGH));
 		priority = PRIORITIES.HIGH
 	end
 	return priority
@@ -215,20 +208,3 @@ AddOn_TotalRP3.Communications = {
 	extractMessageTokenFromData = extractMessageTokenFromData,
 	PRIORITIES = PRIORITIES,
 }
-
--- DEPRECATED
--- Backward compatibility layer
-TRP3_API.communication = {};
-TRP3_API.communication.getMessageIDAndIncrement = Ellyb.DeprecationWarnings.wrapFunction(getNewMessageToken, "TRP3_API.communication.getMessageIDAndIncrement", "AddOn_TotalRP3.Communications.getNewMessageToken");
-TRP3_API.communication.registerProtocolPrefix = Ellyb.DeprecationWarnings.wrapFunction(registerSubSystemPrefix, "TRP3_API.communication.registerProtocolPrefix", "AddOn_TotalRP3.Communications.registerSubSystemPrefix");
-
-TRP3_API.communication.addMessageIDHandler = function(sender, reservedMessageID, callback)
-	Ellyb.DeprecationWarnings.warn([[Deprecated usage of TRP3_API.communication.addMessageIDHandler(sender, reservedMessageID, callback). You should now provide an onProgression callback when using AddOn_TotalRP3.registerSubSystemPrefix(prefix, callback, onProgressCallback) for the sub-system. This callback will be called with the message ID in the parameters.]]);
-	messageIDDispatcher:RegisterCallback(reservedMessageID, function(senderID, msgTotal, msgID)
-		if senderID == sender then
-			callback(senderID, msgTotal, msgID);
-		end
-	end);
-end
-
-Ellyb.DeprecationWarnings.wrapAPI(AddOn_TotalRP3.Communications, "TRP3_API.communication", "AddOn_TotalRP3.Communications", TRP3_API.communication);

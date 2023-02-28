@@ -7,9 +7,6 @@ local Ellyb = TRP3_API.Ellyb;
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
-local after = C_Timer.After;
-local bind = Ellyb.Functions.bind;
-
 local MapScannersManager = {}
 local registeredMapScans = {};
 
@@ -51,24 +48,9 @@ function MapScannersManager.launch(scanID)
 
 	scan:ResetScanData();
 
-	local promise = Ellyb.Promise();
-	promise:Always(function()
-		Events.fireEvent(Events.MAP_SCAN_ENDED)
-	end)
+	local function OnScanTimerElapsed()
+		Events.fireEvent(Events.MAP_SCAN_ENDED);
 
-	Events.fireEvent(Events.MAP_SCAN_STARTED, scan.duration);
-	scan:Scan();
-
-	if scan.duration > 0 then
-		-- Resolve the promise after the scan duration
-		after(scan.duration, bind(promise.Resolve, promise));
-		TRP3_API.WorldMapButton.startCooldown(scan.duration);
-		TRP3_API.ui.misc.playSoundKit(40216);
-	else
-		promise:Resolve();
-	end
-
-	promise:Success(function()
 		-- If the displayed map changed
 		if displayedMapID ~= AddOn_TotalRP3.Map.getDisplayedMapID() then
 			return
@@ -76,9 +58,14 @@ function MapScannersManager.launch(scanID)
 		scan:OnScanCompleted();
 		TRP3_API.MapDataProvider:OnScan(scan:GetData(), scan:GetDataProviderTemplate())
 		TRP3_API.ui.misc.playSoundKit(43493);
-	end)
+	end
 
-	return promise;
+
+	Events.fireEvent(Events.MAP_SCAN_STARTED, scan.duration);
+	scan:Scan();
+	C_Timer.After(scan.duration, OnScanTimerElapsed);
+	TRP3_API.WorldMapButton.startCooldown(scan.duration);
+	TRP3_API.ui.misc.playSoundKit(40216);
 end
 
 TRP3_API.MapScannersManager = MapScannersManager;

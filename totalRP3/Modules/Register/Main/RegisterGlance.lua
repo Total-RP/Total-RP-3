@@ -13,7 +13,7 @@ local loc = TRP3_API.loc;
 local getIcon, tableRemove = Utils.str.icon, Utils.table.remove;
 local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.toast;
 local unitIDIsFilteredForMatureContent;
-local crop = TRP3_API.Ellyb.Strings.crop;
+local crop = TRP3_API.utils.str.crop;
 local shouldCropTexts = TRP3_API.ui.tooltip.shouldCropTexts;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
