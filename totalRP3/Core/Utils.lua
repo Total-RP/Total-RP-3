@@ -9,7 +9,6 @@ local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
 -- TRP3 imports
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
-local Log = Utils.log;
 local loc = TRP3_API.loc;
 
 -- WOW imports
@@ -36,36 +35,8 @@ Utils.print = function(...)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- LOGGING
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
--- Default logger.
-local logger = Ellyb.Logger("TRP3");
-
--- Alias the log level constants for backwards compatibility.
--- The log level defines the prefix color and serves as filter
-Log.level = Ellyb.Logger.LEVELS;
-
--- Print a log message to the chatFrame.
-local function log(message, level)
-	if not level then level = Log.level.INFO; end
-	if not Globals.DEBUG_MODE then
-		return;
-	end
-
-	logger:Log(level, message);
-end
-Log.log = log;
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Messaging
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local MESSAGE_PREFIX = "[|cffffaa00TRP3|r] ";
-
-local function getChatFrame()
-	return DEFAULT_CHAT_FRAME;
-end
 
 -- CHAT_FRAME : ChatFrame (given by chatFrameIndex or default if nil)
 -- ALERT_POPUP : TRP3 alert popup
@@ -79,14 +50,9 @@ Utils.message.type = {
 local messageTypes = Utils.message.type;
 
 -- Display a simple message. Nil free.
-Utils.message.displayMessage = function(message, messageType, noPrefix, chatFrameIndex)
+Utils.message.displayMessage = function(message, messageType)
 	if not messageType or messageType == messageTypes.CHAT_FRAME then
-		local chatFrame = _G["ChatFrame"..tostring(chatFrameIndex)] or getChatFrame();
-		if noPrefix then
-			chatFrame:AddMessage(tostring(message), 1, 1, 1);
-		else
-			chatFrame:AddMessage(MESSAGE_PREFIX..tostring(message), 1, 1, 1);
-		end
+		TRP3_Addon:Print(tostring(message));
 	elseif messageType == messageTypes.ALERT_POPUP then
 		TRP3_API.popup.showAlertPopup(tostring(message));
 	elseif messageType == messageTypes.RAID_ALERT then
@@ -99,48 +65,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Table utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
--- Print all table content (resursively)
--- Debug purpose
--- Better than /dump as it prints one message per line (avoid chat show limit)
-local dumpColor1, dumpColor2, dumpColor3, dumpColor4 = "|cffffaa00", "|cff00ff00", "|cffffff00", "|cffff9900";
-local function tableDump(table, level, withCount)
-	local i = 0;
-	local dumpIndent = "";
-
-	for _ = 1, level, 1 do
-		dumpIndent = dumpIndent .. "    ";
-	end
-
-	if type(table) == "table" then
-		for key, value in pairs(table) do
-			if type(key) == "string" then
-				key = "[\"" .. key .. "\"]"
-			end
-			if type(value) == "table" then
-				log(dumpIndent .. dumpColor2 .. key .. "|r=".. dumpColor3 .. "{", Log.level.DEBUG);
-				tableDump(value, level + 1);
-				log(dumpIndent .. dumpColor3 .. "}", Log.level.DEBUG);
-			elseif type(value) == "function" then
-				log(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor4 .. " <" .. type(value) ..">", Log.level.DEBUG);
-			else
-				log(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor3 .. tostring(value) .. dumpColor4 .. " <" .. type(value) ..">", Log.level.DEBUG);
-			end
-			i = i + 1;
-		end
-	end
-
-	if withCount then
-		log(dumpIndent .. dumpColor1 .. ("Level %s size: %s elements"):format(level, i), Log.level.DEBUG);
-	end
-end
-
-Utils.table.dump = function(table, withCount)
-	log(dumpColor1 .. "Dump: ".. tostring(table), Log.level.DEBUG);
-	if table then
-		tableDump(table, 1, withCount);
-	end
-end
 
 -- Recursively copy all content from a table to another one.
 -- Argument "destination" must be a non nil table reference.
@@ -975,21 +899,21 @@ Utils.str.toHTML = function(text, noColor, noBrackets)
 		after = text:sub(#before + #tagText + 1);
 		text = after;
 
-		--- 	Log.log("Iteration "..i);
-		--- 	Log.log("before ("..(#before).."): "..before);
-		--- 	Log.log("tagText ("..(#tagText).."): "..tagText);
-		--- 	Log.log("after ("..(#before).."): "..after);
+		--- 	TRP3_API.Log("Iteration "..i);
+		--- 	TRP3_API.Log("before ("..(#before).."): "..before);
+		--- 	TRP3_API.Log("tagText ("..(#tagText).."): "..tagText);
+		--- 	TRP3_API.Log("after ("..(#before).."): "..after);
 
 		i = i+1;
 		if i == 500 then
-			log("HTML overfloooow !", Log.level.SEVERE);
+			TRP3_API.Log("HTML overfloooow !");
 		end
 	end
 	if #text > 0 then
 		tinsert(tab, text); -- Rest of the text
 	end
 
-	--- log("Parts count "..(#tab));
+	--- TRP3_API.Log("Parts count "..(#tab));
 
 	local finalText = "";
 	for _, line in pairs(tab) do
@@ -1101,7 +1025,7 @@ Utils.serial.errorCount = 0;
 local function safeDeserialize(structure, default)
 	local status, data = libSerializer:Deserialize(structure);
 	if not status then
-		Log.log("Deserialization error:\n" .. tostring(structure) .. "\n" .. tostring(data), Log.level.WARNING);
+		TRP3_API.Log("Deserialization error:\n" .. tostring(structure) .. "\n" .. tostring(data));
 		return default;
 	end
 	return data;
@@ -1124,7 +1048,7 @@ Utils.serial.safeEncodeCompressMessage = function(serial)
 	if decoded == serial then
 		return encoded;
 	else
-		Log.log("safeEncodeCompressStructure error:\n" .. tostring(serial), Log.level.WARNING);
+		TRP3_API.Log("safeEncodeCompressStructure error:\n" .. tostring(serial));
 		return nil;
 	end
 end
@@ -1225,7 +1149,7 @@ end
 function Utils.music.playMusic(music, source)
 	assert(music, "Music can't be nil.")
 	Utils.music.stopMusic();
-	Log.log("Playing music: " .. music);
+	TRP3_API.Log("Playing music: " .. music);
 	PlayMusic(music);
 	tinsert(soundHandlers, {channel = "Music", id = Utils.music.getTitle(music), handlerID = 0, source = source or Globals.player_id, date = date("%H:%M:%S"), stopped = false});
 	if TRP3_SoundsHistoryFrame then
@@ -1258,7 +1182,7 @@ end
 Utils.texture.applyRoundTexture = function(textureFrame, texturePath, failTexture)
 	local ok, errorMess = pcall(SetPortraitToTexture, textureFrame, texturePath);
 	if not ok then
-		Log.log("Fail to round texture: " .. tostring(errorMess));
+		TRP3_API.Log("Fail to round texture: " .. tostring(errorMess));
 		if failTexture then
 			SetPortraitToTexture(textureFrame, failTexture);
 		elseif _G[textureFrame] then

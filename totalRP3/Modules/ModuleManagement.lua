@@ -4,9 +4,8 @@
 TRP3_API.module = {};
 
 -- imports
-local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
+local Globals = TRP3_API.globals;
 local pairs, type, assert, pcall, tinsert, table, _G, tostring = pairs, type, assert, pcall, tinsert, table, _G, tostring;
-local Log = Utils.log;
 local loc = TRP3_API.loc;
 local MODULE_REGISTRATION = {};
 local MODULE_ACTIVATION;
@@ -67,7 +66,7 @@ TRP3_API.module.registerModule = function(moduleStructure)
 
 	MODULE_REGISTRATION[moduleStructure.id] = moduleStructure;
 
-	Log.log("Module registered: " .. moduleStructure.id);
+	TRP3_API.Log("Module registered: " .. moduleStructure.id);
 end
 
 --- Initializing modules.
@@ -178,7 +177,7 @@ local function callModuleFunction(module, funcName, ...)
 	-- but will allow the loading process to continue.
 	local ok, err, message;
 	if Globals.DEBUG_MODE then
-		Log.log("Calling module function: " .. module.id .. "." .. funcName);
+		TRP3_API.Log("Calling module function: " .. module.id .. "." .. funcName);
 		ok, err, message = xpcall(module[funcName], CallErrorHandler, ...);
 	else
 		-- In release builds swallow the error via pcall. We'll forward it
@@ -372,7 +371,7 @@ end
 local function moduleHotReload(frame, value)
 	local module = frame.module;
 
-	Log.log("Hot reloading module: " .. module.id)
+	TRP3_API.Log("Hot reloading module: " .. module.id)
 	module.status = MODULE_STATUS.OK
 	if MODULE_ACTIVATION[module.id] == nil then
 		MODULE_ACTIVATION[module.id] = true;

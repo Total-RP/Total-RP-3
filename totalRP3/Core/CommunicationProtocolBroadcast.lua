@@ -17,7 +17,6 @@ local wipe, string, pairs, strsplit, assert, tinsert, type, tostring = wipe, str
 local Chomp = AddOn_Chomp;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
-local Log = Utils.log;
 local Comm, isIDIgnored = AddOn_TotalRP3.Communications, nil;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local getConfigValue = TRP3_API.configuration.getValue;
@@ -54,18 +53,18 @@ Comm.totalBroadcastP2PR = 0;
 
 local function broadcast(command, ...)
 	if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel and not config_UseBroadcast() or not command then
-		Log.log("Bad params");
+		TRP3_API.Log("Bad params");
 		return;
 	end
 	if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel and not helloWorlded and command ~= HELLO_CMD then
-		Log.log("Broadcast channel not yet initialized.");
+		TRP3_API.Log("Broadcast channel not yet initialized.");
 		return;
 	end
 	local message = BROADCAST_HEADER .. BROADCAST_SEPARATOR .. command;
 	for _, arg in pairs({...}) do
 		arg = tostring(arg);
 		if arg:find(BROADCAST_SEPARATOR) then
-			Log.log("Trying a broadcast with a arg containing the separator character. Abord !", Log.level.WARNING);
+			TRP3_API.Log("Trying a broadcast with a arg containing the separator character. Abort!");
 			return;
 		end
 		message = message .. BROADCAST_SEPARATOR .. arg;
@@ -81,7 +80,7 @@ local function broadcast(command, ...)
 		end
 		Comm.totalBroadcast = Comm.totalBroadcast + BROADCAST_HEADER:len() + message:len();
 	else
-		Log.log(("Trying a broadcast with a message with lenght %s. Abord !"):format(message:len()), Log.level.WARNING);
+		TRP3_API.Log(("Trying a broadcast with a message with length %s. Abort!"):format(message:len()));
 	end
 end
 Comm.broadcast.broadcast = broadcast;
@@ -148,7 +147,7 @@ local function sendP2PMessage(target, command, ...)
 	for _, arg in pairs({...}) do
 		arg = tostring(arg);
 		if arg:find(BROADCAST_SEPARATOR) then
-			Log.log("Trying a broadcast with a arg containing the separator character. Abord !", Log.level.WARNING);
+			TRP3_API.Log("Trying a broadcast with a arg containing the separator character. Abort!");
 			return;
 		end
 		message = message .. BROADCAST_SEPARATOR .. arg;
@@ -157,7 +156,7 @@ local function sendP2PMessage(target, command, ...)
 		Chomp.SendAddonMessage(BROADCAST_HEADER, message, "WHISPER", target);
 		Comm.totalBroadcastP2P = Comm.totalBroadcastP2P + BROADCAST_HEADER:len() + message:len();
 	else
-		Log.log(("Trying a P2P message with a message with lenght %s. Abord !"):format(message:len()), Log.level.WARNING);
+		TRP3_API.Log(("Trying a P2P message with a message with length %s. Abort!"):format(message:len()));
 	end
 end
 Comm.broadcast.sendP2PMessage = sendP2PMessage;
@@ -283,7 +282,7 @@ local function moveBroadcastChannelToTheBottomOfTheList(forceMove)
 		for index = broadcastChannelIndex, lastChannelIndex - 1 do
 			swapChannelsByIndex(index, index + 1);
 		end
-		Log.log("Moved broadcast channel from position " .. broadcastChannelIndex .. " to " .. lastChannelIndex .. ".");
+		TRP3_API.Log("Moved broadcast channel from position " .. broadcastChannelIndex .. " to " .. lastChannelIndex .. ".");
 
 		hideBroadcastChannelFromChatFrame();
 	end
@@ -355,11 +354,11 @@ Comm.broadcast.init = function()
 				if firstTime then firstTime = false; return; end
 				if GetChannelName(string.lower(config_BroadcastChannel())) == 0 then
 					if forceJoinChannel or isChannelListReady() then
-						Log.log("Step 1: Try to connect to broadcast channel: " .. config_BroadcastChannel());
+						TRP3_API.Log("Step 1: Try to connect to broadcast channel: " .. config_BroadcastChannel());
 						JoinChannelByName(string.lower(config_BroadcastChannel()));
 					end
 				else
-					Log.log("Step 2: Connected to broadcast channel: " .. config_BroadcastChannel() .. ". Now sending HELLO command.");
+					TRP3_API.Log("Step 2: Connected to broadcast channel: " .. config_BroadcastChannel() .. ". Now sending HELLO command.");
 					moveBroadcastChannelToTheBottomOfTheList(true);
 					if not helloWorlded then
 						broadcast(HELLO_CMD, Globals.version, Utils.str.sanitizeVersion(Globals.version_display), Globals.extended_version, Utils.str.sanitizeVersion(Globals.extended_display_version));
@@ -375,7 +374,7 @@ Comm.broadcast.init = function()
 	-- When someone placed a password on the channel
 	Utils.event.registerHandler("CHANNEL_PASSWORD_REQUEST", function(channel)
 		if channel == config_BroadcastChannel() then
-			Log.log("Passworded !");
+			TRP3_API.Log("Passworded !");
 
 			local message = loc.BROADCAST_PASSWORD:format(channel);
 			Utils.message.displayMessage(message);
@@ -413,7 +412,7 @@ Comm.broadcast.init = function()
 	-- We register our own HELLO msg so that when it happens we know we are capable of sending and receive on the channel.
 	Comm.broadcast.registerCommand(HELLO_CMD, function(sender, _)
 		if sender == Globals.player_id then
-			Log.log("Step 3: HELLO command sent and parsed. Broadcast channel initialized.");
+			TRP3_API.Log("Step 3: HELLO command sent and parsed. Broadcast channel initialized.");
 			helloWorlded = true;
 			ticker:Cancel();
 

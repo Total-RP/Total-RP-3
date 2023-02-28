@@ -5,8 +5,7 @@ if Ellyb.Events then
 	return
 end
 
--- Ellyb imports
-local Logger = Ellyb.Logger("Events");
+
 ---@class EventsDispatcher : Object
 --- Used for listening to NON game events and firing callbacks
 local EventsDispatcher = Ellyb.Class("EventsDispatcher");
@@ -20,7 +19,7 @@ local LOG_EVENT_UNREGISTERED = [[Registered event callback with handler ID "%s" 
 
 function EventsDispatcher:initialize()
 	private[self].callbackRegistry = {};
-	Logger:Info("Initialized new EventDispatcher")
+	Ellyb.Log("Initialized new EventDispatcher")
 end
 
 --- Register a callback that we want to be called when the given event is fired.
@@ -44,7 +43,7 @@ function EventsDispatcher:RegisterCallback(event, callback, handlerID)
 	end
 	private[self].callbackRegistry[event][handlerID] = callback;
 
-	Logger:Info(LOG_EVENT_REGISTERED:format(event, handlerID));
+	Ellyb.Logf(LOG_EVENT_REGISTERED, event, handlerID);
 
 	return handlerID;
 end
@@ -58,7 +57,7 @@ function EventsDispatcher:UnregisterCallback(handlerID)
 	for eventName, eventRegistry in pairs(private[self].callbackRegistry) do
 		if eventRegistry[handlerID] then
 			eventRegistry[handlerID] = nil;
-			Logger:Info(LOG_EVENT_UNREGISTERED:format(handlerID, eventName));
+			Ellyb.Logf(LOG_EVENT_UNREGISTERED, handlerID, eventName);
 		end
 	end
 end

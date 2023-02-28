@@ -5,9 +5,6 @@ if Ellyb.GameEvents then
 	return
 end
 
--- Ellyb imports
-local Logger = Ellyb.Logger("GameEvents");
-
 --- Used for listening to in-game events and firing callbacks
 local GameEvents = {};
 Ellyb.GameEvents = GameEvents;
@@ -24,7 +21,7 @@ function GameEvents.registerCallback(event, callback, handlerID)
 
 	if not EventFrame:IsEventRegistered(event) then
 		EventFrame:RegisterEvent(event);
-		Logger:Info(("Listening to new Game event %s."):format(tostring(event)))
+		Ellyb.Logf("Listening to new Game event %s.", tostring(event))
 	end
 
 	return eventsDispatcher:RegisterCallback(event, callback, handlerID);
@@ -43,7 +40,7 @@ local function dispatchEvent(self, event, ...)
 		eventsDispatcher:TriggerEvent(event, ...);
 	else
 		self:UnregisterEvent(event);
-		Logger:Info(("Stopped listening to Game event %s, no more callbacks for this event"):format(tostring(event)));
+		Ellyb.Logf("Stopped listening to Game event %s, no more callbacks for this event", tostring(event));
 	end
 end
 

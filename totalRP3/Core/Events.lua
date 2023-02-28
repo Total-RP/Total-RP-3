@@ -75,12 +75,7 @@ local Events = {
 -- Handles Total RP 3 events system
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local log = TRP3_API.Ellyb.Logger("TRP3 Events");
 local eventsDispatcher = TRP3_API.Ellyb.EventsDispatcher();
-
-function Events.registerEvent()
-	log:Warning("DEPRECATED: Registering events is not longer required with the new events system.");
-end
 
 function Events.unregisterCallback(handlerID)
 	Ellyb.Assertions.isType(handlerID, "string", "handlerID");

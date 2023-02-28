@@ -25,7 +25,6 @@ local function onStart()
 	local registerConfigHandler = Config.registerHandler;
 	local hidePopups = TRP3_API.popup.hidePopups;
 	local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
-	local log = Utils.log.log;
 	local getUnitID = Utils.str.getUnitID;
 	local loc = TRP3_API.loc;
 	local player_id = TRP3_API.globals.player_id;
@@ -221,7 +220,7 @@ local function onStart()
 		for matureWord, _ in pairs(TRP3_MatureFilter.dictionary) do
 			-- If the word is found, return true
 			if words[matureWord] then
-				log("Found |cff00ff00" .. matureWord .. "|r " .. words[matureWord] .. " times!", Utils.log.WARNING);
+				TRP3_API.Log("Found |cff00ff00" .. matureWord .. "|r " .. words[matureWord] .. " times!");
 				badWordsFound = badWordsFound + 1;
 				if badWordsFound >= threshold then
 					return badWordsFound;

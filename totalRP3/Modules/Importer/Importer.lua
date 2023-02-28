@@ -19,7 +19,6 @@ local assert, pairs = assert, pairs;
 local tsize, tcopy = TRP3_API.utils.table.size, TRP3_API.utils.table.copy;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
 local duplicateProfile = TRP3_API.profile.duplicateProfile;
-local log = TRP3_API.utils.log.log;
 
 local profiles = {};
 
@@ -33,7 +32,7 @@ TRP3_API.importer.addAddOn = function(addOnName, API)
 	type(API.getFormatedProfile) == "function" and
 	type(API.listAvailableProfiles) == "function" and
 	type(API.getImportableData) == "function" then
-		log("Importer : API registered "..addOnName);
+		TRP3_API.Log("Importer : API registered "..addOnName);
 		addOns[addOnName] = API;
 	else
 		print("An API for the addon " .. addOnName .. " tried to register itself in the importer module, but misses some of the required functions.");
