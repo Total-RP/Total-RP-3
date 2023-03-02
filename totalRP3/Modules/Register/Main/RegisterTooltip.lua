@@ -425,6 +425,19 @@ local TOOLTIP_BLOCKED_IGNORED_COLOR = Ellyb.ColorManager.RED;
 local TOOLTIP_BLOCKED_MATURE_COLOR = Ellyb.Color.CreateFromRGBA(1.00, 0.75, 0.86, 1.00);
 local TOOLTIP_BLOCKED_MAIN_COLOR = Ellyb.Color.CreateFromRGBA(1.00, 0.75, 0.00, 1.00);
 
+local function FindMiscInfoField(miscInfo, localizedName, englishName)
+	if not miscInfo then
+		return nil;
+	end
+
+	local function Predicate(struct)
+		return (strcmputf8i(struct.NA, localizedName) == 0) or (strcmputf8i(struct.NA, englishName) == 0);
+	end
+
+	local index = FindInTableIf(miscInfo, Predicate);
+	return miscInfo[index];
+end
+
 --- The complete character's tooltip writing sequence.
 local function writeTooltipForCharacter(targetID, _, targetType)
 	local info = getCharacterInfoTab(targetID);
@@ -435,11 +448,13 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	local player = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetID)
 
 	local FIELDS_TO_CROP = {
-		TITLE    = 150,
-		NAME     = 100,
-		RACE     = 50,
-		CLASS    = 50,
+		TITLE = 150,
+		NAME = 100,
+		RACE = 50,
+		CLASS = 50,
 		PRONOUNS = 20,
+		GUILD_NAME = 30,
+		GUILD_RANK = 30,
 	}
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -578,19 +593,39 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	-- Guild
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local guild, grade = GetGuildInfo(targetType);
-	if showGuild() and guild then
-		local text = loc.REG_TT_GUILD:format(grade, colors.SECONDARY:WrapTextInColorCode(guild));
-		local membership;
-		if info.misc and info.misc.ST then
-			if info.misc.ST["6"] == 1 then -- IC guild membership
-				membership = IC_GUILD;
-			elseif info.misc.ST["6"] == 2 then -- OOC guild membership
-				membership = OOC_GUILD;
-			end
+	if showGuild() then
+		local guildName, guildRank = GetGuildInfo(targetType);
+		local guildIsCustom = false;
+
+		local miscInfo = info.characteristics and info.characteristics.MI or nil;
+		local customGuildName = FindMiscInfoField(miscInfo, loc.REG_PLAYER_MISC_PRESET_GUILD_NAME, "Guild name");
+		local customGuildRank = FindMiscInfoField(miscInfo, loc.REG_PLAYER_MISC_PRESET_GUILD_RANK, "Guild rank");
+
+		if customGuildName then
+			guildName = customGuildName.VA;
+			guildRank = customGuildRank and customGuildRank.VA or nil;
+			guildIsCustom = true;
+		elseif customGuildRank then
+			guildRank = customGuildRank.VA;
 		end
 
-		tooltipBuilder:AddDoubleLine(text, membership, colors.MAIN, colors.MAIN, getSubLineFontSize());
+		if guildName then
+			guildName = crop(guildName, FIELDS_TO_CROP.GUILD_NAME);
+			guildRank = crop(guildRank or loc.DEFAULT_GUILD_RANK, FIELDS_TO_CROP.GUILD_RANK);
+
+			local text = string.format(loc.REG_TT_GUILD, guildRank, colors.SECONDARY:WrapTextInColorCode(guildName));
+			local membership = "";
+
+			if not guildIsCustom and info.misc and info.misc.ST then
+				if info.misc.ST["6"] == 1 then -- IC guild membership
+					membership = IC_GUILD;
+				elseif info.misc.ST["6"] == 2 then -- OOC guild membership
+					membership = OOC_GUILD;
+				end
+			end
+
+			tooltipBuilder:AddDoubleLine(text, membership, colors.MAIN, colors.MAIN, getSubLineFontSize());
+		end
 	end
 
 	tooltipBuilder:AddSpace();
@@ -632,16 +667,11 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	--
 
 	if showPronouns() then
-		local characteristics = info.characteristics;
-		local miscInfo = characteristics and characteristics.MI;
-		local miscIndex = miscInfo and FindInTableIf(miscInfo, function(struct)
-			return struct.NA == loc.REG_PLAYER_MISC_PRESET_PRONOUNS
-				or struct.NA == "Pronouns";
-		end);
+		local miscInfo = info.characteristics and info.characteristics.MI or nil;
+		local pronouns = FindMiscInfoField(miscInfo, loc.REG_PLAYER_MISC_PRESET_PRONOUNS, "Pronouns");
 
-		if miscIndex then
-			local pronouns = miscInfo[miscIndex];
-			local leftText = pronouns.NA;
+		if pronouns then
+			local leftText = loc.REG_PLAYER_MISC_PRESET_PRONOUNS;
 			local rightText = crop(pronouns.VA, FIELDS_TO_CROP.PRONOUNS);
 			local lineText = string.format("%1$s: %2$s", leftText, colors.SECONDARY:WrapTextInColorCode(rightText));
 
@@ -837,7 +867,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 
 	local FIELDS_TO_CROP = {
 		TITLE = 150,
-		NAME  = 100
+		NAME  = 100,
 	}
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

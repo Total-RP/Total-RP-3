@@ -133,13 +133,15 @@ TRP3_InterfaceIcons = {
 	-- Miscellaneous Info Field Icons
 	--
 
+	MiscInfoGuildName = { "vas_guildnamechange", "inv_banner_03" },
+	MiscInfoGuildRank = { "achievement_guildperk_honorablemention_rank2", "achievement_pvp_o_04" },
 	MiscInfoHouse     = { "inv_misc_kingsring1", "inv_jewelry_ring_36" },
-	MiscInfoNickname  = { "ability_hunter_beastcall" },
 	MiscInfoMotto     = { "inv_inscription_scrollofwisdom_01", "inv_scroll_01" },
-	MiscInfoTraits    = { "spell_shadow_mindsteal" },
+	MiscInfoNickname  = { "ability_hunter_beastcall" },
 	MiscInfoPiercings = { "inv_jewelry_ring_14" },
 	MiscInfoPronouns  = { "vas_namechange", "inv_scroll_08" },
 	MiscInfoTattoos   = { "inv_inscription_inkblack01", "inv_potion_65" },
+	MiscInfoTraits    = { "spell_shadow_mindsteal" },
 
 	--
 	-- Personality Trait Icons

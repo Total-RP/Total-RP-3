@@ -667,6 +667,16 @@ local MISC_PRESET = {
 		IC = TRP3_InterfaceIcons.MiscInfoPronouns,
 	},
 	{
+		NA = loc.REG_PLAYER_MISC_PRESET_GUILD_NAME,
+		VA = "",
+		IC = TRP3_InterfaceIcons.MiscInfoGuildName,
+	},
+	{
+		NA = loc.REG_PLAYER_MISC_PRESET_GUILD_RANK,
+		VA = loc.DEFAULT_GUILD_RANK,
+		IC = TRP3_InterfaceIcons.MiscInfoGuildRank,
+	},
+	{
 		NA = loc.REG_PLAYER_TRP2_TATTOO,
 		VA = "",
 		IC = TRP3_InterfaceIcons.MiscInfoTattoos,
@@ -684,12 +694,27 @@ local function miscAddDropDownSelection(index)
 	miscAdd(preset.NA, preset.VA, preset.IC);
 end
 
+local function SortCompareMiscEntries(a, b)
+	a = MISC_PRESET[a[2]];
+	b = MISC_PRESET[b[2]];
+
+	if a.list ~= b.list then
+		return a.list == nil;  -- Force "Create new" to end of list.
+	else
+		return strcmputf8i(a.NA, b.NA) < 0;
+	end
+end
+
 local function miscAddDropDown()
 	local values = {};
-	tinsert(values, { loc.REG_PLAYER_MISC_ADD });
+
 	for index, preset in pairs(MISC_PRESET) do
-		tinsert(values, { preset.list or preset.NA, index });
+		table.insert(values, { preset.list or preset.NA, index });
 	end
+
+	table.sort(values, SortCompareMiscEntries);
+	table.insert(values, 1, { loc.REG_PLAYER_MISC_ADD });
+
 	displayDropDown(TRP3_RegisterCharact_Edit_MiscAdd, values, miscAddDropDownSelection, 0, true);
 end
 

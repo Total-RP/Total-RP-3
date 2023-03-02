@@ -129,6 +129,10 @@ local function onStart()
 					msp.my['NI'] = miscData.VA;
 				elseif miscData.NA == loc.REG_PLAYER_MISC_PRESET_PRONOUNS or miscData.NA == "Pronouns" then
 					msp.my['PN'] = miscData.VA;
+				elseif miscData.NA == loc.REG_PLAYER_MISC_PRESET_GUILD_NAME or miscData.NA == "Guild name" then
+					msp.my['PG'] = miscData.VA;
+				elseif miscData.NA == loc.REG_PLAYER_MISC_PRESET_GUILD_RANK or miscData.NA == "Guild rank" then
+					msp.my['PR'] = miscData.VA;
 				end
 			end
 		end
@@ -186,7 +190,7 @@ local function onStart()
 	local SUPPORTED_FIELDS = {
 		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
 		"IC", "CO", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE",
-		"HI", "TR", "MU", "RS", "PS", "PN"
+		"HI", "TR", "MU", "RS", "PS", "PN", "PG", "PR",
 	};
 
 	local CHARACTERISTICS_FIELDS = {
@@ -277,6 +281,16 @@ local function onStart()
 			englishText = "Pronouns",
 			icon = TRP3_InterfaceIcons.MiscInfoPronouns,
 		},
+		PG = {  -- Guild name
+			localizedText = loc.REG_PLAYER_MISC_PRESET_GUILD_NAME,
+			englishText = "Guild name",
+			icon = TRP3_InterfaceIcons.MiscInfoGuildName,
+		},
+		PR = {  -- Guild rank
+			localizedText = loc.REG_PLAYER_MISC_PRESET_GUILD_RANK,
+			englishText = "Guild rank",
+			icon = TRP3_InterfaceIcons.MiscInfoGuildRank,
+		},
 	};
 
 	local function updateMiscInfoField(profile, field, value)
@@ -286,10 +300,9 @@ local function onStart()
 			return;
 		end
 
-		local miscInfo  = GetOrCreateTable(profile.characteristics, "MI");
+		local miscInfo = GetOrCreateTable(profile.characteristics, "MI");
 		local miscIndex = FindInTableIf(miscInfo, function(miscStruct)
-			return miscStruct.NA == fieldInfo.localizedText
-				or miscStruct.NA == fieldInfo.englishText;
+			return (strcmputf8i(miscStruct.NA, fieldInfo.localizedText) == 0) or (strcmputf8i(miscStruct.NA, fieldInfo.englishText) == 0);
 		end);
 
 		if value then

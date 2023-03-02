@@ -1486,6 +1486,10 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP = "The maximum number of characters to display for full titles. Titles exceeding this length will be cropped.",
 	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT = "Always show target unit",
 	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT_HELP = "If checked, your current target will always have its nameplate visible.",
+
+	REG_PLAYER_MISC_PRESET_GUILD_NAME = "Guild name",
+	REG_PLAYER_MISC_PRESET_GUILD_RANK = "Guild rank",
+	DEFAULT_GUILD_RANK = "Member",
 };
 
 -- Use Ellyb to generate the Localization system

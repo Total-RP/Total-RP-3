@@ -109,6 +109,20 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				IC = TRP3_InterfaceIcons.MiscInfoPronouns;
 			});
 		end
+		if importedProfile.PG then
+			tinsert(profile.player.characteristics.MI, {
+				NA = loc.REG_PLAYER_MISC_PRESET_GUILD_NAME;
+				VA = importedProfile.PG;
+				IC = TRP3_InterfaceIcons.MiscInfoGuildName;
+			});
+		end
+		if importedProfile.PR then
+			tinsert(profile.player.characteristics.MI, {
+				NA = loc.REG_PLAYER_MISC_PRESET_GUILD_RANK;
+				VA = importedProfile.PR;
+				IC = TRP3_InterfaceIcons.MiscInfoGuildRank;
+			});
+		end
 		profile.player.character.CU = importedProfile.CU;
 		profile.player.about.T3.PH.TX = importedProfile.DE;
 		profile.player.about.T3.HI.TX = importedProfile.HI;
