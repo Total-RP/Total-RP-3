@@ -9,39 +9,6 @@ end
 local Strings = {};
 Ellyb.Strings = Strings;
 
--- Only used for French related stuff, it's okay if non-latin characters are not here
--- Note: We have a list of lowercase and uppercase letters here, because string.lower doesn't
--- like accentuated uppercase letters at all, so we can't have just lowercase letters and apply a string.lower.
-local VOWELS = { "a", "e", "i", "o", "u", "y", "A"; "E", "I", "O", "U", "Y", "À", "Â", "Ä", "Æ", "È", "É", "Ê", "Ë", "Î", "Ï", "Ô", "Œ", "Ù", "Û", "Ü", "Ÿ", "à", "â", "ä", "æ", "è", "é", "ê", "ë", "î", "ï", "ô", "œ", "ù", "û", "ü", "ÿ" };
-VOWELS = tInvert(VOWELS); -- Invert the table so it is easier to check if something is a vowel
-
----@param letter string A single letter as a string (can be uppercase or lowercase)
----@return boolean  True if the letter is a vowel
-function Strings.isAVowel(letter)
-	Ellyb.Assertions.isType(letter, "string", "letter");
-	return VOWELS[letter] ~= nil;
-end
-
----@param text string
----@return string The first letter in the string that was passed
-function Strings.getFirstLetter(text)
-	Ellyb.Assertions.isType(text, "string", "text");
-	return text:sub(1, 1);
-end
-
--- Build a list of characters that can be used to generate IDs
-local ID_CHARS = {};
-for i = 48, 57 do
-	table.insert(ID_CHARS, string.char(i));
-end
-for i = 65, 90 do
-	table.insert(ID_CHARS, string.char(i));
-end
-for i = 97, 122 do
-	table.insert(ID_CHARS, string.char(i));
-end
-local sID_CHARS = #ID_CHARS;
-
 --- Generate a unique name by checking in a table indexed by names if a given exists and iterate to find a suitable non-taken name
 ---@param table table A table indexed by names
 ---@param name string The name we want to use
@@ -58,14 +25,6 @@ function Strings.generateUniqueName(table, name, customSuffixPattern)
 		tries = tries + 1;
 	end
 	return name;
-end
-
---- Format click instructions
----@param click string
----@param text string
----@return string
-function Strings.clickInstruction(click, text)
-	return TRP3_API.MiscColors.Normal("[" .. click .. "]") .. ": " .. TRP3_API.Colors.White(text);
 end
 
 local BYTES_MULTIPLES = { "byte", "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };

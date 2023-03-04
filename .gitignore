@@ -1,4 +1,5 @@
 .release/*
+.venv
 totalRP3/Libs/*
 !totalRP3/Libs/Ellyb
 !totalRP3/Libs/MSA-DropDownMenu-1.0

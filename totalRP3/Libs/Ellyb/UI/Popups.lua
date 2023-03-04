@@ -41,13 +41,17 @@ end);
 function Popups:OpenURL(url, customText, customShortcutInstructions, customAlertOnClose)
 	local popupText = customText and (customText .. "\n\n") or "";
 	if not customShortcutInstructions then
-		customShortcutInstructions = Ellyb.loc.COPY_URL_POPUP_TEXT;
+		customShortcutInstructions = TRP3_API.loc.COPY_URL_POPUP_TEXT;
 	end
-	popupText = popupText .. customShortcutInstructions:format(TRP3_API.Colors.Orange(Ellyb.System.SHORTCUTS.COPY), TRP3_API.Colors.Orange(Ellyb.System.SHORTCUTS.PASTE));
+
+	local copyShortcut = TRP3_API.FormatShortcut("CTRL-C", TRP3_API.ShortcutType.System);
+	local pasteShortcut = TRP3_API.FormatShortcut("CTRL-V", TRP3_API.ShortcutType.System);
+
+	popupText = popupText .. customShortcutInstructions:format(TRP3_API.Colors.Orange(copyShortcut), TRP3_API.Colors.Orange(pasteShortcut));
 	URLPopup.Text:SetText(popupText);
 	URLPopup.Url:SetText(url);
 	if not customAlertOnClose then
-		customAlertOnClose = Ellyb.loc.COPY_SYSTEM_MESSAGE;
+		customAlertOnClose = TRP3_API.loc.COPY_SYSTEM_MESSAGE;
 	end
 	URLPopup.alertMessage = customAlertOnClose;
 	URLPopup:SetHeight(120 + URLPopup.Text:GetHeight());

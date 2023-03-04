@@ -289,8 +289,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			local helmetOnIcon = Ellyb.Icon(TRP3_InterfaceIcons.ToolbarHelmetOn);
 			local helmTextOn = loc.TB_SWITCH_HELM_ON;
 			local helmTextOff = loc.TB_SWITCH_HELM_OFF;
-			local helmText2 = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.TB_SWITCH_HELM_1);
-			local helmText3 = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.TB_SWITCH_HELM_2);
+			local helmText2 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_HELM_1);
+			local helmText3 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_HELM_2);
 
 			local Button_Helmet = {
 				id = "aa_trp3_b",
@@ -335,8 +335,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			local cloakOffIcon = Ellyb.Icon(TRP3_InterfaceIcons.ToolbarCloakOn);
 			local capeTextOn =  loc.TB_SWITCH_CAPE_ON;
 			local capeTextOff = loc.TB_SWITCH_CAPE_OFF;
-			local capeText2 = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.TB_SWITCH_CAPE_1);
-			local capeText3 = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.TB_SWITCH_CAPE_2);
+			local capeText2 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_CAPE_1);
+			local capeText3 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_CAPE_2);
 			local Button_Cape = {
 				id = "aa_trp3_a",
 				icon = cloakOnIcon:GetFileName(),

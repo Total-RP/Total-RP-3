@@ -825,12 +825,7 @@ local function onStart()
 		slot:SetScript("OnDoubleClick", onGlanceDoubleClick);
 
 		-- Display indications in the tooltip on how to create a chat link
-		Ellyb.Tooltips.getTooltip(slot):AddLine(
-				Ellyb.Strings.clickInstruction(
-						Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
-						loc.CL_TOOLTIP
-				)
-		)
+		Ellyb.Tooltips.getTooltip(slot):AddLine(TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
 	end
 end
 

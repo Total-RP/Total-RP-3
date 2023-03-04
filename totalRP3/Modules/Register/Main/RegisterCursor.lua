@@ -141,9 +141,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		help = loc.CO_CURSOR_MODIFIER_KEY_TT,
 		listContent = {
 			{ NONE, 1 },
-			{ TRP3_API.Ellyb.System.MODIFIERS.SHIFT, 2 },
-			{ TRP3_API.Ellyb.System.MODIFIERS.CTRL, 3 },
-			{ TRP3_API.Ellyb.System.MODIFIERS.ALT, 4 }
+			{ GetBindingText("SHIFT"), 2 },
+			{ GetBindingText("CTRL"), 3 },
+			{ GetBindingText("ALT"), 4 }
 		},
 		configKey = CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY,
 		dependentOnOptions = { CONFIG_RIGHT_CLICK_OPEN_PROFILE },
