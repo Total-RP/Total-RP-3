@@ -11,7 +11,7 @@ local GameTooltip = GameTooltip;
 local Tooltip = Ellyb.Class("TooltipContent");
 Ellyb.Tooltip = Tooltip;
 
----@type {parent: Frame, title: string, customTitleColor: Ellyb_Color}[]
+---@type {parent: Frame, title: string, customTitleColor: Color}[]
 local private = Ellyb.getPrivateStorage();
 
 ---@param parent Frame
@@ -23,7 +23,7 @@ function Tooltip:initialize(parent)
 end
 
 ---@param text string
----@param customColor Ellyb_Color
+---@param customColor Color
 function Tooltip:SetTitle(text, customColor)
 	private[self].title = text;
 	private[self].customTitleColor = customColor;
@@ -80,7 +80,7 @@ function Tooltip:GetOffset()
 	return private[self].x or 0, private[self].y or 0;
 end
 
----@param customColor Ellyb_Color
+---@param customColor Color
 function Tooltip:AddLine(text, customColor)
 	table.insert(private[self].content, {
 		text = text,
@@ -132,7 +132,7 @@ end
 
 ---SetLine
 ---@param text string
----@param customColor Ellyb_Color
+---@param customColor Color
 function Tooltip:SetLine(text, customColor)
 	self:ClearLines();
 	self:AddLine(text, customColor);

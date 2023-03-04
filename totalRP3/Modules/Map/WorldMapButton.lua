@@ -15,7 +15,7 @@ local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 --endregion
 
 --region Ellyb imports
-local YELLOW = Ellyb.ColorManager.YELLOW
+local YELLOW = TRP3_API.Colors.Yellow
 --endregion
 
 --region WoW imports

@@ -6,9 +6,6 @@ local _, TRP3_API = ...;
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
--- Ellyb imports
-local COLORS = TRP3_API.Ellyb.ColorManager;
-
 -- Imports
 local Globals = TRP3_API.globals;
 local loc = TRP3_API.loc;
@@ -109,9 +106,9 @@ function Globals.addon:OnEnable()
 end
 
 function TRP3_ShowErrorMessage()
-	print(COLORS.ORANGE(("[TRP3: %s]"):format(TRP3_API.VERSION_DISPLAY)) .. " " .. COLORS.RED("Error during addon loading sequence:"));
-	print(COLORS.ORANGE("Sequence ID: ") .. " " .. MAIN_SEQUENCE_ID);
-	print(COLORS.ORANGE("Sub-sequence ID: ") .. " " .. MAIN_SEQUENCE_DETAIL);
-	print(COLORS.ORANGE("Error message: ") .. " " .. tostring(MAIN_SEQUENCE_ERROR));
-	print(COLORS.ITEM_ARTIFACT("Note: If you just recently updated the add-on, remember that you need to fully relaunch the game client. Updating while the game client is open will not load new files."));
+	print(TRP3_API.Colors.Orange(("[TRP3: %s]"):format(TRP3_API.VERSION_DISPLAY)) .. " " .. TRP3_API.Colors.Red("Error during addon loading sequence:"));
+	print(TRP3_API.Colors.Orange("Sequence ID: ") .. " " .. MAIN_SEQUENCE_ID);
+	print(TRP3_API.Colors.Orange("Sub-sequence ID: ") .. " " .. MAIN_SEQUENCE_DETAIL);
+	print(TRP3_API.Colors.Orange("Error message: ") .. " " .. tostring(MAIN_SEQUENCE_ERROR));
+	print(TRP3_API.ItemQualityColors.Artifact("Note: If you just recently updated the add-on, remember that you need to fully relaunch the game client. Updating while the game client is open will not load new files."));
 end

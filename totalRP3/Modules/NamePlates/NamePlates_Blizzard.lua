@@ -6,15 +6,6 @@ local TRP3_NamePlates = TRP3_NamePlates;
 local TRP3_NamePlatesUtil = TRP3_NamePlatesUtil;
 local L = TRP3_API.loc;
 
-local function CreateOrUpdateColor(color, r, g, b, a)
-	if not color then
-		return CreateColor(r, g, b, a);
-	else
-		color:SetRGBA(r, g, b, a);
-		return color;
-	end
-end
-
 local function CallUnhookedMethod(widget, methodName, ...)
 	getmetatable(widget).__index[methodName](widget, ...);
 end
@@ -55,12 +46,12 @@ local function ProcessFontStringWidgetTextChanged(widget)
 end
 
 local function ProcessFontStringWidgetColorChanged(widget)
-	widget.TRP3_originalColor = CreateOrUpdateColor(widget.TRP3_originalColor, widget:GetTextColor());
+	widget.TRP3_originalColor = TRP3_API.CreateColor(widget:GetTextColor());
 	UpdateFontStringWidgetColor(widget);
 end
 
 local function ProcessStatusBarWidgetColorChanged(widget)
-	widget.TRP3_originalColor = CreateOrUpdateColor(widget.TRP3_originalColor, widget:GetStatusBarColor());
+	widget.TRP3_originalColor = TRP3_API.CreateColor(widget:GetStatusBarColor());
 	UpdateStatusBarWidgetColor(widget);
 end
 
@@ -211,7 +202,7 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 		local titleWidget = unitframe:CreateFontString(nil, "ARTWORK");
 		titleWidget:ClearAllPoints();
 		titleWidget:SetPoint("TOP", unitframe.name, "BOTTOM", 0, -2);
-		titleWidget:SetVertexColor(TRP3_API.Ellyb.ColorManager.GREY:GetRGBA());
+		titleWidget:SetVertexColor(TRP3_API.Colors.Grey:GetRGBA());
 		titleWidget:Hide();
 
 		nameplate.TRP3_Title = titleWidget;
@@ -264,16 +255,15 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 
 		if displayInfo.shouldColorName then
 			local color = displayInfo.color;
-			overrideColor = unitframe.name.TRP3_overrideColor;
 
 			if UnitIsUnit(nameplate.namePlateUnitToken, "mouseover") then
 				local r = Saturate(color.r * 1.25);
 				local g = Saturate(color.g * 1.25);
 				local b = Saturate(color.b * 1.25);
 
-				overrideColor = CreateOrUpdateColor(overrideColor, r, g, b);
+				overrideColor = TRP3_API.CreateColor(r, g, b);
 			else
-				overrideColor = CreateOrUpdateColor(overrideColor, color:GetRGB());
+				overrideColor = TRP3_API.CreateColor(color:GetRGB());
 			end
 		end
 	end
@@ -294,8 +284,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateHealthBar(nameplate)
 	local overrideColor;
 
 	if displayInfo and displayInfo.shouldColorHealth then
-		overrideColor = unitframe.healthBar.TRP3_overrideColor;
-		overrideColor = CreateOrUpdateColor(overrideColor, displayInfo.color:GetRGB());
+		overrideColor = TRP3_API.CreateColor(displayInfo.color:GetRGB());
 	end
 
 	SetStatusBarWidgetOverrideColor(unitframe.healthBar, overrideColor);

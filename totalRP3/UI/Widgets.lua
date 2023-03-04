@@ -5,7 +5,7 @@
 	Backdrop Tables
 --]]
 
-TRP3_BACKDROP_COLOR_DARK = CreateColor(0.4, 0.4, 0.4);
+TRP3_BACKDROP_COLOR_DARK = TRP3_API.CreateColor(0.4, 0.4, 0.4);
 
 TRP3_BACKDROP_DIALOG_20_20_5555 = {
 	bgFile   = "Interface\\DialogFrame\\UI-DialogBox-Background",

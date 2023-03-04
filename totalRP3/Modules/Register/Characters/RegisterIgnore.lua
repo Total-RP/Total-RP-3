@@ -1,8 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Ellyb = TRP3_API.Ellyb;
-
 local Events = TRP3_Addon.Events;
 local Globals = TRP3_API.globals;
 local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
@@ -93,26 +91,21 @@ local function getRelationColors(profileID)
 end
 TRP3_API.register.relation.getRelationColors = getRelationColors;
 
--- TODO Move this somewhere that makes sense. Also, Saelora should have done this a long time ago :P
-local NEUTRAL = Ellyb.Color.CreateFromRGBA(0.5, 0.5, 1, 1):Freeze()
-local BUSINESS = Ellyb.Color.CreateFromRGBA(1, 1, 0, 1):Freeze()
-local LOVE = Ellyb.ColorManager.PINK;
-local FAMILY = Ellyb.Color.CreateFromRGBA(1, 0.75, 0, 1):Freeze()
 function TRP3_API.register.relation.getColor(relation)
 	if relation == RELATIONS.UNFRIENDLY then
-		return Ellyb.ColorManager.RED;
+		return TRP3_API.RelationColors.Unfriendly;
 	elseif relation == RELATIONS.NEUTRAL then
-		return NEUTRAL;
+		return TRP3_API.RelationColors.Neutral;
 	elseif relation == RELATIONS.BUSINESS then
-		return BUSINESS;
+		return TRP3_API.RelationColors.Business;
 	elseif relation == RELATIONS.FRIEND then
-		return Ellyb.ColorManager.GREEN;
+		return TRP3_API.RelationColors.Friend;
 	elseif relation == RELATIONS.LOVE then
-		return LOVE;
+		return TRP3_API.RelationColors.Love;
 	elseif relation == RELATIONS.FAMILY then
-		return FAMILY;
+		return TRP3_API.RelationColors.Family;
 	else
-		return Ellyb.ColorManager.WHITE;
+		return TRP3_API.Colors.White;
 	end
 end
 

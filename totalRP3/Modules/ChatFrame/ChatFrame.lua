@@ -4,10 +4,6 @@
 ---@type TRP3_API
 local _, TRP3_API = ...;
 
--- Ellyb imports
-local ColorManager = TRP3_API.Ellyb.ColorManager;
-local Color = TRP3_API.Ellyb.Color;
-
 -- imports
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local loc = TRP3_API.loc;
@@ -54,7 +50,7 @@ local CONFIG_SHOW_ICON = "chat_show_icon";
 local CONFIG_SHOW_OOC = "chat_show_ooc";
 local CONFIG_NPCSPEECH_REPLACEMENT = "chat_npcspeech_replacement";
 
-local OOC_INDICATOR_TEXT = ColorManager.RED("<" .. loc.CM_OOC .. "> ");
+local OOC_INDICATOR_TEXT = TRP3_API.Colors.Red("<" .. loc.CM_OOC .. "> ");
 
 local function configNoYelledEmote()
 	return getConfigValue(CONFIG_YELL_NO_EMOTE);
@@ -105,11 +101,11 @@ local function configOOCDetectionPattern()
 end
 
 local function configOOCDetectionColor()
-	return Color(getConfigValue(CONFIG_OOC_COLOR));
+	return TRP3_API.CreateColorFromHexString(getConfigValue(CONFIG_OOC_COLOR));
 end
 TRP3_API.chat.getOOCDetectionColor = configOOCDetectionColor;
-TRP3_API.chat.getEmoteDetectionColor = function() return ColorManager.getChatColorForChannel("EMOTE") end;
-TRP3_API.chat.getSpeechDetectionColor = function() return ColorManager.getChatColorForChannel("SAY") end;
+TRP3_API.chat.getEmoteDetectionColor = function() return TRP3_API.GetChatTypeColor("EMOTE") end;
+TRP3_API.chat.getSpeechDetectionColor = function() return TRP3_API.GetChatTypeColor("SAY") end;
 
 local function configDoSpeechDetection()
 	return getConfigValue(CONFIG_SPEECH);
@@ -377,7 +373,7 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
 	-- For NPC speech color reset
 	local NPCEmoteChatString = "";
 	if NPCEmoteChatColor then
-		NPCEmoteChatString = NPCEmoteChatColor:GetColorCodeStartSequence();
+		NPCEmoteChatString = NPCEmoteChatColor:GenerateHexColorMarkup();
 	end
 
 	local protections;
@@ -469,12 +465,8 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 		local customColor = petProfile.data.NH;
 
 		if customColor then
-			customColor = Color(petProfile.data.NH);
-
-			if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
-				customColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
-			end
-
+			customColor = TRP3_API.CreateColorFromHexString(customColor);
+			customColor = TRP3_API.GenerateReadableColor(customColor, TRP3_ReadabilityOptions.TextOnBlackBackground);
 			nameColor = customColor;
 		end
 	end
@@ -482,7 +474,7 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 	-- If we did get a color wrap the name inside the color code
 	if nameColor then
 		-- And wrap the name inside the color's code
-		name = nameColor:WrapTextInColorCode(name) .. chatColor:GetColorCodeStartSequence();
+		name = nameColor:WrapTextInColorCode(name) .. chatColor:GenerateHexColorMarkup();
 		-- We need the start sequence at the end because emotes replace names in the whole message. Might be redundant for other speech types.
 	else
 		name = chatColor:WrapTextInColorCode(name);
@@ -509,7 +501,7 @@ local function handleNPCEmote(message, senderID)
 		local content;
 
 		if message:find(talkType) then
-			chatColor = ColorManager.getChatColorForChannel(talkChannel);
+			chatColor = TRP3_API.GetChatTypeColor(talkChannel);
 			name = message:sub(4, message:find(talkType) - 2); -- Isolate the name
 			content = message:sub(name:len() + 5);
 
@@ -524,7 +516,7 @@ local function handleNPCEmote(message, senderID)
 	end
 
 	-- If none was found, we default to emote
-	chatColor = ColorManager.getChatColorForChannel("MONSTER_EMOTE");
+	chatColor = TRP3_API.GetChatTypeColor("MONSTER_EMOTE");
 	message = chatColor:WrapTextInColorCode(message:sub(4));
 	message = message:gsub("%[.-%]", function(name) return wrapNameInColorForNPCEmote(name, senderID, chatColor); end);
 
@@ -652,8 +644,6 @@ TRP3_API.chat.getFullnameForUnitUsingChatMethod = getFullnameForUnitUsingChatMet
 -- I have renamed this function from beta 1 to beta 2 because Saelora commented on its name :P
 local defaultGetColoredNameFunction = GetColoredName;
 
-local GetClassColorByGUID = TRP3_API.utils.color.GetClassColorByGUID;
-
 -- This is our custom GetColoredName function that will replace player's names with their full RP names
 -- and use their custom colors.
 -- (It is stored in Utils as we need it in other modules like Prat or WIM)
@@ -713,7 +703,8 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	end
 
 	if GetCVar("chatClassColorOverride") ~= "1" then
-		characterColor = GetClassColorByGUID(GUID);
+		local _, englishClass = GetPlayerInfoByGUID(GUID);
+		characterColor = TRP3_API.GetClassDisplayColor(englishClass);
 	end
 
 	if configShowNameCustomColors() then

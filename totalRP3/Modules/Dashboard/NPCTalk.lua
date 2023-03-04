@@ -71,9 +71,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	local MAX_CHARACTERS_PER_MESSAGES = 254;
 	local WARNING_NUMBER_OF_CHARACTERS = 239;
-	local NORMAL_COLOR = CreateColor(1.0000, 1.0000, 1.0000, 1.0000);
-	local WARNING_COLOR = CreateColor(1.0000, 0.4902, 0.0392, 1.0000);
-	local ERROR_COLOR = CreateColor(0.7686, 0.1216, 0.2314, 1.0000);
+	local NORMAL_COLOR = TRP3_API.CreateColor(1.0000, 1.0000, 1.0000, 1.0000);
+	local WARNING_COLOR = TRP3_API.CreateColor(1.0000, 0.4902, 0.0392, 1.0000);
+	local ERROR_COLOR = TRP3_API.CreateColor(0.7686, 0.1216, 0.2314, 1.0000);
 
 	local function checkCharactersLimit()
 
@@ -110,8 +110,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		local channelTypes = {};
 
 		for channelLabel, channelName in pairs(CHANNEL_TYPES) do
-			local channelColor = TRP3_API.Ellyb.ColorManager.getChatColorForChannel(channelName);
-			tinsert(channelTypes, { TRP3_API.Ellyb.ColorManager.YELLOW(loc.NPC_TALK_CHANNEL) .. channelColor(_G[channelLabel]), channelName});
+			local channelColor = TRP3_API.GetChatTypeColor(channelName);
+			tinsert(channelTypes, { TRP3_API.Colors.Yellow(loc.NPC_TALK_CHANNEL) .. channelColor(_G[channelLabel]), channelName});
 		end
 
 		-- Set the dropdown for the channels

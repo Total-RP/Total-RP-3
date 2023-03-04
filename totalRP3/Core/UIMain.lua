@@ -28,7 +28,7 @@ local function ProcessLauncherClick(buttonName)
 end
 
 local function PopulateLauncherTooltip(tooltip, hideDragDropInstruction)
-	tooltip:AddLine("Total RP 3", Ellyb.ColorManager.WHITE:GetRGB());
+	tooltip:AddLine("Total RP 3", TRP3_API.Colors.White:GetRGB());
 	tooltip:AddLine(Ellyb.Strings.clickInstruction(loc.CM_L_CLICK, loc.MM_SHOW_HIDE_MAIN));
 	if TRP3_API.toolbar then
 		tooltip:AddLine(Ellyb.Strings.clickInstruction(loc.CM_R_CLICK, loc.MM_SHOW_HIDE_SHORTCUT));

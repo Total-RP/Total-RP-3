@@ -16,12 +16,8 @@ local function onStart()
 	local customGetColoredNameWithCustomFallbackFunction = TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction;
 	local playerID = TRP3_API.globals.player_id;
 	local getFullnameForUnitUsingChatMethod = TRP3_API.chat.getFullnameForUnitUsingChatMethod; -- Get full name using settings
-	local getClassColor = TRP3_API.utils.color.getClassColor;
-	local getUnitCustomColor = TRP3_API.utils.color.getUnitCustomColor;
-	local increaseColorContrast = AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast;
 	local configShowNameCustomColors = TRP3_API.chat.configShowNameCustomColors
 	local getData = TRP3_API.profile.getData;
-	local UnitClass = UnitClass;
 	local getConfigValue = TRP3_API.configuration.getValue;
 	local icon = TRP3_API.utils.str.icon;
 	local playerName = TRP3_API.globals.player;
@@ -41,17 +37,20 @@ local function onStart()
 	-- Replace WIM's GetMyColoredName to display our full RP name
 	local oldWIMGetMyColoredName = classes.GetMyColoredName;
 	classes.GetMyColoredName = function()
-
 		if disabledByOOC() then
 			return oldWIMGetMyColoredName();
 		end
 
 		local name = getFullnameForUnitUsingChatMethod(playerID) or playerName;
-		local _, playerClass = UnitClass("Player");
-		local color = configShowNameCustomColors() and getUnitCustomColor(playerID) or getClassColor(playerClass);
+		local color = TRP3_API.GetClassDisplayColor((UnitClassBase("player")));
 
-		if increaseColorContrast() then
-			color:LightenColorUntilItIsReadable();
+		if configShowNameCustomColors() then
+			local player = AddOn_TotalRP3.Player.GetCurrentUser();
+			local customColor = player:GetCustomColorForDisplay();
+
+			if customColor then
+				color = customColor;
+			end
 		end
 
 		name = color:WrapTextInColorCode(name);

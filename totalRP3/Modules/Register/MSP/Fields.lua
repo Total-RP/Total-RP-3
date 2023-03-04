@@ -163,11 +163,11 @@ module.TryRegisterField("PS", {
 				-- We'll strip " and ] from the names for simplicity if present.
 				local leftName = trait.LT:gsub("[%]=]", "");
 				local leftIcon = trait.LI or TRP3_InterfaceIcons.Default;
-				local leftColor = trait.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR:GetRGBTable();
+				local leftColor = trait.LC or TRP3_API.MiscColors.PersonalityTraitColorLeft:GetRGBTable();
 
 				local rightName = trait.RT:gsub("[%]=]", "");
 				local rightIcon = trait.RI or TRP3_InterfaceIcons.Default;
-				local rightColor = trait.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR:GetRGBTable();
+				local rightColor = trait.RC or TRP3_API.MiscColors.PersonalityTraitColorRight:GetRGBTable();
 
 				table.insert(out, PS_CUSTOM_FORMAT:format(
 					value,
@@ -216,15 +216,13 @@ module.TryRegisterField("PS", {
 				elseif key == "left-icon" then
 					struct.LI = value;
 				elseif key == "left-color" then
-					local r, g, b = Ellyb.ColorManager.hexaToNumber(value);
-					struct.LC = { r = r, g = g, b = b };
+					struct.LC = TRP3_API.CreateColorFromHexString(value):GetRGBTable();
 				elseif key == "right-name" then
 					struct.RT = value;
 				elseif key == "right-icon" then
 					struct.RI = value;
 				elseif key == "right-color" then
-					local r, g, b = Ellyb.ColorManager.hexaToNumber(value);
-					struct.RC = { r = r, g = g, b = b };
+					struct.RC = TRP3_API.CreateColorFromHexString(value):GetRGBTable();
 				end
 			end
 
@@ -244,9 +242,9 @@ module.TryRegisterField("PS", {
 			elseif struct.LT and struct.RT then
 				-- It's custom, default any missing fields.
 				struct.LI = struct.LI or TRP3_InterfaceIcons.Default;
-				struct.LC = struct.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR:GetRGBTable();
+				struct.LC = struct.LC or TRP3_API.MiscColors.PersonalityTraitColorLeft:GetRGBTable();
 				struct.RI = struct.RI or TRP3_InterfaceIcons.Default;
-				struct.RC = struct.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR:GetRGBTable();
+				struct.RC = struct.RC or TRP3_API.MiscColors.PersonalityTraitColorRight:GetRGBTable();
 			end
 
 			-- Only register traits that are valid. If the ID or custom names

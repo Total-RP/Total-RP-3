@@ -13,6 +13,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Prototype.lua"/>
 	<Include file="CallbackRegistry.lua"/>
 	<Include file="Events.lua"/>
+	<Include file="Color.lua"/>
+	<Include file="ColorData.lua"/>
 
 	<Include file="..\UI\Widgets.xml"/>
 

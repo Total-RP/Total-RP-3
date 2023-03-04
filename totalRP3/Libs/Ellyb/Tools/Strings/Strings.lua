@@ -65,7 +65,7 @@ end
 ---@param text string
 ---@return string
 function Strings.clickInstruction(click, text)
-	return Ellyb.ColorManager.YELLOW("[" .. click .. "]") .. ": " .. Ellyb.ColorManager.WHITE(text);
+	return TRP3_API.MiscColors.Normal("[" .. click .. "]") .. ": " .. TRP3_API.Colors.White(text);
 end
 
 local BYTES_MULTIPLES = { "byte", "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };

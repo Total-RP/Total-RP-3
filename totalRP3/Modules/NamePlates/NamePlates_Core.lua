@@ -134,12 +134,8 @@ local function GetCompanionColorForDisplay(colorHexString)
 		return nil;
 	end
 
-	local color = TRP3_API.Ellyb.Color.CreateFromHexa(colorHexString);
-
-	if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
-		color:LightenColorUntilItIsReadableOnDarkBackgrounds();
-	end
-
+	local color = TRP3_API.CreateColorFromHexString(colorHexString);
+	color = TRP3_API.GenerateReadableColor(color, TRP3_ReadabilityOptions.TextOnBlackBackground);
 	return color;
 end
 
@@ -147,7 +143,7 @@ local function GetCharacterColorForDisplay(player, classToken)
 	local color = player:GetCustomColorForDisplay();
 
 	if not color and TRP3_NamePlatesSettings.EnableClassColorFallback then
-		color = TRP3_API.Ellyb.ColorManager[classToken];
+		color = TRP3_API.GetClassDisplayColor(classToken);
 	end
 
 	return color;

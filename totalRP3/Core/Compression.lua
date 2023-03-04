@@ -7,7 +7,6 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 -- AddOns imports
 local LibDeflate = LibStub:GetLibrary("LibDeflate");
-local RED, GREY = Ellyb.ColorManager.RED, Ellyb.ColorManager.GREY;
 
 local Compression = {};
 
@@ -38,7 +37,7 @@ function Compression.decompress(compressedData, wasReceivedViaAddOnChannel)
 
 	local decompressedData, _ = LibDeflate:DecompressDeflate(compressedData);
 	if decompressedData == nil then
-		error(RED("[AddOn_TotalRP3.Compression.decompress ERROR]:") .. "\nCould not decompress data \"" .. GREY(tostring(compressedData)) .. "\"");
+		error(TRP3_API.Colors.Red("[AddOn_TotalRP3.Compression.decompress ERROR]:") .. "\nCould not decompress data \"" .. TRP3_API.Colors.Grey(tostring(compressedData)) .. "\"");
 	end
 
 	return decompressedData;

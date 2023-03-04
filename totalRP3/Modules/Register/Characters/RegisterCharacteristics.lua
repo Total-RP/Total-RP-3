@@ -2,17 +2,14 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 -- imports
-local ipairs = ipairs;
 local Globals, Utils, Events, UI, Ellyb = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Events, TRP3_API.ui, TRP3_API.Ellyb;
 local stEtN = Utils.str.emptyToNil;
 local get = TRP3_API.profile.getData;
 local getProfile = TRP3_API.register.getProfile;
 local tcopy, tsize = Utils.table.copy, Utils.table.size;
-local numberToHexa, hexaToNumber = Utils.color.numberToHexa, Utils.color.hexaToNumber;
 local loc = TRP3_API.loc;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
-local assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim = assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim;
-local strjoin, unpack, getKeys = strjoin, unpack, Utils.table.keys;
+local getKeys = Utils.table.keys;
 local setupDropDownMenu = TRP3_API.ui.listbox.setupDropDownMenu;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
@@ -232,11 +229,6 @@ end
 
 --- refreshPsychoColor refreshes the color shown on a line item, updating
 --  the given named color field.
---
---  @param psychoLine The line item to update.
---  @param psychoColorField The color field being updated. Either LC or RC.
---  @param color The color to be applied. Must be an instance of Ellyb.Color,
---               or nil if resetting the color to a default.
 local function refreshPsychoColor(psychoLine, psychoColorField, color)
 	-- Store the coloring on the line item itself for persistence later.
 	if color then
@@ -246,8 +238,8 @@ local function refreshPsychoColor(psychoLine, psychoColorField, color)
 	end
 
 	-- Grab the now-updated color objects for both ends and update the UI.
-	local lc = psychoLine.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR;
-	local rc = psychoLine.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR;
+	local lc = psychoLine.LC or TRP3_API.MiscColors.PersonalityTraitColorLeft;
+	local rc = psychoLine.RC or TRP3_API.MiscColors.PersonalityTraitColorRight;
 
 	if psychoLine.Bar then
 		psychoLine.Bar:SetStatusBarColor(lc:GetRGBA());
@@ -304,7 +296,7 @@ function TRP3_PlayerHousePinMixin:Decorate(displayData)
 
 	if displayData.tooltip then
 		Ellyb.Tooltips.getTooltip(self)
-				:SetTitle(loc.REG_PLAYER_RESIDENCE, Ellyb.ColorManager.ORANGE)
+				:SetTitle(loc.REG_PLAYER_RESIDENCE, TRP3_API.Colors.Orange)
 				:ClearLines()
 				:AddLine(displayData.tooltip)
 	end
@@ -410,7 +402,7 @@ local function setConsultDisplay(context)
 			end);
 
 			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5,
-				loc.REG_PLAYER_RESIDENCE_SHOW, Ellyb.ColorManager.GREEN(dataTab.RC[4]));
+				loc.REG_PLAYER_RESIDENCE_SHOW, TRP3_API.Colors.Green(dataTab.RC[4]));
 		end
 		frame:Show();
 		previous = frame;
@@ -471,14 +463,14 @@ local function setConsultDisplay(context)
 			-- Applying custom colors to attribute names (with contrast adjustment for readability)
 			local leftText = psychoStructure.LT or "";
 			if psychoStructure.LC then
-				local leftTextColor = Ellyb.Color(psychoStructure.LC);
-				leftTextColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
+				local leftTextColor = TRP3_API.CreateColorFromTable(psychoStructure.LC);
+				leftTextColor = TRP3_API.GenerateReadableColor(leftTextColor, TRP3_ReadabilityOptions.TextOnBlackBackground);
 				leftText = leftTextColor:WrapTextInColorCode(leftText);
 			end
 			local rightText = psychoStructure.RT or "";
 			if psychoStructure.RC then
-				local rightTextColor = Ellyb.Color(psychoStructure.RC);
-				rightTextColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
+				local rightTextColor = TRP3_API.CreateColorFromTable(psychoStructure.RC);
+				rightTextColor = TRP3_API.GenerateReadableColor(rightTextColor, TRP3_ReadabilityOptions.TextOnBlackBackground);
 				rightText = rightTextColor:WrapTextInColorCode(rightText);
 			end
 
@@ -491,8 +483,8 @@ local function setConsultDisplay(context)
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 
 			refreshPsycho(frame, value);
-			refreshPsychoColor(frame, "LC", psychoStructure.LC and Ellyb.Color(psychoStructure.LC));
-			refreshPsychoColor(frame, "RC", psychoStructure.RC and Ellyb.Color(psychoStructure.RC));
+			refreshPsychoColor(frame, "LC", psychoStructure.LC and TRP3_API.CreateColorFromTable(psychoStructure.LC));
+			refreshPsychoColor(frame, "RC", psychoStructure.RC and TRP3_API.CreateColorFromTable(psychoStructure.RC));
 			frame:Show();
 			previous = frame;
 		end
@@ -592,7 +584,7 @@ end
 
 local function onEyeColorSelected(red, green, blue)
 	if red and green and blue then
-		local hexa = strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue))
+		local hexa = TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
 		draftData.EH = hexa;
 	else
 		draftData.EH = nil;
@@ -601,7 +593,7 @@ end
 
 local function onClassColorSelected(red, green, blue)
 	if red and green and blue then
-		local hexa = strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue))
+		local hexa = TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
 		draftData.CH = hexa;
 	else
 		draftData.CH = nil;
@@ -1079,8 +1071,17 @@ function setEditDisplay()
 	TRP3_RegisterCharact_Edit_AgeField:SetText(draftData.AG or "");
 	TRP3_RegisterCharact_Edit_EyeField:SetText(draftData.EC or "");
 
-	TRP3_RegisterCharact_Edit_EyeButton.setColor(hexaToNumber(draftData.EH))
-	TRP3_RegisterCharact_Edit_ClassButton.setColor(hexaToNumber(draftData.CH));
+	if draftData.EH then
+		TRP3_RegisterCharact_Edit_EyeButton.setColor(TRP3_API.CreateColorFromHexString(draftData.EH):GetRGBAsBytes());
+	else
+		TRP3_RegisterCharact_Edit_EyeButton.setColor(nil, nil, nil);
+	end
+
+	if draftData.CH then
+		TRP3_RegisterCharact_Edit_ClassButton.setColor(TRP3_API.CreateColorFromHexString(draftData.CH):GetRGBAsBytes());
+	else
+		TRP3_RegisterCharact_Edit_ClassButton.setColor(nil, nil, nil);
+	end
 
 	TRP3_RegisterCharact_Edit_HeightField:SetText(draftData.HE or "");
 	TRP3_RegisterCharact_Edit_WeightField:SetText(draftData.WE or "");
@@ -1170,14 +1171,14 @@ function setEditDisplay()
 			--
 			-- FIXME: When the feature/color_picker_button_mixin branch
 			--        lands we can drop these closures and swap to methods,
-			--        as well as not worry about all the Ellyb.Color -> rgb
+			--        as well as not worry about all the TRP3_API.CreateColorFromHexString -> rgb
 			--        conversion nonsense.
 			frame.CustomLeftColor.onSelection = function(r, g, b)
-				refreshPsychoColor(frame, "LC", r and Ellyb.Color.CreateFromRGBAAsBytes(r, g, b));
+				refreshPsychoColor(frame, "LC", r and TRP3_API.CreateColorFromBytes(r, g, b));
 			end
 
 			frame.CustomRightColor.onSelection = function(r, g, b)
-				refreshPsychoColor(frame, "RC", r and Ellyb.Color.CreateFromRGBAAsBytes(r, g, b));
+				refreshPsychoColor(frame, "RC", r and TRP3_API.CreateColorFromBytes(r, g, b));
 			end
 
 			tinsert(psychoEditCharFrame, frame);
@@ -1227,13 +1228,13 @@ function setEditDisplay()
 		-- invoke onSelected anyway, which means we'll update the bars through
 		-- that handler.
 		if psychoStructure.LC then
-			frame.CustomLeftColor.setColor(Ellyb.Color(psychoStructure.LC):GetRGBAsBytes());
+			frame.CustomLeftColor.setColor(TRP3_API.CreateColorFromTable(psychoStructure.LC):GetRGBAsBytes());
 		else
 			frame.CustomLeftColor.setColor(nil);
 		end
 
 		if psychoStructure.RC then
-			frame.CustomRightColor.setColor(Ellyb.Color(psychoStructure.RC):GetRGBAsBytes());
+			frame.CustomRightColor.setColor(TRP3_API.CreateColorFromTable(psychoStructure.RC):GetRGBAsBytes());
 		else
 			frame.CustomRightColor.setColor(nil);
 		end
