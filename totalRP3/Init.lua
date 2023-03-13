@@ -3,7 +3,7 @@
 
 -- First file loaded. It will do the import stuff that needs to be run first
 ---@class TRP3_API
-local addOnName, TRP3_API = ...;
+local TRP3_API = select(2, ...);
 
 --- Build version, based on Git revision number (ex: 1723)
 --[===[@non-debug@
