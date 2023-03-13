@@ -21,7 +21,7 @@ local MAIN_SEQUENCE_ID, MAIN_SEQUENCE_DETAIL = "", "";
 
 -- Called when TRP3 is loaded.
 function Globals.addon:OnInitialize()
-	TRP3_API.utils.event.registerHandler("SAVED_VARIABLES_TOO_LARGE", function(...)
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "SAVED_VARIABLES_TOO_LARGE", function(_, ...)
 		print(...);
 	end);
 end
@@ -61,8 +61,8 @@ local function loadingSequence()
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.popup.init";
 	TRP3_API.popup.init();
 
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.events.fireEvent::WORKFLOW_ON_LOAD";
-	TRP3_API.events.fireEvent(TRP3_API.events.WORKFLOW_ON_LOAD);
+	MAIN_SEQUENCE_DETAIL = "TRP3_Addon:TriggerEvent::WORKFLOW_ON_LOAD";
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.WORKFLOW_ON_LOAD);
 
 	-- Call module callback for all modules (onStart)
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.module.startModules";
@@ -72,15 +72,15 @@ local function loadingSequence()
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.navigation.menu.selectMenu";
 	TRP3_API.navigation.menu.selectMenu("main_00_dashboard");
 
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.events.fireEvent::WORKFLOW_ON_LOADED";
-	TRP3_API.events.fireEvent(TRP3_API.events.WORKFLOW_ON_LOADED);
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.events.fireEvent::WORKFLOW_ON_FINISH";
-	TRP3_API.events.fireEvent(TRP3_API.events.WORKFLOW_ON_FINISH);
+	MAIN_SEQUENCE_DETAIL = "TRP3_Addon:TriggerEvent::WORKFLOW_ON_LOADED";
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.WORKFLOW_ON_LOADED);
+	MAIN_SEQUENCE_DETAIL = "TRP3_Addon:TriggerEvent::WORKFLOW_ON_FINISH";
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.WORKFLOW_ON_FINISH);
 
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.configuration.constructConfigPage";
 	TRP3_API.configuration.constructConfigPage();
 
-	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
 
 	-- Welcome \o/
 	MAIN_SEQUENCE_DETAIL = "Welcome message";

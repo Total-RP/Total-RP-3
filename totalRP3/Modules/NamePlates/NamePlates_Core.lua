@@ -307,11 +307,28 @@ end
 
 TRP3_NamePlates = TRP3_Addon:NewModule("NamePlates");
 
+TRP3_NamePlates.Events =
+{
+	OnNamePlateDataUpdated = "OnNamePlateDataUpdated",
+};
+
 function TRP3_NamePlates:OnInitialize()
-	self.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(self);
+	self.callbacks = TRP3_API.InitCallbackRegistryWithEvents(self, TRP3_NamePlates.Events);
 	self.requests = CreateAndInitFromMixin(TRP3_NamePlatesRequestManagerMixin);
 	self.displayInfoFilters = {};
 	self.unitCharacterIDs = {};
+
+	self.events = TRP3_API.CreateCallbackGroup();
+	self.events:AddCallback(TRP3_API.GameEvents, "NAME_PLATE_UNIT_ADDED", self.OnNamePlateUnitAdded, self);
+	self.events:AddCallback(TRP3_API.GameEvents, "NAME_PLATE_UNIT_REMOVED", self.OnNamePlateUnitRemoved, self);
+	self.events:AddCallback(TRP3_API.GameEvents, "UNIT_NAME_UPDATE", self.OnUnitNameUpdate, self);
+	self.events:AddCallback(TRP3_API.GameEvents, "PLAYER_REGEN_DISABLED", self.OnPlayerRegenDisabled, self);
+	self.events:AddCallback(TRP3_API.GameEvents, "PLAYER_REGEN_ENABLED", self.OnPlayerRegenEnabled, self);
+	self.events:AddCallback(TRP3_API.GameEvents, "PLAYER_ENTERING_WORLD", self.OnPlayerEnteringWorld, self);
+	self.events:AddCallback(TRP3_API.GameEvents, "PLAYER_TARGET_CHANGED", self.OnPlayerTargetChanged, self);
+
+	self.events:AddCallback(TRP3_Addon, "CONFIGURATION_CHANGED",self.OnConfigurationChanged, self);
+	self.events:AddCallback(TRP3_Addon, "REGISTER_DATA_UPDATED",self.OnRegisterDataUpdated, self);
 
 	-- Settings are registered on initialization so that there's a UI element
 	-- through which users can at least see if nameplates are working.
@@ -322,38 +339,19 @@ function TRP3_NamePlates:OnInitialize()
 	-- be enabled upon the first registration of an OnNamePlateDataUpdated
 	-- callback.
 
-	self.callbacks.OnUsed = function(_, _, event) self:OnEventUsed(event); end
-	self.callbacks.OnUnused = function(_, _, event) self:OnEventUnused(event); end
 	self:SetEnabledState(false);
 end
 
 function TRP3_NamePlates:OnEnable()
-	local HANDLER_ID = tostring(self);
-
-	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_ADDED", GenerateClosure(self.OnNamePlateUnitAdded, self), HANDLER_ID);
-	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_REMOVED", GenerateClosure(self.OnNamePlateUnitRemoved, self), HANDLER_ID);
-	TRP3_API.Ellyb.GameEvents.registerCallback("UNIT_NAME_UPDATE", GenerateClosure(self.OnUnitNameUpdate, self), HANDLER_ID);
-	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_REGEN_DISABLED", GenerateClosure(self.OnCombatStatusChanged, self), HANDLER_ID);
-	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_REGEN_ENABLED", GenerateClosure(self.OnCombatStatusChanged, self), HANDLER_ID);
-	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_ENTERING_WORLD", GenerateClosure(self.OnPlayerEnteringWorld, self), HANDLER_ID);
-	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_TARGET_CHANGED", GenerateClosure(self.OnPlayerTargetChanged, self), HANDLER_ID);
-
-	TRP3_API.Events.registerCallback("CONFIGURATION_CHANGED", GenerateClosure(self.OnConfigurationChanged, self), HANDLER_ID);
-	TRP3_API.Events.registerCallback("REGISTER_DATA_UPDATED", GenerateClosure(self.OnRegisterDataUpdated, self), HANDLER_ID);
-
+	self.events:Register();
 	TRP3_NamePlatesUtil.LoadSettings();
-
 	self:OnCombatStatusChanged();
 	self:OnPlayerTargetChanged();
 	self:UpdateAllNamePlates();
 end
 
 function TRP3_NamePlates:OnDisable()
-	local HANDLER_ID = tostring(self);
-
-	TRP3_API.Ellyb.GameEvents.unregisterCallback(HANDLER_ID);
-	TRP3_API.Events.unregisterCallback(HANDLER_ID);
-
+	self.events:Unregister();
 	self:UpdateAllNamePlates();
 end
 

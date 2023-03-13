@@ -1069,19 +1069,6 @@ Utils.serial.hashCode = function(str)
 	return libCompress:fcs32final(libCompress:fcs32update(libCompress:fcs32init(), str));
 end
 
-
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- EVENT HANDLING
--- Handles WOW events
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-Utils.event.registerHandler = TRP3_API.Ellyb.GameEvents.registerCallback;
-
-Utils.event.unregisterHandler = TRP3_API.Ellyb.GameEvents.unregisterCallback;
-
-Utils.event.fireEvent = TRP3_API.Ellyb.GameEvents.triggerEvent;
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- MUSIC / SOUNDS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

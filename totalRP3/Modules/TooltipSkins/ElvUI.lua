@@ -50,7 +50,7 @@ TRP3_API.module.registerModule({
 			"TRP3_GlanceBarSlot5",
 		}
 
-		TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+		TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 			-- Register configurations options
 			TRP3_API.configuration.registerConfigKey(CONFIG.SKIN_TOOLTIPS, true);
 			TRP3_API.configuration.registerConfigKey(CONFIG.SKIN_TARGET_FRAME, true);
@@ -99,7 +99,7 @@ TRP3_API.module.registerModule({
 		end)
 
 		-- Wait for the add-on to be fully loaded so all the tooltips are available
-		TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
+		TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 
 			local TT = _G["ElvUI"][1]:GetModule('Tooltip');
 

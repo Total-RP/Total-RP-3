@@ -9,7 +9,7 @@ TRP3_API.map = {};
 local loc = TRP3_API.loc;
 
 -- TODO Assert if this is still needed
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 	TRP3_ScanLoaderFrameScanning:SetText(loc.MAP_BUTTON_SCANNING);
 
 	TRP3_ScanLoaderFrame:SetParent(WorldMapFrame.BorderFrame);

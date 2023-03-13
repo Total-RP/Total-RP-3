@@ -4,6 +4,16 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<!-- TODO: Relocate loading of the Core to the TOC and reserve XML files for UI things and self-contained modules. -->
+	<!-- TODO: Globals should probably just move to init and not depend on Player. -->
+	<Include file="Enums.lua"/>
+	<Include file="Player.lua"/>
+	<Include file="Globals.lua"/>
+	<Include file="Logging.lua"/>
+	<Include file="Prototype.lua"/>
+	<Include file="CallbackRegistry.lua"/>
+	<Include file="Events.lua"/>
+
 	<Include file="..\UI\Widgets.xml"/>
 
 	<!-- Please note that the loading order matters a lot -->
@@ -29,12 +39,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Layers>
 	</Frame>
 
-	<Include file="Logging.lua"/>
-	<Include file="Enums.lua"/>
-	<Include file="Player.lua"/>
 
-	<Include file="Globals.lua"/>
-	<Include file="Events.lua"/>
 	<Include file="Utils.lua"/>
 	<Include file="ProfileUtil.lua"/>
 	<Include file="UITools.lua"/>

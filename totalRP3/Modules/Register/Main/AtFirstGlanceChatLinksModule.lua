@@ -14,7 +14,7 @@ local shouldCropTexts = TRP3_API.ui.tooltip.shouldCropTexts;
 local GLANCE_TOOLTIP_CROP = 400;
 local GLANCE_TITLE_CROP = 150;
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
 	local AtFirstGlanceChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_GLANCE, "AT_FIRST_GLANCE");
 

@@ -3,7 +3,7 @@
 
 local Ellyb = TRP3_API.Ellyb;
 
-local Events = TRP3_API.events;
+local Events = TRP3_Addon.Events;
 local Globals = TRP3_API.globals;
 local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
 local loc = TRP3_API.loc;
@@ -130,7 +130,7 @@ local function ignoreID(unitID, reason)
 		reason = loc.TF_IGNORE_NO_REASON;
 	end
 	blockList[unitID] = reason;
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
+	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
 end
 TRP3_API.register.ignoreID = ignoreID;
 
@@ -162,7 +162,7 @@ end
 
 function TRP3_API.register.unignoreID(unitID)
 	blockList[unitID] = nil;
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, TRP3_API.register.isUnitIDKnown(unitID) and hasProfile(unitID) or nil, nil);
+	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, TRP3_API.register.isUnitIDKnown(unitID) and hasProfile(unitID) or nil, nil);
 end
 
 function TRP3_API.register.getIgnoredList()
@@ -177,7 +177,7 @@ local function onRelationSelected(value)
 	local unitID = getUnitID("target");
 	if hasProfile(unitID) then
 		setRelation(hasProfile(unitID), value);
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), "characteristics");
+		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), "characteristics");
 	end
 end
 
@@ -194,7 +194,7 @@ local function onTargetButtonClicked(_, _, _, button)
 	displayDropDown(button, values, onRelationSelected, 0, true);
 end
 
-Events.listenToEvent(Events.WORKFLOW_ON_LOAD, function()
+TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOAD, function()
 	getCompleteName, getPlayerCompleteName = TRP3_API.register.getCompleteName, TRP3_API.register.getPlayerCompleteName;
 
 	if not TRP3_Register.blockList then
@@ -204,7 +204,7 @@ Events.listenToEvent(Events.WORKFLOW_ON_LOAD, function()
 	blockList = TRP3_Register.blockList;
 end);
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	if TRP3_API.target then
 		-- Ignore button on target frame
 		local player_id = TRP3_API.globals.player_id;

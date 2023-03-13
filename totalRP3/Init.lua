@@ -5,6 +5,8 @@
 ---@class TRP3_API
 local TRP3_API = select(2, ...);
 
+TRP3_Addon = LibStub("AceAddon-3.0"):NewAddon("TRP3", "AceConsole-3.0");
+
 --- Build version, based on Git revision number (ex: 1723)
 --[===[@non-debug@
 TRP3_API.BUILD_NUMBER = @project-revision@;

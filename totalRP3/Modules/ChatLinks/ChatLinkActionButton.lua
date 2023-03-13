@@ -78,7 +78,7 @@ function ChatLinkActionButton:OnClick(linkID, sender, button)
 		-- Get a unique message identifier for the data request, used for progression updates
 		local messageToken = AddOn_TotalRP3.Communications.getNewMessageToken();
 		self.messageToken = messageToken;
-		self.handlerID = AddOn_TotalRP3.Communications.registerMessageTokenProgressHandler(messageToken, sender, GenerateClosure(self.OnProgressDownload, self));
+		self.handler = AddOn_TotalRP3.Communications.registerMessageTokenProgressHandler(messageToken, sender, GenerateClosure(self.OnProgressDownload, self));
 
 		-- Send a request for this link ID and indicate a message ID to use for progression updates
 		AddOn_TotalRP3.Communications.sendObject(_private[self].questionCommand, {
@@ -104,8 +104,8 @@ function ChatLinkActionButton:OnProgressDownload(_, amountOfMessagesIncoming, am
 			self.button:Enable();
 			self.button = nil;
 		end
-		if self.handlerID then
-			AddOn_TotalRP3.Communications.unregisterMessageTokenProgressHandler(self.handlerID);
+		if self.handler then
+			self.handler:Unregister();
 		end
 	else
 		if self.button then

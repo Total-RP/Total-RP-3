@@ -74,11 +74,11 @@ TRP3_API.navigation.minimapicon.hide = hideMinimapButton;
 
 TRP3_API.navigation.delayedRefresh = function()
 	C_Timer.After(0.25, function()
-		TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
+		TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
 	end);
 end
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
 
 	registerConfigKey(CONFIG_MINIMAP_SHOW, true);
@@ -168,7 +168,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	TRP3_MainFrame.Resize.onResizeStop = function()
 		TRP3_MainFrame.Minimize:Hide();
 		TRP3_MainFrame.Maximize:Show();
-		TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
+		TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
 	end;
 
 	TRP3_MainFrame.Maximize:SetScript("OnClick", function()
@@ -176,7 +176,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_MainFrame.Minimize:Show();
 		TRP3_MainFrame:SetSize(UIParent:GetWidth(), UIParent:GetHeight());
 		C_Timer.After(0.25, function()
-			TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
+			TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
 		end);
 	end);
 

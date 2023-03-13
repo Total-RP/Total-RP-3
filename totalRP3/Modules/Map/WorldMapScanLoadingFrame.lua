@@ -5,14 +5,14 @@
 local _, TRP3_API = ...;
 
 --region Total RP 3 imports
-local Events = TRP3_API.Events;
+local Events = TRP3_Addon.Events;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
 --endregion
 
 ---@type Frame|ScriptObject
 local TRP3_ScanLoaderFrame = TRP3_ScanLoaderFrame;
 
-Events.registerCallback(Events.MAP_SCAN_STARTED, function(scanDuration)
+TRP3_API.RegisterCallback(TRP3_Addon, Events.MAP_SCAN_STARTED, function(_, scanDuration)
 	assert(scanDuration, "Did somebody forgot to set a duration to a scan? Silly you!")
 	TRP3_ScanLoaderFrame.time = scanDuration;
 	TRP3_ScanLoaderFrame:Show();
@@ -25,7 +25,7 @@ Events.registerCallback(Events.MAP_SCAN_STARTED, function(scanDuration)
 	playAnimation(TRP3_ScanLoaderFrame.content);
 end);
 
-Events.registerCallback(Events.MAP_SCAN_ENDED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, Events.MAP_SCAN_ENDED, function()
 	playAnimation(TRP3_ScanLoaderFrame.fadeOut, function()
 		TRP3_ScanLoaderFrame:Hide();
 	end)

@@ -7,7 +7,7 @@ local loc = TRP3_API.loc;
 
 local REPORT_ICON = Ellyb.Icon([[Interface\HelpFrame\HelpIcon-OpenTicket]]);
 
-TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	if not TRP3_API.target then
 		-- Target bar module disabled.
 		return;

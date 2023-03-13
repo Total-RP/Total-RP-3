@@ -8,8 +8,6 @@
 	<Script file="Colors.lua"/>
 	<Script file="ColorsManager.lua"/>
 	<Script file="Strings\Strings.lua"/>
-	<Script file="EventsDispatcher.lua"/>
-	<Script file="GameEvents.lua"/>
 	<Script file="Unit.lua"/>
 
 </Ui>

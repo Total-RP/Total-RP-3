@@ -22,7 +22,7 @@ local getOtherCharacter = TRP3_API.register.getUnitIDCharacter;
 local getYourCharacter = TRP3_API.profile.getPlayerCharacter;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local UnitAffectingCombat = UnitAffectingCombat;
-local Events = TRP3_API.events;
+local Events = TRP3_Addon.Events;
 local GameTooltip, _G, ipairs, tinsert, strtrim = GameTooltip, _G, ipairs, tinsert, strtrim;
 local hasProfile, getRelationColors = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColors;
 local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
@@ -1284,22 +1284,22 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 	-- Listen to the mouse over event
-	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", function()
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "UPDATE_MOUSEOVER_UNIT", function()
 		-- The event UPDATE_MOUSEOVER_UNIT is fired even when there is no unit on tooltip
 		-- But there is a target on mouseover (maintaining ALT on spell buttons)
 		-- So we need to check that we have indeed a unit before displaying our tooltip.
 		if GameTooltip:GetUnit() then
 			local targetID, targetMode = getUnitID("mouseover");
-			Events.fireEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode, "mouseover");
+			TRP3_Addon:TriggerEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode, "mouseover");
 		end
 	end);
 	hooksecurefunc(GameTooltip, "SetUnit", function()
 		local _, unitID = GameTooltip:GetUnit();
 		if unitID then
 			local targetID, targetMode = getUnitID(unitID);
-			Events.fireEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode, unitID);
+			TRP3_Addon:TriggerEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode, unitID);
 		end
 	end);
 	GameTooltip:HookScript("OnShow", function()
@@ -1317,11 +1317,11 @@ local function onModuleInit()
 	isPlayerIC = TRP3_API.dashboard.isPlayerIC;
 	unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 
-	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, function(targetID, targetMode, unitID)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.MOUSE_OVER_CHANGED, function(_, targetID, targetMode, unitID)
 		show(unitID, targetID, targetMode);
 	end);
 
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, _)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, _)
 		if not unitID or (ui_CharacterTT.target == unitID) then
 			show("mouseover", getUnitID("mouseover"));
 		end

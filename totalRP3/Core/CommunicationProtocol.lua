@@ -34,8 +34,8 @@ local PRIORITIES = {
 local VALID_CHANNELS = {"PARTY", "RAID", "GUILD", "BATTLEGROUND", "WHISPER", "CHANNEL"};
 local VALID_PRIORITIES = {"HIGH", "MEDIUM", "LOW"};
 
-local subSystemsDispatcher = Ellyb.EventsDispatcher();
-local subSystemsOnProgressDispatcher = Ellyb.EventsDispatcher();
+local subSystemsDispatcher = TRP3_API.CreateCallbackRegistry();
+local subSystemsOnProgressDispatcher = TRP3_API.CreateCallbackRegistry();
 local internalMessageIDToChompSessionIDMatching = {};
 
 --[[ Deprecated ]] local function CTLToChompPriority(priority)
@@ -72,28 +72,15 @@ local function extractMessageTokenFromData(data)
 end
 
 local function registerSubSystemPrefix(prefix, callback)
-	local handlerID;
-
-	Ellyb.Assertions.isType(callback, "function", "callback");
-	handlerID = subSystemsDispatcher:RegisterCallback(prefix, callback);
-
-	return handlerID;
+	return TRP3_API.RegisterCallback(subSystemsDispatcher, prefix, function(_, ...) callback(...); end);
 end
 
 local function registerMessageTokenProgressHandler(messageToken, sender, onProgressCallback)
-	Ellyb.Assertions.isType(onProgressCallback, "function", "onProgressCallback");
-	Ellyb.Assertions.isType(sender, "string", "sender");
-
-	return subSystemsOnProgressDispatcher:RegisterCallback(tostring(messageToken), function(receivedSender, ...)
+	return TRP3_API.RegisterCallback(subSystemsOnProgressDispatcher, tostring(messageToken), function(_, receivedSender, ...)
 		if receivedSender == sender then
 			onProgressCallback(receivedSender, ...)
 		end
 	end);
-end
-
-local function unregisterMessageTokenProgressHandler(handlerID)
-	Ellyb.Assertions.isType(handlerID, "string", "handlerID");
-	subSystemsOnProgressDispatcher:UnregisterCallback(handlerID)
 end
 
 local function sendObject(prefix, object, channel, target, priority, messageToken, useLoggedMessages, queue)
@@ -107,7 +94,6 @@ local function sendObject(prefix, object, channel, target, priority, messageToke
 	end
 
 	Ellyb.Assertions.isType(prefix, "string", "prefix");
-	assert(subSystemsDispatcher:HasCallbacksForEvent(prefix), "Unregistered prefix: "..prefix);
 	Ellyb.Assertions.isOneOf(channel, VALID_CHANNELS, "channel");
 
 	if not TRP3_API.register.isIDIgnored(target) then
@@ -200,7 +186,6 @@ AddOn_TotalRP3.Communications = {
 	getNewMessageToken = getNewMessageToken,
 	registerSubSystemPrefix = registerSubSystemPrefix,
 	registerMessageTokenProgressHandler = registerMessageTokenProgressHandler,
-	unregisterMessageTokenProgressHandler = unregisterMessageTokenProgressHandler,
 	estimateStructureLoad = estimateStructureLoad,
 	estimateStructureSize = estimateStructureSize,
 	sendObject = sendObject,

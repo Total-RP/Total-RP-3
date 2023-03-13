@@ -393,7 +393,7 @@ local function UpdateProfileField(player, subtableName, fieldName, value)
 
 	local playerName = TRP3_API.globals.player_id;
 	local profileID = player:GetProfileID();
-	TRP3_API.events.fireEvent(TRP3_API.events.REGISTER_DATA_UPDATED, playerName, profileID, subtableName);
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.REGISTER_DATA_UPDATED, playerName, profileID, subtableName);
 end
 
 function CurrentUser:SetRoleplayStatus(roleplayStatus)

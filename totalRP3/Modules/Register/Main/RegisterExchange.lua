@@ -9,7 +9,7 @@ local Utils = TRP3_API.utils;
 local get = TRP3_API.profile.getData;
 local Comm = AddOn_TotalRP3.Communications;
 local loc = TRP3_API.loc;
-local Events = TRP3_API.events;
+local Events = TRP3_Addon.Events;
 local getCharacterExchangeData = TRP3_API.dashboard.getCharacterExchangeData;
 local registerInfoTypes = TRP3_API.register.registerInfoTypes;
 local isIDIgnored, shouldUpdateInformation = TRP3_API.register.isIDIgnored, TRP3_API.register.shouldUpdateInformation;
@@ -565,21 +565,21 @@ function TRP3_API.register.inits.dataExchangeInit()
 	TRP3_API.configuration.registerConfigKey("Exchange_QueuePoolCount", DEFAULT_QUEUE_POOL_COUNT);
 	TRP3_API.configuration.registerConfigKey("Exchange_QueuePoolWeightThreshold", DEFAULT_QUEUE_POOL_MINIMUM_WEIGHT);
 
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID)
 		if unitID == Globals.player_id then
 			checkPlayerDataWeight();
 		end
 	end);
 
 	-- Listen to the mouse over event
-	TRP3_API.events.listenToEvent(TRP3_API.events.MOUSE_OVER_CHANGED, function(targetID, targetMode)
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.MOUSE_OVER_CHANGED, function(_, targetID, targetMode)
 		if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and targetID then
 			onMouseOverCharacter(targetID);
 		elseif (targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and targetID then
 			onMouseOverCompanion(targetID);
 		end
 	end);
-	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_TARGET_CHANGED", function() onTargetChanged(); end);
 
 	-- Register prefix for data exchange
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(VERNUM_QUERY_PREFIX, function(structure, senderID)
@@ -677,7 +677,7 @@ TRP3_API.slash.registerCommand({
 })
 
 -- Event for the "/trp3 open" command
-Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
+TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 	if AddOn_Chomp.InsensitiveStringEquals(characterToOpen, unitID)
 		and (not dataType or dataType == "character") then
 		-- Use the unitID when opening the UI as it will be precisely what's

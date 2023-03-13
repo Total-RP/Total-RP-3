@@ -66,7 +66,7 @@ end
 -- Dices roll
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local UnitExists, UnitInParty, UnitInRaid = UnitExists, UnitInParty, UnitInRaid;
 
 local DICE_SIGNAL = "DISN";
@@ -142,12 +142,12 @@ function TRP3_API.slash.rollDices(...)
 	end
 	Utils.message.displayMessage(totalMessage, 3);
 	TRP3_API.ui.misc.playSoundKit(36629, "SFX");
-	Events.fireEvent("TRP3_ROLL", strjoin(" ", unpack(args)), total);
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.DICE_ROLL, strjoin(" ", unpack(args)), total);
 
 	return total, i;
 end
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	TRP3_API.slash.registerCommand({
 		id = "roll",
 		helpLine = " " .. loc.DICE_HELP,

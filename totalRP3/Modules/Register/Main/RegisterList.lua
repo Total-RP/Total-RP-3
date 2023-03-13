@@ -6,7 +6,7 @@ local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
 
 -- imports
-local Globals, Events = TRP3_API.globals, TRP3_API.events;
+local Globals, Events = TRP3_API.globals, TRP3_Addon.Events;
 local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
@@ -439,8 +439,8 @@ local function onCharactersActionSelected(value)
 				for _, profileID in pairs(profilesToPurge) do
 					deleteProfile(profileID, true);
 				end
-				Events.fireEvent(Events.REGISTER_DATA_UPDATED);
-				Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
+				TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED);
+				TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED);
 				refreshList();
 			end);
 		end
@@ -459,8 +459,8 @@ local function onCharactersActionSelected(value)
 				for _, profileID in pairs(profilesToPurge) do
 					deleteProfile(profileID, true);
 				end
-				Events.fireEvent(Events.REGISTER_DATA_UPDATED);
-				Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
+				TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED);
+				TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED);
 				refreshList();
 			end);
 		end
@@ -476,8 +476,8 @@ local function onCharactersActionSelected(value)
 				for _, unitID in pairs(characterToPurge) do
 					deleteCharacter(unitID);
 				end
-				Events.fireEvent(Events.REGISTER_DATA_UPDATED);
-				Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
+				TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED);
+				TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED);
 				refreshList();
 			end);
 		end
@@ -487,8 +487,8 @@ local function onCharactersActionSelected(value)
 			for profileID, _ in pairs(list) do
 				deleteProfile(profileID, true);
 			end
-			Events.fireEvent(Events.REGISTER_DATA_UPDATED);
-			Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
+			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED);
+			TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED);
 		end);
 	-- Mass actions
 	elseif value == "actions_delete" then
@@ -496,8 +496,8 @@ local function onCharactersActionSelected(value)
 			for profileID, _ in pairs(selectedIDs) do
 				deleteProfile(profileID, true);
 			end
-			Events.fireEvent(Events.REGISTER_DATA_UPDATED);
-			Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
+			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED);
+			TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED);
 			refreshList();
 		end);
 	elseif value == "actions_ignore" then
@@ -695,7 +695,7 @@ local function onCompanionActionSelected(value)
 				deleteCompanionProfile(profileID, DO_NOT_FIRE_EVENTS);
 			end
 			-- We then fire the event once every profile we needed to delete has been deleted
-			Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
+			TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED);
 		end);
 	elseif value == "actions_delete" then
 		showConfirmPopup(loc.REG_LIST_ACTIONS_MASS_REMOVE_C:format(tsize(selectedIDs)), function()
@@ -704,7 +704,7 @@ local function onCompanionActionSelected(value)
 				deleteCompanionProfile(profileID, DO_NOT_FIRE_EVENTS);
 			end
 			-- We then fire the event once every profile we needed to delete has been deleted
-			Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
+			TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED);
 		end);
 	end
 end
@@ -839,7 +839,7 @@ local function changeMode(_, value)
 		TRP3_RegisterListHeaderAddon:SetText(loc.REG_LIST_PET_MASTER);
 	end
 	refreshList();
-	Events.fireEvent(Events.NAVIGATION_TUTORIAL_REFRESH, REGISTER_LIST_PAGEID);
+	TRP3_Addon:TriggerEvent(Events.NAVIGATION_TUTORIAL_REFRESH, REGISTER_LIST_PAGEID);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -908,17 +908,17 @@ local function tutorialProvider()
 	end
 end
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 	createTutorialStructure();
 
 	-- To try, but I'm afraid for performances ...
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 		if TRP3_MainFrame:IsShown() and getCurrentPageID() == REGISTER_LIST_PAGEID and unitID ~= Globals.player_id and (not dataType or dataType == "characteristics") then
 			refreshList();
 		end
 	end);
 
-	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_PROFILE_DELETED, function(_, profileID)
 		if profileID then
 			selectedIDs[profileID] = nil;
 			if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
@@ -1024,7 +1024,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 
 	-- Resizing
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerwidth, containerHeight)
 		for _, line in pairs(widgetTab) do
 			line:SetHeight((containerHeight - 120) * 0.065);
 			if containerwidth < 690 then
@@ -1052,7 +1052,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 end);
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	if TRP3_API.target then
 		TRP3_API.target.registerButton({
 			id = "aa_player_a_page",

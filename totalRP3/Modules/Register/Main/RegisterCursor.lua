@@ -77,7 +77,7 @@ local function onMouseOverUnit()
 	end
 end
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
 	registerConfigKey(CONFIG_RIGHT_CLICK_OPEN_PROFILE, false);
 	registerConfigKey(CONFIG_RIGHT_CLICK_DISABLE_OOC, false);
@@ -107,8 +107,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end)
 
 	-- Listen to the mouse over event and register data update to event to show the cursor icon
-	TRP3_API.utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOverUnit);
-	TRP3_API.events.listenToEvent(TRP3_API.events.REGISTER_DATA_UPDATED, onMouseOverUnit)
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "UPDATE_MOUSEOVER_UNIT", function() onMouseOverUnit(); end);
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.REGISTER_DATA_UPDATED, function() onMouseOverUnit(); end)
 
 	-- Configuration header
 	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {

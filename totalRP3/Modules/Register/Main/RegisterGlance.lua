@@ -7,7 +7,7 @@ local Ellyb = TRP3_API.Ellyb;
 
 -- API
 TRP3_API.register.glance = {};
-local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
+local Utils, Events, Globals = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.globals;
 local tostring, _G, pairs, type, tinsert, assert, wipe, bit, strsplit = tostring, _G, pairs, type, tinsert, assert, wipe, bit, strsplit;
 local loc = TRP3_API.loc;
 local getIcon, tableRemove = Utils.str.icon, Utils.table.remove;
@@ -748,7 +748,7 @@ local function onStart()
 	end
 
 	-- Config must be built on WORKFLOW_ON_LOADED or else the TargetFrame module could be not yet loaded.
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
 			title = loc.CO_GLANCE_MAIN,
@@ -807,8 +807,8 @@ local function onStart()
 	-- Init
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_TARGET_CHANGED", function() onTargetChanged(); end);
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 		if not unitID or (currentTargetID == unitID) and (not dataType or dataType == "misc") then
 			onTargetChanged();
 		end

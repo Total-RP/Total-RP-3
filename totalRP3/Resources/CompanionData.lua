@@ -762,12 +762,18 @@ do
 		return currentSummonedMountID;
 	end
 
-	-- Finding the summoned mount is hard work on Classic so we only rescan
-	-- when unit auras change for the player.
+	local CompanionData = TRP3_Addon:NewModule("CompanionData");
 
-	TRP3_API.Ellyb.GameEvents.registerCallback("UNIT_AURA", function(unit)
-		local currentMountedStatus = IsMounted();
-		rescanSummonedMountID = rescanSummonedMountID or (unit == "player") and (previousMountedStatus ~= currentMountedStatus);
-		previousMountedStatus = currentMountedStatus;
-	end);
+	function CompanionData:OnEnable()
+		-- Finding the summoned mount is hard work on Classic so we only rescan
+		-- when unit auras change for the player.
+
+		if not C_PetJournal then
+			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "UNIT_AURA", function(_, unit)
+				local currentMountedStatus = IsMounted();
+				rescanSummonedMountID = rescanSummonedMountID or (unit == "player") and (previousMountedStatus ~= currentMountedStatus);
+				previousMountedStatus = currentMountedStatus;
+			end);
+		end
+	end
 end

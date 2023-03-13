@@ -10,7 +10,7 @@ local loc = TRP3_API.loc;
 local tcopy = TRP3_API.utils.table.copy;
 local Utils = TRP3_API.utils;
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	local CompanionProfileChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_COMPANION_PROFILE, "COMPANION_PROFILE");
 
 	--- Get a copy of the data for the link, using the information provided when using CompanionProfileChatLinksModule:InsertLink

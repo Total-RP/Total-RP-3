@@ -2,7 +2,7 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 -- imports
-local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
+local Utils, Events, Globals = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.globals;
 local loc = TRP3_API.loc;
 local get = TRP3_API.profile.getData;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
@@ -306,7 +306,7 @@ local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 	-- Refresh display & target frame
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
+	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
 
 end
 TRP3_API.register.applyPeekSlot = applyPeekSlot;
@@ -316,7 +316,7 @@ local function swapGlanceSlot(from, to)
 	local dataTab = get("player/misc");
 	TRP3_API.register.glance.swapDataFromSlots(dataTab, from, to);
 	-- Refresh display & target frame
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
+	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
 end
 TRP3_API.register.swapGlanceSlot = swapGlanceSlot;
 
@@ -362,7 +362,7 @@ local function onCurrentlyChanged()
 
 		if old ~= character.CU then
 			character.v = Utils.math.incrementNumber(character.v or 1, 2);
-			Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "character");
+			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "character");
 		end
 	end
 end
@@ -382,7 +382,7 @@ local function onOOCInfoChanged()
 
 		if old ~= character.CO then
 			character.v = Utils.math.incrementNumber(character.v or 1, 2);
-			Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "character");
+			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "character");
 		end
 	end
 end
@@ -506,7 +506,7 @@ function TRP3_API.register.inits.miscInit()
 	-- RP style
 	setupFieldSet(TRP3_RegisterMiscViewRPStyle, loc.REG_PLAYER_STYLE_RPSTYLE, 150);
 
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 		if getCurrentPageID() == "player_main" and unitID == Globals.player_id and (not dataType or dataType == "misc") then
 			TRP3_API.popup.hidePopups();
 			local context = getCurrentContext();

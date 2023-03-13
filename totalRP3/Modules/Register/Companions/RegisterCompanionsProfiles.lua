@@ -6,7 +6,7 @@ local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
 
 -- imports
-local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.loc, TRP3_API.utils, TRP3_API.events;
+local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.loc, TRP3_API.utils, TRP3_Addon.Events;
 local tinsert, _G, pairs, type, tostring = tinsert, _G, pairs, type, tostring;
 local tsize = Utils.table.size;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
@@ -471,10 +471,10 @@ local function constructTutorialStructure()
 	};
 end
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 	constructTutorialStructure();
 
-	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_PROFILE_DELETED, function(_, profileID)
 		if profileID and isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
 			unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
 		end
@@ -563,7 +563,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 end);
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
 	if TRP3_API.target then
 		-- Target bar button for pets

@@ -90,7 +90,7 @@ function ChatLinks:GetModuleByID(moduleID)
 	return chatLinksModules[moduleID];
 end
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
 	---@param link ChatLink
 	function ChatLinks.storeLink(link)

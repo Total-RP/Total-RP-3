@@ -7,7 +7,7 @@ local Ellyb = TRP3_API.Ellyb;
 
 --region Total RP 3 imports
 local loc = TRP3_API.loc;
-local Events = TRP3_API.Events;
+local Events = TRP3_Addon.Events;
 local getConfigValue = TRP3_API.configuration.getValue;
 local setConfigValue = TRP3_API.configuration.setValue;
 local registerConfigKey = TRP3_API.configuration.registerConfigKey;
@@ -32,7 +32,7 @@ local NORMAL_STATE_MAP_ICON = Ellyb.Icon(TRP3_InterfaceIcons.ScanReady);
 local ON_COOLDOWN_STATE_MAP_ICON = Ellyb.Icon(TRP3_InterfaceIcons.ScanCooldown);
 
 --region Configuration
-Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, function()
 	registerConfigKey(CONFIG_MAP_BUTTON_POSITION, "BOTTOMLEFT");
 	registerConfigKey(CONFIG_HIDE_BUTTON_IF_EMPTY, false);
 
@@ -116,7 +116,7 @@ end)
 --region Broadcast Lifecycle
 -- When we get BROADCAST_CHANNEL_CONNECTING we'll ensure the button is
 -- disabled and tell the user things are firing up.
-Events.registerCallback(Events.BROADCAST_CHANNEL_CONNECTING, function()
+TRP3_API.RegisterCallback(TRP3_Addon, Events.BROADCAST_CHANNEL_CONNECTING, function()
 	WorldMapButton:SetEnabled(false);
 	WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE_CONNECTING);
 	WorldMapButton.Icon:SetDesaturated(true);
@@ -124,7 +124,7 @@ end);
 
 -- If we get BROADCAST_CHANNEL_OFFLINE we'll ensure the button remains
 -- disabled and dump the localised error into the tooltip, to be useful.
-Events.registerCallback(Events.BROADCAST_CHANNEL_OFFLINE, function(reason)
+TRP3_API.RegisterCallback(TRP3_Addon, Events.BROADCAST_CHANNEL_OFFLINE, function(_, reason)
 	WorldMapButton:SetEnabled(false);
 	WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE_OFFLINE):format(reason);
 	WorldMapButton.Icon:SetDesaturated(true);
@@ -132,7 +132,7 @@ end);
 
 -- When we get BROADCAST_CHANNEL_READY it's time to enable the button use the
 -- standard tooltip description.
-Events.registerCallback(Events.BROADCAST_CHANNEL_READY, function()
+TRP3_API.RegisterCallback(TRP3_Addon, Events.BROADCAST_CHANNEL_READY, function()
 	WorldMapButton:SetEnabled(true);
 	WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE);
 	WorldMapButton.Icon:SetDesaturated(false);

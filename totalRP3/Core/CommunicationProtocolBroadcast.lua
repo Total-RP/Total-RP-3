@@ -3,7 +3,6 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
@@ -196,23 +195,21 @@ Comm.broadcast.resetPlayers = function()
 	return connectedPlayers;
 end
 
-local function onChannelJoin(_, arg2, _, _, _, _, _, _, arg9)
+local function onChannelJoin(_, _, arg2, _, _, _, _, _, _, arg9)
 	if config_UseBroadcast() and arg2 and arg9 == config_BroadcastChannel() then
 		local unitName = unitIDToInfo(arg2);
 		connectedPlayers[unitName] = 1;
 	end
 end
 
-local function onChannelLeave(_, arg2, _, _, _, _, _, _, arg9)
+local function onChannelLeave(_, _, arg2, _, _, _, _, _, _, arg9)
 	if config_UseBroadcast() and arg2 and arg9 == config_BroadcastChannel() then
 		local unitName = unitIDToInfo(arg2);
 		connectedPlayers[unitName] = nil;
 	end
 end
 
-local function onMessageReceived(...)
-	local prefix, message , distributionType, sender, _, _, _, channel = ...;
-
+local function onMessageReceived(_, prefix, message , distributionType, sender, _, _, _, channel)
 	if not sender then
 		return;
 	end
@@ -325,25 +322,25 @@ Comm.broadcast.init = function()
 	RegisterAddonMessagePrefix(BROADCAST_HEADER);
 
 	-- When we receive a broadcast or a P2P response
-	Utils.event.registerHandler("CHAT_MSG_ADDON", onMessageReceived);
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_ADDON", onMessageReceived);
 
 	-- No broadcast channel on Classic or BCC
 	if TRP3_ClientFeatures.BroadcastMethod ~= TRP3_BroadcastMethod.Channel then
-		TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_READY);
+		TRP3_Addon:TriggerEvent(TRP3_Addon.Events.BROADCAST_CHANNEL_READY);
 		return
 	end
 
 	-- Then, launch the loop
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
-			Ellyb.GameEvents.registerCallback("CHANNEL_UI_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
-			Ellyb.GameEvents.registerCallback("CHANNEL_COUNT_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
-			Ellyb.GameEvents.registerCallback("CHAT_MSG_CHANNEL_JOIN", moveBroadcastChannelToTheBottomOfTheList);
+			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_UI_UPDATE", function() moveBroadcastChannelToTheBottomOfTheList(); end);
+			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_COUNT_UPDATE", function() moveBroadcastChannelToTheBottomOfTheList(); end);
+			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_CHANNEL_JOIN", function() moveBroadcastChannelToTheBottomOfTheList(); end);
 		end
 
 		if config_UseBroadcast() then
 			-- We'll send out the event nice and early to say we're setting up.
-			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_CONNECTING);
+			TRP3_Addon:TriggerEvent(TRP3_Addon.Events.BROADCAST_CHANNEL_CONNECTING);
 
 			-- Force joining the broadcast channel if we wait too long.
 			local forceJoinChannel = false;
@@ -367,12 +364,12 @@ Comm.broadcast.init = function()
 			end, 15);
 		else
 			-- Broadcast isn't enabled so we should probably say it's offline.
-			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, loc.BROADCAST_OFFLINE_DISABLED);
+			TRP3_Addon:TriggerEvent(TRP3_Addon.Events.BROADCAST_CHANNEL_OFFLINE, loc.BROADCAST_OFFLINE_DISABLED);
 		end
 	end);
 
 	-- When someone placed a password on the channel
-	Utils.event.registerHandler("CHANNEL_PASSWORD_REQUEST", function(channel)
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_PASSWORD_REQUEST", function(_, channel)
 		if channel == config_BroadcastChannel() then
 			TRP3_API.Log("Passworded !");
 
@@ -381,13 +378,13 @@ Comm.broadcast.init = function()
 			ticker:Cancel();
 
 			-- Notify that it's unlikely broadcast will work due to the password.
-			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, message);
+			TRP3_Addon:TriggerEvent(TRP3_Addon.Events.BROADCAST_CHANNEL_OFFLINE, message);
 		end
 	end);
 
 	if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
 		-- For when someone just places a password
-		Utils.event.registerHandler("CHAT_MSG_CHANNEL_NOTICE_USER", function(mode, user, _, _, _, _, _, _, channel)
+		TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_CHANNEL_NOTICE_USER", function(_, mode, user, _, _, _, _, _, _, channel)
 			if mode == "OWNER_CHANGED" and user == TRP3_API.globals.player_id and channel == config_BroadcastChannel() then
 				SetChannelPasswordOld(config_BroadcastChannel(), "");
 			end
@@ -395,19 +392,19 @@ Comm.broadcast.init = function()
 	end
 
 	-- When you are already in 10 channel
-	Utils.event.registerHandler("CHAT_MSG_SYSTEM", function(message)
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_SYSTEM", function(_, message)
 		if config_UseBroadcast() and message == ERR_TOO_MANY_CHAT_CHANNELS and not helloWorlded then
 			Utils.message.displayMessage(loc.BROADCAST_10);
 			ticker:Cancel();
 
 			-- Notify that broadcast won't work due to the channel limit.
-			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, message);
+			TRP3_Addon:TriggerEvent(TRP3_Addon.Events.BROADCAST_CHANNEL_OFFLINE, message);
 		end
 	end);
 
 	-- For stats
-	Utils.event.registerHandler("CHAT_MSG_CHANNEL_JOIN", onChannelJoin);
-	Utils.event.registerHandler("CHAT_MSG_CHANNEL_LEAVE", onChannelLeave);
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_CHANNEL_JOIN", onChannelJoin);
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_CHANNEL_LEAVE", onChannelLeave);
 
 	-- We register our own HELLO msg so that when it happens we know we are capable of sending and receive on the channel.
 	Comm.broadcast.registerCommand(HELLO_CMD, function(sender, _)
@@ -417,7 +414,7 @@ Comm.broadcast.init = function()
 			ticker:Cancel();
 
 			-- Notify our other bits and pieces that we're all good to go.
-			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_READY);
+			TRP3_Addon:TriggerEvent(TRP3_Addon.Events.BROADCAST_CHANNEL_READY);
 		end
 	end);
 end
