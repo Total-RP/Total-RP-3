@@ -280,13 +280,13 @@ Status possíveis:
 	["CO_MSP"] = "Protocolo Mary Sue",
 	["CO_REGISTER"] = "Configuração de registros",
 	["CO_REGISTER_ABOUT_H1_SIZE"] = "Tamanho de texto do cabeçalho 1",
-	["CO_REGISTER_ABOUT_H1_SIZE_TT"] = "Tamanho do texto entre marcadores {h1}. Padrão: %s ",
+	["CO_REGISTER_ABOUT_H1_SIZE_TT"] = "Tamanho do texto entre marcadores {h1}. Padrão: %d",
 	["CO_REGISTER_ABOUT_H2_SIZE"] = "Tamanho de texto do cabeçalho 2",
-	["CO_REGISTER_ABOUT_H2_SIZE_TT"] = "Tamanho do texto entre marcadores {h2}. Padrão: %s ",
+	["CO_REGISTER_ABOUT_H2_SIZE_TT"] = "Tamanho do texto entre marcadores {h2}. Padrão: %d ",
 	["CO_REGISTER_ABOUT_H3_SIZE"] = "Tamanho de texto do cabeçalho 3",
-	["CO_REGISTER_ABOUT_H3_SIZE_TT"] = "Tamanho do texto entre marcadores {h3}. Padrão: %s ",
+	["CO_REGISTER_ABOUT_H3_SIZE_TT"] = "Tamanho do texto entre marcadores {h3}. Padrão: %d ",
 	["CO_REGISTER_ABOUT_P_SIZE"] = "Tamanho do parágrafo no texto ",
-	["CO_REGISTER_ABOUT_P_SIZE_TT"] = [=[Tamanho do texto fora dos marcadores do cabeçalho. Padrão: %s 
+	["CO_REGISTER_ABOUT_P_SIZE_TT"] = [=[Tamanho do texto fora dos marcadores do cabeçalho. Padrão: %d 
 ]=],
 	["CO_REGISTER_ABOUT_SETTINGS"] = "Configurações \"Sobre\"",
 	["CO_REGISTER_AUTO_PURGE"] = "Expurgar diretório automaticamente",
