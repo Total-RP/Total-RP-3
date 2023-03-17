@@ -44,6 +44,7 @@ local LANGUAGES_ICONS = {
 	[9] = Icon(TRP3_InterfaceIcons.LanguageTitan), -- Titan
 	[36] = Icon(TRP3_InterfaceIcons.LanguageZombie), -- Zombie (in your head)
 	[168] = Icon(TRP3_InterfaceIcons.LanguageSprite), -- Sprite (Faerie dragon)
+	[303] = Icon(TRP3_InterfaceIcons.LanguageFurbolg), -- Furbolg (Dragonflight reputation)
 
 }
 

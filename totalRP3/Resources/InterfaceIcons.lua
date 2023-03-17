@@ -179,6 +179,7 @@ TRP3_InterfaceIcons = {
 	LanguageDraenei       = { "inv_misc_tournaments_banner_draenei", "inv_wand_15", DEFAULT_ICON_NAME },
 	LanguageDwarvish      = { "inv_misc_tournaments_banner_dwarf", "spell_arcane_teleportironforge" },
 	LanguageForsaken      = { "inv_misc_tournaments_banner_scourge", "spell_arcane_teleportundercity" },
+	LanguageFurbolg       = { "inv_gauntlets_02" },
 	LanguageGnomish       = { "inv_misc_tournaments_banner_gnome", "inv_misc_enggizmos_01" },
 	LanguageGnomishBinary = { "inv_misc_punchcards_blue" },
 	LanguageGoblin        = { "achievement_goblinhead", DEFAULT_ICON_NAME },
