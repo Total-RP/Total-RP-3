@@ -82,7 +82,7 @@ end
 --- Will always return false on Classic client, as no unit are mountable in patch 1.13
 --- @return boolean Returns true if the unit can be mounted
 function Unit:IsMountable()
-	if Ellyb.System:IsClassic() then
+	if not UnitVehicleSeatCount then
 		return false
 	end
 	return UnitVehicleSeatCount(_private[self].rawUnitID) and UnitVehicleSeatCount(_private[self].rawUnitID) > 0 and (UnitInParty(_private[self].rawUnitID) or UnitInRaid(_private[self].rawUnitID))

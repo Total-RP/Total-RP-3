@@ -26,37 +26,3 @@ function Frames.makeMovable(frame, validatePositionOnDragStop)
 		end)
 	end
 end
-
---{{{ Mousewheel scroll on frame set slider value
----@type table<Frame, Slider>
-local slidingFrames = {};
-
----@param self Frame
----@param delta number
-local function setSliderValueOnMouseScroll(self, delta)
-	local slider = slidingFrames[self];
-	if not slidingFrames[self] then
-		return
-	end
-	if slider:IsEnabled() then
-		local mini, maxi = slider:GetMinMaxValues();
-		if delta == 1 and slider:GetValue() > mini then
-			slider:SetValue(slider:GetValue() - 1);
-		elseif delta == -1 and slider:GetValue() < maxi then
-			slider:SetValue(slider:GetValue() + 1);
-		end
-	end
-end
-
----Make scrolling with the mouse wheel on the given frame change the given slider value
----@param frame Frame @ The frame that will receive the scroll wheel event
----@param slider Slider @ The slider that should see its value changed
-function Frames.handleMouseWheelScroll(frame, slider)
-	Ellyb.Assertions.isType(frame, "Frame", frame);
-	Ellyb.Assertions.isType(slider, "Slider", slider);
-
-	slidingFrames[frame] = slider
-	frame:SetScript("OnMouseWheel", setSliderValueOnMouseScroll);
-	frame:EnableMouseWheel(1);
-end
---}}}

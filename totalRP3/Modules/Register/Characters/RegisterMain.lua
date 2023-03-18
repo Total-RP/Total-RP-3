@@ -621,14 +621,14 @@ local function cleanupProfiles()
 
 	log("Purging profiles with no data")
 	for profileID, profile in pairs(profiles) do
-		if not profile.characteristics or Ellyb.Tables.isEmpty(profile.characteristics) then
+		if not profile.characteristics or next(profile.characteristics) == nil then
 			deleteProfile(profileID, true);
 		end
 	end
 
 	log("Purging unbound MSP profiles")
 	for profileID, profile in pairs(profiles) do
-		if profile.msp and Ellyb.Tables.isEmpty(profile.link) then
+		if profile.msp and next(profile.link) == nil then
 			deleteProfile(profileID, true);
 		end
 	end

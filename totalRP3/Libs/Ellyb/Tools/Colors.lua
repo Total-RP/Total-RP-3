@@ -94,7 +94,6 @@ end
 ---@param colorB Ellyb_Color The Color to check
 ---@return boolean isEqual Returns true if the color are the same
 function Color:IsEqualTo(colorB)
-	Ellyb.DeprecationWarnings.warn("Color:IsEqualTo(otherColor) is deprecated. You should do a simple comparison colorA == colorB")
 	return self == colorB
 end
 
@@ -267,9 +266,9 @@ end
 function Color:GenerateHexadecimalColor(doNotIncludeAlpha)
 	local red, green, blue, alpha = self:GetRGBAAsBytes();
 	if doNotIncludeAlpha then
-		return Ellyb.Enum.UI_ESCAPE_SEQUENCES.COLOR:sub(7):format(red, green, blue):upper();
+		return string.format("%02x%02x%02x", red, green, blue):upper();
 	else
-		return Ellyb.Enum.UI_ESCAPE_SEQUENCES.COLOR:sub(3):format(alpha, red, green, blue):upper();
+		return string.format("%02x%02x%02x%02x", alpha, red, green, blue):upper();
 	end
 end
 
@@ -283,14 +282,14 @@ end
 
 ---@return string Returns the start code of the UI escape sequence to color text
 function Color:GetColorCodeStartSequence()
-	return Ellyb.Enum.UI_ESCAPE_SEQUENCES.COLOR:sub(1,2) .. self:GenerateHexadecimalColor()
+	return "|c" .. self:GenerateHexadecimalColor()
 end
 
 --- Wrap a given text between the UI escape sequenced necessary to get the text colored in the current Color
 ---@param text string The text to be colored
 ---@return string coloredText A colored representation of the given text
 function Color:WrapTextInColorCode(text)
-	return self:GetColorCodeStartSequence() .. tostring(text) .. Ellyb.Enum.UI_ESCAPE_SEQUENCES.CLOSE;
+	return self:GetColorCodeStartSequence() .. tostring(text) .. "|r";
 end
 
 --- Create a new Color from RGBA values, between 0 and 1.
@@ -367,8 +366,8 @@ end
 function Color:LightenColorUntilItIsReadableOnDarkBackgrounds()
 	-- If the color is too dark to be displayed in the tooltip, we will ligthen it up a notch
 	while not Ellyb.ColorManager.isTextColorReadableOnADarkBackground(self) do
-		self:SetRed(Ellyb.Maths.incrementValueUntilMax(self:GetRed(), 0.01, 1));
-		self:SetGreen(Ellyb.Maths.incrementValueUntilMax(self:GetGreen(), 0.01, 1));
-		self:SetBlue(Ellyb.Maths.incrementValueUntilMax(self:GetBlue(), 0.01, 1));
+		self:SetRed(Saturate(self:GetRed() + 0.01));
+		self:SetGreen(Saturate(self:GetGreen() + 0.01));
+		self:SetBlue(Saturate(self:GetBlue() + 0.01));
 	end
 end

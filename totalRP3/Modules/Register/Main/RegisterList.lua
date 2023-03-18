@@ -358,7 +358,7 @@ local function getCharacterLines()
 	for profileID, profile in pairs(profileList) do
 		local nameIsConform, guildIsConform, realmIsConform, notesIsConform = false, false, false, false;
 
-		if profile.characteristics and not Ellyb.Tables.isEmpty(profile.characteristics) then
+		if profile.characteristics and next(profile.characteristics) ~= nil then
 
 			-- Defines if at least one character is conform to the search criteria
 			for unitID, _ in pairs(profile.link or Globals.empty) do

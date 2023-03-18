@@ -8,7 +8,7 @@ local _, TRP3_API = ...;
 local loc = TRP3_API.loc;
 local tcopy = TRP3_API.utils.table.copy;
 local Utils = TRP3_API.utils;
-local crop = TRP3_API.Ellyb.Strings.crop;
+local crop = TRP3_API.utils.str.crop;
 local shouldCropTexts = TRP3_API.ui.tooltip.shouldCropTexts;
 
 local GLANCE_TOOLTIP_CROP = 400;

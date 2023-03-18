@@ -69,7 +69,7 @@ function EditBoxes.setupTabKeyNavigation(...)
 	for index, editbox in ipairs(editBoxes) do
 		editbox:HookScript("OnTabPressed", function()
 			local nextEditBoxIndex = index + (IsShiftKeyDown() and -1 or 1)
-			Ellyb.Maths.wrap(nextEditBoxIndex, #editBoxes)
+			Wrap(nextEditBoxIndex, #editBoxes)
 			editBoxes[nextEditBoxIndex]:SetFocus();
 		end)
 	end

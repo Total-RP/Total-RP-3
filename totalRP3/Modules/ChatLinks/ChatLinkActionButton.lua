@@ -10,9 +10,6 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
 
--- Ellyb imports
-local bind = Ellyb.Functions.bind;
-
 ---@class ChatLinkActionButton : Object
 local ChatLinkActionButton, _private = Ellyb.Class("ChatLinkActionButton");
 
@@ -38,7 +35,7 @@ function ChatLinkActionButton:initialize(actionID, buttonText, questionCommand, 
 
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(
 		answerCommand,
-		-- Note: We cannot use Ellyb's Functions.bind here since the OnAnswerCommandReceived method is overwritten at a
+		-- Note: We cannot use GenerateClosure here since the OnAnswerCommandReceived method is overwritten at a
 		-- later time by the module created and the binding will target the wrong method.
 		function(data, sender, channel)
 			self:OnAnswerCommandReceived(data, sender, channel);
@@ -81,7 +78,7 @@ function ChatLinkActionButton:OnClick(linkID, sender, button)
 		-- Get a unique message identifier for the data request, used for progression updates
 		local messageToken = AddOn_TotalRP3.Communications.getNewMessageToken();
 		self.messageToken = messageToken;
-		self.handlerID = AddOn_TotalRP3.Communications.registerMessageTokenProgressHandler(messageToken, sender, bind(self.OnProgressDownload, self));
+		self.handlerID = AddOn_TotalRP3.Communications.registerMessageTokenProgressHandler(messageToken, sender, GenerateClosure(self.OnProgressDownload, self));
 
 		-- Send a request for this link ID and indicate a message ID to use for progression updates
 		AddOn_TotalRP3.Communications.sendObject(_private[self].questionCommand, {

@@ -132,19 +132,19 @@ ColorManager.GREY = Ellyb.Color:new("#CCC"):Freeze();
 ColorManager.BLACK = Ellyb.Color:new(0, 0, 0):Freeze();
 
 -- Classes colors
-ColorManager.HUNTER = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.HUNTER]):Freeze();
-ColorManager.WARLOCK = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.WARLOCK]):Freeze();
-ColorManager.PRIEST = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.PRIEST]):Freeze();
-ColorManager.PALADIN = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.PALADIN]):Freeze();
-ColorManager.MAGE = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.MAGE]):Freeze();
-ColorManager.ROGUE = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.ROGUE]):Freeze();
-ColorManager.DRUID = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.DRUID]):Freeze();
-ColorManager.SHAMAN = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.SHAMAN]):Freeze();
-ColorManager.WARRIOR = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.WARRIOR]):Freeze();
-ColorManager.DEATHKNIGHT = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.DEATHKNIGHT]):Freeze();
-ColorManager.MONK = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.MONK]):Freeze();
-ColorManager.DEMONHUNTER = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.DEMONHUNTER]):Freeze();
-ColorManager.EVOKER = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.EVOKER] or { r = 0.2, g = 0.58, b = 0.5 }):Freeze();
+ColorManager.HUNTER = Ellyb.Color:new(RAID_CLASS_COLORS["HUNTER"]):Freeze();
+ColorManager.WARLOCK = Ellyb.Color:new(RAID_CLASS_COLORS["WARLOCK"]):Freeze();
+ColorManager.PRIEST = Ellyb.Color:new(RAID_CLASS_COLORS["PRIEST"]):Freeze();
+ColorManager.PALADIN = Ellyb.Color:new(RAID_CLASS_COLORS["PALADIN"]):Freeze();
+ColorManager.MAGE = Ellyb.Color:new(RAID_CLASS_COLORS["MAGE"]):Freeze();
+ColorManager.ROGUE = Ellyb.Color:new(RAID_CLASS_COLORS["ROGUE"]):Freeze();
+ColorManager.DRUID = Ellyb.Color:new(RAID_CLASS_COLORS["DRUID"]):Freeze();
+ColorManager.SHAMAN = Ellyb.Color:new(RAID_CLASS_COLORS["SHAMAN"]):Freeze();
+ColorManager.WARRIOR = Ellyb.Color:new(RAID_CLASS_COLORS["WARRIOR"]):Freeze();
+ColorManager.DEATHKNIGHT = Ellyb.Color:new(RAID_CLASS_COLORS["DEATHKNIGHT"]):Freeze();
+ColorManager.MONK = Ellyb.Color:new(RAID_CLASS_COLORS["MONK"]):Freeze();
+ColorManager.DEMONHUNTER = Ellyb.Color:new(RAID_CLASS_COLORS["DEMONHUNTER"]):Freeze();
+ColorManager.EVOKER = Ellyb.Color:new(RAID_CLASS_COLORS["EVOKER"] or { r = 0.2, g = 0.58, b = 0.5 }):Freeze();
 
 -- Brand colors
 ColorManager.TWITTER = Ellyb.Color:new("#1da1f2"):Freeze();

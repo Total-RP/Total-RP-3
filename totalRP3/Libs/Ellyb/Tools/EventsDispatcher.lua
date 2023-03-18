@@ -81,5 +81,5 @@ end
 ---@return boolean True if this EventsDispatcher has a callback registered for the given event
 function EventsDispatcher:HasCallbacksForEvent(event)
 	Ellyb.Assertions.isType(event, "string", "event")
-	return not Ellyb.Tables.isEmpty(private[self].callbackRegistry[event] or {});
+	return next(private[self].callbackRegistry[event] or {}) ~= nil;
 end
