@@ -3,7 +3,6 @@
 	<Script file="Ellyb.lua"/>
 	<Include file="Libraries\Libraries.xml" />
 	<Include file="Internals\Internals.xml" />
-	<Include file="Logs\Logs.xml"/>
 	<Include file="Tools\Tools.xml" />
 	<Include file="UI\UI.xml" />
 

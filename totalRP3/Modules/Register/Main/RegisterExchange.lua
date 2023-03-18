@@ -9,7 +9,6 @@ local Utils = TRP3_API.utils;
 local get = TRP3_API.profile.getData;
 local Comm = AddOn_TotalRP3.Communications;
 local loc = TRP3_API.loc;
-local log = Utils.log.log;
 local Events = TRP3_API.events;
 local getCharacterExchangeData = TRP3_API.dashboard.getCharacterExchangeData;
 local registerInfoTypes = TRP3_API.register.registerInfoTypes;
@@ -164,7 +163,7 @@ local function checkPlayerDataWeight()
 
 	local computedSize = GetPlayerDataWeight();
 	if computedSize > ALERT_FOR_SIZE then
-		log(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
+		TRP3_API.Log(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
 		TRP3_API.ui.tooltip.toast(loc.REG_PLAYER_ALERT_HEAVY_SMALL, 5);
 	end
 end
@@ -341,11 +340,11 @@ local function parseCompanionInfo(senderID, senderProfileID, petLine, petV1, pet
 	if petLine and petV1 and petV2 then
 		local profileID, queryV1, queryV2 = boundAndCheckCompanion(petLine, senderID, senderProfileID, petV1, petV2);
 		if queryV1 then
-			log(("Should update v1 for companion profileID %s"):format(profileID));
+			TRP3_API.Log(("Should update v1 for companion profileID %s"):format(profileID));
 			queryInformationType(senderID, COMPANION_PREFIX .. "1" .. profileID);
 		end
 		if queryV2 then
-			log(("Should update v2 for companion profileID %s"):format(profileID));
+			TRP3_API.Log(("Should update v2 for companion profileID %s"):format(profileID));
 			queryInformationType(senderID, COMPANION_PREFIX .. "2" .. profileID);
 		end
 	end
@@ -411,7 +410,7 @@ TRP3_API.r.sendQuery = sendQuery;
 
 local function TryQueryInformation(target, infoType, currentData)
 	if shouldUpdateInformation(target, infoType, currentData) then
-		log(("Should update: %s's %s"):format(target, infoType));
+		TRP3_API.Log(("Should update: %s's %s"):format(target, infoType));
 		queryInformationType(target, infoType);
 	end
 end
@@ -427,7 +426,7 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	or type(structure[VERNUM_QUERY_INDEX_VERSION_DISPLAY]) ~= "string"
 	or type(structure[VERNUM_QUERY_INDEX_CHARACTER_PROFILE]) ~= "string"
 	then
-		log("Incoming vernum integrity check fails. Sender: " .. senderID);
+		TRP3_API.Log("Incoming vernum integrity check fails. Sender: " .. senderID);
 		return;
 	end
 
@@ -546,7 +545,7 @@ local function incomingInformationType(informationType, senderID)
 		data = getCompanionData(profileID, v);
 	end
 	if data then
-		log(("Send %s info to %s"):format(informationType, senderID));
+		TRP3_API.Log(("Send %s info to %s"):format(informationType, senderID));
 
 		local prefix = INFO_TYPE_SEND_PREFIX;
 		local object = { informationType, data };
@@ -576,7 +575,7 @@ local function incomingInformationTypeSent(structure, senderID, channel)
 		return; -- We didn't ask for theses information ...
 	end
 
-	log(("Received %s's %s info !"):format(senderID, informationType));
+	TRP3_API.Log(("Received %s's %s info !"):format(senderID, informationType));
 	CURRENT_QUERY_EXCHANGES[senderID][informationType] = nil;
 
 	local decodedData = data;

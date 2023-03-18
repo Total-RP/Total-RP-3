@@ -14,7 +14,6 @@ TRP3_API.navigation = {
 };
 
 -- imports
-local Log = TRP3_API.utils.log;
 local CreateFrame = CreateFrame;
 local loc = TRP3_API.loc;
 local playUISound = TRP3_API.ui.misc.playUISound;
@@ -218,7 +217,7 @@ TRP3_API.navigation.page.registerPage = registerPage;
 
 local function setPage(pageId, context)
 	Ellyb.Assertions.isType(pageId, "string", "pageId");
-	Log.log("setPage: "..pageId);
+	TRP3_API.Logf("setPage: %s", pageId);
 
 	assert(pageStructures[pageId], "Unknown pageId "..pageId);
 	assert(context == nil or type(context) == "table", "Context must be a table or nil.");

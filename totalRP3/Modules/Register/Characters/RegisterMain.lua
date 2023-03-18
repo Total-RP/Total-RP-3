@@ -21,7 +21,6 @@ local Ellyb = TRP3_API.Ellyb;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
-local log = Utils.log.log;
 local buildZoneText = Utils.str.buildZoneText;
 local getUnitID = Utils.str.getUnitID;
 local Config = TRP3_API.configuration;
@@ -325,7 +324,7 @@ function TRP3_API.register.addCharacter(unitID)
 	assert(unitID and unitID:find('-'), "Malformed unitID");
 	assert(not isUnitIDKnown(unitID), "Already known character: " .. tostring(unitID));
 	characters[unitID] = {};
-	log("Added to the register: " .. unitID);
+	TRP3_API.Log("Added to the register: " .. unitID);
 end
 
 -- GETTERS
@@ -592,7 +591,7 @@ local function cleanupCompanions()
 			end
 		end
 		if tsize(companionProfile.links) < 1 then
-			log("Purging companion " .. companionProfileID .. ", no more characters linked to it.");
+			TRP3_API.Log("Purging companion " .. companionProfileID .. ", no more characters linked to it.");
 			deleteCompanionProfile(companionProfileID, true);
 		end
 	end
@@ -619,14 +618,14 @@ local function cleanupProfiles()
 		end
 	end
 
-	log("Purging profiles with no data")
+	TRP3_API.Log("Purging profiles with no data")
 	for profileID, profile in pairs(profiles) do
 		if not profile.characteristics or next(profile.characteristics) == nil then
 			deleteProfile(profileID, true);
 		end
 	end
 
-	log("Purging unbound MSP profiles")
+	TRP3_API.Log("Purging unbound MSP profiles")
 	for profileID, profile in pairs(profiles) do
 		if profile.msp and next(profile.link) == nil then
 			deleteProfile(profileID, true);
@@ -636,7 +635,7 @@ local function cleanupProfiles()
 	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
 		return ;
 	end
-	log(("Purging profiles older than %s day(s)"):format(getConfigValue("register_auto_purge_mode") / 86400));
+	TRP3_API.Log(("Purging profiles older than %s day(s)"):format(getConfigValue("register_auto_purge_mode") / 86400));
 	-- First, get a tab with all profileID with which we have a relation or on which we have notes
 	local protectedProfileIDs = {};
 	for _, profile in pairs(TRP3_API.profile.getProfiles()) do
@@ -647,14 +646,14 @@ local function cleanupProfiles()
 			protectedProfileIDs[profileID] = true;
 		end
 	end
-	log("Protected profiles: " .. tsize(protectedProfileIDs));
+	TRP3_API.Log("Protected profiles: " .. tsize(protectedProfileIDs));
 	local profilesToPurge = {};
 	for profileID, profile in pairs(profiles) do
 		if not protectedProfileIDs[profileID] and (not profile.time or time() - profile.time > getConfigValue("register_auto_purge_mode")) then
 			tinsert(profilesToPurge, profileID);
 		end
 	end
-	log("Profiles to purge: " .. tsize(profilesToPurge));
+	TRP3_API.Log("Profiles to purge: " .. tsize(profilesToPurge));
 	for _, profileID in pairs(profilesToPurge) do
 		deleteProfile(profileID, true);
 	end

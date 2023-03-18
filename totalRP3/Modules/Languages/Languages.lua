@@ -15,7 +15,7 @@ local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local loc = TRP3_API.loc;
 local Globals = TRP3_API.globals;
 local GetNumLanguages, GetLanguageByIndex, GetDefaultLanguage = GetNumLanguages, GetLanguageByIndex, GetDefaultLanguage;
-local Log = TRP3_API.utils.log;
+
 local Configuration = TRP3_API.configuration;
 
 local LAST_LANGUAGE_USED = "chat_last_language_used";
@@ -59,7 +59,7 @@ end
 ---@param language Language
 function Languages.setLanguage(language)
 	Ellyb.Assertions.isInstanceOf(language, AddOn_TotalRP3.Language, "language")
-	Log.log("Setting language " .. language:GetName());
+	TRP3_API.Log("Setting language " .. language:GetName());
 
 	saveSelectedLanguageToCharacterData(language);
 
@@ -76,7 +76,7 @@ function Languages.setLanguageByID(languageID)
 	local language = Languages.getLanguageByID(languageID)
 	if not language then
 		language = Languages.getDefaultLanguage()
-		Log.log("Trying to set a language that is not known by this character, going back to default language: " .. language, Log.level.WARNING);
+		TRP3_API.Log("Trying to set a language that is not known by this character, going back to default language: " .. language);
 	end
 	Languages.setLanguage(language)
 end

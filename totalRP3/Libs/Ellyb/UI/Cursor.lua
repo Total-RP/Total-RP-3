@@ -20,7 +20,6 @@ local UIParent = UIParent;
 --endregion
 
 --region Ellyb imports
-local Logger = Ellyb.Logger("Cursor");
 local Mouseover = Ellyb.Unit("mouseover");
 local Target = Ellyb.Unit("target");
 --endregion
@@ -116,7 +115,7 @@ hooksecurefunc("TurnOrActionStop", function()
 	if time() - clickTimestamp < 1 then
 		-- Check that the user wasn't actually moving (very fast) the camera and the cursor still is on the targeted unit
 		if Target:GetUnitID() == clickUnitID then
-			Logger:Info("Unit right clicked", clickUnitID);
+			Ellyb.Log("Unit right clicked: ", clickUnitID);
 			for _, callback in pairs(onUnitRightClickedCallbacks) do
 				callback(clickUnitID);
 			end

@@ -9,7 +9,6 @@ TRP3_API.companions = {
 -- imports
 local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.events;
 local loc = TRP3_API.loc;
-local log = Utils.log.log;
 local pairs, assert, tostring, wipe, tinsert, strtrim, tonumber = pairs, assert, tostring, wipe, tinsert, strtrim, tonumber;
 local registerMenu= TRP3_API.navigation.menu.registerMenu;
 local setPage = TRP3_API.navigation.page.setPage;
@@ -106,7 +105,7 @@ local function boundPlayerCompanion(companionID, profileID, targetType)
 	else
 		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
 	end
-	log(("%s bounded to profile %s"):format(companionID, profileID));
+	TRP3_API.Log(("%s bounded to profile %s"):format(companionID, profileID));
 end
 TRP3_API.companions.player.boundPlayerCompanion = boundPlayerCompanion;
 
@@ -122,7 +121,7 @@ local function unboundPlayerCompanion(companionID, targetType)
 	else
 		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
 	end
-	log(("%s unbounded"):format(companionID));
+	TRP3_API.Log(("%s unbounded"):format(companionID));
 end
 TRP3_API.companions.player.unboundPlayerCompanion = unboundPlayerCompanion;
 
@@ -379,7 +378,7 @@ local function registerCreateProfile(profileID)
 		},
 		links = {}
 	};
-	log(("Create companion register profile %s"):format(profileID));
+	TRP3_API.Log(("Create companion register profile %s"):format(profileID));
 end
 TRP3_API.companions.register.registerCreateProfile = registerCreateProfile;
 
@@ -410,7 +409,7 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 					otherProfile.links[companionFullID] = nil;
 				end
 				profile.links[companionFullID] = 1;
-				log(("Bound %s to profile %s"):format(companionFullID, profileID));
+				TRP3_API.Log(("Bound %s to profile %s"):format(companionFullID, profileID));
 				if isMount then
 					Events.fireEvent(Events.REGISTER_DATA_UPDATED, ownerID, nil);
 				else
@@ -423,7 +422,7 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 			local old = registerProfileAssociation[companionFullID];
 			registerProfileAssociation[companionFullID] = nil;
 			if old and registerCompanions[old] then
-				log(("Unbound %s"):format(companionFullID));
+				TRP3_API.Log(("Unbound %s"):format(companionFullID));
 				registerCompanions[old].links[companionFullID] = nil;
 				if isMount then
 					Events.fireEvent(Events.REGISTER_DATA_UPDATED, ownerID, nil);

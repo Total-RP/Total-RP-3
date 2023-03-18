@@ -11,7 +11,6 @@ local COLORS = TRP3_API.Ellyb.ColorManager;
 
 -- Imports
 local Globals = TRP3_API.globals;
-local Log = TRP3_API.utils.log;
 local loc = TRP3_API.loc;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -28,7 +27,7 @@ function Globals.addon:OnInitialize()
 end
 
 local function loadingSequence()
-	Log.log("OnEnable() START");
+	TRP3_API.Log("OnEnable() START");
 
 	-- Get info we can't have earlier
 	MAIN_SEQUENCE_DETAIL = "Globals.build";
@@ -87,7 +86,7 @@ local function loadingSequence()
 
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
 
-	Log.log("OnEnable() DONE");
+	TRP3_API.Log("OnEnable() DONE");
 end
 
 local MAIN_SEQUENCE_ERROR;

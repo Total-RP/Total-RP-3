@@ -149,5 +149,5 @@ TRP3_API.globals.build = function()
 	end
 end
 
-TRP3_Addon = LibStub("AceAddon-3.0"):NewAddon("TRP3");
+TRP3_Addon = LibStub("AceAddon-3.0"):NewAddon("TRP3", "AceConsole-3.0");
 TRP3_API.globals.addon = TRP3_Addon;

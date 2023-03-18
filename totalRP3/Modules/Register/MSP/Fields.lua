@@ -6,7 +6,6 @@ local Ellyb = TRP3_API.Ellyb;
 local Globals = TRP3_API.globals;
 
 local module = AddOn_TotalRP3.MSP or {};
-module.log = module.log or Ellyb.Logger("MSP");
 
 module.TOOLTIP_FIELDS = {"CO", "IC", "PX", "RC", "RS", "TR", "PN"};
 module.REQUEST_FIELDS = {"TT", "AE", "AG", "AH", "AW", "CO", "DE", "HB", "HH", "HI", "IC", "MO", "NH", "MU", "PE", "PS", "RS", "PN"};
@@ -31,7 +30,7 @@ function module.SerializeField(field, ...)
 	local ok, result = pcall(serializer, ...);
 	if not ok then
 		local err = result or "<nil error>";
-		module.log:Severe(("Error serializing field %q: %s"):format(field, err));
+		TRP3_API.Logf("Error serializing field %q: %s", field, err);
 		return nil;
 	end
 
@@ -54,7 +53,7 @@ function module.DeserializeField(field, value)
 	local ok, result = pcall(deserializer, value);
 	if not ok then
 		local err = result or "<nil error>";
-		module.log:Severe(("Error deserializing field %q: %s"):format(field, err));
+		TRP3_API.Logf("Error deserializing field %q: %s", field, err);
 		return nil;
 	end
 

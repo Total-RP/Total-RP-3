@@ -9,7 +9,6 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 -- AddOn imports
 local Chomp = AddOn_Chomp;
-local logger = Ellyb.Logger("TotalRP3_Communication");
 
 -- Total RP 3 imports
 local Compression = AddOn_TotalRP3.Compression;
@@ -144,7 +143,7 @@ local function sendObject(prefix, object, channel, target, priority, messageToke
 			}
 		);
 	else
-		logger:Warning("[sendObject]", "target is ignored", target);
+		TRP3_API.Logf("[sendObject] target '%s' is ignored", target);
 		return false;
 	end
 end
