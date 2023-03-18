@@ -239,6 +239,11 @@ function Player:GetCustomPronouns()
 	return fieldInfo and fieldInfo.value or nil;
 end
 
+function Player:GetCustomVoiceReference()
+	local fieldInfo = self:GetMiscFieldByType(TRP3_API.MiscInfoType.VoiceReference);
+	return fieldInfo and fieldInfo.value or nil;
+end
+
 function Player:GetAccountType()
 	local characterInfo = TRP3_API.register.getUnitIDCharacter(self:GetCharacterID());
 	return characterInfo.isTrial

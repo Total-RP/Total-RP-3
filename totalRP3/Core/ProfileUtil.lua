@@ -17,6 +17,7 @@ TRP3_API.MiscInfoType = {
 	GuildName = 8,
 	GuildRank = 9,
 	Tattoos = 10,
+	VoiceReference = 11,
 };
 
 local MiscInfoTypeData = {
@@ -79,6 +80,12 @@ local MiscInfoTypeData = {
 		englishName = "Tattoos",
 		localizedName = L.REG_PLAYER_TRP2_TATTOO,
 		icon = TRP3_InterfaceIcons.MiscInfoTattoos,
+	},
+	[TRP3_API.MiscInfoType.VoiceReference] = {
+		type = TRP3_API.MiscInfoType.VoiceReference,
+		englishName = "Voice reference",
+		localizedName = L.REG_PLAYER_MISC_PRESET_VOICE_REFERENCE,
+		icon = TRP3_InterfaceIcons.MiscInfoVoiceReference,
 	},
 };
 
@@ -144,6 +151,8 @@ function TRP3_API.GetMiscInfoTypeByName(miscName)
 		return TRP3_API.MiscInfoType.GuildRank;
 	elseif miscName == "Tattoos" or miscName == L.REG_PLAYER_TRP2_TATTOO then
 		return TRP3_API.MiscInfoType.Tattoos;
+	elseif miscName == "Voice reference" or miscName == L.REG_PLAYER_MISC_PRESET_VOICE_REFERENCE then
+		return TRP3_API.MiscInfoType.VoiceReference;
 	else
 		return TRP3_API.MiscInfoType.Custom;
 	end

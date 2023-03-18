@@ -72,6 +72,7 @@ local CONFIG_CHARACT_NOTIF = "tooltip_char_notif";
 local CONFIG_CHARACT_CURRENT = "tooltip_char_current";
 local CONFIG_CHARACT_OOC = "tooltip_char_ooc";
 local CONFIG_CHARACT_PRONOUNS = "tooltip_char_pronouns";
+local CONFIG_CHARACT_VOICE_REFERENCE = "tooltip_char_voice_reference";
 local CONFIG_CHARACT_ZONE = "tooltip_char_zone";
 local CONFIG_CHARACT_HEALTH = "tooltip_char_health";
 local CONFIG_CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
@@ -176,6 +177,10 @@ end
 
 local function showPronouns()
 	return getConfigValue(CONFIG_CHARACT_PRONOUNS);
+end
+
+local function showVoiceReference()
+	return getConfigValue(CONFIG_CHARACT_VOICE_REFERENCE);
 end
 
 local function showZone()
@@ -439,9 +444,10 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		NAME = 100,
 		RACE = 50,
 		CLASS = 50,
-		PRONOUNS = 20,
+		PRONOUNS = 30,
 		GUILD_NAME = 30,
 		GUILD_RANK = 30,
+		VOICE_REFERENCE = 30,
 	}
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -659,6 +665,22 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		if pronouns then
 			local leftText = loc.REG_PLAYER_MISC_PRESET_PRONOUNS;
 			local rightText = crop(pronouns, FIELDS_TO_CROP.PRONOUNS);
+			local lineText = string.format("%1$s: %2$s", leftText, colors.SECONDARY:WrapTextInColorCode(rightText));
+
+			tooltipBuilder:AddLine(lineText, colors.MAIN, getSubLineFontSize(), true);
+		end
+	end
+
+	--
+	-- Voice reference
+	--
+
+	if showVoiceReference() then
+		local pronouns = player:GetCustomVoiceReference();
+
+		if pronouns then
+			local leftText = loc.REG_PLAYER_MISC_PRESET_VOICE_REFERENCE;
+			local rightText = crop(pronouns, FIELDS_TO_CROP.VOICE_REFERENCE);
 			local lineText = string.format("%1$s: %2$s", leftText, colors.SECONDARY:WrapTextInColorCode(rightText));
 
 			tooltipBuilder:AddLine(lineText, colors.MAIN, getSubLineFontSize(), true);
@@ -1337,6 +1359,7 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_CHARACT_CURRENT, true);
 	registerConfigKey(CONFIG_CHARACT_OOC, true);
 	registerConfigKey(CONFIG_CHARACT_PRONOUNS, true);
+	registerConfigKey(CONFIG_CHARACT_VOICE_REFERENCE, true);
 	registerConfigKey(CONFIG_CHARACT_ZONE, true);
 	registerConfigKey(CONFIG_CHARACT_HEALTH, 0);
 	registerConfigKey(CONFIG_CHARACT_CURRENT_SIZE, 140);
@@ -1556,6 +1579,11 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_PRONOUNS,
 				configKey = CONFIG_CHARACT_PRONOUNS,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_VOICE_REFERENCE,
+				configKey = CONFIG_CHARACT_VOICE_REFERENCE,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

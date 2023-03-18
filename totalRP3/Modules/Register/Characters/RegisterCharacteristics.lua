@@ -649,6 +649,7 @@ local MISC_PRESET = {
 		value = loc.DEFAULT_GUILD_RANK,
 	}),
 	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Tattoos),
+	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.VoiceReference),
 	Mixin(TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Custom), {
 		list = "|cff00ff00" .. loc.REG_PLAYER_ADD_NEW,
 		value = loc.CM_VALUE,

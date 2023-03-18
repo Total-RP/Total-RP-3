@@ -1489,8 +1489,10 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT = "Always show target unit",
 	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT_HELP = "If checked, your current target will always have its nameplate visible.",
 
+	CO_TOOLTIP_PRONOUNS = "Show voice reference",
 	REG_PLAYER_MISC_PRESET_GUILD_NAME = "Guild name",
 	REG_PLAYER_MISC_PRESET_GUILD_RANK = "Guild rank",
+	REG_PLAYER_MISC_PRESET_VOICE_REFERENCE = "Voice reference",
 	DEFAULT_GUILD_RANK = "Member",
 };
 
