@@ -95,8 +95,6 @@ local TRP3_BlizzardNamePlates = {};
 function TRP3_BlizzardNamePlates:OnModuleInitialize()
 	if not IsAddOnLoaded("Blizzard_NamePlates") then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
-	elseif TRP3_NAMEPLATES_ADDON ~= nil then
-		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 	end
 
 	-- Quick hack to make these nameplates "cowardly"; if any of the below
@@ -128,18 +126,6 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 end
 
 function TRP3_BlizzardNamePlates:OnModuleEnable()
-	-- Note this below logic for the TRP3_NAMEPLATES_ADDON global is special
-	-- in this decorator; as Blizzard plates are the "default" we check if
-	-- at this point any other decorator has set the global.
-	--
-	-- For a more normal case, see the Kui logic.
-
-	if TRP3_NAMEPLATES_ADDON ~= nil then
-		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
-	else
-		TRP3_NAMEPLATES_ADDON = "Blizzard_NamePlates";
-	end
-
 	self.unitDisplayInfo = {};
 	self.initializedNameplates = {};
 
@@ -261,7 +247,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 
 	if displayInfo then
 		if displayInfo.name then
-			overrideText = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
+			overrideText = displayInfo.name;
 		end
 
 		-- No cropping occurs after this point.
@@ -366,7 +352,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	end
 
 	if displayText then
-		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesUtil.MAX_TITLE_CHARS));
+		nameplate.TRP3_Title:SetText(displayText);
 		nameplate.TRP3_Title:Show();
 	else
 		nameplate.TRP3_Title:Hide();
@@ -479,7 +465,6 @@ TRP3_API.module.registerModule({
 	description = L.BLIZZARD_NAMEPLATES_MODULE_DESCRIPTION,
 	version = 1,
 	minVersion = 92,
-	requiredDeps = { { "trp3_nameplates", 1 } },
 	onInit = function() return TRP3_BlizzardNamePlates:OnModuleInitialize(); end,
 	onStart = function() return TRP3_BlizzardNamePlates:OnModuleEnable(); end,
 });

@@ -19,16 +19,7 @@ function TRP3_KuiNamePlates:OnModuleInitialize()
 	elseif not KuiNameplatesCore or KuiNameplates.layout ~= KuiNameplatesCore then
 		-- For now we only support the "Core" layout for Kui.
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
-	elseif TRP3_NAMEPLATES_ADDON ~= nil then
-		-- Another nameplate decorator module met its own activation criteria.
-		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 	end
-
-	-- Define TRP3_NAMEPLATES_ADDON now to claim decoration rights. This
-	-- should be sanity checked on OnModuleEnable to make sure someone else
-	-- didn't trample over it.
-
-	TRP3_NAMEPLATES_ADDON = "Kui_Nameplates";
 
 	-- Disable our (old) Kui nameplate module explicitly, we'll also tell
 	-- users that they can disable it.
@@ -40,13 +31,6 @@ function TRP3_KuiNamePlates:OnModuleInitialize()
 end
 
 function TRP3_KuiNamePlates:OnModuleEnable()
-	-- Sanity check TRP3_NAMEPLATES_ADDON to ensure that we remain the chosen
-	-- decorator addon, since it may get trampled by external code.
-
-	if TRP3_NAMEPLATES_ADDON ~= "Kui_Nameplates" then
-		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
-	end
-
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
 
 	self.unitDisplayInfo = {};
@@ -54,14 +38,14 @@ function TRP3_KuiNamePlates:OnModuleEnable()
 
 	self.plugin = KuiNameplates:NewPlugin("TotalRP3", 250);
 	self.plugin.Create = function(_, ...) return self:OnNamePlateCreate(...); end;
-	self.plugin.Show = function(_, ...) return self:OnNamePlateShow(...); end;
-	self.plugin.HealthUpdate = function(_, ...) return self:OnNamePlateHealthUpdate(...); end;
-	self.plugin.HealthColourChange = function(_, ...) return self:OnNamePlateHealthColourChange(...); end;
-	self.plugin.GlowColourChange = function(_, ...) return self:OnNamePlateGlowColourChange(...); end;
-	self.plugin.GainedTarget = function(_, ...) return self:OnNamePlateGainedTarget(...); end;
-	self.plugin.LostTarget = function(_, ...) return self:OnNamePlateLostTarget(...); end;
-	self.plugin.Combat = function(_, ...) return self:OnNamePlateCombat(...); end;
-	self.plugin.Hide = function(_, ...) return self:OnNamePlateHide(...); end;
+	self.plugin.Show = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.HealthUpdate = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.HealthColourChange = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.GlowColourChange = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.GainedTarget = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.LostTarget = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.Combat = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.Hide = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
 
 	self.plugin:RegisterMessage("Create");
 	self.plugin:RegisterMessage("Show");
@@ -121,49 +105,13 @@ function TRP3_KuiNamePlates:OnNamePlateCreate(nameplate)
 	self.initialized[nameplateKey] = true;
 end
 
-function TRP3_KuiNamePlates:OnNamePlateShow(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNamePlateHealthUpdate(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNamePlateHealthColourChange(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNamePlateGlowColourChange(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNamePlateGainedTarget(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNamePlateLostTarget(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNamePlateCombat(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNamePlateHide(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
 function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 	if not self:CanCustomizeNamePlate(nameplate) then
 		return;
 	end
 
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
-	local displayText;
-
-	if displayInfo and displayInfo.name then
-		displayText = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
-	end
+	local displayText = displayInfo and displayInfo.name or nil;
 
 	if displayText then
 		nameplate.NameText:SetText(displayText);
@@ -260,7 +208,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 	if displayText and displayFont then
 		nameplate.TRP3_Title:SetFont(nameplate.GuildText:GetFont());
 		nameplate.TRP3_Title:SetTextColor(nameplate.GuildText:GetTextColor());
-		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayText, TRP3_NamePlatesUtil.MAX_TITLE_CHARS));
+		nameplate.TRP3_Title:SetText(displayText);
 		nameplate.TRP3_Title:Show();
 
 		nameplate.GuildText:ClearAllPoints();
@@ -359,7 +307,7 @@ TRP3_API.module.registerModule({
 	description = L.KUI_NAMEPLATES_MODULE_DESCRIPTION,
 	version = 1,
 	minVersion = 92,
-	requiredDeps = { { "trp3_nameplates", 1 } },
+	requiredDeps = { {"Kui_Nameplates", "external"}, {"Kui_Nameplates_Core", "external"} },
 	onInit = function() return TRP3_KuiNamePlates:OnModuleInitialize(); end,
 	onStart = function() return TRP3_KuiNamePlates:OnModuleEnable(); end,
 });

@@ -1349,10 +1349,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY = "Hide bars on |cff449fe0Blizzard|r nameplates",
 	NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP = "If checked, this enables the use of name-only mode for |cff449fe0Blizzard|r nameplates.|n|nIn this mode, all nameplates will have their health bars hidden, including those of enemy units and other players with or without roleplay profiles.|n|nThis option requires a UI reload to take effect.",
 
-	NAMEPLATES_MODULE_DISABLE_WARNING = "Disabling the nameplates module will prevent any nameplate customizations from being made. A user interface reload is required for this to take effect.|n|n|cffff0000Warning: |rOnce disabled, this module can only be re-enabled from the |cffffcc00Modules status|r page.|n|nAre you sure you want to disable this module?",
-	NAMEPLATES_MODULE_ACTIVE_STATUS = "Module |cff00ff00active|r (%1$s|r)",
-	NAMEPLATES_MODULE_INACTIVE_STATUS = "Module |cffff9900inactive|r (no addon found)",
-
 	BLIZZARD_NAMEPLATES_MODULE_NAME = "Blizzard Nameplates",
 	BLIZZARD_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Blizzard's default nameplates.",
 
@@ -1439,11 +1435,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	CO_MODULES_SUPPORTS_HOTRELOAD = "This module supports hot reload.",
 	NAMEPLATES_CONFIG_REQUIRES_TOGGLE = "This may require you to toggle your nameplates to take effect.",
 	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
@@ -1477,6 +1468,24 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	CO_TOOLBAR_VISIBILITY_1 = "Always show",
 	CO_TOOLBAR_VISIBILITY_2 = "Only show in-character",
 	CO_TOOLBAR_VISIBILITY_3 = "Always hidden",
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES = "Show first names only",
+	NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES_HELP = "If checked, only show the first names rather than full names.|n|nThis can only be applied to player units, and will not work with profiles received from other roleplay addons.",
+	NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES = "Disable customizations in instances",
+	NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES_HELP = "If checked, disables nameplate customizations while in instances.|n|nIn instanced content friendly nameplates cannot be customized.",
+	NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS = "Disable customizations on NPC units",
+	NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS_HELP = "If checked, disables nameplate customizations on non-playable character units.",
+	NAMEPLATES_CONFIG_MAX_NAME_CHARS = "Maximum name length",
+	NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP = "The maximum number of characters to display for names and prefix titles. Names exceeding this length will be cropped.",
+	NAMEPLATES_CONFIG_MAX_TITLE_CHARS = "Maximum title length",
+	NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP = "The maximum number of characters to display for full titles. Titles exceeding this length will be cropped.",
+	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT = "Always show target unit",
+	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT_HELP = "If checked, your current target will always have its nameplate visible.",
 };
 
 -- Use Ellyb to generate the Localization system

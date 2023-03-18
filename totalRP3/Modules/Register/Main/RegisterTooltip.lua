@@ -484,7 +484,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 
 	-- OOC
 	if info.character and info.character.RP ~= 1 then
-		if getConfigValue(CONFIG_PREFER_OOC_ICON) == "TEXT" then
+		if getConfigValue(CONFIG_PREFER_OOC_ICON) == TRP3_OOCIndicatorStyle.Text then
 			completeName = strconcat(ColorManager.RED("[" .. loc.CM_OOC .. "] "), completeName);
 		else
 			rightIcons = strconcat(rightIcons, OOC_ICON);
@@ -1327,7 +1327,7 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_CHARACT_RELATION, true);
 	registerConfigKey(CONFIG_CHARACT_SPACING, true);
 	registerConfigKey(CONFIG_NO_FADE_OUT, false);
-	registerConfigKey(CONFIG_PREFER_OOC_ICON, "TEXT");
+	registerConfigKey(CONFIG_PREFER_OOC_ICON, TRP3_OOCIndicatorStyle.Text);
 	registerConfigKey(CONFIG_PETS_ICON, true);
 	registerConfigKey(CONFIG_PETS_TITLE, true);
 	registerConfigKey(CONFIG_PETS_OWNER, true);
@@ -1351,8 +1351,8 @@ local function onModuleInit()
 	};
 
 	local OOC_INDICATOR_TYPES = {
-		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. ColorManager.RED("[" .. loc.CM_OOC .. "] "), "TEXT"},
-		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. OOC_ICON, "ICON"}
+		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. ColorManager.RED("[" .. loc.CM_OOC .. "] "), TRP3_OOCIndicatorStyle.Text},
+		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. OOC_ICON, TRP3_OOCIndicatorStyle.Icon}
 	};
 
 	local HEALTH_FORMAT_TAB = {
