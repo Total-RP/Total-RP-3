@@ -48,10 +48,6 @@ local function loadingSequence()
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.module.initModules";
 	TRP3_API.module.initModules();
 
-	-- Welcome \o/
-	MAIN_SEQUENCE_DETAIL = "Welcome message";
-	TRP3_API.utils.message.displayMessage(loc.GEN_WELCOME_MESSAGE:format(Globals.version_display));
-
 	MAIN_SEQUENCE_DETAIL = "AddOn_TotalRP3.Communications.broadcast.init";
 	AddOn_TotalRP3.Communications.broadcast.init();
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.profile.init";
@@ -85,6 +81,13 @@ local function loadingSequence()
 	TRP3_API.configuration.constructConfigPage();
 
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
+
+	-- Welcome \o/
+	MAIN_SEQUENCE_DETAIL = "Welcome message";
+
+	if not TRP3_API.configuration.getValue("disable_welcome_message") then
+		TRP3_API.utils.message.displayMessage(loc.GEN_WELCOME_MESSAGE:format(Globals.version_display));
+	end
 
 	TRP3_API.Log("OnEnable() DONE");
 end
