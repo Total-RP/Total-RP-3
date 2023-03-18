@@ -74,7 +74,7 @@ TRP3_API.loc = {
 	REG_PLAYER_MSP_MOTTO = "Motto",
 	REG_PLAYER_MSP_HOUSE = "House name",
 	REG_PLAYER_MSP_NICK = "Nickname",
-	REG_PLAYER_TRP2_TRAITS = "Physiognomy",
+	REG_PLAYER_TRP2_TRAITS = "Facial features",
 	REG_PLAYER_TRP2_PIERCING = "Piercings",
 	REG_PLAYER_TRP2_TATTOO = "Tattoos",
 	REG_PLAYER_PSYCHO = "Personality traits",
@@ -1476,6 +1476,8 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 	NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES = "Show first names only",
 	NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES_HELP = "If checked, only show the first names rather than full names.|n|nThis can only be applied to player units, and will not work with profiles received from other roleplay addons.",
+	NAMEPLATES_CONFIG_CUSTOMIZE_GUILD = "Show custom guild names",
+	NAMEPLATES_CONFIG_CUSTOMIZE_GUILD_HELP = "If checked, show custom guild names on nameplates that support them.|n|nThis will not work with profiles received from other roleplay addons.",
 	NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES = "Disable customizations in instances",
 	NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES_HELP = "If checked, disables nameplate customizations while in instances.|n|nIn instanced content friendly nameplates cannot be customized.",
 	NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS = "Disable customizations on NPC units",
@@ -1486,6 +1488,12 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP = "The maximum number of characters to display for full titles. Titles exceeding this length will be cropped.",
 	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT = "Always show target unit",
 	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT_HELP = "If checked, your current target will always have its nameplate visible.",
+
+	CO_TOOLTIP_VOICE_REFERENCE = "Show voice reference",
+	REG_PLAYER_MISC_PRESET_GUILD_NAME = "Guild name",
+	REG_PLAYER_MISC_PRESET_GUILD_RANK = "Guild rank",
+	REG_PLAYER_MISC_PRESET_VOICE_REFERENCE = "Voice reference",
+	DEFAULT_GUILD_RANK = "Member",
 };
 
 -- Use Ellyb to generate the Localization system

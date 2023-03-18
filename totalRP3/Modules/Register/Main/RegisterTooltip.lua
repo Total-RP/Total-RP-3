@@ -72,6 +72,7 @@ local CONFIG_CHARACT_NOTIF = "tooltip_char_notif";
 local CONFIG_CHARACT_CURRENT = "tooltip_char_current";
 local CONFIG_CHARACT_OOC = "tooltip_char_ooc";
 local CONFIG_CHARACT_PRONOUNS = "tooltip_char_pronouns";
+local CONFIG_CHARACT_VOICE_REFERENCE = "tooltip_char_voice_reference";
 local CONFIG_CHARACT_ZONE = "tooltip_char_zone";
 local CONFIG_CHARACT_HEALTH = "tooltip_char_health";
 local CONFIG_CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
@@ -176,6 +177,10 @@ end
 
 local function showPronouns()
 	return getConfigValue(CONFIG_CHARACT_PRONOUNS);
+end
+
+local function showVoiceReference()
+	return getConfigValue(CONFIG_CHARACT_VOICE_REFERENCE);
 end
 
 local function showZone()
@@ -435,11 +440,14 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	local player = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetID)
 
 	local FIELDS_TO_CROP = {
-		TITLE    = 150,
-		NAME     = 100,
-		RACE     = 50,
-		CLASS    = 50,
-		PRONOUNS = 20,
+		TITLE = 150,
+		NAME = 100,
+		RACE = 50,
+		CLASS = 50,
+		PRONOUNS = 30,
+		GUILD_NAME = 30,
+		GUILD_RANK = 30,
+		VOICE_REFERENCE = 30,
 	}
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -578,19 +586,39 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	-- Guild
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local guild, grade = GetGuildInfo(targetType);
-	if showGuild() and guild then
-		local text = loc.REG_TT_GUILD:format(grade, colors.SECONDARY:WrapTextInColorCode(guild));
-		local membership;
-		if info.misc and info.misc.ST then
-			if info.misc.ST["6"] == 1 then -- IC guild membership
-				membership = IC_GUILD;
-			elseif info.misc.ST["6"] == 2 then -- OOC guild membership
-				membership = OOC_GUILD;
-			end
+	if showGuild() then
+		local guildName, guildRank = GetGuildInfo(targetType);
+		local guildIsCustom = false;
+
+		local customGuildInfo = player:GetCustomGuildMembership();
+		local customGuildName = customGuildInfo.name;
+		local customGuildRank = customGuildInfo.rank;
+
+		if customGuildName then
+			guildName = customGuildName;
+			guildRank = customGuildRank;
+			guildIsCustom = true;
+		elseif customGuildRank then
+			guildRank = customGuildRank;
 		end
 
-		tooltipBuilder:AddDoubleLine(text, membership, colors.MAIN, colors.MAIN, getSubLineFontSize());
+		if guildName then
+			guildName = crop(guildName, FIELDS_TO_CROP.GUILD_NAME);
+			guildRank = crop(guildRank or loc.DEFAULT_GUILD_RANK, FIELDS_TO_CROP.GUILD_RANK);
+
+			local text = string.format(loc.REG_TT_GUILD, guildRank, colors.SECONDARY:WrapTextInColorCode(guildName));
+			local membership = "";
+
+			if not guildIsCustom and info.misc and info.misc.ST then
+				if info.misc.ST["6"] == 1 then -- IC guild membership
+					membership = IC_GUILD;
+				elseif info.misc.ST["6"] == 2 then -- OOC guild membership
+					membership = OOC_GUILD;
+				end
+			end
+
+			tooltipBuilder:AddDoubleLine(text, membership, colors.MAIN, colors.MAIN, getSubLineFontSize());
+		end
 	end
 
 	tooltipBuilder:AddSpace();
@@ -632,17 +660,27 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	--
 
 	if showPronouns() then
-		local characteristics = info.characteristics;
-		local miscInfo = characteristics and characteristics.MI;
-		local miscIndex = miscInfo and FindInTableIf(miscInfo, function(struct)
-			return struct.NA == loc.REG_PLAYER_MISC_PRESET_PRONOUNS
-				or struct.NA == "Pronouns";
-		end);
+		local pronouns = player:GetCustomPronouns();
 
-		if miscIndex then
-			local pronouns = miscInfo[miscIndex];
-			local leftText = pronouns.NA;
-			local rightText = crop(pronouns.VA, FIELDS_TO_CROP.PRONOUNS);
+		if pronouns then
+			local leftText = loc.REG_PLAYER_MISC_PRESET_PRONOUNS;
+			local rightText = crop(pronouns, FIELDS_TO_CROP.PRONOUNS);
+			local lineText = string.format("%1$s: %2$s", leftText, colors.SECONDARY:WrapTextInColorCode(rightText));
+
+			tooltipBuilder:AddLine(lineText, colors.MAIN, getSubLineFontSize(), true);
+		end
+	end
+
+	--
+	-- Voice reference
+	--
+
+	if showVoiceReference() then
+		local pronouns = player:GetCustomVoiceReference();
+
+		if pronouns then
+			local leftText = loc.REG_PLAYER_MISC_PRESET_VOICE_REFERENCE;
+			local rightText = crop(pronouns, FIELDS_TO_CROP.VOICE_REFERENCE);
 			local lineText = string.format("%1$s: %2$s", leftText, colors.SECONDARY:WrapTextInColorCode(rightText));
 
 			tooltipBuilder:AddLine(lineText, colors.MAIN, getSubLineFontSize(), true);
@@ -837,7 +875,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 
 	local FIELDS_TO_CROP = {
 		TITLE = 150,
-		NAME  = 100
+		NAME  = 100,
 	}
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1321,6 +1359,7 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_CHARACT_CURRENT, true);
 	registerConfigKey(CONFIG_CHARACT_OOC, true);
 	registerConfigKey(CONFIG_CHARACT_PRONOUNS, true);
+	registerConfigKey(CONFIG_CHARACT_VOICE_REFERENCE, true);
 	registerConfigKey(CONFIG_CHARACT_ZONE, true);
 	registerConfigKey(CONFIG_CHARACT_HEALTH, 0);
 	registerConfigKey(CONFIG_CHARACT_CURRENT_SIZE, 140);
@@ -1540,6 +1579,11 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_PRONOUNS,
 				configKey = CONFIG_CHARACT_PRONOUNS,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_VOICE_REFERENCE,
+				configKey = CONFIG_CHARACT_VOICE_REFERENCE,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

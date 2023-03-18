@@ -4,7 +4,16 @@
 TRP3_API.flyway.patches = {};
 
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local pairs, wipe = pairs, wipe;
+
+local function SafeGet(t, k, ...)
+	local v = t[k];
+
+	if ... ~= nil then
+		return SafeGet(v, ...);
+	else
+		return v;
+	end
+end
 
 -- Delete notification system
 TRP3_API.flyway.patches["3"] = function()
@@ -151,5 +160,25 @@ TRP3_API.flyway.patches["13"] = function()
 		end
 
 		TRP3_Configuration["toolbar_show_on_login"] = nil;
+	end
+end
+
+TRP3_API.flyway.patches["14"] = function()
+	-- Add a new "ID" field to all Misc. Info fields which will be used
+	-- in preference to name lookups going forward. This won't be applied
+	-- to the register - we'll just let that update passively.
+
+	if not TRP3_Profiles then
+		return;
+	end
+
+	for _, profile in pairs(TRP3_Profiles) do
+		local miscInfo = SafeGet(profile, "player", "characteristics", "MI");
+
+		if miscInfo then
+			for _, miscData in ipairs(miscInfo) do
+				miscData.ID = TRP3_API.GetMiscInfoTypeFromData(miscData);
+			end
+		end
 	end
 end

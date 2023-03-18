@@ -6,20 +6,6 @@ local _, TRP3_API = ...;
 local Ellyb = Ellyb(...);
 local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
 
--- Public accessor
-TRP3_API.utils = {
-	log = {},
-	table = {},
-	str = {},
-	color = {},
-	math = {},
-	serial = {},
-	event = {},
-	music = {},
-	texture = {},
-	message = {},
-	resources = {},
-};
 -- TRP3 imports
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
