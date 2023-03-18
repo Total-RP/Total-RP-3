@@ -16,6 +16,7 @@ TRP3_NamePlatesSettings = nil;
 local DefaultSettings = {
 	CustomizeFirstNames = false,
 	CustomizeFullTitles = false,
+	CustomizeGuild = false,
 	CustomizeHealthColors = true,
 	CustomizeIcons = false,
 	CustomizeNameColors = true,
@@ -246,6 +247,12 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				max = 48,
 				step = 1,
 				integer = true,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_GUILD,
+				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_GUILD_HELP,
+				configKey = MapSettingToConfigKey("CustomizeGuild"),
 			},
 			{
 				inherit = "TRP3_ConfigH1",

@@ -16,6 +16,8 @@ local function GetOrCreateDisplayInfo(unitToken)
 
 	displayInfo.color = nil;
 	displayInfo.fullTitle = nil;
+	displayInfo.guildName = nil;
+	displayInfo.guildRank = nil;
 	displayInfo.icon = nil;
 	displayInfo.name = nil;
 	displayInfo.roleplayStatus = nil;
@@ -198,6 +200,14 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 
 			if TRP3_NamePlatesSettings.CustomizeRoleplayStatus then
 				displayInfo.roleplayStatus = player:GetRoleplayStatus();
+			end
+		end
+
+		do  -- Guild Membership
+			if TRP3_NamePlatesSettings.CustomizeGuild then
+				local guildInfo = player:GetCustomGuildMembership();
+				displayInfo.guildName = guildInfo.name;
+				displayInfo.guildRank = guildInfo.rank;
 			end
 		end
 
