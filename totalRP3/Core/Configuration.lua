@@ -384,6 +384,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	registerConfigKey("new_version_alert", true);
 	registerConfigKey("ui_sounds", true);
 	registerConfigKey("ui_animations", true);
+	registerConfigKey("disable_welcome_message", false);
 	registerConfigKey("default_color_picker", false);
 	registerConfigKey("increase_color_contrast", false);
 	registerConfigKey("date_format", "");
@@ -418,6 +419,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				title = loc.CO_GENERAL_UI_ANIMATIONS,
 				configKey = "ui_animations",
 				help = loc.CO_GENERAL_UI_ANIMATIONS_TT,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_GENERAL_DISABLE_WELCOME_MESSAGE,
+				configKey = "disable_welcome_message",
+				help = loc.CO_GENERAL_DISABLE_WELCOME_MESSAGE_HELP,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

@@ -1494,6 +1494,9 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	REG_PLAYER_MISC_PRESET_GUILD_RANK = "Guild rank",
 	REG_PLAYER_MISC_PRESET_VOICE_REFERENCE = "Voice reference",
 	DEFAULT_GUILD_RANK = "Member",
+
+	CO_GENERAL_DISABLE_WELCOME_MESSAGE = "Disable welcome message",
+	CO_GENERAL_DISABLE_WELCOME_MESSAGE_HELP = "Disables the welcome message displayed in the chat frame on login."
 };
 
 -- Use Ellyb to generate the Localization system
