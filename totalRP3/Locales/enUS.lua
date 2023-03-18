@@ -1196,7 +1196,7 @@ Example of |c0000ff00appropriate titles |r:
 - etc.]=],
 	["REG_PLAYER_TRP2_PIERCING"] = "Piercings",
 	["REG_PLAYER_TRP2_TATTOO"] = "Tattoos",
-	["REG_PLAYER_TRP2_TRAITS"] = "Physiognomy",
+	["REG_PLAYER_TRP2_TRAITS"] = "Facial features",
 	["REG_PLAYER_TUTO_ABOUT_COMMON"] = [=[|cff00ff00Character theme:|r
 You can choose a |cffffff00theme|r for your character. Think of it as an |cffffff00ambiance music for reading your character description|r.
 
