@@ -11,7 +11,7 @@ TRP3_API.MiscInfoType = {
 	House = 2,
 	Nickname = 3,
 	Motto = 4,
-	Traits = 5,
+	FacialFeatures = 5,
 	Piercings = 6,
 	Pronouns = 7,
 	GuildName = 8,
@@ -44,9 +44,9 @@ local MiscInfoTypeData = {
 		localizedName = L.REG_PLAYER_MSP_MOTTO,
 		icon = TRP3_InterfaceIcons.MiscInfoMotto,
 	},
-	[TRP3_API.MiscInfoType.Traits] = {
-		type = TRP3_API.MiscInfoType.Traits,
-		englishName = "Physiognomy",
+	[TRP3_API.MiscInfoType.FacialFeatures] = {
+		type = TRP3_API.MiscInfoType.FacialFeatures,
+		englishName = "Facial features",
 		localizedName = L.REG_PLAYER_TRP2_TRAITS,
 		icon = TRP3_InterfaceIcons.MiscInfoTraits,
 	},
@@ -132,8 +132,8 @@ function TRP3_API.GetMiscInfoTypeByName(miscName)
 		return TRP3_API.MiscInfoType.Nickname;
 	elseif miscName == "Motto" or miscName == L.REG_PLAYER_MSP_MOTTO then
 		return TRP3_API.MiscInfoType.Motto;
-	elseif miscName == "Physiognomy" or miscName == L.REG_PLAYER_TRP2_TRAITS then
-		return TRP3_API.MiscInfoType.Traits;
+	elseif miscName == "Facial features" or miscName == L.REG_PLAYER_TRP2_TRAITS then
+		return TRP3_API.MiscInfoType.FacialFeatures;
 	elseif miscName == "Piercings" or miscName == L.REG_PLAYER_TRP2_PIERCING then
 		return TRP3_API.MiscInfoType.Piercings;
 	elseif miscName == "Pronouns" or miscName == L.REG_PLAYER_MISC_PRESET_PRONOUNS then

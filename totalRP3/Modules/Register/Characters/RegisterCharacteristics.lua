@@ -641,7 +641,7 @@ local MISC_PRESET = {
 	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.House),
 	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Nickname),
 	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Motto),
-	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Traits),
+	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Facialfeatures),
 	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Piercings),
 	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Pronouns),
 	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.GuildName),
