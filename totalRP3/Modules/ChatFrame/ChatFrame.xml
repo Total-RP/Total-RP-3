@@ -9,6 +9,5 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="WIM.lua"/>
 	<Include file="Prat.lua"/>
 	<Include file="ElvUI.lua"/>
-	<Include file="Languages.lua"/>
 
 </Ui>

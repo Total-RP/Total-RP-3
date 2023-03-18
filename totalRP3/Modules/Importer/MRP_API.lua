@@ -78,6 +78,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		profile.player.characteristics.WE = importedProfile.AW;
 		if importedProfile.MO then
 			tinsert(profile.player.characteristics.MI, {
+				ID = TRP3_API.MiscInfoType.Motto,
 				NA = loc.REG_PLAYER_MSP_MOTTO;
 				VA = "\"" .. importedProfile.MO .. "\"";
 				IC = TRP3_InterfaceIcons.MiscInfoMotto;
@@ -85,6 +86,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		end
 		if importedProfile.NI then
 			tinsert(profile.player.characteristics.MI, {
+				ID = TRP3_API.MiscInfoType.Nickname,
 				NA = loc.REG_PLAYER_MSP_NICK;
 				VA = importedProfile.NI;
 				IC = TRP3_InterfaceIcons.MiscInfoNickname;
@@ -92,6 +94,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		end
 		if importedProfile.NH then
 			tinsert(profile.player.characteristics.MI, {
+				ID = TRP3_API.MiscInfoType.House,
 				NA = loc.REG_PLAYER_MSP_HOUSE;
 				VA = importedProfile.NH;
 				IC = TRP3_InterfaceIcons.MiscInfoHouse;
@@ -99,9 +102,26 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		end
 		if importedProfile.PN then
 			tinsert(profile.player.characteristics.MI, {
+				ID = TRP3_API.MiscInfoType.Pronouns,
 				NA = loc.REG_PLAYER_MISC_PRESET_PRONOUNS;
 				VA = importedProfile.PN;
 				IC = TRP3_InterfaceIcons.MiscInfoPronouns;
+			});
+		end
+		if importedProfile.PG then
+			tinsert(profile.player.characteristics.MI, {
+				ID = TRP3_API.MiscInfoType.GuildName,
+				NA = loc.REG_PLAYER_MISC_PRESET_GUILD_NAME;
+				VA = importedProfile.PG;
+				IC = TRP3_InterfaceIcons.MiscInfoGuildName;
+			});
+		end
+		if importedProfile.PR then
+			tinsert(profile.player.characteristics.MI, {
+				ID = TRP3_API.MiscInfoType.GuildRank,
+				NA = loc.REG_PLAYER_MISC_PRESET_GUILD_RANK;
+				VA = importedProfile.PR;
+				IC = TRP3_InterfaceIcons.MiscInfoGuildRank;
 			});
 		end
 		profile.player.character.CU = importedProfile.CU;

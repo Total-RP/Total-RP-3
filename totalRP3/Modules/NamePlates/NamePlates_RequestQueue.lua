@@ -482,17 +482,6 @@ end
 
 -- private
 function TRP3_NamePlatesRequestManagerMixin:OnProcessTimerTicked()
-	-- Don't allow errors in processing to kill the ticker; if an error occurs
-	-- we'll just flush the whole queue and hope the user doesn't re-encounter
-	-- the problem.
-
-	if not xpcall(self.OnProcessTimerTicked_Protected, CallErrorHandler, self) then
-		table.wipe(self.requests);
-		self.queue:Clear();
-	end
-end
-
-function TRP3_NamePlatesRequestManagerMixin:OnProcessTimerTicked_Protected()
 	self.slots:ProcessCooldown(self.TickPeriod);
 	self.queue:UpdateEnqueued();
 

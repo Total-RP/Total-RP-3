@@ -121,14 +121,20 @@ local function onStart()
 		msp.my['PN'] = nil;
 		if dataTab.MI then
 			for _, miscData in pairs(dataTab.MI) do
-				if miscData.NA == loc.REG_PLAYER_MSP_MOTTO or miscData.NA == "Motto" then
+				local miscType = TRP3_API.GetMiscInfoTypeFromData(miscData);
+
+				if miscType == TRP3_API.MiscInfoType.Motto then
 					msp.my['MO'] = miscData.VA;
-				elseif miscData.NA == loc.REG_PLAYER_MSP_HOUSE or miscData.NA == "House name" then
+				elseif miscType == TRP3_API.MiscInfoType.House then
 					msp.my['NH'] = miscData.VA;
-				elseif miscData.NA == loc.REG_PLAYER_MSP_NICK or miscData.NA == "Nickname" then
+				elseif miscType == TRP3_API.MiscInfoType.Nickname then
 					msp.my['NI'] = miscData.VA;
-				elseif miscData.NA == loc.REG_PLAYER_MISC_PRESET_PRONOUNS or miscData.NA == "Pronouns" then
+				elseif miscType == TRP3_API.MiscInfoType.Pronouns then
 					msp.my['PN'] = miscData.VA;
+				elseif miscType == TRP3_API.MiscInfoType.GuildName then
+					msp.my['PG'] = miscData.VA;
+				elseif miscType == TRP3_API.MiscInfoType.GuildRank then
+					msp.my['PR'] = miscData.VA;
 				end
 			end
 		end
@@ -186,7 +192,7 @@ local function onStart()
 	local SUPPORTED_FIELDS = {
 		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
 		"IC", "CO", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE",
-		"HI", "TR", "MU", "RS", "PS", "PN"
+		"HI", "TR", "MU", "RS", "PS", "PN", "PG", "PR",
 	};
 
 	local CHARACTERISTICS_FIELDS = {
@@ -256,27 +262,14 @@ local function onStart()
 	end
 
 	local MISC_INFO_FIELDS = {
-		MO = {  -- Motto
-			localizedText = loc.REG_PLAYER_MSP_MOTTO,
-			englishText = "Motto",
-			icon = TRP3_InterfaceIcons.MiscInfoMotto,
-			formatter = function(value) return string.format([["%s"]], value); end,
-		},
-		NH = {  -- House Name
-			localizedText = loc.REG_PLAYER_MSP_HOUSE,
-			englishText = "House name",
-			icon = TRP3_InterfaceIcons.MiscInfoHouse,
-		},
-		NI = {  -- Nickname
-			localizedText = loc.REG_PLAYER_MSP_NICK,
-			englishText = "Nickname",
-			icon = TRP3_InterfaceIcons.MiscInfoNickname,
-		},
-		PN = {  -- Pronouns
-			localizedText = loc.REG_PLAYER_MISC_PRESET_PRONOUNS,
-			englishText = "Pronouns",
-			icon = TRP3_InterfaceIcons.MiscInfoPronouns,
-		},
+		MO = Mixin(TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Motto), {
+			formatter = function(value) return string.format([["%s"]], value); end
+		}),
+		NH = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.House),
+		NI = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Nickname),
+		PN = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Pronouns),
+		PG = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.GuildName),
+		PR = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.GuildRank),
 	};
 
 	local function updateMiscInfoField(profile, field, value)
@@ -286,19 +279,19 @@ local function onStart()
 			return;
 		end
 
-		local miscInfo  = GetOrCreateTable(profile.characteristics, "MI");
-		local miscIndex = FindInTableIf(miscInfo, function(miscStruct)
-			return miscStruct.NA == fieldInfo.localizedText
-				or miscStruct.NA == fieldInfo.englishText;
+		local miscInfo = GetOrCreateTable(profile.characteristics, "MI");
+		local miscIndex = FindInTableIf(miscInfo, function(miscData)
+			return (miscData.NA == fieldInfo.localizedName) or (miscData.NA == fieldInfo.englishName);
 		end);
 
 		if value then
-			local miscStruct = GetOrCreateTable(miscInfo, miscIndex or #miscInfo + 1);
-			table.wipe(miscStruct);
+			local miscData = GetOrCreateTable(miscInfo, miscIndex or #miscInfo + 1);
+			table.wipe(miscData);
 
-			miscStruct.NA = fieldInfo.localizedText;
-			miscStruct.IC = fieldInfo.icon;
-			miscStruct.VA = fieldInfo.formatter and fieldInfo.formatter(value) or value;
+			miscData.ID = fieldInfo.type;
+			miscData.NA = fieldInfo.localizedName;
+			miscData.IC = fieldInfo.icon;
+			miscData.VA = fieldInfo.formatter and fieldInfo.formatter(value) or value;
 		elseif miscIndex then
 			table.remove(miscInfo, miscIndex);
 		end

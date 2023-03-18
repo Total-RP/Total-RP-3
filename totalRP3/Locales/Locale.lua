@@ -74,7 +74,7 @@ TRP3_API.loc = {
 	REG_PLAYER_MSP_MOTTO = "Motto",
 	REG_PLAYER_MSP_HOUSE = "House name",
 	REG_PLAYER_MSP_NICK = "Nickname",
-	REG_PLAYER_TRP2_TRAITS = "Physiognomy",
+	REG_PLAYER_TRP2_TRAITS = "Facial features",
 	REG_PLAYER_TRP2_PIERCING = "Piercings",
 	REG_PLAYER_TRP2_TATTOO = "Tattoos",
 	REG_PLAYER_PSYCHO = "Personality traits",
@@ -477,13 +477,13 @@ Class: 50 characters|r]],
 	CO_REGISTER = "Register settings",
 	CO_REGISTER_ABOUT_SETTINGS = "\"About\" settings",
 	CO_REGISTER_ABOUT_H1_SIZE = "Header 1 text size",
-	CO_REGISTER_ABOUT_H1_SIZE_TT = "Size of the text between {h1} tags. Default: %s",
+	CO_REGISTER_ABOUT_H1_SIZE_TT = "Size of the text between {h1} tags. Default: %d",
 	CO_REGISTER_ABOUT_H2_SIZE = "Header 2 text size",
-	CO_REGISTER_ABOUT_H2_SIZE_TT = "Size of the text between {h2} tags. Default: %s",
+	CO_REGISTER_ABOUT_H2_SIZE_TT = "Size of the text between {h2} tags. Default: %d",
 	CO_REGISTER_ABOUT_H3_SIZE = "Header 3 text size",
-	CO_REGISTER_ABOUT_H3_SIZE_TT = "Size of the text between {h3} tags. Default: %s",
+	CO_REGISTER_ABOUT_H3_SIZE_TT = "Size of the text between {h3} tags. Default: %d",
 	CO_REGISTER_ABOUT_P_SIZE = "Paragraph text size",
-	CO_REGISTER_ABOUT_P_SIZE_TT = "Size of the text outside of header tags. Default: %s",
+	CO_REGISTER_ABOUT_P_SIZE_TT = "Size of the text outside of header tags. Default: %d",
 	CO_REGISTER_AUTO_PURGE = "Auto purge directory",
 	CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reaches a certain threshold. We strongly recommend to avoid disabling the purge system.",
 	CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
@@ -1349,10 +1349,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY = "Hide bars on |cff449fe0Blizzard|r nameplates",
 	NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP = "If checked, this enables the use of name-only mode for |cff449fe0Blizzard|r nameplates.|n|nIn this mode, all nameplates will have their health bars hidden, including those of enemy units and other players with or without roleplay profiles.|n|nThis option requires a UI reload to take effect.",
 
-	NAMEPLATES_MODULE_DISABLE_WARNING = "Disabling the nameplates module will prevent any nameplate customizations from being made. A user interface reload is required for this to take effect.|n|n|cffff0000Warning: |rOnce disabled, this module can only be re-enabled from the |cffffcc00Modules status|r page.|n|nAre you sure you want to disable this module?",
-	NAMEPLATES_MODULE_ACTIVE_STATUS = "Module |cff00ff00active|r (%1$s|r)",
-	NAMEPLATES_MODULE_INACTIVE_STATUS = "Module |cffff9900inactive|r (no addon found)",
-
 	BLIZZARD_NAMEPLATES_MODULE_NAME = "Blizzard Nameplates",
 	BLIZZARD_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Blizzard's default nameplates.",
 
@@ -1439,11 +1435,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	CO_MODULES_SUPPORTS_HOTRELOAD = "This module supports hot reload.",
 	NAMEPLATES_CONFIG_REQUIRES_TOGGLE = "This may require you to toggle your nameplates to take effect.",
 	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
@@ -1473,10 +1464,36 @@ If you wish to report %s's profile and you cannot target them you will need to o
 ]],
 
 	CO_TOOLBAR_VISIBILITY = "Display conditions",
-	CO_TOOLBAR_VISIBILITY_HELP = "Configures the conditions under which the toolbar should be shown.|n|nThe visibility of the toolbar can be forcefully toggled by running the |cff00ff00/trp switch toolbar|r slash command or by right-clicking the minimap button.",
+	CO_TOOLBAR_VISIBILITY_HELP = "Configures the conditions under which the toolbar should be shown.|n|nThe visibility of the toolbar can be forcefully toggled by running the |cff00ff00/trp3 switch toolbar|r slash command or by right-clicking the minimap button.",
 	CO_TOOLBAR_VISIBILITY_1 = "Always show",
 	CO_TOOLBAR_VISIBILITY_2 = "Only show in-character",
 	CO_TOOLBAR_VISIBILITY_3 = "Always hidden",
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES = "Show first names only",
+	NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES_HELP = "If checked, only show the first names rather than full names.|n|nThis can only be applied to player units, and will not work with profiles received from other roleplay addons.",
+	NAMEPLATES_CONFIG_CUSTOMIZE_GUILD = "Show custom guild names",
+	NAMEPLATES_CONFIG_CUSTOMIZE_GUILD_HELP = "If checked, show custom guild names on nameplates that support them.|n|nThis will not work with profiles received from other roleplay addons.",
+	NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES = "Disable customizations in instances",
+	NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES_HELP = "If checked, disables nameplate customizations while in instances.|n|nIn instanced content friendly nameplates cannot be customized.",
+	NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS = "Disable customizations on NPC units",
+	NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS_HELP = "If checked, disables nameplate customizations on non-playable character units.",
+	NAMEPLATES_CONFIG_MAX_NAME_CHARS = "Maximum name length",
+	NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP = "The maximum number of characters to display for names and prefix titles. Names exceeding this length will be cropped.",
+	NAMEPLATES_CONFIG_MAX_TITLE_CHARS = "Maximum title length",
+	NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP = "The maximum number of characters to display for full titles. Titles exceeding this length will be cropped.",
+	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT = "Always show target unit",
+	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT_HELP = "If checked, your current target will always have its nameplate visible.",
+
+	CO_TOOLTIP_VOICE_REFERENCE = "Show voice reference",
+	REG_PLAYER_MISC_PRESET_GUILD_NAME = "Guild name",
+	REG_PLAYER_MISC_PRESET_GUILD_RANK = "Guild rank",
+	REG_PLAYER_MISC_PRESET_VOICE_REFERENCE = "Voice reference",
+	DEFAULT_GUILD_RANK = "Member",
 };
 
 -- Use Ellyb to generate the Localization system

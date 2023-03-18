@@ -133,13 +133,16 @@ TRP3_InterfaceIcons = {
 	-- Miscellaneous Info Field Icons
 	--
 
-	MiscInfoHouse     = { "inv_misc_kingsring1", "inv_jewelry_ring_36" },
-	MiscInfoNickname  = { "ability_hunter_beastcall" },
-	MiscInfoMotto     = { "inv_inscription_scrollofwisdom_01", "inv_scroll_01" },
-	MiscInfoTraits    = { "spell_shadow_mindsteal" },
-	MiscInfoPiercings = { "inv_jewelry_ring_14" },
-	MiscInfoPronouns  = { "vas_namechange", "inv_scroll_08" },
-	MiscInfoTattoos   = { "inv_inscription_inkblack01", "inv_potion_65" },
+	MiscInfoGuildName      = { "vas_guildnamechange", "inv_banner_03" },
+	MiscInfoGuildRank      = { "achievement_guildperk_honorablemention_rank2", "achievement_pvp_o_04" },
+	MiscInfoHouse          = { "inv_misc_kingsring1", "inv_jewelry_ring_36" },
+	MiscInfoMotto          = { "inv_inscription_scrollofwisdom_01", "inv_scroll_01" },
+	MiscInfoNickname       = { "ability_hunter_beastcall" },
+	MiscInfoPiercings      = { "inv_jewelry_ring_14" },
+	MiscInfoPronouns       = { "vas_namechange", "inv_scroll_08" },
+	MiscInfoTattoos        = { "inv_inscription_inkblack01", "inv_potion_65" },
+	MiscInfoTraits         = { "spell_shadow_mindsteal" },
+	MiscInfoVoiceReference = { "spell_holy_silence" },
 
 	--
 	-- Personality Trait Icons
@@ -179,6 +182,7 @@ TRP3_InterfaceIcons = {
 	LanguageDraenei       = { "inv_misc_tournaments_banner_draenei", "inv_wand_15", DEFAULT_ICON_NAME },
 	LanguageDwarvish      = { "inv_misc_tournaments_banner_dwarf", "spell_arcane_teleportironforge" },
 	LanguageForsaken      = { "inv_misc_tournaments_banner_scourge", "spell_arcane_teleportundercity" },
+	LanguageFurbolg       = { "inv_gauntlets_02" },
 	LanguageGnomish       = { "inv_misc_tournaments_banner_gnome", "inv_misc_enggizmos_01" },
 	LanguageGnomishBinary = { "inv_misc_punchcards_blue" },
 	LanguageGoblin        = { "achievement_goblinhead", DEFAULT_ICON_NAME },

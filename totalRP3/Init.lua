@@ -40,12 +40,21 @@ TRP3_API.globals = {
 	--@end-non-debug@]===]
 };
 
--- Public API
 TRP3_API.r = {};
 
--- I will be moving all the stuff from totalRP3/core/impl/utils to their own modules
--- To ensure backward compatibility, we will keep an reference to the old utils table
-TRP3_API.utils = {};
+TRP3_API.utils = {
+	log = {},
+	table = {},
+	str = {},
+	color = {},
+	math = {},
+	serial = {},
+	event = {},
+	music = {},
+	texture = {},
+	message = {},
+	resources = {},
+};
 
 -- Make our shared table public so that our API is accessible to other add-ons and external modules
 _G.TRP3_API = TRP3_API;
