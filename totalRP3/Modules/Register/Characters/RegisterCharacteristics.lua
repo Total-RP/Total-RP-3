@@ -425,6 +425,7 @@ local function setConsultDisplay(context)
 		previous = TRP3_RegisterCharact_CharactPanel_MiscTitle;
 
 		for frameIndex, miscStructure in ipairs(dataTab.MI) do
+			local field = TRP3_API.GetMiscFieldFromData(miscStructure);
 			local frame = miscCharFrame[frameIndex];
 			if frame == nil then
 				frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscInfoLine" .. frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_RegisterInfoLine");
@@ -434,9 +435,9 @@ local function setConsultDisplay(context)
 			frame:ClearAllPoints();
 			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 7);
 			frame:SetPoint("RIGHT", 0, 0);
-			frame.Icon:SetTexture([[interface\icons\]] .. miscStructure.IC);
-			frame.Name:SetText(miscStructure.NA or "");
-			frame.Value:SetText(miscStructure.VA or "");
+			frame.Icon:SetTexture([[interface\icons\]] .. field.icon);
+			frame.Name:SetText(field.localizedName or "");
+			frame.Value:SetText(field.value or "");
 			frame:Show();
 			previous = frame;
 		end
@@ -625,9 +626,10 @@ local function onMiscDelete(self)
 	setEditDisplay();
 end
 
-local function miscAdd(NA, VA, IC)
+local function miscAdd(ID, NA, VA, IC)
 	saveInDraft();
 	tinsert(draftData.MI, {
+		ID = ID,
 		NA = NA,
 		VA = VA,
 		IC = IC,
@@ -636,62 +638,26 @@ local function miscAdd(NA, VA, IC)
 end
 
 local MISC_PRESET = {
-	{
-		NA = loc.REG_PLAYER_MSP_HOUSE,
-		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfoHouse,
-	},
-	{
-		NA = loc.REG_PLAYER_MSP_NICK,
-		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfoNickname,
-	},
-	{
-		NA = loc.REG_PLAYER_MSP_MOTTO,
-		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfoMotto,
-	},
-	{
-		NA = loc.REG_PLAYER_TRP2_TRAITS,
-		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfoTraits,
-	},
-	{
-		NA = loc.REG_PLAYER_TRP2_PIERCING,
-		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfoPiercings,
-	},
-	{
-		NA = loc.REG_PLAYER_MISC_PRESET_PRONOUNS,
-		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfoPronouns,
-	},
-	{
-		NA = loc.REG_PLAYER_MISC_PRESET_GUILD_NAME,
-		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfoGuildName,
-	},
-	{
-		NA = loc.REG_PLAYER_MISC_PRESET_GUILD_RANK,
-		VA = loc.DEFAULT_GUILD_RANK,
-		IC = TRP3_InterfaceIcons.MiscInfoGuildRank,
-	},
-	{
-		NA = loc.REG_PLAYER_TRP2_TATTOO,
-		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfoTattoos,
-	},
-	{
+	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.House),
+	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Nickname),
+	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Motto),
+	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Traits),
+	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Piercings),
+	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Pronouns),
+	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.GuildName),
+	Mixin(TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.GuildRank), {
+		value = loc.DEFAULT_GUILD_RANK,
+	}),
+	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Tattoos),
+	Mixin(TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Custom), {
 		list = "|cff00ff00" .. loc.REG_PLAYER_ADD_NEW,
-		NA = loc.CM_NAME,
-		VA = loc.CM_VALUE,
-		IC = TRP3_InterfaceIcons.Default,
-	},
-}
+		value = loc.CM_VALUE,
+	}),
+};
 
 local function miscAddDropDownSelection(index)
 	local preset = MISC_PRESET[index];
-	miscAdd(preset.NA, preset.VA, preset.IC);
+	miscAdd(preset.type, preset.localizedName, preset.value or "", preset.icon);
 end
 
 local function SortCompareMiscEntries(a, b)
@@ -701,7 +667,7 @@ local function SortCompareMiscEntries(a, b)
 	if a.list ~= b.list then
 		return a.list == nil;  -- Force "Create new" to end of list.
 	else
-		return strcmputf8i(a.NA, b.NA) < 0;
+		return strcmputf8i(a.localizedName, b.localizedName) < 0;
 	end
 end
 
@@ -709,7 +675,7 @@ local function miscAddDropDown()
 	local values = {};
 
 	for index, preset in pairs(MISC_PRESET) do
-		table.insert(values, { preset.list or preset.NA, index });
+		table.insert(values, { preset.list or preset.localizedName, index });
 	end
 
 	table.sort(values, SortCompareMiscEntries);

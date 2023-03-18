@@ -40,12 +40,21 @@ TRP3_API.globals = {
 	--@end-non-debug@]===]
 };
 
--- Public API
 TRP3_API.r = {};
 
--- I will be moving all the stuff from totalRP3/core/impl/utils to their own modules
--- To ensure backward compatibility, we will keep an reference to the old utils table
-TRP3_API.utils = {};
+TRP3_API.utils = {
+	log = {},
+	table = {},
+	str = {},
+	color = {},
+	math = {},
+	serial = {},
+	event = {},
+	music = {},
+	texture = {},
+	message = {},
+	resources = {},
+};
 
 -- Get a new instance of the Ellyb library
 TRP3_API.Ellyb = Ellyb:GetInstance(addOnName);

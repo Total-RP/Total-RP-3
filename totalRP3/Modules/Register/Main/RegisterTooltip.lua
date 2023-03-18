@@ -425,19 +425,6 @@ local TOOLTIP_BLOCKED_IGNORED_COLOR = Ellyb.ColorManager.RED;
 local TOOLTIP_BLOCKED_MATURE_COLOR = Ellyb.Color.CreateFromRGBA(1.00, 0.75, 0.86, 1.00);
 local TOOLTIP_BLOCKED_MAIN_COLOR = Ellyb.Color.CreateFromRGBA(1.00, 0.75, 0.00, 1.00);
 
-local function FindMiscInfoField(miscInfo, localizedName, englishName)
-	if not miscInfo then
-		return nil;
-	end
-
-	local function Predicate(struct)
-		return (strcmputf8i(struct.NA, localizedName) == 0) or (strcmputf8i(struct.NA, englishName) == 0);
-	end
-
-	local index = FindInTableIf(miscInfo, Predicate);
-	return miscInfo[index];
-end
-
 --- The complete character's tooltip writing sequence.
 local function writeTooltipForCharacter(targetID, _, targetType)
 	local info = getCharacterInfoTab(targetID);
@@ -597,16 +584,16 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		local guildName, guildRank = GetGuildInfo(targetType);
 		local guildIsCustom = false;
 
-		local miscInfo = info.characteristics and info.characteristics.MI or nil;
-		local customGuildName = FindMiscInfoField(miscInfo, loc.REG_PLAYER_MISC_PRESET_GUILD_NAME, "Guild name");
-		local customGuildRank = FindMiscInfoField(miscInfo, loc.REG_PLAYER_MISC_PRESET_GUILD_RANK, "Guild rank");
+		local customGuildInfo = player:GetCustomGuildMembership();
+		local customGuildName = customGuildInfo.name;
+		local customGuildRank = customGuildInfo.rank;
 
 		if customGuildName then
-			guildName = customGuildName.VA;
-			guildRank = customGuildRank and customGuildRank.VA or nil;
+			guildName = customGuildName;
+			guildRank = customGuildRank;
 			guildIsCustom = true;
 		elseif customGuildRank then
-			guildRank = customGuildRank.VA;
+			guildRank = customGuildRank;
 		end
 
 		if guildName then
@@ -667,12 +654,11 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	--
 
 	if showPronouns() then
-		local miscInfo = info.characteristics and info.characteristics.MI or nil;
-		local pronouns = FindMiscInfoField(miscInfo, loc.REG_PLAYER_MISC_PRESET_PRONOUNS, "Pronouns");
+		local pronouns = player:GetCustomPronouns();
 
 		if pronouns then
 			local leftText = loc.REG_PLAYER_MISC_PRESET_PRONOUNS;
-			local rightText = crop(pronouns.VA, FIELDS_TO_CROP.PRONOUNS);
+			local rightText = crop(pronouns, FIELDS_TO_CROP.PRONOUNS);
 			local lineText = string.format("%1$s: %2$s", leftText, colors.SECONDARY:WrapTextInColorCode(rightText));
 
 			tooltipBuilder:AddLine(lineText, colors.MAIN, getSubLineFontSize(), true);

@@ -35,6 +35,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Globals.lua"/>
 	<Include file="Events.lua"/>
 	<Include file="Utils.lua"/>
+	<Include file="ProfileUtil.lua"/>
 	<Include file="UITools.lua"/>
 	<Include file="Slash.lua"/>
 

@@ -204,6 +204,41 @@ function Player:GetCurrentlyText()
 	return self:GetInfo("character/CU");
 end
 
+function Player:GetMiscFieldByType(miscType)
+	local miscInfo = self:GetInfo("characteristics/MI");
+
+	if miscInfo then
+		return TRP3_API.GetMiscFieldByType(miscInfo, miscType);
+	else
+		return nil;
+	end
+end
+
+function Player:GetMiscFields()
+	local miscInfo = self:GetInfo("characteristics/MI");
+
+	if miscInfo then
+		return TRP3_API.GetMiscFields(miscInfo);
+	else
+		return {};
+	end
+end
+
+function Player:GetCustomGuildMembership()
+	local guildNameField = self:GetMiscFieldByType(TRP3_API.MiscInfoType.GuildName);
+	local guildRankField = self:GetMiscFieldByType(TRP3_API.MiscInfoType.GuildRank);
+
+	return {
+		name = guildNameField and guildNameField.value or nil,
+		rank = guildRankField and guildRankField.value or nil,
+	};
+end
+
+function Player:GetCustomPronouns()
+	local fieldInfo = self:GetMiscFieldByType(TRP3_API.MiscInfoType.Pronouns);
+	return fieldInfo and fieldInfo.value or nil;
+end
+
 function Player:GetAccountType()
 	local characterInfo = TRP3_API.register.getUnitIDCharacter(self:GetCharacterID());
 	return characterInfo.isTrial
