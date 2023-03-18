@@ -3,7 +3,7 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = Ellyb(...);
+local Ellyb = TRP3_API.Ellyb;
 
 ---@class ChatLinkTooltipLines
 local ChatLinkTooltipLines, _private = TRP3_API.Ellyb.Class("ChatLinkTooltipLines");

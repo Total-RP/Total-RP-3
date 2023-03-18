@@ -1,5 +1,5 @@
----@type Ellyb
-local Ellyb = Ellyb(...);
+local TRP3_API = select(2, ...);
+local Ellyb = TRP3_API.Ellyb;
 
 -- We will remember if the locale is French or not, as French has some special cases we need to handle
 -- local IS_FRENCH_LOCALE = _G.GetLocale() == "frFR";

@@ -3,7 +3,7 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = Ellyb(...);
+local Ellyb = TRP3_API.Ellyb;
 
 -- Public accessor
 TRP3_API.profile = {};

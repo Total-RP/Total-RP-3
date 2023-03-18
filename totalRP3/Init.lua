@@ -3,7 +3,7 @@
 
 -- First file loaded. It will do the import stuff that needs to be run first
 ---@class TRP3_API
-local addOnName, TRP3_API = ...;
+local TRP3_API = select(2, ...);
 
 --- Build version, based on Git revision number (ex: 1723)
 --[===[@non-debug@
@@ -55,10 +55,6 @@ TRP3_API.utils = {
 	message = {},
 	resources = {},
 };
-
--- Get a new instance of the Ellyb library
-TRP3_API.Ellyb = Ellyb:GetInstance(addOnName);
-TRP3_API.Ellyb:SetDebugMode(TRP3_API.globals.DEBUG_MODE);
 
 -- Make our shared table public so that our API is accessible to other add-ons and external modules
 _G.TRP3_API = TRP3_API;

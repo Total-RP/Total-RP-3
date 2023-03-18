@@ -205,9 +205,9 @@ end
 
 local function getTooltipTextColors()
 	local colors = {
-		TITLE = Ellyb.Color.CreateFromHexa(getConfigValue(CONFIG_TOOLTIP_TITLE_COLOR)),
-		MAIN = Ellyb.Color.CreateFromHexa(getConfigValue(CONFIG_TOOLTIP_MAIN_COLOR)),
-		SECONDARY = Ellyb.Color.CreateFromHexa(getConfigValue(CONFIG_TOOLTIP_SECONDARY_COLOR)),
+		TITLE = TRP3_API.Ellyb.Color.CreateFromHexa(getConfigValue(CONFIG_TOOLTIP_TITLE_COLOR)),
+		MAIN = TRP3_API.Ellyb.Color.CreateFromHexa(getConfigValue(CONFIG_TOOLTIP_MAIN_COLOR)),
+		SECONDARY = TRP3_API.Ellyb.Color.CreateFromHexa(getConfigValue(CONFIG_TOOLTIP_SECONDARY_COLOR)),
 	};
 
 	return colors;
@@ -426,9 +426,9 @@ local function getLevelIconOrText(targetType)
 	end
 end
 
-local TOOLTIP_BLOCKED_IGNORED_COLOR = Ellyb.ColorManager.RED;
-local TOOLTIP_BLOCKED_MATURE_COLOR = Ellyb.Color.CreateFromRGBA(1.00, 0.75, 0.86, 1.00);
-local TOOLTIP_BLOCKED_MAIN_COLOR = Ellyb.Color.CreateFromRGBA(1.00, 0.75, 0.00, 1.00);
+local TOOLTIP_BLOCKED_IGNORED_COLOR = TRP3_API.Ellyb.ColorManager.RED;
+local TOOLTIP_BLOCKED_MATURE_COLOR = TRP3_API.Ellyb.Color.CreateFromRGBA(1.00, 0.75, 0.86, 1.00);
+local TOOLTIP_BLOCKED_MAIN_COLOR = TRP3_API.Ellyb.Color.CreateFromRGBA(1.00, 0.75, 0.00, 1.00);
 
 --- The complete character's tooltip writing sequence.
 local function writeTooltipForCharacter(targetID, _, targetType)

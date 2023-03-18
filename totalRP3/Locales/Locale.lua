@@ -3,7 +3,7 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = Ellyb(_);
+local Ellyb = TRP3_API.Ellyb;
 
 -- WoW imports
 local pairs = pairs;

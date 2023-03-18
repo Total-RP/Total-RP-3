@@ -1,5 +1,5 @@
----@type Ellyb
-local Ellyb = Ellyb(...);
+local TRP3_API = select(2, ...);
+local Ellyb = TRP3_API.Ellyb;
 
 -- We are using Ellyb.loc here to store the locale table so we get code completion from the IDE
 -- The table will be replaced by the complete Localization system, with metatable lookups for the localization keys

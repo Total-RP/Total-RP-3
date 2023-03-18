@@ -2,8 +2,8 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 ---@type TRP3_API
-local addonName, TRP3_API = ...;
-local Ellyb = Ellyb(addonName);
+local TRP3_API = select(2, ...);
+local Ellyb = TRP3_API.Ellyb;
 
 -- Lua imports
 local tconcat = table.concat;
