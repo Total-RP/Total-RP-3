@@ -6,6 +6,47 @@ local TRP3_NamePlates = TRP3_NamePlates;
 local TRP3_NamePlatesUtil = TRP3_NamePlatesUtil;
 local L = TRP3_API.loc;
 
+local NIL_SENTINEL = {};
+
+local function FormatStashToken(key)
+	return "trp3_original_" .. key;
+end
+
+local function OverrideStateField(state, field, value)
+	local token = FormatStashToken(field);
+
+	if state[token] == nil then
+		local original = state[field];
+
+		if original == nil then
+			original = NIL_SENTINEL;
+		end
+
+		state[token] = original;
+	end
+
+	state[field] = value;
+	return true;
+end
+
+local function RestoreStateField(state, field)
+	local token = FormatStashToken(field);
+	local original = state[token];
+
+	if original == nil then
+		return false;  -- This field isn't overridden.
+	end
+
+	if original == NIL_SENTINEL then
+		original = nil;
+	end
+
+	state[field] = original;
+	state[token] = nil;
+
+	return true;
+end
+
 local function IsNamePlateInNameOnlyMode(nameplate)
 	local unitframe = nameplate.parent.UnitFrame;
 	return nameplate.IN_NAMEONLY and unitframe and ShouldShowName(unitframe);
@@ -87,7 +128,6 @@ function TRP3_KuiNamePlates:OnNamePlateCreate(nameplate)
 	-- too much with Kui's internal state.
 
 	hooksecurefunc(nameplate, "UpdateNameText", function(...) return self:OnNameplateNameTextUpdated(...); end);
-	hooksecurefunc(nameplate, "UpdateGuildText", function(...) return self:OnNameplateGuildTextUpdated(...); end);
 
 	do
 		-- Icon widget.
@@ -155,22 +195,6 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 
 	self:UpdateNamePlateFullTitle(nameplate);
 	self:UpdateNamePlateIcon(nameplate);
-end
-
-function TRP3_KuiNamePlates:OnNameplateGuildTextUpdated(nameplate)
-	if not self:CanCustomizeNamePlate(nameplate) then
-		return;
-	elseif not IsNamePlateInNameOnlyMode(nameplate) then
-		return;  -- Kui only supports guild strings in name-only mode.
-	end
-
-	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
-	local displayText = displayInfo and displayInfo.guildName or nil;
-
-	if displayText then
-		nameplate.GuildText:SetText(displayText);
-		nameplate.GuildText:Show();
-	end
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlateHealthBar(nameplate)
@@ -264,8 +288,19 @@ function TRP3_KuiNamePlates:UpdateNamePlateGuildText(nameplate)
 		return;
 	end
 
-	-- Guilds are managed through a posthook.
-	nameplate:UpdateGuildText();
+	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
+	local displayText = displayInfo and displayInfo.guildName or nil;
+	local shouldUpdate;
+
+	if displayText then
+		shouldUpdate = OverrideStateField(nameplate.state, "guild_text", displayText);
+	else
+		shouldUpdate = RestoreStateField(nameplate.state, "guild_text");
+	end
+
+	if shouldUpdate then
+		nameplate:UpdateGuildText();
+	end
 end
 
 function TRP3_KuiNamePlates:EvaluateNamePlateVisibility(nameplate)
