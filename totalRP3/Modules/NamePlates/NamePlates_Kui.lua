@@ -87,6 +87,7 @@ function TRP3_KuiNamePlates:OnNamePlateCreate(nameplate)
 	-- too much with Kui's internal state.
 
 	hooksecurefunc(nameplate, "UpdateNameText", function(...) return self:OnNameplateNameTextUpdated(...); end);
+	hooksecurefunc(nameplate, "UpdateGuildText", function(...) return self:OnNameplateGuildTextUpdated(...); end);
 
 	do
 		-- Icon widget.
@@ -154,6 +155,22 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 
 	self:UpdateNamePlateFullTitle(nameplate);
 	self:UpdateNamePlateIcon(nameplate);
+end
+
+function TRP3_KuiNamePlates:OnNameplateGuildTextUpdated(nameplate)
+	if not self:CanCustomizeNamePlate(nameplate) then
+		return;
+	elseif not IsNamePlateInNameOnlyMode(nameplate) then
+		return;  -- Kui only supports guild strings in name-only mode.
+	end
+
+	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
+	local displayText = displayInfo and displayInfo.guildName or nil;
+
+	if displayText then
+		nameplate.GuildText:SetText(displayText);
+		nameplate.GuildText:Show();
+	end
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlateHealthBar(nameplate)
@@ -242,6 +259,15 @@ function TRP3_KuiNamePlates:UpdateNamePlateNameText(nameplate)
 	nameplate:UpdateNameText();
 end
 
+function TRP3_KuiNamePlates:UpdateNamePlateGuildText(nameplate)
+	if not self:CanCustomizeNamePlate(nameplate) then
+		return;
+	end
+
+	-- Guilds are managed through a posthook.
+	nameplate:UpdateGuildText();
+end
+
 function TRP3_KuiNamePlates:EvaluateNamePlateVisibility(nameplate)
 	if not self:CanCustomizeNamePlate(nameplate) then
 		return;
@@ -270,6 +296,7 @@ function TRP3_KuiNamePlates:UpdateNamePlate(nameplate)
 	-- the name text being updated.
 
 	self:UpdateNamePlateNameText(nameplate);
+	self:UpdateNamePlateGuildText(nameplate);
 	self:UpdateNamePlateHealthBar(nameplate);
 	self:UpdateNamePlateVisibility(nameplate);
 end
