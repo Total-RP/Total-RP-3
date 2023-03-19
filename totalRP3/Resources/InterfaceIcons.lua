@@ -235,14 +235,4 @@ do
 
 		TRP3_InterfaceIcons[id] = name or DEFAULT_ICON_NAME;
 	end
-
-	-- Legacy compatibility: A few icons are copied to the globals table.
-	-- These usages have all been cleaned up internally, but might still be
-	-- used by Extended & co.
-
-	TRP3_API.globals.icons = {
-		default = TRP3_InterfaceIcons.Default,
-		unknown = TRP3_InterfaceIcons.Unknown,
-		profile_default = TRP3_InterfaceIcons.ProfileDefault,
-	};
 end
