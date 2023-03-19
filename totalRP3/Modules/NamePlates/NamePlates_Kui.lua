@@ -56,6 +56,15 @@ function TRP3_KuiNamePlates:OnModuleEnable()
 	self.plugin:RegisterMessage("LostTarget");
 	self.plugin:RegisterMessage("Combat");
 	self.plugin:RegisterMessage("Hide");
+
+	-- Nameplate visibility is handled through a fade rule. As we only ever
+	-- forcefully hide nameplates with this rule we give it a high priority.
+
+	local FADE_PRIORITY = 15;
+	local FADE_RULE_ID = "TRP3_KuiNamePlates";
+
+	self.fading = KuiNameplates:GetPlugin("Fading");
+	self.fading:AddFadeRule(GenerateClosure(self.EvaluateNamePlateVisibility, self), FADE_PRIORITY, FADE_RULE_ID);
 end
 
 function TRP3_KuiNamePlates:OnNamePlateDataUpdated(_, nameplate, unitToken, displayInfo)
@@ -233,7 +242,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateNameText(nameplate)
 	nameplate:UpdateNameText();
 end
 
-function TRP3_KuiNamePlates:UpdateNamePlateVisibility(nameplate)
+function TRP3_KuiNamePlates:EvaluateNamePlateVisibility(nameplate)
 	if not self:CanCustomizeNamePlate(nameplate) then
 		return;
 	end
@@ -241,16 +250,14 @@ function TRP3_KuiNamePlates:UpdateNamePlateVisibility(nameplate)
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
 
 	if displayInfo and displayInfo.shouldHide then
-		if nameplate:IsShown() then
-			nameplate:Hide();
-			KuiNameplatesCore:Hide(nameplate);
-		end
+		return 0;
 	else
-		if not nameplate:IsShown() then
-			nameplate:Show();
-			KuiNameplatesCore:Show(nameplate);
-		end
+		return nil;  -- Allow lower priority rules to be processed.
 	end
+end
+
+function TRP3_KuiNamePlates:UpdateNamePlateVisibility(nameplate)
+	self.fading:UpdateFrame(nameplate);
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlate(nameplate)
