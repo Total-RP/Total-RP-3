@@ -12,6 +12,14 @@ local function FormatStashToken(key)
 	return "trp3_original_" .. key;
 end
 
+local function ClearStashedFields(state)
+	for key in pairs(state) do
+		if string.find(key, "^trp3_original_") then
+			state[key] = nil;
+		end
+	end
+end
+
 local function OverrideStateField(state, field, value)
 	local token = FormatStashToken(field);
 
@@ -79,14 +87,14 @@ function TRP3_KuiNamePlates:OnModuleEnable()
 
 	self.plugin = KuiNameplates:NewPlugin("TotalRP3", 250);
 	self.plugin.Create = function(_, ...) return self:OnNamePlateCreate(...); end;
-	self.plugin.Show = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.Show = function(_, nameplate) return self:OnNamePlateShow(nameplate); end;
 	self.plugin.HealthUpdate = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
 	self.plugin.HealthColourChange = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
 	self.plugin.GlowColourChange = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
 	self.plugin.GainedTarget = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
 	self.plugin.LostTarget = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
 	self.plugin.Combat = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
-	self.plugin.Hide = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.Hide = function(_, nameplate) return self:OnNamePlateHide(nameplate); end;
 
 	self.plugin:RegisterMessage("Create");
 	self.plugin:RegisterMessage("Show");
@@ -106,6 +114,16 @@ function TRP3_KuiNamePlates:OnModuleEnable()
 
 	self.fading = KuiNameplates:GetPlugin("Fading");
 	self.fading:AddFadeRule(GenerateClosure(self.EvaluateNamePlateVisibility, self), FADE_PRIORITY, FADE_RULE_ID);
+end
+
+function TRP3_KuiNamePlates:OnNamePlateShow(nameplate)
+	ClearStashedFields(nameplate.state);
+	self:UpdateNamePlate(nameplate);
+end
+
+function TRP3_KuiNamePlates:OnNamePlateHide(nameplate)
+	ClearStashedFields(nameplate.state);
+	self:UpdateNamePlate(nameplate);
 end
 
 function TRP3_KuiNamePlates:OnNamePlateDataUpdated(_, nameplate, unitToken, displayInfo)
