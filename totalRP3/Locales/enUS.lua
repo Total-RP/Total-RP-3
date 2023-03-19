@@ -633,7 +633,6 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	["NAMEPLATES_CONFIG_MENU_TITLE"] = "Nameplates",
 	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
 	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "Nameplate settings",
-	["NAMEPLATES_CONFIG_REQUIRES_TOGGLE"] = "This may require you to toggle your nameplates to take effect.",
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Visibility settings",
 	["NAMEPLATES_MODULE_ACTIVE_STATUS"] = "Module |cff00ff00active|r (%1$s|r)",
 	["NAMEPLATES_MODULE_DESCRIPTION"] = "Enables the customization of nameplates with information obtained from roleplay profiles.",
