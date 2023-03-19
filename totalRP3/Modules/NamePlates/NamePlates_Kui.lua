@@ -6,6 +6,55 @@ local TRP3_NamePlates = TRP3_NamePlates;
 local TRP3_NamePlatesUtil = TRP3_NamePlatesUtil;
 local L = TRP3_API.loc;
 
+local NIL_SENTINEL = {};
+
+local function FormatStashToken(key)
+	return "trp3_original_" .. key;
+end
+
+local function ClearStashedFields(state)
+	for key in pairs(state) do
+		if string.find(key, "^trp3_original_") then
+			state[key] = nil;
+		end
+	end
+end
+
+local function OverrideStateField(state, field, value)
+	local token = FormatStashToken(field);
+
+	if state[token] == nil then
+		local original = state[field];
+
+		if original == nil then
+			original = NIL_SENTINEL;
+		end
+
+		state[token] = original;
+	end
+
+	state[field] = value;
+	return true;
+end
+
+local function RestoreStateField(state, field)
+	local token = FormatStashToken(field);
+	local original = state[token];
+
+	if original == nil then
+		return false;  -- This field isn't overridden.
+	end
+
+	if original == NIL_SENTINEL then
+		original = nil;
+	end
+
+	state[field] = original;
+	state[token] = nil;
+
+	return true;
+end
+
 local function IsNamePlateInNameOnlyMode(nameplate)
 	local unitframe = nameplate.parent.UnitFrame;
 	return nameplate.IN_NAMEONLY and unitframe and ShouldShowName(unitframe);
@@ -38,14 +87,14 @@ function TRP3_KuiNamePlates:OnModuleEnable()
 
 	self.plugin = KuiNameplates:NewPlugin("TotalRP3", 250);
 	self.plugin.Create = function(_, ...) return self:OnNamePlateCreate(...); end;
-	self.plugin.Show = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.Show = function(_, nameplate) return self:OnNamePlateShow(nameplate); end;
 	self.plugin.HealthUpdate = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
 	self.plugin.HealthColourChange = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
 	self.plugin.GlowColourChange = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
 	self.plugin.GainedTarget = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
 	self.plugin.LostTarget = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
 	self.plugin.Combat = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
-	self.plugin.Hide = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.Hide = function(_, nameplate) return self:OnNamePlateHide(nameplate); end;
 
 	self.plugin:RegisterMessage("Create");
 	self.plugin:RegisterMessage("Show");
@@ -65,6 +114,16 @@ function TRP3_KuiNamePlates:OnModuleEnable()
 
 	self.fading = KuiNameplates:GetPlugin("Fading");
 	self.fading:AddFadeRule(GenerateClosure(self.EvaluateNamePlateVisibility, self), FADE_PRIORITY, FADE_RULE_ID);
+end
+
+function TRP3_KuiNamePlates:OnNamePlateShow(nameplate)
+	ClearStashedFields(nameplate.state);
+	self:UpdateNamePlate(nameplate);
+end
+
+function TRP3_KuiNamePlates:OnNamePlateHide(nameplate)
+	ClearStashedFields(nameplate.state);
+	self:UpdateNamePlate(nameplate);
 end
 
 function TRP3_KuiNamePlates:OnNamePlateDataUpdated(_, nameplate, unitToken, displayInfo)
@@ -242,6 +301,26 @@ function TRP3_KuiNamePlates:UpdateNamePlateNameText(nameplate)
 	nameplate:UpdateNameText();
 end
 
+function TRP3_KuiNamePlates:UpdateNamePlateGuildText(nameplate)
+	if not self:CanCustomizeNamePlate(nameplate) then
+		return;
+	end
+
+	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
+	local displayText = displayInfo and displayInfo.guildName or nil;
+	local shouldUpdate;
+
+	if displayText then
+		shouldUpdate = OverrideStateField(nameplate.state, "guild_text", displayText);
+	else
+		shouldUpdate = RestoreStateField(nameplate.state, "guild_text");
+	end
+
+	if shouldUpdate then
+		nameplate:UpdateGuildText();
+	end
+end
+
 function TRP3_KuiNamePlates:EvaluateNamePlateVisibility(nameplate)
 	if not self:CanCustomizeNamePlate(nameplate) then
 		return;
@@ -270,6 +349,7 @@ function TRP3_KuiNamePlates:UpdateNamePlate(nameplate)
 	-- the name text being updated.
 
 	self:UpdateNamePlateNameText(nameplate);
+	self:UpdateNamePlateGuildText(nameplate);
 	self:UpdateNamePlateHealthBar(nameplate);
 	self:UpdateNamePlateVisibility(nameplate);
 end
