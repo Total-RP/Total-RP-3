@@ -1485,7 +1485,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP = "The maximum number of characters to display for names and prefix titles. Names exceeding this length will be cropped.",
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS = "Maximum title length",
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP = "The maximum number of characters to display for full titles. Titles exceeding this length will be cropped.",
-	NAMEPLATES_CONFIG_PAGE_SETTINGS_MAY_REQUIRE_TOGGLE_HELP = "You may need to toggle your nameplates for any settings changes below to take effect.",
+	NAMEPLATES_CONFIG_PAGE_SETTINGS_MAY_REQUIRE_TOGGLE_HELP = "You may need to toggle your nameplates for any settings changes to take effect.",
 	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT = "Always show target unit",
 	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT_HELP = "If checked, your current target will always have its nameplate visible.",
 
