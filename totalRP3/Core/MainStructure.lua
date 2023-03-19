@@ -275,6 +275,10 @@ TRP3_API.navigation.openMainFrame = function()
 	TRP3_MainFrame:Show();
 	TRP3_MainFrame:Raise();
 
+	if not (TRP3_API.globals.serious_day and TRP3_API.configuration.getValue("AF_STUFF_2023")) then
+		TRP3_PartyTime:Hide();
+	end
+
 	TRP3_API.ui.misc.playUISound((WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE) and SOUNDKIT.IG_CHARACTER_INFO_TAB or SOUNDKIT.ACHIEVEMENT_MENU_OPEN);
 end
 
