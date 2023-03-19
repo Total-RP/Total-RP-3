@@ -92,7 +92,7 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 		elements = {
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = L.NAMEPLATES_CONFIG_PAGE_HELP,
+				title = L.NAMEPLATES_CONFIG_PAGE_HELP .. "|n|n" .. L.NAMEPLATES_CONFIG_PAGE_SETTINGS_MAY_REQUIRE_TOGGLE_HELP,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -101,31 +101,31 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_DISABLE_IN_COMBAT,
-				help = L.NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
+				help = L.NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP,
 				configKey = MapSettingToConfigKey("DisableInCombat"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES,
-				help = L.NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
+				help = L.NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES_HELP,
 				configKey = MapSettingToConfigKey("DisableInInstances"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER,
-				help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
+				help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP,
 				configKey = MapSettingToConfigKey("DisableOutOfCharacter"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS,
-				help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
+				help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP,
 				configKey = MapSettingToConfigKey("DisableOutOfCharacterUnits"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS,
-				help = L.NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
+				help = L.NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS_HELP,
 				configKey = MapSettingToConfigKey("DisableNonPlayableUnits"),
 			},
 			{
@@ -137,7 +137,7 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS,
-				help = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
+				help = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP,
 				configKey = MapSettingToConfigKey("HideOutOfCharacterUnits"),
 			},
 			{
@@ -183,7 +183,7 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS,
-				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP .. "\n\n" .. L.NAMEPLATES_CONFIG_REQUIRES_TOGGLE,
+				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP,
 				configKey = MapSettingToConfigKey("CustomizeHealthColors"),
 			},
 			{
