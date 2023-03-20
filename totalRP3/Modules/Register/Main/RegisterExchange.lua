@@ -50,83 +50,24 @@ local function mul(x, y)
 end
 
 local function FNV1A(str)
-	local hash = 2166136261;
+	local hash = 0x811c9dc5;
 
 	for i = 1, #str do
 		local b = strbyte(str, i);
 		hash = bxor(hash, b);
-		hash = mul(hash, 16777619);
+		hash = mul(hash, 0x01000193);
 	end
 
-	return hash;
+	return bit.arshift(hash, 0);
 end
 
-local FNV1ACache = setmetatable({},
-	{
-		__mode = "k",
-		__index = function(t, k)
-			t[k] = FNV1A(k);
-			return t[k];
-		end,
-	}
-);
-
-local KnownBadVersions =
-{
-	[97] = true,  -- 2.3.3: Affected by a bug where it thinks things are out of date.
-	[98] = true,  -- 2.3.4: As above, resolved in 2.3.5.
-};
-
-local senderBadVersions = {};
-local senderObjectRequestTimes = {};
-
-local function GetOrCreateTable(t, key)
-	if t[key] ~= nil then
-		return t[key];
-	end
-
-	t[key] = {};
-	return t[key];
-end
-
-local function RecordIncomingVersion(sender, version)
-	if KnownBadVersions[version] then
-		senderBadVersions[sender] = version;
-	else
-		senderBadVersions[sender] = nil;
-	end
-end
-
-local function IsSenderRunningBadVersion(sender)
-	return senderBadVersions[sender] ~= nil;
-end
-
-local function RecordSenderObjectRequestTime(sender, infoType)
-	if IsSenderRunningBadVersion(sender) then
-		local requestTimes = GetOrCreateTable(senderObjectRequestTimes, sender);
-		requestTimes[infoType] = GetTime();
-	end
-end
-
-local function ShouldRespondToObjectRequest(sender, infoType)
-	local BAD_VERSION_OBJECT_THROTTLE = 180;
-
-	local requestTimes = senderObjectRequestTimes[sender];
-
-	if type(requestTimes) ~= "table" then
-		return true;   -- They're running an okay version.
-	end
-
-	local requestTimeAt = requestTimes[infoType];
-
-	if type(requestTimeAt) ~= "number" then
-		return true;   -- They may have a bad version but they've not asked for this data.
-	elseif GetTime() >= (requestTimeAt + BAD_VERSION_OBJECT_THROTTLE) then
-		return true;   -- The last response was a while ago.
-	else
-		return false;  -- Don't respond; received another request too soon.
-	end
-end
+local FNV1ACache = setmetatable({},	{
+	__mode = "k",
+	__index = function(t, k)
+		t[k] = FNV1A(k);
+		return t[k];
+	end,
+});
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Check size
@@ -452,8 +393,6 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	senderVersion = tonumber(senderVersion) or 0;
 	senderExtendedVersion = tonumber(senderExtendedVersion) or 0;
 
-	RecordIncomingVersion(senderID, senderVersion);
-
 	local clientName = Globals.addon_name;
 	if senderExtendedVersion > 0 then
 		clientName = Globals.addon_name_extended;
@@ -524,12 +463,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function incomingInformationType(informationType, senderID)
-	if not ShouldRespondToObjectRequest(senderID, informationType) then
-		return;
-	end
-
-	RecordSenderObjectRequestTime(senderID, informationType);
-
 	local data;
 	if informationType == registerInfoTypes.CHARACTERISTICS then
 		data = getCharExchangeData();
