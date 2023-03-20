@@ -1,3 +1,25 @@
+# Changelog version 2.4.6
+
+## Added
+
+- Added support for 10.0.7 furbolg language.
+- Added voice reference, custom guild name and rank presets in additional info.
+  - Voice reference will be shown in the tooltip if filled in.
+  - Custom guild name/rank will replace the original fields in TRP tooltips.
+  - You may disable either of these changes via tooltip settings ("Show voice reference" and "Show custom guild names").
+- Added nameplates settings:
+  - Name and title max length on nameplates
+  - Display first name only
+  - Display custom guild name
+- IC/OOC fields from other players' profile are now selectable to make it easier to copy URLs.
+- Added setting to disable the welcome message on login.
+  
+## Fixed
+
+- Fixed an issue with "Unknown" names potentially showing on tooltips after a loading screen.
+- Fixed an issue with the KuiNameplates module to properly fade/hide nameplates when appropriate.
+- Fixed an issue where the target frame would stay hidden after a UI reload with a target selected.
+
 # Changelog version 2.4.5
 
 ## Added
