@@ -324,20 +324,13 @@ TRP3_API.register.swapGlanceSlot = swapGlanceSlot;
 -- Currently
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TRP3_RegisterMiscViewCurrentlyIC, TRP3_RegisterMiscViewCurrentlyOOC = TRP3_RegisterMiscViewCurrentlyICScrollText, TRP3_RegisterMiscViewCurrentlyOOCScrollText;
-
 local function displayCurrently(context)
-	if context.isPlayer then
-		TRP3_RegisterMiscViewCurrentlyIC:Enable();
-		TRP3_RegisterMiscViewCurrentlyOOC:Enable();
-		TRP3_RegisterMiscViewCurrentlyICHelp:Show();
-		TRP3_RegisterMiscViewCurrentlyOOCHelp:Show();
-	else
-		TRP3_RegisterMiscViewCurrentlyIC:Disable();
-		TRP3_RegisterMiscViewCurrentlyOOC:Disable();
-		TRP3_RegisterMiscViewCurrentlyICHelp:Hide();
-		TRP3_RegisterMiscViewCurrentlyOOCHelp:Hide();
-	end
+	TRP3_RegisterMiscViewCurrentlyIC:SetReadOnly(not context.isPlayer);
+	TRP3_RegisterMiscViewCurrentlyIC.HelpButton:SetShown(context.isPlayer);
+
+	TRP3_RegisterMiscViewCurrentlyOOC:SetReadOnly(not context.isPlayer);
+	TRP3_RegisterMiscViewCurrentlyOOC.HelpButton:SetShown(context.isPlayer);
+
 
 	local dataTab = context.profile.character or Globals.empty;
 	TRP3_RegisterMiscViewCurrentlyIC:SetText(dataTab.CU or "");
@@ -358,7 +351,7 @@ local function onCurrentlyChanged()
 	if getCurrentContext().isPlayer then
 		local character = get("player/character");
 		local old = character.CU;
-		character.CU = TRP3_RegisterMiscViewCurrentlyIC:GetText();
+		character.CU = TRP3_RegisterMiscViewCurrentlyIC:GetInputText();
 
 		local sanitizedCU = Utils.str.sanitize(character.CU);
 		if sanitizedCU ~= character.CU then
@@ -378,7 +371,7 @@ local function onOOCInfoChanged()
 	if getCurrentContext().isPlayer then
 		local character = get("player/character");
 		local old = character.CO;
-		character.CO = TRP3_RegisterMiscViewCurrentlyOOC:GetText();
+		character.CO = TRP3_RegisterMiscViewCurrentlyOOC:GetInputText();
 
 		local sanitizedCO = Utils.str.sanitize(character.CO);
 		if sanitizedCO ~= character.CO then
@@ -485,13 +478,13 @@ function TRP3_API.register.inits.miscInit()
 
 	TRP3_API.ui.tooltip.setTooltipAll(TRP3_AtFirstGlanceEditorActive, "TOP", 0, 0, loc.REG_PLAYER_GLANCE_USE);
 
-	TRP3_RegisterMiscViewCurrentlyICTitle:SetText(loc.DB_STATUS_CURRENTLY);
-	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyICHelp, "LEFT", 0, 10, loc.DB_STATUS_CURRENTLY, loc.DB_STATUS_CURRENTLY_TT);
-	TRP3_RegisterMiscViewCurrentlyIC:SetScript("OnTextChanged", onCurrentlyChanged);
+	TRP3_RegisterMiscViewCurrentlyIC.Title:SetText(loc.DB_STATUS_CURRENTLY);
+	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyIC.HelpButton, "LEFT", 0, 10, loc.DB_STATUS_CURRENTLY, loc.DB_STATUS_CURRENTLY_TT);
+	TRP3_RegisterMiscViewCurrentlyIC:RegisterCallback("OnTextChanged", onCurrentlyChanged, {});
 
-	TRP3_RegisterMiscViewCurrentlyOOCTitle:SetText(loc.DB_STATUS_CURRENTLY_OOC);
-	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOCHelp, "LEFT", 0, 10, loc.DB_STATUS_CURRENTLY_OOC, loc.DB_STATUS_CURRENTLY_OOC_TT);
-	TRP3_RegisterMiscViewCurrentlyOOC:SetScript("OnTextChanged", onOOCInfoChanged);
+	TRP3_RegisterMiscViewCurrentlyOOC.Title:SetText(loc.DB_STATUS_CURRENTLY_OOC);
+	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC.HelpButton, "LEFT", 0, 10, loc.DB_STATUS_CURRENTLY_OOC, loc.DB_STATUS_CURRENTLY_OOC_TT);
+	TRP3_RegisterMiscViewCurrentlyOOC:RegisterCallback("OnTextChanged", onOOCInfoChanged, {});
 
 	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "LEFT", 0, 10, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG);
 
