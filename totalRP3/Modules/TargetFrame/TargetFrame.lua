@@ -373,6 +373,7 @@ local function onStart()
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 	Utils.event.registerHandler("PLAYER_MOUNT_DISPLAY_CHANGED", onTargetChanged);
+	Utils.event.registerHandler("PLAYER_ENTERING_WORLD", onTargetChanged);
 	Events.listenToEvent(Events.REGISTER_ABOUT_READ, onTargetChanged);
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
 		if (not unitID or (currentTargetID == unitID)) and (not dataType or dataType == "characteristics" or dataType == "about") then
