@@ -6,6 +6,10 @@ TRP3_API.flyway.patches = {};
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 
 local function SafeGet(t, k, ...)
+	if t == nil then
+		return nil;
+	end
+
 	local v = t[k];
 
 	if ... ~= nil then
