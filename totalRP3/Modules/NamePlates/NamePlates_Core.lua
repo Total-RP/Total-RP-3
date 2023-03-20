@@ -205,9 +205,11 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 
 		do  -- Guild Membership
 			if TRP3_NamePlatesSettings.CustomizeGuild then
-				local guildInfo = player:GetCustomGuildMembership();
-				displayInfo.guildName = guildInfo.name;
-				displayInfo.guildRank = guildInfo.rank;
+				local guildName, guildRank = GetGuildInfo(unitToken);
+				local customGuildInfo = player:GetCustomGuildMembership();
+
+				displayInfo.guildName = customGuildInfo.name or guildName;
+				displayInfo.guildRank = customGuildInfo.rank or guildRank;
 			end
 		end
 
