@@ -165,7 +165,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<Anchor point="CENTER" x="0" y="0"/>
 								</Anchors>
 							</Frame>
-							<Frame name="TRP3_RegisterMiscViewCurrentlyIC" inherits="TRP3_TextArea">
+							<Frame name="TRP3_RegisterMiscViewCurrentlyIC" inherits="TRP3_InsetScrollingEditBoxTemplate">
 								<Anchors>
 									<Anchor point="TOP" x="0" y="-25"/>
 									<Anchor point="BOTTOM" x="0" y="10"/>
@@ -174,7 +174,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								</Anchors>
 								<Layers>
 									<Layer level="OVERLAY">
-										<FontString name="TRP3_RegisterMiscViewCurrentlyICTitle" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
+										<FontString parentKey="Title" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
 											<Anchors>
 												<Anchor point="TOPLEFT" x="15" y="10"/>
 												<Anchor point="TOPRIGHT" x="-15" y="10"/>
@@ -184,7 +184,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									</Layer>
 								</Layers>
 								<Frames>
-									<Button name="TRP3_RegisterMiscViewCurrentlyICHelp" inherits="TRP3_HelpButton">
+									<Button parentKey="HelpButton" inherits="TRP3_HelpButton">
 										<Size x="14" y="14"/>
 										<Anchors>
 											<Anchor point="TOPRIGHT" x="0" y="13"/>
@@ -193,7 +193,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								</Frames>
 							</Frame>
 
-							<Frame name="TRP3_RegisterMiscViewCurrentlyOOC" inherits="TRP3_TextArea">
+							<Frame name="TRP3_RegisterMiscViewCurrentlyOOC" inherits="TRP3_InsetScrollingEditBoxTemplate">
 								<Size x="235" y="0"/>
 								<Anchors>
 									<Anchor point="TOP" x="0" y="-25"/>
@@ -203,7 +203,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								</Anchors>
 								<Layers>
 									<Layer level="OVERLAY">
-										<FontString name="TRP3_RegisterMiscViewCurrentlyOOCTitle" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
+										<FontString parentKey="Title" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
 											<Anchors>
 												<Anchor point="TOPLEFT" x="15" y="10"/>
 												<Anchor point="TOPRIGHT" x="-15" y="10"/>
@@ -213,7 +213,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									</Layer>
 								</Layers>
 								<Frames>
-									<Button name="TRP3_RegisterMiscViewCurrentlyOOCHelp" inherits="TRP3_HelpButton">
+									<Button parentKey="HelpButton" inherits="TRP3_HelpButton">
 										<Size x="14" y="14"/>
 										<Anchors>
 											<Anchor point="TOPRIGHT" x="0" y="13"/>

@@ -37,13 +37,13 @@ local function displayNotes(context)
 	if currentName then
 		profileNotesTitle = string.format(loc.REG_PLAYER_NOTES_PROFILE, currentName);
 	end
-	TRP3_RegisterNotesViewProfileTitle:SetText(profileNotesTitle);
+	TRP3_RegisterNotesViewProfile.Title:SetText(profileNotesTitle);
 
 	assert(profileID, "No profileID in context !");
 
 	local profileNotes = getPlayerCurrentProfile().notes;
-	TRP3_RegisterNotesViewProfileScrollText:SetText(profileNotes and profileNotes[profileID] or "");
-	TRP3_RegisterNotesViewAccountScrollText:SetText(TRP3_Notes and TRP3_Notes[profileID] or "");
+	TRP3_RegisterNotesViewProfile:SetText(profileNotes and profileNotes[profileID] or "");
+	TRP3_RegisterNotesViewAccount:SetText(TRP3_Notes and TRP3_Notes[profileID] or "");
 end
 
 local function onProfileNotesChanged()
@@ -58,7 +58,7 @@ local function onProfileNotesChanged()
 		profile.notes = {};
 	end
 
-	profile.notes[profileID] = stEtN(TRP3_RegisterNotesViewProfileScrollText:GetText());
+	profile.notes[profileID] = stEtN(TRP3_RegisterNotesViewProfile:GetInputText());
 end
 
 local function onAccountNotesChanged()
@@ -68,7 +68,7 @@ local function onAccountNotesChanged()
 		profileID = getPlayerCurrentProfileID();
 	end
 
-	TRP3_Notes[profileID] = stEtN(TRP3_RegisterNotesViewAccountScrollText:GetText());
+	TRP3_Notes[profileID] = stEtN(TRP3_RegisterNotesViewAccount:GetInputText());
 end
 
 local function showNotesTab()
@@ -90,13 +90,13 @@ function TRP3_API.register.inits.notesInit()
 
 	setupFieldSet(TRP3_RegisterNotesView, loc.REG_PLAYER_NOTES, 150);
 
-	TRP3_RegisterNotesViewAccountTitle:SetText(loc.REG_PLAYER_NOTES_ACCOUNT);
+	TRP3_RegisterNotesViewAccount.Title:SetText(loc.REG_PLAYER_NOTES_ACCOUNT);
 
-	setTooltipForSameFrame(TRP3_RegisterNotesViewProfileHelp, "LEFT", 0, 10, loc.REG_PLAYER_NOTES_PROFILE_NONAME, loc.REG_PLAYER_NOTES_PROFILE_HELP);
-	setTooltipForSameFrame(TRP3_RegisterNotesViewAccountHelp, "LEFT", 0, 10, loc.REG_PLAYER_NOTES_ACCOUNT, loc.REG_PLAYER_NOTES_ACCOUNT_HELP);
+	setTooltipForSameFrame(TRP3_RegisterNotesViewProfile.HelpButton, "LEFT", 0, 10, loc.REG_PLAYER_NOTES_PROFILE_NONAME, loc.REG_PLAYER_NOTES_PROFILE_HELP);
+	setTooltipForSameFrame(TRP3_RegisterNotesViewAccount.HelpButton, "LEFT", 0, 10, loc.REG_PLAYER_NOTES_ACCOUNT, loc.REG_PLAYER_NOTES_ACCOUNT_HELP);
 
-	TRP3_RegisterNotesViewAccountScrollText:SetScript("OnTextChanged", onAccountNotesChanged);
-	TRP3_RegisterNotesViewProfileScrollText:SetScript("OnTextChanged", onProfileNotesChanged);
+	TRP3_RegisterNotesViewAccount:RegisterCallback("OnTextChanged", onAccountNotesChanged, {});
+	TRP3_RegisterNotesViewProfile:RegisterCallback("OnTextChanged", onProfileNotesChanged, {});
 
 	TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 		if not TRP3_API.target then

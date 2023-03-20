@@ -325,6 +325,13 @@ stds.wow = {
 			},
 		},
 
+		ScrollUtil = {
+			fields = {
+				"AddManagedScrollBarVisibilityBehavior",
+				"RegisterScrollBoxWithScrollBar",
+			},
+		},
+
 		TooltipUtil = {
 			fields = {
 				"SurfaceArgs",
