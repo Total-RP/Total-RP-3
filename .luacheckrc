@@ -135,6 +135,7 @@ stds.wow = {
 
 		bit = {
 			fields = {
+				"arshift",
 				"band",
 				"bor",
 				"bxor",
