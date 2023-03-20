@@ -11,6 +11,8 @@
   - Name and title max length on nameplates
   - Display first name only
   - Display custom guild name
+  - Disable customizations in instances
+  - Disable customizations on NPCs
 - IC/OOC fields from other players' profile are now selectable to make it easier to copy URLs.
 - Added setting to disable the welcome message on login.
   

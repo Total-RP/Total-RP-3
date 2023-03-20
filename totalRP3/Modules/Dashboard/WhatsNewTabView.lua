@@ -22,6 +22,7 @@ local strhtml = TRP3_API.utils.str.toHTML;
 --- List of "What's new" segments to concatenate and display together when
 ---  this view is activated.
 local SEGMENTS = {
+	loc.WHATS_NEW_25_7,
 	loc.WHATS_NEW_25_6,
 	loc.WHATS_NEW_25_5,
 	loc.WHATS_NEW_25_4,
