@@ -1527,6 +1527,16 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	CM_ALT_MAC = "Option",
 	SHORTCUT_INSTRUCTION = "%s: %s",
 
+	REG_TT_GUILD_CUSTOM = "Custom guild",
+	CO_TOOLTIP_GUILD_HIDDEN = "Hidden",
+	CO_TOOLTIP_GUILD_SHOW_WITH_ORIGINAL = "Show original",
+	CO_TOOLTIP_GUILD_SHOW_WITH_CUSTOM = "Show custom",
+	CO_TOOLTIP_GUILD_SHOW_WITH_ALL = "Show all",
+	CO_TOOLTIP_GUILD_TT = "Customizes how guild membership is displayed in the tooltip.",
+	CO_TOOLTIP_GUILD_TT_HIDDEN = "Does not show any guild membership in the tooltip.",
+	CO_TOOLTIP_GUILD_TT_SHOW_WITH_ORIGINAL = "Shows guild membership in the tooltip, but does not replace the name or rank if customized in the players' profile.",
+	CO_TOOLTIP_GUILD_TT_SHOW_WITH_CUSTOM = "Shows guild membership in the tooltip, replacing the name or rank if customized in the players' profile.",
+	CO_TOOLTIP_GUILD_TT_SHOW_WITH_ALL = "Shows both original and custom guild memberships on separate lines in the tooltip.",
 };
 
 -- Bindings and FrameXML Global Strings
