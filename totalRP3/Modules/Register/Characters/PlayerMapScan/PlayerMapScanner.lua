@@ -206,27 +206,26 @@ end)
 
 -- Slash command integration
 
-local function IsLocationBroadcastEnabled()
+function TRP3_API.IsLocationBroadcastEnabled()
 	return TRP3_API.configuration.getValue(CONFIG_ENABLE_MAP_LOCATION);
 end
 
-local function DisplayLocationBroadcastStatus()
-	if IsLocationBroadcastEnabled() then
-		SendSystemMessage(loc.SLASH_CMD_LOCATION_ENABLED);
-	else
-		SendSystemMessage(loc.SLASH_CMD_LOCATION_DISABLED);
-	end
-end
-
-local function SetLocationBroadcastEnabled(enabled)
-	local state = IsLocationBroadcastEnabled();
+function TRP3_API.SetLocationBroadcastEnabled(enabled)
+	local state = TRP3_API.IsLocationBroadcastEnabled();
 
 	if state == enabled then
 		return;
 	end
 
 	TRP3_API.configuration.setValue(CONFIG_ENABLE_MAP_LOCATION, enabled);
-	DisplayLocationBroadcastStatus();
+end
+
+local function DisplayLocationBroadcastStatus()
+	if TRP3_API.IsLocationBroadcastEnabled() then
+		SendSystemMessage(loc.SLASH_CMD_LOCATION_ENABLED);
+	else
+		SendSystemMessage(loc.SLASH_CMD_LOCATION_DISABLED);
+	end
 end
 
 local function LocationBroadcastCommandHelp()
@@ -252,17 +251,20 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			local subcommand = string.trim(string.join(" ", ...));
 
 			if string.find(subcommand, "^%[") then
-				subcommand = AddOn_TotalRP3.ParseMacroOption(subcommand);
+				subcommand = TRP3_AutomationUtil.ParseMacroOption(subcommand);
 			end
 
 			if subcommand == "" or subcommand == "help" then
 				LocationBroadcastCommandHelp();
 			elseif subcommand == "on" or subcommand == "enable" then
-				SetLocationBroadcastEnabled(true);
+				TRP3_API.SetLocationBroadcastEnabled(true);
+				DisplayLocationBroadcastStatus();
 			elseif subcommand == "off" or subcommand == "disable" then
-				SetLocationBroadcastEnabled(false);
+				TRP3_API.SetLocationBroadcastEnabled(false);
+				DisplayLocationBroadcastStatus();
 			elseif subcommand == "toggle" then
-				SetLocationBroadcastEnabled(not IsLocationBroadcastEnabled());
+				TRP3_API.SetLocationBroadcastEnabled(not TRP3_API.IsLocationBroadcastEnabled());
+				DisplayLocationBroadcastStatus();
 			elseif subcommand == "status" then
 				DisplayLocationBroadcastStatus();
 			else

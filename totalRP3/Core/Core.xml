@@ -15,6 +15,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Events.lua"/>
 	<Include file="Color.lua"/>
 	<Include file="ColorData.lua"/>
+	<Include file="StringUtil.lua"/>
 
 	<Include file="..\UI\Widgets.xml"/>
 
@@ -75,6 +76,5 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="..\UI\Profiles.xml"/>
 	<Include file="Profiles.lua"/>
 	<Include file="ProfilesChatLinksModule.lua"/>
-	<Include file="Automation.lua"/>
 
 </Ui>
