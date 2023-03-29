@@ -189,6 +189,12 @@ stds.wow = {
 			},
 		},
 
+		C_AddOns = {
+			fields = {
+				"GetAddOnMetadata",
+			},
+		},
+
 		C_BattleNet = {
 			fields = {
 				"GetAccountInfoByGUID",
