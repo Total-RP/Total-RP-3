@@ -15,6 +15,45 @@ local getConfigValue, registerConfigKey = TRP3_API.configuration.getValue, TRP3_
 local loc = TRP3_API.loc;
 local tinsert = tinsert;
 
+local LauncherConstants = {
+	HideDragDropInstruction = true,
+};
+
+local function ProcessLauncherClick(buttonName)
+	if buttonName == "RightButton" and TRP3_API.toolbar then
+		TRP3_API.toolbar.switch();
+	else
+		TRP3_API.navigation.switchMainFrame();
+	end
+end
+
+local function PopulateLauncherTooltip(tooltip, hideDragDropInstruction)
+	tooltip:AddLine("Total RP 3", Ellyb.ColorManager.WHITE:GetRGB());
+	tooltip:AddLine(Ellyb.Strings.clickInstruction(loc.CM_L_CLICK, loc.MM_SHOW_HIDE_MAIN));
+	if TRP3_API.toolbar then
+		tooltip:AddLine(Ellyb.Strings.clickInstruction(loc.CM_R_CLICK, loc.MM_SHOW_HIDE_SHORTCUT));
+	end
+	if not hideDragDropInstruction then
+		tooltip:AddLine(Ellyb.Strings.clickInstruction(loc.CM_DRAGDROP, loc.MM_SHOW_HIDE_MOVE));
+	end
+end
+
+function TRP3_OnAddonCompartmentClick(_, buttonName)
+	ProcessLauncherClick(buttonName);
+end
+
+function TRP3_OnAddonCompartmentEnter()
+	local tooltip = TRP3_MainTooltip;
+	GameTooltip_SetDefaultAnchor(tooltip, UIParent);
+	PopulateLauncherTooltip(tooltip, LauncherConstants.HideDragDropInstruction);
+	tooltip:Show()
+end
+
+function TRP3_OnAddonCompartmentLeave()
+	local tooltip = TRP3_MainTooltip;
+	tooltip:Hide();
+end
+
 -- Minimap button API initialization
 TRP3_API.navigation.minimapicon = {};
 
@@ -69,20 +108,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		type = "launcher",
 		icon = "Interface\\AddOns\\totalRP3\\resources\\trp3minimap.tga",
 		tocname = "totalRP3",
-		OnClick = function(_, button)
-			if button == "RightButton" and TRP3_API.toolbar then
-				TRP3_API.toolbar.switch();
-			else
-				TRP3_API.navigation.switchMainFrame();
-			end
+		OnClick = function(_, buttonName)
+			ProcessLauncherClick(buttonName);
 		end,
 		OnTooltipShow = function(tooltip)
-			tooltip:AddLine("Total RP 3", Ellyb.ColorManager.WHITE:GetRGB());
-			tooltip:AddLine(Ellyb.Strings.clickInstruction(loc.CM_L_CLICK, loc.MM_SHOW_HIDE_MAIN));
-			if TRP3_API.toolbar then
-				tooltip:AddLine(Ellyb.Strings.clickInstruction(loc.CM_R_CLICK, loc.MM_SHOW_HIDE_SHORTCUT));
-			end
-			tooltip:AddLine(Ellyb.Strings.clickInstruction(loc.CM_DRAGDROP, loc.MM_SHOW_HIDE_MOVE));
+			PopulateLauncherTooltip(tooltip);
 		end,
 	})
 
