@@ -223,8 +223,9 @@ local function getCompanionVersionNumbers(profileID)
 end
 
 local function UpdateSummonedPetGUID(speciesID)
-	RegisterCVar("totalRP3_SummonedPetID", "");
-	SetCVar("totalRP3_SummonedPetID", speciesID);
+	if TRP3_Companions then
+		TRP3_Companions.summonedPetID = speciesID;
+	end
 end
 
 local function UpdateSummonedPetGUIDFromCast(unitToken, castGUID)
