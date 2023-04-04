@@ -56,6 +56,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	end
 
 	XRP.addOnVersion = function()
+		local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata;
 		return "XRP - " .. GetAddOnMetadata("xrp", "Version");
 	end
 
