@@ -1,7 +1,7 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 
-exclude: ^totalRP3/Locales/.{4}\.lua$
+exclude: ^totalRP3/(Libs/(MSA-DropDownMenu-1\.0|TaintLess)/.*|Locales/.{4}\.lua)$
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -21,7 +21,6 @@ repos:
         entry: luacheck -q
         language: system
         types: [lua]
-        exclude: ^totalRP3/Libs/(TaintLess|MSA-DropDownMenu-1\.0)/.*\.lua$
         require_serial: true
 
       - id: xmllint
@@ -29,5 +28,5 @@ repos:
         entry: xmllint --noout --quiet --schema Scripts/UI.xsd
         language: system
         types: [xml]
-        exclude: ^(Scripts/UI\.xsd|totalRP3/(Bindings|Libs/(TaintLess|MSA-DropDownMenu-1\.0)/.*)\.xml)$
+        exclude: ^(Scripts/UI\.xsd|totalRP3/Bindings\.xml)$
         require_serial: true
