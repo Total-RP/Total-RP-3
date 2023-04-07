@@ -30,4 +30,3 @@ jobs:
           title: Import CurseForge Localization
           body: Automated import of CurseForge localization.
           reviewers: Meorawr, Solanya
-

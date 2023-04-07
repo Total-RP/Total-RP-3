@@ -15,7 +15,7 @@
   - Disable customizations on NPCs
 - IC/OOC fields from other players' profile are now selectable to make it easier to copy URLs.
 - Added setting to disable the welcome message on login.
-  
+
 ## Fixed
 
 - Fixed an issue with "Unknown" names potentially showing on tooltips after a loading screen.
@@ -92,7 +92,7 @@
 - Added 2246 icons from patch 10.0.0.
 - Added 2 new command lines for use in macros:
   - /trp3 set: Allows you to set a profile field to a given value.
-  
+
   ![](https://user-images.githubusercontent.com/287102/197398575-4ea8f528-a212-4cdb-a4ce-9297638d4de9.png)
   - /trp3 location: Allows you to control whether or not you appear on the map scan.
 - Added macro conditionals for the 2 aforementioned command lines:
