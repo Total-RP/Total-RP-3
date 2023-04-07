@@ -1,7 +1,7 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 
-exclude: ^totalRP3/(Libs/(MSA-DropDownMenu-1\.0|TaintLess)/.*|Locales/.{4}\.lua)$
+exclude: ^totalRP3/(Libs/(Ellyb/Libraries|MSA-DropDownMenu-1\.0|TaintLess)/.*|Locales/.{4}\.lua)$
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -11,8 +11,16 @@ repos:
         args: [--markdown-linebreak-ext=md]
       - id: end-of-file-fixer
       - id: fix-byte-order-marker
-      - id: mixed-line-ending
       - id: check-yaml
+
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: 2.7.1
+    hooks:
+      - id: editorconfig-checker
+        alias: ec
+        exclude: ^totalRP3/Locales/.*\.lua$
+        types: []
+        types_or: [lua, xml, shell]
 
   - repo: local
     hooks:

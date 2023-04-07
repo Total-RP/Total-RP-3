@@ -23,7 +23,7 @@ jobs:
         uses: wow-rp-addons/actions-editorconfig-check@v1.0.2
         with:
           args: -no-color
-          files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3/Libs/MSA-DropDownMenu-1.0/*' ':!:totalRP3/Libs/TaintLess/*' ':!:totalRP3/Locales/????.lua')
+          files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3/Libs/MSA-DropDownMenu-1.0/*' ':!:totalRP3/Libs/TaintLess/*' ':!:totalRP3/Locales/*.lua')
 
       - name: Create Package
         uses: BigWigsMods/packager@v2
