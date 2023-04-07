@@ -20,7 +20,7 @@ repos:
         alias: ec
         exclude: ^totalRP3/Locales/.*\.lua$
         types: []
-        types_or: [lua, xml, shell]
+        types_or: [lua, shell, xml]
 
   - repo: local
     hooks:
