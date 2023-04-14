@@ -9,9 +9,187 @@ local Plater;
 local PlaterAddonName = "Plater";
 
 -- The import string for our Plater mod
-local importString = "1QrAZPTsY)l8LhuLTkUb7D9UfbBCyFoyxiyZhEocgKgavrOHshoHDZYV9T7z0j6ajStC98twZ0390xJuAOmtrUHI8mMdXy6lToUCczhDVbXHARi7CypvrElJ9Df5wkYtFrSS9XLRzwhx(cUnR4G0uzsZwD72VJIChLjn627Mw173(M6kYTbQ4ATIT3D3(R)cJz(OlXstrUhSnf5Ukt62RRI8nidDpv3u3rNyO)Fio6mtf51UMQ4thxwDhtBgzLbT2X)1XLIF8FL0mqec5gP5Mw0n62atoKyySIO(9aOV64YkpBI7Llf3tCiZ3RbpPvbqm1udWo8JICa6oUCGMgvlgVytnwdyYf42XAEpmYcGaEMA(MpLsHL1xFCPjZjCTJlD2sbCArDCTmrW1skG3k4XaEQAabfmTI84sP4cxnGcicQgzljy4X2GE4zZNyeqBuTIVNdO2esqci9)XxYwtmSPj3wmbo4NS5JfpYn3lg8Y4C1DzJQyUnc8CxC8MpiHEAXamWPY(CKmCNZD0nYaj8LYgrpXblHOizWulLoa9KUx3gKNdJnxZ4y9)()YbGGJOuTm3CHvGstVSdQLGGBC1n0q8mKzGrVsvR5ckBBjvChIFpKPrhzWioWrT9r5lyzZ16BobT1QDoo4l0DRaX8JNhIG4ALtZS21WyMUJXhSMjoAZvZ4AthLdt4HWK7QmsPfLODGJxhlx6ffFq6H3OMo2sjYQuz4Ztgn(X5thmB8Ztwm8ZdM84d3x5QWiSvLKKQfgHkiC7ZMd5cNRfpG9WTeZnqyvC3)nEGSAFWC60hECS8ShMU4(bZgSy(lW)ROCQ)z0iNbllJY5prDdHr4KcZbgXQxg52lV4adJWqkPLeZxOI7bepDrEjhFK6mpECsEg4zSVtnZHCzfK9Vca(Bxc3iNd3aguTW3xR4b(JYtO5icwUqn2eM1orEcKBrduUkniXfXquk1erLu4JtPeJDCgQqijN6gIGnmotuKdyVsLZvgtCUjM8XFnN3QDX1347Z4l)hxkjbS11vepes9lWyKx1J5QV4BkuFX)tjIQdZAg0IaS9FHQU1w6aVyCa9xOwve7pooKeN9F2uw1IILSvOsgF31kEAsG8PQNhiwGtSiszwBCu6jGIRq4rzodToNKMRexq1GN8WT5EwY7sytelK3Pr(znoOHysY0pk(8GDKfo0oP6YmkfSSbzZKEtFXdft8fzZ0QKUyL4(xfoI23c0UzOoYXpnMk6D1tZ7l5qY3C91ac58eWQC9PdZ7pr0(h2O(2BPuLVieuYdb5EWiP1lbgsEEi1glZgJEEAXnGx51HAT3FyNtO4fzq9CMvDTSGk6EHhALZ88UWx43(TKyfjqKgk26CBQv1cABhBcB238I2rBhIJRTNOqvP22eRdN3WAXmWtXhK9aVSM48Apw6fl6EqPnngnMXMr)Pt1yO6Q8yQl3SEIAcBVrOSCWgsoVYjOFOJljaftCIxYElZ1q7Z6A0cMHkcgVllALBYQ8AaRy5TsAdp5n8QxE10R8Lm75exmI4WH6xqnezNqm3Z6xa7Dkp8Bjv81xpyp6eFCjVN98cygjjl)qGOpr0j5hl4aVisyuaXbXimo45H(MUT(kdDh4V1HdJmtCLnyBBhxUYFt(dX1M64OBUbNwP(MTGN5kyXFWSC2cig7kfweRUjW7hIIXPoZDZ2Z6PQ6A7W29O)Sss4VUjCf0BiISlkMmeYZrjX(hgsp)olJfbfZI)fDB1r6udTpDaRITAqVZ4cixHVvkGY1kpP9lwkvgIhdi9fLEJy46Pke2hVW7fxnydBkKhsQ(tJXY54uUrrsG9WWBXoTD7ADtTQv(7EXcsag)S4)48dsokTJiNfdO3BGRKdXJVXZiu5gkRCH0(qeGiZb9JJ9n1(Tf0utZlUJUk2r7p012GLJYB4cZIYO2M)b8a9N62oxfFbCcc8gF5V6SPPfui0fosSimcX4tw(YsGRXoV(0VnuGGF1tEJ171TdHUzDOy9pqO4QqZn4SYhmD2xFE6FwPwbo)eG5BhAqjwdmmEHPB6yxTCadDgWHRALPJF8ZZWHjgrP5xoQxH2YowI0mvE6Hr89EDB4x1RjYHTJCaR4etrHnyaL8rqOH0reB8LOYFlLy4SDfX6Fwk2eTlfrYo)os1L4UyMQsEqao5NJF4VfxWuqAjCdsdAWpW3zmR7paun4w932PYBTYtrzOn8Q523aKQhADynfCd1qO4qCbu6JWhVC0ek1l1jj65TKQBr5n6zDUOWrNN7fD1m8QY5LEQZR98SbClUlBWiRYMNZnfAi8zQAlQmhonevrAu260Noc2G4El2ADJG9wqncp)8K39Os4082VAr2JN6gBo0)Y7I308hJYiIlGNEbveQbDu6h8gJNxofXN9GlFvHx1Yadfmqro0vJ(LzKu7aHiM(4N4HqsnYqb1eNlIGFeYZQ5dNnBS5RMrLE5XhLc(YEtcN9(24FMqlUkMFb2cP(EIULD1HHHQ5JvniUnAeYTgPiJLoCI2berk89524YP3Vrrgqxz(ICY1nQ4k70V51ixqg)gBZ)gCEhtGm2GIIosCF8(TcoUQiobG1kIXxkQXFeZc9vRMpjpZTWeHu86Kcvb3D3zVDYq)OK3UrnKcfRtZmDrsXpT27PZPY4jL5xBWLF56LH8P9D8Cc55Od)w2CuK7JFnGoedisk8e8Inwm39Ihvni22Ih3r2VqxZ7pSiQuXt7FBFuyT3tvfprwVw)NIhPMQmxt4OveeWmeiaEE(47vKR)ZUT63QXnn70SdTHARgeGPyQVrTSXVXUjnQd)RdGwnn8tUtKdsrMThfFePt4FML44KuMa77pPhajb7XMNBY(jYkQHI8)gh6JIS30meERE9OlgstWh1hUwmmOiJvYHF9FaLxdkGx53oG9RcE5v9DKnu7xfC0cdb9UNARQip85NEEkiQtAgYJnIYJbJkWNd5YZO(nUPDV(D61)MU17DtREkRVUthelWItAPmQtVBA2VBNo30gvEbR3gx3XxeskRLtsufG4jjNuiw0jSY7B0m87u1b5X0L3iZ2jUe3TB76DRdID7oW)AwhLO2OepQF9g9B0RD9o1R3Ur)oDXvAHua1fPkXcI8HjZRdkVkUqdQI1udd2pcwyhNWCfq7KoLXNk)joMyLSEJNpp3YtWX7W1ezYojTsXjWjELn72PDR6T7d)UDRU99SeGnQh4U2P5nT60Uzd4)AhyJGvA0Sz9E1R3TvD4bFyIB3ov4)y8t37DDE8BqYonV0UHYFBp5pXD14Rc(KpZo3M6BCcSvCxKaPOCS)kglWO8GP3xRmuxVRnnEtqQBz2yfgKvS34L6bfTq0ICMmz3q84Sokk))";
+local importString = "TA13ZXPnq4)xYtNNXPJaKeCzM(qQDVmxRn2J5CEYJmcqyZebIbjCJ7d83ExHo4UZ(sAtD85FSOLD3VVD)KKzESnSepwYgLHlV56GH0yETOvYncnlX8CRGL8Os9fwsal5MRDU1dPLQUH0RTVw3HH4ZI9dO0iclHWI9OrEyC0sselbdvPVlt12x3((lvQMp1Z7kyjHWRXsOS4qk8wlTa6CrvtLPIlR(BUPs1Wsk7BYTwdPlQvfB4zsXjd)XqQ7tv5qAJYmKo57xQAaKvYZfdPMhfqy7E5PpDctFxZU1fnf7E41j6d320jEOsdp(rP8mUuMXZ)IEbadiswYCtyi9JffIIdWSwilpDiThy16ITgR6Gio1w3Ngl1P7Q6pe1E7eRTaG9m(xmdUjQT()3WyTgAex1CHIdTJfVBsI9Ut(xaEAjxQfFd8)9yYq6VoKUbkX9oLPLsJw6pCZ2r3LBd6ya))qtcM87e7l2l2jOB66fUUMHLez1YaPfngWcw4HovFRZmxY1ANznV9(QITp0bfZz1(u7(XQBf5olEzz1xDMIMCvVfJ7LaL0LaW(21NZsqFLI9fL5cFpuugv4tbqPYFs0PTtZypec(gsBrHD46ADSevRDeBtA84HeBSNfetCcDGk9vYIZusvhSP)ZCzpS2NSR5ooyiD0h8NETrvplD(tXZhe7f8mHeuy5wNRN623nkC035WYDv18he67Ci6EPlKZf6CwYzxDXv3aun2Fhg9MW4RXZeuhj1QiVL4Wisy0skkCzqiR89eInvGZ4a2ks4s)ikHSetdIcM9JT(n7ZfBf2M)FeMK7czltC9lv54UJH0hCGVze829An7oL1yH33KVxkQZShlFegtPyefb0gtGV8rwgHTmEveYlYleJiie2lIqTEcSLX2lEnJD14NeNhVm5iKgAfLcPu9xZoQhl7ydaFerzzVuUPYifVqyAV4AC9VRS8fr)wLMwqsoYu6LG5fAsFkbhGWrWVXbWnIU5amHcbXkXFzab77b)GNNqGhpFFuicrdqGXumhm1oKC)C0PGA8zRqZyZR(yQu6o(JN4)TAXu)FECmQaMBmtDKFBl271IvVb4NPuZdLFVXEUoazfCjSwSv2L7qr(JkT9)vGNPEcwTQbUXGxS3EslcB7uLvYPGgpN1Wy)d";
 
 TRP3_PlaterNamePlates = {}; -- magic public table
+
+function TRP3_PlaterNamePlates:InitializeUnit(unitToken)
+	-- Throw the nameplate unitToken into a table with the character's name as the key so we can look it up later
+	self.initialized[self:GetNormalizedUnitName(unitToken)] = unitToken;
+end
+
+function TRP3_PlaterNamePlates:CustomizeNameplate(unitFrame)
+	local plateFrame = unitFrame.PlateFrame;
+	local unitToken = plateFrame.namePlateUnitToken;
+	local displayInfo = TRP3_NamePlates:GetUnitDisplayInfo(unitToken);
+
+	if not displayInfo then return false; end
+
+	self:InitializeUnit(unitToken);
+
+	-- Set the display name to the unit's RP name
+	local RPDisplayName;
+	if displayInfo.name then
+		RPDisplayName = displayInfo.name;
+	else
+		RPDisplayName = GetUnitName(unitToken, false);
+	end
+
+	-- Attach the RP status if necessary
+	if displayInfo.roleplayStatus then
+		RPDisplayName = TRP3_NamePlatesUtil.PrependRoleplayStatusToText(RPDisplayName, displayInfo.roleplayStatus);
+	end
+
+	-- Insert the full RP title
+	if displayInfo.fullTitle and not displayInfo.shouldHide then
+		local fullTitle = displayInfo.fullTitle;
+		if self.useFullTitleColor then
+			RPDisplayName = RPDisplayName .. "\n" .. self.fullTitleColor:WrapTextInColorCode(fullTitle);
+		else
+			RPDisplayName = RPDisplayName .. "\n"  .. fullTitle;
+		end
+	end
+
+	local currentPlayer = AddOn_TotalRP3.Player.GetCurrentUser();
+
+	-- Append guild name (visibility of this is controlled via Plater settings)
+	if plateFrame.PlateConfig.show_guild_name then
+		local customGuildName = displayInfo.guildName or plateFrame.playerGuildName;
+		local playerCustomGuildTable = currentPlayer:GetMiscFieldByType(TRP3_API.MiscInfoType.GuildName);
+		local playerCustomGuild = playerCustomGuildTable and playerCustomGuildTable.value or Plater.PlayerGuildName;
+		local sameGuild = customGuildName == playerCustomGuild;
+
+		if customGuildName and not RPDisplayName:find("<" .. customGuildName .. ">") then
+			if sameGuild then
+				RPDisplayName = RPDisplayName .. "\n" .. self.guildMemberColor:WrapTextInColorCode("<" .. customGuildName .. ">");
+			else
+				--RPDisplayName = RPDisplayName .. "\n" .. self.guildNameColor .. "<" .. customGuildName .. ">|r";
+				RPDisplayName = RPDisplayName .. "\n" .. self.guildNameColor:WrapTextInColorCode("<" .. customGuildName .. ">");
+			end
+		end
+	end
+
+	-- Add the icon widget if it doesn't exist, if it does, update it
+	if displayInfo.icon and not plateFrame.TRP3Icon and not displayInfo.shouldHide then
+		do
+			local iconWidget = plateFrame:CreateTexture(nil, "ARTWORK")
+			iconWidget:ClearAllPoints();
+			iconWidget:SetPoint("RIGHT", plateFrame.CurrentUnitNameString, "LEFT", -4, 0);
+			iconWidget:Hide();
+
+			plateFrame.TRP3Icon = iconWidget;
+		end
+	elseif displayInfo.icon and plateFrame.TRP3Icon and not displayInfo.shouldHide then
+		plateFrame.TRP3Icon:ClearAllPoints();
+		plateFrame.TRP3Icon:SetTexture(TRP3_API.utils.getIconTexture(displayInfo.icon));
+		plateFrame.TRP3Icon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
+		plateFrame.TRP3Icon:SetPoint("RIGHT", plateFrame.CurrentUnitNameString, "LEFT", -4, 0);
+		plateFrame.TRP3Icon:Show();
+	elseif plateFrame.TRP3Icon then
+		plateFrame.TRP3Icon:Hide();
+	end
+
+	-- Update nameplate visibility
+	if displayInfo.shouldHide then
+		unitFrame:Hide();
+	else
+		unitFrame:Show();
+	end
+
+	-- Set the color of the name to the RP profile color
+	if displayInfo.shouldColorName then
+		RPDisplayName = displayInfo.color:WrapTextInColorCode(RPDisplayName);
+	end
+
+	-- Set the nameplate color to color the health bar
+	if displayInfo.shouldColorHealth then
+		Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBTable());
+	end
+
+	-- Setting the new name string for all the Plater name elements
+	plateFrame.CurrentUnitNameString:SetText(RPDisplayName);
+	unitFrame.namePlateUnitName = RPDisplayName;
+	plateFrame.namePlateUnitName = RPDisplayName;
+
+	return true;
+end
+
+function TRP3_PlaterNamePlates:GetNormalizedUnitName(unitToken)
+	local unitName, unitRealm = UnitName(unitToken);
+
+	if not unitRealm or unitRealm == "" then
+		unitRealm = GetNormalizedRealmName();
+	end
+
+	return unitName .. "-" .. unitRealm;
+end
+
+function TRP3_PlaterNamePlates:UpdateNameplate(unitFrame)
+	if not unitFrame or unitFrame.actorType ~= "friendlyplayer" or not unitFrame.PlaterOnScreen then
+		return false;
+	end
+
+	self:CustomizeNameplate(unitFrame);
+end
+
+function TRP3_PlaterNamePlates:UpdateAllNameplates()
+	for _, nameplate in ipairs(C_NamePlate:GetNamePlates()) do
+		local unitFrame = nameplate.unitFrame;
+		if not unitFrame then return end
+		self:UpdateNameplate(unitFrame);
+	end
+end
+
+
+--- Called from within the Plater mod to make this module aware of it and it's inner workings
+function TRP3_PlaterNamePlates:RegisterModTable(modTable)
+	if not modTable then
+		return nil;
+	end
+
+	self.modTable = modTable;
+
+	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
+
+	self.initialized = {};
+
+	-- Grabbing the color config from the Plater mod settings
+	self.guildNameColor = TRP3_API.CreateColor(unpack(self.modTable.config.guildNameColor));
+	self.guildMemberColor = TRP3_API.CreateColor(unpack(self.modTable.config.guildMemberColor)); -- name color for members of your guild
+
+	self.fullTitleColor = TRP3_API.CreateColor(unpack(self.modTable.config.fullTitleColor));
+	self.useFullTitleColor = self.modTable.config.useFullTitleColor;
+
+	-- Registering some callbacks
+	self.callbackConfigChanged = TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.CONFIGURATION_CHANGED, self.OnConfigurationChanged, self);
+	self.callbackRegisterUpdated = TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.REGISTER_DATA_UPDATED, self.OnRegisterDataUpdated, self);
+
+	return self;
+end
+
+function TRP3_PlaterNamePlates:UnregisterAllCallbacks()
+	self.callbackConfigChanged:Unregister();
+	self.callbackRegisterUpdated:Unregister();
+end
+
+function TRP3_PlaterNamePlates:OnConfigurationChanged()
+	self:UpdateAllNameplates();
+end
+
+function TRP3_PlaterNamePlates:OnRegisterDataUpdated(unitName)
+	if not unitName then return end
+
+	if self.initialized[unitName] then
+		local nameplate = C_NamePlate.GetNamePlateForUnit(self.initialized[unitName]);
+		if nameplate and unitName == self:GetNormalizedUnitName(nameplate.namePlateUnitToken) then
+			self:UpdateNameplate(nameplate.unitFrame);
+		end
+	end
+end
+
+function TRP3_PlaterNamePlates:OnNamePlateDataUpdated()
+	-- do something here I guess?
+end
 
 function TRP3_PlaterNamePlates:OnModuleInitialize()
 	if GetAddOnEnableState(nil, PlaterAddonName) ~= 2 then
