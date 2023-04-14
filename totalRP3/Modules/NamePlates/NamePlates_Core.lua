@@ -111,11 +111,21 @@ local function ShouldCustomizeUnitNamePlate(unitToken)
 	end
 end
 
-local function ShouldHideNonRoleplayUnit(unitToken)
+local function ShouldHideUnitNamePlate(unitToken)
 	if TRP3_NamePlatesSettings.ShowTargetUnit and UnitIsUnit(unitToken, "target") then
 		return false;
+	end
+
+	local roleplayStatus = GetUnitRoleplayStatus(unitToken);
+	local isNonRoleplayUnit = (roleplayStatus == nil);
+	local isOutOfCharacter = (roleplayStatus == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER);
+
+	if TRP3_NamePlatesSettings.HideNonRoleplayUnits and isNonRoleplayUnit then
+		return true;
+	elseif TRP3_NamePlatesSettings.HideOutOfCharacterUnits and isOutOfCharacter then
+		return true;
 	else
-		return TRP3_NamePlatesSettings.HideNonRoleplayUnits;
+		return false;
 	end
 end
 
@@ -145,6 +155,7 @@ end
 
 local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 	local displayInfo = GetOrCreateDisplayInfo(unitToken);
+	displayInfo.shouldHide = ShouldHideUnitNamePlate(unitToken);
 
 	if characterID and TRP3_API.register.isUnitIDKnown(characterID) then
 		local player = GetOrCreatePlayerFromCharacterID(characterID);
@@ -212,13 +223,6 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 				displayInfo.guildRank = customGuildInfo.rank or guildRank;
 			end
 		end
-
-		if TRP3_NamePlatesSettings.HideOutOfCharacterUnits then
-			displayInfo.shouldHide = displayInfo.shouldHide or not player:IsInCharacter();
-		end
-	else
-		-- Unit has no profile and so is a non-roleplay unit.
-		displayInfo.shouldHide = ShouldHideNonRoleplayUnit(unitToken);
 	end
 
 	if displayInfo.name then
@@ -234,6 +238,7 @@ end
 
 local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 	local displayInfo = GetOrCreateDisplayInfo(unitToken);
+	displayInfo.shouldHide = ShouldHideUnitNamePlate(unitToken);
 
 	local profile = TRP3_API.companions.register.getCompanionProfile(companionFullID);
 
@@ -271,14 +276,7 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 			if TRP3_NamePlatesSettings.CustomizeIcons then
 				displayInfo.icon = profile.data.IC;
 			end
-
-			if TRP3_NamePlatesSettings.HideOutOfCharacterUnits then
-				displayInfo.shouldHide = displayInfo.shouldHide or IsUnitOutOfCharacter(unitToken);
-			end
 		end
-	else
-		-- Unit has no profile and so is a non-roleplay unit.
-		displayInfo.shouldHide = ShouldHideNonRoleplayUnit(unitToken);
 	end
 
 	if displayInfo.name then
@@ -294,7 +292,7 @@ end
 
 local function GetNonPlayableUnitDisplayInfo(unitToken)
 	local displayInfo = GetOrCreateDisplayInfo(unitToken);
-	displayInfo.shouldHide = ShouldHideNonRoleplayUnit(unitToken);
+	displayInfo.shouldHide = ShouldHideUnitNamePlate(unitToken);
 	return displayInfo;
 end
 
