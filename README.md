@@ -59,6 +59,10 @@ Adds a standalone frame to your UI that displays your "Currently" text and allow
 
 Adds a simple button to the toolbar to toggle on and off the map scan location feature.
 
+### [Total RP 3: Unit Frames](https://www.curseforge.com/wow/addons/total-rp-3-unit-frames), by keyboardturner
+
+This module modifies Blizzard player and target frames to use RP name and color, and add a button to open profile.
+
 ## Total RP 3 for add-on developers
 
 Want to integrate your addon with Total RP 3, or create your own module? Check out the [wiki](https://github.com/Total-RP/Total-RP-3/wiki) for a look into TRP3's public API, and a look into how Total RP 3 works.
