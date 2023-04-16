@@ -226,6 +226,8 @@ If not, the language will be changed on the next connection.]=],
 	["CO_GENERAL_COM"] = "Communication",
 	["CO_GENERAL_DEFAULT_COLOR_PICKER"] = "Default color picker",
 	["CO_GENERAL_DEFAULT_COLOR_PICKER_TT"] = "Activate to always use the default color picker. Useful if you're using a color picker addon.",
+	["CO_GENERAL_DISABLE_WELCOME_MESSAGE"] = "Disable welcome message",
+	["CO_GENERAL_DISABLE_WELCOME_MESSAGE_HELP"] = "Disables the welcome message displayed in the chat frame on login.",
 	["CO_GENERAL_HEAVY"] = "Heavy profile alert",
 	["CO_GENERAL_HEAVY_TT"] = "Get an alert when your profile total size exceed a reasonable value.",
 	["CO_GENERAL_LOCALE"] = "Addon locale",
@@ -419,6 +421,7 @@ Class: 50 characters|r]=],
 	["CO_TOOLTIP_TITLE_COLOR"] = "Title text color",
 	["CO_TOOLTIP_TITLE_COLOR_HELP"] = "The color used in the tooltip to display full-length character titles.",
 	["CO_TOOLTIP_USE"] = "Use characters/companions tooltip",
+	["CO_TOOLTIP_VOICE_REFERENCE"] = "Show voice reference",
 	["CO_TOOLTIP_ZONE"] = "Show zone",
 	["CO_TOOLTIP_ZONE_TT"] = "This will only show if the target is not in the same zone as you.",
 	["CO_UI_RELOAD_WARNING"] = [=[The interface needs to be reloaded in order for the changes to be applied.
@@ -501,6 +504,7 @@ to others that you are a beginner roleplayer.]=],
 |cffffff00The roleplayer status|r allows you to state that you are a beginner, or a veteran willing to help rookies!
 
 |cff00ff00These information will be placed in your character's tooltip.]=],
+	["DEFAULT_GUILD_RANK"] = "Member",
 	["DICE_HELP"] = "A dice roll or rolls separated by spaces, example: 1d6, 2d12 3d20 ...",
 	["DICE_ROLL"] = "%s Rolled |cffff9900%sx d%s|r|cffcc6600%s|r and got |cff00ff00%s|r.",
 	["DICE_ROLL_T"] = "%s %s rolled |cffff9900%sx d%s|r|cffcc6600%s|r and got |cff00ff00%s|r.",
@@ -586,23 +590,25 @@ Are you sure you want to view this profile?]=],
 	["MORE_MODULES_2"] = [=[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended{/h3}
 |cff9999ffTotal RP 3: Extended|r add the possibility to create new content in WoW: campaigns with quests and dialogues, items, documents (books, signs, contracts, …) and many more!
-{link*http://extended.totalrp3.info*Download on Curse.com}
+{link*https://www.curseforge.com/wow/addons/total-rp-3-extended*Download on CurseForge}
 
-{h3}Kui |cff9966ffNameplates|r module{/h3}
-The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to the KuiNameplates add-on:
-• See the full RP name of a character on their nameplate, instead of their default name, colored like in their tooltip.
-• See customized pets names.
-• Hide the names of players without an RP profile!
-{link*http://mods.curse.com/addons/wow/total-rp-3-kuinameplates-module*Download on Curse.com}.
+{h3}TRP3 Currently Frame{/h3}
+Adds a standalone frame to your UI that displays your "Currently" text and allows you to edit it easily.
+{link*https://www.curseforge.com/wow/addons/trp3-currently-frame*Download on CurseForge}
 
-
-]=],
+{h3}TRP3 Location Toggle{/h3}
+Adds a simple button to the toolbar to toggle on and off the map scan location feature.
+{link*https://www.curseforge.com/wow/addons/trp3-location-toggle*Download on CurseForge}]=],
 	["NAMEPLATES_CONFIG_ACTIVE_QUERY"] = "Automatically fetch profiles",
 	["NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP"] = "If checked, automatically fetches roleplay profiles for units with nameplates attached.",
 	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY"] = "Hide bars on |cff449fe0Blizzard|r nameplates",
 	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP"] = "If checked, this enables the use of name-only mode for |cff449fe0Blizzard|r nameplates.|n|nIn this mode, all nameplates will have their health bars hidden, including those of enemy units and other players with or without roleplay profiles.|n|nThis option requires a UI reload to take effect.",
+	["NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES"] = "Show first names only",
+	["NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES_HELP"] = "If checked, only show the first names rather than full names.|n|nThis can only be applied to player units, and will not work with profiles received from other roleplay addons.",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES"] = "Show full length titles",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES_HELP"] = "If checked, shows the full title of a unit on nameplates.|n|nFor |cff449fe0Blizzard|r and |cff9966ffKui|r nameplates, full titles are only shown in name-only mode.",
+	["NAMEPLATES_CONFIG_CUSTOMIZE_GUILD"] = "Show custom guild names",
+	["NAMEPLATES_CONFIG_CUSTOMIZE_GUILD_HELP"] = "If checked, show custom guild names on nameplates that support them.",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS"] = "Show custom health colors",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP"] = "If checked, overrides the color of health bars with the class color of a units' profile.",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_ICONS"] = "Show icons",
@@ -617,6 +623,10 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	["NAMEPLATES_CONFIG_CUSTOMIZE_TITLES_HELP"] = "If checked, shows the short title of a unit on nameplates before their name.",
 	["NAMEPLATES_CONFIG_DISABLE_IN_COMBAT"] = "Disable customizations when in combat",
 	["NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP"] = "If checked, disables nameplate customizations while you are in combat.",
+	["NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES"] = "Disable customizations in instances",
+	["NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES_HELP"] = "If checked, disables nameplate customizations while in instances.|n|nIn instanced content friendly nameplates cannot be customized.",
+	["NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS"] = "Disable customizations on NPC units",
+	["NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS_HELP"] = "If checked, disables nameplate customizations on non-playable character units.",
 	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER"] = "Disable customizations when OOC",
 	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP"] = "If checked, disables all nameplate customizations while you are out of character.",
 	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS"] = "Disable customizations on OOC units",
@@ -630,9 +640,16 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	["NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP"] = "If checked, hides the nameplates of units that are currently out of character.",
 	["NAMEPLATES_CONFIG_ICON_SIZE"] = "Icon size",
 	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "Configures the size of icons displayed on nameplates if the |cffffff00Show icons|r option is enabled.",
+	["NAMEPLATES_CONFIG_MAX_NAME_CHARS"] = "Maximum name length",
+	["NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP"] = "The maximum number of characters to display for names and prefix titles. Names exceeding this length will be cropped.",
+	["NAMEPLATES_CONFIG_MAX_TITLE_CHARS"] = "Maximum title length",
+	["NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP"] = "The maximum number of characters to display for full titles. Titles exceeding this length will be cropped.",
 	["NAMEPLATES_CONFIG_MENU_TITLE"] = "Nameplates",
 	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
+	["NAMEPLATES_CONFIG_PAGE_SETTINGS_MAY_REQUIRE_TOGGLE_HELP"] = "You may need to toggle your nameplates for any settings changes to take effect.",
 	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "Nameplate settings",
+	["NAMEPLATES_CONFIG_SHOW_TARGET_UNIT"] = "Always show target unit",
+	["NAMEPLATES_CONFIG_SHOW_TARGET_UNIT_HELP"] = "If checked, your current target will always have its nameplate visible.",
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Visibility settings",
 	["NAMEPLATES_MODULE_ACTIVE_STATUS"] = "Module |cff00ff00active|r (%1$s|r)",
 	["NAMEPLATES_MODULE_DESCRIPTION"] = "Enables the customization of nameplates with information obtained from roleplay profiles.",
@@ -1067,7 +1084,10 @@ There are several ways to do this:|c0000ff00
 	["REG_PLAYER_LASTNAME_TT"] = "This is your character's family name.",
 	["REG_PLAYER_LEFTTRAIT"] = "Left attribute",
 	["REG_PLAYER_MISC_ADD"] = "Add an additional field",
+	["REG_PLAYER_MISC_PRESET_GUILD_NAME"] = "Guild name",
+	["REG_PLAYER_MISC_PRESET_GUILD_RANK"] = "Guild rank",
 	["REG_PLAYER_MISC_PRESET_PRONOUNS"] = "Pronouns",
+	["REG_PLAYER_MISC_PRESET_VOICE_REFERENCE"] = "Voice reference",
 	["REG_PLAYER_MORE_INFO"] = "Additional Information",
 	["REG_PLAYER_MSP_HOUSE"] = "House name",
 	["REG_PLAYER_MSP_MOTTO"] = "Motto",
@@ -1520,6 +1540,26 @@ Total RP is not responsible for links leading to harmful content.]=],
 - Fixed name-only nameplates setting not persisting upon logout.
 - Fixed an issue with profiles showing as Unknown in the directory quick entries if the profile was received for the first time.
 
+]=],
+	["WHATS_NEW_25_7"] = [=[# Changelog version 2.4.6
+## Added
+- Added support for 10.0.7 furbolg language.
+- Added voice reference, custom guild name and rank presets in additional info.
+  - Voice reference will be shown in the tooltip if filled in.
+  - Custom guild name/rank will replace the original fields in TRP tooltips.
+  - You may disable either of these changes via tooltip settings ("Show voice reference" and "Show custom guild names").
+- Added nameplates settings:
+  - Name and title max length on nameplates
+  - Display first name only
+  - Display custom guild name
+  - Disable customizations in instances
+  - Disable customizations on NPCs
+- IC/OOC fields from other players' profile are now selectable to make it easier to copy URLs.
+- Added setting to disable the welcome message on login.
+## Fixed
+- Fixed an issue with "Unknown" names potentially showing on tooltips after a loading screen.
+- Fixed an issue with the KuiNameplates module to properly fade/hide nameplates when appropriate.
+- Fixed an issue where the target frame would stay hidden after a UI reload with a target selected.
 ]=]
 }
 
