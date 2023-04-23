@@ -16,7 +16,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="TabFrame.xml"/>
 	<Include file="StatusPanel.xml"/>
 
-	<Button name="TRP3_PartyTime" virtual="true">
+	<Frame name="TRP3_PartyTime" virtual="true">
 		<Size x="75" y="75"/>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -64,7 +64,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<FlipBook smoothing="NONE" childKey="FatcatPat" duration="0.2" order="1" flipBookRows="2" flipBookColumns="2" flipBookFrames="4" flipBookFrameWidth="0" flipBookFrameHeight="0"/>
 			</AnimationGroup>
 		</Animations>
-	</Button>
+	</Frame>
 
 	<!-- Dashboard -->
 	<Frame name="TRP3_Dashboard" hidden="true" inherits="BackdropTemplate">
@@ -93,12 +93,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Layers>
 		<Frames>
 
-			<Button name="TRP3_PartyTimeLeft" inherits="TRP3_PartyTime">
+			<Frame name="TRP3_PartyTimeLeft" inherits="TRP3_PartyTime">
 				<Anchors><Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_DashboardLogo" x="-10" y="0"/></Anchors>
-			</Button>
-			<Button name="TRP3_PartyTimeRight" inherits="TRP3_PartyTime">
+			</Frame>
+			<Frame name="TRP3_PartyTimeRight" inherits="TRP3_PartyTime">
 				<Anchors><Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_DashboardLogo" x="10" y="0"/></Anchors>
-			</Button>
+			</Frame>
 
 			<!-- Status -->
 			<Frame parentKey="StatusPanel" name="$parentStatus" inherits="TRP3_DashboardStatusPanelTemplate">
