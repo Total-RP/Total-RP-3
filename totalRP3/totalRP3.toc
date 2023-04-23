@@ -37,7 +37,7 @@ Libs\LibDBIcon-1.0\lib.xml
 Libs\LibDeflate\lib.xml
 Libs\LibDropDownExtension\LibDropDownExtension.lua
 Libs\LibMSP\LibMSP.xml
-Libs\LibRPMedia\LibRPMedia-1.0.xml
+Libs\LibRPMedia\lib.xml
 Libs\MSA-DropDownMenu-1.0\MSA-DropDownMenu-1.0.xml
 Libs\UTF8\lib.xml
 
