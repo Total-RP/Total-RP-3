@@ -13,19 +13,20 @@ local importString = "TA13ZXPnq4)xYtNNXPJaKeCzM(qQDVmxRn2J5CEYJmcqyZebIbjCJ7d83E
 
 TRP3_PlaterNamePlates = {}; -- magic public table
 
-function TRP3_PlaterNamePlates:InitializeUnit(unitToken)
-	-- Throw the nameplate unitToken into a table with the character's name as the key so we can look it up later
-	self.initialized[self:GetNormalizedUnitName(unitToken)] = unitToken;
-end
+function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayInfo)
+	if nameplate:IsForbidden() or not nameplate:IsShown() then
+		return;
+	end
 
-function TRP3_PlaterNamePlates:CustomizeNameplate(unitFrame)
+	local unitFrame = nameplate.unitFrame;
+
+	if not unitFrame then
+		return;
+	end
+
 	local plateFrame = unitFrame.PlateFrame;
-	local unitToken = plateFrame.namePlateUnitToken;
-	local displayInfo = TRP3_NamePlates:GetUnitDisplayInfo(unitToken);
 
 	if not displayInfo then return false; end
-
-	self:InitializeUnit(unitToken);
 
 	-- Set the display name to the unit's RP name
 	local RPDisplayName;
@@ -114,33 +115,6 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(unitFrame)
 	return true;
 end
 
-function TRP3_PlaterNamePlates:GetNormalizedUnitName(unitToken)
-	local unitName, unitRealm = UnitName(unitToken);
-
-	if not unitRealm or unitRealm == "" then
-		unitRealm = GetNormalizedRealmName();
-	end
-
-	return unitName .. "-" .. unitRealm;
-end
-
-function TRP3_PlaterNamePlates:UpdateNameplate(unitFrame)
-	if not unitFrame or unitFrame.actorType ~= "friendlyplayer" or not unitFrame.PlaterOnScreen then
-		return false;
-	end
-
-	self:CustomizeNameplate(unitFrame);
-end
-
-function TRP3_PlaterNamePlates:UpdateAllNameplates()
-	for _, nameplate in ipairs(C_NamePlate:GetNamePlates()) do
-		local unitFrame = nameplate.unitFrame;
-		if not unitFrame then return end
-		self:UpdateNameplate(unitFrame);
-	end
-end
-
-
 --- Called from within the Plater mod to make this module aware of it and it's inner workings
 function TRP3_PlaterNamePlates:RegisterModTable(modTable)
 	if not modTable then
@@ -160,35 +134,11 @@ function TRP3_PlaterNamePlates:RegisterModTable(modTable)
 	self.fullTitleColor = TRP3_API.CreateColor(unpack(self.modTable.config.fullTitleColor));
 	self.useFullTitleColor = self.modTable.config.useFullTitleColor;
 
-	-- Registering some callbacks
-	self.callbackConfigChanged = TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.CONFIGURATION_CHANGED, self.OnConfigurationChanged, self);
-	self.callbackRegisterUpdated = TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.REGISTER_DATA_UPDATED, self.OnRegisterDataUpdated, self);
-
 	return self;
 end
 
-function TRP3_PlaterNamePlates:UnregisterAllCallbacks()
-	self.callbackConfigChanged:Unregister();
-	self.callbackRegisterUpdated:Unregister();
-end
-
-function TRP3_PlaterNamePlates:OnConfigurationChanged()
-	self:UpdateAllNameplates();
-end
-
-function TRP3_PlaterNamePlates:OnRegisterDataUpdated(unitName)
-	if not unitName then return end
-
-	if self.initialized[unitName] then
-		local nameplate = C_NamePlate.GetNamePlateForUnit(self.initialized[unitName]);
-		if nameplate and unitName == self:GetNormalizedUnitName(nameplate.namePlateUnitToken) then
-			self:UpdateNameplate(nameplate.unitFrame);
-		end
-	end
-end
-
-function TRP3_PlaterNamePlates:OnNamePlateDataUpdated()
-	-- do something here I guess?
+function TRP3_PlaterNamePlates:OnNamePlateDataUpdated(_, nameplate, unitToken, displayInfo)
+	self:CustomizeNameplate(nameplate, unitToken, displayInfo);
 end
 
 function TRP3_PlaterNamePlates:OnModuleInitialize()
@@ -237,10 +187,7 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 end
 
 function TRP3_PlaterNamePlates:OnModuleDisable()
-	if self.modTable then
-		-- unregister the callback so other addons can take over without a UI reload - we have to do it here because disabling the mod in this way doesn't properly deinitialize it
-		TRP3_NamePlates.UnregisterCallback(self.modTable, "OnNamePlateDataUpdated");
-	end
+	TRP3_NamePlates.UnregisterCallback(self, "OnNamePlateDataUpdated");
 	self.PlaterMod.Enabled = false;
 end
 
