@@ -16,6 +16,56 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="TabFrame.xml"/>
 	<Include file="StatusPanel.xml"/>
 
+	<Button name="TRP3_PartyTime" virtual="true">
+		<Size x="75" y="75"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="FatcatParty" alpha="1" alphaMode="BLEND" file="Interface\AddOns\totalRP3\resources\fatcatparty" nounload="true">
+					<Size x="75" y="75"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="FatcatPat" alpha="0" alphaMode="BLEND" file="Interface\AddOns\totalRP3\resources\fatcatpat" nounload="true">
+					<Size x="75" y="75"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnShow>
+				self.FatcatParty:SetAlpha(1);
+				self.FatcatPat:SetAlpha(0);
+				self.FatcatPartyAnim:Play();
+			</OnShow>
+			<OnEnter>
+				self:StopAnimating();
+				self.FatcatParty:SetAlpha(0);
+				self.FatcatPat:SetAlpha(1);
+				self.FatcatPatAnim:Play();
+			</OnEnter>
+			<OnLeave>
+				self:StopAnimating();
+				self.FatcatParty:SetAlpha(1);
+				self.FatcatPat:SetAlpha(0);
+				self.FatcatPartyAnim:Play();
+			</OnLeave>
+			<OnHide>
+				self:StopAnimating();
+			</OnHide>
+		</Scripts>
+		<Animations>
+			<AnimationGroup parentKey="FatcatPartyAnim" looping="REPEAT" setToFinalAlpha="true">
+				<FlipBook smoothing="NONE" childKey="FatcatParty" duration="0.5" order="1" flipBookRows="4" flipBookColumns="4" flipBookFrames="10" flipBookFrameWidth="0" flipBookFrameHeight="0"/>
+			</AnimationGroup>
+			<AnimationGroup parentKey="FatcatPatAnim" looping="REPEAT" setToFinalAlpha="true">
+				<FlipBook smoothing="NONE" childKey="FatcatPat" duration="0.2" order="1" flipBookRows="2" flipBookColumns="2" flipBookFrames="4" flipBookFrameWidth="0" flipBookFrameHeight="0"/>
+			</AnimationGroup>
+		</Animations>
+	</Button>
+
 	<!-- Dashboard -->
 	<Frame name="TRP3_Dashboard" hidden="true" inherits="BackdropTemplate">
 		<KeyValues>
@@ -42,6 +92,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
+
+			<Button name="TRP3_PartyTimeLeft" inherits="TRP3_PartyTime">
+				<Anchors><Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_DashboardLogo" x="-10" y="0"/></Anchors>
+			</Button>
+			<Button name="TRP3_PartyTimeRight" inherits="TRP3_PartyTime">
+				<Anchors><Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_DashboardLogo" x="10" y="0"/></Anchors>
+			</Button>
 
 			<!-- Status -->
 			<Frame parentKey="StatusPanel" name="$parentStatus" inherits="TRP3_DashboardStatusPanelTemplate">

@@ -314,46 +314,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							</PostClick>
 						</Scripts>
 					</Button>
-					<Button name="TRP3_PartyTime">
-						<Size x="50" y="50"/>
-						<Anchors><Anchor point="BOTTOM" x="10" y="30"/></Anchors>
-						<Scripts>
-							<OnLoad>
-								self:SetNormalTexture("Interface\\AddOns\\totalRP3\\resources\\fcp");
-								self.clickCount = 0;
-							</OnLoad>
-							<OnShow>
-								if not self.timer then
-									self.pictureID = 0;
-									self.timer = C_Timer.NewTicker(0.05, function()
-										local X = self.pictureID % 8;
-										local Y = (self.pictureID - X) / 8;
-										self:GetNormalTexture():SetTexCoord(X * 0.125, (X + 1) * 0.125, Y * 0.125, (Y + 1) * 0.125);
-										self.pictureID = self.pictureID + 1;
-										if self.angery and self.pictureID > 54 then
-											self.pictureID = 10;
-										elseif not self.angery and self.pictureID > 9 then
-											self.pictureID = 0;
-										end
-									end);
-								end
-							</OnShow>
-							<OnEnter>
-								self.angery = true;
-								self.pictureID = 10;
-							</OnEnter>
-							<OnLeave>
-								self.angery = false;
-								self.pictureID = 0;
-							</OnLeave>
-							<OnHide>
-								if self.timer then
-									self.timer:Cancel();
-									self.timer = nil
-								end
-							</OnHide>
-						</Scripts>
-					</Button>
 				</Frames>
 			</ScrollFrame>
 

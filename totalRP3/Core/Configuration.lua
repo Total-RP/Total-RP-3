@@ -481,26 +481,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			}
 		}
 	}
-
-	if TRP3_API.globals.serious_day then
-		registerConfigKey("AF_STUFF_2023", true);
-		tinsert(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL.elements, 2, {
-			inherit = "TRP3_ConfigCheck",
-			title = TRP3_API.utils.Rainbowify("Enable April Fools' joke"),
-			help = "Disable this option to remove this year's April Fools' joke.",
-			configKey = "AF_STUFF_2023",
-		})
-
-		registerHandler("AF_STUFF_2023", function()
-			if getValue("AF_STUFF_2023") then
-				TRP3_PartyTime:Show();
-			else
-				TRP3_PartyTime:Hide();
-			end
-		end);
-
-	end
-
 end);
 
 AddOn_TotalRP3.Configuration = {}

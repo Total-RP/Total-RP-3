@@ -376,4 +376,22 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			TRP3_API.toolbar.toolbarAddButton(Button_Cape);
 		end
 	end
+
+	TRP3_API.configuration.registerConfigKey("secret_party", false);
+	TRP3_API.configuration.registerHandler("secret_party", function()
+		if TRP3_API.configuration.getValue("secret_party") then
+			TRP3_PartyTimeLeft:Show();
+			TRP3_PartyTimeRight:Show();
+		else
+			TRP3_PartyTimeLeft:Hide();
+			TRP3_PartyTimeRight:Hide();
+		end
+	end);
+	TRP3_API.slash.registerCommand({
+		id = "partytime",
+		handler = function()
+			local oldValue = TRP3_API.configuration.getValue("secret_party");
+			TRP3_API.configuration.setValue("secret_party", oldValue == false);
+		end,
+	});
 end);
