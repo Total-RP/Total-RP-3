@@ -9,7 +9,7 @@ local Plater;
 local PlaterAddonName = "Plater";
 
 -- The import string for our Plater mod
-local importString = "TA13ZXPnq4)xYtNNXPJaKeCzM(qQDVmxRn2J5CEYJmcqyZebIbjCJ7d83ExHo4UZ(sAtD85FSOLD3VVD)KKzESnSepwYgLHlV56GH0yETOvYncnlX8CRGL8Os9fwsal5MRDU1dPLQUH0RTVw3HH4ZI9dO0iclHWI9OrEyC0sselbdvPVlt12x3((lvQMp1Z7kyjHWRXsOS4qk8wlTa6CrvtLPIlR(BUPs1Wsk7BYTwdPlQvfB4zsXjd)XqQ7tv5qAJYmKo57xQAaKvYZfdPMhfqy7E5PpDctFxZU1fnf7E41j6d320jEOsdp(rP8mUuMXZ)IEbadiswYCtyi9JffIIdWSwilpDiThy16ITgR6Gio1w3Ngl1P7Q6pe1E7eRTaG9m(xmdUjQT()3WyTgAex1CHIdTJfVBsI9Ut(xaEAjxQfFd8)9yYq6VoKUbkX9oLPLsJw6pCZ2r3LBd6ya))qtcM87e7l2l2jOB66fUUMHLez1YaPfngWcw4HovFRZmxY1ANznV9(QITp0bfZz1(u7(XQBf5olEzz1xDMIMCvVfJ7LaL0LaW(21NZsqFLI9fL5cFpuugv4tbqPYFs0PTtZypec(gsBrHD46ADSevRDeBtA84HeBSNfetCcDGk9vYIZusvhSP)ZCzpS2NSR5ooyiD0h8NETrvplD(tXZhe7f8mHeuy5wNRN623nkC035WYDv18he67Ci6EPlKZf6CwYzxDXv3aun2Fhg9MW4RXZeuhj1QiVL4Wisy0skkCzqiR89eInvGZ4a2ks4s)ikHSetdIcM9JT(n7ZfBf2M)FeMK7czltC9lv54UJH0hCGVze829An7oL1yH33KVxkQZShlFegtPyefb0gtGV8rwgHTmEveYlYleJiie2lIqTEcSLX2lEnJD14NeNhVm5iKgAfLcPu9xZoQhl7ydaFerzzVuUPYifVqyAV4AC9VRS8fr)wLMwqsoYu6LG5fAsFkbhGWrWVXbWnIU5amHcbXkXFzab77b)GNNqGhpFFuicrdqGXumhm1oKC)C0PGA8zRqZyZR(yQu6o(JN4)TAXu)FECmQaMBmtDKFBl271IvVb4NPuZdLFVXEUoazfCjSwSv2L7qr(JkT9)vGNPEcwTQbUXGxS3EslcB7uLvYPGgpN1Wy)d";
+local importString = "TwvxZnQnu0FlDFk7dPJaecCMPp0UUzN0MqYy5TpLrbz4sctLrmir6M(a)27viJDCm7oZ2Dn(JlC5EVNJohKfbI1cEGG)tlHNxRTs1Q7IgYZKBHwL0cgb3(sli4pP1)TGhj4RUZN2mKxP7gYVZDBDhxsOilmIXsJf8yrwalnmoLLWWXqf819DB0T9BBp)gTU5J9YUsbpbVnbNjYsyyrlCGAju3uBRLQ6)vAR1ncEvFtHlAi)ST6Y1Ynk49d)XqU)OUAiVrBhYNY9Z1niYQKfWqU9jal7WnpD0b2(UMdxhAkpCYPn6IBBUrx2RGL1gxMZW5JLi4x9)dQxz(1YYBBUwllHYZE3Ka8U3VdXFj8Mxjvg4la7VgbgY)LH814iEWRBovBmYCXk4XAdEPB2v0CaFA82UEWZCRGN6ule4qJfJWl8yNUV1hwOKgJpCRS9H6YDN0HyXh1(C7RR10cf(izvv9N9HqtHU3rHx1aTY3am(txTuWjFMrdHQcimGKUHbHmeu6INHoJtrYcie8n22YsNa5PVGRBDYKRPzJpkS252Zqp4FcVGmPVwv(bTs3zUwUbuc(Fjv94JdF0LWB6hYhVb8NEJvVDVfWL7OoGUKcxIRMeJ7hfFZ9ESCF9w5JG5EpIEq5N3sWui4F42RVDfs1SWdym41y0nSXPmHWr(CzAWcAsACs6cgjzruIO684yxxWKzrIlJtweMYIJxqzrPr7ZtD5Ttu4uU(TXKcFj7yIFTsxn6WhYF038MXM7EEP5W(iwhgNNV3aB3aDZWygJsyeK20y8viXXiQJXxMscsdsOKycHgKgZCzICtWTwmlJ9d5hgNh3UCgsJlfvGsP)N9j2oo4Xfa6PMYQELADTvbZzmDBppM8RBlFtp(oSMoqgFQkD8aEJRmKftJi0u8BAelDNsGAucAxJdxeftddWp09AeMjimKKqiSicgmvZX62Bj)pgFk6gFXzdSUoBMZLYoWF6o(3BGlNDj43Ma7NmWK4SxRgTi7zX3g83O17fLFVXTXncz9qEVb2z7k8dP4jTX9VHYn6NXRw3G76llF1ZKoa02PRQvtfnUpRvi(V";
 
 TRP3_PlaterNamePlates = {}; -- magic public table
 
@@ -64,7 +64,6 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 			if sameGuild then
 				RPDisplayName = RPDisplayName .. "\n" .. self.guildMemberColor:WrapTextInColorCode("<" .. customGuildName .. ">");
 			else
-				--RPDisplayName = RPDisplayName .. "\n" .. self.guildNameColor .. "<" .. customGuildName .. ">|r";
 				RPDisplayName = RPDisplayName .. "\n" .. self.guildNameColor:WrapTextInColorCode("<" .. customGuildName .. ">");
 			end
 		end
@@ -78,9 +77,11 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 			iconWidget:SetPoint("RIGHT", plateFrame.CurrentUnitNameString, "LEFT", -4, 0);
 			iconWidget:Hide();
 
+
 			plateFrame.TRP3Icon = iconWidget;
 		end
-	elseif displayInfo.icon and plateFrame.TRP3Icon and not displayInfo.shouldHide then
+	end
+	if displayInfo.icon and plateFrame.TRP3Icon and not displayInfo.shouldHide then
 		plateFrame.TRP3Icon:ClearAllPoints();
 		plateFrame.TRP3Icon:SetTexture(TRP3_API.utils.getIconTexture(displayInfo.icon));
 		plateFrame.TRP3Icon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
@@ -123,16 +124,14 @@ function TRP3_PlaterNamePlates:RegisterModTable(modTable)
 
 	self.modTable = modTable;
 
-	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
-
-	self.initialized = {};
-
 	-- Grabbing the color config from the Plater mod settings
 	self.guildNameColor = TRP3_API.CreateColor(unpack(self.modTable.config.guildNameColor));
 	self.guildMemberColor = TRP3_API.CreateColor(unpack(self.modTable.config.guildMemberColor)); -- name color for members of your guild
 
 	self.fullTitleColor = TRP3_API.CreateColor(unpack(self.modTable.config.fullTitleColor));
 	self.useFullTitleColor = self.modTable.config.useFullTitleColor;
+
+	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
 
 	return self;
 end
@@ -186,6 +185,7 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 	self.PlaterMod = scriptAdded;
 end
 
+-- Unregistering the callback and disabling the Plater mod so other nameplate addons can take over without a /reload
 function TRP3_PlaterNamePlates:OnModuleDisable()
 	TRP3_NamePlates.UnregisterCallback(self, "OnNamePlateDataUpdated");
 	self.PlaterMod.Enabled = false;
@@ -199,7 +199,7 @@ TRP3_API.module.registerModule({
 	id = "trp3_plater_nameplates",
 	name = L.PLATER_NAMEPLATES_MODULE_NAME,
 	description = L.PLATER_NAMEPLATES_MODULE_DESCRIPTION,
-	version = 1,
+	version = 2,
 	minVersion = 0,
 	requiredDeps = { { PlaterAddonName, "external" } },
 	hotReload = true,
