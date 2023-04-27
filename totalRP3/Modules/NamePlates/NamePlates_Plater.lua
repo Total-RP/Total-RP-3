@@ -9,7 +9,7 @@ local Plater;
 local PlaterAddonName = "Plater";
 
 -- The import string for our Plater mod
-local importString = "TwvtZnkoq0)lZPmhMTeGqatv7HDhVzQSBcjvKN9ukfKbrc1kJOqISj7b(TpDJa78HtQA2mHy72QPv)E97HSiqSwWde81gNuF5frJf5YTQoT0PScU7HoLGFRX8pcEKGF5f(02XIAt)yXf4T1)0scf5HrmwASGhlYdyPHXPzzrHcof6Yq)gt3W2UpDMX0(1bzFLGNa3MGZe5jSebpdb0kvtBJRrQB(pPRX0k41dTLy0yXrBnvRLB0Qpo(NJf(RM6XIwJBSyj3V00ciRwwQglC3QGY2FZlx9k3qF7(1vTv7)Yl3OpFE7zMQbTAvJfZCe0FOeb)K)Fq9e7VvvDE7PgzLQ6OpSiaF4JZi(1WBrTuBvVcSFlcmw8RJfRHwCTx3qvBkY(5lv30yHLoBUOdb8L276huEM7e8uuTaGRADqeSWn9MHoFyPwAT(WTYURBQM)spGfFu3DDpU2EJEoHSUU5EFOQT0mGuy)gy7uLtrq83ozLGtUNrdv1LQWas6gMkKbGYuENQ3IksEaHa)dBBvfkqE6l4MouMWnnF6XG1OBphmU4KbOYqJU6lgTPhS1)TupaR9vCnVHFSykh8XG1z2Ut()l1dpP2tLBuAWLuIjpzrmUAs8Tx5XYvnBL3OSx5r01AFjRu2sb)lNF65xcunpCpgdwW4lXZcuNi1XPbz0K04K0mgjjlkru)P4yCRGK5rIJJtYctzXXzuwuA0U8umV7XCb7W8()JWKsFjZmXpVm1to8XIB8GVDc84ZlT7phXHW7v57zQTBWdEoaJzmkHraAtJH)cjiJOiJpoLeKgKqjXecninMHzIW2GZIxYyFp(jX5PJlpaPHrrTsRn)7UeBNA70aGEatz9GwVUXPvpZyIhnpT(BAlFw1VxRjcY4dOsphmpZtgYIPreAk8onILoRdGcLaM14WSOyAya8IUtHGmbHHKecHfrGGLAEIQ9uY9ZXNcUXhqJMd3x7HCPS98NUW)VzvlZ)DYXKdy3GzzI87ZyFWQo(Da)ngZor5pAXdUbiBglgSQzBxPhfL3AS4Vgk3yUdwTPfo1xw9ONjre21BQB0lfnDoRti((d";
+local importString = "Tw13ZTjoq4)xYtPZK2HFijGotFOxZ5oUxcjtKZ9ugfKbHdZjJyqICn3d83ExHaSDItMPxBi2Erl7UFF7(jbZNTIr9z0vkdxEZ1H9zP8TIgj3i0mQ5PgbJ(Gs9pmAiJEZ1o36(SsvBF212hR9WqcyPbHesmMrXSuFsCaojIeeXOiOkDTRvnDBBE)Lkv9x74TfmAe8ymkHLgLqy0elGoxuvxzQ4YQ)JBQu1mAzxDU1Qp70TQIv81sX76)wFM7QQSpRwz6ZM89HQAazL8CrFM5bbe2UhE6Qvy6AR3TUOUy3nVmrF8Q6lvfDsX5vARNtH6dHWOZSVp7ZffIIdaRwilpRpRdOZYIrJfTqeNzl4Jd14SDLBpoTcMg3BZ9qxw)XBBkGFNxyHQ9wixN6YSdlqWWfJU8)xZBPgW)v1xO4alo9KjjXjVBSh(ADWSsUulELg5B1s7Z(0ipDkP9y7nInvAyPlhd6yaFQ8M2oHBwyy0yR(baUO2awWcBAvDnoZCjxRDMB5n3xvmEtlGfNvZJn7hBRso6Gxww9DNPOox1zPWUeOBe5dwG9TlpNr9(obfikZfb(EXRjIaqzBu5pkA12jsQVNh8pK2Ic7aYrFgv1yht2KMoSXCLD)xk2PXaQ0vjl(IsQAHnA)nx2bR9v7AUTG9zd(GF60g125X)FjE6GyVGVwibvsU15YPHXDddF9DoSCx1w(gH(ohIUx6c5CHoNr)YvxC1navtd2Hr)jm(s8mb1bsTi2pbffJJItiErjHrSY3JX2ubotdzlWrjbXemobrcJdN9JS(n7ZfBfgZ)pdtYDHmYex)svoOW7Z24aF9a4T7xQ3DYMXcVxLVxk2U2Eu4rymHG8iEaTry4VaplJqwgVi2Zp2pc5H98q(XyI1tOTm2EXlzSRg)M48Wb4hH0qROuiLQ)D2X2HYo0aqhruw2jLRQmsXZeM2xwmS(BklFw0)QstliXhzk9CW8mnzabJc9qXW3Oqs84CaMqrGyfhKeIrb(Wh08ec84he4f55rc9aJPyoyQDi5(9Otb14twHMXMx9XuPKD8hnX)B1IP()84yqbm3yM6i)Xi270If)cWFTsnpu(ZA7b3aKvW7)0IrzxUdf5pO023pZxREewTQgo1NxS3EslcBAvLvYPGgoN1Wy)4p";
 
 TRP3_PlaterNamePlates = {}; -- magic public table
 
@@ -104,14 +104,29 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 	end
 
 	-- Set the nameplate color to color the health bar
-	if displayInfo.shouldColorHealth then
-		Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBTable());
+	-- We have to wait on the first run to avoid Plater stomping our color back to the default
+	if self.firstRun then
+		C_Timer.After(3, function()
+			if displayInfo.shouldColorHealth then
+				Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBATable());
+			else
+				Plater.RefreshNameplateColor(unitFrame);
+			end
+			self.firstRun = false;
+		end)
+	else
+		if displayInfo.shouldColorHealth then
+			Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBATable());
+		else
+			Plater.RefreshNameplateColor(unitFrame);
+		end
 	end
 
 	-- Setting the new name string for all the Plater name elements
 	plateFrame.CurrentUnitNameString:SetText(RPDisplayName);
 	unitFrame.namePlateUnitName = RPDisplayName;
 	plateFrame.namePlateUnitName = RPDisplayName;
+	Plater.UpdateUnitName(plateFrame);
 
 	return true;
 end
@@ -183,12 +198,14 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 	Plater.ForceTickOnAllNameplates();
 
 	self.PlaterMod = scriptAdded;
+	self.firstRun = true;
 end
 
 -- Unregistering the callback and disabling the Plater mod so other nameplate addons can take over without a /reload
 function TRP3_PlaterNamePlates:OnModuleDisable()
 	TRP3_NamePlates.UnregisterCallback(self, "OnNamePlateDataUpdated");
 	self.PlaterMod.Enabled = false;
+	self.firstRun = true;
 end
 
 --
