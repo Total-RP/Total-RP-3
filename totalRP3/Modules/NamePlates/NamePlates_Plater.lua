@@ -54,7 +54,7 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 	local currentPlayer = AddOn_TotalRP3.Player.GetCurrentUser();
 
 	-- Append guild name (visibility of this is controlled via Plater settings)
-	if plateFrame.PlateConfig.show_guild_name then
+	if not plateFrame.PlateConfig or plateFrame.PlateConfig.show_guild_name then
 		local customGuildName = displayInfo.guildName or plateFrame.playerGuildName;
 		local playerCustomGuildTable = currentPlayer:GetMiscFieldByType(TRP3_API.MiscInfoType.GuildName);
 		local playerCustomGuild = playerCustomGuildTable and playerCustomGuildTable.value or Plater.PlayerGuildName;
