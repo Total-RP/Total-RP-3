@@ -108,7 +108,7 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 	if self.firstRun then
 		C_Timer.After(3, function()
 			if displayInfo.shouldColorHealth then
-				Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBATable());
+				Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBTable());
 			else
 				Plater.RefreshNameplateColor(unitFrame);
 			end
@@ -116,7 +116,7 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 		end)
 	else
 		if displayInfo.shouldColorHealth then
-			Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBATable());
+			Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBTable());
 		else
 			Plater.RefreshNameplateColor(unitFrame);
 		end
