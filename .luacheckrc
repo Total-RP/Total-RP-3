@@ -418,6 +418,7 @@ stds.wow = {
 		"GetNormalizedRealmName",
 		"GetNumLanguages",
 		"GetPlayerInfoByGUID",
+		"GetUnitName",
 		"GetRealmName",
 		"GetSpellDescription",
 		"GetSpellInfo",
