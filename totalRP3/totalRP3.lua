@@ -110,5 +110,4 @@ function TRP3_ShowErrorMessage()
 	print(TRP3_API.Colors.Orange("Sequence ID: ") .. " " .. MAIN_SEQUENCE_ID);
 	print(TRP3_API.Colors.Orange("Sub-sequence ID: ") .. " " .. MAIN_SEQUENCE_DETAIL);
 	print(TRP3_API.Colors.Orange("Error message: ") .. " " .. tostring(MAIN_SEQUENCE_ERROR));
-	print(TRP3_API.ItemQualityColors.Artifact("Note: If you just recently updated the add-on, remember that you need to fully relaunch the game client. Updating while the game client is open will not load new files."));
 end
