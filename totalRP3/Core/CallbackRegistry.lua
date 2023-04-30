@@ -324,10 +324,10 @@ local CallbackMethodClosureFactories =
 {
 	function(m) return function(_, o, ...) return o[m](o, ...); end; end,
 	function(m, o) return function(_, ...) return o[m](o, ...); end; end,
-	function(m, o, a) return function(_, ...) return o[m](a, ...); end end,
-	function(m, o, a, b) return function(_, ...) return o[m](o, a, b, ...); end end,
-	function(m, o, a, b, c) return function(_, ...) return o[m](o, a, b, c, ...); end end,
-	function(m, o, a, b, c, d) return function(_, ...) return o[m](o, a, b, c, d, ...); end end,
+	function(m, o, a) return function(_, ...) return o[m](a, ...); end; end,
+	function(m, o, a, b) return function(_, ...) return o[m](o, a, b, ...); end; end,
+	function(m, o, a, b, c) return function(_, ...) return o[m](o, a, b, c, ...); end; end,
+	function(m, o, a, b, c, d) return function(_, ...) return o[m](o, a, b, c, d, ...); end; end,
 };
 
 function TRP3_API.GenerateCallbackClosure(callback, ...)
