@@ -32,7 +32,7 @@ translations/download:
 	$(PYTHON) Scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) download
 
 translations/upload:
-	$(PYTHON) Scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) upload --delete-missing-phrases
+	$(PYTHON) Scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) upload
 
 Scripts/UI.xsd: .FORCE
 	curl -s $(SCHEMA_URL) -o $@
