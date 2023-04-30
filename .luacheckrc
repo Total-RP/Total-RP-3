@@ -218,6 +218,14 @@ stds.wow = {
 			},
 		},
 
+		C_EquipmentSet = {
+			fields = {
+				"GetEquipmentSetID",
+				"GetEquipmentSetInfo",
+				"UseEquipmentSet",
+			},
+		},
+
 		C_EventUtils = {
 			fields = {
 				"IsEventValid",

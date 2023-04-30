@@ -224,3 +224,32 @@ TRP3_AutomationUtil.RegisterAction({
 		context:Print(enabledText);
 	end,
 });
+
+TRP3_AutomationUtil.RegisterAction({
+	id = "trp3:equipset",
+	category = L.AUTOMATION_CATEGORY_CHARACTER,
+	name = L.AUTOMATION_ACTION_CHARACTER_EQUIPSET,
+	description = L.AUTOMATION_ACTION_CHARACTER_EQUIPSET_DESCRIPTION,
+	help = L.AUTOMATION_ACTION_CHARACTER_EQUIPSET_HELP,
+	example = "[ic] Set 1; Set 2",
+
+	ParseOption = function(context)
+		local equipmentSetName = context.option;
+		local equipmentSetID = C_EquipmentSet.GetEquipmentSetID(equipmentSetName) or tonumber(context.option);
+
+		if not equipmentSetID or not C_EquipmentSet.GetEquipmentSetInfo(equipmentSetID) then
+			context:Errorf(L.AUTOMATION_ACTION_CHARACTER_EQUIPSET_INVALID, "|cff33ff99" .. context.option .. "|r");
+		else
+			context:Apply(equipmentSetID);
+		end
+	end,
+
+	Apply = function(context, equipmentSetID)
+		local equipmentSetName, _, _, isEquipped = C_EquipmentSet.GetEquipmentSetInfo(equipmentSetID);
+
+		if not isEquipped and not InCombatLockdown() then
+			C_EquipmentSet.UseEquipmentSet(equipmentSetID);
+			context:Printf(L.AUTOMATION_ACTION_CHARACTER_EQUIPSET_APPLIED, "|cff33ff99" .. equipmentSetName .. "|r");
+		end
+	end,
+})
