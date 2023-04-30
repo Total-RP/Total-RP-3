@@ -293,6 +293,7 @@ stds.wow = {
 
 		C_PlayerInfo = {
 			fields = {
+				"GetAlternateFormInfo",
 				"GUIDIsPlayer",
 			},
 		},

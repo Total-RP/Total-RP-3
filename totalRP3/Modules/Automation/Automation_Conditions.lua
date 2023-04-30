@@ -141,3 +141,18 @@ TRP3_AutomationUtil.RegisterCondition({
 		return TRP3_StringUtil.IsExactOrSubstringMatch(desiredRealmName, currentRealmName);
 	end,
 });
+
+TRP3_AutomationUtil.RegisterCondition({
+	id = "trp3:altform",
+	tokens = { "altform" },
+
+	Evaluate = function()
+		local inAlternateForm = false;
+
+		if C_PlayerInfo.GetAlternateFormInfo then
+			inAlternateForm = select(2, C_PlayerInfo.GetAlternateFormInfo());
+		end
+
+		return inAlternateForm;
+	end,
+});
