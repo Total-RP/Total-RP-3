@@ -26,7 +26,6 @@ local Events = TRP3_Addon.Events;
 local GameTooltip, _G, ipairs, tinsert, strtrim = GameTooltip, _G, ipairs, tinsert, strtrim;
 local hasProfile, getRelationColors = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColors;
 local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
-local IC_GUILD, OOC_GUILD;
 local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
 local EMPTY = Globals.empty;
 local unitIDToInfo = Utils.str.unitIDToInfo;
@@ -150,10 +149,6 @@ local function showRealm()
 	return getConfigValue(CONFIG_CHARACT_REALM);
 end
 
-local function showGuild()
-	return getConfigValue(CONFIG_CHARACT_GUILD);
-end
-
 local function showTarget()
 	return getConfigValue(CONFIG_CHARACT_TARGET);
 end
@@ -212,6 +207,42 @@ local function getTooltipTextColors()
 	return colors;
 end
 TRP3_API.ui.tooltip.getTooltipTextColors = getTooltipTextColors;
+
+local TooltipGuildDisplayOption = {
+	-- Old setting was a boolean; use false/true for sensible defaults here.
+	Hidden = false,
+	ShowWithCustomGuild = true,
+	ShowWithOriginalGuild = 2,
+	ShowWithAllGuilds = 3,
+};
+
+local function ShouldDisplayOriginalGuild(displayOption, originalName, customName)
+	if displayOption == TooltipGuildDisplayOption.Hidden or not originalName then
+		return false;
+	elseif displayOption == TooltipGuildDisplayOption.ShowWithOriginalGuild then
+		return true;
+	elseif displayOption == TooltipGuildDisplayOption.ShowWithCustomGuild and not customName then
+		return true;
+	elseif displayOption == TooltipGuildDisplayOption.ShowWithAllGuilds then
+		return true;
+	else
+		return false;
+	end
+end
+
+local function ShouldDisplayCustomGuild(displayOption, customName)
+	if displayOption == TooltipGuildDisplayOption.Hidden or not customName then
+		return false;
+	elseif displayOption == TooltipGuildDisplayOption.ShowWithOriginalGuild then
+		return false;
+	elseif displayOption == TooltipGuildDisplayOption.ShowWithCustomGuild then
+		return true;
+	elseif displayOption == TooltipGuildDisplayOption.ShowWithAllGuilds then
+		return true;
+	else
+		return false;
+	end
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UTIL METHOD
@@ -585,38 +616,39 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	-- Guild
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	if showGuild() then
-		local guildName, guildRank = GetGuildInfo(targetType);
-		local guildIsCustom = false;
+	local guildDisplayOption = TRP3_API.configuration.getValue(CONFIG_CHARACT_GUILD);
 
+	if guildDisplayOption ~= TooltipGuildDisplayOption.Hidden then
 		local customGuildInfo = player:GetCustomGuildMembership();
 		local customGuildName = customGuildInfo.name;
 		local customGuildRank = customGuildInfo.rank;
 
-		if customGuildName then
-			guildName = customGuildName;
-			guildRank = customGuildRank;
-			guildIsCustom = true;
-		elseif customGuildRank then
-			guildRank = customGuildRank;
-		end
+		local originalGuildName, originalGuildRank = GetGuildInfo(targetType);
 
-		if guildName then
-			guildName = crop(guildName, FIELDS_TO_CROP.GUILD_NAME);
-			guildRank = crop(guildRank or loc.DEFAULT_GUILD_RANK, FIELDS_TO_CROP.GUILD_RANK);
+		if ShouldDisplayOriginalGuild(guildDisplayOption, originalGuildName, customGuildName) then
+			local displayName = crop(originalGuildName, FIELDS_TO_CROP.GUILD_NAME);
+			local displayRank = crop(originalGuildRank or loc.DEFAULT_GUILD_RANK, FIELDS_TO_CROP.GUILD_RANK);
+			local displayText = string.format(loc.REG_TT_GUILD, displayRank, colors.SECONDARY:WrapTextInColorCode(displayName));
+			local displayMembership = "";
 
-			local text = string.format(loc.REG_TT_GUILD, guildRank, colors.SECONDARY:WrapTextInColorCode(guildName));
-			local membership = "";
-
-			if not guildIsCustom and info.misc and info.misc.ST then
+			if info.misc and info.misc.ST then
 				if info.misc.ST["6"] == 1 then -- IC guild membership
-					membership = IC_GUILD;
+					displayMembership = " |cff00ff00(" .. loc.REG_TT_GUILD_IC .. ")";
 				elseif info.misc.ST["6"] == 2 then -- OOC guild membership
-					membership = OOC_GUILD;
+					displayMembership = " |cffff0000(" .. loc.REG_TT_GUILD_OOC .. ")";
 				end
 			end
 
-			tooltipBuilder:AddDoubleLine(text, membership, colors.MAIN, colors.MAIN, getSubLineFontSize());
+			tooltipBuilder:AddDoubleLine(displayText, displayMembership, colors.MAIN, colors.MAIN, getSubLineFontSize());
+		end
+
+		if ShouldDisplayCustomGuild(guildDisplayOption, customGuildName) then
+			local displayName = crop(customGuildName, FIELDS_TO_CROP.GUILD_NAME);
+			local displayRank = crop(customGuildRank or loc.DEFAULT_GUILD_RANK, FIELDS_TO_CROP.GUILD_RANK);
+			local displayText = string.format(loc.REG_TT_GUILD, displayRank, colors.SECONDARY:WrapTextInColorCode(displayName));
+			local displayMembership = " |cff82c5ff(" .. loc.REG_TT_GUILD_CUSTOM .. ")";
+
+			tooltipBuilder:AddDoubleLine(displayText, displayMembership, colors.MAIN, colors.MAIN, getSubLineFontSize());
 		end
 	end
 
@@ -1321,9 +1353,6 @@ local function onModuleInit()
 	ui_CompanionTT.TimeSinceLastUpdate = 0;
 	ui_CompanionTT:SetScript("OnUpdate", onUpdateCompanion);
 
-	IC_GUILD = " |cff00ff00(" .. loc.REG_TT_GUILD_IC .. ")";
-	OOC_GUILD = " |cffff0000(" .. loc.REG_TT_GUILD_OOC .. ")";
-
 	-- Config default value
 	registerConfigKey(CONFIG_PROFILE_ONLY, true);
 	registerConfigKey(CONFIG_IN_CHARACTER_ONLY, false);
@@ -1341,7 +1370,7 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_CHARACT_FT, true);
 	registerConfigKey(CONFIG_CHARACT_RACECLASS, true);
 	registerConfigKey(CONFIG_CHARACT_REALM, true);
-	registerConfigKey(CONFIG_CHARACT_GUILD, true);
+	registerConfigKey(CONFIG_CHARACT_GUILD, TooltipGuildDisplayOption.ShowWithCustomGuild);
 	registerConfigKey(CONFIG_CHARACT_TARGET, true);
 	registerConfigKey(CONFIG_CHARACT_TITLE, true);
 	registerConfigKey(CONFIG_CHARACT_NOTIF, true);
@@ -1545,9 +1574,26 @@ local function onModuleInit()
 				configKey = CONFIG_CHARACT_REALM,
 			},
 			{
-				inherit = "TRP3_ConfigCheck",
+				inherit = "TRP3_ConfigDropDown",
 				title = loc.CO_TOOLTIP_GUILD,
+				listContent = {
+					{ loc.CO_TOOLTIP_GUILD_HIDDEN, TooltipGuildDisplayOption.Hidden },
+					{ loc.CO_TOOLTIP_GUILD_SHOW_WITH_ORIGINAL, TooltipGuildDisplayOption.ShowWithOriginalGuild },
+					{ loc.CO_TOOLTIP_GUILD_SHOW_WITH_CUSTOM, TooltipGuildDisplayOption.ShowWithCustomGuild },
+					{ loc.CO_TOOLTIP_GUILD_SHOW_WITH_ALL, TooltipGuildDisplayOption.ShowWithAllGuilds },
+				},
 				configKey = CONFIG_CHARACT_GUILD,
+				help = (function()
+					local lines = {};
+					table.insert(lines, loc.CO_TOOLTIP_GUILD_TT);
+					table.insert(lines, string.format("|cff00ff00%s:|r %s", loc.CO_TOOLTIP_GUILD_HIDDEN, loc.CO_TOOLTIP_GUILD_TT_HIDDEN));
+					table.insert(lines, string.format("|cff00ff00%s:|r %s", loc.CO_TOOLTIP_GUILD_SHOW_WITH_ORIGINAL, loc.CO_TOOLTIP_GUILD_TT_SHOW_WITH_ORIGINAL));
+					table.insert(lines, string.format("|cff00ff00%s:|r %s", loc.CO_TOOLTIP_GUILD_SHOW_WITH_CUSTOM, loc.CO_TOOLTIP_GUILD_TT_SHOW_WITH_CUSTOM));
+					table.insert(lines, string.format("|cff00ff00%s:|r %s", loc.CO_TOOLTIP_GUILD_SHOW_WITH_ALL, loc.CO_TOOLTIP_GUILD_TT_SHOW_WITH_ALL));
+					return table.concat(lines, "|n|n");
+				end)(),
+				listWidth = nil,
+				listCancel = false,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
