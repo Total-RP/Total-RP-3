@@ -119,7 +119,7 @@ function TRP3_Analytics:OnInitialize()
 end
 
 function TRP3_Analytics:OnEnable()
-	TRP3_API.Ellyb.GameEvents.registerCallback("ADDONS_UNLOADING", GenerateClosure(self.OnAddonsUnloading, self));
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "ADDONS_UNLOADING", self.OnAddonsUnloading, self);
 
 	TRP3_API.slash.registerCommand({
 		id = "statistics",
