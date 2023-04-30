@@ -61,6 +61,7 @@ read_globals = {
 	"Prat",
 	"TinyTooltip",
 	"TipTac",
+	"WagoAnalytics",
 	"WoWUnit",
 	"xrpSaved",
 
@@ -408,6 +409,7 @@ stds.wow = {
 		"GetGuildInfo",
 		"GetInventoryItemTexture",
 		"GetInventorySlotInfo",
+		"GetKeysArray",
 		"GetLanguageByIndex",
 		"GetLocale",
 		"GetMaxLevelForLatestExpansion",
@@ -466,6 +468,7 @@ stds.wow = {
 		"securecall",
 		"securecallfunction",
 		"SecureCmdOptionParse",
+		"secureexecuterange",
 		"SendChatMessage",
 		"SendSystemMessage",
 		"SetCursor",

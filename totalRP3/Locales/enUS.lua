@@ -1537,6 +1537,13 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	CO_TOOLTIP_GUILD_TT_SHOW_WITH_ORIGINAL = "Shows guild membership in the tooltip, but does not replace the name or rank if customized in the players' profile.",
 	CO_TOOLTIP_GUILD_TT_SHOW_WITH_CUSTOM = "Shows guild membership in the tooltip, replacing the name or rank if customized in the players' profile.",
 	CO_TOOLTIP_GUILD_TT_SHOW_WITH_ALL = "Shows both original and custom guild memberships on separate lines in the tooltip.",
+
+	ANALYTICS_CONFIG_ENABLE = "Enable %s",
+	ANALYTICS_CONFIG_ENABLE_HELP = "Enables the collection of anonymous addon usage analytics via %s.|n|nAn example of the statistics collected can be printed to the chat frame through the |cff00ff00/trp3 statistics|r command.",
+	ANALYTICS_CONFIG_ENABLE_HELP_WAGO = [[This requires the |cff00ff00"Help addon developers"|r setting in the Wago Addons application to be enabled.]],
+	ANALYTICS_COMMAND_HELP = "Prints addon usage statistics to the chat frame.",
+	ANALYTICS_OUTPUT_HEADER = "Addon usage statistics:",
+
 };
 
 -- Bindings and FrameXML Global Strings
