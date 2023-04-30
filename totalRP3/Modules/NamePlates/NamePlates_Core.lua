@@ -316,8 +316,8 @@ function TRP3_NamePlates:OnInitialize()
 	self.events:AddCallback(TRP3_API.GameEvents, "NAME_PLATE_UNIT_ADDED", self.OnNamePlateUnitAdded, self);
 	self.events:AddCallback(TRP3_API.GameEvents, "NAME_PLATE_UNIT_REMOVED", self.OnNamePlateUnitRemoved, self);
 	self.events:AddCallback(TRP3_API.GameEvents, "UNIT_NAME_UPDATE", self.OnUnitNameUpdate, self);
-	self.events:AddCallback(TRP3_API.GameEvents, "PLAYER_REGEN_DISABLED", self.OnPlayerRegenDisabled, self);
-	self.events:AddCallback(TRP3_API.GameEvents, "PLAYER_REGEN_ENABLED", self.OnPlayerRegenEnabled, self);
+	self.events:AddCallback(TRP3_API.GameEvents, "PLAYER_REGEN_DISABLED", self.OnCombatStatusChanged, self);
+	self.events:AddCallback(TRP3_API.GameEvents, "PLAYER_REGEN_ENABLED", self.OnCombatStatusChanged, self);
 	self.events:AddCallback(TRP3_API.GameEvents, "PLAYER_ENTERING_WORLD", self.OnPlayerEnteringWorld, self);
 	self.events:AddCallback(TRP3_API.GameEvents, "PLAYER_TARGET_CHANGED", self.OnPlayerTargetChanged, self);
 
