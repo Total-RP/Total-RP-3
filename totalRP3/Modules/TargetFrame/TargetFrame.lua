@@ -13,7 +13,7 @@ local function onStart()
 	TRP3_API.target = {};
 
 	-- imports
-	local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
+	local Utils, Events, Globals = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.globals;
 	local CreateFrame, EMPTY = CreateFrame, Globals.empty;
 	local loc = TRP3_API.loc;
 	local isPlayerIC, isUnitIDKnown, getUnitIDCurrentProfile, hasProfile, isIDIgnored;
@@ -288,7 +288,7 @@ local function onStart()
 	-- Config
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 		loaded = true;
 
 		-- Config
@@ -371,17 +371,17 @@ local function onStart()
 	getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
 	companionHasProfile = TRP3_API.companions.register.companionHasProfile;
 
-	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
-	Utils.event.registerHandler("PLAYER_MOUNT_DISPLAY_CHANGED", onTargetChanged);
-	Utils.event.registerHandler("PLAYER_ENTERING_WORLD", onTargetChanged);
-	Events.listenToEvent(Events.REGISTER_ABOUT_READ, onTargetChanged);
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_TARGET_CHANGED", function() onTargetChanged(); end);
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_MOUNT_DISPLAY_CHANGED", function() onTargetChanged(); end);
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_ENTERING_WORLD", function() onTargetChanged(); end);
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_ABOUT_READ, function() onTargetChanged(); end);
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 		if (not unitID or (currentTargetID == unitID)) and (not dataType or dataType == "characteristics" or dataType == "about") then
 			onTargetChanged();
 		end
 	end);
 
-	TRP3_API.Events.registerCallback("ROLEPLAY_STATUS_CHANGED", onTargetChanged);
+	TRP3_API.RegisterCallback(TRP3_Addon, "ROLEPLAY_STATUS_CHANGED", function() onTargetChanged(); end);
 end
 
 local MODULE_STRUCTURE = {

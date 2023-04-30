@@ -20,8 +20,8 @@ TRP3_ToolbarVisibilityOption = {
 local ToolbarMixin = {};
 
 function ToolbarMixin:OnLoad()
-	TRP3_API.Events.registerCallback("CONFIGURATION_CHANGED", GenerateClosure(self.OnConfigurationChanged, self));
-	TRP3_API.Events.registerCallback("ROLEPLAY_STATUS_CHANGED", GenerateClosure(self.OnRoleplayStatusChanged, self));
+	TRP3_API.RegisterCallback(TRP3_Addon, "CONFIGURATION_CHANGED", self.OnConfigurationChanged, self);
+	TRP3_API.RegisterCallback(TRP3_Addon, "ROLEPLAY_STATUS_CHANGED", self.OnRoleplayStatusChanged, self);
 
 	self:UpdateVisibility();
 end
@@ -303,7 +303,7 @@ local function onStart()
 	-- of *just* relying on periodic updates and a few hand-selected callbacks.
 
 	C_Timer.NewTicker(0.5, RefreshToolbarButtons);
-	TRP3_API.Events.registerCallback("ROLEPLAY_STATUS_CHANGED", RefreshToolbarButtons);
+	TRP3_API.RegisterCallback(TRP3_Addon, "ROLEPLAY_STATUS_CHANGED", RefreshToolbarButtons);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Position
@@ -343,7 +343,7 @@ local function onStart()
 	-- INIT & TRP3 toolbar content
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 		loaded = true;
 
 		TRP3_ToolbarTopFrameText:SetText(Globals.addon_name);

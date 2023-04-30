@@ -11,7 +11,7 @@ local MapScannersManager = {}
 local registeredMapScans = {};
 
 --region Total RP 3 imports
-local Events = TRP3_API.Events;
+local Events = TRP3_Addon.Events;
 --endregion
 
 Events.MAP_SCAN_STARTED = "MAP_SCAN_STARTED"
@@ -49,7 +49,7 @@ function MapScannersManager.launch(scanID)
 	scan:ResetScanData();
 
 	local function OnScanTimerElapsed()
-		Events.fireEvent(Events.MAP_SCAN_ENDED);
+		TRP3_Addon:TriggerEvent(Events.MAP_SCAN_ENDED);
 
 		-- If the displayed map changed
 		if displayedMapID ~= AddOn_TotalRP3.Map.getDisplayedMapID() then
@@ -61,7 +61,7 @@ function MapScannersManager.launch(scanID)
 	end
 
 
-	Events.fireEvent(Events.MAP_SCAN_STARTED, scan.duration);
+	TRP3_Addon:TriggerEvent(Events.MAP_SCAN_STARTED, scan.duration);
 	scan:Scan();
 	C_Timer.After(scan.duration, OnScanTimerElapsed);
 	TRP3_API.WorldMapButton.startCooldown(scan.duration);

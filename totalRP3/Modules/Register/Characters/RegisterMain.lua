@@ -26,7 +26,7 @@ local getUnitID = Utils.str.getUnitID;
 local Config = TRP3_API.configuration;
 local registerConfigKey = Config.registerConfigKey;
 local getConfigValue = Config.getValue;
-local Events = TRP3_API.events;
+local Events = TRP3_Addon.Events;
 local assert, tostring, wipe, pairs, tinsert = assert, tostring, wipe, pairs, tinsert;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
@@ -100,8 +100,8 @@ local function deleteProfile(profileID, dontFireEvents)
 	wipe(profiles[profileID]);
 	profiles[profileID] = nil;
 	if not dontFireEvents then
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
-		Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID, mspOwners);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED, profileID, mspOwners);
 	end
 end
 
@@ -242,7 +242,7 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 	profile.time = time()
 
 	if oldProfileID ~= currentProfileID then
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, currentProfileID, nil);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, currentProfileID, nil);
 	end
 end
 
@@ -316,7 +316,7 @@ function TRP3_API.register.saveInformation(unitID, informationType, data)
 
 	TRP3_API.register.sanitizeProfile(informationType, data);
 	profile[informationType] = data;
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), informationType);
+	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), informationType);
 end
 
 --- Raises error if KNOWN unitID
@@ -502,7 +502,7 @@ local function createTabBar()
 			elseif value == 4 then
 				showNotesTab();
 			end
-			TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
+			TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
 		end,
 	-- Confirmation callback
 		function(callback)
@@ -531,7 +531,7 @@ local function showDefaultTab()
 
 	tabGroup.current = 0;	-- To avoid unwanted behaviour
 	getCurrentContext().isEditMode = false;
-	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
 end
 
 local function showTabs()
@@ -725,7 +725,7 @@ function TRP3_API.register.init()
 	end);
 
 	-- Listen to the mouse over event
-	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "UPDATE_MOUSEOVER_UNIT", function() onMouseOver(); end);
 
 	registerMenu({
 		id = "main_10_player",
@@ -754,7 +754,7 @@ function TRP3_API.register.init()
 	};
 	registerMenu(currentPlayerMenu);
 	local refreshMenu = TRP3_API.navigation.menu.rebuildMenu;
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, profileID, dataType)
 		onInformationUpdated(profileID, dataType);
 
 		local menuItemID;
@@ -816,7 +816,7 @@ function TRP3_API.register.init()
 			}
 		}
 	};
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 		cleanupPlayerRelations();
 		cleanupProfiles();
 		cleanupCharacters();

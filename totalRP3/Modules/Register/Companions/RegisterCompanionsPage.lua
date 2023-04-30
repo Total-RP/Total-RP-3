@@ -2,7 +2,7 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 -- imports
-local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.events;
+local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Events;
 local loc = TRP3_API.loc;
 local registerPage = TRP3_API.navigation.page.registerPage;
 local companionIDToInfo = TRP3_API.utils.str.companionIDToInfo;
@@ -79,7 +79,7 @@ local function applyPeekSlot(slot, ic, ac, ti, tx, swap, companionFullID, profil
 	end
 	local dataTab = TRP3_API.companions.player.getCompanionProfileByID(profileID) or {};
 	applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx, swap);
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionFullID, profileID, "misc");
+	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, companionFullID, profileID, "misc");
 	refreshIfNeeded();
 end
 TRP3_API.companions.player.applyPeekSlot = applyPeekSlot;
@@ -100,7 +100,7 @@ local function swapGlanceSlot(from, to, companionFullID, profileID)
 	dataTab.PE[to] = fromData;
 	-- version increment
 	dataTab.PE.v = Utils.math.incrementNumber(dataTab.PE.v or 1, 2);
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
+	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
 	refreshIfNeeded();
 end
 TRP3_API.companions.player.swapGlanceSlot = swapGlanceSlot;
@@ -148,7 +148,7 @@ local function saveInformation()
 	-- version increment
 	dataTab.data.v = Utils.math.incrementNumber(dataTab.data.v or 0, 2);
 
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID);
+	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID);
 end
 
 local function onPlayerIconSelected(icon)
@@ -284,13 +284,13 @@ local function refresh()
 		displayConsult(context);
 		if not context.isPlayer and context.profile.data and context.profile.data.read == false then
 			context.profile.data.read = true;
-			Events.fireEvent(Events.REGISTER_ABOUT_READ);
+			TRP3_Addon:TriggerEvent(Events.REGISTER_ABOUT_READ);
 		end
 		TRP3_CompanionsPageInformationConsult:Show();
 	end
 
 	TRP3_CompanionsPageInformation:Show();
-	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, COMPANIONS_PAGE_ID);
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_TUTORIAL_REFRESH, COMPANIONS_PAGE_ID);
 end
 
 local function showInformationTab()
@@ -387,7 +387,7 @@ local function createTutorialStructure()
 	}
 end
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 	openPageByUnitID = TRP3_API.register.openPageByUnitID;
 
 	createTutorialStructure();
@@ -406,7 +406,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		end
 	});
 
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(_, profileID, dataType)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, _, profileID, dataType)
 		onInformationUpdated(profileID, dataType);
 	end);
 
@@ -463,7 +463,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	createTabBar();
 
 	-- Resizing
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
 		TRP3_CompanionsPageInformationConsult_About_ScrollText:SetSize(containerWidth - 75, 5);
 		TRP3_CompanionsPageInformationConsult_About_ScrollText:SetText(TRP3_CompanionsPageInformationConsult_About_ScrollText.html or "");
 		TRP3_CompanionsPageInformationEdit_About_TextScrollText:SetSize(containerWidth - 85, 5);

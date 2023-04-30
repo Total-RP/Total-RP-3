@@ -15,7 +15,7 @@ local GameFontNormalHuge = GameFontNormalHuge;
 local GameFontNormalLarge = GameFontNormalLarge;
 
 -- Total RP 3 imports
-local Events = TRP3_API.events;
+local Events = TRP3_Addon.Events;
 local strhtml = TRP3_API.utils.str.toHTML;
 local UIFrame = TRP3_API.ui.frame;
 
@@ -57,7 +57,7 @@ function TRP3_DashboardTabFrameMixin:OnLoad()
 
 	-- Wrap the tab view classes in a table to be passed to the tab controller.
 	self.tabs = {};
-	Events.listenToEvent(Events.WORKFLOW_ON_LOADED, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, function()
 		for i = 1, #self.TabClasses do
 			self.tabs[i] = createTabFromClass(i, self.TabClasses[i], self);
 		end
@@ -72,7 +72,7 @@ function TRP3_DashboardTabFrameMixin:OnLoad()
 	end)
 
 	-- Listen for updates on our frame being resized.
-	Events.listenToEvent(Events.NAVIGATION_RESIZED, function(width, height)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.NAVIGATION_RESIZED, function(_, width, height)
 		return self:OnNavigationResized(width, height);
 	end);
 end

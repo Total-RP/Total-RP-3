@@ -7,7 +7,7 @@ TRP3_API.companions = {
 }
 
 -- imports
-local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.events;
+local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Events;
 local loc = TRP3_API.loc;
 local pairs, assert, tostring, wipe, tinsert, strtrim, tonumber = pairs, assert, tostring, wipe, tinsert, strtrim, tonumber;
 local registerMenu= TRP3_API.navigation.menu.registerMenu;
@@ -101,9 +101,9 @@ local function boundPlayerCompanion(companionID, profileID, targetType)
 	end
 	playerProfileAssociation[companionID] = profileID;
 	if targetType == TYPE_MOUNT then
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, profileID);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, profileID);
 	else
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
 	end
 	TRP3_API.Log(("%s bounded to profile %s"):format(companionID, profileID));
 end
@@ -117,9 +117,9 @@ local function unboundPlayerCompanion(companionID, targetType)
 		playerCompanions[profileID].links[companionID] = nil;
 	end
 	if targetType == TYPE_MOUNT then
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, profileID);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, profileID);
 	else
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
 	end
 	TRP3_API.Log(("%s unbounded"):format(companionID));
 end
@@ -177,7 +177,7 @@ local function deleteProfile(profileID, silently)
 	playerCompanions[profileID] = nil;
 	if not silently then
 		displayMessage(loc.PR_PROFILE_DELETED:format(Utils.str.color("g")..profileName.."|r"));
-		Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED, profileID);
 	end
 end
 TRP3_API.companions.player.deleteProfile = deleteProfile;
@@ -412,9 +412,9 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 				profile.links[companionFullID] = 1;
 				TRP3_API.Log(("Bound %s to profile %s"):format(companionFullID, profileID));
 				if isMount then
-					Events.fireEvent(Events.REGISTER_DATA_UPDATED, ownerID, nil);
+					TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, ownerID, nil);
 				else
-					Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionFullID, profileID);
+					TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, companionFullID, profileID);
 				end
 			end
 
@@ -426,9 +426,9 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 				TRP3_API.Log(("Unbound %s"):format(companionFullID));
 				registerCompanions[old].links[companionFullID] = nil;
 				if isMount then
-					Events.fireEvent(Events.REGISTER_DATA_UPDATED, ownerID, nil);
+					TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, ownerID, nil);
 				else
-					Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionFullID, nil);
+					TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, companionFullID, nil);
 				end
 			end
 		end
@@ -442,19 +442,19 @@ function TRP3_API.companions.register.saveInformation(profileID, v, data)
 		wipe(profile.data);
 		tcopy(profile.data, data);
 		profile.data.read = not profile.data.TX or strtrim(profile.data.TX):len() == 0;
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "characteristics");
+		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "characteristics");
 	elseif v == "2" then
 		wipe(profile.PE);
 		tcopy(profile.PE, data);
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
+		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
 	end
 
 end
 
 function TRP3_API.companions.register.setProfileData(profileID, profile)
 	registerCompanions[profileID] = profile;
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "characteristics");
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
+	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "characteristics");
+	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
 end
 
 function TRP3_API.companions.register.getCompanionProfile(companionFullID)
@@ -491,8 +491,8 @@ function TRP3_API.companions.register.deleteProfile(profileID, silently)
 		end
 	end
 	if not silently then
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
-		Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED, profileID);
 	end
 end
 
@@ -513,7 +513,7 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 
 	if not TRP3_Companions then
 		TRP3_Companions = {};
@@ -533,8 +533,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	if not C_PetJournal then
 		-- Classic support for companion pets.
-		Utils.event.registerHandler("UNIT_SPELLCAST_SUCCEEDED", UpdateSummonedPetGUIDFromCast);
-		Utils.event.registerHandler("PLAYER_ENTERING_WORLD", ResetSummonedPetGUIDFromLogin);
+		TRP3_API.RegisterCallback(TRP3_API.GameEvents, "UNIT_SPELLCAST_SUCCEEDED", function() UpdateSummonedPetGUIDFromCast(); end);
+		TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_ENTERING_WORLD", function() ResetSummonedPetGUIDFromLogin(); end);
 	end
 
 	registerMenu({

@@ -52,7 +52,7 @@ local function setValue(key, value)
 	local old = TRP3_Configuration[key];
 	TRP3_Configuration[key] = value;
 	if old ~= value then
-		TRP3_API.events.fireEvent("CONFIGURATION_CHANGED", key, value);
+		TRP3_Addon:TriggerEvent("CONFIGURATION_CHANGED", key, value);
 
 		if configHandlers[key] then
 			for _, callback in pairs(configHandlers[key]) do
@@ -350,10 +350,10 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 
 	-- Resizing
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
 		for _, structure in pairs(registeredConfiPage) do
 			structure.parent:SetSize(containerWidth - 70, 50);
 		end

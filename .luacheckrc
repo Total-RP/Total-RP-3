@@ -216,6 +216,12 @@ stds.wow = {
 			},
 		},
 
+		C_EventUtils = {
+			fields = {
+				"IsEventValid",
+			},
+		},
+
 		C_FriendList = {
 			fields = {
 				"IsFriend",

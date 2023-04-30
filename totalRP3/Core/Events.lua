@@ -1,14 +1,11 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
+-- The TRP3_Addon object registered with Ace3 acts as an event registry source
+-- for all of our internally triggered events.
 
-local Events = {
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Total RP 3 events
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+TRP3_Addon.Events =
+{
 	-- Workflow
 	WORKFLOW_ON_API = "WORKFLOW_ON_API",
 	WORKFLOW_ON_LOAD = "WORKFLOW_ON_LOAD",
@@ -24,95 +21,69 @@ local Events = {
 	NAVIGATION_TUTORIAL_REFRESH = "NAVIGATION_TUTORIAL_REFRESH",
 	NAVIGATION_RESIZED = "NAVIGATION_RESIZED",
 
-	-- Called when the user changes the page in the main frame. (setPage)
-	-- Arg1 : Page ID
-	-- Arg2 : Page context
+	-- Called when the user changes the page in the main frame.
 	PAGE_OPENED = "PAGE_OPENED",
 
 	-- Fired when a config value is modified.
 	CONFIGURATION_CHANGED = "CONFIGURATION_CHANGED",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Data changed
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-	-- General event when a data changed in a profile of a certain unitID (character or companion)
-	-- Arg1 : (optional) unitID or companionFullID
-	-- Arg2 : profile ID
-	-- Arg3 : (optional) Data type : either nil or "characteristics", "about", "misc", "character", "unitID"
+	-- General event when a data changed in a profile of a certain unitID (character or companion).
 	REGISTER_DATA_UPDATED = "REGISTER_DATA_UPDATED",
 
-	-- Called when you switch from one profile to another
-	-- Use to known when re-compress all of the current profile.
-	-- Arg1 : profile structure
+	-- Called when you switch from one profile to another.
 	REGISTER_PROFILES_LOADED = "REGISTER_PROFILES_LOADED",
 
-	-- Called when a profile is deleted (character or companion)
-	-- Arg1 : Profile ID
-	-- Arg2 : (optional, currently only for characters) A tab containing all the linked unitIDs to the profile
+	-- Called when a profile is deleted (character or companion).
 	REGISTER_PROFILE_DELETED = "REGISTER_PROFILE_DELETED",
 
 	-- Called when as "About" page is shown.
-	-- This is used by the tooltip and the target bar to be refreshed
 	REGISTER_ABOUT_READ = "REGISTER_ABOUT_READ",
 
-	-- Called when Wow Event UPDATE_MOUSEOVER_UNIT is fired
-	-- Arg1 : Target ID
-	-- Arg2 : Target mode (Character, pet, battle pet ...)
+	-- Called when Wow Event UPDATE_MOUSEOVER_UNIT is fired.
 	MOUSE_OVER_CHANGED = "MOUSE_OVER_CHANGED",
 
 	-- Notification for when the players' current roleplay status has changed.
-	--
-	-- This event will be fired at an arbitrary point during the processing
-	-- of the REGISTER_DATA_UPDATED event. Users must not make assumptions
-	-- about the ordering of callbacks between these two events. This event
-	-- should not be triggered manually by any code.
 	ROLEPLAY_STATUS_CHANGED = "ROLEPLAY_STATUS_CHANGED",
+
+	-- Notification for when a dice roll is executed.
+	DICE_ROLL = "DICE_ROLL",
 };
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- EVENT HANDLING
--- Handles Total RP 3 events system
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- TODO: Would prefer to move this to OnInitialize, however that first requires
+--       modularizing everything.
+TRP3_Addon.callbacks = TRP3_API.InitCallbackRegistryWithEvents(TRP3_Addon, TRP3_Addon.Events);
 
-local eventsDispatcher = TRP3_API.Ellyb.EventsDispatcher();
-
-function Events.unregisterCallback(handlerID)
-	Ellyb.Assertions.isType(handlerID, "string", "handlerID");
-	return eventsDispatcher:UnregisterCallback(handlerID);
+function TRP3_Addon:TriggerEvent(event, ...)
+	assert(self.Events[event], "attempted to trigger an invalid addon event");
+	self.callbacks:Fire(event, ...);
 end
 
----@overload fun(event:string, handler:function)
-function Events.registerCallback(event, handler, handlerID)
-	Ellyb.Assertions.isType(event, "string", "event");
-	Ellyb.Assertions.isType(handler, "function", "handler");
-	return eventsDispatcher:RegisterCallback(event, handler, handlerID);
+-- The game event source provides a callback registry-based mechanism for
+-- subscribing to and receiving game-triggered events like ADDON_LOADED.
+
+local GameEventRegistry = {};
+
+function GameEventRegistry:__init()
+	self.registry = TRP3_API.InitCallbackRegistry(self);
+	self.frame = CreateFrame("Frame");
+	self.frame:SetScript("OnEvent", function(_, event, ...) return self.registry:Fire(event, ...); end);
 end
 
-Events.listenToEvent = Events.registerCallback;
-
-function Events.registerCallbacks(events, handler)
-	Ellyb.Assertions.isType(events, "table", "events");
-	Ellyb.Assertions.isType(handler, "function", "handler");
-
-	local handlerID;
-	for _, event in pairs(events) do
-		handlerID = Events.registerCallback(event, handler, handlerID);
-	end
-
-	return handlerID;
-end
-Events.listenToEvents = Events.registerCallback;
-
-function Events.triggerEvent(event, ...)
-	Ellyb.Assertions.isType(event, "string", "event");
-	eventsDispatcher:TriggerEvent(event, ...);
+function GameEventRegistry:OnEventUsed(event)
+	self.frame:RegisterEvent(event);
 end
 
-Events.fireEvent = Events.triggerEvent;
+function GameEventRegistry:OnEventUnused(event)
+	self.frame:UnregisterEvent(event);
+end
 
-TRP3_API.Events = Events;
-TRP3_API.events = Events;
+function GameEventRegistry:IsEventValid(event)
+	return C_EventUtils == nil or C_EventUtils.IsEventValid(event);
+end
+
+TRP3_API.GameEvents = TRP3_API.CreateAndInitFromPrototype(GameEventRegistry);
+
+-- TODO: Can this move elsewhere?
 
 do
 	local status = nil;
@@ -122,9 +93,9 @@ do
 
 		if status ~= current then
 			status = current;
-			eventsDispatcher:TriggerEvent("ROLEPLAY_STATUS_CHANGED", status);
+			TRP3_Addon:TriggerEvent("ROLEPLAY_STATUS_CHANGED", status);
 		end
 	end
 
-	eventsDispatcher:RegisterCallback("REGISTER_DATA_UPDATED", OnRegisterDataUpdated);
+	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", OnRegisterDataUpdated);
 end

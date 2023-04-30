@@ -4,7 +4,7 @@
 ---@type
 local _, TRP3_API = ...;
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
 	local strconcat = strconcat;
 	local loc = TRP3_API.loc;

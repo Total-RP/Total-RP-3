@@ -1,6 +1,8 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+local TRP3_API = select(2, ...);
+
 -- Basic logging infrastructure
 --
 -- Log messages can be written via the 'Log' and 'Logf' functions and will be

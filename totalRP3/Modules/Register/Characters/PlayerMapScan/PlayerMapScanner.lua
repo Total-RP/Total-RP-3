@@ -61,7 +61,7 @@ local function ShouldShowRoleplayStatus(roleplayStatus)
 	return shouldShowStatus;
 end
 
-TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
 	registerConfigKey(CONFIG_ENABLE_MAP_LOCATION, true);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_OOC, false);
@@ -244,7 +244,7 @@ local function LocationBroadcastCommandHelp()
 	SendSystemMessage(string.format(loc.SLASH_CMD_HELP_COMMANDS, table.concat(examples, "|n")));
 end
 
-TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	TRP3_API.slash.registerCommand({
 		id = "location",
 		helpLine = " " .. loc.SLASH_CMD_LOCATION_HELP,

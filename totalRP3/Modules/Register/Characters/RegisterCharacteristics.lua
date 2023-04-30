@@ -3,7 +3,7 @@
 
 -- imports
 local ipairs = ipairs;
-local Globals, Utils, Events, UI, Ellyb = TRP3_API.globals, TRP3_API.utils, TRP3_API.events, TRP3_API.ui, TRP3_API.Ellyb;
+local Globals, Utils, Events, UI, Ellyb = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Events, TRP3_API.ui, TRP3_API.Ellyb;
 local stEtN = Utils.str.emptyToNil;
 local get = TRP3_API.profile.getData;
 local getProfile = TRP3_API.register.getProfile;
@@ -1267,7 +1267,7 @@ local function saveCharacteristics()
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getCurrentContext().profileID, "characteristics");
+	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getCurrentContext().profileID, "characteristics");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1340,7 +1340,7 @@ local function onActionSelected(value)
 	elseif type(value) == "string" then
 		setRelation(context.profileID, value);
 		setupRelationButton(context.profileID, context.profile);
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID, "characteristics");
+		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID, "characteristics");
 	end
 end
 
@@ -1613,7 +1613,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Dropdown_RelationshipFieldTitle:SetText(loc.REG_PLAYER_RELATIONSHIP_STATUS);
 
 	-- Resizing
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
 		local finalContainerWidth = containerWidth - 70;
 		TRP3_RegisterCharact_CharactPanel_Container:SetSize(finalContainerWidth, 50);
 		TRP3_RegisterCharact_Edit_CharactPanel_Container:SetSize(finalContainerWidth, 50);

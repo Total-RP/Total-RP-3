@@ -5,7 +5,7 @@
 local _, TRP3_API = ...;
 
 -- imports
-local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.events;
+local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Events;
 local stEtN = Utils.str.emptyToNil;
 local get = TRP3_API.profile.getData;
 local tcopy = Utils.table.copy;
@@ -529,7 +529,7 @@ local function refreshConsultDisplay(context)
 		if dataTab ~= Globals.empty then
 			dataTab.read = true;
 		end
-		Events.fireEvent(Events.REGISTER_ABOUT_READ);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_ABOUT_READ);
 		if context.profile and context.profile.link then
 			TRP3_ProfileReportButton:Show();
 		end
@@ -584,7 +584,7 @@ local function setEditTemplate(value)
 	end
 
 	draftData.TE = value;
-	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
 	TRP3_API.navigation.delayedRefresh();
 end
 
@@ -600,7 +600,7 @@ local function save()
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getCurrentContext().profileID, "about");
+	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getCurrentContext().profileID, "about");
 end
 
 local function refreshEditDisplay()
@@ -757,7 +757,7 @@ local function onAboutReceived(profileID)
 	local noDescr = (aboutData.TE == 1 and not shouldShowTemplate1(aboutData)) or (aboutData.TE == 2 and not shouldShowTemplate2(aboutData)) or (aboutData.TE == 3 and not shouldShowTemplate3(aboutData))
 	if noDescr then
 		aboutData.read = true;
-		Events.fireEvent(Events.REGISTER_ABOUT_READ);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_ABOUT_READ);
 	end
 	if aboutData.MU and type(aboutData) == "string" then
 		aboutData.MU = Utils.music.convertPathToID(aboutData.MU);
@@ -855,7 +855,7 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	if TRP3_API.target then
 		TRP3_API.target.registerButton({
 			id = "aa_player_b_music",
@@ -993,14 +993,14 @@ function TRP3_API.register.inits.aboutInit()
 		Utils.music.stopMusic();
 	end);
 
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, profileID, dataType)
 		if dataType == "about" and unitID and unitID ~= Globals.player_id then
 			onAboutReceived(profileID);
 		end
 	end);
 
 	-- Resizing
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerwidth, containerHeight)
 		TRP3_RegisterAbout_AboutPanel_Container:SetSize(containerwidth - 40, 5);
 		TRP3_RegisterAbout_AboutPanel_Template1:SetSize(containerwidth - 50, 5);
 		TRP3_RegisterAbout_AboutPanel_Template3_1_Text:SetWidth(containerwidth - 70);

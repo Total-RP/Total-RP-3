@@ -42,28 +42,6 @@ for i = 97, 122 do
 end
 local sID_CHARS = #ID_CHARS;
 
---- Generate a pseudo-unique random ID.
---- If you encounter a collision, you really should playing lottery
----@return string ID @ Generated ID
-function Strings.generateID()
-	local ID = date("%m%d%H%M%S");
-	for _ = 1, 5 do
-		ID = ID .. ID_CHARS[random(1, sID_CHARS)];
-	end
-	return ID;
-end
-
---- Generate a pseudo-random unique ID while checking a table for possible collisions.
----@param table table A table where indexes are IDs generated via Strings.generateID
----@return string ID An ID that is not already used inside this table
-function Strings.generateUniqueID(table)
-	local ID = Strings.generateID();
-	while table[ID] ~= nil do
-		ID = Strings.generateID();
-	end
-	return ID;
-end
-
 --- Generate a unique name by checking in a table indexed by names if a given exists and iterate to find a suitable non-taken name
 ---@param table table A table indexed by names
 ---@param name string The name we want to use

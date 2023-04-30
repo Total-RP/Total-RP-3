@@ -7,7 +7,7 @@ local _, TRP3_API = ...;
 -- TRP imports.
 local L = TRP3_API.loc;
 local Enums = AddOn_TotalRP3.Enums;
-local Events = TRP3_API.events;
+local Events = TRP3_Addon.Events;
 local Globals = TRP3_API.globals;
 local UI = TRP3_API.ui;
 local Utils = TRP3_API.utils;
@@ -19,7 +19,7 @@ local function IncrementCharacterDataVersion(player)
 	local character = player:GetInfo("character");
 	character.v = Utils.math.incrementNumber(character.v or 1, 2);
 
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, player:GetProfileID(), "character");
+	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, player:GetProfileID(), "character");
 end
 
 -- Mixin for the top-level status frame panel.
@@ -28,7 +28,7 @@ TRP3_DashboardStatusPanelMixin = DashboardStatusPanelMixin;
 
 -- Handler called when the frame is loaded.
 function DashboardStatusPanelMixin:OnLoad()
-	Events.registerCallback(Events.WORKFLOW_ON_LOADED, function() self:LocalizeUI(); end);
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, self.LocalizeUI, self);
 end
 
 -- Updates all localization-dependant parts of the UI.
@@ -45,8 +45,8 @@ TRP3_DashboardStatusMenuMixin = DashboardStatusMenuMixin;
 
 -- Handler called when the menu frame is loaded.
 function DashboardStatusMenuMixin:OnLoad()
-	Events.registerCallback(Events.WORKFLOW_ON_LOADED, function(...) self:InitializeMenu(...); end);
-	Events.registerCallback(Events.REGISTER_DATA_UPDATED, function(...) self:OnRegisterDataUpdated(...); end);
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, self.InitializeMenu, self);
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, self.OnRegisterDataUpdated, self);
 end
 
 -- Handler called when the menu frame is shown.

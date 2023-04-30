@@ -7,7 +7,7 @@ local _, TRP3_API = ...;
 local function onStart()
 
 	-- TRP3 API imports
-	local Utils, Events, Register, UI, Config = TRP3_API.utils, TRP3_API.events, TRP3_API.register, TRP3_API.ui, TRP3_API.configuration;
+	local Utils, Events, Register, UI, Config = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.register, TRP3_API.ui, TRP3_API.configuration;
 	local getProfileByID = Register.getProfile;
 	local getUnitIDProfile = Register.getUnitIDCurrentProfileSafe;
 	local getUnitIDProfileID = Register.getUnitIDProfileID;
@@ -145,7 +145,7 @@ local function onStart()
 		local profile = getProfileByID(profileID);
 		profile.hasMatureContent = true;
 		profile.lastMatureContentEvaluation = time();
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
 	end
 	TRP3_API.register.mature_filter.flagUnitProfileHasHavingMatureContent = flagUnitProfileHasHavingMatureContent
 
@@ -169,7 +169,7 @@ local function onStart()
 			-- Flag the profile of the unit has having mature content
 			flagUnitProfileHasHavingMatureContent(profileID);
 			-- Fire the event that the register has been updated so the UI stuff get refreshed
-			Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
+			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
 		end);
 	end
 
@@ -178,7 +178,7 @@ local function onStart()
 			local profileID = getUnitIDProfileID(unitID);
 			removeProfileIdFromSafeList(profileID);
 			-- Fire the event that the register has been updated so the UI stuff get refreshed
-			Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
+			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
 		end);
 	end
 
@@ -191,7 +191,7 @@ local function onStart()
 
 		TRP3_API.popup.showConfirmPopup(loc.MATURE_FILTER_ADD_TO_SAFELIST_TEXT:format(unitID), function()
 			addProfileIdToSafeList(profileID);
-			Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
+			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
 			if callback and type(callback) == "function" then callback() end;
 		end);
 	end
@@ -464,7 +464,7 @@ local function onStart()
 		local unitID = getUnitID("target");
 		if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 			local _, profileID = getUnitIDProfile(unitID);
-			Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, profileID, nil);
+			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, profileID, nil);
 		end
 	end);
 
@@ -476,7 +476,7 @@ local function onStart()
 	TRP3_API.register.mature_filter.isMatureFilterEnabled = isMatureFilterEnabled;
 
 	-- Config must be built on WORKFLOW_ON_LOADED or else the TargetFrame module could be not yet loaded.
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		-- Section title
 		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigH1",
@@ -619,7 +619,7 @@ local function onStart()
 
 	-- We listen to data updates in the register and apply the filter if enabled
 	-- and the profile is not already safe listed.
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(_, profileID, _)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, _, profileID, _)
 		if isMatureFilterEnabled() and profileID and getProfileOrNil(profileID) and not isProfileSafeListed(profileID) then
 			local profile = getProfileByID(profileID);
 			if not profile.hasMatureContent or shouldReEvaluateContent(profile.lastMatureContentEvaluation) then

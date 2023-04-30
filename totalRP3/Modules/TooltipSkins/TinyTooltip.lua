@@ -28,7 +28,7 @@ TRP3_API.module.registerModule({
 		}
 
 		-- Wait for the add-on to be fully loaded so all the tooltips are available
-		TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
+		TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 
 			-- Get the LibEvent used by TinyTooltip
 			local LibEvent = LibStub:GetLibrary("LibEvent.7000");

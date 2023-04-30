@@ -9,7 +9,7 @@ local Ellyb = TRP3_API.Ellyb;
 TRP3_API.profile = {};
 
 -- imports
-local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local Globals, Events, Utils = TRP3_API.globals, TRP3_Addon.Events, TRP3_API.utils;
 local loc = TRP3_API.loc;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe = strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe;
@@ -131,8 +131,8 @@ local function selectProfile(profileID)
 	currentProfileId = profileID;
 	character.profileID = profileID;
 	displayMessage(loc.PR_PROFILE_LOADED:format(Utils.str.color("g")..profiles[character.profileID]["profileName"].."|r"));
-	Events.fireEvent(Events.REGISTER_PROFILES_LOADED, currentProfile);
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, profileID);
+	TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILES_LOADED, currentProfile);
+	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, profileID);
 end
 TRP3_API.profile.selectProfile = selectProfile;
 
@@ -569,7 +569,7 @@ function TRP3_API.profile.init()
 
 	local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 
-	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_PROFILES_LOADED, function()
 		if getCurrentPageID() == "player_profiles" then
 			if tabGroup.current == 1 then
 				tabGroup:SelectTab(1); -- Force refresh

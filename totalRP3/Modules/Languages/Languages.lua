@@ -92,7 +92,7 @@ function Languages.getSavedLanguage()
 	end
 end
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	if not TRP3_API.toolbar then return end;
 
 	local languagesButton = {
@@ -156,11 +156,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	-- Listen to events related to language changes and check that we are still able to speak the saved language
-	TRP3_API.Events.registerCallback("LANGUAGE_LIST_CHANGED", checkCurrentLanguageAndRestoreSavedState)
-	TRP3_API.Events.registerCallback("NEUTRAL_FACTION_SELECT_RESULT", checkCurrentLanguageAndRestoreSavedState)
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "LANGUAGE_LIST_CHANGED", checkCurrentLanguageAndRestoreSavedState)
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "NEUTRAL_FACTION_SELECT_RESULT", checkCurrentLanguageAndRestoreSavedState)
 
 	-- If workaround for language reset is enabled, try to restore saved language when loading screen ended
-	TRP3_API.Events.registerCallback("LOADING_SCREEN_DISABLED", function()
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "LOADING_SCREEN_DISABLED", function()
 		if Configuration.getValue(TRP3_API.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET) then
 			checkCurrentLanguageAndRestoreSavedState()
 		end
@@ -168,7 +168,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	-- If the option to remember last language used is enabled, try to restore saved language after entering world
 	if Configuration.getValue(TRP3_API.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED) then
-		TRP3_API.Events.registerCallback("PLAYER_ENTERING_WORLD", checkCurrentLanguageAndRestoreSavedState)
+		TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_ENTERING_WORLD", checkCurrentLanguageAndRestoreSavedState)
 		-- We have to wait a little for everything to be fully loaded before trying to restore previously selected language
 		C_Timer.After(1, checkCurrentLanguageAndRestoreSavedState)
 	end

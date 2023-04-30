@@ -254,10 +254,10 @@ local function setPage(pageId, context)
 		currentPage.onPagePostShow(context);
 	end
 
-	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, pageId);
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_TUTORIAL_REFRESH, pageId);
 	playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 
-	TRP3_API.Events.triggerEvent(TRP3_API.Events.PAGE_OPENED, pageId, context)
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.PAGE_OPENED, pageId, context);
 end
 TRP3_API.navigation.page.setPage = setPage;
 
@@ -407,7 +407,7 @@ local function showTutorial(tutorialStructure)
 	TRP3_TutorialFrame:Show();
 end
 
-local function onTutorialRefresh(pageID)
+local function onTutorialRefresh(_, pageID)
 	if currentPageId == pageID then
 		local currentPage = pageStructures[currentPageId];
 		TRP3_TutorialFrame:Hide();
@@ -440,5 +440,5 @@ TRP3_API.navigation.init = function()
 		closeAll(self.parentMenu);
 	end);
 
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, onTutorialRefresh);
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_TUTORIAL_REFRESH, onTutorialRefresh);
 end

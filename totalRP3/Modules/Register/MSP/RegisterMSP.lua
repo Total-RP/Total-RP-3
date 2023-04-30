@@ -22,7 +22,7 @@ local function onStart()
 		error(("Conflict with another MSP addon: %s"):format(msp_RPAddOn));
 	end
 
-	local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.events;
+	local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Events;
 	local get, getCompleteName = TRP3_API.profile.getData, TRP3_API.register.getCompleteName;
 	local isIgnored = TRP3_API.register.isIDIgnored;
 
@@ -469,7 +469,7 @@ local function onStart()
 				profile.characteristics["CH"] = color;
 			end
 
-			Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
+			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
 		end
 	end);
 
@@ -498,7 +498,7 @@ local function onStart()
 	updateCharacterData();
 	msp:Update();
 
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
 		if unitID == Globals.player_id then
 			if not dataType or dataType == "about" or dataType == "characteristics" or dataType == "character" or dataType == "misc" then
 				onProfileChanged();
@@ -508,7 +508,7 @@ local function onStart()
 			end
 		end
 	end);
-	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, TRP3_API.r.sendMSPQuery);
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.MOUSE_OVER_CHANGED, function(_, unitID) TRP3_API.r.sendMSPQuery(unitID); end);
 end
 
 function TRP3_API.r.sendMSPQuery(name, targetMode)

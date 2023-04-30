@@ -15,9 +15,9 @@ local YELLOW = Ellyb.ColorManager.YELLOW;
 local loc = TRP3_API.loc;
 local tcopy = TRP3_API.utils.table.copy;
 local Utils = TRP3_API.utils;
-local Events = TRP3_API.events;
+local Events = TRP3_Addon.Events;
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
 	local ProfilesChatLinkModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_PLAYER_PROFILE, "PLAYER_PROFILE");
 
@@ -91,7 +91,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_API.profile.duplicateProfile(profile, profileName);
 		TRP3_API.navigation.openMainFrame();
 		TRP3_API.navigation.page.setPage("player_profiles", {});
-		Events.fireEvent(Events.REGISTER_PROFILES_LOADED);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILES_LOADED);
 	end
 
 	-- Open profile in directory button
@@ -101,7 +101,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		local profile, profileID = profileData.profile, profileData.profileID;
 		profile.link = {};
 		TRP3_API.register.insertProfile(profileID, profile.player)
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
+		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
 
 		TRP3_API.register.openPageByProfileID(profileID);
 		TRP3_API.navigation.openMainFrame();
