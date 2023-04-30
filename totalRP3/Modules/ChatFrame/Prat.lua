@@ -57,7 +57,7 @@ Prat:AddModuleToLoad(function()
 
 		--- Extract the color used by Prat so we use it by default
 		---@type ColorMixin
-		local characterColor = TRP3_API.utils.color.extractColorFromText(message.PLAYER);
+		local characterColor = TRP3_API.CreateColorFromHexMarkup(message.PLAYER);
 
 		-- Character name is without the server name is they are from the same realm or if the option to remove realm info is enabled
 		if realm == TRP3_API.globals.player_realm_id or TRP3_API.configuration.getValue("remove_realm") then
@@ -73,17 +73,10 @@ Prat:AddModuleToLoad(function()
 
 		-- We retrieve the custom color if the option for custom colored names in chat is enabled
 		if TRP3_API.chat.configShowNameCustomColors() then
-			local customColor = TRP3_API.utils.color.getUnitCustomColor(unitID);
+			local player = AddOn_TotalRP3.Player.CreateFromCharacterID(unitID);
+			local customColor = player:GetCustomColorForDisplay(unitID);
 
-			-- If we do have a custom
 			if customColor then
-				-- Check if the option to increase the color contrast is enabled
-				if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
-					-- And lighten the color if it is
-					customColor:LightenColorUntilItIsReadable();
-				end
-
-				-- And finally, use the color
 				characterColor = customColor;
 			end
 		end

@@ -42,7 +42,7 @@ MapPoiMixins.CoalescedMapPinMixin = CoalescedMapPinMixin;
 -- The grouped coalesced map pins have uses categories to group the content of the markers under the cursor
 local GroupedCoalescedMapPinMixin = {};
 
-local WHITE = Ellyb.ColorManager.WHITE;
+local WHITE = TRP3_API.Colors.White;
 local TOOLTIP_CATEGORY_SEPARATOR = [[|TInterface\Common\UI-TooltipDivider-Transparent:8:128:0:0:8:8:0:128:0:8:255:255:255|t]];
 
 --- Custom sorting function that compares entries.

@@ -1468,11 +1468,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	CO_TOOLBAR_VISIBILITY_2 = "Only show in-character",
 	CO_TOOLBAR_VISIBILITY_3 = "Always hidden",
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES = "Show first names only",
 	NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES_HELP = "If checked, only show the first names rather than full names.|n|nThis can only be applied to player units, and will not work with profiles received from other roleplay addons.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_GUILD = "Show custom guild names",
@@ -1523,6 +1518,21 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue where the target frame would stay hidden after a UI reload with a target selected.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	CO_GENERAL_CONTRAST_LEVEL = "Color contrast level",
+	CO_GENERAL_CONTRAST_LEVEL_HELP = "Controls how aggressively custom colors will be adjusted for readability against dark backgrounds.|n|nThe 'Low' setting is the recommended default and will generally only affect very dark colors.",
+	CO_GENERAL_CONTRAST_LEVEL_NONE = "None",
+	CO_GENERAL_CONTRAST_LEVEL_VERY_LOW = "Very low",
+	CO_GENERAL_CONTRAST_LEVEL_LOW = "Low",
+	CO_GENERAL_CONTRAST_LEVEL_MEDIUM_LOW = "Medium low",
+	CO_GENERAL_CONTRAST_LEVEL_MEDIUM_HIGH = "Medium high",
+	CO_GENERAL_CONTRAST_LEVEL_HIGH = "High",
+	CO_GENERAL_CONTRAST_LEVEL_VERY_HIGH = "Very high",
 };
 
 -- Use Ellyb to generate the Localization system

@@ -20,8 +20,7 @@ local ChatLinks = {};
 TRP3_API.ChatLinks = ChatLinks;
 
 --region Ellyb imports
-local ColorManager = Ellyb.ColorManager;
-local ORANGE = ColorManager.ORANGE;
+local ORANGE = TRP3_API.Colors.Orange;
 --endregion
 
 --region Wow Imports
@@ -44,7 +43,7 @@ local loc = TRP3_API.loc;
 local LINK_CODE = "garrmission:totalrp3";
 local LINK_LENGTHS = LINK_CODE:len();
 
-local LINK_COLOR = ColorManager.YELLOW;
+local LINK_COLOR = TRP3_API.Colors.Yellow;
 local CHAT_LINKS_PROTOCOL_REQUEST_PREFIX = "CTLK_R"; -- Request data about a link clicked
 local CHAT_LINKS_PROTOCOL_DATA_PREFIX = "CTLK_D"; -- Send data bout a link sent
 
@@ -61,8 +60,8 @@ ChatLinks.FORMAT = {
 		SMALL = "SMALL",
 	},
 	COLORS = {
-		YELLOW = ColorManager.YELLOW,
-		WHITE = ColorManager.WHITE,
+		YELLOW = TRP3_API.Colors.Yellow,
+		WHITE = TRP3_API.Colors.White,
 	}
 }
 
@@ -156,7 +155,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		hideActionButtons();
 
 		TRP3_RefTooltip.sender = sender;
-		TRP3_RefTooltip:SetText(tooltipContent.title, TRP3_API.Ellyb.ColorManager.WHITE:GetRGB());
+		TRP3_RefTooltip:SetText(tooltipContent.title, TRP3_API.Ellyb.TRP3_API.Colors.White:GetRGB());
 
 		if tooltipContent.lines then
 			for _, line in ipairs(tooltipContent.lines) do
@@ -277,7 +276,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		Ellyb.Assertions.isType(linkType, "string", "linkType");
 		Ellyb.Assertions.isType(callback, "function", "callback");
 
-		TRP3_API.popup.showCustomYesNoPopup(loc.CL_MAKE_IMPORTABLE_SIMPLER:format(TRP3_API.Ellyb.ColorManager.ORANGE(linkType)),
+		TRP3_API.popup.showCustomYesNoPopup(loc.CL_MAKE_IMPORTABLE_SIMPLER:format(TRP3_API.Ellyb.TRP3_API.Colors.Orange(linkType)),
 			loc.CL_MAKE_IMPORTABLE_BUTTON_TEXT,
 			loc.CL_MAKE_NON_IMPORTABLE,
 			function()

@@ -3,7 +3,6 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
 
 local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
@@ -70,8 +69,6 @@ TRP3_API.globals = {
 	PSYCHO_MAX_VALUE_V1 = 6,
 	PSYCHO_DEFAULT_VALUE_V2 = 10,
 	PSYCHO_MAX_VALUE_V2 = 20,
-	PSYCHO_DEFAULT_LEFT_COLOR = Ellyb.Color.CreateFromRGBAAsBytes(255, 140, 26):Freeze(),
-	PSYCHO_DEFAULT_RIGHT_COLOR = Ellyb.Color.CreateFromRGBAAsBytes(32, 208, 249):Freeze(),
 };
 
 -- TODO: Expansion constants are temporary and can be cleaned up once the next

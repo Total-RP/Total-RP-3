@@ -44,9 +44,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		if dataTab.IC then
 			name = Utils.str.icon(dataTab.IC, 30) .. " " .. name;
 		end
-		tooltipLines:SetTitle(name, TRP3_API.Ellyb.ColorManager.WHITE);
+		tooltipLines:SetTitle(name, TRP3_API.Colors.White);
 		if dataTab.TI then
-			tooltipLines:AddLine("< " .. dataTab.TI .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);
+			tooltipLines:AddLine("< " .. dataTab.TI .. " >", TRP3_API.Colors.Orange);
 		end
 		return tooltipLines;
 	end

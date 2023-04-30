@@ -118,7 +118,7 @@ end
 function Player:GetCustomColor()
 	local characteristics = self:GetCharacteristics();
 	if characteristics and characteristics.CH then
-		return Ellyb.Color.CreateFromHexa(characteristics.CH);
+		return TRP3_API.CreateColorFromHexString(characteristics.CH);
 	end
 end
 
@@ -128,8 +128,8 @@ end
 --- @ return Ellyb_Color|nil
 function Player:GetCustomColorForDisplay()
 	local color = self:GetCustomColor()
-	if color and AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
-		color:LightenColorUntilItIsReadableOnDarkBackgrounds()
+	if color then
+		color = TRP3_API.GenerateReadableColor(color, TRP3_ReadabilityOptions.TextOnBlackBackground);
 	end
 	return color
 end

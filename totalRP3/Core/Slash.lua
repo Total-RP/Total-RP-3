@@ -53,9 +53,9 @@ function SlashCmdList.TOTALRP3(msg)
 		end
 		sort(sortTable);
 		for _, commandId in pairs(sortTable) do
-			local cmd, cmdText = COMMANDS[commandId], TRP3_API.Ellyb.ColorManager.GREEN("/trp3 " .. commandId);
+			local cmd, cmdText = COMMANDS[commandId], TRP3_API.Colors.Green("/trp3 " .. commandId);
 			if cmd.helpLine then
-				cmdText = cmdText .. TRP3_API.Ellyb.ColorManager.ORANGE(cmd.helpLine);
+				cmdText = cmdText .. TRP3_API.Colors.Orange(cmd.helpLine);
 			end
 			displayMessage(cmdText);
 		end

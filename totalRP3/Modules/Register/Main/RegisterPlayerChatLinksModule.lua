@@ -45,25 +45,25 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
 
-		local customColor = TRP3_API.Ellyb.ColorManager.YELLOW;
+		local customColor = TRP3_API.Colors.Yellow;
 		if profile.characteristics and profile.characteristics.CH then
-			customColor = TRP3_API.Ellyb.Color(profile.characteristics.CH);
+			customColor = TRP3_API.CreateColorFromHexString(profile.characteristics.CH);
 		end
 
 		tooltipLines:SetTitle(customColor(Utils.str.icon(profile.characteristics.IC or TRP3_InterfaceIcons.ProfileDefault, 20) .. " " .. TRP3_API.register.getCompleteName(profile.characteristics, profile.profileName, true)));
 
 		if profile.characteristics and profile.characteristics.FT then
-			tooltipLines:AddLine("< " .. profile.characteristics.FT .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);
+			tooltipLines:AddLine("< " .. profile.characteristics.FT .. " >", TRP3_API.Colors.Orange);
 		end
 		if profile.character and profile.character.CU then
 			tooltipLines:AddLine(" ");
 			tooltipLines:AddLine(loc.REG_PLAYER_CURRENT .. ": ");
-			tooltipLines:AddLine(profile.character.CU, TRP3_API.Ellyb.ColorManager.YELLOW);
+			tooltipLines:AddLine(profile.character.CU, TRP3_API.Colors.Yellow);
 		end
 		if profile.character and profile.character.CO then
 			tooltipLines:AddLine(" ");
 			tooltipLines:AddLine(loc.DB_STATUS_CURRENTLY_OOC .. ": ");
-			tooltipLines:AddLine(profile.character.CO, TRP3_API.Ellyb.ColorManager.YELLOW);
+			tooltipLines:AddLine(profile.character.CO, TRP3_API.Colors.Yellow);
 		end
 
 		return tooltipLines;

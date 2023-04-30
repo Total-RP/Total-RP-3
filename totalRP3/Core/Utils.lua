@@ -508,190 +508,6 @@ function Utils.guid.isAPlayerGUID(GUID)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Colors
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
---- Value must be 256 based
-local function numberToHexa(number)
-	number = string.format('%x', number);
-	if number:len() == 1 then
-		number = '0' .. number;
-	end
-	return number;
-end
-Utils.color.numberToHexa = numberToHexa;
-
---- Value must be a string with hexa decimal representation
--- Return 256 based
-local function hexaToNumber(hexa)
-	if not hexa then
-		return nil, nil, nil;
-	end
-	local redH = tonumber(hexa:sub(1, 2), 16)
-	local greenH = tonumber(hexa:sub(3, 4), 16)
-	local blueH = tonumber(hexa:sub(5, 6), 16)
-	return redH, greenH, blueH;
-end
-Utils.color.hexaToNumber = hexaToNumber;
-
-local function hexaToFloat(hexa)
-	local r, g, b = hexaToNumber(hexa);
-	return r / 255, g / 255, b / 255;
-end
-Utils.color.hexaToFloat = hexaToFloat;
-
---- Values must be 256 based
-local function colorCode(red, green, blue)
-	local redH = numberToHexa(red);
-	local greenH = numberToHexa(green);
-	local blueH = numberToHexa(blue);
-	return strconcat("|cff", redH, greenH, blueH);
-end
-Utils.color.colorCode = colorCode;
-
---- Values must be 0..1 based
-Utils.color.colorCodeFloat = function(red, green, blue)
-	return colorCode(math.ceil(red*255), math.ceil(green*255), math.ceil(blue*255));
-end
-
---- From r, g, b tab
-Utils.color.colorCodeFloatTab = function(tab)
-	return colorCode(math.ceil(tab.r*255), math.ceil(tab.g*255), math.ceil(tab.b*255));
-end
-
----
--- Function to test if a color is correctly readable on a specified.
--- We will calculate the luminance of the text color
--- using known values that take into account how the human eye perceive color
--- and then compute the contrast ratio.
--- The contrast ratio should be higher than 50%.
--- @external [](http://www.whydomath.org/node/wavlets/imagebasics.html)
---
--- @param textColor Color of the text {r, g, b}, must be 256 based
--- @return True if the text will be readable
---
-local textColorIsReadableOnBackground = function(textColor)
-	return ((0.299 * textColor.r + 0.587 * textColor.g + 0.114 * textColor.b)) >= 0.5;
-end
-
-Utils.color.textColorIsReadableOnBackground = textColorIsReadableOnBackground;
-
-Utils.color.lightenColorUntilItIsReadable = function(textColor)
-	-- If the color is too dark to be displayed in the tooltip, we will ligthen it up a notch
-	while not textColorIsReadableOnBackground(textColor) do
-		textColor.r = textColor.r + 0.01;
-		textColor.g = textColor.g + 0.01;
-		textColor.b = textColor.b + 0.01;
-	end
-
-	if textColor.r > 1 then textColor.r = 1 end
-	if textColor.g > 1 then textColor.g = 1 end
-	if textColor.b > 1 then textColor.b = 1 end
-
-	return textColor;
-end
-
-local function mixinColor(color)
-	-- Backward compatibility
-	color.LightenColorUntilItIsReadable = color.LightenColorUntilItIsReadableOnDarkBackgrounds;
-	return color;
-end
-
----@return ColorMixin
-local function CreateColor(...)
-	return mixinColor(Ellyb.Color(...));
-end
-Utils.color.CreateColor = CreateColor;
-
--- Backward compatibility
-function Utils.color.getColorFromHexadecimalCode(...)
-	return mixinColor(Ellyb.Color.CreateFromHexa(...));
-end
-
---- Returns a Color using Blizzard's ColorMixin for a given class (english, not localized)
--- @see ColorMixin
-function Utils.color.getClassColor(englishClass)
-	return mixinColor(Ellyb.ColorManager.getClassColor(englishClass));
-end
-
---- Returns the custom color defined in the unitID's profile as a Color using Blizzard's ColorMixing.
--- @param unitID
--- @return Color
--- @see ColorMixin
-function Utils.color.getUnitCustomColor(unitID)
-	local info = TRP3_API.register.getUnitIDCurrentProfileSafe(unitID);
-
-	if info.characteristics and info.characteristics.CH then
-		return CreateColor(info.characteristics.CH);
-	end
-end
-
-function Utils.color.getChatColorForChannel(channel)
-	return mixinColor(Ellyb.ColorManager.getChatColorForChannel(channel));
-end
-
-local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
-
----GetClassColorByGUID
----@param GUID string
----@return ColorMixin
-function TRP3_API.utils.color.GetClassColorByGUID(GUID)
-	local _, englishClass, _, _, _, _, _ = GetPlayerInfoByGUID(GUID);
-	local classColorTable = RAID_CLASS_COLORS[englishClass];
-	if classColorTable then
-		return CreateColor(classColorTable.r, classColorTable.g, classColorTable.b, 1);
-	end
-end
-
----GetCustomColorByGUID
----@param GUID string
----@return ColorMixin
-function TRP3_API.utils.color.GetCustomColorByGUID(GUID)
-	local _, _, _, _, _, name, realm = GetPlayerInfoByGUID(GUID);
-
-	local unitID = Utils.str.unitInfoToID(name, realm);
-	return Utils.color.getUnitCustomColor(unitID)
-end
-
----
--- Returns the color for the unit corresponding to the given GUID.
--- @param GUID The GUID to use to retrieve player information
--- @param useCustomColors If we should use custom color or not (usually defined in settings)
--- @param lightenColorUntilItIsReadable If we should increase the color so it is readable on dark background (usually defined in settings)
---
-function Utils.color.getUnitColorByGUID(GUID, useCustomColors, lightenColorUntilItIsReadable)
-	assert(GUID, "Invalid GUID given to Utils.color.getUnitColorByGUID(GUID)");
-	local _, englishClass, _, _, _, name, realm = GetPlayerInfoByGUID(GUID);
-	local color;
-
-	if not englishClass then return end
-
-	color = Utils.color.getClassColor(englishClass);
-
-	if useCustomColors then
-		local unitID = Utils.str.unitInfoToID(name, realm);
-		color = Utils.color.getUnitCustomColor(unitID) or color;
-
-		if lightenColorUntilItIsReadable then
-			color:LightenColorUntilItIsReadable();
-		end
-	end
-
-	return color ;
-end
-
-function Utils.color.extractColorFromText(text)
-	local r, g, b = 1, 1, 1;
-	local rgb = text:match("|c%x%x(%x%x%x%x%x%x)");
-
-	if rgb then
-		r, g, b = hexaToFloat(rgb);
-	end
-
-	return CreateColor(r, g, b, 1);
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Math
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -703,28 +519,6 @@ local function incrementNumber(version, figures)
 	return incremented;
 end
 Utils.math.incrementNumber = incrementNumber;
-
---- Return the interpolation.
--- delta is a number between 0 and 1;
-local function lerp(delta, from, to)
-	local diff = to - from;
-	return from + (delta * diff);
-end
-Utils.math.lerp = lerp;
-
-Utils.math.color = function(delta, fromR, fromG, fromB, toR, toG, toB)
-	return lerp(delta, fromR, toR), lerp(delta, fromG, toG), lerp(delta, fromB, toB);
-end
-
---- Values must be 256 based
-Utils.math.colorCode = function(delta, fromR, fromG, fromB, toR, toG, toB)
-	return colorCode(lerp(delta, fromR, toR), lerp(delta, fromG, toG), lerp(delta, fromB, toB));
-end
-
-function Utils.math.round(value, decimals)
-	local mult = 10 ^ (decimals or 0)
-	return math.floor(value * mult) / mult;
-end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Text tags utils
@@ -1182,17 +976,17 @@ local function Rainbow(value, max)
 	local movedValue = value - 1;    -- screw Lua lmao
 	local fifth = (max - 1) / 5;
 	if movedValue < fifth then
-		return TRP3_API.Ellyb.Color(1, 0.3 + 0.7 * movedValue / fifth, 0.3)
+		return TRP3_API.CreateColor(1, 0.3 + 0.7 * movedValue / fifth, 0.3)
 	elseif movedValue < 2 * fifth then
-		return TRP3_API.Ellyb.Color(1 - 0.7 * (movedValue - fifth) / fifth, 1, 0.3)
+		return TRP3_API.CreateColor(1 - 0.7 * (movedValue - fifth) / fifth, 1, 0.3)
 	elseif movedValue < 3 * fifth then
-		return TRP3_API.Ellyb.Color(0.3, 1, 0.3 + 0.7 * (movedValue - 2 * fifth) / fifth)
+		return TRP3_API.CreateColor(0.3, 1, 0.3 + 0.7 * (movedValue - 2 * fifth) / fifth)
 	elseif movedValue < 4 * fifth then
-		return TRP3_API.Ellyb.Color(0.3, 1 - 0.7 * (movedValue - 3 * fifth) / fifth, 1)
+		return TRP3_API.CreateColor(0.3, 1 - 0.7 * (movedValue - 3 * fifth) / fifth, 1)
 	elseif movedValue ~= max - 1 then
-		return TRP3_API.Ellyb.Color(0.3 + 0.7 * (movedValue - 4 * fifth) / fifth, 0.3, 1)
+		return TRP3_API.CreateColor(0.3 + 0.7 * (movedValue - 4 * fifth) / fifth, 0.3, 1)
 	else
-		return TRP3_API.Ellyb.Color(1, 0.3, 1)
+		return TRP3_API.CreateColor(1, 0.3, 1)
 	end
 end
 
@@ -1219,11 +1013,11 @@ local function OldgodCharacterColor(value, max)
 	local movedValue = value - 1;    -- screw Lua lmao
 	local third = (max - 1) / 3;
 	if movedValue < 2 * third then
-		return TRP3_API.Ellyb.Color(0.5 + 0.5 * movedValue / (2 * third), 0.3, 1 - 0.7 * movedValue / (2 * third))
+		return TRP3_API.CreateColor(0.5 + 0.5 * movedValue / (2 * third), 0.3, 1 - 0.7 * movedValue / (2 * third))
 	elseif movedValue ~= max - 1 then
-		return TRP3_API.Ellyb.Color(1, 0.3 + 0.2 * (movedValue - 2 * third) / third, 0.3)
+		return TRP3_API.CreateColor(1, 0.3 + 0.2 * (movedValue - 2 * third) / third, 0.3)
 	else
-		return TRP3_API.Ellyb.Color(1, 0.5, 0.3)
+		return TRP3_API.CreateColor(1, 0.5, 0.3)
 	end
 end
 

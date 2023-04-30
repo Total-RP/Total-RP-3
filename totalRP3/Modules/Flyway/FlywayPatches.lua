@@ -186,3 +186,15 @@ TRP3_API.flyway.patches["14"] = function()
 		end
 	end
 end
+
+TRP3_API.flyway.patches["15"] = function()
+	-- Migrate contrast setting to a more flexible level system. This just
+	-- deletes the old setting; the old system had a tendency to white out
+	-- colors in quite a nasty manner however with our new levels it should
+	-- make more sense to just allow its default "Low" level be used, which
+	-- is very conservative in the colors it'll attempt to adjust.
+
+	if TRP3_Configuration then
+		TRP3_Configuration["increase_color_contrast"] = nil;
+	end
+end

@@ -49,8 +49,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			glanceTitle = crop(glanceTitle, GLANCE_TITLE_CROP);
 		end
 
-		tooltipLines:SetTitle(Utils.str.icon(icon, 30) .. " " .. glanceTitle, TRP3_API.Ellyb.ColorManager.WHITE);
-		tooltipLines:AddLine(TTText, TRP3_API.Ellyb.ColorManager.ORANGE);
+		tooltipLines:SetTitle(Utils.str.icon(icon, 30) .. " " .. glanceTitle, TRP3_API.Colors.White);
+		tooltipLines:AddLine(TTText, TRP3_API.Colors.Orange);
 		return tooltipLines;
 	end
 

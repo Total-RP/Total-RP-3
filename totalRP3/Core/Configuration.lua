@@ -11,7 +11,6 @@ TRP3_API.configuration = {};
 local loc = TRP3_API.loc;
 local Utils = TRP3_API.utils;
 local Config = TRP3_API.configuration;
-local numberToHexa, hexaToNumber = Utils.color.numberToHexa, Utils.color.hexaToNumber;
 local CreateFrame = CreateFrame;
 local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
@@ -163,13 +162,13 @@ local function buildConfigurationPage(structure)
 			if element.configKey then
 				local button = _G[widget:GetName().."Picker"];
 				element.controller = button;
-				button.setColor(hexaToNumber(getValue(element.configKey)));
+				button.setColor(TRP3_API.CreateColorFromHexString(getValue(element.configKey)):GetRGBAsBytes());
 				button.onSelection = function(red, green, blue)
 					if red and green and blue then
-						local hexa = strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue))
+						local hexa = TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
 						setValue(element.configKey, hexa);
 					else
-						button.setColor(hexaToNumber(defaultValues[element.configKey]));
+						button.setColor(TRP3_API.CreateColorFromHexString(defaultValues[element.configKey]):GetRGBAsBytes());
 					end
 				end;
 			end
@@ -386,7 +385,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	registerConfigKey("ui_animations", true);
 	registerConfigKey("disable_welcome_message", false);
 	registerConfigKey("default_color_picker", false);
-	registerConfigKey("increase_color_contrast", false);
+	registerConfigKey("color_contrast_level", TRP3_API.ColorContrastOption.Default);
 	registerConfigKey("date_format", "");
 
 	-- Build widgets
@@ -433,10 +432,20 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				help = loc.CO_GENERAL_DEFAULT_COLOR_PICKER_TT,
 			},
 			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_TOOLTIP_CONTRAST ,
-				configKey = "increase_color_contrast",
-				help = loc.CO_TOOLTIP_CONTRAST_TT ,
+				inherit = "TRP3_ConfigDropDown",
+				title = loc.CO_GENERAL_CONTRAST_LEVEL ,
+				configKey = "color_contrast_level",
+				help = loc.CO_GENERAL_CONTRAST_LEVEL_HELP,
+				listContent = {
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_NONE, TRP3_API.ColorContrastOption.None },
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_VERY_LOW, TRP3_API.ColorContrastOption.VeryLow },
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_LOW, TRP3_API.ColorContrastOption.Low },
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_MEDIUM_LOW, TRP3_API.ColorContrastOption.MediumLow },
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_MEDIUM_HIGH, TRP3_API.ColorContrastOption.MediumHigh },
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_HIGH, TRP3_API.ColorContrastOption.High },
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_VERY_HIGH, TRP3_API.ColorContrastOption.VeryHigh },
+				},
+				listCancel = true,
 			},
 			{
 				inherit = "TRP3_ConfigButton",
@@ -459,20 +468,20 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 					local specifiers =
 					{
-						string.format(loc.CO_DATE_FORMAT_SPEC_a, TRP3_API.Ellyb.ColorManager.CYAN("%a"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%a", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_A, TRP3_API.Ellyb.ColorManager.CYAN("%A"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%A", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_b, TRP3_API.Ellyb.ColorManager.CYAN("%b"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%b", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_B, TRP3_API.Ellyb.ColorManager.CYAN("%B"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%B", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_d, TRP3_API.Ellyb.ColorManager.CYAN("%d"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%d", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_H, TRP3_API.Ellyb.ColorManager.CYAN("%H"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%H", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_I, TRP3_API.Ellyb.ColorManager.CYAN("%I"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%I", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_m, TRP3_API.Ellyb.ColorManager.CYAN("%m"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%m", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_M, TRP3_API.Ellyb.ColorManager.CYAN("%M"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%M", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_p, TRP3_API.Ellyb.ColorManager.CYAN("%p"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%p", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_S, TRP3_API.Ellyb.ColorManager.CYAN("%S"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%S", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_y, TRP3_API.Ellyb.ColorManager.CYAN("%y"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%y", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_Y, TRP3_API.Ellyb.ColorManager.CYAN("%Y"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%Y", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_ESC, TRP3_API.Ellyb.ColorManager.CYAN("%%")),
+						string.format(loc.CO_DATE_FORMAT_SPEC_a, TRP3_API.Colors.Cyan("%a"), TRP3_API.Colors.Green(date("!%a", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_A, TRP3_API.Colors.Cyan("%A"), TRP3_API.Colors.Green(date("!%A", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_b, TRP3_API.Colors.Cyan("%b"), TRP3_API.Colors.Green(date("!%b", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_B, TRP3_API.Colors.Cyan("%B"), TRP3_API.Colors.Green(date("!%B", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_d, TRP3_API.Colors.Cyan("%d"), TRP3_API.Colors.Green(date("!%d", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_H, TRP3_API.Colors.Cyan("%H"), TRP3_API.Colors.Green(date("!%H", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_I, TRP3_API.Colors.Cyan("%I"), TRP3_API.Colors.Green(date("!%I", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_m, TRP3_API.Colors.Cyan("%m"), TRP3_API.Colors.Green(date("!%m", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_M, TRP3_API.Colors.Cyan("%M"), TRP3_API.Colors.Green(date("!%M", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_p, TRP3_API.Colors.Cyan("%p"), TRP3_API.Colors.Green(date("!%p", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_S, TRP3_API.Colors.Cyan("%S"), TRP3_API.Colors.Green(date("!%S", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_y, TRP3_API.Colors.Cyan("%y"), TRP3_API.Colors.Green(date("!%y", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_Y, TRP3_API.Colors.Cyan("%Y"), TRP3_API.Colors.Green(date("!%Y", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_ESC, TRP3_API.Colors.Cyan("%%")),
 					};
 
 					return string.format(loc.CO_DATE_FORMAT_HELP, table.concat(specifiers, "|n"))
@@ -484,13 +493,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 end);
 
 AddOn_TotalRP3.Configuration = {}
-
---- Returns true if the user checked the setting to increase color contrast to make text colored using user selected custom
---- colors more readable.
---- @return boolean
-function AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast()
-	return getValue("increase_color_contrast")
-end
 
 function TRP3_API.configuration.constructConfigPage()
 	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_FRAME_PAGE);

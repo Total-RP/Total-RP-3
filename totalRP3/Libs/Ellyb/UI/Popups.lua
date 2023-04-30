@@ -5,9 +5,6 @@ if Ellyb.Popups then
 	return
 end
 
--- Ellyb imports
-local ORANGE = Ellyb.ColorManager.ORANGE;
-
 local Popups = {};
 Ellyb.Popups = Popups;
 
@@ -46,7 +43,7 @@ function Popups:OpenURL(url, customText, customShortcutInstructions, customAlert
 	if not customShortcutInstructions then
 		customShortcutInstructions = Ellyb.loc.COPY_URL_POPUP_TEXT;
 	end
-	popupText = popupText .. customShortcutInstructions:format(ORANGE(Ellyb.System.SHORTCUTS.COPY), ORANGE(Ellyb.System.SHORTCUTS.PASTE));
+	popupText = popupText .. customShortcutInstructions:format(TRP3_API.Colors.Orange(Ellyb.System.SHORTCUTS.COPY), TRP3_API.Colors.Orange(Ellyb.System.SHORTCUTS.PASTE));
 	URLPopup.Text:SetText(popupText);
 	URLPopup.Url:SetText(url);
 	if not customAlertOnClose then

@@ -9,7 +9,7 @@ local loc = TRP3_API.loc;
 --}}}
 
 --{{{ Ellyb imports
-local ORANGE = Ellyb.ColorManager.ORANGE;
+local ORANGE = TRP3_API.Colors.Orange;
 ---}}}
 
 -- Create the pin template, above group members
@@ -49,15 +49,15 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	if player:IsCurrentUser() then
 		-- Special case when seeing ourselves on the map (DEBUG)
 		displayData.iconAtlas = "PlayerPartyBlip";
-		displayData.iconColor = Ellyb.ColorManager.CYAN;
-		displayData.categoryName = loc.REG_RELATION .. ": " .. Ellyb.ColorManager.CYAN("SELF");
+		displayData.iconColor = TRP3_API.Colors.Cyan;
+		displayData.categoryName = loc.REG_RELATION .. ": " .. TRP3_API.Colors.Cyan("SELF");
 		displayData.categoryPriority = math.huge;
 	elseif shouldDifferentiateBetweenWarModes and not hasSameWarModeAsPlayer then
 		-- Swap out the atlas for this marker, show it in red, low opacity, and in a special category
 		displayData.iconAtlas = "PlayerPartyBlip";
-		displayData.iconColor = Ellyb.ColorManager.GREY;
+		displayData.iconColor = TRP3_API.Colors.Grey;
 		displayData.opacity = math.min(0.5, displayData.opacity);
-		displayData.categoryName = Ellyb.ColorManager.RED(loc.REG_LOCATION_DIFFERENT_WAR_MODE);
+		displayData.categoryName = TRP3_API.Colors.Red(loc.REG_LOCATION_DIFFERENT_WAR_MODE);
 		displayData.categoryPriority = -1;
 	else
 		local relation = player:GetRelationshipWithPlayer()

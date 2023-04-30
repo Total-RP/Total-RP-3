@@ -121,7 +121,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			for _, language in ipairs(Languages.getAvailableLanguages()) do
 				if language:IsActive() then
 					tinsert(dropdownItems, {
-						language:GetIcon():GenerateString(15) .. " " .. TRP3_API.Ellyb.ColorManager.GREEN(language:GetName()),
+						language:GetIcon():GenerateString(15) .. " " .. TRP3_API.Colors.Green(language:GetName()),
 						nil
 					})
 				else

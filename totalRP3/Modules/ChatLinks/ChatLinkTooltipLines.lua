@@ -29,7 +29,7 @@ function ChatLinkTooltipLines:AddLine(text, color, size)
 	Ellyb.Assertions.isType(text, "string", "text");
 
 	if not color then
-		color = TRP3_API.Ellyb.ColorManager.WHITE;
+		color = TRP3_API.Colors.White;
 	end
 	local r, g, b = color:GetRGB();
 	tinsert(_private[self].lines, {
@@ -52,10 +52,10 @@ function ChatLinkTooltipLines:AddDoubleLine(textLeft, textRight, colorLeft, colo
 	Ellyb.Assertions.isType(textRight, "string", "textRight");
 
 	if not colorLeft then
-		colorLeft = TRP3_API.Ellyb.ColorManager.WHITE;
+		colorLeft = TRP3_API.Colors.White;
 	end
 	if not colorRight then
-		colorRight = TRP3_API.Ellyb.ColorManager.WHITE;
+		colorRight = TRP3_API.Colors.White;
 	end
 
 	local rLeft, gLeft, bLeft = colorLeft:GetRGB();

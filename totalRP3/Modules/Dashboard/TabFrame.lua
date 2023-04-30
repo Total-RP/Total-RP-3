@@ -5,9 +5,6 @@
 local TRP3_API = select(2, ...);
 local Ellyb = TRP3_API.Ellyb;
 
--- Ellyb imports
-local ColorManager = Ellyb.ColorManager;
-
 -- WoW imports
 local GameFontNormal = GameFontNormal;
 local GameFontNormalHuge3 = GameFontNormalHuge3;
@@ -120,9 +117,9 @@ function TRP3_DashboardTabFrameMixin:ResetHTMLStyles()
 	htmlFrame:SetFontObject("h2", GameFontNormalHuge);
 	htmlFrame:SetFontObject("h3", GameFontNormalLarge);
 
-	htmlFrame:SetTextColor("h1", ColorManager.WHITE:GetRGB());
-	htmlFrame:SetTextColor("h2", ColorManager.WHITE:GetRGB());
-	htmlFrame:SetTextColor("h3", ColorManager.WHITE:GetRGB());
+	htmlFrame:SetTextColor("h1", TRP3_API.Colors.White:GetRGB());
+	htmlFrame:SetTextColor("h2", TRP3_API.Colors.White:GetRGB());
+	htmlFrame:SetTextColor("h3", TRP3_API.Colors.White:GetRGB());
 end
 
 --- Convenience method that sets the text on the HTMLContent child widget

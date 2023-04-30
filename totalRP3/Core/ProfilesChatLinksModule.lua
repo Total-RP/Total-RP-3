@@ -9,7 +9,7 @@ local Ellyb = TRP3_API.Ellyb;
 local assert = assert;
 
 -- Ellyb imports
-local YELLOW = Ellyb.ColorManager.YELLOW;
+local YELLOW = TRP3_API.Colors.Yellow;
 
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
@@ -50,13 +50,13 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 		local customColor = YELLOW;
 		if info.characteristics.CH then
-			customColor = TRP3_API.Ellyb.Color(info.characteristics.CH);
+			customColor = TRP3_API.CreateColorFromHexString(info.characteristics.CH);
 		end
 
 		tooltipLines:SetTitle(customColor(Utils.str.icon(info.characteristics.IC or TRP3_InterfaceIcons.ProfileDefault, 20) .. " " .. TRP3_API.register.getCompleteName(info.characteristics, profile.profileName, true)));
 
 		if info.characteristics.FT then
-			tooltipLines:AddLine("< " .. info.characteristics.FT .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);
+			tooltipLines:AddLine("< " .. info.characteristics.FT .. " >", TRP3_API.Colors.Orange);
 		end
 		if info.character.CU and info.character.CU ~= "" then
 			tooltipLines:AddLine(" ");
