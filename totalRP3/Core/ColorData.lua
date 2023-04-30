@@ -311,6 +311,6 @@ TRP3_API.NamedColors =
 	UNCOMMON = TRP3_API.ItemQualityColors.Uncommon,
 
 	-- Faction colors
-	ALLIANCE = TRP3_API.FactionColors.ALLIANCE,
-	HORDE = TRP3_API.FactionColors.HORDE,
+	ALLIANCE = TRP3_API.FactionColors.Alliance,
+	HORDE = TRP3_API.FactionColors.Horde,
 };
