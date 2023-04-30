@@ -309,6 +309,11 @@ end
 --
 -- All closures strip the first parameter (event name) from the argument list
 -- to more closely match Blizzards' behavior.
+--
+-- For the 'CallbackMethodClosureFactories' list the first closure generator
+-- is a bit special; if GenerateCallbackClosure is called with solely a string
+-- method name and no other parameters it will generate a closure that invokes
+-- the named method on the first non-event parameter supplied to the closure.
 
 local CallbackClosureFactories =
 {
