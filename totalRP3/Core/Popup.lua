@@ -262,7 +262,10 @@ function TRP3_API.popup.showCopyDropdownPopup(copyTexts, customText, customShort
 	if not customShortcutInstructions then
 		customShortcutInstructions = loc.COPY_DROPDOWN_POPUP_TEXT;
 	end
-	popupText = popupText .. customShortcutInstructions:format(TRP3_API.Colors.Orange(Ellyb.System.SHORTCUTS.COPY), TRP3_API.Colors.Orange(Ellyb.System.SHORTCUTS.PASTE));
+	local copyShortcut = TRP3_API.FormatShortcut("CTRL-C", TRP3_API.ShortcutType.System);
+	local pasteShortcut = TRP3_API.FormatShortcut("CTRL-V", TRP3_API.ShortcutType.System);
+
+	popupText = popupText .. customShortcutInstructions:format(TRP3_API.Colors.Orange(copyShortcut), TRP3_API.Colors.Orange(pasteShortcut));
 	CopyTextPopup.Text:SetText(popupText);
 	CopyTextPopup.CopyText:SetText(copyTexts[1]);
 	if #copyTexts > 1 then
@@ -351,7 +354,7 @@ local function filteredMusicBrowser()
 	end
 	filteredMusicList = getMusicList(filter); -- Music tab is unfiltered
 
-	TRP3_MusicBrowserTotal:SetText( (#filteredMusicList) .. " / " .. getMusicListSize() );
+	TRP3_MusicBrowserTotal:SetText(string.format(GENERIC_FRACTION_STRING, #filteredMusicList, getMusicListSize()));
 	initList(
 		{
 			widgetTab = musicWidgetTab,
@@ -424,7 +427,7 @@ local function filteredIconBrowser()
 		filteredIconList = nil;
 	end
 	filteredIconList = getIconList(filter);
-	TRP3_IconBrowserTotal:SetText( (#filteredIconList) .. " / " .. getIconListSize() );
+	TRP3_IconBrowserTotal:SetText(string.format(GENERIC_FRACTION_STRING, #filteredIconList, getIconListSize()));
 	initList(
 		{
 			widgetTab = iconWidgetTab,
@@ -695,7 +698,7 @@ end
 local function filteredCompanionBrowser()
 	local filter = TRP3_CompanionBrowserFilterBox:GetText();
 	local totalCompanionCount = getWoWCompanionFilteredList(filter);
-	TRP3_CompanionBrowserTotal:SetText( (#filteredCompanionList) .. " / " .. totalCompanionCount );
+	TRP3_CompanionBrowserTotal:SetText(string.format(GENERIC_FRACTION_STRING, #filteredCompanionList, totalCompanionCount));
 	initList(
 		{
 			widgetTab = companionWidgetTab,
@@ -1119,7 +1122,7 @@ local function filteredImageBrowser()
 	local filter = TRP3_ImageBrowserFilterBox:GetText();
 	filteredImageList = getImageList(filter);
 	local size = #filteredImageList;
-	TRP3_ImageBrowserTotal:SetText( size .. " / " .. getImageListSize() );
+	TRP3_ImageBrowserTotal:SetText(string.format(GENERIC_FRACTION_STRING, size, getImageListSize()));
 	if size > 0 then
 		TRP3_ImageBrowserSelect:Enable();
 	else

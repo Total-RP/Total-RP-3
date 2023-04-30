@@ -3,8 +3,6 @@
 	<Script file="Assertions.lua"/>
 	<Script file="Locale.lua"/>
 	<Script file="Localization.lua"/>
-	<Script file="../Locales.lua"/>
-	<Script file="System.lua"/>
 	<Script file="Strings\Strings.lua"/>
 	<Script file="Unit.lua"/>
 

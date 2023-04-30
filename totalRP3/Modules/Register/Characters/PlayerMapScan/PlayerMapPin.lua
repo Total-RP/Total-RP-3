@@ -140,7 +140,7 @@ end
 
 function TRP3_PlayerMapPinMixin:OnTooltipAboutToShow(tooltip)
 	tooltip:AddTempLine([[|TInterface\Common\UI-TooltipDivider-Transparent:8:128:0:0:8:8:0:128:0:8:255:255:255|t]]);
-	tooltip:AddTempLine(Ellyb.Strings.clickInstruction(loc.CM_R_CLICK, loc.CL_OPEN_PROFILE), WHITE_FONT_COLOR);
+	tooltip:AddTempLine(TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.CL_OPEN_PROFILE), WHITE_FONT_COLOR);
 end
 
 TRP3_PlayerMapPinDropDownMixin = {};

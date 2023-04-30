@@ -111,7 +111,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				local currentLanguage = Languages.getCurrentLanguage()
 				buttonStructure.currentLanguageID = currentLanguage:GetID();
 				buttonStructure.tooltip = loc.TB_LANGUAGE .. ": " .. currentLanguage:GetName();
-				buttonStructure.tooltipSub = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.TB_LANGUAGES_TT);
+				buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_LANGUAGES_TT);
 				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or TRP3_InterfaceIcons.ToolbarLanguage;
 			end
 		end,

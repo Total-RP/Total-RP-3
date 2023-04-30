@@ -1,8 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Ellyb = TRP3_API.Ellyb;
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Minimap button widget
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -29,12 +27,14 @@ end
 
 local function PopulateLauncherTooltip(tooltip, hideDragDropInstruction)
 	tooltip:AddLine("Total RP 3", TRP3_API.Colors.White:GetRGB());
-	tooltip:AddLine(Ellyb.Strings.clickInstruction(loc.CM_L_CLICK, loc.MM_SHOW_HIDE_MAIN));
+	tooltip:AddLine(TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.MM_SHOW_HIDE_MAIN));
+
 	if TRP3_API.toolbar then
-		tooltip:AddLine(Ellyb.Strings.clickInstruction(loc.CM_R_CLICK, loc.MM_SHOW_HIDE_SHORTCUT));
+		tooltip:AddLine(TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.MM_SHOW_HIDE_SHORTCUT));
 	end
+
 	if not hideDragDropInstruction then
-		tooltip:AddLine(Ellyb.Strings.clickInstruction(loc.CM_DRAGDROP, loc.MM_SHOW_HIDE_MOVE));
+		tooltip:AddLine(TRP3_API.FormatShortcutWithInstruction("DRAGDROP", loc.MM_SHOW_HIDE_MOVE));
 	end
 end
 

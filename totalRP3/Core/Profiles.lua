@@ -498,15 +498,8 @@ function TRP3_API.profile.init()
 
 		-- Display indications in the tooltip on how to create a chat link
 		Ellyb.Tooltips.getTooltip(widget)
-			:AddLine(
-				Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.CM_OPEN)
-			)
-			:AddLine(
-				Ellyb.Strings.clickInstruction(
-						Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
-						loc.CL_TOOLTIP
-				)
-			);
+			:AddLine(TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPEN))
+			:AddLine(TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
 
 	end
 	TRP3_ProfileManagerList.widgetTab = widgetTab;

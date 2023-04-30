@@ -3,7 +3,6 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
 
 -- imports
 local Globals, Events = TRP3_API.globals, TRP3_Addon.Events;
@@ -338,12 +337,9 @@ local function decorateCharacterLine(line, characterIndex)
 	_G[line:GetName().."Select"]:Show();
 
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, leftTooltipTitle, leftTooltipText .. "\n\n" ..
-		Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.CM_OPEN) .. "\n" ..
-		Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.RIGHT_CLICK, loc.REG_LIST_CHAR_NAME_COPY) .. "\n" ..
-		Ellyb.Strings.clickInstruction(
-			Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
-			loc.CL_TOOLTIP
-		));
+		TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPEN) .. "\n" ..
+		TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_CHAR_NAME_COPY) .. "\n" ..
+		TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
 end
 
 local function getCharacterLines()
@@ -587,11 +583,8 @@ local function decorateCompanionLine(line, index)
 
 	local secondLine = loc.REG_LIST_PETS_TOOLTIP .. ":\n" .. companionList .. "\n" .. loc.REG_LIST_PETS_TOOLTIP2 .. ":\n" .. masterList;
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n\n" ..
-		Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.CM_OPEN) .. "\n" ..
-		Ellyb.Strings.clickInstruction(
-			Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
-			loc.CL_TOOLTIP
-		));
+		TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPEN) .. "\n" ..
+		TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
 	setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
 
 	-- Third column : flags
