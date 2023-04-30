@@ -112,4 +112,5 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="ChatLinks\ChatLinks.xml"/>
 	<Include file="UnitPopups\UnitPopups.xml"/>
 	<Include file="NamePlates\NamePlates.xml"/>
+	<Include file="Analytics\Analytics.xml"/>
 </Ui>
