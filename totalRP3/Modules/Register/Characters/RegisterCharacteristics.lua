@@ -229,6 +229,10 @@ end
 
 --- refreshPsychoColor refreshes the color shown on a line item, updating
 --  the given named color field.
+--  @param psychoLine The line item to update.
+--  @param psychoColorField The color field being updated. Either LC or RC.
+--  @param color The color to be applied. Must be an instance of Ellyb.Color,
+--               or nil if resetting the color to a default.
 local function refreshPsychoColor(psychoLine, psychoColorField, color)
 	-- Store the coloring on the line item itself for persistence later.
 	if color then
