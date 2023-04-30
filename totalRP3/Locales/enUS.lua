@@ -214,40 +214,9 @@ Once a template is selected, you can open this tutorial again to have more help 
 
 The description doesn't have to be limited to your character's |cffff9900physical description|r. Feel free to indicate parts from their |cffff9900background|r or details about their |cffff9900personality|r.
 
-If not, the language will be changed on the next connection.]=],
-	["CO_GENERAL_COM"] = "Communication",
-	["CO_GENERAL_DEFAULT_COLOR_PICKER"] = "Default color picker",
-	["CO_GENERAL_DEFAULT_COLOR_PICKER_TT"] = "Activate to always use the default color picker. Useful if you're using a color picker addon.",
-	["CO_GENERAL_HEAVY"] = "Heavy profile alert",
-	["CO_GENERAL_HEAVY_TT"] = "Get an alert when your profile total size exceed a reasonable value.",
-	["CO_GENERAL_LOCALE"] = "Addon locale",
-	["CO_GENERAL_MISC"] = "Miscellaneous",
-	["CO_GENERAL_NEW_VERSION"] = "Update alert",
-	["CO_GENERAL_NEW_VERSION_TT"] = "Get an alert when a new version is available.",
-	["CO_GENERAL_RESET_CUSTOM_COLORS"] = "Reset custom colors",
-	["CO_GENERAL_RESET_CUSTOM_COLORS_TT"] = "Removes all custom colors saved in the color picker.",
-	["CO_GENERAL_RESET_CUSTOM_COLORS_WARNING"] = "Are you sure you want to remove all custom colors saved in the color picker ?",
-	["CO_GENERAL_TT_SIZE"] = "Info tooltip text size",
-	["CO_GENERAL_UI_ANIMATIONS"] = "UI animations",
-	["CO_GENERAL_UI_ANIMATIONS_TT"] = "Activate the UI animations.",
-	["CO_GENERAL_UI_SOUNDS"] = "UI sounds",
-	["CO_GENERAL_UI_SOUNDS_TT"] = "Activate the UI sounds (when opening windows, switching tabs, clicking buttons).",
-	["CO_GLANCE_LOCK"] = "Lock bar",
-	["CO_GLANCE_LOCK_TT"] = "Prevent the bar from being dragged",
-	["CO_GLANCE_MAIN"] = "\"At first glance\" bar",
-	["CO_GLANCE_PRESET_TRP2"] = "Use Total RP 2 style positions",
-	["CO_GLANCE_PRESET_TRP2_BUTTON"] = "Use",
-	["CO_GLANCE_PRESET_TRP2_HELP"] = "Shortcut to setup the bar in a TRP2 style : to the right of WoW target frame.",
-	["CO_GLANCE_PRESET_TRP3"] = "Use Total RP 3 style positions",
-	["CO_GLANCE_PRESET_TRP3_HELP"] = "Shortcut to setup the bar in a TRP3 style : to the bottom of the TRP3 target frame.",
-	["CO_GLANCE_RESET_TT"] = "Reset the bar position to the bottom left of the anchored frame.",
-	["CO_GLANCE_TT_ANCHOR"] = "Tooltips anchor point",
-	["CO_HIDE_EMPTY_MAP_BUTTON"] = "Hide when no scans available",
-	["CO_LOCATION"] = "Location settings",
-	["CO_LOCATION_ACTIVATE"] = "Enable character location",
-	["CO_LOCATION_ACTIVATE_TT"] = "Enable the character location system, allowing you to scan for other Total RP users on the world map and allowing them to find you.",
-	["CO_LOCATION_DISABLE_CLASSIC_PVP"] = "Disable location when flagged for PvP",
-	["CO_LOCATION_DISABLE_CLASSIC_PVP_TT"] = [=[You will not respond to location requests from other players when you are flagged for PvP.
+With this template you can use the formatting tools to access several layout parameters like |cffffff00text sizes, colors, and alignments|r.
+These tools also allow you to insert |cffffff00images, icons, or links to external web sites|r.]],
+	REG_PLAYER_TUTO_ABOUT_T2 = [[This template is more structured and consists of |cff00ff00a list of independent frames|r.
 
 Each frame is caracterized by an |cffffff00icon, a background and a text|r. Note that you can use some text tags in these frames, like the color and the icon text tags.
 
@@ -354,58 +323,8 @@ You can optionally enter the reason below. This is a personal note, it will serv
 
 The second column shows the relation between these characters and your current character.
 
-|cfffff569Limit details:
-Name: 100 characters
-Title: 150 characters
-Race: 50 characters
-Class: 50 characters|r]=],
-	["CO_TOOLTIP_CURRENT"] = "Show \"current\" information",
-	["CO_TOOLTIP_CURRENT_LINES"] = "Max \"Currently\" line breaks",
-	["CO_TOOLTIP_CURRENT_SIZE"] = "Max \"current\" information length",
-	["CO_TOOLTIP_FT"] = "Show full title",
-	["CO_TOOLTIP_GUILD"] = "Show guild info",
-	["CO_TOOLTIP_HEALTH"] = "Show health",
-	["CO_TOOLTIP_HEALTH_BOTH"] = "Number + Percentage",
-	["CO_TOOLTIP_HEALTH_DISABLED"] = "Disabled",
-	["CO_TOOLTIP_HEALTH_NUMBER"] = "Number",
-	["CO_TOOLTIP_HEALTH_PERCENT"] = "Percentage",
-	["CO_TOOLTIP_HEALTH_TT"] = "This will only show if the target is not at full health.",
-	["CO_TOOLTIP_HIDE_IN_INSTANCE"] = "Hide while in instance",
-	["CO_TOOLTIP_HIDE_ORIGINAL"] = "Hide original tooltip",
-	["CO_TOOLTIP_ICONS"] = "Show icons",
-	["CO_TOOLTIP_IN_CHARACTER_ONLY"] = "Hide when out of character",
-	["CO_TOOLTIP_MAIN_COLOR"] = "Main text color",
-	["CO_TOOLTIP_MAIN_COLOR_HELP"] = "The color used in the tooltip to display text such as the race, level, and currently and OOC headers.",
-	["CO_TOOLTIP_MAINSIZE"] = "Main font size",
-	["CO_TOOLTIP_NO_FADE_OUT"] = "Hide immediately instead of fading",
-	["CO_TOOLTIP_NOTIF"] = "Show notifications",
-	["CO_TOOLTIP_NOTIF_TT"] = "The notifications line is the line containing the client version, the unread description marker and the 'At first glance' marker.",
-	["CO_TOOLTIP_OWNER"] = "Show owner",
-	["CO_TOOLTIP_PETS"] = "Companions tooltip",
-	["CO_TOOLTIP_PETS_INFO"] = "Show companion info",
-	["CO_TOOLTIP_PREFERRED_OOC_INDICATOR"] = "Preferred OOC indicator",
-	["CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON"] = "Icon: ",
-	["CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT"] = "Text: ",
-	["CO_TOOLTIP_PROFILE_ONLY"] = "Use only if target has a profile",
-	["CO_TOOLTIP_PRONOUNS"] = "Show pronouns",
-	["CO_TOOLTIP_RACE"] = "Show race, class and level",
-	["CO_TOOLTIP_REALM"] = "Show realm",
-	["CO_TOOLTIP_RELATION"] = "Show relationship color",
-	["CO_TOOLTIP_RELATION_TT"] = "Set the character tooltip border to a color representing the relation.",
-	["CO_TOOLTIP_SECONDARY_COLOR"] = "Secondary text color",
-	["CO_TOOLTIP_SECONDARY_COLOR_HELP"] = "The color used in the tooltip to display secondary subtext such as realm and guild names, the currently and OOC contents, and zone or health information.",
-	["CO_TOOLTIP_SPACING"] = "Show spacing",
-	["CO_TOOLTIP_SPACING_TT"] = "Place spaces to lighten the tooltip, in the style of MyRoleplay tooltip.",
-	["CO_TOOLTIP_SUBSIZE"] = "Secondary font size",
-	["CO_TOOLTIP_TARGET"] = "Show target",
-	["CO_TOOLTIP_TERSIZE"] = "Tertiary font size",
-	["CO_TOOLTIP_TITLE"] = "Show title",
-	["CO_TOOLTIP_TITLE_COLOR"] = "Title text color",
-	["CO_TOOLTIP_TITLE_COLOR_HELP"] = "The color used in the tooltip to display full-length character titles.",
-	["CO_TOOLTIP_USE"] = "Use characters/companions tooltip",
-	["CO_TOOLTIP_ZONE"] = "Show zone",
-	["CO_TOOLTIP_ZONE_TT"] = "This will only show if the target is not in the same zone as you.",
-	["CO_UI_RELOAD_WARNING"] = [=[The interface needs to be reloaded in order for the changes to be applied.
+The last column is for various flags. (ignored ..etc.)]],
+	REG_LIST_CHAR_TUTO_FILTER = [[You can filter the character list.
 
 The |cff00ff00name filter|r will perform a search on the profile full name (first name + last name) but also on any linked WoW characters.
 
@@ -443,36 +362,7 @@ The |cff00ff00realm only filter|r will show only profiles linked to a WoW charac
 
 You can't have simultaneously more than one addon using the Mary Sue Protocol, as they would be in conflict.|r
 
-|cff00ff00These information will be placed in your character's tooltip.]=],
-	["DICE_HELP"] = "A dice roll or rolls separated by spaces, example: 1d6, 2d12 3d20 ...",
-	["DICE_ROLL"] = "%s Rolled |cffff9900%sx d%s|r|cffcc6600%s|r and got |cff00ff00%s|r.",
-	["DICE_ROLL_T"] = "%s %s rolled |cffff9900%sx d%s|r|cffcc6600%s|r and got |cff00ff00%s|r.",
-	["DICE_TOTAL"] = "%s Total of |cff00ff00%s|r for the roll.",
-	["DICE_TOTAL_T"] = "%s %s got a total of |cff00ff00%s|r for the roll.",
-	["DTBK_AFK"] = "Total RP 3 - AFK/DND",
-	["DTBK_CLOAK"] = "Total RP 3 - Cloak",
-	["DTBK_HELMET"] = "Total RP 3 - Helmet",
-	["DTBK_LANGUAGES"] = "Total RP 3 - Languages",
-	["DTBK_RP"] = "Total RP 3 - IC/OOC",
-	["GEN_VERSION"] = "Version: %s (Build %s)",
-	["GEN_WELCOME_MESSAGE"] = "Thank you for using Total RP 3 (v %s) ! Have fun !",
-	["KUI_NAMEPLATES_MODULE_DESCRIPTION"] = "Enables the customization of Kui nameplates.",
-	["KUI_NAMEPLATES_MODULE_NAME"] = "Kui Nameplates",
-	["KUI_NAMEPLATES_WARN_OUTDATED_MODULE"] = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
-	["LANG_CHANGE_CAUSED_REVERT_TO_DEFAULT"] = "Current spoken language reverted to default %s because you no longer know the previously selected language %s.",
-	["MACRO_RPSTATUS_INVALID"] = "Unknown roleplay status: %s",
-	["MAP_BUTTON_NO_SCAN"] = "No scan available",
-	["MAP_BUTTON_SCANNING"] = "Scanning",
-	["MAP_BUTTON_SUBTITLE"] = "Click to show available scans",
-	["MAP_BUTTON_SUBTITLE_80_DISABLED"] = "Scans temporarily unavailable due to 8.0 changes",
-	["MAP_BUTTON_SUBTITLE_CONNECTING"] = "Map scanning is setting up. Please wait.",
-	["MAP_BUTTON_SUBTITLE_OFFLINE"] = "Map scanning is unavailable right now: %s",
-	["MAP_BUTTON_TITLE"] = "Scan for roleplay",
-	["MAP_SCAN_CHAR"] = "Scan for characters",
-	["MAP_SCAN_CHAR_TITLE"] = "Characters",
-	["MATURE_FILTER_ADD_TO_SAFELIST"] = "Add this profile to the |cffffffffmature safelist|r",
-	["MATURE_FILTER_ADD_TO_SAFELIST_OPTION"] = "Add to the |cffffffffmature safelist|r",
-	["MATURE_FILTER_ADD_TO_SAFELIST_TEXT"] = [=[Confirm that you want to add %s to the |cffffffffmature safelist|r.
+Currently loaded: |cff00ff00%s
 
 |cffff9900Therefore the MSP support for Total RP3 will be disabled.|r
 
@@ -493,7 +383,7 @@ These tools also allow you to insert |cffffff00images, icons or links to externa
 
 	CO_CONFIGURATION = "Settings",
 	CO_GENERAL = "General settings",
-	CO_GENERAL_CHANGELOCALE_ALERT = "Reload the interface in order to change the language to %s now?\n\nIf not, the language will be changed on the next load.",
+	CO_GENERAL_CHANGELOCALE_ALERT = "Reload the interface in order to change the language to %s now?\n\nIf not, the language will be changed on the next connection.",
 	CO_GENERAL_LOCALE = "Addon locale",
 	CO_GENERAL_COM = "Communication",
 	CO_GENERAL_MISC = "Miscellaneous",
@@ -574,13 +464,13 @@ Class: 50 characters|r]],
 	CO_REGISTER = "Register settings",
 	CO_REGISTER_ABOUT_SETTINGS = "\"About\" settings",
 	CO_REGISTER_ABOUT_H1_SIZE = "Header 1 text size",
-	CO_REGISTER_ABOUT_H1_SIZE_TT = "Size of the text between {h1} tags. Default: %s",
+	CO_REGISTER_ABOUT_H1_SIZE_TT = "Size of the text between {h1} tags. Default: %d",
 	CO_REGISTER_ABOUT_H2_SIZE = "Header 2 text size",
-	CO_REGISTER_ABOUT_H2_SIZE_TT = "Size of the text between {h2} tags. Default: %s",
+	CO_REGISTER_ABOUT_H2_SIZE_TT = "Size of the text between {h2} tags. Default: %d",
 	CO_REGISTER_ABOUT_H3_SIZE = "Header 3 text size",
-	CO_REGISTER_ABOUT_H3_SIZE_TT = "Size of the text between {h3} tags. Default: %s",
+	CO_REGISTER_ABOUT_H3_SIZE_TT = "Size of the text between {h3} tags. Default: %d",
 	CO_REGISTER_ABOUT_P_SIZE = "Paragraph text size",
-	CO_REGISTER_ABOUT_P_SIZE_TT = "Size of the text outside of header tags. Default: %s",
+	CO_REGISTER_ABOUT_P_SIZE_TT = "Size of the text outside of header tags. Default: %d",
 	CO_REGISTER_AUTO_PURGE = "Auto purge directory",
 	CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reaches a certain threshold. We strongly recommend to avoid disabling the purge system.",
 	CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
@@ -589,75 +479,66 @@ Class: 50 characters|r]],
 	CO_CURSOR_RIGHT_CLICK = "Right-click to open profile",
 	CO_CURSOR_RIGHT_CLICK_TT = [[Right-click on a player in the 3D world to open their profile, if they have one.
 
-Are you sure you want to view this profile?]=],
-	["MATURE_FILTER_WARNING_TITLE"] = "Mature content",
-	["MM_SHOW_HIDE_MAIN"] = "Show/hide the main frame",
-	["MM_SHOW_HIDE_MOVE"] = "Move button",
-	["MM_SHOW_HIDE_SHORTCUT"] = "Show/hide the toolbar",
-	["MO_ADDON_NOT_INSTALLED"] = "The %s add-on is not installed, custom Total RP 3 integration disabled.",
-	["MO_CHAT_CUSTOMIZATIONS_DESCRIPTION"] = "Add custom compatibility for the %s add-on, so that chat messages and player names are modified by Total RP 3 in that add-on.",
-	["MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION"] = "Add custom compatibility for the %s add-on, so that your tooltip preferences are applied to Total RP 3's tooltips.",
-	["MORE_MODULES_2"] = [=[{h2:c}Optional modules{/h2}
-{h3}Total RP 3: Extended{/h3}
-|cff9999ffTotal RP 3: Extended|r add the possibility to create new content in WoW: campaigns with quests and dialogues, items, documents (books, signs, contracts, …) and many more!
-{link*http://extended.totalrp3.info*Download on Curse.com}
+|TInterface\Cursor\WorkOrders:25|t This icon will be attached to the cursor when a player has a profile and you can right-click them.
 
-{h3}Kui |cff9966ffNameplates|r module{/h3}
-The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to the KuiNameplates add-on:
-• See the full RP name of a character on their nameplate, instead of their default name, colored like in their tooltip.
-• See customized pets names.
-• Hide the names of players without an RP profile!
-{link*http://mods.curse.com/addons/wow/total-rp-3-kuinameplates-module*Download on Curse.com}.
+|cffccccccNote: This feature is disabled during combat.|r]],
+	CO_CURSOR_DISABLE_OOC = "Disabled while OOC",
+	CO_CURSOR_DISABLE_OOC_TT = "Disable the cursor modifications when your roleplay status is set to |cffccccccOut Of Character|f.",
+	CO_CURSOR_MODIFIER_KEY = "Modifier key",
+	CO_CURSOR_MODIFIER_KEY_TT = "Requires a modifier key to be held down while right-clicking a player, to prevent accidental clicks.",
+	CO_MODULES = "Modules status",
+	CO_MODULES_VERSION = "Version: %s",
+	CO_MODULES_ID = "Module ID: %s",
+	CO_MODULES_STATUS = "Status: %s",
+	CO_MODULES_STATUS_0 = "Missing dependencies",
+	CO_MODULES_STATUS_1 = "Loaded",
+	CO_MODULES_STATUS_2 = "Disabled",
+	CO_MODULES_STATUS_3 = "Total RP 3 update required",
+	CO_MODULES_STATUS_4 = "Error on initialization",
+	CO_MODULES_STATUS_5 = "Error on startup",
+	CO_MODULES_TT_NONE = "No dependencies";
+	CO_MODULES_TT_DEPS = "Dependencies";
+	CO_MODULES_TT_TRP = "%sFor Total RP 3 build %s minimum.|r",
+	CO_MODULES_TT_DEP = "\n%s- %s (version %s)|r",
+	CO_MODULES_TT_ERROR = "\n\n|cffff0000Error:|r\n%s";
+	CO_MODULES_TUTO = [[A module is a independent feature that can be enabled or disabled.
 
+Possible status:
+|cff00ff00Loaded:|r The module is enabled and loaded.
+|cff999999Disabled:|r The module is disabled.
+|cffff9900Missing dependencies:|r Some dependencies are not loaded.
+|cffff9900TRP update required:|r The module requires a more recent version of TRP3.
+|cffff0000Error on init or on startup:|r The module loading sequence failed. The module will likely create errors!
 
-]=],
-	["NAMEPLATES_CONFIG_ACTIVE_QUERY"] = "Automatically fetch profiles",
-	["NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP"] = "If checked, automatically fetches roleplay profiles for units with nameplates attached.",
-	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY"] = "Hide bars on |cff449fe0Blizzard|r nameplates",
-	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP"] = "If checked, this enables the use of name-only mode for |cff449fe0Blizzard|r nameplates.|n|nIn this mode, all nameplates will have their health bars hidden, including those of enemy units and other players with or without roleplay profiles.|n|nThis option requires a UI reload to take effect.",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES"] = "Show full length titles",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES_HELP"] = "If checked, shows the full title of a unit on nameplates.|n|nFor |cff449fe0Blizzard|r and |cff9966ffKui|r nameplates, full titles are only shown in name-only mode.",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS"] = "Show custom health colors",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP"] = "If checked, overrides the color of health bars with the class color of a units' profile.",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_ICONS"] = "Show icons",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_ICONS_HELP"] = "If checked, shows profile icons on nameplates.",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS"] = "Show custom name colors",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS_HELP"] = "If checked, overrides the color of name texts with the class color of a units' profile.",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_NAMES"] = "Show custom names",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_NAMES_HELP"] = "If checked, replaces the name shown on nameplates.",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS"] = "Show roleplay status indicator",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS_HELP"] = "If checked, shows an indicator of a units' roleplay status (IC or OOC) on nameplates.",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_TITLES"] = "Show prefix titles",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_TITLES_HELP"] = "If checked, shows the short title of a unit on nameplates before their name.",
-	["NAMEPLATES_CONFIG_DISABLE_IN_COMBAT"] = "Disable customizations when in combat",
-	["NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP"] = "If checked, disables nameplate customizations while you are in combat.",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER"] = "Disable customizations when OOC",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP"] = "If checked, disables all nameplate customizations while you are out of character.",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS"] = "Disable customizations on OOC units",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP"] = "If checked, disables nameplate customizations on units that are out of character.",
-	["NAMEPLATES_CONFIG_ELEMENT_HEADER"] = "Customization settings",
-	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK"] = "Use class color by default",
-	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP"] = "If checked, this enables the use of class colors for names and health bars as a fallback for units that do not have a custom class color in their profile.|n|nUnits that do not have roleplay profiles are unaffected by this setting and will not be class-colored.",
-	["NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS"] = "Hide non-roleplay units",
-	["NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP"] = "If checked, hides the nameplates of player and companion units that do not have roleplay profiles.",
-	["NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS"] = "Hide out of character units",
-	["NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP"] = "If checked, hides the nameplates of units that are currently out of character.",
-	["NAMEPLATES_CONFIG_ICON_SIZE"] = "Icon size",
-	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "Configures the size of icons displayed on nameplates if the |cffffff00Show icons|r option is enabled.",
-	["NAMEPLATES_CONFIG_MENU_TITLE"] = "Nameplates",
-	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
-	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "Nameplate settings",
-	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Visibility settings",
-	["NAMEPLATES_MODULE_ACTIVE_STATUS"] = "Module |cff00ff00active|r (%1$s|r)",
-	["NAMEPLATES_MODULE_DESCRIPTION"] = "Enables the customization of nameplates with information obtained from roleplay profiles.",
-	["NAMEPLATES_MODULE_DISABLE_WARNING"] = "Disabling the nameplates module will prevent any nameplate customizations from being made. A user interface reload is required for this to take effect.|n|n|cffff0000Warning: |rOnce disabled, this module can only be re-enabled from the |cffffcc00Modules status|r page.|n|nAre you sure you want to disable this module?",
-	["NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY"] = "This module was disabled automatically due to a missing dependency.",
-	["NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL"] = "This module was disabled automatically due to a conflict with another module or addon.",
-	["NAMEPLATES_MODULE_INACTIVE_STATUS"] = "Module |cffff9900inactive|r (no addon found)",
-	["NAMEPLATES_MODULE_NAME"] = "Nameplates",
-	["NEW_VERSION"] = [=[|cff00ff00A new version of Total RP 3 (v %s) is available.
+|cffff9900When disabling a module, a UI reload is necessary.]],
+	CO_MODULES_SHOWERROR = "Show error",
+	CO_MODULES_DISABLE = "Disable module",
+	CO_MODULES_ENABLE = "Enable module",
+	CO_TOOLBAR = "Frames settings",
+	CO_TOOLBAR_CONTENT = "Toolbar settings",
+	CO_TOOLBAR_ICON_SIZE = "Icons size",
+	CO_TOOLBAR_MAX = "Max icons per line",
+	CO_TOOLBAR_MAX_TT = "Set to 1 if you want to display the bar vertically!",
+	CO_TOOLBAR_CONTENT_CAPE = "Cape switch",
+	CO_TOOLBAR_CONTENT_HELMET = "Helmet switch",
+	CO_TOOLBAR_CONTENT_STATUS = "Player status (AFK/DND)",
+	CO_TOOLBAR_CONTENT_RPSTATUS = "Character status (IC/OOC)",
+	CO_TOOLBAR_SHOW_ON_LOGIN = "Show toolbar on login",
+	CO_TOOLBAR_SHOW_ON_LOGIN_HELP = "If you don't want the toolbar to be displayed on login, you can disable this option.",
+	CO_TOOLBAR_HIDE_TITLE = "Hide Toolbar Title",
+	CO_TOOLBAR_HIDE_TITLE_HELP = "Hides the title shown above the toolbar.",
+	CO_TARGETFRAME = "Target frame settings",
+	CO_TARGETFRAME_USE = "Display conditions",
+	CO_TARGETFRAME_USE_TT = "Determines in which conditions the target frame should be shown on target selection.",
+	CO_TARGETFRAME_USE_1 = "Always",
+	CO_TARGETFRAME_USE_2 = "Only when IC",
+	CO_TARGETFRAME_USE_3 = "Never (Disabled)",
+	CO_TARGETFRAME_ICON_SIZE = "Icons size",
+	CO_MINIMAP_BUTTON = "Minimap button",
+	CO_MINIMAP_BUTTON_SHOW_TITLE = "Show minimap button",
+	CO_MINIMAP_BUTTON_SHOW_HELP = [[If you are using another add-on to display Total RP 3's minimap button (FuBar, Titan, Bazooka) you can remove the button from the minimap.
 
-|cff00ff00Reminder: You can open Total RP 3 using /trp3 switch main|r]],
+|cff00ff00Reminder : You can open Total RP 3 using /trp3 switch main|r]],
 	CO_MINIMAP_BUTTON_FRAME = "Frame to anchor",
 	CO_MINIMAP_BUTTON_RESET = "Reset position",
 	CO_MINIMAP_BUTTON_RESET_BUTTON = "Reset",
@@ -733,6 +614,22 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	CO_LOCATION_DISABLE_CLASSIC_PVP_TT = "You will not respond to location requests from other players when you are flagged for PvP.\n\nThis option is particularly useful to avoid abuses of the location system to track you.",
 	CO_SANITIZER = "Sanitize incoming profiles",
 	CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images, ...).",
+	CO_DATE_FORMAT = "Date format",
+	CO_DATE_FORMAT_HELP = "Format string used for date/time strings in the addon.|n|nIf left empty, this will display date/time strings in a format appropriate to the configured locale of the addon.|n|nThe following format specifiers are supported:|n|n%1$s|n|nAll other characters are treated literally.",
+	CO_DATE_FORMAT_SPEC_a = "%1$s: Abbreviated weekday name (%2$s)",
+	CO_DATE_FORMAT_SPEC_A = "%1$s: Full weekday name (%2$s)",
+	CO_DATE_FORMAT_SPEC_b = "%1$s: Abbreviated month name (%2$s)",
+	CO_DATE_FORMAT_SPEC_B = "%1$s: Full month name (%2$s)",
+	CO_DATE_FORMAT_SPEC_d = "%1$s: Day of the month (%2$s)",
+	CO_DATE_FORMAT_SPEC_H = "%1$s: Hour using a 24-hour clock (%2$s)",
+	CO_DATE_FORMAT_SPEC_I = "%1$s: Hour using a 12-hour clock (%2$s)",
+	CO_DATE_FORMAT_SPEC_m = "%1$s: Month (%2$s)",
+	CO_DATE_FORMAT_SPEC_M = "%1$s: Minute (%2$s)",
+	CO_DATE_FORMAT_SPEC_p = "%1$s: Either 'am' or 'pm' (%2$s)",
+	CO_DATE_FORMAT_SPEC_S = "%1$s: Second (%2$s)",
+	CO_DATE_FORMAT_SPEC_y = "%1$s: Two-digit year (%2$s)",
+	CO_DATE_FORMAT_SPEC_Y = "%1$s: Full year (%2$s)",
+	CO_DATE_FORMAT_SPEC_ESC = "%1$s: The literal character '%%'",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- TOOLBAR AND UI BUTTONS
@@ -1147,40 +1044,9 @@ The content of their profiles will be hidden again.]],
 	DICE_ROLL_T = "%s %s rolled |cffff9900%sx d%s|r|cffcc6600%s|r and got |cff00ff00%s|r.",
 	DICE_TOTAL_T = "%s %s got a total of |cff00ff00%s|r for the roll.",
 
-|rYou can optionally enter the reason below. This is a personal note that will serve as reminder.]=],
-	["REG_PLAYER_LASTNAME"] = "Last name",
-	["REG_PLAYER_LASTNAME_TT"] = "This is your character's family name.",
-	["REG_PLAYER_LEFTTRAIT"] = "Left attribute",
-	["REG_PLAYER_MISC_ADD"] = "Add an additional field",
-	["REG_PLAYER_MISC_PRESET_PRONOUNS"] = "Pronouns",
-	["REG_PLAYER_MORE_INFO"] = "Additional Information",
-	["REG_PLAYER_MSP_HOUSE"] = "House name",
-	["REG_PLAYER_MSP_MOTTO"] = "Motto",
-	["REG_PLAYER_MSP_NICK"] = "Nickname",
-	["REG_PLAYER_NAMESTITLES"] = "Names and titles",
-	["REG_PLAYER_NO_CHAR"] = "No characteristics",
-	["REG_PLAYER_NOTES"] = "Notes",
-	["REG_PLAYER_NOTES_ACCOUNT"] = "Common notes",
-	["REG_PLAYER_NOTES_ACCOUNT_HELP"] = "These private notes are tied to your account and will be shared with all of your profiles.",
-	["REG_PLAYER_NOTES_PROFILE"] = "Notes from %s",
-	["REG_PLAYER_NOTES_PROFILE_HELP"] = "These private notes are tied to your current profile and will change based on what profile you currently have active.",
-	["REG_PLAYER_NOTES_PROFILE_NONAME"] = "Profile notes",
-	["REG_PLAYER_PEEK"] = "Miscellaneous",
-	["REG_PLAYER_PHYSICAL"] = "Physical Description",
-	["REG_PLAYER_PSYCHO"] = "Personality Traits",
-	["REG_PLAYER_PSYCHO_Acete"] = "Ascetic",
-	["REG_PLAYER_PSYCHO_ADD"] = "Add a personality trait",
-	["REG_PLAYER_PSYCHO_ATTIBUTENAME_TT"] = "Attribute name",
-	["REG_PLAYER_PSYCHO_Bonvivant"] = "Bon vivant",
-	["REG_PLAYER_PSYCHO_CHAOTIC"] = "Chaotic",
-	["REG_PLAYER_PSYCHO_Chaste"] = "Chaste",
-	["REG_PLAYER_PSYCHO_Conciliant"] = "Paragon",
-	["REG_PLAYER_PSYCHO_Couard"] = "Spineless",
-	["REG_PLAYER_PSYCHO_CREATENEW"] = "Create a trait",
-	["REG_PLAYER_PSYCHO_Cruel"] = "Brutal",
-	["REG_PLAYER_PSYCHO_CUSTOM"] = "Custom trait",
-	["REG_PLAYER_PSYCHO_CUSTOMCOLOR"] = "Select attribute color",
-	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT"] = [=[Select a color used by the bar for the left attribute.
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- NPC Speeches
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	NPC_TALK_TITLE = "NPC speeches",
 	NPC_TALK_NAME = "NPC name",
@@ -1469,10 +1335,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY = "Hide bars on |cff449fe0Blizzard|r nameplates",
 	NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP = "If checked, this enables the use of name-only mode for |cff449fe0Blizzard|r nameplates.|n|nIn this mode, all nameplates will have their health bars hidden, including those of enemy units and other players with or without roleplay profiles.|n|nThis option requires a UI reload to take effect.",
 
-	NAMEPLATES_MODULE_DISABLE_WARNING = "Disabling the nameplates module will prevent any nameplate customizations from being made. A user interface reload is required for this to take effect.|n|n|cffff0000Warning: |rOnce disabled, this module can only be re-enabled from the |cffffcc00Modules status|r page.|n|nAre you sure you want to disable this module?",
-	NAMEPLATES_MODULE_ACTIVE_STATUS = "Module |cff00ff00active|r (%1$s|r)",
-	NAMEPLATES_MODULE_INACTIVE_STATUS = "Module |cffff9900inactive|r (no addon found)",
-
 	BLIZZARD_NAMEPLATES_MODULE_NAME = "Blizzard Nameplates",
 	BLIZZARD_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Blizzard's default nameplates.",
 
@@ -1534,24 +1396,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	SLASH_CMD_SET_FAILED_INVALID_ICON = "Failed to update %1$q field: %2$q is not a valid icon name.",
 	SLASH_CMD_SET_SUCCESS = "Successfully updated the %1$q field for your current profile.",
 	MACRO_RPSTATUS_INVALID = "Unknown roleplay status: %s",
-	UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE = "|cffffcc00Note: |r Due to issues with Edit Mode in patch 10.0.0 the unit popups module has been |cffff0000disabled|r. Sorry for any inconvenience!",
 
-	CO_DATE_FORMAT = "Date format",
-	CO_DATE_FORMAT_HELP = "Format string used for date/time strings in the addon.|n|nIf left empty, this will display date/time strings in a format appropriate to the configured locale of the addon.|n|nThe following format specifiers are supported:|n|n%1$s|n|nAll other characters are treated literally.",
-	CO_DATE_FORMAT_SPEC_a = "%1$s: Abbreviated weekday name (%2$s)",
-	CO_DATE_FORMAT_SPEC_A = "%1$s: Full weekday name (%2$s)",
-	CO_DATE_FORMAT_SPEC_b = "%1$s: Abbreviated month name (%2$s)",
-	CO_DATE_FORMAT_SPEC_B = "%1$s: Full month name (%2$s)",
-	CO_DATE_FORMAT_SPEC_d = "%1$s: Day of the month (%2$s)",
-	CO_DATE_FORMAT_SPEC_H = "%1$s: Hour using a 24-hour clock (%2$s)",
-	CO_DATE_FORMAT_SPEC_I = "%1$s: Hour using a 12-hour clock (%2$s)",
-	CO_DATE_FORMAT_SPEC_m = "%1$s: Month (%2$s)",
-	CO_DATE_FORMAT_SPEC_M = "%1$s: Minute (%2$s)",
-	CO_DATE_FORMAT_SPEC_p = "%1$s: Either 'am' or 'pm' (%2$s)",
-	CO_DATE_FORMAT_SPEC_S = "%1$s: Second (%2$s)",
-	CO_DATE_FORMAT_SPEC_y = "%1$s: Two-digit year (%2$s)",
-	CO_DATE_FORMAT_SPEC_Y = "%1$s: Full year (%2$s)",
-	CO_DATE_FORMAT_SPEC_ESC = "%1$s: The literal character '%%'",
 	WHATS_NEW_25_4 = [[# Changelog version 2.4.3
 
 ## Added
@@ -1567,11 +1412,13 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed potential taint issues leading to blocked actions.
 
 ]],
-
 	WHATS_NEW_25_5 = [[# Changelog version 2.4.4
+
 ## Fixed
+
 - Fixed "not currently playing" error messages sometimes showing up for players from specific realms.
 - Fixed "Import profile" popup not properly resetting after importing a profile.
+
 ]],
 
 	CO_MODULES_SUPPORTS_HOTRELOAD = "This module supports hot reload.",
@@ -1585,21 +1432,29 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	CO_LOCATION_SHOW_OUT_OF_CHARACTER_TT = "If checked, show map pins for all players that are marked as out of character.",
 
 	WHATS_NEW_25_6 = [[# Changelog version 2.4.5
+
 ## Added
+
 - Added Plater support for RP nameplates customization. Thanks to Ghost for this addition.
 - The TRP toolbar can now be set to only show while in character with the Toolbar display conditions setting (replacing Toolbar show on login).
 - OOC characters are now hidden from the map scan.
   - You can re-enable them by checking "Show out of character players" in Register settings > Location settings. Pins with only OOC characters will appear faded.
   - Only players from this version onwards are recognized as OOC, so this may take some time to be accurate.
+
 ## Fixed
+
 - Re-enabled right-click menu options (with the exception of the IC/OOC status toggle).
 - Fixed dashboard dropdowns not showing the correct selected values.
 - Fixed name-only nameplates setting not persisting upon logout.
 - Fixed an issue with profiles showing as Unknown in the directory quick entries if the profile was received for the first time.
+
 ]],
 
-]=]
-}
+	CO_TOOLBAR_VISIBILITY = "Display conditions",
+	CO_TOOLBAR_VISIBILITY_HELP = "Configures the conditions under which the toolbar should be shown.|n|nThe visibility of the toolbar can be forcefully toggled by running the |cff00ff00/trp3 switch toolbar|r slash command or by right-clicking the minimap button.",
+	CO_TOOLBAR_VISIBILITY_1 = "Always show",
+	CO_TOOLBAR_VISIBILITY_2 = "Only show in-character",
+	CO_TOOLBAR_VISIBILITY_3 = "Always hidden",
 
 	NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES = "Show first names only",
 	NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES_HELP = "If checked, only show the first names rather than full names.|n|nThis can only be applied to player units, and will not work with profiles received from other roleplay addons.",
@@ -1651,6 +1506,11 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue where the target frame would stay hidden after a UI reload with a target selected.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
 
 	CO_GENERAL_CONTRAST_LEVEL = "Color contrast level",
 	CO_GENERAL_CONTRAST_LEVEL_HELP = "Controls how aggressively custom colors will be adjusted for readability against dark backgrounds.|n|nThe 'Low' setting is the recommended default and will generally only affect very dark colors.",
