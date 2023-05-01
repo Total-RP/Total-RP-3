@@ -6,11 +6,14 @@ if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
 end
 
 local IMAGES = {
+	--region Achievement
 	{
 		url = "Interface\\ACHIEVEMENTFRAME\\UI-Achievement-Bling",
 		width = 128,
 		height = 128
 	},
+	--endregion
+	--region Archaeology
 	{
 		url = "Interface\\ARCHEOLOGY\\Arch-Race-ArakkoaBIG",
 		width = 256,
@@ -351,21 +354,29 @@ local IMAGES = {
 		width = 512,
 		height = 256
 	},
+	--endregion
+	--region BarberShop
 	{
 		url = "Interface\\BarberShop\\UI-Barbershop-Banner",
 		width = 512,
 		height = 256
 	},
+	--endregion
+	--region Battlefield
 	{
 		url = "Interface\\BattlefieldFrame\\UI-Battlefield-Icon",
 		width = 64,
 		height = 64
 	},
+	--endregion
+	--region BlackMarket
 	{
 		url = "Interface\\BlackMarket\\BlackMarketSign",
 		width = 256,
 		height = 128
 	},
+	--endregion
+	--region Calendar
 	{
 		url = "Interface\\Calendar\\MeetingIcon",
 		width = 128,
@@ -506,6 +517,8 @@ local IMAGES = {
 		width = 128,
 		height = 128
 	},
+	--endregion
+	--region Challenges
 	{
 		url = "Interface\\Challenges\\ChallengeMode_Medal_Bronze",
 		width = 128,
@@ -551,6 +564,8 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	},
+	--endregion
+	--region Credits
 	{
 		url = "Interface\\Credits\\CreditsScreenKeyArt0WoW",
 		width = 512,
@@ -601,6 +616,8 @@ local IMAGES = {
 		width = 512,
 		height = 256
 	},
+	--endregion
+	--region DressUpFrame
 	{
 		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Dracthyr1",
 		width = 256,
@@ -781,6 +798,8 @@ local IMAGES = {
 		width = 512,
 		height = 512
 	},
+	--endregion
+	--region FlavorImages
 	{
 		url = "Interface\\FlavorImages\\BloodElfLogo-small",
 		width = 256,
@@ -791,6 +810,8 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	},
+	--endregion
+	--region Garrison
 	{
 		url = "Interface\\Garrison\\_GarrMissionLocation-ArathiHighlands-Mid",
 		width = 512,
@@ -996,6 +1017,8 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	},
+	--endregion
+	--region LFG icons
 	{
 		url = "Interface\\LFGFRAME\\LFGICON-AQRUINS",
 		width = 256,
@@ -1949,7 +1972,10 @@ local IMAGES = {
 		url = "Interface\\LFGFRAME\\LFGIcon-Zandalar",
 		width = 256,
 		height = 256
-	}, {
+	},
+	--endregion
+	--region LFG backgrounds
+	{
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-ABrewingStorm",
 		width = 256,
 		height = 128
@@ -2817,7 +2843,10 @@ local IMAGES = {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-ZULGURUB",
 		width = 256,
 		height = 128
-	}, {
+	},
+	--endregion
+	--region Pet Battles
+	{
 		url = "Interface\\PETBATTLES\\Weather-ArcaneStorm",
 		width = 512,
 		height = 128
@@ -2877,6 +2906,8 @@ local IMAGES = {
 		width = 512,
 		height = 128
 	},
+	--endregion
+	--region Pictures
 	{
 		url = "Interface\\Pictures\\11482_crystals_east",
 		width = 256,
@@ -3367,6 +3398,8 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	},
+	--endregion
+	--region PVPFrame
 	{
 		url = "Interface\\PVPFrame\\Icons\\prestige-icon-1",
 		width = 128,
@@ -4102,11 +4135,15 @@ local IMAGES = {
 		width = 512,
 		height = 512
 	},
+	--endregion
+	--region QUESTFRAME
 	{
 		url = "Interface\\QUESTFRAME\\UI-HorizontalBreak",
 		width = 256,
 		height = 64
 	},
+	--endregion
+	--region QuestionFrame
 	{
 		url = "Interface\\QuestionFrame\\answer-ArmoryAlliance",
 		width = 512,
@@ -6002,6 +6039,8 @@ local IMAGES = {
 		width = 512,
 		height = 256
 	},
+	--endregion
+	--region Talent Frame
 	{
 		url = "Interface\\TALENTFRAME\\bg-deathknight-blood",
 		width = 512,
@@ -6172,6 +6211,8 @@ local IMAGES = {
 		width = 512,
 		height = 512
 	},
+	--endregion
+	--region Taxi Frame
 	{
 		url = "Interface\\TAXIFRAME\\TAXIMAP0",
 		width = 512,
@@ -6202,6 +6243,7 @@ local IMAGES = {
 		width = 512,
 		height = 512
 	},
+	--endregion
 };
 
 local pairs, tinsert = pairs, tinsert;
