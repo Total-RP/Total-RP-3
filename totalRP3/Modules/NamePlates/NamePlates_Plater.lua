@@ -86,11 +86,7 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 	end
 
 	-- Update nameplate visibility
-	if displayInfo.shouldHide then
-		unitFrame:Hide();
-	else
-		unitFrame:Show();
-	end
+	unitFrame:SetShown(not displayInfo.shouldHide);
 
 	-- Set the color of the name to the RP profile color
 	if displayInfo.shouldColorName then
