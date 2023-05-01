@@ -27,42 +27,38 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 	local plateFrame = unitFrame.PlateFrame;
 
 	-- Set the display name to the unit's RP name
-	local RPDisplayName;
-	if displayInfo.name then
-		RPDisplayName = displayInfo.name;
-	else
-		RPDisplayName = GetUnitName(unitToken, false);
-	end
+	local showServerName = false;
+	local displayName = displayInfo.name or GetUnitName(unitToken, showServerName);
 
 	-- Attach the RP status if necessary
 	if displayInfo.roleplayStatus then
-		RPDisplayName = TRP3_NamePlatesUtil.PrependRoleplayStatusToText(RPDisplayName, displayInfo.roleplayStatus);
+		displayName = TRP3_NamePlatesUtil.PrependRoleplayStatusToText(displayName, displayInfo.roleplayStatus);
 	end
 
 	-- Insert the full RP title
 	if displayInfo.fullTitle and not displayInfo.shouldHide then
 		local fullTitle = displayInfo.fullTitle;
 		if self.useFullTitleColor then
-			RPDisplayName = RPDisplayName .. "\n" .. self.fullTitleColor:WrapTextInColorCode(fullTitle);
+			displayName = displayName .. "\n" .. self.fullTitleColor:WrapTextInColorCode(fullTitle);
 		else
-			RPDisplayName = RPDisplayName .. "\n"  .. fullTitle;
+			displayName = displayName .. "\n"  .. fullTitle;
 		end
 	end
 
-	local currentPlayer = AddOn_TotalRP3.Player.GetCurrentUser();
 
 	-- Append guild name (visibility of this is controlled via Plater settings)
 	if not plateFrame.PlateConfig or plateFrame.PlateConfig.show_guild_name then
+		local currentPlayer = AddOn_TotalRP3.Player.GetCurrentUser();
 		local customGuildName = displayInfo.guildName or plateFrame.playerGuildName;
 		local playerCustomGuildTable = currentPlayer:GetMiscFieldByType(TRP3_API.MiscInfoType.GuildName);
 		local playerCustomGuild = playerCustomGuildTable and playerCustomGuildTable.value or Plater.PlayerGuildName;
 		local sameGuild = customGuildName == playerCustomGuild;
 
-		if customGuildName and not RPDisplayName:find("<" .. customGuildName .. ">") then
+		if customGuildName and not displayName:find("<" .. customGuildName .. ">") then
 			if sameGuild then
-				RPDisplayName = RPDisplayName .. "\n" .. self.guildMemberColor:WrapTextInColorCode("<" .. customGuildName .. ">");
+				displayName = displayName .. "\n" .. self.guildMemberColor:WrapTextInColorCode("<" .. customGuildName .. ">");
 			else
-				RPDisplayName = RPDisplayName .. "\n" .. self.guildNameColor:WrapTextInColorCode("<" .. customGuildName .. ">");
+				displayName = displayName .. "\n" .. self.guildNameColor:WrapTextInColorCode("<" .. customGuildName .. ">");
 			end
 		end
 	end
@@ -98,7 +94,7 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 
 	-- Set the color of the name to the RP profile color
 	if displayInfo.shouldColorName then
-		RPDisplayName = displayInfo.color:WrapTextInColorCode(RPDisplayName);
+		displayName = displayInfo.color:WrapTextInColorCode(displayName);
 	end
 
 	-- Set the nameplate color to color the health bar
@@ -121,9 +117,9 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 	end
 
 	-- Setting the new name string for all the Plater name elements
-	plateFrame.CurrentUnitNameString:SetText(RPDisplayName);
-	unitFrame.namePlateUnitName = RPDisplayName;
-	plateFrame.namePlateUnitName = RPDisplayName;
+	plateFrame.CurrentUnitNameString:SetText(displayName);
+	unitFrame.namePlateUnitName = displayName;
+	plateFrame.namePlateUnitName = displayName;
 	Plater.UpdateUnitName(plateFrame);
 
 	return true;
