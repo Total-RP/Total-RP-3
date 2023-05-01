@@ -103,7 +103,7 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 				Plater.RefreshNameplateColor(unitFrame);
 			end
 			self.firstRun = false;
-		end)
+		end);
 	else
 		if displayInfo.shouldColorHealth then
 			Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBTable());
