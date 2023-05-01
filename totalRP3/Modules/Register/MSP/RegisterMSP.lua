@@ -501,7 +501,7 @@ local function onStart()
 	updateCharacterData();
 	msp:Update();
 
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 		if unitID == Globals.player_id then
 			if not dataType or dataType == "about" or dataType == "characteristics" or dataType == "character" or dataType == "misc" then
 				onProfileChanged();
