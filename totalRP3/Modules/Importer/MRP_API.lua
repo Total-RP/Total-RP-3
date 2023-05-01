@@ -125,6 +125,14 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				IC = TRP3_InterfaceIcons.MiscInfoGuildRank;
 			});
 		end
+		if importedProfile.PV then
+			tinsert(profile.player.characteristics.MI, {
+				ID = TRP3_API.MiscInfoType.VoiceReference,
+				NA = loc.REG_PLAYER_MISC_PRESET_VOICE_REFERENCE;
+				VA = importedProfile.PV;
+				IC = TRP3_InterfaceIcons.MiscInfoVoiceReference;
+			});
+		end
 		profile.player.character.CU = importedProfile.CU;
 		profile.player.about.T3.PH.TX = importedProfile.DE;
 		profile.player.about.T3.HI.TX = importedProfile.HI;
