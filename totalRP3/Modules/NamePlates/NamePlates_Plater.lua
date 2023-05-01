@@ -172,6 +172,7 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 		for _, scriptObject in ipairs(scriptDB) do
 			if scriptObject.Name == newScript.Name then
 				scriptAdded = scriptObject;
+				break;
 			end
 		end
 	end
