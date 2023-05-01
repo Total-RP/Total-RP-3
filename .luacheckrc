@@ -400,6 +400,7 @@ stds.wow = {
 		"GameTooltip_AddNormalLine",
 		"GameTooltip_SetDefaultAnchor",
 		"GameTooltip_SetTitle",
+		"GameTooltip_ShowDisabledTooltip",
 		"GenerateClosure",
 		"GetAddOnEnableState",
 		"GetAddOnInfo",

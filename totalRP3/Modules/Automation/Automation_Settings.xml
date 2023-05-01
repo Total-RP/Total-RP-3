@@ -49,7 +49,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
 				</Anchors>
 			</EventButton>
-			<EventButton parentKey="TestButton" parentArray="editorFrames" inherits="UIPanelButtonNoTooltipTemplate" mixin="UIButtonMixin">
+			<EventButton parentKey="TestButton" parentArray="editorFrames" inherits="UIPanelButtonNoTooltipTemplate" mixin="TRP3_UIButtonMixin">
 				<KeyValues>
 					<KeyValue key="tooltipTextColor" value="NORMAL_FONT_COLOR" type="global"/>
 				</KeyValues>
