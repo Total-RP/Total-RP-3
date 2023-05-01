@@ -398,6 +398,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_AberrusStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_AllianceWarCampaign",
 		width = 128,
 		height = 128
@@ -1297,6 +1302,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Aberrus",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Ahnkalet",
 		width = 256,
 		height = 256
@@ -1976,6 +1985,26 @@ local IMAGES = {
 	--endregion
 	--region LFG backgrounds
 	{
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Aberrus",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-AberrusWing1Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-AberrusWing2Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-AberrusWing3Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-AberrusWing4Q",
+		width = 512,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-ABrewingStorm",
 		width = 256,
 		height = 128
@@ -4145,6 +4174,26 @@ local IMAGES = {
 	--endregion
 	--region QuestionFrame
 	{
+		url = "Interface\\QuestionFrame\\answer-AlchemyCauldron01-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-AlchemyCauldron02-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-AlchemyCauldron03-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-AlchemyCauldron04-large",
+		width = 512,
+		height = 256
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-ArmoryAlliance",
 		width = 512,
 		height = 256
@@ -4861,6 +4910,26 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-embercourt-security-venthyrvolunteers",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-FRR_EnvoyExpedition",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-FRR_EnvoyMaruuk",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-FRR_EnvoyTuskarr",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-FRR_EnvoyValdrakken",
 		width = 256,
 		height = 128
 	},
