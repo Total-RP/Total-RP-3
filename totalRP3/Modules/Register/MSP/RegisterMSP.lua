@@ -135,6 +135,8 @@ local function onStart()
 					msp.my['PG'] = miscData.VA;
 				elseif miscType == TRP3_API.MiscInfoType.GuildRank then
 					msp.my['PR'] = miscData.VA;
+				elseif miscType == TRP3_API.MiscInfoType.VoiceReference then
+					msp.my['PV'] = miscData.VA;
 				end
 			end
 		end
@@ -270,6 +272,7 @@ local function onStart()
 		PN = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Pronouns),
 		PG = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.GuildName),
 		PR = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.GuildRank),
+		PV = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.VoiceReference),
 	};
 
 	local function updateMiscInfoField(profile, field, value)
@@ -498,7 +501,7 @@ local function onStart()
 	updateCharacterData();
 	msp:Update();
 
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 		if unitID == Globals.player_id then
 			if not dataType or dataType == "about" or dataType == "characteristics" or dataType == "character" or dataType == "misc" then
 				onProfileChanged();
