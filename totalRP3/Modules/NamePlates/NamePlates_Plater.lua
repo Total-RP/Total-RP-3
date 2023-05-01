@@ -14,7 +14,7 @@ local importString = "Tw13VrQnq4)xUNYjLRIFymWj1hAV0902MqII30NICWlmKGQxmcBsV0h4V9
 TRP3_PlaterNamePlates = {}; -- magic public table
 
 function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayInfo)
-	if nameplate:IsForbidden() or not nameplate:IsShown() then
+	if nameplate:IsForbidden() or not nameplate:IsShown() or not displayInfo then
 		return;
 	end
 
@@ -25,8 +25,6 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 	end
 
 	local plateFrame = unitFrame.PlateFrame;
-
-	if not displayInfo then return false; end
 
 	-- Set the display name to the unit's RP name
 	local RPDisplayName;
