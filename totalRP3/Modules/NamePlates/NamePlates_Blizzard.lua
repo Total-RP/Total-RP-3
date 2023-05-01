@@ -148,7 +148,7 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 	end
 
 	local nameplate = unitframe:GetParent();
-	local frameName = nameplate:GetName();
+	local frameName = nameplate:GetName() or "";
 
 	if self.initializedNameplates[frameName] or not string.find(frameName, "^NamePlate%d+$") then
 		return;
