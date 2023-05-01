@@ -144,7 +144,7 @@ function TRP3_Analytics:OnEnable()
 			help = string.join("|n|n", string.format(L.ANALYTICS_CONFIG_ENABLE_HELP, SINK_NAME), L.ANALYTICS_CONFIG_ENABLE_HELP_WAGO),
 		});
 
-		TRP3_API.configuration.refreshPage("main_config_aaa_general");
+		TRP3_API.configuration.refreshPage("main_config_0_general");
 	end
 end
 
