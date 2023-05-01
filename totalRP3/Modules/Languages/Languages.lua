@@ -157,7 +157,10 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	-- Listen to events related to language changes and check that we are still able to speak the saved language
 	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "LANGUAGE_LIST_CHANGED", checkCurrentLanguageAndRestoreSavedState)
-	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "NEUTRAL_FACTION_SELECT_RESULT", checkCurrentLanguageAndRestoreSavedState)
+
+	if NeutralPlayerSelectFaction then
+		TRP3_API.RegisterCallback(TRP3_API.GameEvents, "NEUTRAL_FACTION_SELECT_RESULT", checkCurrentLanguageAndRestoreSavedState)
+	end
 
 	-- If workaround for language reset is enabled, try to restore saved language when loading screen ended
 	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "LOADING_SCREEN_DISABLED", function()

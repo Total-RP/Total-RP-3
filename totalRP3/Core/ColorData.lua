@@ -109,10 +109,10 @@ TRP3_API.MiscColors =
 	CraftingReagent = TRP3_API.CreateColorFromBytes(102, 187, 255),
 	Disabled = TRP3_API.CreateColorFromTable(DISABLED_FONT_COLOR),
 	Highlight = TRP3_API.CreateColorFromTable(HIGHLIGHT_FONT_COLOR),
-	Link = TRP3_API.CreateColorFromTable(LINK_FONT_COLOR),
+	Link = TRP3_API.CreateColorFromTable(LINK_FONT_COLOR or { r = 0.4, g = 0.73, b = 1 }),
 	Normal = TRP3_API.CreateColorFromTable(NORMAL_FONT_COLOR),
 	Transmogrify = TRP3_API.CreateColorFromTable(TRANSMOGRIFY_FONT_COLOR),
-	Warning = TRP3_API.CreateColorFromTable(WARNING_FONT_COLOR),
+	Warning = TRP3_API.CreateColorFromTable(WARNING_FONT_COLOR or { r = 1, g = 0.28, b = 0 }),
 
 	PersonalityTraitColorLeft = TRP3_API.CreateColorFromBytes(255, 140, 26),
 	PersonalityTraitColorRight = TRP3_API.CreateColorFromBytes(32, 208, 249),

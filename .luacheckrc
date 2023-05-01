@@ -449,6 +449,7 @@ stds.wow = {
 		"Lerp",
 		"Mixin",
 		"MouseIsOver",
+		"NeutralPlayerSelectFaction",
 		"nop",
 		"OpenWorldMap",
 		"PetCanBeRenamed",
