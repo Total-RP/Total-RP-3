@@ -1608,7 +1608,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Added Automation system, accessible in the settings
   - This allows you to automate actions based on macro conditionals.
   - Actions include changing your profile, your roleplay status, whether the map scan is enabled or not...
-  - For a list of macro conditionals, see [our wiki article](https://github.com/Total-RP/Total-RP-3/wiki/Analytics-in-Total-RP-3).
+  - For a list of macro conditionals, see [our wiki article](https://github.com/Total-RP/Total-RP-3/wiki/Macro-conditionals).
 - Added Analytics module
   - **This is strictly opt-in and only applies to users of the Wago Addons client who enabled "Help addon developers".**
   - For more details, see [our wiki article](https://github.com/Total-RP/Total-RP-3/wiki/Analytics-in-Total-RP-3).
