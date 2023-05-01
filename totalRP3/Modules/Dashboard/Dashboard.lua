@@ -149,7 +149,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			subcommand = string.trim(subcommand or "");
 
 			if string.find(subcommand, "^%[") then
-				subcommand = AddOn_TotalRP3.ParseMacroOption(subcommand);
+				subcommand = TRP3_AutomationUtil.ParseMacroOption(subcommand);
 			end
 
 			local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();

@@ -362,7 +362,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	registerMenu({
 		id = "main_90_config",
 		text = loc.CO_CONFIGURATION,
-		onSelected = function() selectMenu("main_91_config_main_config_aaa_general") end,
+		onSelected = function() selectMenu("main_91_config_main_config_0_general") end,
 	});
 
 	TRP3_API.configuration.CONFIG_FRAME_PAGE = {
@@ -390,7 +390,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 	-- Build widgets
 	TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL = {
-		id = "main_config_aaa_general",
+		id = "main_config_0_general",
 		menuText = loc.CO_GENERAL,
 		pageText = loc.CO_GENERAL,
 		elements = {

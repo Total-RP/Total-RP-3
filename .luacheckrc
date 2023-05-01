@@ -218,6 +218,14 @@ stds.wow = {
 			},
 		},
 
+		C_EquipmentSet = {
+			fields = {
+				"GetEquipmentSetID",
+				"GetEquipmentSetInfo",
+				"UseEquipmentSet",
+			},
+		},
+
 		C_EventUtils = {
 			fields = {
 				"IsEventValid",
@@ -293,6 +301,7 @@ stds.wow = {
 
 		C_PlayerInfo = {
 			fields = {
+				"GetAlternateFormInfo",
 				"GUIDIsPlayer",
 			},
 		},
@@ -357,6 +366,7 @@ stds.wow = {
 		"Ambiguate",
 		"BNGetGameAccountInfoByGUID",
 		"BNGetInfo",
+		"CalculateStringEditDistance",
 		"CallErrorHandler",
 		"Chat_GetChatFrame",
 		"ChatConfigChannelSettings_SwapChannelsByIndex",
@@ -367,6 +377,7 @@ stds.wow = {
 		"ChatFrame_RemoveMessageEventFilter",
 		"CheckInteractDistance",
 		"Clamp",
+		"ClampedPercentageBetween",
 		"CloseDropDownMenus",
 		"CompactUnitFrame_UpdateHealthColor",
 		"CompactUnitFrame_UpdateName",
@@ -389,6 +400,7 @@ stds.wow = {
 		"GameTooltip_AddNormalLine",
 		"GameTooltip_SetDefaultAnchor",
 		"GameTooltip_SetTitle",
+		"GameTooltip_ShowDisabledTooltip",
 		"GenerateClosure",
 		"GetAddOnEnableState",
 		"GetAddOnInfo",
@@ -433,6 +445,8 @@ stds.wow = {
 		"InCombatLockdown",
 		"IsAddOnLoaded",
 		"IsAltKeyDown",
+		"IsChatAFK",
+		"IsChatDND",
 		"IsControlKeyDown",
 		"IsGuildMember",
 		"IsInGroup",
@@ -487,6 +501,7 @@ stds.wow = {
 		"StopMusic",
 		"StopSound",
 		"strcmputf8i",
+		"StringToBoolean",
 		"SwapChatChannelByLocalID",
 		"tostringall",
 		"UIDropDownMenu_AddButton",
@@ -523,6 +538,7 @@ stds.wow = {
 		"UnitIsUnit",
 		"UnitLevel",
 		"UnitName",
+		"UnitNameUnmodified",
 		"UnitPlayerControlled",
 		"UnitPVPName",
 		"UnitRace",
