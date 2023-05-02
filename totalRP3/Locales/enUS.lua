@@ -1305,15 +1305,9 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP = "If checked, disables nameplate customizations while you are in combat.",
 	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER = "Disable customizations when OOC",
 	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP = "If checked, disables all nameplate customizations while you are out of character.",
-	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS = "Disable customizations on OOC units",
-	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP = "If checked, disables nameplate customizations on units that are out of character.",
-	NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS = "Hide non-roleplay units",
-	NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP = "If checked, hides the nameplates of player and companion units that do not have roleplay profiles.",
-	NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS = "Hide out of character units",
-	NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP = "If checked, hides the nameplates of units that are currently out of character.",
 	NAMEPLATES_CONFIG_ELEMENT_HEADER = "Customization settings",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAMES = "Show custom names",
-	NAMEPLATES_CONFIG_CUSTOMIZE_NAMES_HELP = "If checked, replaces the name shown on nameplates.",
+	NAMEPLATES_CONFIG_CUSTOMIZE_NAMES_HELP = "Controls how custom names for units will be displayed.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS = "Show custom name colors",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS_HELP = "If checked, overrides the color of name texts with the class color of a units' profile.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS = "Show custom health colors",
@@ -1456,14 +1450,10 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	CO_TOOLBAR_VISIBILITY_2 = "Only show in-character",
 	CO_TOOLBAR_VISIBILITY_3 = "Always hidden",
 
-	NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES = "Show first names only",
-	NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES_HELP = "If checked, only show the first names rather than full names.|n|nThis can only be applied to player units, and will not work with profiles received from other roleplay addons.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_GUILD = "Show custom guild names",
 	NAMEPLATES_CONFIG_CUSTOMIZE_GUILD_HELP = "If checked, show custom guild names on nameplates that support them.",
 	NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES = "Disable customizations in instances",
 	NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES_HELP = "If checked, disables nameplate customizations while in instances.|n|nIn instanced content friendly nameplates cannot be customized.",
-	NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS = "Disable customizations on NPC units",
-	NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS_HELP = "If checked, disables nameplate customizations on non-playable character units.",
 	NAMEPLATES_CONFIG_MAX_NAME_CHARS = "Maximum name length",
 	NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP = "The maximum number of characters to display for names and prefix titles. Names exceeding this length will be cropped.",
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS = "Maximum title length",
@@ -1506,11 +1496,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue where the target frame would stay hidden after a UI reload with a target selected.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
 
 	CO_GENERAL_CONTRAST_LEVEL = "Color contrast level",
 	CO_GENERAL_CONTRAST_LEVEL_HELP = "Controls how aggressively custom colors will be adjusted for readability against dark backgrounds.|n|nThe 'Low' setting is the recommended default and will generally only affect very dark colors.",
@@ -1621,6 +1606,25 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - "Always show target" nameplate option will now display the target nameplate even if it is OOC and "Hide out of character units" was enabled.
 
 ]],
+
+	NAMEPLATES_CONFIG_CUSTOMIZE_OOC_UNITS = "Customize OOC units",
+	NAMEPLATES_CONFIG_CUSTOMIZE_OOC_UNITS_HELP = "Controls the customization of out of character units.",
+	NAMEPLATES_CONFIG_CUSTOMIZE_NON_ROLEPLAY_UNITS = "Customize non-roleplay units",
+	NAMEPLATES_CONFIG_CUSTOMIZE_NON_ROLEPLAY_UNITS_HELP = "Controls the customization of units that do not have roleplay profiles.",
+	NAMEPLATES_CONFIG_CUSTOMIZE_NPC_UNITS = "Customize NPC units",
+	NAMEPLATES_CONFIG_CUSTOMIZE_NPC_UNITS_HELP = "Controls the customization of NPC units.",
+	NAMEPLATES_CONFIG_UNIT_STATE_SHOW = "Show",
+	NAMEPLATES_CONFIG_UNIT_STATE_SHOW_HELP = "Show nameplates for these units with full customizations applied.|n|nVisibility of these nameplates may be overridden by other settings.",
+	NAMEPLATES_CONFIG_UNIT_STATE_HIDE = "Always hide",
+	NAMEPLATES_CONFIG_UNIT_STATE_HIDE_HELP = "Always hide nameplates for these units.",
+	NAMEPLATES_CONFIG_UNIT_STATE_DISABLE = "Do not customize",
+	NAMEPLATES_CONFIG_UNIT_STATE_DISABLE_HELP = "Ignore nameplates for these units and do not customize them.",
+	NAMEPLATES_CONFIG_UNIT_NAME_FULL = "Show full name",
+	NAMEPLATES_CONFIG_UNIT_NAME_FULL_HELP = "Shows the full name of units.",
+	NAMEPLATES_CONFIG_UNIT_NAME_FIRST = "Show first name",
+	NAMEPLATES_CONFIG_UNIT_NAME_FIRST_HELP = "Only show first names of players rather than full names.|n|nThis will not work with companion units and profiles received from other roleplay addons.",
+	NAMEPLATES_CONFIG_UNIT_NAME_ORIGINAL = "Show original name",
+	NAMEPLATES_CONFIG_UNIT_NAME_ORIGINAL_HELP = "Shows the original unmodified player name of the unit.",
 };
 
 -- Bindings and FrameXML Global Strings
