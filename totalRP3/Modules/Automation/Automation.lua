@@ -84,7 +84,8 @@ function TRP3_Automation:OnEnable()
 	-- actions at the end of the current frame if any of these fire.
 
 	self.monitor:RegisterEvent("PLAYER_ENTERING_WORLD");
-	self.monitor:RegisterEvent("UPDATE_SHAPESHIFT_FORM");
+	-- Disabled due to a client performance issue in Classic Wrath.
+	-- self.monitor:RegisterEvent("UPDATE_SHAPESHIFT_FORM");
 	self.monitor:RegisterEvent("UPDATE_STEALTH");
 	self.monitor:RegisterEvent("PLAYER_TARGET_CHANGED");
 	self.monitor:RegisterEvent("PLAYER_FOCUS_CHANGED");
