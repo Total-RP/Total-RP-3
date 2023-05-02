@@ -1594,7 +1594,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	AUTOMATION_MODULE_SETTINGS_TITLE = "Automation settings",
 	AUTOMATION_STATE_IC = "ic",
 	AUTOMATION_STATE_OOC = "ooc",
-	AUTOMATION_STATE_UNSET = "unset",
+	AUTOMATION_STATE_UNSET = "nochange",
 	AUTOMATION_TEST_BUTTON = "Test condition",
 	AUTOMATION_TEST_HELP = "Executes the supplied macro condition, printing the option it would select to the chat frame.",
 	AUTOMATION_TEST_OUTPUT = "Test condition result: %s",
