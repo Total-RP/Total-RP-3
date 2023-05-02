@@ -111,7 +111,7 @@ end
 -- matched strings may vary a bit - for example booleans also accept any
 -- string beginning with "t" or "f" for true/false.
 
-TRP3_AutomationUtil.BOOLEAN_OPTIONS = GenerateOptionList("1", "0", "on", "off", "true", "false");
+TRP3_AutomationUtil.BOOLEAN_OPTIONS = GenerateOptionList("1", "0", "on", "off", "true", "false", "nochange");
 TRP3_AutomationUtil.ROLEPLAY_STATUS_OPTIONS = GenerateOptionList("ic", "ooc", "nochange");
 
 function TRP3_AutomationUtil.FormatOptionError(str, options)
@@ -127,8 +127,13 @@ end
 --
 
 function TRP3_AutomationUtil.ParseBooleanString(str)
-	-- Will return nil if the supplied string is ambiguous.
-	return StringToBoolean(str);
+	if str == "nochange" then
+		return true, nil;
+	else
+		-- Will return nil if the supplied string is ambiguous.
+		local state = StringToBoolean(str);
+		return (state ~= nil), state;
+	end
 end
 
 function TRP3_AutomationUtil.ParseRoleplayStatusString(str)

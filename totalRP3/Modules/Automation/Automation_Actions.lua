@@ -89,12 +89,12 @@ TRP3_AutomationUtil.RegisterAction({
 	example = "[ic] 1; 0",
 
 	ParseOption = function(context)
-		local enabled = TRP3_AutomationUtil.ParseBooleanString(context.option);
+		local ok, enabled = TRP3_AutomationUtil.ParseBooleanString(context.option);
 
-		if enabled == nil then
+		if not ok then
 			local reason = TRP3_AutomationUtil.FormatOptionError(context.option, TRP3_AutomationUtil.BOOLEAN_OPTIONS);
 			context:Errorf(L.AUTOMATION_ACTION_MAP_SCANS_BROADCAST_ERROR, reason);
-		else
+		elseif enabled ~= nil then
 			context:Apply(enabled);
 		end
 	end,
@@ -126,12 +126,12 @@ TRP3_AutomationUtil.RegisterAction({
 	example = "[instance][ooc] 0; 1",
 
 	ParseOption = function(context)
-		local enabled = TRP3_AutomationUtil.ParseBooleanString(context.option);
+		local ok, enabled = TRP3_AutomationUtil.ParseBooleanString(context.option);
 
-		if enabled == nil then
+		if not ok then
 			local reason = TRP3_AutomationUtil.FormatOptionError(context.option, TRP3_AutomationUtil.BOOLEAN_OPTIONS);
 			context:Errorf(L.AUTOMATION_ACTION_NAMEPLATES_ENABLE_ERROR, reason);
-		else
+		elseif enabled ~= nil then
 			context:Apply(enabled);
 		end
 	end,
@@ -160,12 +160,12 @@ TRP3_AutomationUtil.RegisterAction({
 	example = "[instance][ooc] 0; 1",
 
 	ParseOption = function(context)
-		local enabled = TRP3_AutomationUtil.ParseBooleanString(context.option);
+		local ok, enabled = TRP3_AutomationUtil.ParseBooleanString(context.option);
 
-		if enabled == nil then
+		if not ok then
 			local reason = TRP3_AutomationUtil.FormatOptionError(context.option, TRP3_AutomationUtil.BOOLEAN_OPTIONS);
 			context:Errorf(L.AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS_ERROR, reason);
-		else
+		elseif enabled ~= nil then
 			context:Apply(enabled);
 		end
 	end,
@@ -197,12 +197,12 @@ TRP3_AutomationUtil.RegisterAction({
 	example = "[instance][ooc] 0; 1",
 
 	ParseOption = function(context)
-		local enabled = TRP3_AutomationUtil.ParseBooleanString(context.option);
+		local ok, enabled = TRP3_AutomationUtil.ParseBooleanString(context.option);
 
-		if enabled == nil then
+		if not ok then
 			local reason = TRP3_AutomationUtil.FormatOptionError(context.option, TRP3_AutomationUtil.BOOLEAN_OPTIONS);
 			context:Errorf(L.AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS_ERROR, reason);
-		else
+		elseif enabled ~= nil then
 			context:Apply(enabled);
 		end
 	end,
