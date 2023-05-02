@@ -79,6 +79,7 @@ function TRP3_AutomationSettingsMixin:OnTestButtonClicked()
 	local expression = self:GetEditorInputText();
 	local result = TRP3_AutomationUtil.ParseMacroOption(expression);
 
+	TRP3_Automation:ResetMessageCooldowns();
 	TRP3_Addon:Printf(L.AUTOMATION_TEST_OUTPUT, string.format("|cff33ff99%s|r", result));
 end
 
