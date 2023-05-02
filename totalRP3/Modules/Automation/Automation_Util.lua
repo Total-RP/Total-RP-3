@@ -127,7 +127,7 @@ end
 --
 
 function TRP3_AutomationUtil.ParseBooleanString(str)
-	if str == "nochange" then
+	if str == "nochange" or str == L.AUTOMATION_STATE_UNSET then
 		return true, nil;
 	else
 		-- Will return nil if the supplied string is ambiguous.
