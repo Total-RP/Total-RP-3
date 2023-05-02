@@ -27,7 +27,7 @@ TRP3_AutomationUtil.RegisterAction({
 		local player = AddOn_TotalRP3.Player.GetCurrentUser();
 
 		if status == nil then
-			return;  -- User used the "unset" token which applies no change.
+			return;  -- User used the "nochange" token which does what it says on the tin.
 		elseif player:GetRoleplayStatus() == status then
 			return;  -- Already in the desired state.
 		end
