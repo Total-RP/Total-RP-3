@@ -1589,7 +1589,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	AUTOMATION_ERROR_INVALID_OPTION = "invalid option '%1$s' (expected any of the following: %s)",
 	AUTOMATION_ERROR_INVALID_PROFILE = "unable to find a profile named '%s'",
 	AUTOMATION_MODULE_DESCRIPTION = "Allows configuring actions such as profile swaps and roleplay status changes to occur automatically.",
-	AUTOMATION_MODULE_MESSAGE_PREFIX = "TRP3 Automation",
 	AUTOMATION_MODULE_NAME = "Automation",
 	AUTOMATION_MODULE_SETTINGS_HELP = "Select an action from the dropdown below and then enter a macro condition string into the displayed text field.",
 	AUTOMATION_MODULE_SETTINGS_TITLE = "Automation settings",
