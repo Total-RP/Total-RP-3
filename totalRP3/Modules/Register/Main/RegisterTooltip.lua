@@ -82,6 +82,7 @@ local CONFIG_CHARACT_CURRENT_LINES = "tooltip_char_current_lines";
 local CONFIG_TOOLTIP_TITLE_COLOR = "tooltip_title_color";
 local CONFIG_TOOLTIP_MAIN_COLOR = "tooltip_main_color";
 local CONFIG_TOOLTIP_SECONDARY_COLOR = "tooltip_secondary_color";
+local CONFIG_TOOLTIP_SHOW_CUSTOM_GUILD_INDICATOR = "tooltip_show_custom_guild_indicator";
 
 local ANCHOR_TAB;
 
@@ -242,6 +243,10 @@ local function ShouldDisplayCustomGuild(displayOption, customName)
 	else
 		return false;
 	end
+end
+
+local function ShouldDisplayCustomGuildIndicator()
+	return getConfigValue(CONFIG_TOOLTIP_SHOW_CUSTOM_GUILD_INDICATOR);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -646,7 +651,11 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 			local displayName = crop(customGuildName, FIELDS_TO_CROP.GUILD_NAME);
 			local displayRank = crop(customGuildRank or loc.DEFAULT_GUILD_RANK, FIELDS_TO_CROP.GUILD_RANK);
 			local displayText = string.format(loc.REG_TT_GUILD, displayRank, colors.SECONDARY:WrapTextInColorCode(displayName));
-			local displayMembership = " |cff82c5ff(" .. loc.REG_TT_GUILD_CUSTOM .. ")";
+			local displayMembership = "";
+
+			if ShouldDisplayCustomGuildIndicator() then
+				displayMembership = " |cff82c5ff(" .. loc.REG_TT_GUILD_CUSTOM .. ")";
+			end
 
 			tooltipBuilder:AddDoubleLine(displayText, displayMembership, colors.MAIN, colors.MAIN, getSubLineFontSize());
 		end
@@ -1394,6 +1403,7 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_TOOLTIP_TITLE_COLOR, "ff8000");
 	registerConfigKey(CONFIG_TOOLTIP_MAIN_COLOR, "ffffff");
 	registerConfigKey(CONFIG_TOOLTIP_SECONDARY_COLOR, "ffc000");
+	registerConfigKey(CONFIG_TOOLTIP_SHOW_CUSTOM_GUILD_INDICATOR, true);
 
 	ANCHOR_TAB = {
 		{loc.CO_ANCHOR_TOP_LEFT, "ANCHOR_TOPLEFT"},
@@ -1594,6 +1604,11 @@ local function onModuleInit()
 				end)(),
 				listWidth = nil,
 				listCancel = false,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_SHOW_CUSTOM_GUILD_INDICATOR,
+				configKey = CONFIG_TOOLTIP_SHOW_CUSTOM_GUILD_INDICATOR,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

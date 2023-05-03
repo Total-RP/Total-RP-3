@@ -1620,6 +1620,8 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - "Always show target" nameplate option will now display the target nameplate even if it is OOC and "Hide out of character units" was enabled.
 
 ]],
+
+	CO_TOOLTIP_SHOW_CUSTOM_GUILD_INDICATOR = "Show custom guild indicator",
 };
 
 -- Bindings and FrameXML Global Strings
