@@ -217,7 +217,7 @@ local TooltipGuildDisplayOption = {
 };
 
 local function ShouldDisplayOriginalGuild(displayOption, originalName, customName)
-	if displayOption == TooltipGuildDisplayOption.Hidden or not originalName then
+	if displayOption == TooltipGuildDisplayOption.Hidden or not originalName or originalName == "" then
 		return false;
 	elseif displayOption == TooltipGuildDisplayOption.ShowWithOriginalGuild then
 		return true;
@@ -231,7 +231,7 @@ local function ShouldDisplayOriginalGuild(displayOption, originalName, customNam
 end
 
 local function ShouldDisplayCustomGuild(displayOption, customName)
-	if displayOption == TooltipGuildDisplayOption.Hidden or not customName then
+	if displayOption == TooltipGuildDisplayOption.Hidden or not customName or customName == "" then
 		return false;
 	elseif displayOption == TooltipGuildDisplayOption.ShowWithOriginalGuild then
 		return false;
@@ -620,8 +620,8 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 
 	if guildDisplayOption ~= TooltipGuildDisplayOption.Hidden then
 		local customGuildInfo = player:GetCustomGuildMembership();
-		local customGuildName = customGuildInfo.name;
-		local customGuildRank = customGuildInfo.rank;
+		local customGuildName = string.trim(customGuildInfo.name);
+		local customGuildRank = string.trim(customGuildInfo.rank);
 
 		local originalGuildName, originalGuildRank = GetGuildInfo(targetType);
 
@@ -645,6 +645,11 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		if ShouldDisplayCustomGuild(guildDisplayOption, customGuildName) then
 			local displayName = crop(customGuildName, FIELDS_TO_CROP.GUILD_NAME);
 			local displayRank = crop(customGuildRank or loc.DEFAULT_GUILD_RANK, FIELDS_TO_CROP.GUILD_RANK);
+
+			if displayRank == "" then
+				displayRank = loc.DEFAULT_GUILD_RANK;
+			end
+
 			local displayText = string.format(loc.REG_TT_GUILD, displayRank, colors.SECONDARY:WrapTextInColorCode(displayName));
 			local displayMembership = " |cff82c5ff(" .. loc.REG_TT_GUILD_CUSTOM .. ")";
 
