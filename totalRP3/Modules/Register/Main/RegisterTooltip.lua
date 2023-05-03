@@ -82,7 +82,7 @@ local CONFIG_CHARACT_CURRENT_LINES = "tooltip_char_current_lines";
 local CONFIG_TOOLTIP_TITLE_COLOR = "tooltip_title_color";
 local CONFIG_TOOLTIP_MAIN_COLOR = "tooltip_main_color";
 local CONFIG_TOOLTIP_SECONDARY_COLOR = "tooltip_secondary_color";
-local CONFIG_TOOLTIP_SHOW_CUSTOM_GUILD_INDICATOR = "tooltip_show_custom_guild_indicator";
+local CONFIG_TOOLTIP_SHOW_GUILD_INDICATOR = "tooltip_show_guild_indicator";
 
 local ANCHOR_TAB;
 
@@ -245,8 +245,8 @@ local function ShouldDisplayCustomGuild(displayOption, customName)
 	end
 end
 
-local function ShouldDisplayCustomGuildIndicator()
-	return getConfigValue(CONFIG_TOOLTIP_SHOW_CUSTOM_GUILD_INDICATOR);
+local function ShouldDisplayGuildIndicator()
+	return getConfigValue(CONFIG_TOOLTIP_SHOW_GUILD_INDICATOR);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -636,7 +636,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 			local displayText = string.format(loc.REG_TT_GUILD, displayRank, colors.SECONDARY:WrapTextInColorCode(displayName));
 			local displayMembership = "";
 
-			if info.misc and info.misc.ST then
+			if ShouldDisplayGuildIndicator() and info.misc and info.misc.ST then
 				if info.misc.ST["6"] == 1 then -- IC guild membership
 					displayMembership = " |cff00ff00(" .. loc.REG_TT_GUILD_IC .. ")";
 				elseif info.misc.ST["6"] == 2 then -- OOC guild membership
@@ -653,7 +653,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 			local displayText = string.format(loc.REG_TT_GUILD, displayRank, colors.SECONDARY:WrapTextInColorCode(displayName));
 			local displayMembership = "";
 
-			if ShouldDisplayCustomGuildIndicator() then
+			if ShouldDisplayGuildIndicator() then
 				displayMembership = " |cff82c5ff(" .. loc.REG_TT_GUILD_CUSTOM .. ")";
 			end
 
@@ -1403,7 +1403,7 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_TOOLTIP_TITLE_COLOR, "ff8000");
 	registerConfigKey(CONFIG_TOOLTIP_MAIN_COLOR, "ffffff");
 	registerConfigKey(CONFIG_TOOLTIP_SECONDARY_COLOR, "ffc000");
-	registerConfigKey(CONFIG_TOOLTIP_SHOW_CUSTOM_GUILD_INDICATOR, true);
+	registerConfigKey(CONFIG_TOOLTIP_SHOW_GUILD_INDICATOR, true);
 
 	ANCHOR_TAB = {
 		{loc.CO_ANCHOR_TOP_LEFT, "ANCHOR_TOPLEFT"},
@@ -1607,8 +1607,9 @@ local function onModuleInit()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_TOOLTIP_SHOW_CUSTOM_GUILD_INDICATOR,
-				configKey = CONFIG_TOOLTIP_SHOW_CUSTOM_GUILD_INDICATOR,
+				title = loc.CO_TOOLTIP_SHOW_GUILD_INDICATOR,
+				configKey = CONFIG_TOOLTIP_SHOW_GUILD_INDICATOR,
+				help=loc.CO_TOOLTIP_GUILD_INDICATOR_HELP,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

@@ -1621,7 +1621,8 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 ]],
 
-	CO_TOOLTIP_SHOW_CUSTOM_GUILD_INDICATOR = "Show custom guild indicator",
+	CO_TOOLTIP_SHOW_GUILD_INDICATOR = "Show guild indicator",
+	CO_TOOLTIP_GUILD_INDICATOR_HELP = "Toggles the visibility of guild membership indicators displayed to the right of the guild name.",
 };
 
 -- Bindings and FrameXML Global Strings
