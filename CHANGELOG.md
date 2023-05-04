@@ -1,3 +1,12 @@
+# Changelog version 2.5.1
+
+## Fixed
+
+- Fixed an error with the Prat module out if a player had no custom color.
+- Fixed an error with chat links.
+- Empty guild rank/name fields will now display default values in the tooltip.
+- Fixed an issue with "No player named..." messages appearing when hovering players on realms with non-latin characters.
+
 # Changelog version 2.5.0
 
 ## Added
