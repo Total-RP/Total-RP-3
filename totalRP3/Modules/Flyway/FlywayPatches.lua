@@ -198,3 +198,17 @@ TRP3_API.flyway.patches["15"] = function()
 		TRP3_Configuration["increase_color_contrast"] = nil;
 	end
 end
+
+TRP3_API.flyway.patches["16"] = function()
+	-- Migrate minimap settings to launcher settings.
+
+	if TRP3_Configuration then
+		if TRP3_Configuration["minimap_show"] ~= nil then
+			TRP3_Configuration["Launcher_ShowMinimapButton"] = TRP3_Configuration["minimap_show"];
+		end
+
+		if TRP3_Configuration["minimap_icon_position"] and TRP3_Configuration["minimap_icon_position"]["minimapPos"] then
+			TRP3_Configuration["Launcher_MinimapButtonPosition"] = TRP3_Configuration["minimap_icon_position"]["minimapPos"];
+		end
+	end
+end

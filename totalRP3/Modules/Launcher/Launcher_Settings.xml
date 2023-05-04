@@ -1,0 +1,44 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="Launcher_Settings.lua"/>
+
+	<Button name="TRP3_LauncherClickBindingButtonTemplate" mixin="TRP3_LauncherClickBindingButtonMixin" inherits="UIMenuButtonStretchTemplate" virtual="true">
+		<KeyValues>
+			<KeyValue key="tooltipFrame" value="TRP3_MainTooltip" type="global"/>
+		</KeyValues>
+		<Size x="160" y="22"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture parentKey="SelectedHighlight" file="Interface\Buttons\UI-Silver-Button-Select" alphaMode="ADD" hidden="true">
+					<Size x="160" y="20"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="-3"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<NormalFont style="GameFontHighlightSmall"/>
+		<DisabledFont style="GameFontDisableSmall"/>
+		<HighlightFont style="GameFontHighlightSmall"/>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnClick method="OnClick"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_LauncherClickBindingElementTemplate" mixin="TRP3_LauncherClickBindingElementMixin" inherits="TRP3_ConfigNote" virtual="true">
+		<Frames>
+			<Button parentKey="Button" inherits="TRP3_LauncherClickBindingButtonTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+</Ui>

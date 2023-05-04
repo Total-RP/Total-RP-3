@@ -114,4 +114,5 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="NamePlates\NamePlates.xml"/>
 	<Include file="Analytics\Analytics.xml"/>
 	<Include file="Automation\Automation.xml"/>
+	<Include file="Launcher\Launcher.xml"/>
 </Ui>
