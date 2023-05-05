@@ -98,7 +98,7 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 	if displayInfo.shouldColorHealth then
 		if self.firstRun then
 			C_Timer.After(3, function()
-				if unitFrame.PlaterOnScreen then
+				if unitFrame.PlaterOnScreen and displayInfo.color then
 					Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBTable());
 				end
 				self.firstRun = false;
