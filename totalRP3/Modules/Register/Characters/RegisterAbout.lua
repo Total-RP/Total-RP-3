@@ -79,6 +79,17 @@ local function setToolbarTextFrameScript(toolbar, frame)
 	frame:SetScript("OnEditFocusGained", function() TRP3_API.ui.text.changeToolbarTextFrame(toolbar, frame) end);
 end
 
+local save;
+
+local function OnTextAreaSaveRequested()
+	save();
+	TRP3_API.register.ui.showAboutTab();
+end
+
+local function AddSaveBehaviorToTextArea(frame)
+	frame:RegisterCallback("OnSaveRequested", OnTextAreaSaveRequested, {});
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -298,6 +309,7 @@ local function createTemplate2Frame(frameIndex)
 	setTooltipAll(_G[frame:GetName().."Delete"], "TOP", 0, 5, loc.REG_PLAYER_ABOUT_REMOVE_FRAME);
 	setTooltipAll(_G[frame:GetName().."Icon"], "TOP", 0, 5, loc.UI_ICON_SELECT);
 	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, _G["TRP3_RegisterAbout_Template2_Edit"..frameIndex.."TextScrollText"]);
+	AddSaveBehaviorToTextArea(_G["TRP3_RegisterAbout_Template2_Edit"..frameIndex.."Text"]);
 	tinsert(template2EditFrames, frame);
 	return frame;
 end
@@ -588,7 +600,7 @@ local function setEditTemplate(value)
 	TRP3_API.navigation.delayedRefresh();
 end
 
-local function save()
+function save()
 	saveInDraft();
 
 	local dataTab = get("player/about");
@@ -928,6 +940,11 @@ function TRP3_API.register.inits.aboutInit()
 	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText);
 	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText);
 	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_HistTextScrollText);
+
+	AddSaveBehaviorToTextArea(TRP3_RegisterAbout_Edit_Template1ScrollText:GetParent():GetParent());
+	AddSaveBehaviorToTextArea(TRP3_RegisterAbout_Edit_Template3_PhysText);
+	AddSaveBehaviorToTextArea(TRP3_RegisterAbout_Edit_Template3_PsyText);
+	AddSaveBehaviorToTextArea(TRP3_RegisterAbout_Edit_Template3_HistText);
 
 	registerConfigKey(CONFIG_REGISTER_ABOUT_P_SIZE, defaultFontParameters.p.size);
 	registerConfigKey(CONFIG_REGISTER_ABOUT_H1_SIZE, defaultFontParameters.h1.size);
