@@ -95,10 +95,12 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 
 	-- Set the nameplate color to color the health bar
 	-- We have to wait on the first run to avoid Plater stomping our color back to the default
-	if displayInfo.color and displayInfo.shouldColorHealth then
+	if displayInfo.shouldColorHealth then
 		if self.firstRun then
 			C_Timer.After(3, function()
-				Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBTable());
+				if unitFrame.PlaterOnScreen then
+					Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBTable());
+				end
 				self.firstRun = false;
 			end);
 		else
