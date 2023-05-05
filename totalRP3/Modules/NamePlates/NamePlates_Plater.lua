@@ -20,7 +20,7 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 
 	local unitFrame = nameplate.unitFrame;
 
-	if not unitFrame then
+	if not unitFrame or not unitFrame.PlaterOnScreen then
 		return;
 	end
 
