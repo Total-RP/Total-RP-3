@@ -597,6 +597,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<OnEscapePressed method="OnEscapePressed"/>
 							<OnEditFocusGained method="OnEditFocusGained"/>
 							<OnEditFocusLost method="OnEditFocusLost"/>
+							<OnKeyDown method="OnKeyDown"/>
 						</Scripts>
 						<FontString inherits="ChatFontNormal"/>
 					</EditBox>

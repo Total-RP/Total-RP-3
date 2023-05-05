@@ -304,16 +304,28 @@ function TRP3_TooltipMixin:SetBorderColor(r, g, b, a)
 	end
 end
 
-TRP3_TextAreaBaseMixin = {};
+TRP3_TextAreaBaseMixin = CreateFromMixins(CallbackRegistryMixin);
+TRP3_TextAreaBaseMixin:GenerateCallbackEvents({
+	"OnSaveRequested",
+});
 
 function TRP3_TextAreaBaseMixin:OnLoad()
+	CallbackRegistryMixin.OnLoad(self);
+
 	local editbox = self:GetEditBox();
 	editbox:RegisterCallback("OnEditFocusGained", self.OnEditFocusGained, self);
 	editbox:RegisterCallback("OnEditFocusGained", self.OnEditFocusLost, self);
+	editbox:RegisterCallback("OnKeyDown", self.OnKeyDown, self);
 end
 
 function TRP3_TextAreaBaseMixin:OnShow()
 	self:UpdateLayout();
+end
+
+function TRP3_TextAreaBaseMixin:OnKeyDown(char)
+	if TRP3_BindingUtil.EvaluateBinding("CTRL-S", char) then
+		self:TriggerEvent("OnSaveRequested");
+	end
 end
 
 function TRP3_TextAreaBaseMixin:OnSizeChanged()
@@ -347,6 +359,7 @@ TRP3_TextAreaBaseEditBoxMixin = CreateFromMixins(CallbackRegistryMixin);
 TRP3_TextAreaBaseEditBoxMixin:GenerateCallbackEvents({
 	"OnEditFocusGained",
 	"OnEditFocusLost",
+	"OnKeyDown",
 });
 
 function TRP3_TextAreaBaseEditBoxMixin:OnLoad()
@@ -373,6 +386,10 @@ end
 function TRP3_TextAreaBaseEditBoxMixin:OnEditFocusLost()
 	self:HighlightText(0, 0);
 	self:TriggerEvent("OnEditFocusLost", self);
+end
+
+function TRP3_TextAreaBaseEditBoxMixin:OnKeyDown(char)
+	self:TriggerEvent("OnKeyDown", char);
 end
 
 function TRP3_TextAreaBaseEditBoxMixin:GetScrollFrame()
