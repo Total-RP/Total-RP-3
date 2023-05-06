@@ -242,25 +242,11 @@ function TRP3_LauncherClickBindingButtonMixin:OnClick(buttonName)
 end
 
 function TRP3_LauncherClickBindingButtonMixin:OnEnter()
-	local bindingText = self:GetBindingText();
-
-	if bindingText ~= "" then
-		local action = self:GetActionInfo();
-		local tooltip = self:GetTooltipFrame();
-
-		tooltip:SetOwner(self, "ANCHOR_RIGHT");
-		GameTooltip_AddHighlightLine(tooltip, string.format(KEY_BINDING_NAME_AND_KEY, action.name, bindingText));
-		GameTooltip_AddNormalLine(tooltip, KEY_BINDING_TOOLTIP);
-		tooltip:Show();
-	end
+	self:SetTooltipShown(true);
 end
 
 function TRP3_LauncherClickBindingButtonMixin:OnLeave()
-	local tooltip = self:GetTooltipFrame();
-
-	if tooltip:IsOwned(self) then
-		tooltip:Hide();
-	end
+	self:SetTooltipShown(false);
 end
 
 function TRP3_LauncherClickBindingButtonMixin:OnBindingsChanged()
@@ -300,6 +286,25 @@ function TRP3_LauncherClickBindingButtonMixin:GetTooltipFrame()
 	return self.tooltipFrame;
 end
 
+function TRP3_LauncherClickBindingButtonMixin:IsTooltipShown()
+	return self.tooltipFrame:IsOwned(self);
+end
+
+function TRP3_LauncherClickBindingButtonMixin:SetTooltipShown(shown)
+	local bindingText = self:GetBindingText();
+	local action = self:GetActionInfo();
+	local tooltip = self:GetTooltipFrame();
+
+	if shown and action and bindingText ~= "" then
+		tooltip:SetOwner(self, "ANCHOR_RIGHT");
+		GameTooltip_AddHighlightLine(tooltip, string.format(KEY_BINDING_NAME_AND_KEY, action.name, bindingText));
+		GameTooltip_AddNormalLine(tooltip, KEY_BINDING_TOOLTIP);
+		tooltip:Show();
+	elseif self:IsTooltipShown() then
+		tooltip:Hide();
+	end
+end
+
 function TRP3_LauncherClickBindingButtonMixin:SetAction(actionID)
 	if self.actionID ~= actionID then
 		self.actionID = actionID;
@@ -323,6 +328,8 @@ function TRP3_LauncherClickBindingButtonMixin:Refresh()
 		self:SetNormalFontObject(GameFontDisableSmall);
 		self:SetText(NOT_BOUND);
 	end
+
+	self:SetTooltipShown(self:IsMouseOver());
 end
 
 TRP3_LauncherClickBindingElementMixin = {};
