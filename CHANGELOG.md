@@ -1,3 +1,9 @@
+# Changelog version 2.5.2
+
+## Fixed
+
+- Fixed an issue with the Plater RP nameplates getting stuck on screen.
+
 # Changelog version 2.5.1
 
 ## Fixed

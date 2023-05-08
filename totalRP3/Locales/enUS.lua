@@ -1637,6 +1637,13 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue with "No player named..." messages appearing when hovering players on realms with non-latin characters.
 
 ]],
+	WHATS_NEW_26_2 = [[# Changelog version 2.5.2
+
+## Fixed
+
+- Fixed an issue with the Plater RP nameplates getting stuck on screen.
+
+]],
 };
 
 -- Bindings and FrameXML Global Strings
