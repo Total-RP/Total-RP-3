@@ -613,8 +613,6 @@ local function getCompanionOwner(unitType, targetType)
 		end
 
 		for _, line in ipairs(tooltipData.lines) do
-			TooltipUtil.SurfaceArgs(line);
-
 			if line.type == Enum.TooltipDataLineType.UnitOwner then
 				ownerGUID = line.guid;
 				break;
