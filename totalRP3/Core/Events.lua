@@ -61,27 +61,28 @@ end
 -- The game event source provides a callback registry-based mechanism for
 -- subscribing to and receiving game-triggered events like ADDON_LOADED.
 
-local GameEventRegistry = {};
+TRP3_API.GameEvents = {};
 
-function GameEventRegistry:__init()
-	self.registry = TRP3_API.InitCallbackRegistry(self);
-	self.frame = CreateFrame("Frame");
-	self.frame:SetScript("OnEvent", function(_, event, ...) return self.registry:Fire(event, ...); end);
+local GameEventFrame = CreateFrame("Frame", "TRP3_GameEventFrame");
+local GameEventRegistry = TRP3_API.InitCallbackRegistry(TRP3_API.GameEvents);
+
+function GameEventFrame:OnEvent(...)
+	GameEventRegistry:Fire(...);
 end
 
-function GameEventRegistry:OnEventUsed(event)
-	self.frame:RegisterEvent(event);
+GameEventFrame:SetScript("OnEvent", GameEventFrame.OnEvent);
+
+function TRP3_API.GameEvents:OnEventUsed(event)
+	GameEventFrame:RegisterEvent(event);
 end
 
-function GameEventRegistry:OnEventUnused(event)
-	self.frame:UnregisterEvent(event);
+function TRP3_API.GameEvents:OnEventUnused(event)
+	GameEventFrame:UnregisterEvent(event);
 end
 
-function GameEventRegistry:IsEventValid(event)
+function TRP3_API.GameEvents:IsEventValid(event)
 	return C_EventUtils == nil or C_EventUtils.IsEventValid(event);
 end
-
-TRP3_API.GameEvents = TRP3_API.CreateAndInitFromPrototype(GameEventRegistry);
 
 -- TODO: Can this move elsewhere?
 
