@@ -56,41 +56,22 @@ function TRP3_DashboardHTMLContentMixin:OnHyperlinkClick(url, text, button)
 	Popups:OpenURL(url, loc.UI_LINK_SAFE, nil, loc.COPY_SYSTEM_MESSAGE);
 end
 
-function TRP3_DashboardHTMLContentMixin:OnHyperlinkClickTwitter(url, _, button)
-	-- Left click opens the Social UI, right-click gives you a profile link.
-	if Social_ToggleShow and button == "LeftButton" then
-		Social_ToggleShow(url:gsub("twitter", "|cff61AAEE@") .. "|r ");
-	else
-		url = url:gsub("twitter", "http://twitter.com/");
-		Popups:OpenURL(url, "|cff55aceeTwitter profile|r\n", nil, loc.COPY_SYSTEM_MESSAGE);
-	end
+function TRP3_DashboardHTMLContentMixin:OnHyperlinkClickTwitter(url)
+	url = url:gsub("twitter", "http://twitter.com/");
+	Popups:OpenURL(url, "|cff55aceeTwitter profile|r\n", nil, loc.COPY_SYSTEM_MESSAGE);
 end
 
 --- Called when any hyperlinks in the content are moused-over.
-function TRP3_DashboardHTMLContentMixin:OnHyperlinkEnter(url, text)
+function TRP3_DashboardHTMLContentMixin:OnHyperlinkEnter(_, text)
 	local tooltip = self.tooltip;
 
 	tooltip:Hide();
 	tooltip:SetOwner(self, "ANCHOR_CURSOR");
-
-	if Social_ToggleShow and url:sub(1, 7) == "twitter" then
-		-- Display the Twitter handle of the user and a two-line instruction
-		-- with left and right click actions.
-		tooltip:AddLine(url:gsub("twitter", "|cff61AAEE@"), 1, 1, 1, true);
-		tooltip:AddLine(strformat(
-			"|cffffff00%s:|r %s|n|cffffff00%s:|r %s",
-			loc.CM_CLICK, loc.CM_TWEET,
-			loc.CM_R_CLICK, loc.CM_TWEET_PROFILE
-		), 1, 1, 1, true);
-	else
-		-- Display the text of the hyperlink and a single left-click
-		-- line that clicking this means opening a popup.
-		tooltip:AddLine(text, 1, 1, 1, true);
-		tooltip:AddLine(strformat(
-			"|cffffff00%s:|r %s",
-			loc.CM_CLICK, loc.CM_OPEN
-		), 1, 1, 1, true);
-	end
+	tooltip:AddLine(text, 1, 1, 1, true);
+	tooltip:AddLine(strformat(
+		"|cffffff00%s:|r %s",
+		loc.CM_CLICK, loc.CM_OPEN
+	), 1, 1, 1, true);
 	tooltip:Show();
 end
 

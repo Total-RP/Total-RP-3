@@ -497,7 +497,6 @@ stds.wow = {
 		"ShowingCloak",
 		"ShowingHelm",
 		"ShowUIPanel",
-		"Social_ToggleShow",
 		"StaticPopup_Show",
 		"StopMusic",
 		"StopSound",
