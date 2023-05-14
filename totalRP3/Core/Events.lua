@@ -106,3 +106,5 @@ do
 
 	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", OnRegisterDataUpdated);
 end
+
+TRP3_DebugUtil.RemoveFromEventTraceWindow(GameEventRegistry);
