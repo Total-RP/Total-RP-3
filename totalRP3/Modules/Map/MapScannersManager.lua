@@ -10,14 +10,6 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 local MapScannersManager = {}
 local registeredMapScans = {};
 
---region Total RP 3 imports
-local Events = TRP3_Addon.Events;
---endregion
-
-Events.MAP_SCAN_STARTED = "MAP_SCAN_STARTED"
-Events.MAP_SCAN_ENDED = "MAP_SCAN_ENDED"
-
-
 ---@param scan MapScanner
 function MapScannersManager.register(scan)
 	Ellyb.Assertions.isInstanceOf(scan, AddOn_TotalRP3.MapScanner, "scan");
@@ -49,7 +41,7 @@ function MapScannersManager.launch(scanID)
 	scan:ResetScanData();
 
 	local function OnScanTimerElapsed()
-		TRP3_Addon:TriggerEvent(Events.MAP_SCAN_ENDED);
+		TRP3_Addon:TriggerEvent("MAP_SCAN_ENDED");
 
 		-- If the displayed map changed
 		if displayedMapID ~= AddOn_TotalRP3.Map.getDisplayedMapID() then
@@ -61,7 +53,7 @@ function MapScannersManager.launch(scanID)
 	end
 
 
-	TRP3_Addon:TriggerEvent(Events.MAP_SCAN_STARTED, scan.duration);
+	TRP3_Addon:TriggerEvent("MAP_SCAN_STARTED", scan.duration);
 	scan:Scan();
 	C_Timer.After(scan.duration, OnScanTimerElapsed);
 	TRP3_API.WorldMapButton.startCooldown(scan.duration);
