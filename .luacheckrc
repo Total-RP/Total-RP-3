@@ -349,6 +349,14 @@ stds.wow = {
 			},
 		},
 
+		EventTrace = {
+			fields = {
+				"CanLogEvent",
+				"IsLoggingCREvents",
+				"LogLine",
+			},
+		},
+
 		ScrollUtil = {
 			fields = {
 				"AddManagedScrollBarVisibilityBehavior",
@@ -416,7 +424,6 @@ stds.wow = {
 		"GetNormalizedRealmName",
 		"GetNumLanguages",
 		"GetPlayerInfoByGUID",
-		"GetUnitName",
 		"GetRealmName",
 		"GetSpellDescription",
 		"GetSpellInfo",
@@ -425,6 +432,7 @@ stds.wow = {
 		"GetSubZoneText",
 		"GetTime",
 		"GetTimePreciseSec",
+		"GetUnitName",
 		"GetZonePVPInfo",
 		"GetZoneText",
 		"hooksecurefunc",
@@ -447,6 +455,7 @@ stds.wow = {
 		"IsVeteranTrialAccount",
 		"JoinChannelByName",
 		"Lerp",
+		"LIGHTBLUE_FONT_COLOR",
 		"Mixin",
 		"MouseIsOver",
 		"NeutralPlayerSelectFaction",
@@ -461,6 +470,7 @@ stds.wow = {
 		"ReloadUI",
 		"RemoveChatWindowChannel",
 		"ResetCursor",
+		"SafePack",
 		"Saturate",
 		"ScrollingEdit_OnCursorChanged",
 		"ScrollingEdit_OnLoad",
