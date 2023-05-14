@@ -80,6 +80,11 @@ function TRP3_API.AddCallbackEventValidator(registry, validator)
 end
 
 function TRP3_API.AddCallbackEventTableValidator(registry, events)
+	-- The 'events' table may either be an array of event names or a key/value
+	-- mapping where the value represents the event name.
+
+	events = tInvert(events);
+
 	local function IsEventValid(self, event)
 		return events[event] ~= nil;
 	end
