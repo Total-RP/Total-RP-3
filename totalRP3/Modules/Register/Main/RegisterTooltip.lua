@@ -221,7 +221,7 @@ local function ShouldDisplayOriginalGuild(displayOption, originalName, customNam
 		return false;
 	elseif displayOption == TooltipGuildDisplayOption.ShowWithOriginalGuild then
 		return true;
-	elseif displayOption == TooltipGuildDisplayOption.ShowWithCustomGuild and not customName then
+	elseif displayOption == TooltipGuildDisplayOption.ShowWithCustomGuild and (not customName or customName == "") then
 		return true;
 	elseif displayOption == TooltipGuildDisplayOption.ShowWithAllGuilds then
 		return true;
