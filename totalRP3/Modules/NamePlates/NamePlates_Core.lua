@@ -2,6 +2,7 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local TRP3_API = select(2, ...);
+local L = TRP3_API.loc;
 
 local displayInfoPool = {};
 local playerCharacterPool = setmetatable({}, { __mode = "kv" });
@@ -18,6 +19,7 @@ local function GetOrCreateDisplayInfo(unitToken)
 	displayInfo.fullTitle = nil;
 	displayInfo.guildName = nil;
 	displayInfo.guildRank = nil;
+	displayInfo.guildIsCustom = nil;
 	displayInfo.icon = nil;
 	displayInfo.name = nil;
 	displayInfo.roleplayStatus = nil;
@@ -212,11 +214,21 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 
 		do  -- Guild Membership
 			if TRP3_NamePlatesSettings.CustomizeGuild then
-				local guildName, guildRank = GetGuildInfo(unitToken);
 				local customGuildInfo = player:GetCustomGuildMembership();
+				local customGuildName = customGuildInfo.name and string.trim(customGuildInfo.name) or nil;
+				local customGuildRank = customGuildInfo.rank and string.trim(customGuildInfo.rank) or nil;
 
-				displayInfo.guildName = customGuildInfo.name or guildName;
-				displayInfo.guildRank = customGuildInfo.rank or guildRank;
+				local originalGuildName, originalGuildRank = GetGuildInfo(unitToken);
+
+				if customGuildName and customGuildName ~= "" then
+					displayInfo.guildName = customGuildName;
+					displayInfo.guildRank = customGuildRank or L.DEFAULT_GUILD_RANK;
+					displayInfo.guildIsCustom = true;
+				elseif originalGuildName and originalGuildName ~= "" then
+					displayInfo.guildName = originalGuildName;
+					displayInfo.guildRank = originalGuildRank;
+					displayInfo.guildIsCustom = false;
+				end
 			end
 		end
 	end
