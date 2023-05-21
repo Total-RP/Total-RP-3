@@ -220,15 +220,11 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 
 				local originalGuildName, originalGuildRank = GetGuildInfo(unitToken);
 
-				-- Conditions below approximately match tooltip behavior; if
-				-- the custom guild name is an empty string it will hide the
-				-- display of both custom -and- original guild information.
-
 				if customGuildName and customGuildName ~= "" then
 					displayInfo.guildName = customGuildName;
 					displayInfo.guildRank = customGuildRank or L.DEFAULT_GUILD_RANK;
 					displayInfo.guildIsCustom = true;
-				elseif originalGuildName and originalGuildName ~= "" and not customGuildName then
+				elseif originalGuildName and originalGuildName ~= "" then
 					displayInfo.guildName = originalGuildName;
 					displayInfo.guildRank = originalGuildRank;
 					displayInfo.guildIsCustom = false;
