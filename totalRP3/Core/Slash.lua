@@ -147,6 +147,22 @@ function TRP3_API.slash.rollDices(...)
 	return total, i;
 end
 
+local function isValidDiceObject(diceObject)
+	if type(diceObject) ~= "table" or not diceObject.t or #diceObject > 4 then
+		return false;
+	end
+
+	for _, v in pairs(diceObject) do
+		local valueType = type(v);
+
+		if valueType ~= "number" and valueType ~= "nil" then
+			return false;
+		end
+	end
+
+	return true;
+end
+
 TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	TRP3_API.slash.registerCommand({
 		id = "roll",
@@ -158,7 +174,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(DICE_SIGNAL, function(arg, sender)
 		if sender ~= Globals.player_id then
-			if type(arg) == "table" then
+			if isValidDiceObject(arg) then
 				if arg.c and arg.d and arg.t then
 					local modifierString = (arg.m == 0) and "" or format("%+d", arg.m); -- we add a + to positive modifiers and don't render a 0 value
 					Utils.message.displayMessage(loc.DICE_ROLL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), sender, arg.c, arg.d, modifierString, arg.t));
