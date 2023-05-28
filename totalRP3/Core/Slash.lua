@@ -150,13 +150,13 @@ end
 local function isValidDiceObject(diceObject)
 	if type(diceObject) ~= "table" then
 		return false;
-	elseif type(diceObject.c) ~= "number" then  -- Sides
-		return false;
-	elseif type(diceObject.d) ~= "number" then  -- Count
-		return false;
 	elseif type(diceObject.t) ~= "number" then  -- Roll total
 		return false;
-	elseif type(diceObject.m) ~= "number" then  -- Modifier (+/-)
+	elseif diceObject.c ~= nil and type(diceObject.c) ~= "number" then  -- Sides
+		return false;
+	elseif diceObject.d ~= nil and type(diceObject.d) ~= "number" then  -- Count
+		return false;
+	elseif diceObject.m ~= nil and type(diceObject.m) ~= "number" then  -- Modifier (+/-)
 		return false;
 	else
 		return true;
