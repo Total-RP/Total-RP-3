@@ -4,6 +4,7 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="Main.lua"/>
 
 	<Button name="TRP3_TutorialButton" virtual="true" frameStrata="DIALOG" hidden="true">
 		<Size x="46" y="46"/>
@@ -242,7 +243,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameTemplate" hidden="true" movable="true">
+	<Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameTemplate" mixin="TRP3_MainFrameMixin" hidden="true" movable="true">
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -404,6 +405,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Frame>
 
 		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad" inherit="prepend"/>
+			<OnShow method="OnShow"/>
+			<OnSizeChanged method="OnSizeChanged"/>
+		</Scripts>
 	</Frame>
 
 	<Frame name="TRP3_DEBUG_CODE_FRAME" inherits="TRP3_TextArea" parent="UIParent" hidden="true">
