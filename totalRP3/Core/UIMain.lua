@@ -165,26 +165,18 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	});
 
 	-- Resizing
-	TRP3_MainFrame.Resize.onResizeStop = function()
-		TRP3_MainFrame.Minimize:Hide();
-		TRP3_MainFrame.Maximize:Show();
-		TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
+	TRP3_MainFrame.Resize.onResizeStop = function(width, height)
+		TRP3_MainFrame:ResizeWindow(width, height);
 	end;
 
 	TRP3_MainFrame.Maximize:SetScript("OnClick", function()
-		TRP3_MainFrame.Maximize:Hide();
-		TRP3_MainFrame.Minimize:Show();
-		TRP3_MainFrame:SetSize(UIParent:GetWidth(), UIParent:GetHeight());
-		C_Timer.After(0.25, function()
-			TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
-		end);
+		TRP3_MainFrame:MaximizeWindow();
+		TRP3_API.navigation.delayedRefresh();
 	end);
 
 	TRP3_MainFrame.Minimize:SetScript("OnClick", function()
-		TRP3_MainFrame:SetSize(768, 500);
-		C_Timer.After(0.25, function()
-			TRP3_MainFrame.Resize.onResizeStop();
-		end);
+		TRP3_MainFrame:RestoreWindow();
+		TRP3_API.navigation.delayedRefresh();
 	end);
 
 	TRP3_API.ui.frame.setupMove(TRP3_MainFrame);

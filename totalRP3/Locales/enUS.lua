@@ -1644,6 +1644,9 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue with the Plater RP nameplates getting stuck on screen.
 
 ]],
+
+	CO_GENERAL_HIDE_MAXIMIZE_BUTTON = "Hide maximize button",
+	CO_GENERAL_HIDE_MAXIMIZE_BUTTON_HELP = "Hides the minimize and maximize buttons on the Total RP 3 window.",
 };
 
 -- Bindings and FrameXML Global Strings
