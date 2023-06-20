@@ -1,3 +1,10 @@
+# Changelog version 2.5.3
+
+## Fixed
+
+- Prevented invalid dice roll messages from showing.
+- Updated TaintLess library for patch 3.4.2.
+
 # Changelog version 2.5.2
 
 ## Fixed

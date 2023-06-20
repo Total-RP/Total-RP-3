@@ -1621,12 +1621,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - "Always show target" nameplate option will now display the target nameplate even if it is OOC and "Hide out of character units" was enabled.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	WHATS_NEW_26_1 = [[# Changelog version 2.5.1
 
 ## Fixed
@@ -1645,8 +1639,22 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 ]],
 
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
 	CO_GENERAL_HIDE_MAXIMIZE_BUTTON = "Hide maximize button",
 	CO_GENERAL_HIDE_MAXIMIZE_BUTTON_HELP = "Hides the minimize and maximize buttons on the Total RP 3 window.",
+	WHATS_NEW_26_3 = [[# Changelog version 2.5.3
+
+## Fixed
+
+- Prevented invalid dice roll messages from showing.
+- Updated TaintLess library for patch 3.4.2.
+
+]],
+
 };
 
 -- Bindings and FrameXML Global Strings
