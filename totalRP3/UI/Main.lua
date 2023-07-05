@@ -11,6 +11,7 @@ TRP3_MainFrameMixin = {};
 function TRP3_MainFrameMixin:OnLoad()
 	self.windowState = WindowState.Normal;
 	TRP3_Addon.RegisterCallback(self, "CONFIGURATION_CHANGED", "OnConfigurationChanged");
+	TRP3_API.ui.frame.initResize(self.Resize);
 end
 
 function TRP3_MainFrameMixin:OnConfigurationChanged(_, key)
@@ -133,7 +134,6 @@ TRP3_WindowResizeButtonArtMixin = {};
 
 function TRP3_WindowResizeButtonArtMixin:OnLoad()
 	TRP3_WindowMinimizeButtonArtMixin.OnLoad(self);
-	TRP3_API.ui.frame.initResize(self);
 
 	if C_Texture.GetAtlasInfo("RedButton-Condense") then
 		MirrorTexCoordsAlongHorizontalAxis(self:GetNormalTexture());
