@@ -239,11 +239,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Button>
 
-	<Button name="TRP3_ActionButton" virtual="true">
-		<Size x="32" y="32"/>
-		<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
-		<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
-		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+	<Button name="TRP3_ActionButton" inherits="TRP3_StyledButtonTemplate" virtual="true">
+		<Size x="24" y="24"/>
+		<KeyValues>
+			<KeyValue key="styleName" value="MinimizeButton" type="string"/>
+		</KeyValues>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
