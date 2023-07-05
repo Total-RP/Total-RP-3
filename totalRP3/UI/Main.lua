@@ -138,5 +138,6 @@ function TRP3_WindowResizeButtonArtMixin:OnLoad()
 	if C_Texture.GetAtlasInfo("RedButton-Condense") then
 		MirrorTexCoordsAlongHorizontalAxis(self:GetNormalTexture());
 		MirrorTexCoordsAlongHorizontalAxis(self:GetPushedTexture());
+		MirrorTexCoordsAlongHorizontalAxis(self:GetDisabledTexture());
 	end
 end
