@@ -325,6 +325,12 @@ stds.wow = {
 			},
 		},
 
+		C_Texture = {
+			fields = {
+				"GetAtlasInfo",
+			},
+		},
+
 		C_Timer = {
 			fields = {
 				"After",

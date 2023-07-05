@@ -74,3 +74,69 @@ function TRP3_MainFrameMixin:UpdateWindowStateButtons()
 	self.Minimize:SetShown(state == WindowState.Maximized and ShouldShowWindowStateButtons());
 	self.Maximize:SetShown(state == WindowState.Normal and ShouldShowWindowStateButtons());
 end
+
+local function ResetTexCoords(texture)
+	texture:SetTexCoord(0, 1, 0, 1);
+end
+
+local function MirrorTexCoordsAlongHorizontalAxis(region)
+	local x1, y1, x2, y2, x3, y3, x4, y4 = region:GetTexCoord();
+	region:SetTexCoord(x3, y3, x4, y4, x1, y1, x2, y2);
+end
+
+TRP3_WindowCloseButtonArtMixin = {};
+
+function TRP3_WindowCloseButtonArtMixin:OnLoad()
+	if C_Texture.GetAtlasInfo("RedButton-Exit") then
+		ResetTexCoords(self:GetNormalTexture());
+		ResetTexCoords(self:GetPushedTexture());
+		ResetTexCoords(self:GetDisabledTexture());
+		ResetTexCoords(self:GetHighlightTexture());
+		self:SetNormalAtlas("RedButton-Exit");
+		self:SetPushedAtlas("RedButton-Exit-Pressed");
+		self:SetDisabledAtlas("RedButton-Exit-Disabled");
+		self:SetHighlightAtlas("RedButton-Highlight", "ADD");
+	end
+end
+
+TRP3_WindowMaximizeButtonArtMixin = {};
+
+function TRP3_WindowMaximizeButtonArtMixin:OnLoad()
+	if C_Texture.GetAtlasInfo("RedButton-Expand") then
+		ResetTexCoords(self:GetNormalTexture());
+		ResetTexCoords(self:GetPushedTexture());
+		ResetTexCoords(self:GetDisabledTexture());
+		ResetTexCoords(self:GetHighlightTexture());
+		self:SetNormalAtlas("RedButton-Expand");
+		self:SetPushedAtlas("RedButton-Expand-Pressed");
+		self:SetDisabledAtlas("RedButton-Expand-Disabled");
+		self:SetHighlightAtlas("RedButton-Highlight", "ADD");
+	end
+end
+
+TRP3_WindowMinimizeButtonArtMixin = {};
+
+function TRP3_WindowMinimizeButtonArtMixin:OnLoad()
+	if C_Texture.GetAtlasInfo("RedButton-Condense") then
+		ResetTexCoords(self:GetNormalTexture());
+		ResetTexCoords(self:GetPushedTexture());
+		ResetTexCoords(self:GetDisabledTexture());
+		ResetTexCoords(self:GetHighlightTexture());
+		self:SetNormalAtlas("RedButton-Condense");
+		self:SetPushedAtlas("RedButton-Condense-Pressed");
+		self:SetDisabledAtlas("RedButton-Condense-Disabled");
+		self:SetHighlightAtlas("RedButton-Highlight", "ADD");
+	end
+end
+
+TRP3_WindowResizeButtonArtMixin = {};
+
+function TRP3_WindowResizeButtonArtMixin:OnLoad()
+	TRP3_WindowMinimizeButtonArtMixin.OnLoad(self);
+	TRP3_API.ui.frame.initResize(self);
+
+	if C_Texture.GetAtlasInfo("RedButton-Condense") then
+		MirrorTexCoordsAlongHorizontalAxis(self:GetNormalTexture());
+		MirrorTexCoordsAlongHorizontalAxis(self:GetPushedTexture());
+	end
+end

@@ -6,6 +6,82 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Main.lua"/>
 
+	<Button name="TRP3_WindowCloseButtonArtTemplate" mixin="TRP3_WindowCloseButtonArtMixin" virtual="true">
+		<Size x="24" y="24"/>
+		<NormalTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Up">
+			<TexCoords left="0.125" right="0.875" top="0.125" bottom="0.875"/>
+		</NormalTexture>
+		<PushedTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Down">
+			<TexCoords left="0.125" right="0.875" top="0.125" bottom="0.875"/>
+		</PushedTexture>
+		<DisabledTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Disabled">
+			<TexCoords left="0.125" right="0.875" top="0.125" bottom="0.875"/>
+		</DisabledTexture>
+		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD">
+			<TexCoords left="0.125" right="0.875" top="0.125" bottom="0.875"/>
+		</HighlightTexture>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
+	</Button>
+
+	<Button name="TRP3_WindowMaximizeButtonArtTemplate" mixin="TRP3_WindowMaximizeButtonArtMixin" virtual="true">
+		<Size x="24" y="24"/>
+		<NormalTexture file="Interface\Buttons\UI-Panel-BiggerButton-Up">
+			<TexCoords left="0.125" right="0.875" top="0.125" bottom="0.875"/>
+		</NormalTexture>
+		<PushedTexture file="Interface\Buttons\UI-Panel-BiggerButton-Down">
+			<TexCoords left="0.125" right="0.875" top="0.125" bottom="0.875"/>
+		</PushedTexture>
+		<DisabledTexture file="Interface\Buttons\UI-Panel-BiggerButton-Disabled">
+			<TexCoords left="0.125" right="0.875" top="0.125" bottom="0.875"/>
+		</DisabledTexture>
+		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD">
+			<TexCoords left="0.125" right="0.875" top="0.125" bottom="0.875"/>
+		</HighlightTexture>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
+	</Button>
+
+	<Button name="TRP3_WindowMinimizeButtonArtTemplate" mixin="TRP3_WindowMinimizeButtonArtMixin" virtual="true">
+		<Size x="24" y="24"/>
+		<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up">
+			<TexCoords left="0.125" right="0.875" top="0.125" bottom="0.875"/>
+		</NormalTexture>
+		<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down">
+			<TexCoords left="0.125" right="0.875" top="0.125" bottom="0.875"/>
+		</PushedTexture>
+		<DisabledTexture file="Interface\Buttons\UI-Panel-SmallerButton-Disabled">
+			<TexCoords left="0.125" right="0.875" top="0.125" bottom="0.875"/>
+		</DisabledTexture>
+		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD">
+			<TexCoords left="0.125" right="0.875" top="0.125" bottom="0.875"/>
+		</HighlightTexture>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
+	</Button>
+
+	<Button name="TRP3_WindowResizeButtonArtTemplate" mixin="TRP3_WindowResizeButtonArtMixin" virtual="true">
+		<Size x="24" y="24"/>
+		<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up">
+			<TexCoords left="0.875" right="0.125" top="0.125" bottom="0.875"/>
+		</NormalTexture>
+		<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down">
+			<TexCoords left="0.875" right="0.125" top="0.125" bottom="0.875"/>
+		</PushedTexture>
+		<DisabledTexture file="Interface\Buttons\UI-Panel-SmallerButton-Disabled">
+			<TexCoords left="0.875" right="0.125" top="0.125" bottom="0.875"/>
+		</DisabledTexture>
+		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD">
+			<TexCoords left="0.125" right="0.875" top="0.125" bottom="0.875"/>
+		</HighlightTexture>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
+	</Button>
+
 	<Button name="TRP3_TutorialButton" virtual="true" frameStrata="DIALOG" hidden="true">
 		<Size x="46" y="46"/>
 		<Layers>
@@ -202,42 +278,34 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Layers>
 		<Frames>
 			<!-- CLOSE MAIN FRAME -->
-			<Button parentKey="Close" inherits="UIPanelCloseButton">
+			<Button parentKey="Close" inherits="TRP3_WindowCloseButtonArtTemplate">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="4" y="4"/>
+					<Anchor point="TOPRIGHT"/>
 				</Anchors>
 			</Button>
 
 			<!-- MaxiButton -->
-			<Button parentKey="Maximize">
+			<Button parentKey="Maximize" inherits="TRP3_WindowMaximizeButtonArtTemplate">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-16" y="4"/>
+					<Anchor point="RIGHT" relativeKey="$parent.Close" relativePoint="LEFT"/>
 				</Anchors>
-				<Size x="32" y="32"/>
-				<NormalTexture file="Interface\Buttons\UI-Panel-BiggerButton-Up"/>
-				<PushedTexture file="Interface\Buttons\UI-Panel-BiggerButton-Down"/>
-				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 			</Button>
 
 			<!-- MiniButton -->
-			<Button parentKey="Minimize" hidden="true">
+			<Button parentKey="Minimize" inherits="TRP3_WindowMinimizeButtonArtTemplate" hidden="true">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-16" y="4"/>
+					<Anchor point="RIGHT" relativeKey="$parent.Close" relativePoint="LEFT"/>
 				</Anchors>
-				<Size x="32" y="32"/>
-				<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
-				<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
-				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 			</Button>
 
 			<!-- RESIZING BUTTON -->
-			<Button parentKey="Resize" inherits="TRP3_ResizeButton">
+			<Button parentKey="Resize" inherits="TRP3_WindowResizeButtonArtTemplate">
 				<KeyValues>
 					<KeyValue key="minWidth" value="768" type="number"/>
 					<KeyValue key="minHeight" value="500" type="number"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="4" y="-4"/>
+					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 			</Button>
 		</Frames>
