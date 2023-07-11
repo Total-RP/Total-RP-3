@@ -156,7 +156,6 @@ function TRP3_PetBrowserMixin:OnLoad()
 	self.tooltipFrame    = self.tooltipFrame or TRP3_MainTooltip;
 
 	-- Dynamic UI styling.
-	UIPanelCloseButton_SetBorderAtlas(self.CloseButton, "UI-Frame-GenericMetal-ExitButtonBorder", -1, 1);
 	self.AcceptButton:SetText(L.UI_PET_BROWSER_ACCEPT);
 
 	-- Icon grid layout setup.

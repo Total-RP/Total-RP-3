@@ -325,6 +325,12 @@ stds.wow = {
 			},
 		},
 
+		C_Texture = {
+			fields = {
+				"GetAtlasInfo",
+			},
+		},
+
 		C_Timer = {
 			fields = {
 				"After",
@@ -510,7 +516,6 @@ stds.wow = {
 		"UIDROPDOWNMENU_INIT_MENU",
 		"UIDROPDOWNMENU_MENU_LEVEL",
 		"UIDROPDOWNMENU_MENU_VALUE",
-		"UIPanelCloseButton_SetBorderAtlas",
 		"UnitAffectingCombat",
 		"UnitAura",
 		"UnitBattlePetLevel",
