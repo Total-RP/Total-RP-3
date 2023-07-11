@@ -1,3 +1,14 @@
+# Changelog version 2.5.4
+
+## Added
+
+- Added 53 musics, 45 images and 169 icons from patch 10.1.5 and before (some previously encrypted icons).
+
+## Fixed
+
+- Fixed close/minimize/resize buttons positions for Retail.
+- Fixed a bug with the dashboard potentially related to Prat.
+
 # Changelog version 2.5.3
 
 ## Fixed

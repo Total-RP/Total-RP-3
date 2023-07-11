@@ -410,6 +410,8 @@ These tools also allow you to insert |cffffff00images, icons or links to externa
 	CO_GENERAL_CONTRAST_LEVEL_MEDIUM_HIGH = "Medium high",
 	CO_GENERAL_CONTRAST_LEVEL_HIGH = "High",
 	CO_GENERAL_CONTRAST_LEVEL_VERY_HIGH = "Very high",
+	CO_GENERAL_HIDE_MAXIMIZE_BUTTON = "Hide maximize button",
+	CO_GENERAL_HIDE_MAXIMIZE_BUTTON_HELP = "Hides the minimize and maximize buttons on the Total RP 3 window.",
 	CO_TOOLTIP = "Tooltip settings",
 	CO_TOOLTIP_USE = "Use characters/companions tooltip",
 	CO_TOOLTIP_COMBAT = "Hide during combat",
@@ -1638,14 +1640,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue with the Plater RP nameplates getting stuck on screen.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
-	CO_GENERAL_HIDE_MAXIMIZE_BUTTON = "Hide maximize button",
-	CO_GENERAL_HIDE_MAXIMIZE_BUTTON_HELP = "Hides the minimize and maximize buttons on the Total RP 3 window.",
 	WHATS_NEW_26_3 = [[# Changelog version 2.5.3
 
 ## Fixed
@@ -1654,7 +1648,18 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Updated TaintLess library for patch 3.4.2.
 
 ]],
+	WHATS_NEW_26_4 = [[# Changelog version 2.5.4
 
+## Added
+
+- Added 53 musics, 45 images and 169 icons from patch 10.1.5 and before (some previously encrypted icons).
+
+## Fixed
+
+- Fixed close/minimize/resize buttons positions for Retail.
+- Fixed a bug with the dashboard potentially related to Prat.
+
+]],
 };
 
 -- Bindings and FrameXML Global Strings
