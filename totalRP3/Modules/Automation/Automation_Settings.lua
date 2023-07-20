@@ -20,8 +20,6 @@ function TRP3_AutomationSettingsMixin:OnLoad()
 
 	MSA_DropDownMenu_SetInitializeFunction(self.Profiles, function(_, ...) self:OnProfileDropDownInitialize(...); end);
 	MSA_DropDownMenu_SetWidth(self.Profiles, self.Profiles:GetWidth());
-	-- self.Profiles:SetScript("OnEnter", function(_, ...) self:OnProfileDropDownEnter(...); end);
-	-- self.Profiles:SetScript("OnLeave", function(_, ...) self:OnProfileDropDownLeave(...); end);
 
 	self.SaveButton:RegisterCallback("OnClick", self.OnSaveButtonClicked, self);
 	self.TestButton:RegisterCallback("OnClick", self.OnTestButtonClicked, self);
