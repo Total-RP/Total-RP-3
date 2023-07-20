@@ -66,9 +66,7 @@ end
 TRP3_Automation = TRP3_Addon:NewModule("Automation", "AceConsole-3.0");
 
 function TRP3_Automation:OnLoad()
-	self.actions = {};
 	self.actionsByID = {};
-	self.events = TRP3_API.CreateCallbackGroup();
 	self.conditionsByID = {};
 	self.conditionsByToken = {};
 	self.messageCooldowns = {};
@@ -86,9 +84,18 @@ function TRP3_Automation:OnInitialize()
 	self.db.RegisterCallback(self, "OnProfileCopied");
 	self.db.RegisterCallback(self, "OnProfileDeleted");
 	self.db.RegisterCallback(self, "OnProfileReset");
-	self.db.RegisterCallback(self, "OnProfileShutdown");
-	self.db.RegisterCallback(self, "OnDatabaseShutdown");
-	self:LoadSettings();
+
+	-- The initial implementation of automation used one settings table
+	-- without profile support. For users with saved automation rules, we
+	-- need to import them into the new profile-based system.
+
+	if TRP3_SavedAutomation.actions then
+		for actionID, actionSettings in pairs(TRP3_SavedAutomation.actions) do
+			self.db.profile.actions[actionID].expression = actionSettings.expression;
+		end
+
+		TRP3_SavedAutomation.actions = nil;
+	end
 
 	TRP3_API.slash.registerCommand({
 		id = "set",
@@ -126,31 +133,19 @@ function TRP3_Automation:OnDisable()
 end
 
 function TRP3_Automation:OnProfileChanged(_, _, profileName)
-	self:LoadSettings();
 	TRP3_AutomationEvents:TriggerEvent("OnProfileChanged", profileName);
 end
 
 function TRP3_Automation:OnProfileCopied()
-	self:LoadSettings();
 	TRP3_AutomationEvents:TriggerEvent("OnProfileModified", self.db:GetCurrentProfile());
 end
 
 function TRP3_Automation:OnProfileDeleted(_, _, profileName)
-	self:LoadSettings();
 	TRP3_AutomationEvents:TriggerEvent("OnProfileDeleted", profileName);
 end
 
 function TRP3_Automation:OnProfileReset()
-	self:LoadSettings();
 	TRP3_AutomationEvents:TriggerEvent("OnProfileModified", self.db:GetCurrentProfile());
-end
-
-function TRP3_Automation:OnProfileShutdown()
-	self:SaveSettings();
-end
-
-function TRP3_Automation:OnDatabaseShutdown()
-	self:SaveSettings();
 end
 
 function TRP3_Automation:OnDirtyEvent()
@@ -173,34 +168,6 @@ end
 
 function TRP3_Automation:OnContextMessage(message)
 	TRP3_Addon:Print(message);
-end
-
-function TRP3_Automation:LoadSettings()
-	if TRP3_SavedAutomation.actions then
-		-- The initial implementation of automation used one settings table
-		-- without profile support. For users with saved automation rules, we
-		-- need to import them into the new profile-based system.
-
-		for actionID, actionSettings in pairs(TRP3_SavedAutomation.actions) do
-			self.db.profile.actions[actionID].expression = actionSettings.expression;
-		end
-
-		TRP3_SavedAutomation.actions = nil;
-	end
-
-	local actions = {};
-
-	for actionID, actionSettings in pairs(self.db.profile.actions) do
-		actions[actionID] = { expression = actionSettings.expression };
-	end
-
-	self.actions = actions;
-end
-
-function TRP3_Automation:SaveSettings()
-	for actionID, actionSettings in pairs(self.actions) do
-		self.db.profile.actions[actionID] = { expression = actionSettings.expression };
-	end
 end
 
 function TRP3_Automation:GetAllProfiles()
@@ -278,7 +245,7 @@ function TRP3_Automation:GetConditionByToken(conditionToken)
 end
 
 function TRP3_Automation:GetActionExpression(actionID)
-	local actionSettings = self.actions[actionID];
+	local actionSettings = self.db.profile.actions[actionID];
 	local actionExpression = "";
 
 	if actionSettings then
@@ -289,8 +256,7 @@ function TRP3_Automation:GetActionExpression(actionID)
 end
 
 function TRP3_Automation:SetActionExpression(actionID, expression)
-	self.actions[actionID] = self.actions[actionID] or {};
-	self.actions[actionID].expression = string.trim(expression or "");
+	self.db.profile.actions[actionID].expression = string.trim(expression or "");
 	TRP3_AutomationEvents:TriggerEvent("OnProfileModified", self.db:GetCurrentProfile());
 	self:ResetMessageCooldowns();
 	self:MarkDirty();
