@@ -88,7 +88,7 @@ function TRP3_Automation:OnInitialize()
 	self.db.RegisterCallback(self, "OnProfileReset");
 	self.db.RegisterCallback(self, "OnProfileShutdown");
 	self.db.RegisterCallback(self, "OnDatabaseShutdown");
-	self:LoadSettings(self.db);
+	self:LoadSettings();
 
 	TRP3_API.slash.registerCommand({
 		id = "set",
@@ -176,16 +176,16 @@ function TRP3_Automation:OnContextMessage(message)
 end
 
 function TRP3_Automation:LoadSettings()
-	if self.db.actions then
+	if TRP3_SavedAutomation.actions then
 		-- The initial implementation of automation used one settings table
 		-- without profile support. For users with saved automation rules, we
 		-- need to import them into the new profile-based system.
 
-		for actionID, actionSettings in pairs(self.db.actions) do
-			self.db.profile.actions[actionID] = actionSettings.expression;
+		for actionID, actionSettings in pairs(TRP3_SavedAutomation.actions) do
+			self.db.profile.actions[actionID].expression = actionSettings.expression;
 		end
 
-		self.db.actions = nil;
+		TRP3_SavedAutomation.actions = nil;
 	end
 
 	local actions = {};
