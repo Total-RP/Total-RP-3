@@ -82,7 +82,7 @@ function TRP3_AutomationSettingsMixin:OnActionDropDownLeave()
 end
 
 function TRP3_AutomationSettingsMixin:OnActionDropDownInitialize()
-	self:PopulateActionsDropDown();
+	self:PopulateActionDropDown();
 end
 
 function TRP3_AutomationSettingsMixin:OnActionSelected(actionID)
@@ -90,11 +90,11 @@ function TRP3_AutomationSettingsMixin:OnActionSelected(actionID)
 end
 
 function TRP3_AutomationSettingsMixin:OnActionDropDownInitialize()
-	self:PopulateActionsDropDown();
+	self:PopulateActionDropDown();
 end
 
 function TRP3_AutomationSettingsMixin:OnProfileDropDownInitialize()
-	self:PopulateProfilesDropDown();
+	self:PopulateProfileDropDown();
 end
 
 function TRP3_AutomationSettingsMixin:OnCreateProfileSelected()
@@ -164,7 +164,7 @@ function TRP3_AutomationSettingsMixin:SetSelectedActionID(actionID)
 	end
 end
 
-function TRP3_AutomationSettingsMixin:PopulateActionsDropDown()
+function TRP3_AutomationSettingsMixin:PopulateActionDropDown()
 	local actions = TRP3_AutomationUtil.GetRegisteredActions();
 
 	local function SortCompareActions(a, b)
@@ -325,7 +325,7 @@ function TRP3_AutomationSettingsMixin:PopulateProfileActionMenu(menuLevel, profi
 	end
 end
 
-function TRP3_AutomationSettingsMixin:PopulateProfilesDropDown()
+function TRP3_AutomationSettingsMixin:PopulateProfileDropDown()
 	local menuLevel = MSA_DROPDOWNMENU_MENU_LEVEL;
 
 	if menuLevel == 1 then
