@@ -43,6 +43,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="TOP" relativeKey="$parent.HelpText" relativePoint="BOTTOM" y="-20"/>
 				</Anchors>
 			</Frame>
+			<Frame parentKey="Profiles" name="$parentProfiles" inherits="TRP3_DropDownMenuTemplate">
+				<Size x="130" y="32"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="-5"/>
+					<Anchor point="TOP" relativeKey="$parent.HelpText" relativePoint="BOTTOM" y="-20"/>
+				</Anchors>
+			</Frame>
 			<EventButton parentKey="SaveButton" parentArray="editorFrames" text="SAVE" inherits="UIPanelButtonTemplate">
 				<Size x="130" y="22"/>
 				<Anchors>
