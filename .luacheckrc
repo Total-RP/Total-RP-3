@@ -582,6 +582,7 @@ stds.wow = {
 		"TargetFrame",
 		"UIErrorsFrame",
 		"UIParent",
+		"UISpecialFrames",
 		"WorldFrame",
 		"WorldMapFrame",
 
