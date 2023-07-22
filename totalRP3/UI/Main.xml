@@ -253,11 +253,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
-		<Scripts>
-			<OnLoad inherit="prepend">
-				tinsert(UISpecialFrames, self:GetName());
-			</OnLoad>
-		</Scripts>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<!--Interface\BlackMarket\BlackMarketBackground-Tile-->
