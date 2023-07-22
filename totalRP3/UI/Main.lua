@@ -9,6 +9,7 @@ local WindowState = {
 TRP3_MainFrameMixin = {};
 
 function TRP3_MainFrameMixin:OnLoad()
+	tinsert(UISpecialFrames, self:GetName());
 	self.windowState = WindowState.Normal;
 	TRP3_Addon.RegisterCallback(self, "CONFIGURATION_CHANGED", "OnConfigurationChanged");
 	TRP3_API.ui.frame.initResize(self.Resize);
