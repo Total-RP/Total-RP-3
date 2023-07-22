@@ -6,8 +6,10 @@ local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
 function TRP3_API.utils.resources.getIconList(filter)
 	local list = {};
 
-	for _, name in LibRPMedia:FindIcons(filter or "", { method = "substring" }) do
-		list[#list + 1] = name;
+	local n = 1;
+	for _, name in LibRPMedia:FindIcons(filter or "", { method = "substring", reuseTable = {} }) do
+		list[n] = name;
+		n = n + 1;
 	end
 
 	return list;
