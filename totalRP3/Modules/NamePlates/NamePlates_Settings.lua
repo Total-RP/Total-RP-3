@@ -36,6 +36,7 @@ local DefaultSettings = {
 	IconSize = 16,
 	MaximumNameLength = 30,
 	MaximumTitleLength = 30,
+	MaximumCustomGuildNameLength = 30,
 	PreferredOOCIndicator = TRP3_OOCIndicatorStyle.Text,
 	ShowTargetUnit = true,
 };
@@ -253,6 +254,17 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_GUILD,
 				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_GUILD_HELP,
 				configKey = MapSettingToConfigKey("CustomizeGuild"),
+			},
+			{
+				inherit = "TRP3_ConfigSlider",
+				title = L.NAMEPLATES_CONFIG_MAX_CUSTOM_GUILD_NAME_CHARS,
+				help = L.NAMEPLATES_CONFIG_MAX_CUSTOM_GUILD_NAME_CHARS_HELP,
+				configKey = MapSettingToConfigKey("MaximumCustomGuildNameLength"),
+				dependentOnOptions = { MapSettingToConfigKey("CustomizeGuild") },
+				min = 10,
+				max = 60,
+				step = 1,
+				integer = true,
 			},
 			{
 				inherit = "TRP3_ConfigH1",

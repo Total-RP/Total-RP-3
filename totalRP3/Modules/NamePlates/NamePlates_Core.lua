@@ -221,7 +221,7 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 				local originalGuildName, originalGuildRank = GetGuildInfo(unitToken);
 
 				if customGuildName and customGuildName ~= "" then
-					displayInfo.guildName = customGuildName;
+					displayInfo.guildName = TRP3_NamePlatesUtil.GenerateCroppedCustomGuildName(customGuildName);
 					displayInfo.guildRank = customGuildRank or L.DEFAULT_GUILD_RANK;
 					displayInfo.guildIsCustom = true;
 				elseif originalGuildName and originalGuildName ~= "" then

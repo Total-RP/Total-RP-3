@@ -15,6 +15,10 @@ function TRP3_NamePlatesUtil.GenerateCroppedTitleText(fullTitle)
 	return TRP3_API.utils.str.crop(fullTitle, TRP3_NamePlatesSettings.MaximumTitleLength);
 end
 
+function TRP3_NamePlatesUtil.GenerateCroppedCustomGuildName(customGuildName)
+	return TRP3_API.utils.str.crop(customGuildName, TRP3_NamePlatesSettings.MaximumCustomGuildNameLength);
+end
+
 function TRP3_NamePlatesUtil.GetPreferredIconSize()
 	local size = TRP3_NamePlatesSettings.IconSize;
 	return size, size;
