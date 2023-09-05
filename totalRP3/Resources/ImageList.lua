@@ -588,6 +588,21 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_TurbulentTimeways",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_TurbulentTimewaysEnd",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_TurbulentTimewaysStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_UldirStart",
 		width = 128,
 		height = 128
@@ -4308,6 +4323,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-Ashran",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Dreamsurge-large",
 		width = 512,
 		height = 256
 	},
