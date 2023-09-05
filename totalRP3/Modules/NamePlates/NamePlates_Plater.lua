@@ -160,34 +160,39 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 
 	Plater = _G.Plater;
 
-	local success, scriptAdded = Plater.ImportScriptString(importString, false);
+	-- Check if the script exists and has the same revision before importing it, to avoid flooding the recycle bin
+	local scriptObject;
+	local scriptType = "hook";
+	local scriptDB = Plater.GetScriptDB(scriptType);
+	local newScriptTable = Plater.DecompressData(importString, "print");
+	local newScript = Plater.BuildScriptObjectFromIndexTable(newScriptTable, scriptType);
 
-	-- If the mod was not installed (is already up to date) then find the installed mod object so we can still control it
-	if not success and not scriptAdded then
-		local scriptType = "hook";
-
-		local scriptDB = Plater.GetScriptDB(scriptType);
-		local newScriptTable = Plater.DecompressData(importString, "print");
-		local newScript = Plater.BuildScriptObjectFromIndexTable(newScriptTable, scriptType);
-
-		for _, scriptObject in ipairs(scriptDB) do
-			if scriptObject.Name == newScript.Name then
-				scriptAdded = scriptObject;
+	for i=1, #scriptDB do
+		local script = scriptDB[i];
+		if script.Name == newScript.Name then
+			if script.Revision == newScript.Revision then
+				scriptObject = script;
 				break;
 			end
 		end
 	end
 
-	if not scriptAdded then
-		return false, L.PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR;
+	if not scriptObject then
+		local success, scriptAdded = Plater.ImportScriptString(importString);
+
+		if not success or not scriptAdded then
+			return false, L.PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR;
+		end
+
+		scriptObject = scriptAdded;
 	end
 
-	scriptAdded.Enabled = true;
+	scriptObject.Enabled = true;
 
-	Plater.RecompileScript(scriptAdded);
+	Plater.RecompileScript(scriptObject);
 	Plater.ForceTickOnAllNameplates();
 
-	self.PlaterMod = scriptAdded;
+	self.PlaterMod = scriptObject;
 	self.firstRun = true;
 end
 
