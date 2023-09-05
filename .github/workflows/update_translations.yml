@@ -19,7 +19,7 @@ jobs:
           cache: 'pip'
 
       - name: Install Python dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r .github/scripts/requirements.txt
 
       - name: Upload CurseForge Translations
         run: make translations/upload

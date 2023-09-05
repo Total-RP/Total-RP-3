@@ -16,7 +16,7 @@ LOCALE_DIR := totalRP3/Locales
 
 all: dist
 
-check: Scripts/UI.xsd
+check: .github/scripts/ui.xsd
 	pre-commit run --all-files
 
 dist:
@@ -29,10 +29,10 @@ libs:
 translations: translations/upload translations/download
 
 translations/download:
-	$(PYTHON) Scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) download
+	$(PYTHON) .github/scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) download
 
 translations/upload:
-	$(PYTHON) Scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) upload
+	$(PYTHON) .github/scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) upload
 
-Scripts/UI.xsd: .FORCE
+.github/scripts/ui.xsd: .FORCE
 	curl -s $(SCHEMA_URL) -o $@
