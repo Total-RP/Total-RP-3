@@ -453,7 +453,7 @@ Ci sono diverse maniere per farlo:|c0000ff00
 	["REG_RELATION_NONE"] = "Nessuna",
 	["REG_RELATION_UNFRIENDLY"] = "Ostile",
 	["REG_RELATION_UNFRIENDLY_TT"] = "A %s non piace chiaramente %s.",
-	["REG_TT_GUILD"] = "%s di |cffff9900%s",
+	["REG_TT_GUILD"] = "%s di %s",
 	["REG_TT_IGNORED"] = "< Il personaggio viene ignorato >",
 	["REG_TT_IGNORED_OWNER"] = "< Il proprietario viene ignorato >",
 	["REG_TT_LEVEL"] = "Livello %s %s",

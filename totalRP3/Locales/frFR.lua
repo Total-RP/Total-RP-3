@@ -1354,7 +1354,7 @@ Si vous souhaitez signaler le profil de %s comme enfreignant le Code de Conduite
 	["REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT"] = "Ce joueur utilisait un compte d'essai.",
 	["REG_TIME"] = "Vu pour la dernière fois",
 	["REG_TRIAL_ACCOUNT"] = "Compte d'essai",
-	["REG_TT_GUILD"] = "%s de |cffff9900%s",
+	["REG_TT_GUILD"] = "%s de %s",
 	["REG_TT_GUILD_CUSTOM"] = "Guilde personnalisée",
 	["REG_TT_GUILD_IC"] = "membre RP",
 	["REG_TT_GUILD_OOC"] = "membre HRP",
