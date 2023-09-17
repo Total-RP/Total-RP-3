@@ -1169,7 +1169,7 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 	["REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT"] = "Este jugador tiene una cuenta de prueba.",
 	["REG_TIME"] = "Última vez visto",
 	["REG_TRIAL_ACCOUNT"] = "Cuenta de prueba",
-	["REG_TT_GUILD"] = "%s de |cffff9900%s",
+	["REG_TT_GUILD"] = "%s de %s",
 	["REG_TT_GUILD_IC"] = "Miembro ER",
 	["REG_TT_GUILD_OOC"] = "Miembro FdR",
 	["REG_TT_IGNORED"] = "<Personaje ignorado>",

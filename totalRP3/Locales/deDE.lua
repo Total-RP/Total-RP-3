@@ -1065,7 +1065,7 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 	["REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT"] = "Dieser Spieler benutze einen Starter Edition Account.",
 	["REG_TIME"] = "Zuletzt gesehen",
 	["REG_TRIAL_ACCOUNT"] = "Probeaccount",
-	["REG_TT_GUILD"] = "%s von |cffff9900%s",
+	["REG_TT_GUILD"] = "%s von %s",
 	["REG_TT_GUILD_IC"] = "IC Mitglied",
 	["REG_TT_GUILD_OOC"] = "OOC Mitglied",
 	["REG_TT_IGNORED"] = "< Charakter ist ignoriert >",

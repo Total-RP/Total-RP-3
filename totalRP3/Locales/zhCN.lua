@@ -1198,7 +1198,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT"] = "这个玩家使用试玩账号。",
 	["REG_TIME"] = "最后一次露面的时间",
 	["REG_TRIAL_ACCOUNT"] = "试玩帐号",
-	["REG_TT_GUILD"] = "%s 属于 |cffff9900%s",
+	["REG_TT_GUILD"] = "%s 属于 %s",
 	["REG_TT_GUILD_IC"] = "RP 成员",
 	["REG_TT_GUILD_OOC"] = "OOC 成员",
 	["REG_TT_IGNORED"] = "< 角色被忽略 >",

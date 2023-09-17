@@ -1171,7 +1171,7 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT"] = "Este jogador está em uma conta de teste.",
 	["REG_TIME"] = "Última vez visto",
 	["REG_TRIAL_ACCOUNT"] = "Conta de teste",
-	["REG_TT_GUILD"] = "%s de |cffff9900%s",
+	["REG_TT_GUILD"] = "%s de %s",
 	["REG_TT_GUILD_IC"] = "Membro IC",
 	["REG_TT_GUILD_OOC"] = "Membro OOC",
 	["REG_TT_IGNORED"] = "< Personagem está ignorado >",

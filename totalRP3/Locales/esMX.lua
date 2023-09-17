@@ -650,7 +650,7 @@ Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplement
 	["REG_RELATION_TARGET"] = "|cffffff00Clic: |rCambiar relación",
 	["REG_RELATION_UNFRIENDLY"] = "Enemigo",
 	["REG_RELATION_UNFRIENDLY_TT"] = "%s está enemistado con %s.",
-	["REG_TT_GUILD"] = "%s de |cffff9900%s",
+	["REG_TT_GUILD"] = "%s de %s",
 	["REG_TT_GUILD_IC"] = "Miembro ER",
 	["REG_TT_GUILD_OOC"] = "Miembro FdR",
 	["REG_TT_IGNORED"] = "<Personaje ignorado>",
