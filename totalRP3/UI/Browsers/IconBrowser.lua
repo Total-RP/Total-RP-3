@@ -73,7 +73,7 @@ function IconSearchController:ResumeSearch()
 		return;
 	end
 
-	local MAX_ICONS_PER_TICK = 250;
+	local MAX_ICONS_PER_TICK = 500;
 	local i = self.progress + 1;
 	local j = math.min(self.progress + MAX_ICONS_PER_TICK, self.total);
 
