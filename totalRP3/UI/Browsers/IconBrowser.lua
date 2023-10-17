@@ -37,7 +37,7 @@ function IconSearchController:OnLoad()
 end
 
 function IconSearchController:BeginSearch(query)
-	query = string.trim(query);
+	query = string.utf8lower(string.trim(query));
 
 	if self.query == query then
 		return;
