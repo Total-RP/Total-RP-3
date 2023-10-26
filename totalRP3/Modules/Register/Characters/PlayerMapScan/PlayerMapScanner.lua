@@ -131,8 +131,10 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	playerMapScanner.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAME;
 
 	--{{{ Scan behavior
+	--TODO: find a better way to trigger guild-only scans
 	function playerMapScanner:Scan()
-		broadcast.broadcast(SCAN_COMMAND, Map.getDisplayedMapID());
+		local method = IsShiftKeyDown() and TRP3_BroadcastMethod.Guild or TRP3_ClientFeatures.BroadcastMethod;
+		broadcast.broadcast(SCAN_COMMAND, method, Map.getDisplayedMapID());
 	end
 
 	-- Players can only scan for other players in zones where it is possible to retrieve player coordinates.
@@ -198,7 +200,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			playerMapScanner:OnScanDataReceived(sender, x, y, {
 				hasWarModeActive = hasWarModeActive,
 				roleplayStatus = roleplayStatus,
-			})
+			});
 		end
 	end)
 	--}}}
