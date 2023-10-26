@@ -80,6 +80,8 @@ local TRP3_EXPANSION_BATTLE_FOR_AZEROTH = LE_EXPANSION_BATTLE_FOR_AZEROTH or 7;
 TRP3_BroadcastMethod = {
 	Channel = 1,
 	Yell = 2,
+	Guild = 3,
+	Raid = 4, -- will fall back to 'Party' if player is not in a raid group
 };
 
 TRP3_ClientFeatures = {

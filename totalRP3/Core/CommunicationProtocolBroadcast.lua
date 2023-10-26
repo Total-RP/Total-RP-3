@@ -45,20 +45,13 @@ local BROADCAST_PREFIX = "RPB";
 local BROADCAST_VERSION = 1;
 local BROADCAST_SEPARATOR = "~";
 local BROADCAST_HEADER = BROADCAST_PREFIX .. BROADCAST_VERSION;
+local BROADCAST_MAX_MESSAGE_LEN = 254;
 Comm.totalBroadcast = 0;
 Comm.totalBroadcastP2P = 0;
 Comm.totalBroadcastR = 0;
 Comm.totalBroadcastP2PR = 0;
 
-local function broadcast(command, ...)
-	if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel and not config_UseBroadcast() or not command then
-		TRP3_API.Log("Bad params");
-		return;
-	end
-	if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel and not helloWorlded and command ~= HELLO_CMD then
-		TRP3_API.Log("Broadcast channel not yet initialized.");
-		return;
-	end
+local function assembleMessage(command, ...)
 	local message = BROADCAST_HEADER .. BROADCAST_SEPARATOR .. command;
 	for _, arg in pairs({...}) do
 		arg = tostring(arg);
@@ -68,14 +61,41 @@ local function broadcast(command, ...)
 		end
 		message = message .. BROADCAST_SEPARATOR .. arg;
 	end
-	if message:len() < 254 then
-		if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Yell then
-			Chomp.SendAddonMessage(BROADCAST_HEADER, message, "YELL");
-		elseif TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
+
+	return message;
+end
+
+local BroadcastMethodNameLookup = tInvert(TRP3_BroadcastMethod);
+local function getBroadcastMethodName(method)
+	local methodName = BroadcastMethodNameLookup[method]
+	return methodName and methodName:upper();
+end
+
+local function broadcast(command, method, ...)
+	if method == TRP3_BroadcastMethod.Channel and not config_UseBroadcast() or not command then
+		TRP3_API.Log("Bad params");
+		return;
+	end
+
+	if method == TRP3_BroadcastMethod.Channel and not helloWorlded and command ~= HELLO_CMD then
+		TRP3_API.Log("Broadcast channel not yet initialized.");
+		return;
+	end
+
+	local message = assembleMessage(command, ...);
+
+	if message:len() < BROADCAST_MAX_MESSAGE_LEN then
+		local methodName = getBroadcastMethodName(method);
+		if not methodName then
+			securecall(error, "Unknown broadcast method: " .. method);
+			return;
+		end
+
+		if method == TRP3_BroadcastMethod.Channel then
 			local channelName = GetChannelName(config_BroadcastChannel());
-			Chomp.SendAddonMessage(BROADCAST_HEADER, message, "CHANNEL", channelName);
+			Chomp.SendAddonMessage(BROADCAST_HEADER, message, methodName, channelName);
 		else
-			error("Unknown broadcast method for this client");
+			Chomp.SendAddonMessage(BROADCAST_HEADER, message, methodName);
 		end
 		Comm.totalBroadcast = Comm.totalBroadcast + BROADCAST_HEADER:len() + message:len();
 	else
@@ -358,7 +378,7 @@ Comm.broadcast.init = function()
 					TRP3_API.Log("Step 2: Connected to broadcast channel: " .. config_BroadcastChannel() .. ". Now sending HELLO command.");
 					moveBroadcastChannelToTheBottomOfTheList(true);
 					if not helloWorlded then
-						broadcast(HELLO_CMD, Globals.version, Utils.str.sanitizeVersion(Globals.version_display), Globals.extended_version, Utils.str.sanitizeVersion(Globals.extended_display_version));
+						broadcast(HELLO_CMD, TRP3_ClientFeatures.BroadcastMethod, Globals.version, Utils.str.sanitizeVersion(Globals.version_display), Globals.extended_version, Utils.str.sanitizeVersion(Globals.extended_display_version));
 					end
 				end
 			end, 15);
