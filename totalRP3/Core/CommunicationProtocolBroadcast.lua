@@ -232,6 +232,24 @@ local function onChannelLeave(_, _, arg2, _, _, _, _, _, _, arg9)
 	end
 end
 
+local function isBroadcastMessage(distributionType, channel)
+	if string.lower(channel) ~= string.lower(config_BroadcastChannel()) then
+		return false;
+	end
+
+	if distributionType == "YELL" then
+		return true;
+	elseif distributionType == "CHANNEL" then
+		return true;
+	elseif distributionType == "PARTY" then
+		return true;
+	elseif distributionType == "RAID" then
+		return true;
+	else
+		return false;
+	end
+end
+
 local function onMessageReceived(_, prefix, message , distributionType, sender, _, _, _, channel)
 	if not sender then
 		return;
@@ -245,7 +263,7 @@ local function onMessageReceived(_, prefix, message , distributionType, sender, 
 
 		if not isIDIgnored(sender) then
 			-- Have to test "UNKNOWN" for "YELL" addon messages because Blizzard lul
-			if distributionType == "YELL" or distributionType == "UNKNOWN" or distributionType == "CHANNEL" and string.lower(channel) == string.lower(config_BroadcastChannel()) then
+			if isBroadcastMessage(distributionType, channel) then
 				onBroadcastReceived(message, sender, channel);
 			else
 				onP2PMessageReceived(message, sender);
