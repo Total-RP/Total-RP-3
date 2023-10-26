@@ -233,13 +233,13 @@ local function onChannelLeave(_, _, arg2, _, _, _, _, _, _, arg9)
 end
 
 local function isBroadcastMessage(distributionType, channel)
-	if string.lower(channel) ~= string.lower(config_BroadcastChannel()) then
-		return false;
-	end
-
 	if distributionType == "YELL" then
 		return true;
+	elseif distributionType == "UNKNOWN" then
+		return true;
 	elseif distributionType == "CHANNEL" then
+		return string.lower(channel) == string.lower(config_BroadcastChannel())
+	elseif distributionType == "GUILD" then
 		return true;
 	elseif distributionType == "PARTY" then
 		return true;
