@@ -235,8 +235,6 @@ end
 local function isBroadcastMessage(distributionType, channel)
 	if distributionType == "YELL" then
 		return true;
-	elseif distributionType == "UNKNOWN" then
-		return true;
 	elseif distributionType == "CHANNEL" then
 		return string.lower(channel) == string.lower(config_BroadcastChannel())
 	elseif distributionType == "GUILD" then
@@ -244,6 +242,8 @@ local function isBroadcastMessage(distributionType, channel)
 	elseif distributionType == "PARTY" then
 		return true;
 	elseif distributionType == "RAID" then
+		return true;
+	elseif distributionType == "UNKNOWN" then
 		return true;
 	else
 		return false;
@@ -262,7 +262,6 @@ local function onMessageReceived(_, prefix, message , distributionType, sender, 
 		end
 
 		if not isIDIgnored(sender) then
-			-- Have to test "UNKNOWN" for "YELL" addon messages because Blizzard lul
 			if isBroadcastMessage(distributionType, channel) then
 				onBroadcastReceived(message, sender, channel);
 			else
