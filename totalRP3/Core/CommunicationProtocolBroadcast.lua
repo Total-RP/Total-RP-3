@@ -72,8 +72,10 @@ local function getBroadcastMethodName(method)
 end
 
 local function broadcast(command, method, ...)
-	if method == TRP3_BroadcastMethod.Channel and not config_UseBroadcast() or not command then
-		TRP3_API.Log("Bad params");
+	if not command then
+		securecall(error, "No broadcast command provided");
+		return;
+	elseif method == TRP3_BroadcastMethod.Channel and not config_UseBroadcast() then
 		return;
 	elseif method == TRP3_BroadcastMethod.Channel and not helloWorlded and command ~= HELLO_CMD then
 		TRP3_API.Log("Broadcast channel not yet initialized.");
