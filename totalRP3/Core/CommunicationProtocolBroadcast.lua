@@ -75,10 +75,11 @@ local function broadcast(command, method, ...)
 	if method == TRP3_BroadcastMethod.Channel and not config_UseBroadcast() or not command then
 		TRP3_API.Log("Bad params");
 		return;
-	end
-
-	if method == TRP3_BroadcastMethod.Channel and not helloWorlded and command ~= HELLO_CMD then
+	elseif method == TRP3_BroadcastMethod.Channel and not helloWorlded and command ~= HELLO_CMD then
 		TRP3_API.Log("Broadcast channel not yet initialized.");
+		return;
+	elseif method == TRP3_BroadcastMethod.Guild and not IsInGuild() then
+		TRP3_API.Log("Attempted to broadcast to guild while not in a guild.");
 		return;
 	end
 
