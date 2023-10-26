@@ -67,7 +67,7 @@ end
 
 local BroadcastMethodNameLookup = tInvert(TRP3_BroadcastMethod);
 local function getBroadcastMethodName(method)
-	local methodName = BroadcastMethodNameLookup[method]
+	local methodName = BroadcastMethodNameLookup[method];
 	return methodName and methodName:upper();
 end
 
