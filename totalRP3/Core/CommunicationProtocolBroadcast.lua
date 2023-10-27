@@ -51,18 +51,31 @@ Comm.totalBroadcastP2P = 0;
 Comm.totalBroadcastR = 0;
 Comm.totalBroadcastP2PR = 0;
 
-local function assembleMessage(command, includeHeader, ...)
-	local message = includeHeader and BROADCAST_HEADER .. BROADCAST_SEPARATOR .. command or command;
-	for _, arg in pairs({...}) do
-		arg = tostring(arg);
-		if arg:find(BROADCAST_SEPARATOR) then
-			TRP3_API.Log("Trying a broadcast with a arg containing the separator character. Abort!");
-			return;
+local function AssembleDelimitedMessage(...)
+	local parts = { ... };
+	local n = 0;
+
+	for i, part in ipairs(parts) do
+		part = tostring(part);
+
+		local offset = 1;
+		local plain = true;
+
+		if string.find(part, BROADCAST_SEPARATOR, offset, plain) then
+			securecall(error, "attempted to assemble a message containing a delimiter character");
+			return nil;
 		end
-		message = message .. BROADCAST_SEPARATOR .. arg;
+
+		parts[i] = part;
+		n = i;
 	end
 
-	return message;
+	-- Concat range is limited to [1, n] explicitly; concat internally uses
+	-- object length (#) whereas ipairs stops at the first nil; if we were
+	-- supplied any nil values it's possible that concat would attempt to
+	-- include those in the message and then hard error.
+
+	return table.concat(parts, BROADCAST_SEPARATOR, 1, n);
 end
 
 TRP3_API.BroadcastMethod = {
@@ -109,7 +122,7 @@ local function broadcast(command, method, ...)
 		return;
 	end
 
-	local message = assembleMessage(command, true, ...);
+	local message = AssembleDelimitedMessage(command, BROADCAST_HEADER, ...);
 
 	if #message > BROADCAST_MAX_MESSAGE_LEN then
 		securecall(error, "attempted to send an oversized broadcast message");
@@ -185,7 +198,8 @@ function Comm.broadcast.registerP2PCommand(command, callback)
 end
 
 local function sendP2PMessage(target, command, ...)
-	local message = assembleMessage(command, false, ...);
+	-- P2P messages don't use the broadcast header.
+	local message = AssembleDelimitedMessage(command, ...);
 	if message:len() < BROADCAST_MAX_MESSAGE_LEN then
 		Chomp.SendAddonMessage(BROADCAST_HEADER, message, "WHISPER", target);
 		Comm.totalBroadcastP2P = Comm.totalBroadcastP2P + BROADCAST_HEADER:len() + message:len();
