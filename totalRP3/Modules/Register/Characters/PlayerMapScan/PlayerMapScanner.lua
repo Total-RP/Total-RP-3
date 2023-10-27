@@ -164,8 +164,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 	});
 
-	---@type MapScanner
-	local playerMapScanner = newMapScanner("playerScan");
+	newMapScanner("playerScan"); -- default player scan, don't need the return here
 	---@type MapScanner
 	local guildMapScanner = newMapScanner("guildScan");
 	guildMapScanner.scanOptionText = loc.MAP_SCAN_CHAR_GUILD_ONLY;
