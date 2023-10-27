@@ -61,8 +61,53 @@ local function ShouldShowRoleplayStatus(roleplayStatus)
 	return shouldShowStatus;
 end
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+local SCAN_COMMAND = "C_SCAN";
+local lastScannerUsed;
 
+local PlayerMapScannerMixin = {};
+-- Set scan display properties
+PlayerMapScannerMixin.scanIcon = Ellyb.Icon(TRP3_InterfaceIcons.PlayerScanIcon);
+PlayerMapScannerMixin.scanOptionText = loc.MAP_SCAN_CHAR;
+PlayerMapScannerMixin.scanTitle = loc.MAP_SCAN_CHAR_TITLE;
+-- Indicate the name of the pin template to use with this scan.
+-- The MapDataProvider will use this template to generate the pin
+PlayerMapScannerMixin.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAME;
+
+--{{{ Default scan behavior
+function PlayerMapScannerMixin:Scan()
+	broadcast.broadcast(SCAN_COMMAND, TRP3_ClientFeatures.BroadcastMethod, Map.getDisplayedMapID());
+	lastScannerUsed = self;
+end
+
+-- Players can only scan for other players in zones where it is possible to retrieve player coordinates.
+function PlayerMapScannerMixin:CanScan()
+	if not getConfigValue(CONFIG_ENABLE_MAP_LOCATION) then
+		return false;
+	end
+
+	-- Check if the map we are going to scan is the map the player is currently in
+	-- and if we have access to coordinates. If not, it's a protected zone and we cannot scan.
+	if Map.getDisplayedMapID() == Map.getPlayerMapID() then
+		local x, y = Map.getPlayerCoordinates();
+		if not x or not y then
+			return false;
+		end
+	elseif TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Yell then
+		-- When Yell comms are in use we forbid scans in zones other
+		-- than the one you're in.
+		return false;
+	end
+
+	return true;
+end
+
+local function newMapScanner(scanID)
+	local scanner = AddOn_TotalRP3.MapScanner(scanID);
+	Mixin(scanner, PlayerMapScannerMixin);
+	return scanner;
+end
+
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	registerConfigKey(CONFIG_ENABLE_MAP_LOCATION, true);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_OOC, false);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE, false);
@@ -118,47 +163,20 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 	});
 
-
-	local SCAN_COMMAND = "C_SCAN";
 	---@type MapScanner
-	local playerMapScanner = AddOn_TotalRP3.MapScanner("playerScan");
-	-- Set scan display properties
-	playerMapScanner.scanIcon = Ellyb.Icon(TRP3_InterfaceIcons.PlayerScanIcon);
-	playerMapScanner.scanOptionText = loc.MAP_SCAN_CHAR;
-	playerMapScanner.scanTitle = loc.MAP_SCAN_CHAR_TITLE;
-	-- Indicate the name of the pin template to use with this scan.
-	-- The MapDataProvider will use this template to generate the pin
-	playerMapScanner.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAME;
+	local playerMapScanner = newMapScanner("playerScan");
+	---@type MapScanner
+	local guildMapScanner = newMapScanner("guildScan");
+	guildMapScanner.scanOptionText = loc.MAP_SCAN_CHAR_GUILD_ONLY;
+	guildMapScanner.scanTitle = loc.MAP_SCAN_CHAR_GUILD_ONLY_TITLE;
 
-	--{{{ Scan behavior
-	--TODO: find a better way to trigger guild-only scans
-	function playerMapScanner:Scan()
-		local method = IsShiftKeyDown() and TRP3_BroadcastMethod.Guild or TRP3_ClientFeatures.BroadcastMethod;
-		broadcast.broadcast(SCAN_COMMAND, method, Map.getDisplayedMapID());
+	function guildMapScanner:Scan()
+		broadcast.broadcast(SCAN_COMMAND, TRP3_BroadcastMethod.Guild, Map.getDisplayedMapID());
+		lastScannerUsed = self;
 	end
 
-	-- Players can only scan for other players in zones where it is possible to retrieve player coordinates.
-	function playerMapScanner:CanScan()
-		if not getConfigValue(CONFIG_ENABLE_MAP_LOCATION) then
-			return false;
-		end
-
-		-- Check if the map we are going to scan is the map the player is currently in
-		-- and if we have access to coordinates. If not, it's a protected zone and we cannot scan.
-		if Map.getDisplayedMapID() == Map.getPlayerMapID() then
-			local x, y = Map.getPlayerCoordinates();
-			if not x or not y then
-				return false;
-			end
-		elseif not TRP3_ClientFeatures.ChannelBroadcasts then
-			-- When Yell comms are in use we forbid scans in zones other
-			-- than the one you're in.
-			return false;
-		end
-
-		return true;
-	end
-	--}}}
+	TRP3_PlayerMapScanner = playerMapScanner;
+	TRP3_GuildMapScanner = guildMapScanner;
 
 	--{{{ Broadcast commands
 	broadcast.registerCommand(SCAN_COMMAND, function(sender, mapID)
@@ -197,7 +215,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		end
 
 		if Map.playerCanSeeTarget(sender, checkWarMode) and ShouldShowRoleplayStatus(roleplayStatus) then
-			playerMapScanner:OnScanDataReceived(sender, x, y, {
+			lastScannerUsed:OnScanDataReceived(sender, x, y, {
 				hasWarModeActive = hasWarModeActive,
 				roleplayStatus = roleplayStatus,
 			});
