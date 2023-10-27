@@ -69,13 +69,14 @@ local PlayerMapScannerMixin = {};
 PlayerMapScannerMixin.scanIcon = Ellyb.Icon(TRP3_InterfaceIcons.PlayerScanIcon);
 PlayerMapScannerMixin.scanOptionText = loc.MAP_SCAN_CHAR;
 PlayerMapScannerMixin.scanTitle = loc.MAP_SCAN_CHAR_TITLE;
+PlayerMapScannerMixin.broadcastMethod = TRP3_API.BroadcastMethod.World
 -- Indicate the name of the pin template to use with this scan.
 -- The MapDataProvider will use this template to generate the pin
 PlayerMapScannerMixin.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAME;
 
 --{{{ Default scan behavior
 function PlayerMapScannerMixin:Scan()
-	broadcast.broadcast(SCAN_COMMAND, TRP3_ClientFeatures.BroadcastMethod, Map.getDisplayedMapID());
+	broadcast.broadcast(SCAN_COMMAND, self.broadcastMethod, Map.getDisplayedMapID());
 	lastScannerUsed = self;
 end
 
@@ -92,7 +93,7 @@ function PlayerMapScannerMixin:CanScan()
 		if not x or not y then
 			return false;
 		end
-	elseif TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Yell then
+	elseif not TRP3_ClientFeatures.ChannelBroadcasts then
 		-- When Yell comms are in use we forbid scans in zones other
 		-- than the one you're in.
 		return false;
@@ -169,11 +170,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	local guildMapScanner = newMapScanner("guildScan");
 	guildMapScanner.scanOptionText = loc.MAP_SCAN_CHAR_GUILD_ONLY;
 	guildMapScanner.scanTitle = loc.MAP_SCAN_CHAR_GUILD_ONLY_TITLE;
-
-	function guildMapScanner:Scan()
-		broadcast.broadcast(SCAN_COMMAND, TRP3_BroadcastMethod.Guild, Map.getDisplayedMapID());
-		lastScannerUsed = self;
-	end
+	guildMapScanner.broadcastMethod = TRP3_API.BroadcastMethod.Guild;
 
 	TRP3_PlayerMapScanner = playerMapScanner;
 	TRP3_GuildMapScanner = guildMapScanner;
