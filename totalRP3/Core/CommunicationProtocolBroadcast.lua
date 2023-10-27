@@ -80,6 +80,10 @@ local BroadcastDistributionTypes = {
 local function broadcast(command, method, ...)
 	local distributionType = BroadcastDistributionTypes[method];
 
+	if distributionType == "RAID" and not IsInRaid() then
+		distributionType = "PARTY";
+	end
+
 	if type(command) ~= "string" or command == "" then
 		securecall(error, "invalid broadcast command");
 		return;
@@ -94,6 +98,9 @@ local function broadcast(command, method, ...)
 		return;
 	elseif distributionType == "GUILD" and not IsInGuild() then
 		TRP3_API.Log("Attempted to broadcast to guild while not in a guild.");
+		return;
+	elseif distributionType == "PARTY" and not IsInGroup(LE_PARTY_CATEGORY_HOME) then
+		TRP3_API.Log("Attempted to broadcast to group while not in a group.");
 		return;
 	end
 
