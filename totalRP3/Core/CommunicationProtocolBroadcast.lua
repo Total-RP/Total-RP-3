@@ -118,7 +118,7 @@ local function broadcast(command, method, ...)
 		return;
 	end
 
-	local message = AssembleDelimitedMessage(command, BROADCAST_HEADER, ...);
+	local message = AssembleDelimitedMessage(BROADCAST_HEADER, command, ...);
 
 	if not message then
 		-- Error already raised by AssembleDelimitedMessage.
