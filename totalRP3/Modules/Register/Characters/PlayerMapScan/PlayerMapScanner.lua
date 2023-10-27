@@ -167,6 +167,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	newMapScanner("playerScan"); -- default player scan, don't need the return here
 	---@type MapScanner
 	local guildMapScanner = newMapScanner("guildScan");
+	guildMapScanner.scanIcon = Ellyb.Icon(TRP3_InterfaceIcons.MiscInfoGuildRank);
 	guildMapScanner.scanOptionText = loc.MAP_SCAN_CHAR_GUILD_ONLY;
 	guildMapScanner.scanTitle = loc.MAP_SCAN_CHAR_GUILD_ONLY_TITLE;
 	guildMapScanner.broadcastMethod = TRP3_API.BroadcastMethod.Guild;
