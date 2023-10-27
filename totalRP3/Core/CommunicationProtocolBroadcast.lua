@@ -124,7 +124,10 @@ local function broadcast(command, method, ...)
 
 	local message = AssembleDelimitedMessage(command, BROADCAST_HEADER, ...);
 
-	if #message > BROADCAST_MAX_MESSAGE_LEN then
+	if not message then
+		-- Error already raised by AssembleDelimitedMessage.
+		return;
+	elseif #message > BROADCAST_MAX_MESSAGE_LEN then
 		securecall(error, "attempted to send an oversized broadcast message");
 		return;
 	end
@@ -200,12 +203,16 @@ end
 local function sendP2PMessage(target, command, ...)
 	-- P2P messages don't use the broadcast header.
 	local message = AssembleDelimitedMessage(command, ...);
-	if message:len() < BROADCAST_MAX_MESSAGE_LEN then
-		Chomp.SendAddonMessage(BROADCAST_HEADER, message, "WHISPER", target);
-		Comm.totalBroadcastP2P = Comm.totalBroadcastP2P + BROADCAST_HEADER:len() + message:len();
-	else
-		TRP3_API.Log(("Trying a P2P message with a message with length %s. Abort!"):format(message:len()));
+
+	if not message then
+		-- Error already raised by AssembleDelimitedMessage.
+		return;
+	elseif #message > BROADCAST_MAX_MESSAGE_LEN then
+		securecall(error, "attempted to send an oversized p2p message");
+		return;
 	end
+
+	Chomp.SendAddonMessage(BROADCAST_HEADER, message, "WHISPER", target);
 end
 Comm.broadcast.sendP2PMessage = sendP2PMessage;
 
