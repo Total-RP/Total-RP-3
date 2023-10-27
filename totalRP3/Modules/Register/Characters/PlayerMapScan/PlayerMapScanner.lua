@@ -121,9 +121,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	local SCAN_COMMAND = "C_SCAN";
 	---@type MapScanner
-	local playerMapScanner = AddOn_TotalRP3.MapScanner("playerScan")
+	local playerMapScanner = AddOn_TotalRP3.MapScanner("playerScan");
 	-- Set scan display properties
-	playerMapScanner.scanIcon = Ellyb.Icon(TRP3_InterfaceIcons.PlayerScanIcon)
+	playerMapScanner.scanIcon = Ellyb.Icon(TRP3_InterfaceIcons.PlayerScanIcon);
 	playerMapScanner.scanOptionText = loc.MAP_SCAN_CHAR;
 	playerMapScanner.scanTitle = loc.MAP_SCAN_CHAR_TITLE;
 	-- Indicate the name of the pin template to use with this scan.
@@ -140,13 +140,13 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	-- Players can only scan for other players in zones where it is possible to retrieve player coordinates.
 	function playerMapScanner:CanScan()
 		if not getConfigValue(CONFIG_ENABLE_MAP_LOCATION) then
-			return false
+			return false;
 		end
 
 		-- Check if the map we are going to scan is the map the player is currently in
 		-- and if we have access to coordinates. If not, it's a protected zone and we cannot scan.
 		if Map.getDisplayedMapID() == Map.getPlayerMapID() then
-			local x, y = Map.getPlayerCoordinates()
+			local x, y = Map.getPlayerCoordinates();
 			if not x or not y then
 				return false;
 			end
@@ -167,7 +167,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			if shouldAnswerToLocationRequest() then
 				local playerMapID = Map.getPlayerMapID();
 				if playerMapID ~= mapID then
-					return
+					return;
 				end
 				local x, y = Map.getPlayerCoordinates();
 				if x and y then
