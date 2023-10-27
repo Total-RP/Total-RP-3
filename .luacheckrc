@@ -457,6 +457,7 @@ stds.wow = {
 		"IsControlKeyDown",
 		"IsGuildMember",
 		"IsInGroup",
+		"IsInGuild",
 		"IsInInstance",
 		"IsInRaid",
 		"IsItemInRange",
