@@ -172,8 +172,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	guildMapScanner.scanTitle = loc.MAP_SCAN_CHAR_GUILD_ONLY_TITLE;
 	guildMapScanner.broadcastMethod = TRP3_API.BroadcastMethod.Guild;
 
-	TRP3_PlayerMapScanner = playerMapScanner;
-	TRP3_GuildMapScanner = guildMapScanner;
 	guildMapScanner.CanScan = function()
 		return PlayerMapScannerMixin:CanScan() and IsInGuild();
 	end
