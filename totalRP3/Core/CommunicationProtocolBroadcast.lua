@@ -165,16 +165,8 @@ function Comm.broadcast.registerP2PCommand(command, callback)
 end
 
 local function sendP2PMessage(target, command, ...)
-	local message = command;
-	for _, arg in pairs({...}) do
-		arg = tostring(arg);
-		if arg:find(BROADCAST_SEPARATOR) then
-			TRP3_API.Log("Trying a broadcast with a arg containing the separator character. Abort!");
-			return;
-		end
-		message = message .. BROADCAST_SEPARATOR .. arg;
-	end
-	if message:len() < 254 then
+	local message = assembleMessage(command, ...);
+	if message:len() < BROADCAST_MAX_MESSAGE_LEN then
 		Chomp.SendAddonMessage(BROADCAST_HEADER, message, "WHISPER", target);
 		Comm.totalBroadcastP2P = Comm.totalBroadcastP2P + BROADCAST_HEADER:len() + message:len();
 	else
