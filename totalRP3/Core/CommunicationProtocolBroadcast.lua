@@ -138,13 +138,12 @@ local function broadcast(command, method, ...)
 end
 Comm.broadcast.broadcast = broadcast;
 
-local function onBroadcastReceived(message, sender)
-	local header, command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
-	if header ~= BROADCAST_HEADER or not command then
-		return; -- If not RP protocol or don't have a command
+local function onBroadcastReceived(sender, header, command, ...)
+	if header ~= BROADCAST_HEADER then
+		return; -- If not RP protocol
 	end
 	for _, callback in pairs(PREFIX_REGISTRATION[command] or Globals.empty) do
-		securecallfunction(callback, sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+		securecallfunction(callback, sender, ...);
 	end
 end
 
@@ -175,11 +174,10 @@ end
 -- Peer to peer part
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onP2PMessageReceived(message, sender)
-	local command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
+local function onP2PMessageReceived(sender, command, ...)
 	if PREFIX_P2P_REGISTRATION[command] then
 		for _, callback in pairs(PREFIX_P2P_REGISTRATION[command]) do
-			securecallfunction(callback, sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+			securecallfunction(callback, sender, ...);
 		end
 	end
 end
@@ -282,19 +280,21 @@ local function onMessageReceived(_, prefix, message , distributionType, sender, 
 	end
 
 	if prefix == BROADCAST_HEADER then
-
 		if not sender:find('-') then
 			sender = Utils.str.unitInfoToID(sender);
 		end
 
 		if not isIDIgnored(sender) then
-			if isBroadcastMessage(distributionType, channel) then
-				onBroadcastReceived(message, sender, channel);
-			else
-				onP2PMessageReceived(message, sender);
-			end
-		end
+			local handler;
 
+			if isBroadcastMessage(distributionType, channel) then
+				handler = onBroadcastReceived;
+			else
+				handler = onP2PMessageReceived;
+			end
+
+			handler(sender, strsplit(BROADCAST_SEPARATOR, message));
+		end
 	end
 end
 
