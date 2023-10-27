@@ -174,6 +174,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	TRP3_PlayerMapScanner = playerMapScanner;
 	TRP3_GuildMapScanner = guildMapScanner;
+	guildMapScanner.CanScan = function()
+		return PlayerMapScannerMixin:CanScan() and IsInGuild();
+	end
 
 	--{{{ Broadcast commands
 	broadcast.registerCommand(SCAN_COMMAND, function(sender, mapID)
