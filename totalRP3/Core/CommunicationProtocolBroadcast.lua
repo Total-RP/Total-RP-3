@@ -84,6 +84,11 @@ local function broadcast(command, method, ...)
 		distributionType = "PARTY";
 	end
 
+	-- On error handling - ideally many of these checks would hard error, but
+	-- this reportedly bricks the map scanner code in a catastrophic way. As
+	-- such we'll use the securecall(error) pattern to route errors to the
+	-- global error handler and then return normally.
+
 	if type(command) ~= "string" or command == "" then
 		securecall(error, "invalid broadcast command");
 		return;
