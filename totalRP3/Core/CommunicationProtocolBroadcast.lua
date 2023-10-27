@@ -147,7 +147,7 @@ local function onBroadcastReceived(message, sender)
 	end
 	Comm.totalBroadcastR = Comm.totalBroadcastR + BROADCAST_HEADER:len() + message:len();
 	for _, callback in pairs(PREFIX_REGISTRATION[command] or Globals.empty) do
-		callback(sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+		securecallfunction(callback, sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 	end
 end
 
@@ -183,7 +183,7 @@ local function onP2PMessageReceived(message, sender)
 	local command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
 	if PREFIX_P2P_REGISTRATION[command] then
 		for _, callback in pairs(PREFIX_P2P_REGISTRATION[command]) do
-			callback(sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+			securecallfunction(callback, sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 		end
 	end
 end
