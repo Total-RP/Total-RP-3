@@ -1675,6 +1675,9 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed a recycling issue with RP nameplates when using Plater Nameplates.
 
 ]],
+
+	MAP_SCAN_CHAR_GUILD_ONLY = "Scan for guild members",
+	MAP_SCAN_CHAR_GUILD_ONLY_TITLE = "Guild",
 };
 
 -- Bindings and FrameXML Global Strings
