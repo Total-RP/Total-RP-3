@@ -51,8 +51,8 @@ Comm.totalBroadcastP2P = 0;
 Comm.totalBroadcastR = 0;
 Comm.totalBroadcastP2PR = 0;
 
-local function assembleMessage(command, ...)
-	local message = BROADCAST_HEADER .. BROADCAST_SEPARATOR .. command;
+local function assembleMessage(command, includeHeader, ...)
+	local message = includeHeader and BROADCAST_HEADER .. BROADCAST_SEPARATOR .. command or command;
 	for _, arg in pairs({...}) do
 		arg = tostring(arg);
 		if arg:find(BROADCAST_SEPARATOR) then
@@ -104,7 +104,7 @@ local function broadcast(command, method, ...)
 		return;
 	end
 
-	local message = assembleMessage(command, ...);
+	local message = assembleMessage(command, true, ...);
 
 	if #message > BROADCAST_MAX_MESSAGE_LEN then
 		securecall(error, "attempted to send an oversized broadcast message");
@@ -180,7 +180,7 @@ function Comm.broadcast.registerP2PCommand(command, callback)
 end
 
 local function sendP2PMessage(target, command, ...)
-	local message = assembleMessage(command, ...);
+	local message = assembleMessage(command, false, ...);
 	if message:len() < BROADCAST_MAX_MESSAGE_LEN then
 		Chomp.SendAddonMessage(BROADCAST_HEADER, message, "WHISPER", target);
 		Comm.totalBroadcastP2P = Comm.totalBroadcastP2P + BROADCAST_HEADER:len() + message:len();
