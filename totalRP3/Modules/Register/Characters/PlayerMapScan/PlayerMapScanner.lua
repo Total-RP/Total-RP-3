@@ -148,7 +148,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			if not x or not y then
 				return false;
 			end
-		elseif TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Yell then
+		elseif not TRP3_ClientFeatures.ChannelBroadcasts then
 			-- When Yell comms are in use we forbid scans in zones other
 			-- than the one you're in.
 			return false;

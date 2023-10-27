@@ -65,45 +65,53 @@ local function assembleMessage(command, ...)
 	return message;
 end
 
-local BroadcastMethodNameLookup = tInvert(TRP3_BroadcastMethod);
-local function getBroadcastMethodName(method)
-	local methodName = BroadcastMethodNameLookup[method];
-	return methodName and methodName:upper();
-end
+TRP3_API.BroadcastMethod = {
+	World = "WORLD",
+	Guild = "GUILD",
+	Group = "GROUP",
+};
+
+local BroadcastDistributionTypes = {
+	[TRP3_API.BroadcastMethod.World] = (TRP3_ClientFeatures.ChannelBroadcasts and "CHANNEL" or "YELL"),
+	[TRP3_API.BroadcastMethod.Guild] = "GUILD",
+	[TRP3_API.BroadcastMethod.Group] = "RAID",  -- Downlevels to PARTY automatically.
+};
 
 local function broadcast(command, method, ...)
-	if not command then
-		securecall(error, "No broadcast command provided");
+	local distributionType = BroadcastDistributionTypes[method];
+
+	if type(command) ~= "string" or command == "" then
+		securecall(error, "invalid broadcast command");
 		return;
-	elseif method == TRP3_BroadcastMethod.Channel and not config_UseBroadcast() then
+	elseif not distributionType then
+		securecall(error, "invalid broadcast method");
 		return;
-	elseif method == TRP3_BroadcastMethod.Channel and not helloWorlded and command ~= HELLO_CMD then
+	elseif distributionType == "CHANNEL" and not config_UseBroadcast() then
+		-- No logging or error necessary; user disabled channel broadcasts.
+		return;
+	elseif distributionType == "CHANNEL" and not helloWorlded and command ~= HELLO_CMD then
 		TRP3_API.Log("Broadcast channel not yet initialized.");
 		return;
-	elseif method == TRP3_BroadcastMethod.Guild and not IsInGuild() then
+	elseif distributionType == "GUILD" and not IsInGuild() then
 		TRP3_API.Log("Attempted to broadcast to guild while not in a guild.");
 		return;
 	end
 
 	local message = assembleMessage(command, ...);
 
-	if message:len() < BROADCAST_MAX_MESSAGE_LEN then
-		local methodName = getBroadcastMethodName(method);
-		if not methodName then
-			securecall(error, "Unknown broadcast method: " .. method);
-			return;
-		end
-
-		if method == TRP3_BroadcastMethod.Channel then
-			local channelName = GetChannelName(config_BroadcastChannel());
-			Chomp.SendAddonMessage(BROADCAST_HEADER, message, methodName, channelName);
-		else
-			Chomp.SendAddonMessage(BROADCAST_HEADER, message, methodName);
-		end
-		Comm.totalBroadcast = Comm.totalBroadcast + BROADCAST_HEADER:len() + message:len();
-	else
-		TRP3_API.Log(("Trying a broadcast with a message with length %s. Abort!"):format(message:len()));
+	if #message > BROADCAST_MAX_MESSAGE_LEN then
+		securecall(error, "attempted to send an oversized broadcast message");
+		return;
 	end
+
+	local target;
+
+	if distributionType == "CHANNEL" then
+		target = GetChannelName(config_BroadcastChannel());
+	end
+
+	Chomp.SendAddonMessage(BROADCAST_HEADER, message, distributionType, target);
+	Comm.totalBroadcast = Comm.totalBroadcast + BROADCAST_HEADER:len() + message:len();
 end
 Comm.broadcast.broadcast = broadcast;
 
@@ -128,7 +136,7 @@ function Comm.broadcast.registerCommand(command, callback)
 end
 
 local SetChannelPasswordOld = SetChannelPassword;
-if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
+if TRP3_ClientFeatures.ChannelBroadcasts then
 	SetChannelPassword = function(data, password)
 		local _, channelName = GetChannelName(data);
 		if channelName ~= config_BroadcastChannel() or password == "" then
@@ -357,14 +365,14 @@ Comm.broadcast.init = function()
 	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_ADDON", onMessageReceived);
 
 	-- No broadcast channel on Classic or BCC
-	if TRP3_ClientFeatures.BroadcastMethod ~= TRP3_BroadcastMethod.Channel then
+	if not TRP3_ClientFeatures.ChannelBroadcasts then
 		TRP3_Addon:TriggerEvent(TRP3_Addon.Events.BROADCAST_CHANNEL_READY);
 		return
 	end
 
 	-- Then, launch the loop
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-		if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
+		if TRP3_ClientFeatures.ChannelBroadcasts then
 			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_UI_UPDATE", function() moveBroadcastChannelToTheBottomOfTheList(); end);
 			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_COUNT_UPDATE", function() moveBroadcastChannelToTheBottomOfTheList(); end);
 			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_CHANNEL_JOIN", function() moveBroadcastChannelToTheBottomOfTheList(); end);
@@ -390,7 +398,7 @@ Comm.broadcast.init = function()
 					TRP3_API.Log("Step 2: Connected to broadcast channel: " .. config_BroadcastChannel() .. ". Now sending HELLO command.");
 					moveBroadcastChannelToTheBottomOfTheList(true);
 					if not helloWorlded then
-						broadcast(HELLO_CMD, TRP3_ClientFeatures.BroadcastMethod, Globals.version, Utils.str.sanitizeVersion(Globals.version_display), Globals.extended_version, Utils.str.sanitizeVersion(Globals.extended_display_version));
+						broadcast(HELLO_CMD, TRP3_API.BroadcastMethod.World, Globals.version, Utils.str.sanitizeVersion(Globals.version_display), Globals.extended_version, Utils.str.sanitizeVersion(Globals.extended_display_version));
 					end
 				end
 			end, 15);
@@ -414,7 +422,7 @@ Comm.broadcast.init = function()
 		end
 	end);
 
-	if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
+	if TRP3_ClientFeatures.ChannelBroadcasts then
 		-- For when someone just places a password
 		TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_CHANNEL_NOTICE_USER", function(_, mode, user, _, _, _, _, _, _, channel)
 			if mode == "OWNER_CHANGED" and user == TRP3_API.globals.player_id and channel == config_BroadcastChannel() then

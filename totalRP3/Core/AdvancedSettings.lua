@@ -17,7 +17,7 @@ TRP3_API.ADVANCED_SETTINGS_KEYS = {
 }
 
 -- Broadcast keys should only be registered in Retail
-if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
+if TRP3_ClientFeatures.ChannelBroadcasts then
 	TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS = "comm_broad_use";
 	TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL = "comm_broad_chan";
 	TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST = "MAKE_SURE_BROADCAST_CHANNEL_IS_LAST";
@@ -37,7 +37,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_API.ADVANCED_SETTINGS_STRUCTURE.menuText = loc.CO_ADVANCED_SETTINGS_MENU_NAME
 	TRP3_API.ADVANCED_SETTINGS_STRUCTURE.pageText = loc.CO_ADVANCED_SETTINGS
 
-	if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
+	if TRP3_ClientFeatures.ChannelBroadcasts then
 		-- Broadcast settings
 		tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigH1",
