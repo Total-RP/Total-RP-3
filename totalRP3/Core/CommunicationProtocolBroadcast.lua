@@ -46,10 +46,6 @@ local BROADCAST_VERSION = 1;
 local BROADCAST_SEPARATOR = "~";
 local BROADCAST_HEADER = BROADCAST_PREFIX .. BROADCAST_VERSION;
 local BROADCAST_MAX_MESSAGE_LEN = 254;
-Comm.totalBroadcast = 0;
-Comm.totalBroadcastP2P = 0;
-Comm.totalBroadcastR = 0;
-Comm.totalBroadcastP2PR = 0;
 
 local function AssembleDelimitedMessage(...)
 	local parts = { ... };
@@ -139,7 +135,6 @@ local function broadcast(command, method, ...)
 	end
 
 	Chomp.SendAddonMessage(BROADCAST_HEADER, message, distributionType, target);
-	Comm.totalBroadcast = Comm.totalBroadcast + BROADCAST_HEADER:len() + message:len();
 end
 Comm.broadcast.broadcast = broadcast;
 
@@ -148,7 +143,6 @@ local function onBroadcastReceived(message, sender)
 	if header ~= BROADCAST_HEADER or not command then
 		return; -- If not RP protocol or don't have a command
 	end
-	Comm.totalBroadcastR = Comm.totalBroadcastR + BROADCAST_HEADER:len() + message:len();
 	for _, callback in pairs(PREFIX_REGISTRATION[command] or Globals.empty) do
 		securecallfunction(callback, sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 	end
@@ -182,7 +176,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onP2PMessageReceived(message, sender)
-	Comm.totalBroadcastP2PR = Comm.totalBroadcastP2PR + BROADCAST_HEADER:len() + message:len();
 	local command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
 	if PREFIX_P2P_REGISTRATION[command] then
 		for _, callback in pairs(PREFIX_P2P_REGISTRATION[command]) do
