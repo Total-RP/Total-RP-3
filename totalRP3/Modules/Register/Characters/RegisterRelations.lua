@@ -178,7 +178,7 @@ local function onActionSelected(selectedAction)
 				{},
 				{function(red, green, blue)
 					local color = TRP3_API.CreateColorFromBytes(red, green, blue)
-					relation.color = color:GenerateHexColor()
+					relation.color = color:GenerateHexColorOpaque()
 					TRP3_API.configuration.setValue("register_relation_list", getRelationList())
 					TRP3_API.configuration.updateElementByTitle("main_config_relations", originalRelation, "title", getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id)))
 				end, TRP3_API.CreateColorFromHexString(relation.color):GetRGBAsBytes() }
@@ -237,7 +237,7 @@ buildConfigPageElements = function ()
 												name = relationTitle,
 												description = description,
 												texture = relationIcon,
-												color = Color(red, green, blue):GenerateHexadecimalColor(),
+												color = TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque(),
 												order = 0,
 												inUse = false,
 											};
