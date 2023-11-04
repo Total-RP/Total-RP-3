@@ -1,17 +1,12 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Ellyb = TRP3_API.Ellyb;
-
-local Color = Ellyb.Color;
-
 local Globals = TRP3_API.globals;
 local loc = TRP3_API.loc;
 local EMPTY = Globals.empty;
 local tcopy = TRP3_API.utils.table.copy;
 local get = TRP3_API.profile.getData;
 local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
-local Events = TRP3_API.events;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local getProfiles = TRP3_API.profile.getProfiles;
 
@@ -26,7 +21,7 @@ end
 TRP3_API.register.relation = {};
 
 
-Events.listenToEvent(Events.WORKFLOW_ON_LOAD, function()
+TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 	getCompleteName, getPlayerCompleteName = TRP3_API.register.getCompleteName, TRP3_API.register.getPlayerCompleteName;
 end);
 
@@ -35,13 +30,13 @@ end);
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local DEFAULT_RELATIONS = {
-	UNFRIENDLY = { id = "UNFRIENDLY", order = 5, texture = TRP3_InterfaceIcons.RelationUnfriendly, color = Ellyb.ColorManager.RED:GenerateHexadecimalColor() },
-	NONE = { id = "NONE", order = 6, texture = TRP3_InterfaceIcons.RelationNone, color = Ellyb.ColorManager.WHITE:GenerateHexadecimalColor() },
-	NEUTRAL = { id = "NEUTRAL", order = 4, texture = TRP3_InterfaceIcons.RelationNeutral, color = Ellyb.Color.CreateFromRGBA(0.5, 0.5, 1, 1):GenerateHexadecimalColor() },
-	BUSINESS = { id = "BUSINESS", order = 3, texture = TRP3_InterfaceIcons.RelationBusiness, color = Ellyb.Color.CreateFromRGBA(1, 1, 0, 1):GenerateHexadecimalColor() },
-	FRIEND = { id = "FRIEND", order = 2, texture = TRP3_InterfaceIcons.RelationFriend, color = Ellyb.ColorManager.GREEN:GenerateHexadecimalColor() },
-	LOVE = { id = "LOVE", order = 1, texture = TRP3_InterfaceIcons.RelationLove, color = Ellyb.ColorManager.PINK:GenerateHexadecimalColor() },
-	FAMILY = { id = "FAMILY", order = 0, texture = TRP3_InterfaceIcons.RelationFamily, color = Ellyb.Color.CreateFromRGBA(1, 0.75, 0, 1):GenerateHexadecimalColor() },
+	UNFRIENDLY = { id = "UNFRIENDLY", order = 5, texture = TRP3_InterfaceIcons.RelationUnfriendly, color = TRP3_API.Colors.Red:GenerateHexColorOpaque() },
+	NONE = { id = "NONE", order = 6, texture = TRP3_InterfaceIcons.RelationNone, color = TRP3_API.Colors.White:GenerateHexColorOpaque() },
+	NEUTRAL = { id = "NEUTRAL", order = 4, texture = TRP3_InterfaceIcons.RelationNeutral, color = TRP3_API.CreateColor(0.5, 0.5, 1):GenerateHexColorOpaque() },
+	BUSINESS = { id = "BUSINESS", order = 3, texture = TRP3_InterfaceIcons.RelationBusiness, color = TRP3_API.CreateColor(1, 1, 0):GenerateHexColorOpaque() },
+	FRIEND = { id = "FRIEND", order = 2, texture = TRP3_InterfaceIcons.RelationFriend, color = TRP3_API.Colors.Green:GenerateHexColorOpaque() },
+	LOVE = { id = "LOVE", order = 1, texture = TRP3_InterfaceIcons.RelationLove, color = TRP3_API.Colors.Pink:GenerateHexColorOpaque() },
+	FAMILY = { id = "FAMILY", order = 0, texture = TRP3_InterfaceIcons.RelationFamily, color = TRP3_API.CreateColor(1, 0.75, 0):GenerateHexColorOpaque() },
 };
 local ACTIONS = {
 	DELETE= 'DEL',
@@ -118,13 +113,12 @@ TRP3_API.register.relation.getRelationTexture = getRelationTexture;
 
 local function getRelationColors(profileID)
 	local relation = getRelation(profileID);
-	local color = Color(relation.color);
-	return color:GetRed(), color:GetGreen(), color:GetBlue(), color:GetAlpha();
+	return TRP3_API.CreateColorFromHexString(relation.color):GetRGBAsBytes();
 end
 TRP3_API.register.relation.getRelationColors = getRelationColors;
 
 local function getColor(relation)
-	return Color('#'..getRelationInfo(relation).color);
+	return TRP3_API.CreateColorFromHexString('#'..getRelationInfo(relation).color);
 end
 TRP3_API.register.relation.getColor = getColor;
 
@@ -154,19 +148,19 @@ local function onActionSelected(selectedAction)
 	local action = selectedAction:sub(1, 3)
 	local relationID = selectedAction:sub(4)
 	local relation = getRelationInfo(relationID)
-	local orginalRelation = getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id))
+	local originalRelation = getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id))
 	local playerIdentifier = "{"..loc.REG_RELATION_REPLACE_PLAYER.."}";
 	local targetIdentifier = "{"..loc.REG_RELATION_REPLACE_TARGET.."}";
 	if action==ACTIONS.UPDATE_TOOLTIP then
-		TRP3_API.popup.showTextInputPopup(loc.CO_RELATIONS_UPDATE_DESCRIPTION:format(orginalRelation,loc.REG_RELATION_REPLACE_PLAYER, loc.REG_RELATION_REPLACE_TARGET), function(tooltip)
+		TRP3_API.popup.showTextInputPopup(loc.CO_RELATIONS_UPDATE_DESCRIPTION:format(originalRelation,loc.REG_RELATION_REPLACE_PLAYER, loc.REG_RELATION_REPLACE_TARGET), function(tooltip)
 			if tooltip == "" then
-				return TRP3_API.popup.showAlertPopup(loc.CO_RELATIONS_UPDATE_DESCRIPTION_ERROR:format(orginalRelation))
+				return TRP3_API.popup.showAlertPopup(loc.CO_RELATIONS_UPDATE_DESCRIPTION_ERROR:format(originalRelation))
 			end
 			local unlocalisedPlayer = '{player}';
 			local unlocalisedTarget = '{target}';
 			relation.description = tooltip:gsub(unlocalisedPlayer,'%%1$s'):gsub(unlocalisedTarget, '%%2$s'):gsub(playerIdentifier, '%%1$s'):gsub(targetIdentifier, '%%2$s')
 			TRP3_API.configuration.setValue("register_relation_list", getRelationList())
-			TRP3_API.configuration.updateElementByTitle("main_config_relations", orginalRelation, "text", tooltip)
+			TRP3_API.configuration.updateElementByTitle("main_config_relations", originalRelation, "text", tooltip)
 		end, function()  end, relation.description:format(playerIdentifier, targetIdentifier))
 	elseif action==ACTIONS.UPDATE_ICON then
 		TRP3_API.popup.showPopup(
@@ -175,7 +169,7 @@ local function onActionSelected(selectedAction)
 			{function(relationIcon)
 				relation.texture = relationIcon
 				TRP3_API.configuration.setValue("register_relation_list", getRelationList())
-				TRP3_API.configuration.updateElementByTitle("main_config_relations", orginalRelation, "icon", relationIcon)
+				TRP3_API.configuration.updateElementByTitle("main_config_relations", originalRelation, "icon", relationIcon)
 			end}
 		)
 	elseif action==ACTIONS.UPDATE_COLOR then
@@ -183,17 +177,17 @@ local function onActionSelected(selectedAction)
 				TRP3_API.popup.COLORS,
 				{},
 				{function(red, green, blue)
-					local color = Color(red, green, blue)
+					local color = TRP3_API.CreateColorFromBytes(red, green, blue)
 					relation.color = color:GenerateHexColor()
 					TRP3_API.configuration.setValue("register_relation_list", getRelationList())
-					TRP3_API.configuration.updateElementByTitle("main_config_relations", orginalRelation, "title", getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id)))
-				end, Ellyb.Color(relation.color):GetRGBAsBytes() }
+					TRP3_API.configuration.updateElementByTitle("main_config_relations", originalRelation, "title", getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id)))
+				end, TRP3_API.CreateColorFromHexString(relation.color):GetRGBAsBytes() }
 		)
 	elseif not relation.inUse and action==ACTIONS.DELETE then
 		TRP3_API.popup.showConfirmPopup(loc.CO_RELATIONS_DELETE_WARNING:format(getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id))), function()
 			local relationList = getRelationList()
 			TRP3_API.configuration.setValue("register_relation_list", relationList)
-			TRP3_API.configuration.removeElementFromPageByTitle("main_config_relations", orginalRelation)
+			TRP3_API.configuration.removeElementFromPageByTitle("main_config_relations", originalRelation)
 			relationList[relationID] = nil
 		end)
 	end
@@ -305,7 +299,7 @@ TRP3_API.register.inits.relationsInit = function()
 	tcopy(configDefault,DEFAULT_RELATIONS)
 	TRP3_API.configuration.registerConfigKey("register_relation_list", configDefault);
 
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 
 	TRP3_API.configuration.registerConfigurationPage({
 		id = "main_config_relations",
