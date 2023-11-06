@@ -32,10 +32,6 @@ local function OnCallbackEventFired(registry, event, ...)
 		return;
 	end
 
-	if TRP3_API.IsEventValid(TRP3_API.GameEvents, event) then
-		return;
-	end
-
 	local qualifiedEventName = "TRP3_" .. event;
 
 	if not EventTrace:CanLogEvent(qualifiedEventName) or not EventTrace:IsLoggingCREvents() then
