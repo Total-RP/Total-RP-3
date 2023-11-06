@@ -10,6 +10,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Player.lua"/>
 	<Include file="Globals.lua"/>
 	<Include file="Logging.lua"/>
+	<Include file="Debug.lua"/>
 	<Include file="Prototype.lua"/>
 	<Include file="Objects\Callback.lua"/>
 	<Include file="Objects\CallbackGroup.lua"/>

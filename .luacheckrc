@@ -355,6 +355,14 @@ stds.wow = {
 			},
 		},
 
+		EventTrace = {
+			fields = {
+				"CanLogEvent",
+				"IsLoggingCREvents",
+				"LogLine",
+			},
+		},
+
 		ScrollUtil = {
 			fields = {
 				"AddManagedScrollBarVisibilityBehavior",
@@ -462,6 +470,7 @@ stds.wow = {
 		"IsVeteranTrialAccount",
 		"JoinChannelByName",
 		"Lerp",
+		"LIGHTBLUE_FONT_COLOR",
 		"Mixin",
 		"MouseIsOver",
 		"NeutralPlayerSelectFaction",
@@ -476,6 +485,7 @@ stds.wow = {
 		"ReloadUI",
 		"RemoveChatWindowChannel",
 		"ResetCursor",
+		"SafePack",
 		"Saturate",
 		"ScrollingEdit_OnCursorChanged",
 		"ScrollingEdit_OnLoad",
@@ -504,6 +514,7 @@ stds.wow = {
 		"SwapChatChannelByLocalID",
 		"tostringall",
 		"UIDROPDOWNMENU_INIT_MENU",
+		"UIPanelCloseButton_SetBorderAtlas",
 		"UnitAffectingCombat",
 		"UnitAura",
 		"UnitBattlePetLevel",

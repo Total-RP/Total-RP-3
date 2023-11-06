@@ -47,6 +47,12 @@ TRP3_Addon.Events =
 
 	-- Notification for when a dice roll is executed.
 	DICE_ROLL = "DICE_ROLL",
+
+	-- Notification for when a map scan has started.
+	MAP_SCAN_STARTED = "MAP_SCAN_STARTED",
+
+	-- Notification for when a map scan has ended.
+	MAP_SCAN_ENDED = "MAP_SCAN_ENDED",
 };
 
 -- TODO: Would prefer to move this to OnInitialize, however that first requires
@@ -100,3 +106,5 @@ do
 
 	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", OnRegisterDataUpdated);
 end
+
+TRP3_DebugUtil.RemoveFromEventTraceWindow(GameEventRegistry);
