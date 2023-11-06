@@ -1494,6 +1494,27 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	SLASH_CMD_SET_SUCCESS = "Successfully updated the %1$q field for your current profile.",
 	MACRO_RPSTATUS_INVALID = "Unknown roleplay status: %s",
 
+	LAUNCHER_CONFIG_MENU_TITLE = "Launcher settings",
+	LAUNCHER_CONFIG_PAGE_DESCRIPTION = "This settings on this page control the behavior of various widgets that provide access to the Total RP 3 interface, such as minimap buttons.",
+	LAUNCHER_CONFIG_LOCK_MINIMAP_BUTTON = "Lock minimap button",
+	LAUNCHER_CONFIG_LOCK_MINIMAP_BUTTON_HELP = "If checked, prevent the minimap button from being draggable.",
+	LAUNCHER_CONFIG_RESET_MINIMAP_BUTTON = "Reset minimap button position",
+	LAUNCHER_CONFIG_RESET_MINIMAP_BUTTON_HELP = "Resets the position of the minimap button to the default location.",
+	LAUNCHER_CONFIG_ADDON_COMPARTMENT = "Addon compartment",
+	LAUNCHER_CONFIG_SHOW_ADDON_COMPARTMENT_BUTTON = "Show in addon compartment",
+	LAUNCHER_CONFIG_SHOW_ADDON_COMPARTMENT_BUTTON_HELP = "If checked, display an entry for Total RP 3 in Blizzard's addon compartment menu located near the minimap.|n|nThis feature is exclusive to Dragonflight and has no effect in Classic.",
+	LAUNCHER_MODULE_NAME = "Launcher",
+	LAUNCHER_MODULE_DESCRIPTION = "Provides user interface elements such as a minimap button to control the addon.",
+
+	LAUNCHER_CONFIG_ACTIONS = "Launcher actions",
+	LAUNCHER_ACTION_OPEN = "Toggle main window",
+	LAUNCHER_ACTION_TOOLBAR = "Toggle toolbar",
+	LAUNCHER_ACTION_STATUS = "Toggle roleplay status",
+	LAUNCHER_ACTION_SETTINGS = "Open settings page",
+	LAUNCHER_ACTION_DIRECTORY = "Open directory page",
+	LAUNCHER_ACTION_PROFILES = "Open profiles page",
+	LAUNCHER_ACTION_PLAYER = "Open current profile page",
+
 	WHATS_NEW_25_4 = [[# Changelog version 2.4.3
 
 ## Added
@@ -1637,26 +1658,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue with "No player named..." messages appearing when hovering players on realms with non-latin characters.
 
 ]],
-	LAUNCHER_CONFIG_MENU_TITLE = "Launcher settings",
-	LAUNCHER_CONFIG_PAGE_DESCRIPTION = "This settings on this page control the behavior of various widgets that provide access to the Total RP 3 interface, such as minimap buttons.",
-	LAUNCHER_CONFIG_LOCK_MINIMAP_BUTTON = "Lock minimap button",
-	LAUNCHER_CONFIG_LOCK_MINIMAP_BUTTON_HELP = "If checked, prevent the minimap button from being draggable.",
-	LAUNCHER_CONFIG_RESET_MINIMAP_BUTTON = "Reset minimap button position",
-	LAUNCHER_CONFIG_RESET_MINIMAP_BUTTON_HELP = "Resets the position of the minimap button to the default location.",
-	LAUNCHER_CONFIG_ADDON_COMPARTMENT = "Addon compartment",
-	LAUNCHER_CONFIG_SHOW_ADDON_COMPARTMENT_BUTTON = "Show in addon compartment",
-	LAUNCHER_CONFIG_SHOW_ADDON_COMPARTMENT_BUTTON_HELP = "If checked, display an entry for Total RP 3 in Blizzard's addon compartment menu located near the minimap.|n|nThis feature is exclusive to Dragonflight and has no effect in Classic.",
-	LAUNCHER_MODULE_NAME = "Launcher",
-	LAUNCHER_MODULE_DESCRIPTION = "Provides user interface elements such as a minimap button to control the addon.",
-
-	LAUNCHER_CONFIG_ACTIONS = "Launcher actions",
-	LAUNCHER_ACTION_OPEN = "Toggle main window",
-	LAUNCHER_ACTION_TOOLBAR = "Toggle toolbar",
-	LAUNCHER_ACTION_STATUS = "Toggle roleplay status",
-	LAUNCHER_ACTION_SETTINGS = "Open settings page",
-	LAUNCHER_ACTION_DIRECTORY = "Open directory page",
-	LAUNCHER_ACTION_PROFILES = "Open profiles page",
-	LAUNCHER_ACTION_PLAYER = "Open current profile page",
 	WHATS_NEW_26_2 = [[# Changelog version 2.5.2
 
 ## Fixed
