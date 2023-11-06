@@ -173,7 +173,17 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	guildMapScanner.broadcastMethod = TRP3_API.BroadcastMethod.Guild;
 
 	guildMapScanner.CanScan = function()
-		return PlayerMapScannerMixin:CanScan() and IsInGuild();
+		if not IsInGuild() then
+			return false;
+		end
+		if not getConfigValue(CONFIG_ENABLE_MAP_LOCATION) then
+			return false;
+		end
+		local x, y = Map.getPlayerCoordinates();
+		if not x or not y then
+			return false;
+		end
+		return true;
 	end
 
 	--{{{ Broadcast commands
