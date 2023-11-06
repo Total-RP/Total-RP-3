@@ -2,6 +2,7 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local TRP3_API = select(2, ...);
+local L = TRP3_API.loc;
 
 local displayInfoPool = {};
 local playerCharacterPool = setmetatable({}, { __mode = "kv" });
@@ -18,7 +19,9 @@ local function GetOrCreateDisplayInfo(unitToken)
 	displayInfo.fullTitle = nil;
 	displayInfo.guildName = nil;
 	displayInfo.guildRank = nil;
+	displayInfo.guildIsCustom = nil;
 	displayInfo.icon = nil;
+	displayInfo.isRoleplayUnit = false;
 	displayInfo.name = nil;
 	displayInfo.roleplayStatus = nil;
 	displayInfo.shouldColorHealth = nil;
@@ -89,44 +92,48 @@ local function IsUnitOutOfCharacter(unitToken)
 	return roleplayStatus == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
 end
 
+local function IsNPCUnit(unitToken)
+	return not UnitIsPlayer(unitToken) and not UnitIsOtherPlayersPet(unitToken);
+end
+
 local function ShouldCustomizeUnitNamePlate(unitToken)
+	local shouldCustomize;
+
 	if not TRP3_NamePlates:IsEnabled() then
-		return false;  -- Module is disabled.
+		shouldCustomize = false;  -- Module is disabled.
 	elseif not unitToken then
-		return false;  -- Unit is invalid.
+		shouldCustomize = false;  -- Unit is invalid.
 	elseif UnitIsUnit(unitToken, "player") then
-		return false;  -- Never decorate personal nameplates.
+		shouldCustomize = false;  -- Never decorate personal nameplates.
 	elseif TRP3_NamePlatesSettings.DisableInCombat and isInCombat then
-		return false;  -- Player is in (or about to enter) combat.
+		shouldCustomize = false;  -- Player is in (or about to enter) combat.
 	elseif TRP3_NamePlatesSettings.DisableInInstances and IsInInstance() then
-		return false;   -- Player is in instanced content.
+		shouldCustomize = false;   -- Player is in instanced content.
 	elseif TRP3_NamePlatesSettings.DisableOutOfCharacter and IsUnitOutOfCharacter("player") then
-		return false;  -- Player is currently OOC.
-	elseif TRP3_NamePlatesSettings.DisableNonPlayableUnits and (not UnitIsPlayer(unitToken) and not UnitIsOtherPlayersPet(unitToken)) then
-		return false;  -- NPC unit decorations are disabled.
-	elseif TRP3_NamePlatesSettings.DisableOutOfCharacterUnits and IsUnitOutOfCharacter(unitToken) then
-		return false;  -- Unit is currently OOC.
+		shouldCustomize = false;  -- Player is currently OOC.
+	elseif TRP3_NamePlatesSettings.CustomizeNPCUnits == TRP3_NamePlateUnitCustomizationState.Disable and IsNPCUnit(unitToken) then
+		shouldCustomize = false;  -- NPC unit decorations are disabled.
+	elseif TRP3_NamePlatesSettings.CustomizeOOCUnits == TRP3_NamePlateUnitCustomizationState.Disable and IsUnitOutOfCharacter(unitToken) then
+		shouldCustomize = false;  -- Unit is currently OOC.
 	else
-		return true;
+		shouldCustomize = true;
 	end
+
+	return shouldCustomize;
 end
 
 local function ShouldHideUnitNamePlate(unitToken)
-	if TRP3_NamePlatesSettings.ShowTargetUnit and UnitIsUnit(unitToken, "target") then
-		return false;
-	end
+	local shouldHide;
 
-	local roleplayStatus = GetUnitRoleplayStatus(unitToken);
-	local isNonRoleplayUnit = (roleplayStatus == nil);
-	local isOutOfCharacter = (roleplayStatus == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER);
-
-	if TRP3_NamePlatesSettings.HideNonRoleplayUnits and isNonRoleplayUnit then
-		return true;
-	elseif TRP3_NamePlatesSettings.HideOutOfCharacterUnits and isOutOfCharacter then
-		return true;
+	if TRP3_NamePlatesSettings.CustomizeNPCUnits == TRP3_NamePlateUnitCustomizationState.Hide and IsNPCUnit(unitToken) then
+		shouldHide = true;   -- NPC units should be hidden.
+	elseif TRP3_NamePlatesSettings.CustomizeOOCUnits == TRP3_NamePlateUnitCustomizationState.Hide and IsUnitOutOfCharacter(unitToken) then
+		shouldHide = true;   -- OOC units should be hidden.
 	else
-		return false;
+		shouldHide = false;
 	end
+
+	return shouldHide;
 end
 
 local function GetCompanionColorForDisplay(colorHexString)
@@ -151,28 +158,29 @@ end
 
 local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 	local displayInfo = GetOrCreateDisplayInfo(unitToken);
-	displayInfo.shouldHide = ShouldHideUnitNamePlate(unitToken);
 
 	if characterID and TRP3_API.register.isUnitIDKnown(characterID) then
 		local player = GetOrCreatePlayerFromCharacterID(characterID);
 		local classToken = UnitClassBase(unitToken);
 
-		do  -- Names/Titles
-			if TRP3_NamePlatesSettings.CustomizeNames then
-				if TRP3_NamePlatesSettings.CustomizeFirstNames then
-					displayInfo.name = player:GetFirstName();
-				end
+		displayInfo.isRoleplayUnit = true;
 
-				if not displayInfo.name or displayInfo.name == "" then
-					displayInfo.name = player:GetRoleplayingName();
-				end
+		do  -- Names/Titles
+			if TRP3_NamePlatesSettings.CustomizeNames == TRP3_NamePlateUnitNameDisplayMode.FirstName then
+				displayInfo.name = player:GetFirstName();  -- May be nil or empty.
+			elseif TRP3_NamePlatesSettings.CustomizeNames == TRP3_NamePlateUnitNameDisplayMode.OriginalName then
+				displayInfo.name = player:GetName();  -- Should never be nil or empty.
+			end
+
+			if not displayInfo.name or displayInfo.name == "" then
+				displayInfo.name = player:GetRoleplayingName();
 			end
 
 			if TRP3_NamePlatesSettings.CustomizeTitles then
 				local prefix = player:GetTitle();
 
 				if prefix then
-					displayInfo.name = strjoin(" ", prefix, displayInfo.name or player:GetName());
+					displayInfo.name = strjoin(" ", prefix, displayInfo.name);
 				end
 			end
 
@@ -212,11 +220,21 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 
 		do  -- Guild Membership
 			if TRP3_NamePlatesSettings.CustomizeGuild then
-				local guildName, guildRank = GetGuildInfo(unitToken);
 				local customGuildInfo = player:GetCustomGuildMembership();
+				local customGuildName = customGuildInfo.name and string.trim(customGuildInfo.name) or nil;
+				local customGuildRank = customGuildInfo.rank and string.trim(customGuildInfo.rank) or nil;
 
-				displayInfo.guildName = customGuildInfo.name or guildName;
-				displayInfo.guildRank = customGuildInfo.rank or guildRank;
+				local originalGuildName, originalGuildRank = GetGuildInfo(unitToken);
+
+				if customGuildName and customGuildName ~= "" then
+					displayInfo.guildName = TRP3_NamePlatesUtil.GenerateCroppedGuildName(customGuildName);
+					displayInfo.guildRank = customGuildRank or L.DEFAULT_GUILD_RANK;
+					displayInfo.guildIsCustom = true;
+				elseif originalGuildName and originalGuildName ~= "" then
+					displayInfo.guildName = TRP3_NamePlatesUtil.GenerateCroppedGuildName(originalGuildName);
+					displayInfo.guildRank = originalGuildRank;
+					displayInfo.guildIsCustom = false;
+				end
 			end
 		end
 	end
@@ -234,13 +252,14 @@ end
 
 local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 	local displayInfo = GetOrCreateDisplayInfo(unitToken);
-	displayInfo.shouldHide = ShouldHideUnitNamePlate(unitToken);
 
 	local profile = TRP3_API.companions.register.getCompanionProfile(companionFullID);
 
 	if profile and profile.data then
+		displayInfo.isRoleplayUnit = true;
+
 		do  -- Names/Titles
-			if TRP3_NamePlatesSettings.CustomizeNames then
+			if TRP3_NamePlatesSettings.CustomizeNames ~= TRP3_NamePlateUnitNameDisplayMode.OriginalName then
 				displayInfo.name = profile.data.NA;
 			end
 
@@ -288,7 +307,6 @@ end
 
 local function GetNonPlayableUnitDisplayInfo(unitToken)
 	local displayInfo = GetOrCreateDisplayInfo(unitToken);
-	displayInfo.shouldHide = ShouldHideUnitNamePlate(unitToken);
 	return displayInfo;
 end
 
@@ -460,6 +478,31 @@ function TRP3_NamePlates:GetUnitDisplayInfo(unitToken)
 		for _, filter in ipairs(self.displayInfoFilters) do
 			securecallfunction(filter, unitToken, displayInfo);
 		end
+	end
+
+	-- Apply additional post-filter logic for non-roleplay units. Filters can
+	-- flag display info as being roleplay related or not, allowing other
+	-- addons to mark units like NPCs as being roleplay units.
+
+	if displayInfo and not displayInfo.isRoleplayUnit then
+		if TRP3_NamePlatesSettings.CustomizeNonRoleplayUnits == TRP3_NamePlateUnitCustomizationState.Disable then
+			displayInfo = nil;
+		elseif TRP3_NamePlatesSettings.CustomizeNonRoleplayUnits == TRP3_NamePlateUnitCustomizationState.Hide then
+			displayInfo.shouldHide = true;
+		end
+	end
+
+	-- If no explicit visibility was set by any filter, figure out a default
+	-- based on the unit in question.
+
+	if displayInfo and displayInfo.shouldHide == nil then
+		displayInfo.shouldHide = ShouldHideUnitNamePlate(unitToken);
+	end
+
+	-- Target visibility takes priority over everything else and is forced.
+
+	if displayInfo and TRP3_NamePlatesSettings.ShowTargetUnit and UnitIsUnit(unitToken, "target") then
+		displayInfo.shouldHide = false;
 	end
 
 	return displayInfo;

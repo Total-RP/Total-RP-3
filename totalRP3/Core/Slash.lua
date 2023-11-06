@@ -147,6 +147,22 @@ function TRP3_API.slash.rollDices(...)
 	return total, i;
 end
 
+local function isValidDiceObject(diceObject)
+	if type(diceObject) ~= "table" then
+		return false;
+	elseif type(diceObject.t) ~= "number" then  -- Roll total
+		return false;
+	elseif diceObject.c ~= nil and type(diceObject.c) ~= "number" then  -- Sides
+		return false;
+	elseif diceObject.d ~= nil and type(diceObject.d) ~= "number" then  -- Count
+		return false;
+	elseif diceObject.m ~= nil and type(diceObject.m) ~= "number" then  -- Modifier (+/-)
+		return false;
+	else
+		return true;
+	end
+end
+
 TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	TRP3_API.slash.registerCommand({
 		id = "roll",
@@ -157,17 +173,17 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	});
 
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(DICE_SIGNAL, function(arg, sender)
-		if sender ~= Globals.player_id then
-			if type(arg) == "table" then
-				if arg.c and arg.d and arg.t then
-					local modifierString = (arg.m == 0) and "" or format("%+d", arg.m); -- we add a + to positive modifiers and don't render a 0 value
-					Utils.message.displayMessage(loc.DICE_ROLL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), sender, arg.c, arg.d, modifierString, arg.t));
-				elseif arg.t then
-					local totalMessage = loc.DICE_TOTAL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), sender, arg.t);
-					Utils.message.displayMessage(totalMessage);
-				end
-				Utils.music.playSoundID(36629, "SFX", sender);
-			end
+		if sender == Globals.player_id or not isValidDiceObject(arg) then
+			return;
 		end
+
+		if arg.c and arg.d and arg.t then
+			local modifierString = (arg.m == 0) and "" or format("%+d", arg.m); -- we add a + to positive modifiers and don't render a 0 value
+			Utils.message.displayMessage(loc.DICE_ROLL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), sender, arg.c, arg.d, modifierString, arg.t));
+		elseif arg.t then
+			local totalMessage = loc.DICE_TOTAL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), sender, arg.t);
+			Utils.message.displayMessage(totalMessage);
+		end
+		Utils.music.playSoundID(36629, "SFX", sender);
 	end);
 end);

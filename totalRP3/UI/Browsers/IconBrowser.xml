@@ -1,0 +1,164 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="IconBrowser.lua"/>
+
+	<Button name="TRP3_IconBrowserButton" mixin="TRP3_IconBrowserButtonMixin" virtual="true">
+		<Size x="40" y="40"/>
+		<NormalTexture file="Interface\ICONS\INV_Misc_QuestionMark"/>
+		<PushedTexture file="Interface\ICONS\INV_Misc_QuestionMark"/>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<OnClick method="OnClick"/>
+		</Scripts>
+	</Button>
+
+	<StatusBar name="TRP3_IconBrowserProgressBar" mixin="TRP3_IconBrowserProgressBarMixin" virtual="true">
+		<Size x="250" y="14"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="2" y="-2"/>
+						<Anchor point="BOTTOMRIGHT" x="-2" y="2"/>
+					</Anchors>
+					<Color r="0" g="0" b="0" a="0.5"/>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture parentKey="BorderLeft" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
+					<Size x="16" y="0"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="-6" y="5"/>
+						<Anchor point="BOTTOMLEFT" x="-6" y="-5"/>
+					</Anchors>
+					<TexCoords left="0" right="0.0625" top="0" bottom="0.75"/>
+				</Texture>
+				<Texture parentKey="BorderRight" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
+					<Size x="16" y="0"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="6" y="5"/>
+						<Anchor point="BOTTOMRIGHT" x="6" y="-5"/>
+					</Anchors>
+					<TexCoords left="0.812" right="0.8745" top="0" bottom="0.75"/>
+				</Texture>
+				<Texture parentKey="BorderCenter" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
+					<Size x="16"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.BorderLeft" relativePoint="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.BorderRight" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords left="0.0625" right="0.812" top="0" bottom="0.75"/>
+				</Texture>
+				<FontString parentKey="Text" inherits="GameFontHighlightSmall">
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<BarTexture file="Interface\TargetingFrame\UI-StatusBar">
+			<Color r="0" g="0.75" b="0"/>
+		</BarTexture>
+		<Scripts>
+			<OnShow method="OnShow"/>
+		</Scripts>
+	</StatusBar>
+
+	<Frame name="TRP3_IconBrowser" mixin="TRP3_IconBrowserMixin" parent="TRP3_PopupsFrame" enableMouse="true">
+		<Size x="425" y="420"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Title" inherits="GameFontNormalLarge">
+					<Size y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="-17"/>
+						<Anchor point="TOPRIGHT" x="0" y="-17"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey="Backdrop" inherits="BackdropTemplate" setAllPoints="true" useParentLevel="true">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_16_3333" type="global"/>
+				</KeyValues>
+			</Frame>
+			<Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
+				<Size y="280"/>
+				<Anchors>
+					<Anchor point="TOP" y="-35"/>
+					<Anchor point="LEFT" x="15"/>
+					<Anchor point="RIGHT" x="-15"/>
+				</Anchors>
+			</Frame>
+			<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeKey="$parent.ScrollBox" relativePoint="TOPRIGHT"/>
+					<Anchor point="BOTTOMRIGHT" relativeKey="$parent.ScrollBox" relativePoint="BOTTOMRIGHT"/>
+				</Anchors>
+			</EventFrame>
+			<StatusBar parentKey="ProgressBar" inherits="TRP3_IconBrowserProgressBar">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.ScrollBox" relativePoint="BOTTOM" y="-10"/>
+				</Anchors>
+			</StatusBar>
+			<Frame parentKey="Filter">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.ProgressBar" relativePoint="BOTTOM" y="-10"/>
+					<Anchor point="LEFT" x="10"/>
+					<Anchor point="RIGHT" x="-10"/>
+					<Anchor point="BOTTOM" y="10"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="TotalText" inherits="GameFontNormal">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="0" y="-12"/>
+								<Anchor point="TOPRIGHT" x="0" y="-12"/>
+							</Anchors>
+							<Color b="0.95" r="0.95" g="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Frame parentKey="Backdrop" inherits="BackdropTemplate" setAllPoints="true" useParentLevel="true">
+						<KeyValues>
+							<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_3333" type="global"/>
+						</KeyValues>
+					</Frame>
+					<EditBox parentKey="EditBox" inherits="TRP3_TitledEditBox">
+						<Anchors>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+						</Anchors>
+					</EditBox>
+				</Frames>
+			</Frame>
+			<Button parentKey="CloseButton" inherits="TRP3_StyledButtonTemplate">
+				<Size x="24" y="24"/>
+				<KeyValues>
+					<KeyValue key="styleName" value="CloseButton" type="string"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+			<OnHide method="OnHide"/>
+		</Scripts>
+	</Frame>
+</Ui>

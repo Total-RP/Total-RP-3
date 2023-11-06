@@ -52,7 +52,7 @@ TRP3_API.module.registerModule = function(moduleStructure)
 	assert(not MODULE_REGISTRATION[moduleStructure.id], "This module is already register: " .. moduleStructure.id);
 	assert(not hasBeenInit, "Module structure must be registered before Total RP 3 initialization: " .. moduleStructure.id);
 
-	if not moduleStructure.name or not type(moduleStructure.name) == "string" or moduleStructure.name:len() == 0 then
+	if not moduleStructure.name or type(moduleStructure.name) ~= "string" or moduleStructure.name:len() == 0 then
 		moduleStructure.name = moduleStructure.id;
 	end
 

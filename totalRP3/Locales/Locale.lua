@@ -32,17 +32,48 @@ end
 local DEFAULT_SHORTCUT_SEPARATOR = "+";
 local SYSTEM_SHORTCUT_SEPARATOR = IsMacClient() and "-" or DEFAULT_SHORTCUT_SEPARATOR;
 
-local DecomposeChordString;
-local GetLocalizedKeyText;
-local GetLocalizedSystemKeyText;
-local MetaKeyComparator;
+local MouseActionLocalizationKeys = {
+	CLICK = "CM_CLICK",         -- "Click"
+	DCLICK = "CM_DOUBLECLICK",  -- "Double click"
+	DRAGDROP = "CM_DRAGDROP",   -- "Drag & drop"
+	LCLICK = "CM_L_CLICK",      -- "Left-click"
+	BUTTON1 = "CM_L_CLICK",
+	MCLICK = "CM_M_CLICK",      -- "Middle-click"
+	BUTTON3 = "CM_M_CLICK",
+	RCLICK = "CM_R_CLICK",      -- "Right-click"
+	BUTTON2 = "CM_R_CLICK",
+};
+
+local function GetLocalizedKeyText(key)
+	local text;
+
+	if MouseActionLocalizationKeys[key] then
+		text = TRP3_API.loc[MouseActionLocalizationKeys[key]];
+	else
+		text = GetBindingText(key);
+	end
+
+	return text;
+end
+
+local function GetLocalizedSystemKeyText(key)
+	if IsMacClient() then
+		if key == "CTRL" then
+			return "CMD";
+		elseif key == "ALT" then
+			return "OPT";
+		end
+	end
+
+	return GetLocalizedKeyText(key);
+end
 
 TRP3_API.ShortcutType = {
 	Normal = nil,
 	System = 1,
 };
 
-function TRP3_API.FormatShortcut(chord, shortcutType)
+function TRP3_API.FormatShortcut(binding, shortcutType)
 	local separator;
 	local localizer;
 
@@ -56,7 +87,7 @@ function TRP3_API.FormatShortcut(chord, shortcutType)
 		error("invalid shortcut type");
 	end
 
-	local keys = DecomposeChordString(chord);
+	local keys = TRP3_BindingUtil.DecomposeBinding(binding);
 
 	for index, key in ipairs(keys) do
 		keys[index] = localizer(key);
@@ -65,78 +96,7 @@ function TRP3_API.FormatShortcut(chord, shortcutType)
 	return table.concat(keys, separator);
 end
 
-function TRP3_API.FormatShortcutWithInstruction(chord, instruction, shortcutType)
-	local shortcut = TRP3_API.FormatShortcut(chord, shortcutType);
+function TRP3_API.FormatShortcutWithInstruction(binding, instruction, shortcutType)
+	local shortcut = TRP3_API.FormatShortcut(binding, shortcutType);
 	return string.format(TRP3_API.loc.SHORTCUT_INSTRUCTION, TRP3_API.MiscColors.Normal("[" .. shortcut .. "]"), TRP3_API.Colors.White(instruction));
-end
-
-local MetaKeyPriorities = {
-	LALT = 1,
-	RALT = 2,
-	LCTRL = 3,
-	RCTRL = 4,
-	LSHIFT = 5,
-	RSHIFT = 6,
-	LMETA = 7,
-	RMETA = 8,
-	ALT = 9,
-	CTRL = 10,
-	SHIFT = 11,
-	META = 12,
-};
-
-local CustomLocalizationKeys = {
-	-- Meta keys
-	ALT = "CM_ALT",
-	CTRL = "CM_CTRL",
-	SHIFT = "CM_SHIFT",
-
-	-- Mouse actions
-	CLICK = "CM_CLICK",         -- "Click"
-	DCLICK = "CM_DOUBLECLICK",  -- "Double click"
-	DRAGDROP = "CM_DRAGDROP",   -- "Drag & drop"
-	LCLICK = "CM_L_CLICK",      -- "Left-click"
-	MCLICK = "CM_M_CLICK",      -- "Middle-click"
-	RCLICK = "CM_R_CLICK",      -- "Right-click"
-};
-
-function MetaKeyComparator(a, b)
-	local priorityA = MetaKeyPriorities[a];
-	local priorityB = MetaKeyPriorities[b];
-
-	if priorityA and priorityB then
-		return priorityA < priorityB;
-	else
-		return priorityA ~= nil;
-	end
-end
-
-function DecomposeChordString(chord)
-	local keys = { string.split("-", chord) };
-	table.sort(keys, MetaKeyComparator);
-	return keys;
-end
-
-function GetLocalizedKeyText(key)
-	local text;
-
-	if CustomLocalizationKeys[key] then
-		text = TRP3_API.loc[CustomLocalizationKeys[key]];
-	else
-		text = GetBindingText(key);
-	end
-
-	return text;
-end
-
-function GetLocalizedSystemKeyText(key)
-	if IsMacClient() then
-		if key == "CTRL" then
-			return TRP3_API.loc.CM_CTRL_MAC;
-		elseif key == "ALT" then
-			return TRP3_API.loc.CM_ALT_MAC;
-		end
-	end
-
-	return GetLocalizedKeyText(key);
 end
