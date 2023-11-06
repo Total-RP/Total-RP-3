@@ -217,11 +217,11 @@ local TooltipGuildDisplayOption = {
 };
 
 local function ShouldDisplayOriginalGuild(displayOption, originalName, customName)
-	if displayOption == TooltipGuildDisplayOption.Hidden or not originalName then
+	if displayOption == TooltipGuildDisplayOption.Hidden or not originalName or originalName == "" then
 		return false;
 	elseif displayOption == TooltipGuildDisplayOption.ShowWithOriginalGuild then
 		return true;
-	elseif displayOption == TooltipGuildDisplayOption.ShowWithCustomGuild and not customName then
+	elseif displayOption == TooltipGuildDisplayOption.ShowWithCustomGuild and (not customName or customName == "") then
 		return true;
 	elseif displayOption == TooltipGuildDisplayOption.ShowWithAllGuilds then
 		return true;
@@ -231,7 +231,7 @@ local function ShouldDisplayOriginalGuild(displayOption, originalName, customNam
 end
 
 local function ShouldDisplayCustomGuild(displayOption, customName)
-	if displayOption == TooltipGuildDisplayOption.Hidden or not customName then
+	if displayOption == TooltipGuildDisplayOption.Hidden or not customName or customName == "" then
 		return false;
 	elseif displayOption == TooltipGuildDisplayOption.ShowWithOriginalGuild then
 		return false;
@@ -620,8 +620,12 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 
 	if guildDisplayOption ~= TooltipGuildDisplayOption.Hidden then
 		local customGuildInfo = player:GetCustomGuildMembership();
-		local customGuildName = customGuildInfo.name;
-		local customGuildRank = customGuildInfo.rank;
+		local customGuildName = customGuildInfo.name and string.trim(customGuildInfo.name) or nil;
+		local customGuildRank = customGuildInfo.rank and string.trim(customGuildInfo.rank) or nil;
+
+		if customGuildRank == "" then
+			customGuildRank = nil;
+		end
 
 		local originalGuildName, originalGuildRank = GetGuildInfo(targetType);
 

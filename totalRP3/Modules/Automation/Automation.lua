@@ -10,11 +10,11 @@ local AUTOMATION_MESSAGE_THROTTLE = 5;
 local BaseContext = {};
 
 function BaseContext:Error(message)
-	TRP3_Automation:OnContextMessage(message);
+	TRP3_Automation:OnContextError(message);
 end
 
 function BaseContext:Errorf(format, ...)
-	TRP3_Automation:OnContextMessage(string.format(format, ...));
+	TRP3_Automation:OnContextError(string.format(format, ...));
 end
 
 function BaseContext:Print(message)
@@ -84,7 +84,8 @@ function TRP3_Automation:OnEnable()
 	-- actions at the end of the current frame if any of these fire.
 
 	self.monitor:RegisterEvent("PLAYER_ENTERING_WORLD");
-	self.monitor:RegisterEvent("UPDATE_SHAPESHIFT_FORM");
+	-- Disabled due to a client performance issue in Classic Wrath.
+	-- self.monitor:RegisterEvent("UPDATE_SHAPESHIFT_FORM");
 	self.monitor:RegisterEvent("UPDATE_STEALTH");
 	self.monitor:RegisterEvent("PLAYER_TARGET_CHANGED");
 	self.monitor:RegisterEvent("PLAYER_FOCUS_CHANGED");
@@ -117,14 +118,18 @@ function TRP3_Automation:OnDirtyUpdate()
 	self:ProcessAllActions();
 end
 
-function TRP3_Automation:OnContextMessage(message)
+function TRP3_Automation:OnContextError(message)
 	local expirationTime = self.messageCooldowns[message] or -math.huge;
 	local currentTime = GetTime();
 
 	if expirationTime <= currentTime then
 		self.messageCooldowns[message] = currentTime + AUTOMATION_MESSAGE_THROTTLE;
-		self.Print(L.AUTOMATION_MODULE_MESSAGE_PREFIX, message);
+		TRP3_Addon:Print(message);
 	end
+end
+
+function TRP3_Automation:OnContextMessage(message)
+	TRP3_Addon:Print(message);
 end
 
 function TRP3_Automation:LoadSettings(settings)

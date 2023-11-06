@@ -11,42 +11,30 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Button name="TRP3_ChatLinkActionButton" inherits="UIPanelButtonTemplate" virtual="true" hidden="true" mixin="TRP3_ChatLinkActionButtonMixin">
 		<Size x="100" y="20"/>
 		<Scripts>
-			<OnLoad method="OnLoad" />
-			<OnClick method="OnClick" />
+			<OnLoad method="OnLoad"/>
+			<OnClick method="OnClick"/>
 		</Scripts>
 	</Button>
 
 	<GameTooltip name="TRP3_RefTooltip" inherits="TRP3_TooltipTemplate" parent="UIParent" enableMouse="true" toplevel="true" movable="true" frameStrata="TOOLTIP" hidden="true" mixin="TRP3_ChatLinkTooltipMixin">
-		<Size>
-			<AbsDimension x="128" y="64"/>
-		</Size>
+		<Size x="128" y="64"/>
 		<Anchors>
-			<Anchor point="BOTTOM">
-				<Offset>
-					<AbsDimension x="0" y="80"/>
-				</Offset>
-			</Anchor>
+			<Anchor point="BOTTOM" y="80"/>
 		</Anchors>
 		<Frames>
-			<Button>
-				<Size>
-					<AbsDimension x="32" y="32"/>
-				</Size>
+			<Button parentKey="CloseButton" inherits="TRP3_StyledButtonTemplate">
+				<Size x="24" y="24"/>
+				<KeyValues>
+					<KeyValue key="styleName" value="CloseButton" type="string"/>
+				</KeyValues>
 				<Anchors>
-					<Anchor point="TOPRIGHT">
-						<Offset>
-							<AbsDimension x="1" y="0"/>
-						</Offset>
-					</Anchor>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 				</Anchors>
 				<Scripts>
 					<OnClick>
 						TRP3_RefTooltip:Hide();
 					</OnClick>
 				</Scripts>
-				<NormalTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Up"/>
-				<PushedTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Down"/>
-				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 			</Button>
 
 			<Button parentKey="Button1" inherits="TRP3_ChatLinkActionButton">
@@ -76,8 +64,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Button>
 		</Frames>
 		<Scripts>
-			<OnLoad method="OnLoad" inherit="prepend" />
-			<OnUpdate method="OnUpdate" />
+			<OnLoad method="OnLoad" inherit="prepend"/>
+			<OnUpdate method="OnUpdate"/>
 		</Scripts>
 	</GameTooltip>
 

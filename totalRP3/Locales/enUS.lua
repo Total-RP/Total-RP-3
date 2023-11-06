@@ -401,6 +401,17 @@ These tools also allow you to insert |cffffff00images, icons or links to externa
 	CO_GENERAL_RESET_CUSTOM_COLORS = "Reset custom colors",
 	CO_GENERAL_RESET_CUSTOM_COLORS_TT = "Removes all custom colors saved in the color picker.",
 	CO_GENERAL_RESET_CUSTOM_COLORS_WARNING = "Are you sure you want to remove all custom colors saved in the color picker?",
+	CO_GENERAL_CONTRAST_LEVEL = "Color contrast level",
+	CO_GENERAL_CONTRAST_LEVEL_HELP = "Controls how aggressively custom colors will be adjusted for readability against dark backgrounds.|n|nThe 'Low' setting is the recommended default and will generally only affect very dark colors.",
+	CO_GENERAL_CONTRAST_LEVEL_NONE = "None",
+	CO_GENERAL_CONTRAST_LEVEL_VERY_LOW = "Very low",
+	CO_GENERAL_CONTRAST_LEVEL_LOW = "Low",
+	CO_GENERAL_CONTRAST_LEVEL_MEDIUM_LOW = "Medium low",
+	CO_GENERAL_CONTRAST_LEVEL_MEDIUM_HIGH = "Medium high",
+	CO_GENERAL_CONTRAST_LEVEL_HIGH = "High",
+	CO_GENERAL_CONTRAST_LEVEL_VERY_HIGH = "Very high",
+	CO_GENERAL_HIDE_MAXIMIZE_BUTTON = "Hide maximize button",
+	CO_GENERAL_HIDE_MAXIMIZE_BUTTON_HELP = "Hides the minimize and maximize buttons on the Total RP 3 window.",
 	CO_TOOLTIP = "Tooltip settings",
 	CO_TOOLTIP_USE = "Use characters/companions tooltip",
 	CO_TOOLTIP_COMBAT = "Hide during combat",
@@ -461,6 +472,18 @@ Class: 50 characters|r]],
 	CO_TOOLTIP_MAIN_COLOR_HELP = [[The color used in the tooltip to display text such as the race, level, and currently and OOC headers.]],
 	CO_TOOLTIP_SECONDARY_COLOR = "Secondary text color",
 	CO_TOOLTIP_SECONDARY_COLOR_HELP = [[The color used in the tooltip to display secondary subtext such as realm and guild names, the currently and OOC contents, and zone or health information.]],
+
+	REG_TT_GUILD_CUSTOM = "Custom guild",
+	CO_TOOLTIP_GUILD_HIDDEN = "Hidden",
+	CO_TOOLTIP_GUILD_SHOW_WITH_ORIGINAL = "Show original",
+	CO_TOOLTIP_GUILD_SHOW_WITH_CUSTOM = "Show custom",
+	CO_TOOLTIP_GUILD_SHOW_WITH_ALL = "Show all",
+	CO_TOOLTIP_GUILD_TT = "Customizes how guild membership is displayed in the tooltip.",
+	CO_TOOLTIP_GUILD_TT_HIDDEN = "Does not show any guild membership in the tooltip.",
+	CO_TOOLTIP_GUILD_TT_SHOW_WITH_ORIGINAL = "Shows guild membership in the tooltip, but does not replace the name or rank if customized in the players' profile.",
+	CO_TOOLTIP_GUILD_TT_SHOW_WITH_CUSTOM = "Shows guild membership in the tooltip, replacing the name or rank if customized in the players' profile.",
+	CO_TOOLTIP_GUILD_TT_SHOW_WITH_ALL = "Shows both original and custom guild memberships on separate lines in the tooltip.",
+
 	CO_REGISTER = "Register settings",
 	CO_REGISTER_ABOUT_SETTINGS = "\"About\" settings",
 	CO_REGISTER_ABOUT_H1_SIZE = "Header 1 text size",
@@ -807,6 +830,7 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 This will works:|cff00ff00
 - On any item in your bags
 - On any icon in the spellbook|r]],
+	UI_ICON_BROWSER_SEARCHING = "Searching... (%d%%)",
 	UI_COMPANION_BROWSER_HELP = "Select a battle pet",
 	UI_COMPANION_BROWSER_HELP_TT = "|cffffff00Warning: |rOnly renamed battle pets can be linked to a profile.\n\n|cff00ff00This section lists these battle pets only.",
 	UI_ICON_SELECT = "Select icon",
@@ -912,6 +936,11 @@ Total RP is not responsible for links leading to harmful content.]],
 	CM_PINK = "Pink",
 	CM_BLACK = "Black",
 	CM_GREY = "Grey",
+
+	COPY_URL_POPUP_TEXT = "You can copy this link by using the %s keyboard shortcut and then paste the link inside your browser using the %s shortcut.",
+	CM_CTRL_MAC = "Command",
+	CM_ALT_MAC = "Option",
+	SHORTCUT_INSTRUCTION = "%s: %s",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Minimap button
@@ -1062,6 +1091,74 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	NPC_TALK_ERROR_EMPTY_MESSAGE = "The message cannot be empty.",
 	NPC_TALK_COMMAND_HELP = "Open the NPC speeches frame.",
 	NPC_TALK_BUTTON_TT = "Open the NPC speeches frame allowing you to do NPC speeches or emotes.",
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- ANALYTICS
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	ANALYTICS_CONFIG_ENABLE = "Enable %s",
+	ANALYTICS_CONFIG_ENABLE_HELP = "Enables the collection of anonymous addon usage analytics via %s.|n|nAn example of the statistics collected can be printed to the chat frame through the |cff00ff00/trp3 statistics|r command.",
+	ANALYTICS_CONFIG_ENABLE_HELP_WAGO = [[This requires the |cff00ff00"Help addon developers"|r setting in the Wago Addons application to be enabled.]],
+	ANALYTICS_COMMAND_HELP = "Prints addon usage statistics to the chat frame.",
+	ANALYTICS_OUTPUT_HEADER = "Addon usage statistics:",
+	MACRO_ACTION_PROFILE_NAME_INVALID = "Unknown profile name: %s",
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- AUTOMATION
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	AUTOMATION_ACTION_CHARACTER_EQUIPSET = "Wear equipment set",
+	AUTOMATION_ACTION_CHARACTER_EQUIPSET_APPLIED = "Changed equipment set to %s.",
+	AUTOMATION_ACTION_CHARACTER_EQUIPSET_DESCRIPTION = "Automatically wears an equipment set.",
+	AUTOMATION_ACTION_CHARACTER_EQUIPSET_HELP = "The name of the equipment set to wear must match the exact name of a set stored in the Equipment Manager of the Character Info panel.",
+	AUTOMATION_ACTION_CHARACTER_EQUIPSET_INVALID = "Failed to change equipment set: Set %s does not exist.",
+	AUTOMATION_ACTION_MAP_SCANS_BROADCAST = "Toggle location broadcast",
+	AUTOMATION_ACTION_MAP_SCANS_BROADCAST_DESCRIPTION = "Toggles whether or not you will appear on other players' map scans.",
+	AUTOMATION_ACTION_MAP_SCANS_BROADCAST_DISABLED = "Map scan location broadcast has been disabled.",
+	AUTOMATION_ACTION_MAP_SCANS_BROADCAST_ENABLED = "Map scan location broadcast has been enabled.",
+	AUTOMATION_ACTION_MAP_SCANS_BROADCAST_ERROR = "Failed to toggle map scan location broadcast: %s",
+	AUTOMATION_ACTION_NAMEPLATES_ENABLE = "Toggle customizations",
+	AUTOMATION_ACTION_NAMEPLATES_ENABLE_DESCRIPTION = "Toggles whether or not nameplates will be customized.",
+	AUTOMATION_ACTION_NAMEPLATES_ENABLE_DISABLED = "Nameplate customizations have been disabled.",
+	AUTOMATION_ACTION_NAMEPLATES_ENABLE_ENABLED = "Nameplate customizations have been enabled.",
+	AUTOMATION_ACTION_NAMEPLATES_ENABLE_ERROR = "Failed to toggle nameplate customizations: %s",
+	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS = "Toggle friendly NPC nameplates",
+	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS_DESCRIPTION = "Toggles whether or not friendly nameplates for NPCs will be shown.",
+	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS_DISABLED = "Friendly NPC nameplates have been disabled.",
+	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS_ENABLED = "Friendly NPC nameplates have been enabled.",
+	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS_ERROR = "Failed to toggle friendly NPC nameplates: %s",
+	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS = "Toggle friendly player nameplates",
+	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS_DESCRIPTION = "Toggles whether or not friendly nameplates for other players will be shown.",
+	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS_DISABLED = "Friendly player nameplates have been disabled.",
+	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS_ENABLED = "Friendly player nameplates have been enabled.",
+	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS_ERROR = "Failed to toggle friendly nameplates: %s",
+	AUTOMATION_ACTION_OPTIONS_HELP = "The macro condition must evaluate to any of the following options: %s.",
+	AUTOMATION_ACTION_PROFILE_CHANGE = "Change profile",
+	AUTOMATION_ACTION_PROFILE_CHANGE_DESCRIPTION = "Changes your currently selected profile.",
+	AUTOMATION_ACTION_PROFILE_CHANGE_ERROR = "Failed to swap profiles: %s",
+	AUTOMATION_ACTION_PROFILE_CHANGE_HELP = "The name of the profile to swap into will be matched case-insensitively and only need to be a partial match. For an exact match enclose the profile name in quotation marks (\"\").",
+	AUTOMATION_ACTION_ROLEPLAY_STATUS = "Change roleplay status",
+	AUTOMATION_ACTION_ROLEPLAY_STATUS_CHANGED_IC = "Roleplay status has been changed to in character.",
+	AUTOMATION_ACTION_ROLEPLAY_STATUS_CHANGED_OOC = "Roleplay status has been changed to out of character.",
+	AUTOMATION_ACTION_ROLEPLAY_STATUS_DESCRIPTION = "Changes your current roleplay status (in-character or out-of-character).",
+	AUTOMATION_ACTION_ROLEPLAY_STATUS_ERROR = "Failed to change roleplay status: %s",
+	AUTOMATION_CATEGORY_CHARACTER = "Character",
+	AUTOMATION_CATEGORY_MAP_SCANS = "Map scans",
+	AUTOMATION_CATEGORY_NAMEPLATES = "Nameplates",
+	AUTOMATION_CATEGORY_PROFILE = "Profile",
+	AUTOMATION_CONDITION_ROLEPLAY_STATUS_ERROR = "Failed to check 'rpstatus' condition: %s",
+	AUTOMATION_ERROR_INVALID_OPTION = "invalid option '%1$s' (expected any of the following: %s)",
+	AUTOMATION_ERROR_INVALID_PROFILE = "unable to find a profile named '%s'",
+	AUTOMATION_MODULE_DESCRIPTION = "Allows configuring actions such as profile swaps and roleplay status changes to occur automatically.",
+	AUTOMATION_MODULE_NAME = "Automation",
+	AUTOMATION_MODULE_SETTINGS_HELP = "Select an action from the dropdown below and then enter a macro condition string into the displayed text field.",
+	AUTOMATION_MODULE_SETTINGS_TITLE = "Automation settings",
+	AUTOMATION_STATE_IC = "ic",
+	AUTOMATION_STATE_OOC = "ooc",
+	AUTOMATION_STATE_UNSET = "nochange",
+	AUTOMATION_TEST_BUTTON = "Test condition",
+	AUTOMATION_TEST_HELP = "Executes the supplied macro condition, printing the option it would select to the chat frame.",
+	AUTOMATION_TEST_OUTPUT = "Test condition result: %s",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- MISC
@@ -1458,6 +1555,8 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP = "The maximum number of characters to display for names and prefix titles. Names exceeding this length will be cropped.",
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS = "Maximum title length",
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP = "The maximum number of characters to display for full titles. Titles exceeding this length will be cropped.",
+	NAMEPLATES_CONFIG_MAX_GUILD_NAME_CHARS = "Maximum guild name length",
+	NAMEPLATES_CONFIG_MAX_GUILD_NAME_CHARS_HELP = "The maximum number of characters to display for guild names. Guild names exceeding this length will be cropped.",
 	NAMEPLATES_CONFIG_PAGE_SETTINGS_MAY_REQUIRE_TOGGLE_HELP = "You may need to toggle your nameplates for any settings changes to take effect.",
 	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT = "Always show target unit",
 	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT_HELP = "If checked, your current target will always have its nameplate visible.",
@@ -1496,95 +1595,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue where the target frame would stay hidden after a UI reload with a target selected.
 
 ]],
-
-	CO_GENERAL_CONTRAST_LEVEL = "Color contrast level",
-	CO_GENERAL_CONTRAST_LEVEL_HELP = "Controls how aggressively custom colors will be adjusted for readability against dark backgrounds.|n|nThe 'Low' setting is the recommended default and will generally only affect very dark colors.",
-	CO_GENERAL_CONTRAST_LEVEL_NONE = "None",
-	CO_GENERAL_CONTRAST_LEVEL_VERY_LOW = "Very low",
-	CO_GENERAL_CONTRAST_LEVEL_LOW = "Low",
-	CO_GENERAL_CONTRAST_LEVEL_MEDIUM_LOW = "Medium low",
-	CO_GENERAL_CONTRAST_LEVEL_MEDIUM_HIGH = "Medium high",
-	CO_GENERAL_CONTRAST_LEVEL_HIGH = "High",
-	CO_GENERAL_CONTRAST_LEVEL_VERY_HIGH = "Very high",
-
-	COPY_URL_POPUP_TEXT = "You can copy this link by using the %s keyboard shortcut and then paste the link inside your browser using the %s shortcut.",
-	CM_CTRL_MAC = "Command",
-	CM_ALT_MAC = "Option",
-	SHORTCUT_INSTRUCTION = "%s: %s",
-
-	REG_TT_GUILD_CUSTOM = "Custom guild",
-	CO_TOOLTIP_GUILD_HIDDEN = "Hidden",
-	CO_TOOLTIP_GUILD_SHOW_WITH_ORIGINAL = "Show original",
-	CO_TOOLTIP_GUILD_SHOW_WITH_CUSTOM = "Show custom",
-	CO_TOOLTIP_GUILD_SHOW_WITH_ALL = "Show all",
-	CO_TOOLTIP_GUILD_TT = "Customizes how guild membership is displayed in the tooltip.",
-	CO_TOOLTIP_GUILD_TT_HIDDEN = "Does not show any guild membership in the tooltip.",
-	CO_TOOLTIP_GUILD_TT_SHOW_WITH_ORIGINAL = "Shows guild membership in the tooltip, but does not replace the name or rank if customized in the players' profile.",
-	CO_TOOLTIP_GUILD_TT_SHOW_WITH_CUSTOM = "Shows guild membership in the tooltip, replacing the name or rank if customized in the players' profile.",
-	CO_TOOLTIP_GUILD_TT_SHOW_WITH_ALL = "Shows both original and custom guild memberships on separate lines in the tooltip.",
-
-	ANALYTICS_CONFIG_ENABLE = "Enable %s",
-	ANALYTICS_CONFIG_ENABLE_HELP = "Enables the collection of anonymous addon usage analytics via %s.|n|nAn example of the statistics collected can be printed to the chat frame through the |cff00ff00/trp3 statistics|r command.",
-	ANALYTICS_CONFIG_ENABLE_HELP_WAGO = [[This requires the |cff00ff00"Help addon developers"|r setting in the Wago Addons application to be enabled.]],
-	ANALYTICS_COMMAND_HELP = "Prints addon usage statistics to the chat frame.",
-	ANALYTICS_OUTPUT_HEADER = "Addon usage statistics:",
-
-	MACRO_ACTION_PROFILE_NAME_INVALID = "Unknown profile name: %s",
-
-	AUTOMATION_ACTION_CHARACTER_EQUIPSET = "Wear equipment set",
-	AUTOMATION_ACTION_CHARACTER_EQUIPSET_APPLIED = "Changed equipment set to %s.",
-	AUTOMATION_ACTION_CHARACTER_EQUIPSET_DESCRIPTION = "Automatically wears an equipment set.",
-	AUTOMATION_ACTION_CHARACTER_EQUIPSET_HELP = "The name of the equipment set to wear must match the exact name of a set stored in the Equipment Manager of the Character Info panel.",
-	AUTOMATION_ACTION_CHARACTER_EQUIPSET_INVALID = "Failed to change equipment set: Set %s does not exist.",
-	AUTOMATION_ACTION_MAP_SCANS_BROADCAST = "Toggle location broadcast",
-	AUTOMATION_ACTION_MAP_SCANS_BROADCAST_DESCRIPTION = "Toggles whether or not you will appear on other players' map scans.",
-	AUTOMATION_ACTION_MAP_SCANS_BROADCAST_DISABLED = "Map scan location broadcast has been disabled.",
-	AUTOMATION_ACTION_MAP_SCANS_BROADCAST_ENABLED = "Map scan location broadcast has been enabled.",
-	AUTOMATION_ACTION_MAP_SCANS_BROADCAST_ERROR = "Failed to toggle map scan location broadcast: %s",
-	AUTOMATION_ACTION_NAMEPLATES_ENABLE = "Toggle customizations",
-	AUTOMATION_ACTION_NAMEPLATES_ENABLE_DESCRIPTION = "Toggles whether or not nameplates will be customized.",
-	AUTOMATION_ACTION_NAMEPLATES_ENABLE_DISABLED = "Nameplate customizations have been disabled.",
-	AUTOMATION_ACTION_NAMEPLATES_ENABLE_ENABLED = "Nameplate customizations have been enabled.",
-	AUTOMATION_ACTION_NAMEPLATES_ENABLE_ERROR = "Failed to toggle nameplate customizations: %s",
-	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS = "Toggle friendly NPC nameplates",
-	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS_DESCRIPTION = "Toggles whether or not friendly nameplates for NPCs will be shown.",
-	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS_DISABLED = "Friendly NPC nameplates have been disabled.",
-	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS_ENABLED = "Friendly NPC nameplates have been enabled.",
-	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS_ERROR = "Failed to toggle friendly NPC nameplates: %s",
-	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS = "Toggle friendly player nameplates",
-	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS_DESCRIPTION = "Toggles whether or not friendly nameplates for other players will be shown.",
-	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS_DISABLED = "Friendly player nameplates have been disabled.",
-	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS_ENABLED = "Friendly player nameplates have been enabled.",
-	AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS_ERROR = "Failed to toggle friendly nameplates: %s",
-	AUTOMATION_ACTION_OPTIONS_HELP = "The macro condition must evaluate to any of the following options: %s.",
-	AUTOMATION_ACTION_PROFILE_CHANGE = "Change profile",
-	AUTOMATION_ACTION_PROFILE_CHANGE_DESCRIPTION = "Changes your currently selected profile.",
-	AUTOMATION_ACTION_PROFILE_CHANGE_ERROR = "Failed to swap profiles: %s",
-	AUTOMATION_ACTION_PROFILE_CHANGE_HELP = "The name of the profile to swap into will be matched case-insensitively and only need to be a partial match. For an exact match enclose the profile name in quotation marks (\"\").",
-	AUTOMATION_ACTION_ROLEPLAY_STATUS = "Change roleplay status",
-	AUTOMATION_ACTION_ROLEPLAY_STATUS_CHANGED_IC = "Roleplay status has been changed to in character.",
-	AUTOMATION_ACTION_ROLEPLAY_STATUS_CHANGED_OOC = "Roleplay status has been changed to out of character.",
-	AUTOMATION_ACTION_ROLEPLAY_STATUS_DESCRIPTION = "Changes your current roleplay status (in-character or out-of-character).",
-	AUTOMATION_ACTION_ROLEPLAY_STATUS_ERROR = "Failed to change roleplay status: %s",
-	AUTOMATION_CATEGORY_CHARACTER = "Character",
-	AUTOMATION_CATEGORY_MAP_SCANS = "Map scans",
-	AUTOMATION_CATEGORY_NAMEPLATES = "Nameplates",
-	AUTOMATION_CATEGORY_PROFILE = "Profile",
-	AUTOMATION_CONDITION_ROLEPLAY_STATUS_ERROR = "Failed to check 'rpstatus' condition: %s",
-	AUTOMATION_ERROR_INVALID_OPTION = "invalid option '%1$s' (expected any of the following: %s)",
-	AUTOMATION_ERROR_INVALID_PROFILE = "unable to find a profile named '%s'",
-	AUTOMATION_MODULE_DESCRIPTION = "Allows configuring actions such as profile swaps and roleplay status changes to occur automatically.",
-	AUTOMATION_MODULE_MESSAGE_PREFIX = "TRP3 Automation",
-	AUTOMATION_MODULE_NAME = "Automation",
-	AUTOMATION_MODULE_SETTINGS_HELP = "Select an action from the dropdown below and then enter a macro condition string into the displayed text field.",
-	AUTOMATION_MODULE_SETTINGS_TITLE = "Automation settings",
-	AUTOMATION_STATE_IC = "ic",
-	AUTOMATION_STATE_OOC = "ooc",
-	AUTOMATION_STATE_UNSET = "unset",
-	AUTOMATION_TEST_BUTTON = "Test condition",
-	AUTOMATION_TEST_HELP = "Executes the supplied macro condition, printing the option it would select to the chat frame.",
-	AUTOMATION_TEST_OUTPUT = "Test condition result: %s",
-
 	WHATS_NEW_26_0 = [[# Changelog version 2.5.0
 
 ## Added
@@ -1606,7 +1616,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - "Always show target" nameplate option will now display the target nameplate even if it is OOC and "Hide out of character units" was enabled.
 
 ]],
-
 	NAMEPLATES_CONFIG_CUSTOMIZE_OOC_UNITS = "Customize OOC units",
 	NAMEPLATES_CONFIG_CUSTOMIZE_OOC_UNITS_HELP = "Controls the customization of out of character units.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NON_ROLEPLAY_UNITS = "Customize non-roleplay units",
@@ -1625,6 +1634,56 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_UNIT_NAME_FIRST_HELP = "Only show first names of players rather than full names.|n|nThis will not work with companion units and profiles received from other roleplay addons.",
 	NAMEPLATES_CONFIG_UNIT_NAME_ORIGINAL = "Show original name",
 	NAMEPLATES_CONFIG_UNIT_NAME_ORIGINAL_HELP = "Shows the original unmodified player name of the unit.",
+	WHATS_NEW_26_1 = [[# Changelog version 2.5.1
+
+## Fixed
+
+- Fixed an error with the Prat module out if a player had no custom color.
+- Fixed an error with chat links.
+- Empty guild rank/name fields will now display default values in the tooltip.
+- Fixed an issue with "No player named..." messages appearing when hovering players on realms with non-latin characters.
+
+]],
+	WHATS_NEW_26_2 = [[# Changelog version 2.5.2
+
+## Fixed
+
+- Fixed an issue with the Plater RP nameplates getting stuck on screen.
+
+]],
+	WHATS_NEW_26_3 = [[# Changelog version 2.5.3
+
+## Fixed
+
+- Prevented invalid dice roll messages from showing.
+- Updated TaintLess library for patch 3.4.2.
+
+]],
+	WHATS_NEW_26_4 = [[# Changelog version 2.5.4
+
+## Added
+
+- Added 53 musics, 45 images and 169 icons from patch 10.1.5 and before (some previously encrypted icons).
+
+## Fixed
+
+- Fixed close/minimize/resize buttons positions for Retail.
+- Fixed a bug with the dashboard potentially related to Prat.
+
+]],
+	WHATS_NEW_26_5 = [[# Changelog version 2.5.5
+
+## Added
+
+- Added 3 musics, 4 images and 76 icons from patch 10.1.7.
+- Added setting to crop long guild names on RP nameplates.
+
+## Fixed
+
+- Improved icon browser performance to deal with an occasional addon loading issue.
+- Fixed a recycling issue with RP nameplates when using Plater Nameplates.
+
+]],
 };
 
 -- Bindings and FrameXML Global Strings

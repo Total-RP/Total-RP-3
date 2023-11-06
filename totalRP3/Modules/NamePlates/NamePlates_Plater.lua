@@ -9,7 +9,7 @@ local Plater;
 local PlaterAddonName = "Plater";
 
 -- The import string for our Plater mod
-local importString = "Tw13VrQnq4)xUNYjLRIFymWj1hAV0902MqII30NICWlmKGQxmcBsV0h4V9ogdS7MS3jDTxi7UdEyM57BMpB4(8nCMpNTrzeYBVjCiptSdALcdO5mZlTaN9Ks9xCwiND7no36H8kv3q(n2hR74qc4zbHuAseNfXZ8PjbrPjr(y0eSk9DBvT97A)WvkvZN7fDLCwm(yCgLNfNMWzPwaDbu3uBQfY6)ryQvnCwvFtH1Ai)SDQYnITs49d)(qU7QUAiVrzgYN99t1niYQefWqU5jadB)dpF1bM(UM9RdnL7V5Tj6Jx3CLQSxcxuRTEodRpgcNTW(H8FPSekpcSAqwD(qEpsN1LtgR6Wio3wWNhRX57l3bCAdonEWM7XUS(J31wI)USWkv3DyUoZLzhwWGXloB9)TM3AnI)RBUujqwC27MLeV79t9WVwhmVsi1WxPr(TAPd5)8epDkPdy7TWJ1ACPRMc6uaFU8MUEWnlmCwIv)GahAmOfUWJDQ(wNzHuO1oZDI2hQlNUPtjbNv7ZThgRUfkCwIQQ6V4mHMcvVLchKaKmJwO9DRVGZ8(cLeavfqGVxYwkeqrqPkEg602jsMVNh(pM2Ys7aYrFot1Aht2KMnUXCJD)xgUv6pGxqM0xll)KsQ60xk2cso7pfYECd6NToCBdhYhFa8NETrTBrcy9DugqvsH1X65HX9JdF99oSCF9oXJG(EhIEq6Q3fGUGZ(01xE9TivZc2Jr)dXOTyJvzgHJ8zvIFkjojkojL6fNggZR(quKnlOZSq(QO40GeAuukHgMeU4Ny9BMPWB563htkCHmXexVsvnQWhYF0L8MXKB3V0S)KnJfJNMVxb72cDNGXukXJ6H0MeH)f4zzeXY4vjE(j(XeVippIFse16j0wbBV4Km2vKFyCE8a8tqASvubsP6VxCSBSWJnaYBfLv9s5MAJeoLW0(cJrNFBz5RYX)dPPfKrVDkDCbELQmGgrc9ij43KqAY0KaNrXOCnkinmIe4JFilZi0JFqGxSNhn0dnMJ5452Rj)pgDkQgFXkdm2mRpLkLUN)Kj(3RHvNSf8RZG9onmpCwMvJsKfw89b)Tk1Yq53AShCJqwHV)tdtYUcxrkEsPTVFwSv9mUADdEQVO8G9Kwa02PQQLZbnEoRHZ)3p";
+local importString = "1w13VrQnq4)xUNYjL7Kbmg4KUhAt6EABtyJI30NICWlysq1lgHnPx6d83EhJb2FKTv6AsdzZoXdZmFFZ8XaZJTMr9y01kdxE7nb9zP8TIgj3i0mQ5LgbJ(Ks9hmAaJE7no36(SsvBF2n2BR9Wq8zP(besCiJgYs9iXb(4eIFeJIHQ01Ur10TT5txRu1FRJ3wWOrWTXOewAmkHrtSa6srvDLPIlR(lUPsvZOLD15wR(SZ2QkwZ3ifFS)x7ZCxvL9z1ktF2s9pvuSQ(kfVquC2hMy1h(yFMfWd3Zu8FUQgqFjpx0NzEsuVlDtxTctxluYsUul25wuxS39oB968(Lv1xRk6KIlR0wpNbqgcMrNBy9zaEffhWpTqwEEFwh0bwwmASOfI4CBPFEOgNVRC)xBdRHdEWcKHPO(9PhCus)YDnfW3ZhSq1EhWMZCCZ1nGGNVy0LV7Z9)FgT9zFDKTUhc2JZ3kESsdhD9yqNc4tL302jCAcdJgBL(aWf1gWco4XwvxJZmxY1AN5wEZdvfJ)tlGfNvZZn7hBRso6Gxww9DNPOox1zPWUeOBe5dwG9DlVKrrFNG9fL5cFpu8gIWNaGsL)SOvBNiPEie8lK2Ic7aYrFgv1yht2KMoStzTD1rAOtRduPRswCHsQAHDe)ox2bN9n7zUTh9zd(GV60g125X)VjE5GyVIVribvsU15YPHX9ddF99oSCF1w(Jc99oe9G0fYLcDoJEXQRwDlq1u)Dy0BcJVgptqDGulI9sWrXHrXjeuusqeR8tHH2ubotdylcJs8JjHHjysqCWSFS1VzFUyRWy()rysUlKrM46xQYbfEF2JoWxpaE7Zl17wkBSW7FKVxl2UXUf)emMqWiccOnoe(Xhzze2Y4fXiVyVimkeHWEXHeRNaBzS9IxZyxnEN48W7EobPHwrPqkv)5SJTdLDObGpHOSStkxxzKIJeM23ZnC()QS8OOFRstlidpXu6yWCKM0NeIdq4y4V4as84CaMqrGyn0pjie77bFWZtiWJNVpkcHibiWykMdMAhsU3hDkOgFXk0m28QpLkLSJ)4j(FNwm1)NhhdkG5gZuh5NhXENwS4na)nk18q5xQTlUbiRG3dRfJYUChkYFsPH3TKX3OEgoTQg26Zl27zslcBAvLvYPGg2ZAyS)o";
 
 TRP3_PlaterNamePlates = {};
 
@@ -20,7 +20,7 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 
 	local unitFrame = nameplate.unitFrame;
 
-	if not unitFrame then
+	if not unitFrame or not unitFrame.PlaterOnScreen then
 		return;
 	end
 
@@ -85,6 +85,7 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 	end
 
 	-- Update nameplate visibility
+	-- We need to check if the nameplate is still visible first, so we don't re-show it if it's been hidden elsewhere
 	unitFrame:SetShown(not displayInfo.shouldHide);
 
 	-- Set the color of the name to the RP profile color
@@ -94,17 +95,17 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 
 	-- Set the nameplate color to color the health bar
 	-- We have to wait on the first run to avoid Plater stomping our color back to the default
-	if self.firstRun then
-		C_Timer.After(3, function()
-			if displayInfo.shouldColorHealth then
-				Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBTable());
-			else
-				Plater.RefreshNameplateColor(unitFrame);
-			end
-			self.firstRun = false;
-		end);
-	elseif displayInfo.shouldColorHealth then
-		Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBTable());
+	if displayInfo.shouldColorHealth then
+		if self.firstRun then
+			C_Timer.After(3, function()
+				if unitFrame.PlaterOnScreen and displayInfo.color then
+					Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBTable());
+				end
+				self.firstRun = false;
+			end);
+		else
+			Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBTable());
+		end
 	else
 		Plater.RefreshNameplateColor(unitFrame);
 	end
@@ -159,34 +160,39 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 
 	Plater = _G.Plater;
 
-	local success, scriptAdded = Plater.ImportScriptString(importString, false);
+	-- Check if the script exists and has the same revision before importing it, to avoid flooding the recycle bin
+	local scriptObject;
+	local scriptType = "hook";
+	local scriptDB = Plater.GetScriptDB(scriptType);
+	local newScriptTable = Plater.DecompressData(importString, "print");
+	local newScript = Plater.BuildScriptObjectFromIndexTable(newScriptTable, scriptType);
 
-	-- If the mod was not installed (is already up to date) then find the installed mod object so we can still control it
-	if not success and not scriptAdded then
-		local scriptType = "hook";
-
-		local scriptDB = Plater.GetScriptDB(scriptType);
-		local newScriptTable = Plater.DecompressData(importString, "print");
-		local newScript = Plater.BuildScriptObjectFromIndexTable(newScriptTable, scriptType);
-
-		for _, scriptObject in ipairs(scriptDB) do
-			if scriptObject.Name == newScript.Name then
-				scriptAdded = scriptObject;
+	for i=1, #scriptDB do
+		local script = scriptDB[i];
+		if script.Name == newScript.Name then
+			if script.Revision == newScript.Revision then
+				scriptObject = script;
 				break;
 			end
 		end
 	end
 
-	if not scriptAdded then
-		return false, L.PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR;
+	if not scriptObject then
+		local success, scriptAdded = Plater.ImportScriptString(importString);
+
+		if not success or not scriptAdded then
+			return false, L.PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR;
+		end
+
+		scriptObject = scriptAdded;
 	end
 
-	scriptAdded.Enabled = true;
+	scriptObject.Enabled = true;
 
-	Plater.RecompileScript(scriptAdded);
+	Plater.RecompileScript(scriptObject);
 	Plater.ForceTickOnAllNameplates();
 
-	self.PlaterMod = scriptAdded;
+	self.PlaterMod = scriptObject;
 	self.firstRun = true;
 end
 

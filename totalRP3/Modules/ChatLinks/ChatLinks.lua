@@ -155,7 +155,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		hideActionButtons();
 
 		TRP3_RefTooltip.sender = sender;
-		TRP3_RefTooltip:SetText(tooltipContent.title, TRP3_API.Ellyb.TRP3_API.Colors.White:GetRGB());
+		TRP3_RefTooltip:SetText(tooltipContent.title, TRP3_API.Colors.White:GetRGB());
 
 		if tooltipContent.lines then
 			for _, line in ipairs(tooltipContent.lines) do
@@ -276,7 +276,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		Ellyb.Assertions.isType(linkType, "string", "linkType");
 		Ellyb.Assertions.isType(callback, "function", "callback");
 
-		TRP3_API.popup.showCustomYesNoPopup(loc.CL_MAKE_IMPORTABLE_SIMPLER:format(TRP3_API.Ellyb.TRP3_API.Colors.Orange(linkType)),
+		TRP3_API.popup.showCustomYesNoPopup(loc.CL_MAKE_IMPORTABLE_SIMPLER:format(TRP3_API.Colors.Orange(linkType)),
 			loc.CL_MAKE_IMPORTABLE_BUTTON_TEXT,
 			loc.CL_MAKE_NON_IMPORTABLE,
 			function()

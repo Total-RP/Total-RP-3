@@ -111,8 +111,8 @@ end
 -- matched strings may vary a bit - for example booleans also accept any
 -- string beginning with "t" or "f" for true/false.
 
-TRP3_AutomationUtil.BOOLEAN_OPTIONS = GenerateOptionList("1", "0", "on", "off", "true", "false");
-TRP3_AutomationUtil.ROLEPLAY_STATUS_OPTIONS = GenerateOptionList("ic", "ooc", "unset");
+TRP3_AutomationUtil.BOOLEAN_OPTIONS = GenerateOptionList("1", "0", "on", "off", "true", "false", "nochange");
+TRP3_AutomationUtil.ROLEPLAY_STATUS_OPTIONS = GenerateOptionList("ic", "ooc", "nochange");
 
 function TRP3_AutomationUtil.FormatOptionError(str, options)
 	return string.format(L.AUTOMATION_ERROR_INVALID_OPTION, str, table.concat(options, LIST_DELIMITER));
@@ -127,8 +127,13 @@ end
 --
 
 function TRP3_AutomationUtil.ParseBooleanString(str)
-	-- Will return nil if the supplied string is ambiguous.
-	return StringToBoolean(str);
+	if str == "nochange" or str == L.AUTOMATION_STATE_UNSET then
+		return true, nil;
+	else
+		-- Will return nil if the supplied string is ambiguous.
+		local state = StringToBoolean(str);
+		return (state ~= nil), state;
+	end
 end
 
 function TRP3_AutomationUtil.ParseRoleplayStatusString(str)
@@ -136,7 +141,7 @@ function TRP3_AutomationUtil.ParseRoleplayStatusString(str)
 		return true, AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
 	elseif str == "ooc" or str == L.AUTOMATION_STATE_OOC then
 		return true, AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
-	elseif str == "unset" or str == L.AUTOMATION_STATE_UNSET then
+	elseif str == "nochange" or str == L.AUTOMATION_STATE_UNSET then
 		return true, nil;
 	else
 		return false;
