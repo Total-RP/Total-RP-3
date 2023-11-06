@@ -211,7 +211,7 @@ TRP3_API.flyway.patches["16"] = function()
 			TRP3_Configuration["Launcher_MinimapButtonPosition"] = TRP3_Configuration["minimap_icon_position"]["minimapPos"];
 		end
 	end
-  
+
 	-- This patch migrates a few nameplates settings from separated booleans
 	-- to enums.
 
