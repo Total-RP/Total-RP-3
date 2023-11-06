@@ -19,7 +19,6 @@ local loc = TRP3_API.loc;
 local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat;
 local math = math;
 local MouseIsOver, CreateFrame, ToggleDropDownMenu = MouseIsOver, CreateFrame, MSA_ToggleDropDownMenu;
-local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = MSA_DropDownMenu_Initialize, MSA_DropDownMenu_CreateInfo, MSA_DropDownMenu_AddButton;
 local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
 local shiftDown = IsShiftKeyDown;
 local UnitIsPlayer = UnitIsPlayer;
@@ -132,7 +131,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 		return;
 	end
 
-	UIDropDownMenu_Initialize(dropDownFrame,
+	MSA_DropDownMenu_Initialize(dropDownFrame,
 		function(_, level, menuList)
 			local levelValues = menuList or values;
 			level = level or 1;
@@ -141,7 +140,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 				local text = tab[1];
 				local value = tab[2];
 				local tooltipText = tab[3];
-				local info = UIDropDownMenu_CreateInfo();
+				local info = MSA_DropDownMenu_CreateInfo();
 				info.notCheckable = "true";
 				if text == "" then
 					info.dist = 0;
@@ -183,13 +182,13 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 						info.isTitle = tooltipText == nil;
 					end
 				end
-				UIDropDownMenu_AddButton(info, level);
+				MSA_DropDownMenu_AddButton(info, level);
 			end
 			if menuList == nil and addCancel then
-				local info = UIDropDownMenu_CreateInfo();
+				local info = {};
 				info.notCheckable = "true";
 				info.text = CANCEL;
-				UIDropDownMenu_AddButton(info, level);
+				MSA_DropDownMenu_AddButton(info, level);
 			end
 
 		end,
@@ -613,8 +612,6 @@ local function getCompanionOwner(unitType, targetType)
 		end
 
 		for _, line in ipairs(tooltipData.lines) do
-			TooltipUtil.SurfaceArgs(line);
-
 			if line.type == Enum.TooltipDataLineType.UnitOwner then
 				ownerGUID = line.guid;
 				break;
