@@ -200,6 +200,18 @@ TRP3_API.flyway.patches["15"] = function()
 end
 
 TRP3_API.flyway.patches["16"] = function()
+	-- Migrate minimap settings to launcher settings.
+
+	if TRP3_Configuration then
+		if TRP3_Configuration["minimap_show"] ~= nil then
+			TRP3_Configuration["Launcher_ShowMinimapButton"] = TRP3_Configuration["minimap_show"];
+		end
+
+		if TRP3_Configuration["minimap_icon_position"] and TRP3_Configuration["minimap_icon_position"]["minimapPos"] then
+			TRP3_Configuration["Launcher_MinimapButtonPosition"] = TRP3_Configuration["minimap_icon_position"]["minimapPos"];
+		end
+	end
+
 	-- This patch migrates a few nameplates settings from separated booleans
 	-- to enums.
 
