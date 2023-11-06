@@ -1159,6 +1159,22 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	AUTOMATION_TEST_BUTTON = "Test condition",
 	AUTOMATION_TEST_HELP = "Executes the supplied macro condition, printing the option it would select to the chat frame.",
 	AUTOMATION_TEST_OUTPUT = "Test condition result: %s",
+	AUTOMATION_PROFILE_CREATE = "Create profile",
+	AUTOMATION_PROFILE_CREATE_HELP = "Creates a new profile.|n|nProfiles can be used to create character-specific rulesets for profile automation.",
+	AUTOMATION_PROFILE_CREATE_DIALOG_TITLE = "Enter a name for the new automation profile.",
+	AUTOMATION_PROFILE_CREATE_DIALOG_BUTTON1 = "Create",
+	AUTOMATION_PROFILE_COPY = "Copy profile",
+	AUTOMATION_PROFILE_COPY_HELP = "Copies all stored rules from this profile into the currently enabled one.|n|nThis will |cnRED_FONT_COLOR:irreversibly replace|r all rules configured on the current profile.",
+	AUTOMATION_PROFILE_COPY_DIALOG_TITLE = "Are you sure you want to replace all automation rules in the profile |W|cnGREEN_FONT_COLOR:%s|r|w with the rules from the profile |W|cnGREEN_FONT_COLOR:%s|r|w?",
+	AUTOMATION_PROFILE_COPY_DIALOG_BUTTON1 = "Copy",
+	AUTOMATION_PROFILE_ENABLE = "Enable profile",
+	AUTOMATION_PROFILE_ENABLE_HELP = "Enables this profile for the current character.",
+	AUTOMATION_PROFILE_DELETE = "Delete profile",
+	AUTOMATION_PROFILE_DELETE_HELP = "Deletes this profile.|n|nThis is an |cnRED_FONT_COLOR:irreversible|r process; deleted profiles cannot be restored.",
+	AUTOMATION_PROFILE_DELETE_DIALOG_TITLE = "Are you sure you want to delete the profile |W|cnGREEN_FONT_COLOR:%s|r|w?",
+	AUTOMATION_PROFILE_RESET = "Reset profile",
+	AUTOMATION_PROFILE_RESET_HELP = "Resets all stored rules on the currently enabled profile.|n|nThis will |cnRED_FONT_COLOR:irreversibly delete|r all rules configured on the current profile.",
+	AUTOMATION_PROFILE_RESET_DIALOG_TITLE = "Are you sure you want to reset all automation rules in the profile |W|cnGREEN_FONT_COLOR:%s|r|w?",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- MISC

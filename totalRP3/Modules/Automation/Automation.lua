@@ -4,8 +4,20 @@
 local TRP3_API = select(2, ...);
 local L = TRP3_API.loc;
 
+local AceDB = LibStub:GetLibrary("AceDB-3.0");
+
 local AUTOMATION_UPDATE_THROTTLE = 1;
 local AUTOMATION_MESSAGE_THROTTLE = 5;
+
+local SavedAutomationDefaults = {
+	profile = {
+		actions = {
+			["**"] = {
+				expression = "",
+			},
+		},
+	},
+};
 
 local BaseContext = {};
 
@@ -54,9 +66,7 @@ end
 TRP3_Automation = TRP3_Addon:NewModule("Automation", "AceConsole-3.0");
 
 function TRP3_Automation:OnLoad()
-	self.actions = {};
 	self.actionsByID = {};
-	self.events = TRP3_API.CreateCallbackGroup();
 	self.conditionsByID = {};
 	self.conditionsByToken = {};
 	self.messageCooldowns = {};
@@ -68,8 +78,24 @@ function TRP3_Automation:OnLoad()
 end
 
 function TRP3_Automation:OnInitialize()
-	self.events:RegisterCallback(TRP3_API.GameEvents, "ADDONS_UNLOADING", self.OnUninitialize, self);
-	self:LoadSettings(TRP3_SavedAutomation);
+	local useDefaultProfile = true;
+	self.db = AceDB:New("TRP3_SavedAutomation", SavedAutomationDefaults, useDefaultProfile);
+	self.db.RegisterCallback(self, "OnProfileChanged");
+	self.db.RegisterCallback(self, "OnProfileCopied");
+	self.db.RegisterCallback(self, "OnProfileDeleted");
+	self.db.RegisterCallback(self, "OnProfileReset");
+
+	-- The initial implementation of automation used one settings table
+	-- without profile support. For users with saved automation rules, we
+	-- need to import them into the new profile-based system.
+
+	if TRP3_SavedAutomation.actions then
+		for actionID, actionSettings in pairs(TRP3_SavedAutomation.actions) do
+			self.db.profile.actions[actionID].expression = actionSettings.expression;
+		end
+
+		TRP3_SavedAutomation.actions = nil;
+	end
 
 	TRP3_API.slash.registerCommand({
 		id = "set",
@@ -106,8 +132,20 @@ function TRP3_Automation:OnDisable()
 	self.ticker = nil;
 end
 
-function TRP3_Automation:OnUninitialize()
-	TRP3_SavedAutomation = self:SaveSettings();
+function TRP3_Automation:OnProfileChanged(_, _, profileName)
+	TRP3_AutomationEvents:TriggerEvent("OnProfileChanged", profileName);
+end
+
+function TRP3_Automation:OnProfileCopied()
+	TRP3_AutomationEvents:TriggerEvent("OnProfileModified", self.db:GetCurrentProfile());
+end
+
+function TRP3_Automation:OnProfileDeleted(_, _, profileName)
+	TRP3_AutomationEvents:TriggerEvent("OnProfileDeleted", profileName);
+end
+
+function TRP3_Automation:OnProfileReset()
+	TRP3_AutomationEvents:TriggerEvent("OnProfileModified", self.db:GetCurrentProfile());
 end
 
 function TRP3_Automation:OnDirtyEvent()
@@ -132,32 +170,30 @@ function TRP3_Automation:OnContextMessage(message)
 	TRP3_Addon:Print(message);
 end
 
-function TRP3_Automation:LoadSettings(settings)
-	local actions = {};
-
-	if type(settings) ~= "table" then
-		settings = {};
-	end
-
-	if type(settings.actions) ~= "table" then
-		settings.actions = {};
-	end
-
-	for actionID, actionSettings in pairs(settings.actions) do
-		actions[actionID] = { expression = actionSettings.expression };
-	end
-
-	self.actions = actions;
+function TRP3_Automation:GetAllProfiles()
+	return self.db:GetProfiles();
 end
 
-function TRP3_Automation:SaveSettings()
-	local settings = { actions = {} };
+function TRP3_Automation:GetCurrentProfile()
+	return self.db:GetCurrentProfile();
+end
 
-	for actionID, actionSettings in pairs(self.actions) do
-		settings.actions[actionID] = { expression = actionSettings.expression };
-	end
+function TRP3_Automation:SetCurrentProfile(profileName)
+	self.db:SetProfile(profileName);
+end
 
-	return settings;
+function TRP3_Automation:DeleteProfile(profileName)
+	local silent = true;
+	self.db:DeleteProfile(profileName, silent);
+end
+
+function TRP3_Automation:CopyProfile(profileName)
+	local silent = true;
+	self.db:CopyProfile(profileName, silent);
+end
+
+function TRP3_Automation:ResetCurrentProfile()
+	self.db:ResetProfile();
 end
 
 function TRP3_Automation:RegisterAction(action)
@@ -209,7 +245,7 @@ function TRP3_Automation:GetConditionByToken(conditionToken)
 end
 
 function TRP3_Automation:GetActionExpression(actionID)
-	local actionSettings = self.actions[actionID];
+	local actionSettings = self.db.profile.actions[actionID];
 	local actionExpression = "";
 
 	if actionSettings then
@@ -220,8 +256,8 @@ function TRP3_Automation:GetActionExpression(actionID)
 end
 
 function TRP3_Automation:SetActionExpression(actionID, expression)
-	self.actions[actionID] = self.actions[actionID] or {};
-	self.actions[actionID].expression = string.trim(expression or "");
+	self.db.profile.actions[actionID].expression = string.trim(expression or "");
+	TRP3_AutomationEvents:TriggerEvent("OnProfileModified", self.db:GetCurrentProfile());
 	self:ResetMessageCooldowns();
 	self:MarkDirty();
 end

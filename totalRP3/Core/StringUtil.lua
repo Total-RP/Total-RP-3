@@ -103,3 +103,19 @@ function TRP3_StringUtil.FindClosestMatch(searchText, candidateList)
 
 	return matchedText;
 end
+
+function TRP3_StringUtil.GenerateIncrementalName(predicate, prefix, suffix)
+	if not suffix then
+		suffix = " (%d)";
+	end
+
+	local name = prefix;
+	local count = 1;
+
+	while not predicate(name) do
+		name = prefix .. string.format(suffix, count);
+		count = count + 1;
+	end
+
+	return name;
+end

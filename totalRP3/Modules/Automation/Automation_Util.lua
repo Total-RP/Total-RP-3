@@ -6,7 +6,63 @@ local L = TRP3_API.loc;
 
 local hasRegisteredSettings;
 
+TRP3_AutomationEvents = TRP3_API.CreateCallbackRegistryWithEvents({
+	OnProfileChanged = "OnProfileChanged",   -- Triggers when the current profile changes.
+	OnProfileModified = "OnProfileUpdated",  -- Triggers when a profile is edited.
+	OnProfileDeleted = "OnProfileDeleted",   -- Triggers when a profile is deleted.
+});
+
 TRP3_AutomationUtil = {};
+
+function TRP3_AutomationUtil.GetAllProfiles()
+	return TRP3_Automation:GetAllProfiles();
+end
+
+function TRP3_AutomationUtil.GetCurrentProfile()
+	return TRP3_Automation:GetCurrentProfile();
+end
+
+function TRP3_AutomationUtil.SetCurrentProfile(profileName)
+	return TRP3_Automation:SetCurrentProfile(profileName);
+end
+
+function TRP3_AutomationUtil.DoesProfileExist(profileName)
+	return tContains(TRP3_Automation:GetAllProfiles(), profileName);
+end
+
+function TRP3_AutomationUtil.IsDefaultProfile(profileName)
+	return profileName == "Default";
+end
+
+function TRP3_AutomationUtil.IsCurrentProfile(profileName)
+	return profileName == TRP3_Automation:GetCurrentProfile();
+end
+
+function TRP3_AutomationUtil.DeleteProfile(profileName)
+	return TRP3_Automation:DeleteProfile(profileName);
+end
+
+function TRP3_AutomationUtil.CopyProfile(profileName)
+	return TRP3_Automation:CopyProfile(profileName);
+end
+
+function TRP3_AutomationUtil.ResetCurrentProfile()
+	return TRP3_Automation:ResetCurrentProfile();
+end
+
+function TRP3_AutomationUtil.GenerateProfileName()
+	local playerName = UnitNameUnmodified("player");
+	local serverName = GetRealmName();
+
+	local profileNamePrefix = string.format("%s - %s", playerName, serverName);
+	local profiles = tInvert(TRP3_Automation:GetAllProfiles());
+
+	local function IsAvailableProfileName(profileName)
+		return profiles[profileName] == nil;
+	end
+
+	return TRP3_StringUtil.GenerateIncrementalName(IsAvailableProfileName, profileNamePrefix);
+end
 
 function TRP3_AutomationUtil.RegisterAction(action)
 	TRP3_Automation:RegisterAction(action);
