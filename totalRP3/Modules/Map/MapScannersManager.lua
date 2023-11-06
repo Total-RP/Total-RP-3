@@ -53,7 +53,7 @@ function MapScannersManager.launch(scanID)
 	end
 
 
-	TRP3_Addon:TriggerEvent("MAP_SCAN_STARTED", scan.duration);
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.MAP_SCAN_STARTED, scan.duration);
 	scan:Scan();
 	C_Timer.After(scan.duration, OnScanTimerElapsed);
 	TRP3_API.WorldMapButton.startCooldown(scan.duration);
