@@ -86,7 +86,7 @@ Comm.broadcast.broadcast = broadcast;
 
 local function onBroadcastReceived(message, sender)
 	local header, command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
-	if not header == BROADCAST_HEADER or not command then
+	if header ~= BROADCAST_HEADER or not command then
 		return; -- If not RP protocol or don't have a command
 	end
 	Comm.totalBroadcastR = Comm.totalBroadcastR + BROADCAST_HEADER:len() + message:len();

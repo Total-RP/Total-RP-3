@@ -410,6 +410,8 @@ These tools also allow you to insert |cffffff00images, icons or links to externa
 	CO_GENERAL_CONTRAST_LEVEL_MEDIUM_HIGH = "Medium high",
 	CO_GENERAL_CONTRAST_LEVEL_HIGH = "High",
 	CO_GENERAL_CONTRAST_LEVEL_VERY_HIGH = "Very high",
+	CO_GENERAL_HIDE_MAXIMIZE_BUTTON = "Hide maximize button",
+	CO_GENERAL_HIDE_MAXIMIZE_BUTTON_HELP = "Hides the minimize and maximize buttons on the Total RP 3 window.",
 	CO_TOOLTIP = "Tooltip settings",
 	CO_TOOLTIP_USE = "Use characters/companions tooltip",
 	CO_TOOLTIP_COMBAT = "Hide during combat",
@@ -828,6 +830,7 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 This will works:|cff00ff00
 - On any item in your bags
 - On any icon in the spellbook|r]],
+	UI_ICON_BROWSER_SEARCHING = "Searching... (%d%%)",
 	UI_COMPANION_BROWSER_HELP = "Select a battle pet",
 	UI_COMPANION_BROWSER_HELP_TT = "|cffffff00Warning: |rOnly renamed battle pets can be linked to a profile.\n\n|cff00ff00This section lists these battle pets only.",
 	UI_ICON_SELECT = "Select icon",
@@ -1562,6 +1565,8 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP = "The maximum number of characters to display for names and prefix titles. Names exceeding this length will be cropped.",
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS = "Maximum title length",
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP = "The maximum number of characters to display for full titles. Titles exceeding this length will be cropped.",
+	NAMEPLATES_CONFIG_MAX_GUILD_NAME_CHARS = "Maximum guild name length",
+	NAMEPLATES_CONFIG_MAX_GUILD_NAME_CHARS_HELP = "The maximum number of characters to display for guild names. Guild names exceeding this length will be cropped.",
 	NAMEPLATES_CONFIG_PAGE_SETTINGS_MAY_REQUIRE_TOGGLE_HELP = "You may need to toggle your nameplates for any settings changes to take effect.",
 	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT = "Always show target unit",
 	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT_HELP = "If checked, your current target will always have its nameplate visible.",
@@ -1622,7 +1627,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - "Always show target" nameplate option will now display the target nameplate even if it is OOC and "Hide out of character units" was enabled.
 
 ]],
-
 	WHATS_NEW_26_1 = [[# Changelog version 2.5.1
 
 ## Fixed
@@ -1633,7 +1637,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue with "No player named..." messages appearing when hovering players on realms with non-latin characters.
 
 ]],
-
 	LAUNCHER_CONFIG_MENU_TITLE = "Launcher settings",
 	LAUNCHER_CONFIG_PAGE_DESCRIPTION = "This settings on this page control the behavior of various widgets that provide access to the Total RP 3 interface, such as minimap buttons.",
 	LAUNCHER_CONFIG_LOCK_MINIMAP_BUTTON = "Lock minimap button",
@@ -1654,6 +1657,46 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	LAUNCHER_ACTION_DIRECTORY = "Open directory page",
 	LAUNCHER_ACTION_PROFILES = "Open profiles page",
 	LAUNCHER_ACTION_PLAYER = "Open current profile page",
+	WHATS_NEW_26_2 = [[# Changelog version 2.5.2
+
+## Fixed
+
+- Fixed an issue with the Plater RP nameplates getting stuck on screen.
+
+]],
+	WHATS_NEW_26_3 = [[# Changelog version 2.5.3
+
+## Fixed
+
+- Prevented invalid dice roll messages from showing.
+- Updated TaintLess library for patch 3.4.2.
+
+]],
+	WHATS_NEW_26_4 = [[# Changelog version 2.5.4
+
+## Added
+
+- Added 53 musics, 45 images and 169 icons from patch 10.1.5 and before (some previously encrypted icons).
+
+## Fixed
+
+- Fixed close/minimize/resize buttons positions for Retail.
+- Fixed a bug with the dashboard potentially related to Prat.
+
+]],
+	WHATS_NEW_26_5 = [[# Changelog version 2.5.5
+
+## Added
+
+- Added 3 musics, 4 images and 76 icons from patch 10.1.7.
+- Added setting to crop long guild names on RP nameplates.
+
+## Fixed
+
+- Improved icon browser performance to deal with an occasional addon loading issue.
+- Fixed a recycling issue with RP nameplates when using Plater Nameplates.
+
+]],
 };
 
 -- Bindings and FrameXML Global Strings

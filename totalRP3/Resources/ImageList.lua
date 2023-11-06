@@ -423,12 +423,32 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_BrokenIslesCupEnd",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_BrokenIslesCupStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_CastleNathriaStart",
 		width = 128,
 		height = 128
 	},
 	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_DanceDay",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_DraenorCupEnd",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_DraenorCupStart",
 		width = 128,
 		height = 128
 	},
@@ -443,7 +463,27 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_EasternKingdomsCupEnd",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_EasternKingdomsCupStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_EternalPalace",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_GreatSeaIslandsCupEnd",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_GreatSeaIslandsCupStart",
 		width = 128,
 		height = 128
 	},
@@ -453,12 +493,42 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_KalimdorCupEnd",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_KalimdorCupStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_MoonkinFestival",
 		width = 128,
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_NorthrendCupEnd",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_NorthrendCupStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_NyalothaStart",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_PandariaCupEnd",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_PandariaCupStart",
 		width = 128,
 		height = 128
 	},
@@ -478,12 +548,27 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_SecretsOfAzerothStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_SepulcherOfTheFirstOnesStart",
 		width = 128,
 		height = 128
 	},
 	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_Shadowlands",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_ShadowlandsCupEnd",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_ShadowlandsCupStart",
 		width = 128,
 		height = 128
 	},
@@ -499,6 +584,21 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_TransmogPopularityContestStart",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_TurbulentTimeways",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_TurbulentTimewaysEnd",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_TurbulentTimewaysStart",
 		width = 128,
 		height = 128
 	},
@@ -1450,6 +1550,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-DawnOfTheInfinite",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-DeepwindGorge",
 		width = 256,
 		height = 256
@@ -2194,6 +2298,10 @@ local IMAGES = {
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DarkmaulCitadel",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DawnOfTheInfinite",
 		width = 256,
 		height = 128
 	}, {
@@ -4219,6 +4327,11 @@ local IMAGES = {
 		height = 256
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-Dreamsurge-large",
+		width = 512,
+		height = 256
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-Frostfire-BloodmaulCompound",
 		width = 512,
 		height = 256
@@ -4505,6 +4618,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-DruidRestoration",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-EvokerAugmentation",
 		width = 256,
 		height = 128,
 	},
@@ -6108,6 +6226,46 @@ local IMAGES = {
 		width = 512,
 		height = 256
 	},
+	{
+		url = "Interface\\QuestionFrame\\answer-AzmerlothMurlocPet",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-StormDragonMount",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-TimeRiftGunRack_BombLobber",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-TimeRiftGunRack_CrankShot",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-TimeRiftGunRack_Flamethrower",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-TimeRiftGunRack_Railgun",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-TimeRiftGunRack_ShrapnelSpreader",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-TimeRiftGunRack_Thunderbolt",
+		width = 256,
+		height = 128
+	},
 	--endregion
 	--region Talent Frame
 	{
@@ -6309,6 +6467,88 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\TAXIFRAME\\Taximap1116",
+		width = 512,
+		height = 512
+	},
+	--endregion
+	--region Store
+	{
+		url = "Interface\\Store\\ShopVC2",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Store\\ShopVC3",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Store\\ShopVC4",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Store\\ShopVC5",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Store\\ShopVC6",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Store\\ShopVC7",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Store\\ShopVC8",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Store\\ShopVC9",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Store\\ShopVC10",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Store\\ShopVC11",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Store\\ShopVC12",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\Store\\ShopVC13",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\Store\\ShopVC14",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\Store\\ShopVC15",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\Store\\ShopVC16",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\Store\\ShopVC17",
 		width = 512,
 		height = 512
 	},
