@@ -198,3 +198,56 @@ TRP3_API.flyway.patches["15"] = function()
 		TRP3_Configuration["increase_color_contrast"] = nil;
 	end
 end
+
+TRP3_API.flyway.patches["16"] = function()
+	-- This patch migrates a few nameplates settings from separated booleans
+	-- to enums.
+
+	if not TRP3_Configuration then
+		return;
+	end
+
+	local customizeNonRoleplayUnits;
+	local customizeNPCUnits;
+	local customizeOOCUnits;
+	local customizeNames;
+
+	if TRP3_Configuration["NamePlates_DisableOutOfCharacterUnits"] then
+		customizeOOCUnits = TRP3_NamePlateUnitCustomizationState.Disable;
+	elseif TRP3_Configuration["NamePlates_HideOutOfCharacterUnits"] then
+		customizeOOCUnits = TRP3_NamePlateUnitCustomizationState.Hide;
+	else
+		customizeOOCUnits = TRP3_NamePlateUnitCustomizationState.Show;
+	end
+
+	if TRP3_Configuration["NamePlates_DisableNonPlayableUnits"] then
+		customizeNPCUnits = TRP3_NamePlateUnitCustomizationState.Disable;
+	else
+		customizeNPCUnits = TRP3_NamePlateUnitCustomizationState.Show;
+	end
+
+	if TRP3_Configuration["NamePlates_HideNonRoleplayUnits"] then
+		customizeNonRoleplayUnits = TRP3_NamePlateUnitCustomizationState.Hide;
+	else
+		customizeNonRoleplayUnits = TRP3_NamePlateUnitCustomizationState.Show;
+	end
+
+	if TRP3_Configuration["NamePlates_CustomizeNames"] == false then
+		customizeNames = TRP3_NamePlateUnitNameDisplayMode.OriginalName;
+	elseif TRP3_Configuration["NamePlates_CustomizeFirstNames"] then
+		customizeNames = TRP3_NamePlateUnitNameDisplayMode.FirstName;
+	else
+		customizeNames = TRP3_NamePlateUnitNameDisplayMode.FullName;
+	end
+
+	TRP3_Configuration["NamePlates_CustomizeNonRoleplayUnits"] = customizeNonRoleplayUnits;
+	TRP3_Configuration["NamePlates_CustomizeNPCUnits"] = customizeNPCUnits;
+	TRP3_Configuration["NamePlates_CustomizeOOCUnits"] = customizeOOCUnits;
+	TRP3_Configuration["NamePlates_CustomizeNames"] = customizeNames;
+
+	TRP3_Configuration["NamePlates_DisableNonPlayableUnits"] = nil;
+	TRP3_Configuration["NamePlates_HideNonRoleplayUnits"] = nil;
+	TRP3_Configuration["NamePlates_DisableOutOfCharacterUnits"] = nil;
+	TRP3_Configuration["NamePlates_HideOutOfCharacterUnits"] = nil;
+	TRP3_Configuration["NamePlates_CustomizeFirstName"] = nil;
+end
