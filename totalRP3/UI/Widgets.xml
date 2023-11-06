@@ -7,6 +7,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Include file="ScrollingEditBox.xml"/>
 	<Include file="FocusRegion.xml"/>
+	<Include file="StyledButton.xml"/>
 	<Include file="UIButton.xml"/>
 	<Include file="Widgets.lua"/>
 
@@ -238,11 +239,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Button>
 
-	<Button name="TRP3_ActionButton" virtual="true">
-		<Size x="32" y="32"/>
-		<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
-		<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
-		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+	<Button name="TRP3_ActionButton" inherits="TRP3_StyledButtonTemplate" virtual="true">
+		<Size x="24" y="24"/>
+		<KeyValues>
+			<KeyValue key="styleName" value="MinimizeButton" type="string"/>
+		</KeyValues>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
@@ -913,20 +914,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<!-- Resize button -->
-	<Button name="TRP3_ResizeButton" virtual="true">
-		<Size x="32" y="32"/>
+	<Button name="TRP3_ResizeButton" inherits="TRP3_StyledButtonTemplate" virtual="true">
+		<Size x="24" y="24"/>
+		<KeyValues>
+			<KeyValue key="styleName" value="ResizeButton" type="string"/>
+		</KeyValues>
 		<Scripts>
-			<OnLoad>
+			<OnLoad inherit="prepend">
 				TRP3_API.ui.frame.initResize(self);
 			</OnLoad>
 		</Scripts>
-		<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up">
-			<TexCoords left="1" right="0" top="0" bottom="1"/>
-		</NormalTexture>
-		<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down">
-			<TexCoords left="1" right="0" top="0" bottom="1"/>
-		</PushedTexture>
-		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 	</Button>
 
 	<Slider name="TRP3_Scrollbar" virtual="true">
@@ -1082,14 +1079,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button parentKey="CloseButton" inherits="UIPanelCloseButton">
+			<Button parentKey="CloseButton" inherits="TRP3_StyledButtonTemplate">
+				<Size x="24" y="24"/>
+				<KeyValues>
+					<KeyValue key="styleName" value="CloseButton" type="string"/>
+				</KeyValues>
 				<Anchors>
-					<Anchor point="TOPRIGHT">
-						<Offset>
-							<AbsDimension x="-3" y="-3" />
-						</Offset>
-					</Anchor>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 				</Anchors>
+				<Scripts>
+					<OnClick function="HideParentPanel"/>
+				</Scripts>
 			</Button>
 			<EditBox parentKey="CopyText">
 				<Anchors>

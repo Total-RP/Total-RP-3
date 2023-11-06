@@ -275,9 +275,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</Frame>
 
-			<Button inherits="UIPanelCloseButton">
+			<Button parentKey="CloseButton" inherits="TRP3_StyledButtonTemplate">
+				<Size x="24" y="24"/>
+				<KeyValues>
+					<KeyValue key="styleName" value="CloseButton" type="string"/>
+				</KeyValues>
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="0" y="0"/>
+					<Anchor point="TOPRIGHT"/>
 				</Anchors>
 				<Scripts>
 					<OnClick>
@@ -297,7 +301,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<KeyValue key="minHeight" value="150" type="number"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 			</Button>
 		</Frames>

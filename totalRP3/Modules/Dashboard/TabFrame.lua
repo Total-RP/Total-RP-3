@@ -80,7 +80,7 @@ function TRP3_DashboardTabFrameMixin:OnNavigationResized(width)
 	-- Resize the content frame and try to refresh it.
 	local htmlFrame = self.HTMLContent;
 	htmlFrame:SetSize(width - 54, 5);
-	htmlFrame:SetText(htmlFrame:GetText());
+	htmlFrame:SetText(htmlFrame:GetText() or "");
 end
 
 --- Called when a tab in this frame has been selected. Updates the content

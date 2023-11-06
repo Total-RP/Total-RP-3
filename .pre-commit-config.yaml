@@ -33,8 +33,8 @@ repos:
 
       - id: xmllint
         name: check xml
-        entry: xmllint --noout --quiet --schema Scripts/UI.xsd
+        entry: xmllint --noout --quiet --schema .github/scripts/ui.xsd
         language: system
         types: [xml]
-        exclude: ^(Scripts/UI\.xsd|totalRP3/Bindings\.xml)$
+        exclude: ^(.github/scripts/ui\.xsd|totalRP3/Bindings\.xml)$
         require_serial: true

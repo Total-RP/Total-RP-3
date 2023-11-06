@@ -12,7 +12,7 @@ local initList = TRP3_API.ui.list.initList;
 local tinsert, tremove, _G, pairs, wipe, math, assert = tinsert, tremove, _G, pairs, wipe, math, assert;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForFrame, setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local getIconList, getIconListSize, getImageList, getImageListSize, getMusicList, getMusicListSize;
+local getImageList, getImageListSize, getMusicList, getMusicListSize;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local max = math.max;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
@@ -394,83 +394,35 @@ end
 -- Icon browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TRP3_IconBrowser = TRP3_IconBrowser;
-local iconWidgetTab = {};
-local filteredIconList;
-local ui_IconBrowserContent = TRP3_IconBrowserContent;
+local IconBrowserCallbackOwner = {};  -- Dummy owner for callback registrations.
 
-local function decorateIcon(icon, index)
-	icon:SetNormalTexture("Interface\\ICONS\\"..filteredIconList[index]);
-	icon:SetPushedTexture("Interface\\ICONS\\"..filteredIconList[index]);
-	setTooltipForFrame(icon, TRP3_IconBrowser, "RIGHT", 0, -100, Utils.str.icon(filteredIconList[index], 75), filteredIconList[index]);
-	icon.index = index;
-end
+local function OnIconBrowserSelection(onSelectCallback, _, iconInfo)
+	TRP3_IconBrowserUtil.UnregisterAllCallbacks(IconBrowserCallbackOwner);
+	hidePopups();
 
-local function onIconClick(icon)
-	TRP3_API.popup.hideIconBrowser();
-	if ui_IconBrowserContent.onSelectCallback then
-		ui_IconBrowserContent.onSelectCallback(filteredIconList[icon.index], icon);
+	if onSelectCallback then
+		onSelectCallback(iconInfo.name, iconInfo);
 	end
 end
 
-local function onIconClose()
-	TRP3_API.popup.hideIconBrowser();
-	if ui_IconBrowserContent.onCancelCallback then
-		ui_IconBrowserContent.onCancelCallback();
+local function OnIconBrowserClosed(onCancelCallback)
+	TRP3_IconBrowserUtil.UnregisterAllCallbacks(IconBrowserCallbackOwner);
+	hidePopups();
+
+	if onCancelCallback then
+		onCancelCallback();
 	end
-end
-
-local function filteredIconBrowser()
-	local filter = TRP3_IconBrowserFilterBox:GetText();
-	if filteredIconList and filteredIconList ~= getIconList() then -- Remove previous filtering if is not full list
-		wipe(filteredIconList);
-		filteredIconList = nil;
-	end
-	filteredIconList = getIconList(filter);
-	TRP3_IconBrowserTotal:SetText(string.format(GENERIC_FRACTION_STRING, #filteredIconList, getIconListSize()));
-	initList(
-		{
-			widgetTab = iconWidgetTab,
-			decorate = decorateIcon
-		},
-		filteredIconList,
-		TRP3_IconBrowserContentSlider
-	);
-end
-
-local function initIconBrowser()
-	handleMouseWheel(ui_IconBrowserContent, TRP3_IconBrowserContentSlider);
-	TRP3_IconBrowserContentSlider:SetValue(0);
-	-- Create icons
-	for row = 0, 5 do
-		for column = 0, 7 do
-			local button = CreateFrame("Button", "TRP3_IconBrowserButton_"..row.."_"..column, ui_IconBrowserContent, "TRP3_IconBrowserButton");
-			button:ClearAllPoints();
-			button:SetPoint("TOPLEFT", ui_IconBrowserContent, "TOPLEFT", 15 + (column * 45), -15 + (row * (-45)));
-			button:SetScript("OnClick", onIconClick);
-			tinsert(iconWidgetTab, button);
-		end
-	end
-
-	TRP3_IconBrowserFilterBox:SetScript("OnTextChanged", filteredIconBrowser);
-	TRP3_IconBrowserClose:SetScript("OnClick", onIconClose);
-
-	TRP3_IconBrowserTitle:SetText(loc.UI_ICON_BROWSER);
-	TRP3_IconBrowserFilterBoxText:SetText(loc.UI_FILTER);
-	filteredIconBrowser();
 end
 
 local function showIconBrowser(onSelectCallback, onCancelCallback, scale)
-	ui_IconBrowserContent.onSelectCallback = onSelectCallback;
-	ui_IconBrowserContent.onCancelCallback = onCancelCallback;
-	TRP3_IconBrowserFilterBox:SetText("");
-	TRP3_IconBrowserFilterBox:SetFocus();
+	TRP3_IconBrowserUtil.RegisterCallback(IconBrowserCallbackOwner, "OnBrowserIconSelected", OnIconBrowserSelection, onSelectCallback);
+	TRP3_IconBrowserUtil.RegisterCallback(IconBrowserCallbackOwner, "OnBrowserClosed", OnIconBrowserClosed, onCancelCallback);
+	TRP3_IconBrowserUtil.OpenBrowser();
 	TRP3_IconBrowser:SetScale(scale or 1);
 end
 
 function TRP3_API.popup.hideIconBrowser()
-	hidePopups();
-	TRP3_IconBrowser:Hide();
+	TRP3_IconBrowserUtil.CloseBrowser();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1161,11 +1113,9 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_API.popup.init()
-	getIconList, getIconListSize = TRP3_API.utils.resources.getIconList, TRP3_API.utils.resources.getIconListSize;
 	getImageList, getImageListSize = TRP3_API.utils.resources.getImageList, TRP3_API.utils.resources.getImageListSize;
 	getMusicList, getMusicListSize = TRP3_API.utils.resources.getMusicList, TRP3_API.utils.resources.getMusicListSize;
 
-	initIconBrowser();
 	initCompanionBrowser();
 	initMusicBrowser();
 	initColorBrowser();

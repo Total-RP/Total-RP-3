@@ -1,3 +1,33 @@
+# Changelog version 2.5.5
+
+## Added
+
+- Added 3 musics, 4 images and 76 icons from patch 10.1.7.
+- Added setting to crop long guild names on RP nameplates.
+
+## Fixed
+
+- Improved icon browser performance to deal with an occasional addon loading issue.
+- Fixed a recycling issue with RP nameplates when using Plater Nameplates.
+
+# Changelog version 2.5.4
+
+## Added
+
+- Added 53 musics, 45 images and 169 icons from patch 10.1.5 and before (some previously encrypted icons).
+
+## Fixed
+
+- Fixed close/minimize/resize buttons positions for Retail.
+- Fixed a bug with the dashboard potentially related to Prat.
+
+# Changelog version 2.5.3
+
+## Fixed
+
+- Prevented invalid dice roll messages from showing.
+- Updated TaintLess library for patch 3.4.2.
+
 # Changelog version 2.5.2
 
 ## Fixed

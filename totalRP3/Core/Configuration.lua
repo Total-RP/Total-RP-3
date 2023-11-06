@@ -102,7 +102,7 @@ local function buildConfigurationPage(structure)
 	local lastWidget;
 	local marginLeft = structure.marginLeft or 5;
 	for _, element in pairs(structure.elements) do
-		local widget = element.widget or CreateFrame("Frame", element.widgetName or ("TRP3_ConfigurationWidget"..GENERATED_WIDGET_INDEX), structure.parent, element.inherit);
+		local widget = element.widget or CreateFrame(element.frameType or "Frame", element.widgetName or ("TRP3_ConfigurationWidget"..GENERATED_WIDGET_INDEX), structure.parent, element.inherit);
 		widget:ClearAllPoints();
 		widget:SetPoint("LEFT", structure.parent, "LEFT", marginLeft + (element.marginLeft or 5), 0);
 		widget:SetPoint("RIGHT", structure.parent, "RIGHT", -marginLeft, 0);
@@ -281,6 +281,10 @@ local function buildConfigurationPage(structure)
 			end
 		end
 
+		if element.elementInitializer and element.elementData then
+			element.elementInitializer(widget, element.elementData);
+		end
+
 		lastWidget = widget;
 		GENERATED_WIDGET_INDEX = GENERATED_WIDGET_INDEX + 1;
 	end
@@ -384,6 +388,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	registerConfigKey("ui_sounds", true);
 	registerConfigKey("ui_animations", true);
 	registerConfigKey("disable_welcome_message", false);
+	registerConfigKey("hide_maximize_button", false);
 	registerConfigKey("default_color_picker", false);
 	registerConfigKey("color_contrast_level", TRP3_API.ColorContrastOption.Default);
 	registerConfigKey("date_format", "");
@@ -424,6 +429,12 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				title = loc.CO_GENERAL_DISABLE_WELCOME_MESSAGE,
 				configKey = "disable_welcome_message",
 				help = loc.CO_GENERAL_DISABLE_WELCOME_MESSAGE_HELP,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_GENERAL_HIDE_MAXIMIZE_BUTTON,
+				configKey = "hide_maximize_button",
+				help = loc.CO_GENERAL_HIDE_MAXIMIZE_BUTTON_HELP,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
