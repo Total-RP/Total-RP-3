@@ -41,7 +41,7 @@ function MapScannersManager.launch(scanID)
 	scan:ResetScanData();
 
 	local function OnScanTimerElapsed()
-		TRP3_Addon:TriggerEvent("MAP_SCAN_ENDED");
+		TRP3_Addon:TriggerEvent(TRP3_Addon.Events.MAP_SCAN_ENDED);
 
 		-- If the displayed map changed
 		if displayedMapID ~= AddOn_TotalRP3.Map.getDisplayedMapID() then
