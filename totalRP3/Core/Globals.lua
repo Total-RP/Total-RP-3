@@ -77,13 +77,8 @@ TRP3_API.globals = {
 local TRP3_EXPANSION_CATACLYSM = LE_EXPANSION_CATACLYSM or 3;
 local TRP3_EXPANSION_BATTLE_FOR_AZEROTH = LE_EXPANSION_BATTLE_FOR_AZEROTH or 7;
 
-TRP3_BroadcastMethod = {
-	Channel = 1,
-	Yell = 2,
-};
-
 TRP3_ClientFeatures = {
-	BroadcastMethod = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE and TRP3_BroadcastMethod.Yell or TRP3_BroadcastMethod.Channel),
+	ChannelBroadcasts = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE),
 	WarMode = (LE_EXPANSION_LEVEL_CURRENT >= TRP3_EXPANSION_BATTLE_FOR_AZEROTH),
 	Transmogrification = (LE_EXPANSION_LEVEL_CURRENT >= TRP3_EXPANSION_CATACLYSM),
 	WaterElementalWorkaround = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE),

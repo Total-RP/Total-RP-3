@@ -45,53 +45,105 @@ local BROADCAST_PREFIX = "RPB";
 local BROADCAST_VERSION = 1;
 local BROADCAST_SEPARATOR = "~";
 local BROADCAST_HEADER = BROADCAST_PREFIX .. BROADCAST_VERSION;
-Comm.totalBroadcast = 0;
-Comm.totalBroadcastP2P = 0;
-Comm.totalBroadcastR = 0;
-Comm.totalBroadcastP2PR = 0;
+local BROADCAST_MAX_MESSAGE_LEN = 254;
 
-local function broadcast(command, ...)
-	if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel and not config_UseBroadcast() or not command then
-		TRP3_API.Log("Bad params");
-		return;
+local function AssembleDelimitedMessage(...)
+	local parts = { ... };
+	local n = 0;
+
+	for i, part in ipairs(parts) do
+		part = tostring(part);
+
+		local offset = 1;
+		local plain = true;
+
+		if string.find(part, BROADCAST_SEPARATOR, offset, plain) then
+			securecall(error, "attempted to assemble a message containing a delimiter character");
+			return nil;
+		end
+
+		parts[i] = part;
+		n = i;
 	end
-	if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel and not helloWorlded and command ~= HELLO_CMD then
+
+	-- Concat range is limited to [1, n] explicitly; concat internally uses
+	-- object length (#) whereas ipairs stops at the first nil; if we were
+	-- supplied any nil values it's possible that concat would attempt to
+	-- include those in the message and then hard error.
+
+	return table.concat(parts, BROADCAST_SEPARATOR, 1, n);
+end
+
+TRP3_API.BroadcastMethod = {
+	World = "WORLD",
+	Guild = "GUILD",
+	Group = "GROUP",
+};
+
+local BroadcastDistributionTypes = {
+	[TRP3_API.BroadcastMethod.World] = (TRP3_ClientFeatures.ChannelBroadcasts and "CHANNEL" or "YELL"),
+	[TRP3_API.BroadcastMethod.Guild] = "GUILD",
+	[TRP3_API.BroadcastMethod.Group] = "RAID",  -- Downlevels to PARTY automatically.
+};
+
+local function broadcast(command, method, ...)
+	local distributionType = BroadcastDistributionTypes[method];
+
+	if distributionType == "RAID" and not IsInRaid() then
+		distributionType = "PARTY";
+	end
+
+	-- On error handling - ideally many of these checks would hard error, but
+	-- this reportedly bricks the map scanner code in a catastrophic way. As
+	-- such we'll use the securecall(error) pattern to route errors to the
+	-- global error handler and then return normally.
+
+	if type(command) ~= "string" or command == "" then
+		securecall(error, "invalid broadcast command");
+		return;
+	elseif not distributionType then
+		securecall(error, "invalid broadcast method");
+		return;
+	elseif distributionType == "CHANNEL" and not config_UseBroadcast() then
+		-- No logging or error necessary; user disabled channel broadcasts.
+		return;
+	elseif distributionType == "CHANNEL" and not helloWorlded and command ~= HELLO_CMD then
 		TRP3_API.Log("Broadcast channel not yet initialized.");
 		return;
+	elseif distributionType == "GUILD" and not IsInGuild() then
+		TRP3_API.Log("Attempted to broadcast to guild while not in a guild.");
+		return;
+	elseif distributionType == "PARTY" and not IsInGroup(LE_PARTY_CATEGORY_HOME) then
+		TRP3_API.Log("Attempted to broadcast to group while not in a group.");
+		return;
 	end
-	local message = BROADCAST_HEADER .. BROADCAST_SEPARATOR .. command;
-	for _, arg in pairs({...}) do
-		arg = tostring(arg);
-		if arg:find(BROADCAST_SEPARATOR) then
-			TRP3_API.Log("Trying a broadcast with a arg containing the separator character. Abort!");
-			return;
-		end
-		message = message .. BROADCAST_SEPARATOR .. arg;
+
+	local message = AssembleDelimitedMessage(BROADCAST_HEADER, command, ...);
+
+	if not message then
+		-- Error already raised by AssembleDelimitedMessage.
+		return;
+	elseif #message > BROADCAST_MAX_MESSAGE_LEN then
+		securecall(error, "attempted to send an oversized broadcast message");
+		return;
 	end
-	if message:len() < 254 then
-		if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Yell then
-			Chomp.SendAddonMessage(BROADCAST_HEADER, message, "YELL");
-		elseif TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
-			local channelName = GetChannelName(config_BroadcastChannel());
-			Chomp.SendAddonMessage(BROADCAST_HEADER, message, "CHANNEL", channelName);
-		else
-			error("Unknown broadcast method for this client");
-		end
-		Comm.totalBroadcast = Comm.totalBroadcast + BROADCAST_HEADER:len() + message:len();
-	else
-		TRP3_API.Log(("Trying a broadcast with a message with length %s. Abort!"):format(message:len()));
+
+	local target;
+
+	if distributionType == "CHANNEL" then
+		target = GetChannelName(config_BroadcastChannel());
 	end
+
+	Chomp.SendAddonMessage(BROADCAST_HEADER, message, distributionType, target);
 end
 Comm.broadcast.broadcast = broadcast;
 
-local function onBroadcastReceived(message, sender)
-	local header, command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
-	if header ~= BROADCAST_HEADER or not command then
-		return; -- If not RP protocol or don't have a command
+local function onBroadcastReceived(sender, header, command, ...)
+	if header ~= BROADCAST_HEADER then
+		return; -- If not RP protocol
 	end
-	Comm.totalBroadcastR = Comm.totalBroadcastR + BROADCAST_HEADER:len() + message:len();
 	for _, callback in pairs(PREFIX_REGISTRATION[command] or Globals.empty) do
-		callback(sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+		securecallfunction(callback, sender, ...);
 	end
 end
 
@@ -105,7 +157,7 @@ function Comm.broadcast.registerCommand(command, callback)
 end
 
 local SetChannelPasswordOld = SetChannelPassword;
-if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
+if TRP3_ClientFeatures.ChannelBroadcasts then
 	SetChannelPassword = function(data, password)
 		local _, channelName = GetChannelName(data);
 		if channelName ~= config_BroadcastChannel() or password == "" then
@@ -122,12 +174,10 @@ end
 -- Peer to peer part
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onP2PMessageReceived(message, sender)
-	Comm.totalBroadcastP2PR = Comm.totalBroadcastP2PR + BROADCAST_HEADER:len() + message:len();
-	local command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
+local function onP2PMessageReceived(sender, command, ...)
 	if PREFIX_P2P_REGISTRATION[command] then
 		for _, callback in pairs(PREFIX_P2P_REGISTRATION[command]) do
-			callback(sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+			securecallfunction(callback, sender, ...);
 		end
 	end
 end
@@ -142,21 +192,18 @@ function Comm.broadcast.registerP2PCommand(command, callback)
 end
 
 local function sendP2PMessage(target, command, ...)
-	local message = command;
-	for _, arg in pairs({...}) do
-		arg = tostring(arg);
-		if arg:find(BROADCAST_SEPARATOR) then
-			TRP3_API.Log("Trying a broadcast with a arg containing the separator character. Abort!");
-			return;
-		end
-		message = message .. BROADCAST_SEPARATOR .. arg;
+	-- P2P messages don't use the broadcast header.
+	local message = AssembleDelimitedMessage(command, ...);
+
+	if not message then
+		-- Error already raised by AssembleDelimitedMessage.
+		return;
+	elseif #message > BROADCAST_MAX_MESSAGE_LEN then
+		securecall(error, "attempted to send an oversized p2p message");
+		return;
 	end
-	if message:len() < 254 then
-		Chomp.SendAddonMessage(BROADCAST_HEADER, message, "WHISPER", target);
-		Comm.totalBroadcastP2P = Comm.totalBroadcastP2P + BROADCAST_HEADER:len() + message:len();
-	else
-		TRP3_API.Log(("Trying a P2P message with a message with length %s. Abort!"):format(message:len()));
-	end
+
+	Chomp.SendAddonMessage(BROADCAST_HEADER, message, "WHISPER", target);
 end
 Comm.broadcast.sendP2PMessage = sendP2PMessage;
 
@@ -209,26 +256,45 @@ local function onChannelLeave(_, _, arg2, _, _, _, _, _, _, arg9)
 	end
 end
 
+local function isBroadcastMessage(distributionType, channel)
+	if distributionType == "YELL" then
+		return true;
+	elseif distributionType == "CHANNEL" then
+		return string.lower(channel) == string.lower(config_BroadcastChannel())
+	elseif distributionType == "GUILD" then
+		return true;
+	elseif distributionType == "PARTY" then
+		return true;
+	elseif distributionType == "RAID" then
+		return true;
+	elseif distributionType == "UNKNOWN" then
+		return true;
+	else
+		return false;
+	end
+end
+
 local function onMessageReceived(_, prefix, message , distributionType, sender, _, _, _, channel)
 	if not sender then
 		return;
 	end
 
 	if prefix == BROADCAST_HEADER then
-
 		if not sender:find('-') then
 			sender = Utils.str.unitInfoToID(sender);
 		end
 
 		if not isIDIgnored(sender) then
-			-- Have to test "UNKNOWN" for "YELL" addon messages because Blizzard lul
-			if distributionType == "YELL" or distributionType == "UNKNOWN" or distributionType == "CHANNEL" and string.lower(channel) == string.lower(config_BroadcastChannel()) then
-				onBroadcastReceived(message, sender, channel);
-			else
-				onP2PMessageReceived(message, sender);
-			end
-		end
+			local handler;
 
+			if isBroadcastMessage(distributionType, channel) then
+				handler = onBroadcastReceived;
+			else
+				handler = onP2PMessageReceived;
+			end
+
+			handler(sender, strsplit(BROADCAST_SEPARATOR, message));
+		end
 	end
 end
 
@@ -325,14 +391,14 @@ Comm.broadcast.init = function()
 	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_ADDON", onMessageReceived);
 
 	-- No broadcast channel on Classic or BCC
-	if TRP3_ClientFeatures.BroadcastMethod ~= TRP3_BroadcastMethod.Channel then
+	if not TRP3_ClientFeatures.ChannelBroadcasts then
 		TRP3_Addon:TriggerEvent(TRP3_Addon.Events.BROADCAST_CHANNEL_READY);
 		return
 	end
 
 	-- Then, launch the loop
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-		if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
+		if TRP3_ClientFeatures.ChannelBroadcasts then
 			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_UI_UPDATE", function() moveBroadcastChannelToTheBottomOfTheList(); end);
 			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_COUNT_UPDATE", function() moveBroadcastChannelToTheBottomOfTheList(); end);
 			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_CHANNEL_JOIN", function() moveBroadcastChannelToTheBottomOfTheList(); end);
@@ -358,7 +424,7 @@ Comm.broadcast.init = function()
 					TRP3_API.Log("Step 2: Connected to broadcast channel: " .. config_BroadcastChannel() .. ". Now sending HELLO command.");
 					moveBroadcastChannelToTheBottomOfTheList(true);
 					if not helloWorlded then
-						broadcast(HELLO_CMD, Globals.version, Utils.str.sanitizeVersion(Globals.version_display), Globals.extended_version, Utils.str.sanitizeVersion(Globals.extended_display_version));
+						broadcast(HELLO_CMD, TRP3_API.BroadcastMethod.World, Globals.version, Utils.str.sanitizeVersion(Globals.version_display), Globals.extended_version, Utils.str.sanitizeVersion(Globals.extended_display_version));
 					end
 				end
 			end, 15);
@@ -382,7 +448,7 @@ Comm.broadcast.init = function()
 		end
 	end);
 
-	if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
+	if TRP3_ClientFeatures.ChannelBroadcasts then
 		-- For when someone just places a password
 		TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_CHANNEL_NOTICE_USER", function(_, mode, user, _, _, _, _, _, _, channel)
 			if mode == "OWNER_CHANGED" and user == TRP3_API.globals.player_id and channel == config_BroadcastChannel() then
