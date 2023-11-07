@@ -473,6 +473,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_EmeraldDreamStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_EternalPalace",
 		width = 128,
 		height = 128
@@ -1574,6 +1579,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-EmeraldDream",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-EndTime",
 		width = 256,
 		height = 256
@@ -2316,6 +2325,26 @@ local IMAGES = {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-EmberCourt",
 		width = 256,
 		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-EmeraldDream",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-EmeraldDreamWing1Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-EmeraldDreamWing2Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-EmeraldDreamWing3Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-EmeraldDreamWing4Q",
+		width = 512,
+		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-EndTime",
 		width = 256,
@@ -6265,6 +6294,21 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-TimeRiftGunRack_Thunderbolt",
 		width = 256,
 		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-UncommonSeed-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-RareSeed-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-EpicSeed-large",
+		width = 512,
+		height = 256
 	},
 	--endregion
 	--region Talent Frame
