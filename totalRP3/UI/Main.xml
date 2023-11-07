@@ -249,7 +249,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameTemplate" mixin="TRP3_MainFrameMixin" hidden="true" movable="true">
+	<Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameTemplate" mixin="TRP3_MainFrameMixin" hidden="true" movable="true" dontSavePosition="true">
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>

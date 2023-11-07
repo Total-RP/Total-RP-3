@@ -1,6 +1,11 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+local LibWindow = LibStub:GetLibrary("LibWindow-1.1");
+
+local DEFAULT_WINDOW_WIDTH = 768;
+local DEFAULT_WINDOW_HEIGHT = 500;
+
 local WindowState = {
 	Normal = 1,
 	Maximized = 2,
@@ -9,10 +14,20 @@ local WindowState = {
 TRP3_MainFrameMixin = {};
 
 function TRP3_MainFrameMixin:OnLoad()
-	tinsert(UISpecialFrames, self:GetName());
 	self.windowState = WindowState.Normal;
+	self.windowLayout = nil;  -- Aliases configuration table; set during addon load.
+
+	tinsert(UISpecialFrames, self:GetName());
 	TRP3_Addon.RegisterCallback(self, "CONFIGURATION_CHANGED", "OnConfigurationChanged");
+	TRP3_Addon.RegisterCallback(self, "WORKFLOW_ON_FINISH", "OnLayoutLoaded");
 	TRP3_API.ui.frame.initResize(self.Resize);
+end
+
+function TRP3_MainFrameMixin:OnLayoutLoaded()
+	self.windowLayout = TRP3_API.configuration.getValue("window_layout");
+	LibWindow.RegisterConfig(self, self.windowLayout);
+	LibWindow.MakeDraggable(self);
+	self:RestoreLayout();
 end
 
 function TRP3_MainFrameMixin:OnConfigurationChanged(_, key)
@@ -26,6 +41,10 @@ function TRP3_MainFrameMixin:OnShow()
 end
 
 function TRP3_MainFrameMixin:OnSizeChanged()
+	if self:IsLayoutLoaded() then
+		self:SaveLayout();
+	end
+
 	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetSize());
 end
 
@@ -39,13 +58,35 @@ function TRP3_MainFrameMixin:MaximizeWindow()
 end
 
 function TRP3_MainFrameMixin:RestoreWindow()
-	self:SetSize(768, 500);
+	self:SetSize(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 	self:SetWindowState(WindowState.Normal);
 end
 
 function TRP3_MainFrameMixin:ResizeWindow(width, height)
 	self:SetSize(width, height);
 	self:SetWindowState(WindowState.Normal);
+end
+
+function TRP3_MainFrameMixin:IsLayoutLoaded()
+	return self.windowLayout ~= nil;
+end
+
+function TRP3_MainFrameMixin:RestoreLayout()
+	assert(self:IsLayoutLoaded(), "attempted to restore window layout before layout has been loaded");
+
+	local width = self.windowLayout.w or DEFAULT_WINDOW_WIDTH;
+	local height = self.windowLayout.h or DEFAULT_WINDOW_HEIGHT;
+	self:SetSize(width, height);
+	LibWindow.RestorePosition(self);
+end
+
+function TRP3_MainFrameMixin:SaveLayout()
+	assert(self:IsLayoutLoaded(), "attempted to save window layout before layout has been loaded");
+
+	local width, height = self:GetSize();
+	self.windowLayout.w = width;
+	self.windowLayout.h = height;
+	LibWindow.SavePosition(self);
 end
 
 function TRP3_MainFrameMixin:GetWindowState()
