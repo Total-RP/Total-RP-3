@@ -13,6 +13,10 @@
 - Reworked the icon browser search to be asynchronous, in order to prevent issues related to the amount of icons in the game.
 - Changed the nameplate visibility settings from checkboxes to dropdowns offering clearer control over which nameplates to display or hide.
 
+## Fixed
+
+- Fixed the size of the main window not persisting between sessions. **The position may be reset once upon login with the new version.**
+
 # Changelog version 2.5.5
 
 ## Added

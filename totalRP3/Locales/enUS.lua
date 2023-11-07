@@ -1737,6 +1737,10 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Reworked the icon browser search to be asynchronous, in order to prevent issues related to the amount of icons in the game.
 - Changed the nameplate visibility settings from checkboxes to dropdowns offering clearer control over which nameplates to display or hide.
 
+## Fixed
+
+- Fixed the size of the main window not persisting between sessions. **The position may be reset once upon login with the new version.**
+
 ]],
 
 	MAP_SCAN_CHAR_GUILD_ONLY = "Scan for guild members",
