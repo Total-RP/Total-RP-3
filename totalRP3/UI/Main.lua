@@ -104,7 +104,7 @@ function TRP3_MainFrameLayoutMixin:OnSizeChanged(...)
 		self:SaveLayout();
 	end
 
-	TRP3_MainFrameMixin:OnSizeChanged(...);
+	TRP3_MainFrameMixin.OnSizeChanged(self, ...);
 end
 
 function TRP3_MainFrameLayoutMixin:IsLayoutLoaded()
