@@ -389,6 +389,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	registerConfigKey("ui_animations", true);
 	registerConfigKey("disable_welcome_message", false);
 	registerConfigKey("hide_maximize_button", false);
+	registerConfigKey("window_layout", {});  -- Contents managed by TRP3_MainFrameMixin.
 	registerConfigKey("default_color_picker", false);
 	registerConfigKey("color_contrast_level", TRP3_API.ColorContrastOption.Default);
 	registerConfigKey("date_format", "");
