@@ -8,7 +8,7 @@ local hasRegisteredSettings;
 
 TRP3_AutomationEvents = TRP3_API.CreateCallbackRegistryWithEvents({
 	OnProfileChanged = "OnProfileChanged",   -- Triggers when the current profile changes.
-	OnProfileModified = "OnProfileUpdated",  -- Triggers when a profile is edited.
+	OnProfileModified = "OnProfileModified",  -- Triggers when a profile is edited.
 	OnProfileDeleted = "OnProfileDeleted",   -- Triggers when a profile is deleted.
 });
 
