@@ -10,10 +10,10 @@ local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
 ------------------------------------------------------------------------------
 
 local IconBrowserCallbacks = TRP3_API.CreateCallbackRegistryWithEvents({
-	OnBrowserClosed = true,
-	OnBrowserOpened = true,
-	OnBrowserIconSelected = true,
-	OnSearchUpdated = true,
+	"OnBrowserClosed",
+	"OnBrowserOpened",
+	"OnBrowserIconSelected",
+	"OnSearchUpdated",
 });
 
 -- Search controller
