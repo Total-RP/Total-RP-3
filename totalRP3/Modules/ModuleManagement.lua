@@ -15,7 +15,6 @@ local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForS
 local registerMenu = TRP3_API.navigation.menu.registerMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local CreateFrame = CreateFrame;
-local GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState or GetAddOnEnableState;
 local initModule;
 local startModule;
 local onModuleStarted;
@@ -113,7 +112,7 @@ local function checkModuleDependency(_, dependency)
 		return MODULE_REGISTRATION[dependency_id] and MODULE_REGISTRATION[dependency_id].version >= dependency_version and
 			MODULE_ACTIVATION[dependency_id] ~= false;
 	else
-		return GetAddOnEnableState(dependency_id, UnitName("player")) == 2;
+		return TRP3_API.utils.IsAddOnEnabled(dependency_id);
 	end
 end
 

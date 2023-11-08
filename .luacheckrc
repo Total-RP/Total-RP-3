@@ -193,8 +193,8 @@ stds.wow = {
 
 		C_AddOns = {
 			fields = {
-				"GetAddOnMetadata",
 				"GetAddOnEnableState",
+				"GetAddOnMetadata",
 			},
 		},
 
