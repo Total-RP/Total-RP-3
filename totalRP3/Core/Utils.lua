@@ -1117,5 +1117,5 @@ function Utils.IsAddOnEnabled(addonName)
 		enableState = GetAddOnEnableState(characterName, addonName);
 	end
 
-	return enableState > 0;
+	return enableState == 2;
 end
