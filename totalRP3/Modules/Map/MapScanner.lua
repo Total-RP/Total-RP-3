@@ -15,6 +15,7 @@ local MapScanner, _private = Ellyb.Class("MapScanner");
 ---@type Icon
 MapScanner.scanIcon = Ellyb.Icon(TRP3_InterfaceIcons.DefaultScanIcon);
 MapScanner.scanOptionText = UNKNOWN;
+MapScanner.scanSortIndex = math.huge;
 MapScanner.scanTitle = UNKNOWN;
 MapScanner.duration = 3;
 MapScanner.dataProviderTemplate = "TRP3_PlayerMapPinTemplate";
@@ -61,6 +62,10 @@ end
 
 function MapScanner:GetActionText()
 	return self.scanOptionText;
+end
+
+function MapScanner:GetSortIndex()
+	return self.scanSortIndex;
 end
 
 -- This function will be called when the scan is being fired by the user.

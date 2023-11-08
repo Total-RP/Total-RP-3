@@ -153,7 +153,18 @@ WorldMapButton:SetScript("OnClick", function(self)
 	local function SortCompareScanNames(a, b)
 		local scanA = scans[a[2]];
 		local scanB = scans[b[2]];
-		return TRP3_StringUtil.SortCompareStrings(scanA:GetActionText(), scanB:GetActionText());
+		local scanIndexA = scanA:GetSortIndex();
+		local scanIndexB = scanB:GetSortIndex();
+
+		if scanIndexA ~= scanIndexB then
+			return scanIndexA < scanIndexB;
+		end
+
+		-- Fallback; if scan index is equal then sort by (localized) text.
+		local scanLabelA = scanA:GetActionText();
+		local scanLabelB = scanB:GetActionText();
+
+		return scanLabelA < scanLabelB;
 	end
 
 	table.sort(structure, SortCompareScanNames);
