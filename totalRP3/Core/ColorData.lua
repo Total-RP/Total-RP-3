@@ -32,7 +32,7 @@ TRP3_API.FactionColors =
 	Horde = TryCreateColorFromTable(PLAYER_FACTION_COLOR_HORDE) or TRP3_API.CreateColorFromBytes(229, 13, 18),
 };
 
--- Item quality colors (see: https://wowpedia.fandom.com/wiki/Quality)
+-- Item quality colors (see: https://warcraft.wiki.gg/wiki/Quality)
 TRP3_API.ItemQualityColors =
 {
 	Artifact = TryCreateColorFromTable(ITEM_ARTIFACT_COLOR) or TRP3_API.CreateColorFromBytes(230, 204, 128),
@@ -46,7 +46,7 @@ TRP3_API.ItemQualityColors =
 	WoWToken = TryCreateColorFromTable(ITEM_WOW_TOKEN_COLOR) or TRP3_API.CreateColorFromBytes(0, 204, 255),
 };
 
--- Class colors (see: https://wowpedia.fandom.com/wiki/Class_colors)
+-- Class colors (see: https://warcraft.wiki.gg/wiki/Class_colors)
 -- These use uppercase keys to match API-provided class tokens.
 TRP3_API.ClassColors =
 {
@@ -76,7 +76,7 @@ TRP3_API.RelationColors =
 	Friend = TRP3_API.CreateColorFromBytes(25, 255, 25),
 }
 
--- Power colors (See: https://wowpedia.fandom.com/wiki/Power_colors)
+-- Power colors (See: https://warcraft.wiki.gg/wiki/Power_colors)
 TRP3_API.PowerTypeColors =
 {
 	AmmoSlot = TRP3_API.CreateColorFromBytes(204, 153, 0),
