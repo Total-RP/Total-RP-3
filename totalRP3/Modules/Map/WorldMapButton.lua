@@ -140,19 +140,24 @@ end);
 
 --endregion
 
-local function SortCompareScanNames(a, b)
-	return TRP3_StringUtil.SortCompareStrings(a[1], b[1]);
-end
-
 WorldMapButton:SetScript("OnClick", function(self)
 	local structure = {};
+	local scans = TRP3_API.MapScannersManager.getAllScans();
 	---@param scan MapScanner
-	for scanID, scan in pairs(TRP3_API.MapScannersManager.getAllScans()) do
+	for scanID, scan in pairs(scans) do
 		if scan:CanScan() then
 			tinsert(structure, { scan:GetActionString(), scanID });
 		end
 	end
+
+	local function SortCompareScanNames(a, b)
+		local scanA = scans[a[2]];
+		local scanB = scans[b[2]];
+		return TRP3_StringUtil.SortCompareStrings(scanA:GetActionText(), scanB:GetActionText());
+	end
+
 	table.sort(structure, SortCompareScanNames);
+
 	if #structure == 0 then
 		tinsert(structure, {loc.MAP_BUTTON_NO_SCAN, nil});
 	end

@@ -59,6 +59,10 @@ function MapScanner:GetActionString()
 	return self.scanIcon:GenerateString(20) .. " " .. self.scanOptionText;
 end
 
+function MapScanner:GetActionText()
+	return self.scanOptionText;
+end
+
 -- This function will be called when the scan is being fired by the user.
 -- Override to have your behavior be executed for the scan
 --[[Override]] function MapScanner:Scan()
