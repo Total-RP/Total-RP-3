@@ -112,7 +112,7 @@ local function checkModuleDependency(_, dependency)
 		return MODULE_REGISTRATION[dependency_id] and MODULE_REGISTRATION[dependency_id].version >= dependency_version and
 			MODULE_ACTIVATION[dependency_id] ~= false;
 	else
-		return GetAddOnEnableState(nil, dependency_id) == 2;
+		return TRP3_API.utils.IsAddOnEnabled(dependency_id);
 	end
 end
 
