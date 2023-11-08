@@ -144,7 +144,7 @@ function TRP3_PlaterNamePlates:OnNamePlateDataUpdated(_, nameplate, unitToken, d
 end
 
 function TRP3_PlaterNamePlates:OnModuleInitialize()
-	if GetAddOnEnableState(nil, PlaterAddonName) ~= 2 then
+	if GetAddOnEnableState(PlaterAddonName, UnitName("player")) ~= 2 then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	end
 
