@@ -140,6 +140,10 @@ end);
 
 --endregion
 
+local function SortCompareScanNames(a, b)
+	return TRP3_StringUtil.SortCompareStrings(a[1], b[1]);
+end
+
 WorldMapButton:SetScript("OnClick", function(self)
 	local structure = {};
 	---@param scan MapScanner
@@ -148,6 +152,7 @@ WorldMapButton:SetScript("OnClick", function(self)
 			tinsert(structure, { scan:GetActionString(), scanID });
 		end
 	end
+	table.sort(structure, SortCompareScanNames);
 	if #structure == 0 then
 		tinsert(structure, {loc.MAP_BUTTON_NO_SCAN, nil});
 	end
