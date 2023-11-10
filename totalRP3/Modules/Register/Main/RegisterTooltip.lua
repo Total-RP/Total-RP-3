@@ -1022,10 +1022,12 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 				local type = UnitBattlePetType(targetType);
 				if type then
 					type = _G["BATTLE_PET_NAME_" .. type];
-				else
-					-- Not sure if UnitBattlePetType can be nil, but it would
-					-- make sense for the same edge cases to possibly occur as
-					-- with UnitCreatureType.
+				end
+
+				if not type then
+					-- It's possible for UnitBattlePetType to return a non-nil
+					-- value and for Blizzard to forget to define a global
+					-- string for the localized type name.
 					type = UNKNOWNOBJECT;
 				end
 
