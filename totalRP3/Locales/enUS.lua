@@ -1742,9 +1742,20 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed the size of the main window not persisting between sessions. **The position may be reset once upon login with the new version.**
 
 ]],
-
 	MAP_SCAN_CHAR_GUILD_ONLY = "Scan for guild members",
 	MAP_SCAN_CHAR_GUILD_ONLY_TITLE = "Guild",
+
+	WHATS_NEW_27_1 = [[# Changelog version 2.6.1
+
+## Fixed
+
+- Fixed an issue with the nameplates addon detection which could cause the RP names not to apply.
+- Fixed the shuffling of the map scans in the dropdown.
+- Fixed the companion tooltip not showing on humanoid battle pets.
+  - Battle pet types will still be shown incorrectly until Blizzard fixes the bug which caused the issue in the first place.
+
+]],
+
 };
 
 -- Bindings and FrameXML Global Strings
