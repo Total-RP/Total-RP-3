@@ -1020,14 +1020,14 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 		elseif targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
 			if UnitBattlePetType then
 				local type = UnitBattlePetType(targetType);
+
 				if type then
-					type = _G["BATTLE_PET_NAME_" .. type];
+					-- Pet types are 0-indexed, strings are 1-indexed.
+					type = _G["BATTLE_PET_NAME_" .. (type + 1)];
 				end
 
 				if not type then
-					-- It's possible for UnitBattlePetType to return a non-nil
-					-- value and for Blizzard to forget to define a global
-					-- string for the localized type name.
+					-- Safety fallback in case of shenanigans.
 					type = UNKNOWNOBJECT;
 				end
 
