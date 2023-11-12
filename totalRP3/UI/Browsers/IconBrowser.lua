@@ -447,7 +447,11 @@ function TRP3_IconBrowserMixin:OnLoad()
 	self.callbacks = TRP3_API.InitCallbackRegistryWithEvents(self, { "OnOpened", "OnClosed", "OnIconSelected" });
 	self.baseModel = CreateIconBrowserModel();
 	self.selectionModel = CreateIconBrowserSelectionModel(self.baseModel);
-	self.model = CreateIconBrowserFilterModel(self.selectionModel);
+	self.filterModel = CreateIconBrowserFilterModel(self.selectionModel);
+	self.model = self.filterModel;   -- Alias for the outermost model.
+	self.model.RegisterCallback(self, "OnModelUpdated");
+	self.model.RegisterCallback(self, "OnSearchStateChanged");
+	self.model.RegisterCallback(self, "OnSearchProgressChanged");
 
 	local GRID_STRIDE = 9;
 	local GRID_PADDING = 4;
@@ -461,13 +465,10 @@ function TRP3_IconBrowserMixin:OnLoad()
 	self.CloseButton:SetScript("OnClick", function() self:OnCloseButtonClicked(); end);
 	self.SearchBox:HookScript("OnTextChanged", TRP3_FunctionUtil.Debounce(0.25, function() self:OnFilterTextChanged(); end));
 
-	self.model.RegisterCallback(self, "OnModelUpdated");
-	self.model.RegisterCallback(self, "OnSearchStateChanged");
-	self.model.RegisterCallback(self, "OnSearchProgressChanged");
 end
 
 function TRP3_IconBrowserMixin:OnShow()
-	self.model:ClearSearchQuery();
+	self.filterModel:ClearSearchQuery();
 	self.Title:SetText(L.UI_ICON_BROWSER);
 	self.SearchBox.Instructions:SetTextColor(0.6, 0.6, 0.6);
 	self.SearchBox:SetText("");
@@ -500,7 +501,7 @@ function TRP3_IconBrowserMixin:OnCloseButtonClicked()
 end
 
 function TRP3_IconBrowserMixin:OnFilterTextChanged()
-	self.model:SetSearchQuery(self.SearchBox:GetText());
+	self.filterModel:SetSearchQuery(self.SearchBox:GetText());
 end
 
 function TRP3_IconBrowserMixin:OnIconButtonInitialized(button, iconInfo)
@@ -515,9 +516,9 @@ function TRP3_IconBrowserMixin:OnIconButtonClicked(button)
 end
 
 function TRP3_IconBrowserMixin:Refresh()
-	local filterCount = self.model:GetIconCount();
-	local progress = self.model:GetSearchProgress();
-	local state = self.model:GetSearchState();
+	local progress = self.filterModel:GetSearchProgress();
+	local state = self.filterModel:GetSearchState();
+	local count = self.model:GetIconCount();
 
 	self.ScrollContent.ProgressBar.Text:SetFormattedText(L.UI_ICON_BROWSER_SEARCHING, progress.searched / progress.total * 100);
 
@@ -530,7 +531,7 @@ function TRP3_IconBrowserMixin:Refresh()
 	self.x=state
 
 	self.ScrollContent.ProgressBar:SetValue(progress.searched / progress.total);
-	self.ScrollContent.EmptyText:SetShown(state == "finished" and filterCount == 0);
+	self.ScrollContent.EmptyText:SetShown(state == "finished" and count == 0);
 end
 
 TRP3_IconBrowserButtonMixin = {};
