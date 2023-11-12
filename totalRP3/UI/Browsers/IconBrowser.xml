@@ -59,7 +59,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</CheckButton>
 
-	<Frame name="TRP3_IconBrowserEmptyStateTemplate" mixin="TRP3_IconBrowserEmptyStateMixin" virtual="true" hidden="true">
+	<Frame name="TRP3_IconBrowserEmptyStateTemplate" mixin="TRP3_IconBrowserEmptyStateMixin" hidden="true" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="Title" inherits="GameFontNormalHuge" text="L.UI_FILTER_NO_RESULTS_FOUND_TITLE">
@@ -94,7 +94,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Animations>
 	</Frame>
 
-	<StatusBar name="TRP3_IconBrowserProgressBar" virtual="true" minValue="0" maxValue="1">
+	<StatusBar name="TRP3_IconBrowserProgressBar" minValue="0" maxValue="1" virtual="true">
 		<Size x="250" y="14"/>
 		<Layers>
 			<Layer level="BACKGROUND">
