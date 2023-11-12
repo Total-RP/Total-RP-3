@@ -217,6 +217,17 @@ function IconBrowserFilterModel:GetIconCount()
 	return count;
 end
 
+function IconBrowserFilterModel:GetIconIndex(name)
+	local sourceIndex = self.source:GetIconIndex(name);
+	local proxyIndex;
+
+	if sourceIndex then
+		proxyIndex = self:GetProxyIndex(sourceIndex);
+	end
+
+	return proxyIndex;
+end
+
 function IconBrowserFilterModel:GetIconInfo(proxyIndex)
 	return self.source:GetIconInfo(self:GetSourceIndex(proxyIndex));
 end
@@ -373,6 +384,17 @@ end
 
 function IconBrowserSelectionModel:GetIconCount()
 	return self.source:GetIconCount();
+end
+
+function IconBrowserSelectionModel:GetIconIndex(name)
+	local sourceIndex = self.source:GetIconIndex(name);
+	local proxyIndex;
+
+	if sourceIndex then
+		proxyIndex = self:GetProxyIndex(sourceIndex);
+	end
+
+	return proxyIndex;
 end
 
 ---@param index integer
