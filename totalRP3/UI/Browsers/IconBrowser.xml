@@ -222,9 +222,19 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<KeyValues>
 							<KeyValue key="layoutType" value="TooltipDefaultLayout" type="string"/>
 						</KeyValues>
+						<Layers>
+							<Layer level="BACKGROUND" textureSubLevel="7">
+								<Texture parentKey="Background" atlas="collections-background-tile">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="4" y="-4"/>
+										<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+									</Anchors>
+									<Color r="0.7" g="0.7" b="0.7"/>
+								</Texture>
+							</Layer>
+						</Layers>
 						<Scripts>
 							<OnLoad inherit="prepend">
-								self:SetCenterColor(0.1, 0.1, 0.1)
 								self:SetBorderColor(0.5, 0.5, 0.5)
 							</OnLoad>
 						</Scripts>
