@@ -198,8 +198,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame parentKey="Content" setAllPoints="true">
-			</Frame>
 			<Button parentKey="CloseButton" inherits="TRP3_StyledButtonTemplate">
 				<Size x="24" y="24"/>
 				<KeyValues>
