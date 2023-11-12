@@ -536,12 +536,12 @@ function TRP3_IconBrowserMixin:OnLoad()
 	local GRID_PADDING = 4;
 
 	local scrollBoxAnchorsWithBar = {
-		AnchorUtil.CreateAnchor("TOPLEFT", self.Content, "TOPLEFT", 10, -4),
+		AnchorUtil.CreateAnchor("TOPLEFT", self.Content, "TOPLEFT", 8, -4),
 		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self.Content, "BOTTOMRIGHT", -10, 4),
 	};
 
 	local scrollBoxAnchorsWithoutBar = {
-		AnchorUtil.CreateAnchor("TOPLEFT", self.Content, "TOPLEFT", 17, -4),
+		AnchorUtil.CreateAnchor("TOPLEFT", self.Content, "TOPLEFT", 16, -4),
 		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self.Content, "BOTTOMRIGHT", -17, -4),
 	};
 
