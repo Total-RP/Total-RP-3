@@ -394,35 +394,33 @@ end
 -- Icon browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local IconBrowserCallbackOwner = {};  -- Dummy owner for callback registrations.
+local function showIconBrowser(onSelectCallback, onCancelCallback, scale, selectedIcon)
+	local function OnAccept(iconInfo)
+		hidePopups();
 
-local function OnIconBrowserSelection(onSelectCallback, _, iconInfo)
-	TRP3_IconBrowserUtil.UnregisterAllCallbacks(IconBrowserCallbackOwner);
-	hidePopups();
-
-	if onSelectCallback then
-		onSelectCallback(iconInfo.name, iconInfo);
+		if onSelectCallback then
+			onSelectCallback(iconInfo.name, iconInfo);
+		end
 	end
-end
 
-local function OnIconBrowserClosed(onCancelCallback)
-	TRP3_IconBrowserUtil.UnregisterAllCallbacks(IconBrowserCallbackOwner);
-	hidePopups();
+	local function OnCancel()
+		hidePopups();
 
-	if onCancelCallback then
-		onCancelCallback();
+		if onCancelCallback then
+			onCancelCallback();
+		end
 	end
-end
 
-local function showIconBrowser(onSelectCallback, onCancelCallback, scale)
-	TRP3_IconBrowserUtil.RegisterCallback(IconBrowserCallbackOwner, "OnBrowserIconSelected", OnIconBrowserSelection, onSelectCallback);
-	TRP3_IconBrowserUtil.RegisterCallback(IconBrowserCallbackOwner, "OnBrowserClosed", OnIconBrowserClosed, onCancelCallback);
-	TRP3_IconBrowserUtil.OpenBrowser();
-	TRP3_IconBrowser:SetScale(scale or 1);
+	TRP3_IconBrowser.Open({
+		onAcceptCallback = OnAccept,
+		onCancelCallback = OnCancel,
+		scale = scale,
+		selectedIcon = selectedIcon,
+	});
 end
 
 function TRP3_API.popup.hideIconBrowser()
-	TRP3_IconBrowserUtil.CloseBrowser();
+	TRP3_IconBrowser.Close();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1145,7 +1143,7 @@ local POPUP_STRUCTURE = {
 		showMethod = showColorBrowser,
 	},
 	[TRP3_API.popup.ICONS] = {
-		frame = TRP3_IconBrowser,
+		frame = TRP3_IconBrowserFrame,
 		showMethod = showIconBrowser,
 	},
 	[TRP3_API.popup.MUSICS] = {

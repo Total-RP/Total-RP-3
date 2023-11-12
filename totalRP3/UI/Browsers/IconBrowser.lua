@@ -1,216 +1,441 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local _, TRP3_API = ...;
 local L = TRP3_API.loc;
 
 local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
 
--- Callback registry
-------------------------------------------------------------------------------
+local function GenerateSearchableString(str)
+	return string.utf8lower(string.trim((string.gsub(str, "%p+", " "))));
+end
 
-local IconBrowserCallbacks = TRP3_API.CreateCallbackRegistryWithEvents({
-	"OnBrowserClosed",
-	"OnBrowserOpened",
-	"OnBrowserIconSelected",
-	"OnSearchUpdated",
-});
+--- Table structure providing data about a single icon sourced from a model.
+---
+---@class TRP3.IconBrowserModelItem
+---@field index integer
+---@field key integer
+---@field name string
+---@field type "atlas" | "file"
+---@field file TRP3.FileID?
+---@field atlas TRP3.AtlasElementID?
+---@field selected boolean?
 
--- Search controller
-------------------------------------------------------------------------------
+--- IconBrowserModel is a basic model that sources icons from LibRPMedia.
+---
+---@class TRP3.IconBrowserModel
+---@field private callbacks TRP3.CallbackDispatcher
+local IconBrowserModel = {};
 
-local IconSearchState = {
-	Searching = "searching",
-	Finished = "finished",
-	Cancelled = "cancelled",
-};
+---@protected
+function IconBrowserModel:__init()
+	self.callbacks = TRP3_API.InitCallbackRegistryWithEvents(self, { "OnModelUpdated" });
+end
 
-local IconSearchController = {};
+---@return integer count
+function IconBrowserModel:GetIconCount()
+	return LibRPMedia:GetNumIcons();
+end
 
-function IconSearchController:OnLoad()
-	self.query = "";
-	self.results = {};
+---@param index integer
+---@return TRP3.IconBrowserModelItem? data
+function IconBrowserModel:GetIconInfo(index)
+	return LibRPMedia:GetIconDataByIndex(index);
+end
+
+---@param index integer
+---@return string? name
+function IconBrowserModel:GetIconName(index)
+	return LibRPMedia:GetIconDataByIndex(index, "name");
+end
+
+local function CreateIconBrowserModel()
+	return TRP3_API.CreateAndInitFromPrototype(IconBrowserModel);
+end
+
+--- Table structure providing information about the progress of an
+--- asynchronous search task against an icon model.
+---
+---@class TRP3.IconBrowserSearchProgress
+---@field found integer
+---@field searched integer
+---@field total integer
+
+--- IconBrowserSearchTask is a single-shot object that performs an
+--- asynchronous name-based search against a model to provide a filtered
+--- list of icon indices.
+---
+---@class TRP3.IconBrowserFilterTask
+---@field private callbacks TRP3.CallbackDispatcher
+---@field private state "pending" | "running" | "finished"
+---@field private ticker unknown
+---@field private model TRP3.IconBrowserModel
+---@field private query string
+---@field private found integer
+---@field private searched integer
+---@field private total integer
+---@field private step integer
+---@field private results integer[]
+local IconBrowserSearchTask = {};
+
+---@param query string
+---@param model TRP3.IconBrowserModel
+---@protected
+function IconBrowserSearchTask:__init(query, model)
+	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.state = "pending";
 	self.ticker = nil;
-	self.progress = LibRPMedia:GetNumIcons();
-	self.total = self.progress;
-	self.lastResumeTime = -math.huge;
+	self.model = model;
+	self.query = query;
+	self.found = 0;
+	self.searched = 0;
+	self.total = model:GetIconCount();
+	self.step = 500;
+	self.results = {};
 end
 
-function IconSearchController:BeginSearch(query)
-	query = string.utf8lower(string.trim(query));
-
-	if self.query == query then
-		return;
-	end
-
-	-- Cancel any existing ticker.
-	if self.ticker ~= nil then
-		self.ticker:Cancel();
-		self.ticker = nil;
-	end
-
-	if query == "" then
-		self.query = "";
-		self.results = {};
-		self.ticker = nil;
-		self.progress = LibRPMedia:GetNumIcons();
-		self.total = self.progress;
-		self.lastResumeTime = -math.huge;
-	else
-		self.query = query;
-		self.results = {};
-		self.ticker = C_Timer.NewTicker(0, function() self:OnUpdate(); end);
-		self.progress = 0;
-		self.total = LibRPMedia:GetNumIcons();
-		self.lastResumeTime = -math.huge;
-	end
-
-	IconBrowserCallbacks:TriggerEvent("OnSearchUpdated");
+function IconBrowserSearchTask:Start()
+	assert(self.state == "pending", "attempted to restart an already started search task");
+	self.ticker = C_Timer.NewTicker(0, function() self:OnUpdate(); end);
+	self.state = "running";
+	self.callbacks:Fire("OnStateChanged", self.state);
 end
 
-function IconSearchController:ResumeSearch()
-	if not self:HasSearchState(IconSearchState.Searching) then
-		return;
-	end
-
-	local MAX_ICONS_PER_TICK = 500;
-	local i = self.progress + 1;
-	local j = math.min(self.progress + MAX_ICONS_PER_TICK, self.total);
-
-	for iconIndex = i, j do
-		local iconName = LibRPMedia:GetIconDataByIndex(iconIndex, "name");
-		local pattern = self.query;
-		local offset = 1;
-		local plain = true;
-
-		if iconName and string.find(iconName, pattern, offset, plain) then
-			table.insert(self.results, iconIndex);
-		end
-	end
-
-	-- Update search progress; if we've reached the total number of icons
-	-- then cancel and release the ticker.
-
-	self.progress = j;
-	self.lastResumeTime = GetTime();
-
-	if self.progress == self.total and self.ticker ~= nil then
-		self.ticker:Cancel();
-		self.ticker = nil;
-	end
-
-	IconBrowserCallbacks:TriggerEvent("OnSearchUpdated");
-end
-
-
-function IconSearchController:CancelSearch()
-	if not self:HasSearchState(IconSearchState.Searching) then
+function IconBrowserSearchTask:Finish()
+	if self.state == "finished" then
 		return;
 	end
 
 	self.ticker:Cancel();
 	self.ticker = nil;
-	IconBrowserCallbacks:TriggerEvent("OnSearchUpdated");
+	self.state = "finished";
+	self.callbacks:Fire("OnStateChanged", self.state);
 end
 
-function IconSearchController:OnUpdate()
-	local MAX_ELAPSED_TIME = 0.1;
-	local MAX_SKIPPED_TIME = 0.5;
+function IconBrowserSearchTask:GetQuery()
+	return self.query;
+end
 
-	local elapsedTime = GetTickTime();
-	local skippedTime = GetTime() - self.lastResumeTime;
+---@return TRP3.IconBrowserSearchProgress
+function IconBrowserSearchTask:GetProgress()
+	return { found = self.found, searched = self.searched, total = self.total };
+end
 
-	-- If the last frame was too slow then we won't resume the search on this
-	-- frame to allow the client to catch up a little bit.
-	--
-	-- We won't duck forever though - if for whatever reason the client is
-	-- persistently slow we'll eventually force resumption of the search.
+function IconBrowserSearchTask:GetState()
+	return self.state;
+end
 
-	if (elapsedTime < MAX_ELAPSED_TIME) or (skippedTime >= MAX_SKIPPED_TIME) then
-		self:ResumeSearch();
+function IconBrowserSearchTask:GetResults()
+	return self.results;
+end
+
+---@private
+function IconBrowserSearchTask:OnUpdate()
+	local query = self.query;
+	local model = self.model;
+	local found = self.found;
+	local results = self.results;
+
+	local i = self.searched + 1;
+	local j = math.min(self.searched + self.step, self.total);
+
+	for iconIndex = i, j do
+		local iconName = GenerateSearchableString(model:GetIconName(iconIndex));
+		local offset = 1;
+		local plain = true;
+
+		if iconName and string.find(iconName, query, offset, plain) then
+			found = found + 1;
+			results[found] = iconIndex;
+		end
+	end
+
+	if i == 1 or self.found ~= found then
+		self.found = found;
+		self.callbacks:Fire("OnResultsChanged", self.results);
+	end
+
+	self.searched = j;
+	self.callbacks:Fire("OnProgressChanged", self:GetProgress());
+
+	if self.searched >= self.total then
+		self:Finish();
 	end
 end
 
-function IconSearchController:GetSearchState()
-	if self.progress == self.total then
-		return IconSearchState.Finished;
-	elseif self.ticker ~= nil then
-		return IconSearchState.Searching;
+---@param query string
+---@param model TRP3.IconBrowserModel
+local function CreateIconBrowserSearchTask(query, model)
+	return TRP3_API.CreateAndInitFromPrototype(IconBrowserSearchTask, query, model);
+end
+
+--- IconBrowserFilterModel is a proxy model that implements asynchronous
+--- filtering via name-based search queries.
+---
+---@class TRP3.IconBrowserFilterModel : TRP3.IconBrowserModel
+---@field private callbacks TRP3.CallbackDispatcher
+---@field private source TRP3.IconBrowserModel
+---@field private sourceIndices integer[]
+---@field private searchQuery string
+---@field private searchTask TRP3.IconBrowserFilterTask?
+---@field private searchProgress TRP3.IconBrowserSearchProgress
+local IconBrowserFilterModel = {};
+
+---@param source TRP3.IconBrowserModel
+---@protected
+function IconBrowserFilterModel:__init(source)
+	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.source = source;
+	self.sourceIndices = {};
+	self.searchQuery = "";
+	self.searchTask = nil;
+
+	self.source.RegisterCallback(self, "OnModelUpdated", "OnSourceModelUpdated");
+end
+
+function IconBrowserFilterModel:GetIconCount()
+	local count;
+
+	if self:HasSearchQuery() then
+		count = #self.sourceIndices;
 	else
-		return IconSearchState.Cancelled;
+		count = self.source:GetIconCount();
 	end
+
+	return count;
 end
 
-function IconSearchController:GetSearchInfo()
-	return {
-		query = self.query,
-		progress = self.progress,
-		total = self.total,
-		state = self:GetSearchState(),
-	};
+function IconBrowserFilterModel:GetIconInfo(filterIndex)
+	return self.source:GetIconInfo(self:GetSourceIndex(filterIndex));
 end
 
-function IconSearchController:GetNumSearchResults()
-	if self.query == "" then
-		return self.total;
+function IconBrowserFilterModel:GetIconName(filterIndex)
+	return self.source:GetIconName(self:GetSourceIndex(filterIndex));
+end
+
+function IconBrowserFilterModel:GetSourceModel()
+	return self.source;
+end
+
+function IconBrowserFilterModel:GetSourceIndex(filterIndex)
+	local sourceIndex;
+
+	if self:HasSearchQuery() then
+		sourceIndex = self.sourceIndices[filterIndex];
 	else
-		return #self.results;
+		sourceIndex = filterIndex;
 	end
+
+	return sourceIndex;
 end
 
-function IconSearchController:GetSearchResultInfo(index)
-	if self.query == "" then
-		return LibRPMedia:GetIconDataByIndex(index);
+function IconBrowserFilterModel:ClearSearchQuery()
+	self:SetSearchQuery("");
+end
+
+function IconBrowserFilterModel:GetSearchQuery()
+	return self.searchQuery;
+end
+
+---@return TRP3.IconBrowserSearchProgress
+function IconBrowserFilterModel:GetSearchProgress()
+	local progress;
+
+	if self.searchTask ~= nil then
+		progress = self.searchTask:GetProgress();
 	else
-		return LibRPMedia:GetIconDataByIndex(self.results[index]);
+		local count = self.source:GetIconCount();
+		progress = { found = count, searched = count, total = count };
+	end
+
+	return progress;
+end
+
+---@return "running" | "finished"
+function IconBrowserFilterModel:GetSearchState()
+	local state;
+
+	if self.searchTask ~= nil then
+		state = "running";
+	else
+		state = "finished";
+	end
+
+	return state;
+end
+
+function IconBrowserFilterModel:HasSearchQuery()
+	return self.searchQuery ~= "";
+end
+
+---@param query string
+function IconBrowserFilterModel:SetSearchQuery(query)
+	query = GenerateSearchableString(query);  ---@cast query string
+
+	if self.searchQuery ~= query then
+		self.searchQuery = query;
+		self:RebuildModel();
 	end
 end
 
-function IconSearchController:HasSearchState(state)
-	return self:GetSearchState() == state;
+---@private
+function IconBrowserFilterModel:OnSourceModelUpdated()
+	self:RebuildModel();
 end
 
-IconSearchController:OnLoad();
+---@private
+function IconBrowserFilterModel:RebuildModel()
+	if self.searchTask then
+		self.searchTask:Finish();
+		self.searchTask = nil;
+	end
 
--- Browser utilities
-------------------------------------------------------------------------------
+	local query = self:GetSearchQuery();
 
-TRP3_IconBrowserUtil = {};
+	if query == "" then
+		self.callbacks:Fire("OnModelUpdated");
+		return;
+	end
 
-function TRP3_IconBrowserUtil.GetNumSearchResults()
-	return IconSearchController:GetNumSearchResults();
+	local function OnStateChanged(_, state)
+		if state == "finished" then
+			self.searchTask.UnregisterAllCallbacks(self);
+			self.searchTask = nil;
+		end
+
+		self.callbacks:Fire("OnSearchStateChanged", state);
+	end
+
+	local function OnProgressChanged(_, progress)
+		self.callbacks:Fire("OnSearchProgressChanged", progress);
+	end
+
+	local function OnResultsChanged(_, results)
+		self.sourceIndices = results;
+		self.callbacks:Fire("OnModelUpdated");
+	end
+
+	self.searchTask = CreateIconBrowserSearchTask(query, self.source);
+	self.searchTask.RegisterCallback(self, "OnStateChanged", OnStateChanged);
+	self.searchTask.RegisterCallback(self, "OnProgressChanged", OnProgressChanged);
+	self.searchTask.RegisterCallback(self, "OnResultsChanged", OnResultsChanged);
+	self.searchTask:Start();
 end
 
-function TRP3_IconBrowserUtil.GetSearchInfo()
-	return IconSearchController:GetSearchInfo();
+---@param source TRP3.IconBrowserModel
+local function CreateIconBrowserFilterModel(source)
+	return TRP3_API.CreateAndInitFromPrototype(IconBrowserFilterModel, source);
 end
 
-function TRP3_IconBrowserUtil.GetSearchResultInfo(index)
-	return IconSearchController:GetSearchResultInfo(index);
+--- IconBrowserSelectionModel is a proxy model that relocates the currently
+--- selected icon to the start of the model.
+---@class TRP3.IconBrowserSelectionModel : TRP3.IconBrowserModel
+---@field private callbacks TRP3.CallbackDispatcher
+---@field private source TRP3.IconBrowserModel
+---@field private selectedIndex integer?
+local IconBrowserSelectionModel = {};
+
+---@protected
+function IconBrowserSelectionModel:__init(source)
+	self.callbacks = TRP3_API.InitCallbackRegistryWithEvents(self, { "OnModelUpdated" });
+	self.source = source;
+	self.selectedIndex = nil;
 end
 
-function TRP3_IconBrowserUtil.BeginSearch(query)
-	IconSearchController:BeginSearch(query);
+---@param index integer
+---@return TRP3.IconBrowserModelItem? data
+function IconBrowserSelectionModel:GetIconInfo(index)
+	local iconInfo = self.source:GetIconInfo(self:GetSourceIndex(index));
+
+	if iconInfo and self.selectedIndex then
+		iconInfo.selected = (index == 1);
+	end
+
+	return iconInfo;
 end
 
-function TRP3_IconBrowserUtil.RegisterCallback(owner, event, callback, ...)
-	IconBrowserCallbacks.RegisterCallback(owner, event, callback, ...);
+function IconBrowserSelectionModel:GetIconCount()
+	return self.source:GetIconCount();
 end
 
-function TRP3_IconBrowserUtil.UnregisterCallback(owner, event)
-	IconBrowserCallbacks.UnregisterCallback(owner, event);
+---@param index integer
+---@return string? name
+function IconBrowserSelectionModel:GetIconName(index)
+	return self.source:GetIconName(self:GetSourceIndex(index));
 end
 
-function TRP3_IconBrowserUtil.UnregisterAllCallbacks(owner)
-	IconBrowserCallbacks.UnregisterAllCallbacks(owner);
+function IconBrowserSelectionModel:GetSourceModel()
+	return self.source;
 end
 
-function TRP3_IconBrowserUtil.CloseBrowser()
-	TRP3_IconBrowser:Hide();
+function IconBrowserSelectionModel:GetSourceIndex(filterIndex)
+	local sourceIndex = filterIndex;
+
+	if self.selectedIndex then
+		if filterIndex == 1 then
+			sourceIndex = self.selectedIndex;
+		elseif filterIndex <= self.selectedIndex then
+			sourceIndex = filterIndex - 1;
+		end
+	end
+
+	return sourceIndex;
 end
 
-function TRP3_IconBrowserUtil.OpenBrowser()
-	TRP3_IconBrowser:Show();
+function IconBrowserSelectionModel:GetSelectedIndex()
+	return self.selectedIndex;
+end
+
+function IconBrowserSelectionModel:SetSelectedIndex(sourceIndex)
+	if self.selectedIndex ~= sourceIndex then
+		self.selectedIndex = sourceIndex;
+		self.callbacks:Fire("OnModelUpdated");
+	end
+end
+
+---@param source TRP3.IconBrowserModel
+local function CreateIconBrowserSelectionModel(source)
+	return TRP3_API.CreateAndInitFromPrototype(IconBrowserSelectionModel, source);
+end
+
+--- Creates a data provider that displays the contents of an icon data model
+--- within a scrollbox list view.
+---
+---@param model TRP3.IconBrowserModel
+---@return table provider
+local function CreateIconDataProvider(model)
+	local provider = CreateFromMixins(CallbackRegistryMixin);
+
+	function provider:Enumerate(i, j)
+		i = i and (i - 1) or 0;
+		j = j or model:GetIconCount();
+
+		local function Next(_, k)
+			k = k + 1;
+
+			if k <= j then
+				return k, model:GetIconInfo(k);
+			end
+		end
+
+		return Next, nil, i;
+	end
+
+	function provider:Find(i)
+		return model:GetIconInfo(i);
+	end
+
+	function provider:GetSize()
+		return model:GetIconCount();
+	end
+
+	provider:GenerateCallbackEvents({ "OnSizeChanged" });
+	provider:OnLoad();
+
+	model.RegisterCallback(provider, "OnModelUpdated", function()
+		provider:TriggerEvent("OnSizeChanged");
+	end);
+
+	return provider;
 end
 
 -- Browser mixin
@@ -219,60 +444,93 @@ end
 TRP3_IconBrowserMixin = {};
 
 function TRP3_IconBrowserMixin:OnLoad()
-	local GRID_STRIDE = 8;
-	local GRID_PADDING = 8;
-	local GRID_SPACING_X = 6;
-	local GRID_SPACING_Y = 6;
+	self.callbacks = TRP3_API.InitCallbackRegistryWithEvents(self, { "OnOpened", "OnClosed", "OnIconSelected" });
+	self.baseModel = CreateIconBrowserModel();
+	self.selectionModel = CreateIconBrowserSelectionModel(self.baseModel);
+	self.model = CreateIconBrowserFilterModel(self.selectionModel);
 
-	TRP3_IconBrowserUtil.RegisterCallback(self, "OnSearchUpdated");
+	local GRID_STRIDE = 9;
+	local GRID_PADDING = 4;
 
-	self.CloseButton:SetScript("OnClick", function(_, ...) self:OnCloseButtonClicked(...); end);
-	self.SearchFilterEditBox = self.Filter.EditBox;
-	self.SearchFilterEditBox:SetScript("OnTextChanged", function(_, ...) self:OnFilterTextChanged(...); end);
-	self.SearchFilterEditBoxTitle = self.Filter.EditBox.title;
-	self.SearchFilterTotalText = self.Filter.TotalText;
+	self.ScrollContent.ScrollView = CreateScrollBoxListGridView(GRID_STRIDE, GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING);
+	self.ScrollContent.ScrollView:SetElementInitializer("TRP3_IconBrowserButton", function(button, iconInfo) self:OnIconButtonInitialized(button, iconInfo); end);
+	ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollContent.ScrollBox, self.ScrollContent.ScrollBar, self.ScrollContent.ScrollView);
+	ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollContent.ScrollBox, self.ScrollContent.ScrollBar);
+	self.ScrollContent.ScrollBox:SetDataProvider(CreateIconDataProvider(self.model));
 
-	self.ScrollView = CreateScrollBoxListGridView(GRID_STRIDE, GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_SPACING_X, GRID_SPACING_Y);
-	self.ScrollView:SetElementInitializer("TRP3_IconBrowserButton", function(button) button:Refresh(); end)
-	ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
-	ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar);
-	self.DataProvider = CreateIndexRangeDataProvider(0);
-	self.ScrollBox:SetDataProvider(self.DataProvider);
+	self.CloseButton:SetScript("OnClick", function() self:OnCloseButtonClicked(); end);
+	self.SearchBox:HookScript("OnTextChanged", TRP3_FunctionUtil.Debounce(0.25, function() self:OnFilterTextChanged(); end));
+
+	self.model.RegisterCallback(self, "OnModelUpdated");
+	self.model.RegisterCallback(self, "OnSearchStateChanged");
+	self.model.RegisterCallback(self, "OnSearchProgressChanged");
 end
 
 function TRP3_IconBrowserMixin:OnShow()
-	self.SearchFilterEditBox:SetText("");
-	self.SearchFilterEditBox:SetFocus(true);
+	self.model:ClearSearchQuery();
+	self.Title:SetText(L.UI_ICON_BROWSER);
+	self.SearchBox.Instructions:SetTextColor(0.6, 0.6, 0.6);
+	self.SearchBox:SetText("");
+	self.SearchBox:SetFocus(true);
+	self.ScrollContent.EmptyText.Title:SetText(L.UI_FILTER_NO_RESULTS_FOUND_TITLE);
+	self.ScrollContent.EmptyText.Text:SetText(L.UI_FILTER_NO_RESULTS_FOUND_TEXT);
+	self.ScrollContent.ScrollBox:ScrollToBegin();
 	self:Refresh();
-	IconBrowserCallbacks:TriggerEvent("OnBrowserOpened");
+	self.callbacks:Fire("OnOpened");
 end
 
 function TRP3_IconBrowserMixin:OnHide()
-	IconBrowserCallbacks:TriggerEvent("OnBrowserClosed");
+	self.callbacks:Fire("OnClosed");
 end
 
-function TRP3_IconBrowserMixin:OnCloseButtonClicked()
-	TRP3_IconBrowserUtil.CloseBrowser();
-end
-
-function TRP3_IconBrowserMixin:OnFilterTextChanged()
-	local query = self.SearchFilterEditBox:GetText();
-	TRP3_IconBrowserUtil.BeginSearch(query);
-end
-
-function TRP3_IconBrowserMixin:OnSearchUpdated()
+function TRP3_IconBrowserMixin:OnSearchStateChanged()
 	self:Refresh();
 end
 
-function TRP3_IconBrowserMixin:Refresh()
-	local searchInfo = TRP3_IconBrowserUtil.GetSearchInfo();
-	local searchResultCount = TRP3_IconBrowserUtil.GetNumSearchResults();
+function TRP3_IconBrowserMixin:OnSearchProgressChanged()
+	self:Refresh();
+end
 
-	self.Title:SetText(L.UI_ICON_BROWSER);
-	self.SearchFilterEditBoxTitle:SetText(L.UI_FILTER);
-	self.SearchFilterTotalText:SetFormattedText(GENERIC_FRACTION_STRING, searchResultCount, searchInfo.total);
-	self.DataProvider:SetSize(searchResultCount);
-	self.ProgressBar:Refresh();
+function TRP3_IconBrowserMixin:OnModelUpdated()
+	self:Refresh();
+end
+
+function TRP3_IconBrowserMixin:OnCloseButtonClicked()
+	self:Hide();
+end
+
+function TRP3_IconBrowserMixin:OnFilterTextChanged()
+	self.model:SetSearchQuery(self.SearchBox:GetText());
+end
+
+function TRP3_IconBrowserMixin:OnIconButtonInitialized(button, iconInfo)
+	button:SetScript("OnClick", function() self:OnIconButtonClicked(button); end);
+	button:Init(iconInfo);
+end
+
+function TRP3_IconBrowserMixin:OnIconButtonClicked(button)
+	local iconInfo = button:GetElementData();
+	self.callbacks:Fire("OnIconSelected", iconInfo);
+	self:Hide();
+end
+
+function TRP3_IconBrowserMixin:Refresh()
+	local filterCount = self.model:GetIconCount();
+	local progress = self.model:GetSearchProgress();
+	local state = self.model:GetSearchState();
+
+	self.ScrollContent.ProgressBar.Text:SetFormattedText(L.UI_ICON_BROWSER_SEARCHING, progress.searched / progress.total * 100);
+
+	-- FIXME: Hacky hack hack
+	if self.x ~= state then
+		local reverse = (state == "running");
+		self.ScrollContent.ProgressBar.AnimInOut:Play(reverse);
+		self.ScrollContent.Thing.AnimIn:Play(not reverse);
+	end
+	self.x=state
+
+	self.ScrollContent.ProgressBar:SetValue(progress.searched / progress.total);
+	self.ScrollContent.EmptyText:SetShown(state == "finished" and filterCount == 0);
 end
 
 TRP3_IconBrowserButtonMixin = {};
@@ -282,41 +540,69 @@ function TRP3_IconBrowserButtonMixin:OnLoad()
 end
 
 function TRP3_IconBrowserButtonMixin:OnEnter()
-	TRP3_RefreshTooltipForFrame(self);
+	local iconInfo = self:GetElementData();
+
+	if not iconInfo then
+		return;
+	end
+
+	local iconSizeSource = 64;
+	local iconSizeScaled = 32;
+	local titleLineIcon = CreateTextureMarkup(iconInfo.file, iconSizeSource, iconSizeSource, iconSizeScaled, iconSizeScaled, 0, 1, 0, 1);
+	local titleLineText = string.join(" ", titleLineIcon, iconInfo.name);
+
+	TRP3_MainTooltip:SetOwner(self, "ANCHOR_RIGHT");
+	GameTooltip_SetTitle(TRP3_MainTooltip, titleLineText, GREEN_FONT_COLOR, false);
+	TRP3_MainTooltip:Show();
 end
 
 function TRP3_IconBrowserButtonMixin:OnLeave()
 	TRP3_MainTooltip:Hide();
 end
 
-function TRP3_IconBrowserButtonMixin:OnClick()
-	local resultIndex = self:GetElementData();
-	local resultInfo = TRP3_IconBrowserUtil.GetSearchResultInfo(resultIndex);
-
-	IconBrowserCallbacks:TriggerEvent("OnBrowserIconSelected", resultInfo);
-	TRP3_IconBrowserUtil.CloseBrowser();
+---@param iconInfo TRP3.IconBrowserModelItem
+function TRP3_IconBrowserButtonMixin:Init(iconInfo)
+	self.SelectedTexture:SetShown(iconInfo and iconInfo.selected);
+	self.Icon:SetTexture(iconInfo and iconInfo.file or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]]);
 end
 
-function TRP3_IconBrowserButtonMixin:Refresh()
-	local resultIndex = self:GetElementData();
-	local resultInfo = TRP3_IconBrowserUtil.GetSearchResultInfo(resultIndex);
+-- Browser API
+------------------------------------------------------------------------------
 
-	self:SetNormalTexture(resultInfo.file);
-	self:SetPushedTexture(resultInfo.file);
-	TRP3_API.ui.tooltip.setTooltipForFrame(self, self, "RIGHT", 0, -100, TRP3_API.utils.str.icon(resultInfo.name, 75), resultInfo.name);
+TRP3_IconBrowser = {};
+
+function TRP3_IconBrowser.Close()
+	TRP3_IconBrowserFrame:Hide();
 end
 
-TRP3_IconBrowserProgressBarMixin = {};
+function TRP3_IconBrowser.Open(options)
+	local owner = {};
 
-function TRP3_IconBrowserProgressBarMixin:OnShow()
-	self:Refresh();
-end
+	local function OnClosed()
+		TRP3_IconBrowserFrame.UnregisterAllCallbacks(owner);
 
-function TRP3_IconBrowserProgressBarMixin:Refresh()
-	local searchInfo = TRP3_IconBrowserUtil.GetSearchInfo();
+		if options.onCancelCallback then
+			options.onCancelCallback();
+		end
+	end
 
-	self.Text:SetFormattedText(L.UI_ICON_BROWSER_SEARCHING, searchInfo.progress / searchInfo.total * 100)
-	self:SetShown(searchInfo.progress < searchInfo.total);
-	self:SetMinMaxValues(0, searchInfo.total);
-	self:SetValue(searchInfo.progress);
+	local function OnIconSelected(_, iconInfo)
+		TRP3_IconBrowserFrame.UnregisterAllCallbacks(owner);
+
+		if options.onAcceptCallback then
+			options.onAcceptCallback(iconInfo);
+		end
+	end
+
+	--- FIXME: Hacky hack hack
+	if type(options.selectedIcon) == "string" then
+		TRP3_IconBrowserFrame.selectionModel:SetSelectedIndex(LibRPMedia:GetIconIndexByName(options.selectedIcon));
+	else
+		TRP3_IconBrowserFrame.selectionModel:SetSelectedIndex(nil);
+	end
+
+	TRP3_IconBrowserFrame.RegisterCallback(owner, "OnClosed", OnClosed);
+	TRP3_IconBrowserFrame.RegisterCallback(owner, "OnIconSelected", OnIconSelected);
+	TRP3_IconBrowserFrame:SetScale(tonumber(options.scale) or 1);
+	TRP3_IconBrowserFrame:Show();
 end

@@ -3,6 +3,7 @@ max_line_length = false
 exclude_files = {
 	"Scripts/mature_dictionary_template.lua",
 	"totalRP3/Libs",
+	"Types",
 };
 
 ignore = {
@@ -397,6 +398,7 @@ stds.wow = {
 		"CreateFromMixins",
 		"CreateIndexRangeDataProvider",
 		"CreateScrollBoxListGridView",
+		"CreateTextureMarkup",
 		"CreateVector2D",
 		"DisableAddOn",
 		"EventRegistry",
@@ -472,7 +474,6 @@ stds.wow = {
 		"IsVeteranTrialAccount",
 		"JoinChannelByName",
 		"Lerp",
-		"LIGHTBLUE_FONT_COLOR",
 		"Mixin",
 		"MouseIsOver",
 		"NeutralPlayerSelectFaction",
@@ -606,6 +607,7 @@ stds.wow = {
 		"FUEL",
 		"FURY",
 		"GENERIC_FRACTION_STRING",
+		"GREEN_FONT_COLOR",
 		"HEALTH",
 		"HIGHLIGHT_FONT_COLOR",
 		"HOLY_POWER",
@@ -644,6 +646,7 @@ stds.wow = {
 		"LE_PET_JOURNAL_FILTER_COLLECTED",
 		"LE_PET_JOURNAL_FILTER_NOT_COLLECTED",
 		"LE_SORT_BY_LEVEL",
+		"LIGHTBLUE_FONT_COLOR",
 		"LINK_FONT_COLOR",
 		"LIST_DELIMITER",
 		"LOCALE_enGB",

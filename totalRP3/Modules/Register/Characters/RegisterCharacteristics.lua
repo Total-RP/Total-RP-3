@@ -31,8 +31,8 @@ local buildZoneText = Utils.str.buildZoneText;
 local setupEditBoxesNavigation = TRP3_API.ui.frame.setupEditBoxesNavigation;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 
-local showIconBrowser = function(callback)
-	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback});
+local showIconBrowser = function(callback, selectedIcon)
+	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback, nil, nil, selectedIcon});
 end;
 
 local PSYCHO_PRESETS_UNKOWN;
@@ -1119,7 +1119,7 @@ function setEditDisplay()
 			showIconBrowser(function(icon)
 				miscStructure.IC = icon;
 				setupIconButton(_G[frame:GetName() .. "Icon"], icon or TRP3_InterfaceIcons.Default);
-			end);
+			end, miscStructure.IC);
 		end);
 
 		frame.miscIndex = frameIndex;
@@ -1192,14 +1192,14 @@ function setEditDisplay()
 			showIconBrowser(function(icon)
 				psychoStructure.LI = icon;
 				setupIconButton(self, icon or TRP3_InterfaceIcons.Default);
-			end);
+			end, psychoStructure.LI);
 		end);
 
 		frame.CustomRightIcon:SetScript("OnClick", function(self)
 			showIconBrowser(function(icon)
 				psychoStructure.RI = icon;
 				setupIconButton(self, icon or TRP3_InterfaceIcons.Default);
-			end);
+			end, psychoStructure.RI);
 		end);
 
 		-- Run through all the child elements. If they've got a hide set flag
@@ -1513,7 +1513,7 @@ function TRP3_API.register.inits.characteristicsInit()
 
 	-- UI
 	TRP3_RegisterCharact_Edit_MiscAdd:SetScript("OnClick", miscAddDropDown);
-	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("OnClick", function() showIconBrowser(onPlayerIconSelected) end);
+	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("OnClick", function() showIconBrowser(onPlayerIconSelected, draftData.IC) end);
 	TRP3_RegisterCharact_NamePanel_Edit_CancelButton:SetScript("OnClick", showCharacteristicsTab);
 	TRP3_RegisterCharact_NamePanel_Edit_SaveButton:SetScript("OnClick", onSave);
 	TRP3_RegisterCharact_NamePanel_EditButton:SetScript("OnClick", onEdit);

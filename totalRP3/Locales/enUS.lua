@@ -849,6 +849,8 @@ This will works:|cff00ff00
 	UI_IMAGE_BROWSER = "Image browser",
 	UI_IMAGE_SELECT = "Select image",
 	UI_FILTER = "Filter",
+	UI_FILTER_NO_RESULTS_FOUND_TITLE = "No results found.",
+	UI_FILTER_NO_RESULTS_FOUND_TEXT = "Try adjusting your search criteria.",
 	UI_LINK_URL = "http://your.url.here",
 	UI_LINK_TEXT = "Your text here",
 	UI_LINK_SAFE = [[Here's the link URL.]],

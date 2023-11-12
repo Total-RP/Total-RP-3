@@ -6,20 +6,78 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="IconBrowser.lua"/>
 
-	<Button name="TRP3_IconBrowserButton" mixin="TRP3_IconBrowserButtonMixin" virtual="true">
+	<!-- FIXME: Hacky hack hack -->
+	<Texture name="TRP3_IconBrowserButtonTodoTemplate" virtual="true">
+		<Animations>
+			<AnimationGroup parentKey="PulseAnimation" looping="REPEAT" setToFinalAlpha="true">
+				<Alpha childKey="Icon" fromAlpha="1" toAlpha="0.75" duration="1" smoothing="IN" order="1"/>
+				<Alpha childKey="Icon" fromAlpha="0.75" toAlpha="1" duration="1" smoothing="OUT" order="2"/>
+				<Scripts>
+					<OnLoad method="Play"/>
+				</Scripts>
+			</AnimationGroup>
+		</Animations>
+	</Texture>
+
+	<CheckButton name="TRP3_IconBrowserButton" mixin="TRP3_IconBrowserButtonMixin" virtual="true">
 		<Size x="40" y="40"/>
-		<NormalTexture file="Interface\ICONS\INV_Misc_QuestionMark"/>
-		<PushedTexture file="Interface\ICONS\INV_Misc_QuestionMark"/>
-		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+		<HitRectInsets left="2" right="2" top="2" bottom="2"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background" atlas="Forge-ColorSwatchBackground"/>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="3" y="-3"/>
+						<Anchor point="BOTTOMRIGHT" x="-3" y="3"/>
+					</Anchors>
+				</Texture>
+				<MaskTexture parentKey="IconMask" file="Interface\AddOns\totalRP3\Resources\UI\common-iconmask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Icon" x="2" y="-2"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.Icon" x="-2" y="2"/>
+					</Anchors>
+					<MaskedTextures>
+						<MaskedTexture childKey="Icon"/>
+					</MaskedTextures>
+				</MaskTexture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture parentKey="SelectedTexture" atlas="Forge-ColorSwatchSelection" inherits="TRP3_IconBrowserButtonTodoTemplate" hidden="true"/>
+			</Layer>
+		</Layers>
+		<PushedTexture atlas="Forge-ColorSwatchBackground"/>
+		<HighlightTexture atlas="Forge-ColorSwatchHighlight" inherits="TRP3_IconBrowserButtonTodoTemplate"/>
 		<Scripts>
 			<OnLoad method="OnLoad"/>
 			<OnEnter method="OnEnter"/>
 			<OnLeave method="OnLeave"/>
-			<OnClick method="OnClick"/>
 		</Scripts>
-	</Button>
+	</CheckButton>
 
-	<StatusBar name="TRP3_IconBrowserProgressBar" mixin="TRP3_IconBrowserProgressBarMixin" virtual="true">
+	<Frame name="TRP3_IconBrowserEmptyTextFrame" virtual="true">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Title" inherits="GameFontNormalHuge">
+					<Anchors>
+						<Anchor point="BOTTOM" relativePoint="CENTER" y="3"/>
+						<Anchor point="LEFT"/>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey="Text" inherits="GameFontHighlight">
+					<Anchors>
+						<Anchor point="TOP" relativePoint="CENTER" y="-3"/>
+						<Anchor point="LEFT"/>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<StatusBar name="TRP3_IconBrowserSearchProgressBar" virtual="true" minValue="0" maxValue="1" alpha="0">
 		<Size x="250" y="14"/>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -66,12 +124,15 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<BarTexture file="Interface\TargetingFrame\UI-StatusBar">
 			<Color r="0" g="0.75" b="0"/>
 		</BarTexture>
-		<Scripts>
-			<OnShow method="OnShow"/>
-		</Scripts>
+		<Animations>
+			<AnimationGroup parentKey="AnimInOut" setToFinalAlpha="true">
+				<Translation offsetY="-10" duration="0.25" order="1" endDelay="0.2"/>
+				<Alpha fromAlpha="1" toAlpha="0" duration="0.25" order="1" endDelay="0.2"/>
+			</AnimationGroup>
+		</Animations>
 	</StatusBar>
 
-	<Frame name="TRP3_IconBrowser" mixin="TRP3_IconBrowserMixin" parent="TRP3_PopupsFrame" enableMouse="true">
+	<Frame name="TRP3_IconBrowserFrame" mixin="TRP3_IconBrowserMixin" enableMouse="true">
 		<Size x="425" y="420"/>
 		<Anchors>
 			<Anchor point="CENTER"/>
@@ -81,69 +142,15 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<FontString parentKey="Title" inherits="GameFontNormalLarge">
 					<Size y="10"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" x="0" y="-17"/>
-						<Anchor point="TOPRIGHT" x="0" y="-17"/>
+						<Anchor point="TOPLEFT" y="-17"/>
+						<Anchor point="TOPRIGHT" y="-17"/>
 					</Anchors>
 					<Color b="0.95" r="0.95" g="0.95"/>
 				</FontString>
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame parentKey="Backdrop" inherits="BackdropTemplate" setAllPoints="true" useParentLevel="true">
-				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_16_3333" type="global"/>
-				</KeyValues>
-			</Frame>
-			<Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
-				<Size y="280"/>
-				<Anchors>
-					<Anchor point="TOP" y="-35"/>
-					<Anchor point="LEFT" x="15"/>
-					<Anchor point="RIGHT" x="-15"/>
-				</Anchors>
-			</Frame>
-			<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
-				<Anchors>
-					<Anchor point="TOPRIGHT" relativeKey="$parent.ScrollBox" relativePoint="TOPRIGHT"/>
-					<Anchor point="BOTTOMRIGHT" relativeKey="$parent.ScrollBox" relativePoint="BOTTOMRIGHT"/>
-				</Anchors>
-			</EventFrame>
-			<StatusBar parentKey="ProgressBar" inherits="TRP3_IconBrowserProgressBar">
-				<Anchors>
-					<Anchor point="TOP" relativeKey="$parent.ScrollBox" relativePoint="BOTTOM" y="-10"/>
-				</Anchors>
-			</StatusBar>
-			<Frame parentKey="Filter">
-				<Anchors>
-					<Anchor point="TOP" relativeKey="$parent.ProgressBar" relativePoint="BOTTOM" y="-10"/>
-					<Anchor point="LEFT" x="10"/>
-					<Anchor point="RIGHT" x="-10"/>
-					<Anchor point="BOTTOM" y="10"/>
-				</Anchors>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString parentKey="TotalText" inherits="GameFontNormal">
-							<Size x="0" y="10"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" x="0" y="-12"/>
-								<Anchor point="TOPRIGHT" x="0" y="-12"/>
-							</Anchors>
-							<Color b="0.95" r="0.95" g="0.95"/>
-						</FontString>
-					</Layer>
-				</Layers>
-				<Frames>
-					<Frame parentKey="Backdrop" inherits="BackdropTemplate" setAllPoints="true" useParentLevel="true">
-						<KeyValues>
-							<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_3333" type="global"/>
-						</KeyValues>
-					</Frame>
-					<EditBox parentKey="EditBox" inherits="TRP3_TitledEditBox">
-						<Anchors>
-							<Anchor point="BOTTOM" x="0" y="10"/>
-						</Anchors>
-					</EditBox>
-				</Frames>
+			<Frame parentKey="Content" setAllPoints="true">
 			</Frame>
 			<Button parentKey="CloseButton" inherits="TRP3_StyledButtonTemplate">
 				<Size x="24" y="24"/>
@@ -154,6 +161,79 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 				</Anchors>
 			</Button>
+			<EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" autoFocus="false">
+				<Size x="200" y="22"/>
+				<Anchors>
+					<Anchor point="TOP" y="-40"/>
+					<Anchor point="RIGHT" x="-12"/>
+				</Anchors>
+			</EditBox>
+			<Frame parentKey="ScrollContent">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.SearchBox" relativePoint="BOTTOM" y="-5"/>
+					<Anchor point="LEFT" x="10"/>
+					<Anchor point="RIGHT" x="-10"/>
+					<Anchor point="BOTTOM" y="10"/>
+				</Anchors>
+				<Frames>
+					<Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
+						<Anchors>
+							<Anchor point="TOP" y="-4"/>
+							<Anchor point="LEFT" x="4"/>
+							<Anchor point="RIGHT" x="-4"/>
+							<Anchor point="BOTTOM" y="4"/>
+						</Anchors>
+					</Frame>
+					<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativeKey="$parent.ScrollBox" relativePoint="TOPRIGHT" x="-8" y="-4"/>
+							<Anchor point="BOTTOMRIGHT" relativeKey="$parent.ScrollBox" relativePoint="BOTTOMRIGHT" x="-8" y="4"/>
+						</Anchors>
+					</EventFrame>
+					<Frame parentKey="EmptyText" inherits="TRP3_IconBrowserEmptyTextFrame">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeKey="$parent.ScrollBox"/>
+							<Anchor point="BOTTOMRIGHT" relativeKey="$parent.ScrollBox"/>
+						</Anchors>
+					</Frame>
+					<Frame parentKey="Backdrop" inherits="BackdropTemplate" setAllPoints="true" useParentLevel="true">
+						<KeyValues>
+							<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_3333" type="global"/>
+						</KeyValues>
+					</Frame>
+					<!-- FIXME: Hacky hack hack -->
+					<Frame parentKey="Thing" frameLevel="9999" enableMouse="true" hidden="true">
+						<Anchors>
+							<Anchor point="TOP" y="-4"/>
+							<Anchor point="LEFT" x="4"/>
+							<Anchor point="RIGHT" x="-4"/>
+							<Anchor point="BOTTOM" y="4"/>
+						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<Texture>
+									<Color a="0.7"/>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Animations>
+							<AnimationGroup parentKey="AnimIn" setToFinalAlpha="true" inherits="VisibleWhilePlayingAnimGroupTemplate">
+								<Alpha fromAlpha="0" toAlpha="1" duration="0.2" startDelay="0.2"/>
+							</AnimationGroup>
+						</Animations>
+					</Frame>
+					<StatusBar parentKey="ProgressBar" inherits="TRP3_IconBrowserSearchProgressBar" frameLevel="10000">
+						<Anchors>
+							<Anchor point="CENTER" y="0"/>
+						</Anchors>
+					</StatusBar>
+				</Frames>
+			</Frame>
+			<Frame parentKey="Backdrop" inherits="BackdropTemplate" setAllPoints="true" useParentLevel="true">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_16_3333" type="global"/>
+				</KeyValues>
+			</Frame>
 		</Frames>
 		<Scripts>
 			<OnLoad method="OnLoad"/>
