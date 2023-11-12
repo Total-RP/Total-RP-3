@@ -16,7 +16,6 @@ local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
-local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Configuration methods
@@ -103,207 +102,187 @@ local function buildConfigurationPage(structure)
 	local lastWidget;
 	local marginLeft = structure.marginLeft or 5;
 	for _, element in pairs(structure.elements) do
-		if element.remove then
-			element.widget:Hide();
-			--TODO: implement a frames pool to avoid recreating frames
+		local widget = element.widget or CreateFrame("Frame", element.widgetName or ("TRP3_ConfigurationWidget" .. GENERATED_WIDGET_INDEX), structure.parent, element.inherit);
+		widget:ClearAllPoints();
+		widget:SetPoint("LEFT", structure.parent, "LEFT", marginLeft + (element.marginLeft or 5), 0);
+		widget:SetPoint("RIGHT", structure.parent, "RIGHT", -marginLeft, 0);
+		if lastWidget ~= nil then
+			widget:SetPoint("TOP", lastWidget, "BOTTOM", 0, element.marginTop or 0);
 		else
-			local widget = element.widget or CreateFrame("Frame", element.widgetName or ("TRP3_ConfigurationWidget" .. GENERATED_WIDGET_INDEX), structure.parent, element.inherit);
-			widget:ClearAllPoints();
-			widget:SetPoint("LEFT", structure.parent, "LEFT", marginLeft + (element.marginLeft or 5), 0);
-			widget:SetPoint("RIGHT", structure.parent, "RIGHT", -marginLeft, 0);
-			if lastWidget ~= nil then
-				widget:SetPoint("TOP", lastWidget, "BOTTOM", 0, element.marginTop or 0);
+			widget:SetPoint("TOP", structure.parent, "TOP", 0, element.marginTop or 0);
+		end
+		element.widget = widget;
+
+		-- Titles
+		if element.title then
+			if _G[widget:GetName() .. "Title"] then
+				_G[widget:GetName() .. "Title"]:SetText(element.title);
+			elseif element.title and _G[widget:GetName() .. "Text"] then
+				_G[widget:GetName() .. "Text"]:SetText(element.title);
+			end
+		end
+
+		-- Help
+		if _G[widget:GetName() .. "Help"] then
+			local help = _G[widget:GetName() .. "Help"];
+			if element.help then
+				help:Show();
+				setTooltipForFrame(help, "RIGHT", 0, 5, element.title, element.help);
 			else
-				widget:SetPoint("TOP", structure.parent, "TOP", 0, element.marginTop or 0);
+				help:Hide();
 			end
-			element.widget = widget;
+		end
 
-			-- Text -- we do this first because titles are more important, so they can override
-			if element.text then
-				if _G[widget:GetName() .. "Text"] then
-					_G[widget:GetName() .. "Text"]:SetText(element.text);
-				end
-			end
-
-			-- Titles
-			if element.title then
-				if _G[widget:GetName() .. "Title"] then
-					_G[widget:GetName() .. "Title"]:SetText(element.title);
-				elseif element.title and _G[widget:GetName() .. "Text"] then
-					_G[widget:GetName() .. "Text"]:SetText(element.title);
-				end
-			end
-
-			--Icon
-			if element.icon then
-				if _G[widget:GetName() .. "Icon"] then
-					setupIconButton(_G[widget:GetName() .. "Icon"], element.icon);
-				end
-			end
-
-
-			-- Help
-			if _G[widget:GetName() .. "Help"] then
-				local help = _G[widget:GetName() .. "Help"];
-				if element.help then
-					help:Show();
-					setTooltipForFrame(help, "RIGHT", 0, 5, element.title, element.help);
-				else
-					help:Hide();
-				end
-			end
-
-			-- Specific for Dropdown
-			if _G[widget:GetName() .. "DropDown"] then
-				local dropDown = _G[widget:GetName() .. "DropDown"];
-				element.controller = _G[widget:GetName() .. "DropDownButton"];
-				if element.configKey then
-					if not element.listCallback then
-						element.listCallback = function(value)
-							setValue(element.configKey, value);
-						end
+		-- Specific for Dropdown
+		if _G[widget:GetName() .. "DropDown"] then
+			local dropDown = _G[widget:GetName() .. "DropDown"];
+			element.controller = _G[widget:GetName() .. "DropDownButton"];
+			if element.configKey then
+				if not element.listCallback then
+					element.listCallback = function(value)
+						setValue(element.configKey, value);
 					end
 				end
-				setupListBox(
-						dropDown,
-						element.listContent or {},
-						element.listCallback,
-						element.listDefault or "",
-						element.listWidth or 134,
-						element.listCancel
-				);
-				if element.configKey and not element.listDefault then
-					dropDown:SetSelectedValue(getValue(element.configKey));
-				end
 			end
-
-			-- Specific for Color picker
-			if _G[widget:GetName() .. "Picker"] then
-				if element.configKey then
-					local button = _G[widget:GetName() .. "Picker"];
-					element.controller = button;
-					button.setColor(TRP3_API.CreateColorFromHexString(getValue(element.configKey)):GetRGBAsBytes());
-					button.onSelection = function(red, green, blue)
-						if red and green and blue then
-							local hexa = TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
-							setValue(element.configKey, hexa);
-						else
-							button.setColor(TRP3_API.CreateColorFromHexString(defaultValues[element.configKey]):GetRGBAsBytes());
-						end
-					end;
-				end
+			setupListBox(
+					dropDown,
+					element.listContent or {},
+					element.listCallback,
+					element.listDefault or "",
+					element.listWidth or 134,
+					element.listCancel
+			);
+			if element.configKey and not element.listDefault then
+				dropDown:SetSelectedValue(getValue(element.configKey));
 			end
+		end
 
-			-- Specific for Button
-			if _G[widget:GetName() .. "Button"] then
-				local button = _G[widget:GetName() .. "Button"];
+		-- Specific for Color picker
+		if _G[widget:GetName() .. "Picker"] then
+			if element.configKey then
+				local button = _G[widget:GetName() .. "Picker"];
 				element.controller = button;
-				button:SetScript("OnClick", element.OnClick or element.callback);
-				button:SetScript("OnShow", element.OnShow);
-				button:SetScript("OnHide", element.OnHide);
-				button:SetText(element.text or "");
+				button.setColor(TRP3_API.CreateColorFromHexString(getValue(element.configKey)):GetRGBAsBytes());
+				button.onSelection = function(red, green, blue)
+					if red and green and blue then
+						local hexa = TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
+						setValue(element.configKey, hexa);
+					else
+						button.setColor(TRP3_API.CreateColorFromHexString(defaultValues[element.configKey]):GetRGBAsBytes());
+					end
+				end;
 			end
+		end
 
-			-- Specific for EditBox
-			if _G[widget:GetName() .. "Box"] then
-				local box = _G[widget:GetName() .. "Box"];
-				element.controller = box;
-				if element.configKey then
-					box:SetScript("OnTextChanged", function(self)
-						local value = self:GetText();
-						self.Instructions:SetShown(value == "");
-						setValue(element.configKey, value);
-					end);
-					box:SetText(tostring(getValue(element.configKey)));
-				end
-				box:SetNumeric(element.numeric);
-				box:SetMaxLetters(element.maxLetters or 0);
-				box.Instructions:SetText(element.instructions or "");
-				local boxTitle = _G[widget:GetName() .. "BoxText"];
-				if boxTitle then
-					boxTitle:SetText(element.boxTitle);
-				end
+		-- Specific for Button
+		if _G[widget:GetName() .. "Button"] then
+			local button = _G[widget:GetName() .. "Button"];
+			element.controller = button;
+			button:SetScript("OnClick", element.OnClick or element.callback);
+			button:SetScript("OnShow", element.OnShow);
+			button:SetScript("OnHide", element.OnHide);
+			button:SetText(element.text or "");
+		end
+
+		-- Specific for EditBox
+		if _G[widget:GetName() .. "Box"] then
+			local box = _G[widget:GetName() .. "Box"];
+			element.controller = box;
+			if element.configKey then
+				box:SetScript("OnTextChanged", function(self)
+					local value = self:GetText();
+					self.Instructions:SetShown(value == "");
+					setValue(element.configKey, value);
+				end);
+				box:SetText(tostring(getValue(element.configKey)));
 			end
+			box:SetNumeric(element.numeric);
+			box:SetMaxLetters(element.maxLetters or 0);
+			box.Instructions:SetText(element.instructions or "");
+			local boxTitle = _G[widget:GetName() .. "BoxText"];
+			if boxTitle then
+				boxTitle:SetText(element.boxTitle);
+			end
+		end
 
-			-- Specific for Check
-			if _G[widget:GetName() .. "Check"] then
-				local box = _G[widget:GetName() .. "Check"];
-				element.controller = box;
-				if element.configKey then
-					box:SetScript("OnClick", function(self)
-						local optionIsEnabled = self:GetChecked();
-						setValue(element.configKey, optionIsEnabled);
+		-- Specific for Check
+		if _G[widget:GetName() .. "Check"] then
+			local box = _G[widget:GetName() .. "Check"];
+			element.controller = box;
+			if element.configKey then
+				box:SetScript("OnClick", function(self)
+					local optionIsEnabled = self:GetChecked();
+					setValue(element.configKey, optionIsEnabled);
 
-						if optionsDependentOnOtherOptions[element.configKey] then
-							for _, dependentOption in pairs(optionsDependentOnOtherOptions[element.configKey]) do
+					if optionsDependentOnOtherOptions[element.configKey] then
+						for _, dependentOption in pairs(optionsDependentOnOtherOptions[element.configKey]) do
 
-								dependentOption.widget:SetAlpha(optionIsEnabled and 1 or 0.5);
+							dependentOption.widget:SetAlpha(optionIsEnabled and 1 or 0.5);
 
-								if dependentOption.controller then
-									if optionIsEnabled then
-										dependentOption.controller:Enable();
-									else
-										dependentOption.controller:Disable();
-									end
+							if dependentOption.controller then
+								if optionIsEnabled then
+									dependentOption.controller:Enable();
+								else
+									dependentOption.controller:Disable();
 								end
 							end
 						end
-					end);
-					box:SetChecked(getValue(element.configKey));
-					box:SetScript("OnShow", element.OnShow);
-					box:SetScript("OnHide", element.OnHide);
-				else
-					box:SetScript("OnClick", element.OnClick or element.callback);
-					box:SetScript("OnShow", element.OnShow);
-					box:SetScript("OnHide", element.OnHide);
-				end
-			end
-
-			-- Specific for Sliders
-			if _G[widget:GetName() .. "Slider"] then
-				local slider = _G[widget:GetName() .. "Slider"];
-				local text = _G[widget:GetName() .. "SliderValText"];
-				local min = element.min or 0;
-				local max = element.max or 100;
-
-				slider:SetMinMaxValues(min, max);
-				_G[widget:GetName() .. "SliderLow"]:SetText(min);
-				_G[widget:GetName() .. "SliderHigh"]:SetText(max);
-				slider:SetValueStep(element.step);
-				slider:SetObeyStepOnDrag(element.integer);
-
-				local onChange = function(_, value)
-					if element.integer then
-						value = math.floor(value);
 					end
-					text:SetText(value);
-					if element.configKey then
-						setValue(element.configKey, value);
-					end
-				end
-				slider:SetScript("OnValueChanged", onChange);
-
-				if element.configKey then
-					slider:SetValue(tonumber(getValue(element.configKey)) or min);
-				else
-					slider:SetValue(0);
-				end
-
-				onChange(slider, slider:GetValue());
+				end);
+				box:SetChecked(getValue(element.configKey));
+				box:SetScript("OnShow", element.OnShow);
+				box:SetScript("OnHide", element.OnHide);
+			else
+				box:SetScript("OnClick", element.OnClick or element.callback);
+				box:SetScript("OnShow", element.OnShow);
+				box:SetScript("OnHide", element.OnHide);
 			end
-
-			if element.dependentOnOptions then
-				for _, dependence in pairs(element.dependentOnOptions) do
-					if not optionsDependency[dependence] then
-						optionsDependency[dependence] = {};
-					end
-					tinsert(optionsDependency[dependence], element);
-				end
-			end
-
-			lastWidget = widget;
-			GENERATED_WIDGET_INDEX = GENERATED_WIDGET_INDEX + 1;
 		end
+
+		-- Specific for Sliders
+		if _G[widget:GetName() .. "Slider"] then
+			local slider = _G[widget:GetName() .. "Slider"];
+			local text = _G[widget:GetName() .. "SliderValText"];
+			local min = element.min or 0;
+			local max = element.max or 100;
+
+			slider:SetMinMaxValues(min, max);
+			_G[widget:GetName() .. "SliderLow"]:SetText(min);
+			_G[widget:GetName() .. "SliderHigh"]:SetText(max);
+			slider:SetValueStep(element.step);
+			slider:SetObeyStepOnDrag(element.integer);
+
+			local onChange = function(_, value)
+				if element.integer then
+					value = math.floor(value);
+				end
+				text:SetText(value);
+				if element.configKey then
+					setValue(element.configKey, value);
+				end
+			end
+			slider:SetScript("OnValueChanged", onChange);
+
+			if element.configKey then
+				slider:SetValue(tonumber(getValue(element.configKey)) or min);
+			else
+				slider:SetValue(0);
+			end
+
+			onChange(slider, slider:GetValue());
+		end
+
+		if element.dependentOnOptions then
+			for _, dependence in pairs(element.dependentOnOptions) do
+				if not optionsDependency[dependence] then
+					optionsDependency[dependence] = {};
+				end
+				tinsert(optionsDependency[dependence], element);
+			end
+		end
+
+		lastWidget = widget;
+		GENERATED_WIDGET_INDEX = GENERATED_WIDGET_INDEX + 1;
 	end
 
 	-- Now that we have built all our widget we can go through the dependencies table
@@ -366,40 +345,6 @@ Config.registerConfigurationPage = registerConfigurationPage;
 
 function Config.refreshPage(pageID)
 	buildConfigurationPage(registeredConfiPage[pageID]);
-end
-
-function Config.insertElementIntoPage(pageID, element, position)
-	local insertionPosition
-	if position then
-		if position >= 0 then
-			insertionPosition = position
-		else
-			insertionPosition = (#registeredConfiPage[pageID].elements + 1) - position
-		end
-	else
-		insertionPosition = #registeredConfiPage[pageID].elements + 1
-	end
-
-	registeredConfiPage[pageID].elements[insertionPosition] = element;
-	Config.refreshPage(pageID)
-end
-
-function Config.removeElementFromPageByTitle(pageID, title)
-	for i, element in pairs(registeredConfiPage[pageID].elements) do
-		if element.title == title then
-			registeredConfiPage[pageID].elements[i].remove = true;
-		end
-	end
-	Config.refreshPage(pageID)
-end
-
-function Config.updateElementByTitle(pageID, title, field, value)
-	for i, element in pairs(registeredConfiPage[pageID].elements) do
-		if element.title == title then
-			registeredConfiPage[pageID].elements[i][field] = value;
-		end
-	end
-	Config.refreshPage(pageID)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
