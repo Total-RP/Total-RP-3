@@ -365,6 +365,12 @@ stds.wow = {
 			},
 		},
 
+		EventUtil = {
+			fields = {
+				"ContinueOnAddOnLoaded",
+			},
+		},
+
 		ScrollUtil = {
 			fields = {
 				"AddManagedScrollBarVisibilityBehavior",

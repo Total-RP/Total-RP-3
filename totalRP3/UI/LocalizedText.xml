@@ -1,0 +1,18 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="LocalizedText.lua"/>
+
+	<!--
+		No templates provided; FontStrings for some inexplicable reason
+		don't support multiple inheritance, so we'd need one template
+		for each font to be defined here.
+
+		Instead, add your own <OnLoad> script to all fontstrings that
+		need localization and point it to the TRP3_LocalizeTextOnAddOnLoaded
+		function.
+	-->
+</Ui>
