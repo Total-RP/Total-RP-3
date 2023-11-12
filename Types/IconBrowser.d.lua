@@ -1,21 +1,50 @@
 ---@meta
 
----@class TRP3.IconBrowserModel
-local IconBrowserModel = {};
+---@class TRP3.AbstractIconBrowserModel
+local AbstractIconBrowserModel = {};
+
+---@return integer count
+function AbstractIconBrowserModel:GetIconCount() end
+
+---@param name string
+---@return integer? index
+function AbstractIconBrowserModel:GetIconIndex(name) end
+
+---@param index integer
+---@return TRP3.IconBrowserModelItem? data
+function AbstractIconBrowserModel:GetIconInfo(index) end
+
+---@param index integer
+---@return string? name
+function AbstractIconBrowserModel:GetIconName(index) end
 
 ---@param owner TRP3.CallbackOwner
 ---@param event "OnModelUpdated"
 ---@param callback fun(event: "OnModelUpdated")|string?
-function IconBrowserModel.RegisterCallback(owner, event, callback) end
+function AbstractIconBrowserModel.RegisterCallback(owner, event, callback) end
 
 ---@param owner TRP3.CallbackOwner
 ---@param event "OnModelUpdated"
-function IconBrowserModel.UnregisterCallback(owner, event) end
+function AbstractIconBrowserModel.UnregisterCallback(owner, event) end
 
 ---@param owner TRP3.CallbackOwner
-function IconBrowserModel.UnregisterAllCallbacks(owner) end
+function AbstractIconBrowserModel.UnregisterAllCallbacks(owner) end
 
----@class TRP3.IconBrowserFilterModel : TRP3.IconBrowserModel
+---@class TRP3.AbstractIconBrowserProxyModel : TRP3.AbstractIconBrowserModel
+local AbstractIconBrowserProxyModel = {};
+
+---@return TRP3.AbstractIconBrowserModel
+function AbstractIconBrowserProxyModel:GetSourceModel() end
+
+---@param proxyIndex integer
+---@return integer? sourceIndex
+function AbstractIconBrowserProxyModel:GetSourceIndex(proxyIndex) end
+
+---@param sourceIndex integer
+---@return integer? proxyIndex
+function AbstractIconBrowserProxyModel:GetProxyIndex(sourceIndex) end
+
+---@class TRP3.IconBrowserFilterModel
 local IconBrowserFilterModel = {};
 
 ---@param owner TRP3.CallbackOwner
@@ -37,7 +66,7 @@ function IconBrowserFilterModel.RegisterCallback(owner, event, callback) end
 ---@param event "OnSearchProgressChanged"
 function IconBrowserFilterModel.UnregisterCallback(owner, event) end
 
----@class TRP3.IconBrowserFilterTask
+---@class TRP3.IconBrowserSearchTask
 local IconBrowserSearchTask = {};
 
 ---@param owner TRP3.CallbackOwner

@@ -6,21 +6,16 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="IconBrowser.lua"/>
 
-	<!-- FIXME: Hacky hack hack -->
-	<Texture name="TRP3_IconBrowserButtonTodoTemplate" virtual="true">
-		<Animations>
-			<AnimationGroup parentKey="PulseAnimation" looping="REPEAT" setToFinalAlpha="true">
-				<Alpha childKey="Icon" fromAlpha="1" toAlpha="0.75" duration="1" smoothing="IN" order="1"/>
-				<Alpha childKey="Icon" fromAlpha="0.75" toAlpha="1" duration="1" smoothing="OUT" order="2"/>
-				<Scripts>
-					<OnLoad method="Play"/>
-				</Scripts>
-			</AnimationGroup>
-		</Animations>
-	</Texture>
+	<AnimationGroup name="TRP3_IconBrowserPulseAnimGroupTemplate" looping="REPEAT" setToFinalAlpha="true" virtual="true">
+		<Alpha fromAlpha="1" toAlpha="0.75" duration="1" smoothing="IN" order="1"/>
+		<Alpha fromAlpha="0.75" toAlpha="1" duration="1" smoothing="OUT" order="2"/>
+		<Scripts>
+			<OnLoad method="Play"/>
+		</Scripts>
+	</AnimationGroup>
 
 	<CheckButton name="TRP3_IconBrowserButton" mixin="TRP3_IconBrowserButtonMixin" virtual="true">
-		<Size x="40" y="40"/>
+		<Size x="36" y="36"/>
 		<HitRectInsets left="2" right="2" top="2" bottom="2"/>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -44,11 +39,19 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</MaskTexture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<Texture parentKey="SelectedTexture" atlas="Forge-ColorSwatchSelection" inherits="TRP3_IconBrowserButtonTodoTemplate" hidden="true"/>
+				<Texture parentKey="SelectedTexture" atlas="Forge-ColorSwatchSelection" hidden="true">
+					<Animations>
+						<AnimationGroup parentKey="PulseAnim" inherits="TRP3_IconBrowserPulseAnimGroupTemplate"/>
+					</Animations>
+				</Texture>
 			</Layer>
 		</Layers>
 		<PushedTexture atlas="Forge-ColorSwatchBackground"/>
-		<HighlightTexture atlas="Forge-ColorSwatchHighlight" inherits="TRP3_IconBrowserButtonTodoTemplate"/>
+		<HighlightTexture atlas="Forge-ColorSwatchHighlight">
+			<Animations>
+				<AnimationGroup parentKey="PulseAnim" inherits="TRP3_IconBrowserPulseAnimGroupTemplate"/>
+			</Animations>
+		</HighlightTexture>
 		<Scripts>
 			<OnLoad method="OnLoad"/>
 			<OnEnter method="OnEnter"/>
@@ -56,28 +59,42 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</CheckButton>
 
-	<Frame name="TRP3_IconBrowserEmptyTextFrame" virtual="true">
+	<Frame name="TRP3_IconBrowserEmptyStateTemplate" mixin="TRP3_IconBrowserEmptyStateMixin" virtual="true" hidden="true">
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Title" inherits="GameFontNormalHuge">
+				<FontString parentKey="Title" inherits="GameFontNormalHuge" text="L.UI_FILTER_NO_RESULTS_FOUND_TITLE">
 					<Anchors>
 						<Anchor point="BOTTOM" relativePoint="CENTER" y="3"/>
 						<Anchor point="LEFT"/>
 						<Anchor point="RIGHT"/>
 					</Anchors>
+					<Scripts>
+						<OnLoad function="TRP3_LocalizeTextOnAddOnLoaded"/>
+					</Scripts>
 				</FontString>
-				<FontString parentKey="Text" inherits="GameFontHighlight">
+				<FontString parentKey="Text" inherits="GameFontHighlight" text="L.UI_FILTER_NO_RESULTS_FOUND_TEXT">
 					<Anchors>
 						<Anchor point="TOP" relativePoint="CENTER" y="-3"/>
 						<Anchor point="LEFT"/>
 						<Anchor point="RIGHT"/>
 					</Anchors>
+					<Scripts>
+						<OnLoad function="TRP3_LocalizeTextOnAddOnLoaded"/>
+					</Scripts>
 				</FontString>
 			</Layer>
 		</Layers>
+		<Animations>
+			<AnimationGroup parentKey="AnimIn">
+				<Alpha fromAlpha="0" toAlpha="1" duration="0.25" smoothing="IN" order="1"/>
+			</AnimationGroup>
+			<AnimationGroup parentKey="AnimOut" inherits="VisibleWhilePlayingAnimGroupTemplate">
+				<Alpha fromAlpha="1" toAlpha="0" duration="0.15" smoothing="OUT" order="1"/>
+			</AnimationGroup>
+		</Animations>
 	</Frame>
 
-	<StatusBar name="TRP3_IconBrowserSearchProgressBar" virtual="true" minValue="0" maxValue="1" alpha="0">
+	<StatusBar name="TRP3_IconBrowserProgressBar" virtual="true" minValue="0" maxValue="1">
 		<Size x="250" y="14"/>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -124,13 +141,41 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<BarTexture file="Interface\TargetingFrame\UI-StatusBar">
 			<Color r="0" g="0.75" b="0"/>
 		</BarTexture>
+	</StatusBar>
+
+	<Frame name="TRP3_IconBrowserProgressOverlayTemplate" mixin="TRP3_IconBrowserProgressOverlayMixin" virtual="true">
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background">
+					<Color a="0.6"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<StatusBar parentKey="ProgressBar" inherits="TRP3_IconBrowserProgressBar">
+				<Anchors>
+					<Anchor point="CENTER"/>
+				</Anchors>
+			</StatusBar>
+		</Frames>
 		<Animations>
-			<AnimationGroup parentKey="AnimInOut" setToFinalAlpha="true">
-				<Translation offsetY="-10" duration="0.25" order="1" endDelay="0.2"/>
-				<Alpha fromAlpha="1" toAlpha="0" duration="0.25" order="1" endDelay="0.2"/>
+			<AnimationGroup parentKey="AnimIn" setToFinalAlpha="true">
+				<!-- For the translation effect to work this animation must be played in reverse. -->
+				<Alpha fromAlpha="1" toAlpha="0" duration="0.15" smoothing="IN" order="1"/>
+				<Alpha fromAlpha="1" toAlpha="0" duration="0.25" smoothing="IN" order="1" childKey="ProgressBar"/>
+				<Translation offsetY="-10" duration="0.25" smoothing="IN" order="1" childKey="ProgressBar"/>
+			</AnimationGroup>
+			<AnimationGroup parentKey="AnimOut" setToFinalAlpha="true" inherits="VisibleWhilePlayingAnimGroupTemplate">
+				<Alpha fromAlpha="1" toAlpha="0" duration="0.15" smoothing="IN" order="1"/>
+				<Alpha fromAlpha="1" toAlpha="0" duration="0.25" smoothing="IN" order="1" childKey="ProgressBar"/>
 			</AnimationGroup>
 		</Animations>
-	</StatusBar>
+		<Scripts>
+			<OnEnter function="nop"/>
+			<OnLeave function="nop"/>
+			<OnMouseWheel function="nop"/>
+		</Scripts>
+	</Frame>
 
 	<Frame name="TRP3_IconBrowserFrame" mixin="TRP3_IconBrowserMixin" enableMouse="true">
 		<Size x="425" y="420"/>
@@ -139,13 +184,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Title" inherits="GameFontNormalLarge">
+				<FontString parentKey="Title" inherits="GameFontNormalLarge" text="L.UI_ICON_BROWSER">
 					<Size y="10"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" y="-17"/>
 						<Anchor point="TOPRIGHT" y="-17"/>
 					</Anchors>
 					<Color b="0.95" r="0.95" g="0.95"/>
+					<Scripts>
+						<OnLoad function="TRP3_LocalizeTextOnAddOnLoaded"/>
+					</Scripts>
 				</FontString>
 			</Layer>
 		</Layers>
@@ -168,7 +216,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="RIGHT" x="-12"/>
 				</Anchors>
 			</EditBox>
-			<Frame parentKey="ScrollContent">
+			<Frame parentKey="Content">
 				<Anchors>
 					<Anchor point="TOP" relativeKey="$parent.SearchBox" relativePoint="BOTTOM" y="-5"/>
 					<Anchor point="LEFT" x="10"/>
@@ -176,24 +224,23 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="BOTTOM" y="10"/>
 				</Anchors>
 				<Frames>
-					<Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
-						<Anchors>
-							<Anchor point="TOP" y="-4"/>
-							<Anchor point="LEFT" x="4"/>
-							<Anchor point="RIGHT" x="-4"/>
-							<Anchor point="BOTTOM" y="4"/>
-						</Anchors>
-					</Frame>
+					<Frame parentKey="ScrollBox" inherits="WowScrollBoxList"/>
 					<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
 						<Anchors>
-							<Anchor point="TOPRIGHT" relativeKey="$parent.ScrollBox" relativePoint="TOPRIGHT" x="-8" y="-4"/>
-							<Anchor point="BOTTOMRIGHT" relativeKey="$parent.ScrollBox" relativePoint="BOTTOMRIGHT" x="-8" y="4"/>
+							<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" x="-12" y="-8"/>
+							<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-12" y="8"/>
 						</Anchors>
 					</EventFrame>
-					<Frame parentKey="EmptyText" inherits="TRP3_IconBrowserEmptyTextFrame">
+					<Frame parentKey="EmptyState" inherits="TRP3_IconBrowserEmptyStateTemplate">
 						<Anchors>
-							<Anchor point="TOPLEFT" relativeKey="$parent.ScrollBox"/>
-							<Anchor point="BOTTOMRIGHT" relativeKey="$parent.ScrollBox"/>
+							<Anchor point="TOPLEFT" x="4" y="-4"/>
+							<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+						</Anchors>
+					</Frame>
+					<Frame parentKey="ProgressOverlay" inherits="TRP3_IconBrowserProgressOverlayTemplate" frameLevel="1000" fixedFrameLevel="true">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="4" y="-4"/>
+							<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
 						</Anchors>
 					</Frame>
 					<Frame parentKey="Backdrop" inherits="BackdropTemplate" setAllPoints="true" useParentLevel="true">
@@ -201,32 +248,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_3333" type="global"/>
 						</KeyValues>
 					</Frame>
-					<!-- FIXME: Hacky hack hack -->
-					<Frame parentKey="Thing" frameLevel="9999" enableMouse="true" hidden="true">
-						<Anchors>
-							<Anchor point="TOP" y="-4"/>
-							<Anchor point="LEFT" x="4"/>
-							<Anchor point="RIGHT" x="-4"/>
-							<Anchor point="BOTTOM" y="4"/>
-						</Anchors>
-						<Layers>
-							<Layer level="OVERLAY">
-								<Texture>
-									<Color a="0.7"/>
-								</Texture>
-							</Layer>
-						</Layers>
-						<Animations>
-							<AnimationGroup parentKey="AnimIn" setToFinalAlpha="true" inherits="VisibleWhilePlayingAnimGroupTemplate">
-								<Alpha fromAlpha="0" toAlpha="1" duration="0.2" startDelay="0.2"/>
-							</AnimationGroup>
-						</Animations>
-					</Frame>
-					<StatusBar parentKey="ProgressBar" inherits="TRP3_IconBrowserSearchProgressBar" frameLevel="10000">
-						<Anchors>
-							<Anchor point="CENTER" y="0"/>
-						</Anchors>
-					</StatusBar>
 				</Frames>
 			</Frame>
 			<Frame parentKey="Backdrop" inherits="BackdropTemplate" setAllPoints="true" useParentLevel="true">
