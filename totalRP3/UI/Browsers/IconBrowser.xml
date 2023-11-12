@@ -177,47 +177,24 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_IconBrowserFrame" parent="TRP3_PopupsFrame" mixin="TRP3_IconBrowserMixin" enableMouse="true" hidden="true">
+	<Frame name="TRP3_IconBrowserFrame" mixin="TRP3_IconBrowserMixin" parent="UIParent" enableMouse="true" toplevel="true">
 		<Size x="425" y="420"/>
 		<Anchors>
 			<Anchor point="CENTER"/>
 		</Anchors>
-		<Layers>
-			<Layer level="OVERLAY">
-				<FontString parentKey="Title" inherits="GameFontNormalLarge" text="L.UI_ICON_BROWSER">
-					<Size y="10"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" y="-17"/>
-						<Anchor point="TOPRIGHT" y="-17"/>
-					</Anchors>
-					<Color b="0.95" r="0.95" g="0.95"/>
-					<Scripts>
-						<OnLoad function="TRP3_LocalizeTextOnAddOnLoaded"/>
-					</Scripts>
-				</FontString>
-			</Layer>
-		</Layers>
 		<Frames>
-			<Button parentKey="CloseButton" inherits="TRP3_StyledButtonTemplate">
-				<Size x="24" y="24"/>
-				<KeyValues>
-					<KeyValue key="styleName" value="CloseButton" type="string"/>
-				</KeyValues>
-				<Anchors>
-					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
-				</Anchors>
-			</Button>
+			<Button parentKey="CloseButton" inherits="UIPanelCloseButtonDefaultAnchors"/>
 			<EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" autoFocus="false">
 				<Size x="200" y="22"/>
 				<Anchors>
-					<Anchor point="TOP" y="-40"/>
+					<Anchor point="TOP" y="-30"/>
 					<Anchor point="RIGHT" x="-12"/>
 				</Anchors>
 			</EditBox>
 			<Frame parentKey="Content">
 				<Anchors>
 					<Anchor point="TOP" relativeKey="$parent.SearchBox" relativePoint="BOTTOM" y="-5"/>
-					<Anchor point="LEFT" x="10"/>
+					<Anchor point="LEFT" x="14"/>
 					<Anchor point="RIGHT" x="-10"/>
 					<Anchor point="BOTTOM" y="10"/>
 				</Anchors>
@@ -241,17 +218,45 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
 						</Anchors>
 					</Frame>
-					<Frame parentKey="Backdrop" inherits="BackdropTemplate" setAllPoints="true" useParentLevel="true">
+					<Frame parentKey="NineSlice" inherits="NineSlicePanelTemplate" useParentLevel="true">
 						<KeyValues>
-							<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_3333" type="global"/>
+							<KeyValue key="layoutType" value="TooltipDefaultLayout" type="string"/>
 						</KeyValues>
+						<Scripts>
+							<OnLoad inherit="prepend">
+								self:SetCenterColor(0.1, 0.1, 0.1)
+								self:SetBorderColor(0.5, 0.5, 0.5)
+							</OnLoad>
+						</Scripts>
 					</Frame>
 				</Frames>
 			</Frame>
-			<Frame parentKey="Backdrop" inherits="BackdropTemplate" setAllPoints="true" useParentLevel="true">
+			<Frame parentKey="NineSlice" inherits="NineSlicePanelTemplate" useParentLevel="true">
 				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_16_3333" type="global"/>
+					<KeyValue key="layoutType" value="ButtonFrameTemplateNoPortrait" type="string"/>
 				</KeyValues>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture atlas="collections-background-tile" vertTile="true" horizTile="true" useAtlasSize="true">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="7" y="-2"/>
+								<Anchor point="BOTTOMRIGHT" x="-2" y="2"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<FontString parentKey="Text" inherits="GameFontNormal" text="L.UI_ICON_BROWSER" wordwrap="false">
+							<Anchors>
+								<Anchor point="TOP" x="0" y="-5"/>
+								<Anchor point="LEFT" x="60"/>
+								<Anchor point="RIGHT" x="-60"/>
+							</Anchors>
+							<Scripts>
+								<OnLoad function="TRP3_LocalizeTextOnAddOnLoaded"/>
+							</Scripts>
+						</FontString>
+					</Layer>
+				</Layers>
 			</Frame>
 		</Frames>
 		<Scripts>
