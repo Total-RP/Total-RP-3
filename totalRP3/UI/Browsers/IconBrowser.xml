@@ -177,7 +177,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_IconBrowserFrame" mixin="TRP3_IconBrowserMixin" enableMouse="true">
+	<Frame name="TRP3_IconBrowserFrame" parent="TRP3_PopupsFrame" mixin="TRP3_IconBrowserMixin" enableMouse="true" hidden="true">
 		<Size x="425" y="420"/>
 		<Anchors>
 			<Anchor point="CENTER"/>
