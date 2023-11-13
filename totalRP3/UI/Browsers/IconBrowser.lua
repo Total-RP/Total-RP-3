@@ -1,8 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local L = TRP3_API.loc;
-
 local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
 
 local function GenerateSearchableString(str)
@@ -681,6 +679,7 @@ function TRP3_IconBrowserProgressOverlayMixin:SetModel(model)
 			if not self:IsShown() then
 				local reverse = true;
 				self.AnimIn:Play(reverse);
+				self.ProgressBar:SetValue(0);
 				self:Show();
 			end
 		elseif state == "finished" and self:IsShown() then
@@ -690,8 +689,7 @@ function TRP3_IconBrowserProgressOverlayMixin:SetModel(model)
 
 	---@param progress TRP3.IconBrowserSearchProgress
 	local function OnProgressChanged(_, progress)
-		self.ProgressBar.Text:SetFormattedText(L.UI_ICON_BROWSER_SEARCHING, progress.searched / progress.total * 100);
-		self.ProgressBar:SetValue(progress.searched / progress.total);
+		self.ProgressBar:SetSmoothedValue(progress.searched / progress.total);
 	end
 
 	local function UpdateVisibilityDeferred()

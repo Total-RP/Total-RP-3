@@ -94,7 +94,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Animations>
 	</Frame>
 
-	<StatusBar name="TRP3_IconBrowserProgressBar" minValue="0" maxValue="1" virtual="true">
+	<StatusBar name="TRP3_IconBrowserProgressBar" mixin="SmoothStatusBarMixin" minValue="0" maxValue="1" virtual="true">
 		<Size x="250" y="14"/>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -131,10 +131,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Anchors>
 					<TexCoords left="0.0625" right="0.812" top="0" bottom="0.75"/>
 				</Texture>
-				<FontString parentKey="Text" inherits="GameFontHighlightSmall">
+				<FontString parentKey="Text" inherits="GameFontHighlightSmall" text="L.UI_ICON_BROWSER_SEARCHING">
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
+					<Scripts>
+						<OnLoad function="TRP3_LocalizeTextOnAddOnLoaded"/>
+					</Scripts>
 				</FontString>
 			</Layer>
 		</Layers>
