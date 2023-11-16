@@ -149,7 +149,7 @@ TRP3_AutomationUtil.RegisterCondition({
 	Evaluate = function()
 		local inAlternateForm = true;
 
-		if C_PlayerInfo.GetAlternateFormInfo and GetShapeshiftForm() == 0 then
+		if C_PlayerInfo.GetAlternateFormInfo and not (TRP3_API.utils.str.GetClass("player") == "DRUID" and GetShapeshiftForm() ~= 0) then
 			inAlternateForm = select(2, C_PlayerInfo.GetAlternateFormInfo());
 		end
 
