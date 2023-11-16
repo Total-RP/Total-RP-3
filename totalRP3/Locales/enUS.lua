@@ -1755,6 +1755,14 @@ If you wish to report %s's profile and you cannot target them you will need to o
   - Battle pet types will still be shown incorrectly until Blizzard fixes the bug which caused the issue in the first place.
 
 ]],
+	WHATS_NEW_27_2 = [[# Changelog version 2.6.2
+
+## Fixed
+
+- Fixed nameplate customization erroring in combat since a recent hotfix.
+- Fixed custom names displaying on chat lines they're not supposed to (like preset emotes) while using Prat.
+
+]],
 
 };
 
