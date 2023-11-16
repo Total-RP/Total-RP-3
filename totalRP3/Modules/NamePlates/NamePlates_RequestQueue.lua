@@ -39,15 +39,19 @@ local function GetUnitDistance(unit)
 	-- Note that this logic is helpfully borrowed from DBM which tests and
 	-- bases ranges off comparisons to UnitDistanceSquared.
 
-	if CheckInteractDistance(unit, 2) then
-		return 11;  -- Trade (11 yards)
-	elseif IsItemInRange(21519, unit) then
-		return 23;  -- Mistletoe (23 yards)
-	elseif IsItemInRange(1180, unit) then
-		return 33;  -- Scroll of Stamina (33 yards)
-	else
-		return 60;  -- Max nameplate range (60 yards).
+	local distance = 60;  -- Max nameplate range (60 yards).
+
+	if not InCombatLockdown() then
+		if CheckInteractDistance(unit, 2) then
+			distance = 11;  -- Trade (11 yards)
+		elseif IsItemInRange(21519, unit) then
+			distance = 23;  -- Mistletoe (23 yards)
+		elseif IsItemInRange(1180, unit) then
+			distance = 33;  -- Scroll of Stamina (33 yards)
+		end
 	end
+
+	return distance;
 end
 
 local function IsFriendsWithPlayer(guid)
