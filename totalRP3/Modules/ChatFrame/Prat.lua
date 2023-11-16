@@ -44,6 +44,9 @@ Prat:AddModuleToLoad(function()
 		-- If the message has no GUID (system?) or an invalid GUID (WIM >:( ) we don't have anything to do with this
 		if not message.GUID or not C_PlayerInfo.GUIDIsPlayer(message.GUID) then return end;
 
+		-- If the message has no player, we don't have anything to do with this
+		if not TRP3_API.utils.str.emptyToNil(message.PLAYER) then return end;
+
 		-- Do not do any modification if the channel is not handled by TRP3 or customizations has been disabled
 		-- for that channel in the settings
 		if not TRP3_API.chat.isChannelHandled(event) or not TRP3_API.chat.configIsChannelUsed(event) then return end;
