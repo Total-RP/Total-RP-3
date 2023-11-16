@@ -147,9 +147,9 @@ TRP3_AutomationUtil.RegisterCondition({
 	tokens = { "altform" },
 
 	Evaluate = function()
-		local inAlternateForm = false;
+		local inAlternateForm = true;
 
-		if C_PlayerInfo.GetAlternateFormInfo then
+		if C_PlayerInfo.GetAlternateFormInfo and GetShapeshiftForm() == 0 then
 			inAlternateForm = select(2, C_PlayerInfo.GetAlternateFormInfo());
 		end
 
