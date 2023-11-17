@@ -527,11 +527,6 @@ local function saveInDraft()
 	draftData.BP = stEtN(strtrim(TRP3_RegisterCharact_Edit_BirthplaceField:GetText()));
 	draftData.RS = tonumber(TRP3_RegisterCharact_Dropdown_RelationshipField:GetSelectedValue());
 
-	if sanitizeCharacteristics(draftData) then
-		-- Yell at the user about their mischieves
-		showAlertPopup(loc.REG_CODE_INSERTION_WARNING);
-	end
-
 	-- Save psycho values
 	for index, psychoStructure in pairs(draftData.PS) do
 		local psychoLine = psychoEditCharFrame[index];

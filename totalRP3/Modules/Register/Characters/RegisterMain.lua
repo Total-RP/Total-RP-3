@@ -667,10 +667,6 @@ local function cleanupMyProfiles()
 			atLeastOneProfileWasSanitized = true;
 		end
 	end
-	if atLeastOneProfileWasSanitized then
-		-- Yell at the user about their mischieves
-		showAlertPopup(loc.REG_CODE_INSERTION_WARNING);
-	end
 end
 
 local function getFirstCharacterIDFromProfile(profile)

@@ -297,11 +297,6 @@ local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
 		peekTab.TX = tx;
 	end
 
-	if sanitizeMisc(dataTab) then
-		-- Yell at the user about their mischieves
-		showAlertPopup(loc.REG_CODE_INSERTION_WARNING);
-	end
-
 	-- version increment
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
@@ -353,12 +348,7 @@ local function onCurrentlyChanged()
 		local old = character.CU;
 		character.CU = TRP3_RegisterMiscViewCurrentlyIC:GetInputText();
 
-		local sanitizedCU = Utils.str.sanitize(character.CU, true);
-		if sanitizedCU ~= character.CU then
-			character.CU = sanitizedCU;
-			-- Yell at the user about their mischieves
-			showAlertPopup(loc.REG_CODE_INSERTION_WARNING);
-		end
+		character.CU = Utils.str.sanitize(character.CU, true);
 
 		if old ~= character.CU then
 			character.v = Utils.math.incrementNumber(character.v or 1, 2);
@@ -373,12 +363,7 @@ local function onOOCInfoChanged()
 		local old = character.CO;
 		character.CO = TRP3_RegisterMiscViewCurrentlyOOC:GetInputText();
 
-		local sanitizedCO = Utils.str.sanitize(character.CO, true);
-		if sanitizedCO ~= character.CO then
-			character.CO = sanitizedCO;
-			-- Yell at the user about their mischieves
-			showAlertPopup(loc.REG_CODE_INSERTION_WARNING);
-		end
+		character.CO = Utils.str.sanitize(character.CO, true);
 
 		if old ~= character.CO then
 			character.v = Utils.math.incrementNumber(character.v or 1, 2);
