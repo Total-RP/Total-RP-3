@@ -257,7 +257,7 @@ local function sanitizeMisc(structure)
 			local index = tostring(i);
 			if structure.PE[index] then
 				local sanitizedTIValue = Utils.str.sanitize(structure.PE[index].TI);
-				local sanitizedTXValue = Utils.str.sanitize(structure.PE[index].TX);
+				local sanitizedTXValue = Utils.str.sanitize(structure.PE[index].TX, true);
 				if sanitizedTIValue ~= structure.PE[index].TI then
 					structure.PE[index].TI = sanitizedTIValue;
 					somethingWasSanitized = true;
@@ -353,7 +353,7 @@ local function onCurrentlyChanged()
 		local old = character.CU;
 		character.CU = TRP3_RegisterMiscViewCurrentlyIC:GetInputText();
 
-		local sanitizedCU = Utils.str.sanitize(character.CU);
+		local sanitizedCU = Utils.str.sanitize(character.CU, true);
 		if sanitizedCU ~= character.CU then
 			character.CU = sanitizedCU;
 			-- Yell at the user about their mischieves
@@ -373,7 +373,7 @@ local function onOOCInfoChanged()
 		local old = character.CO;
 		character.CO = TRP3_RegisterMiscViewCurrentlyOOC:GetInputText();
 
-		local sanitizedCO = Utils.str.sanitize(character.CO);
+		local sanitizedCO = Utils.str.sanitize(character.CO, true);
 		if sanitizedCO ~= character.CO then
 			character.CO = sanitizedCO;
 			-- Yell at the user about their mischieves

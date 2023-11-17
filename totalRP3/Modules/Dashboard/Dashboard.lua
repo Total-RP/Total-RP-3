@@ -88,7 +88,7 @@ function TRP3_API.dashboard.sanitizeCharacter(structure)
 	if structure then
 		for _, field in pairs(FIELDS_TO_SANITIZE) do
 			if structure[field] then
-				local sanitizedValue = Utils.str.sanitize(structure[field]);
+				local sanitizedValue = Utils.str.sanitize(structure[field], true);
 				if sanitizedValue ~= structure[field] then
 					structure[field] = sanitizedValue;
 					somethingWasSanitized = true;
