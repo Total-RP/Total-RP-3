@@ -19,6 +19,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Events.lua"/>
 	<Include file="Color.lua"/>
 	<Include file="ColorData.lua"/>
+	<Include file="FunctionUtil.lua"/>
 	<Include file="StringUtil.lua"/>
 	<Include file="BindingUtil.lua"/>
 

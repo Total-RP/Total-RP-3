@@ -557,6 +557,7 @@ stds.wow = {
 			fields = {
 				"GetColorRGB",
 				"SetColorRGB",
+				"SetupColorPickerAndShow",
 			},
 		},
 
