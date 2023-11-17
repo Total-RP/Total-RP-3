@@ -427,6 +427,20 @@ end
 -- Companion browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+TRP3_CompanionBrowserButtonMixin = {};
+
+function TRP3_CompanionBrowserButtonMixin:OnLoad()
+	self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+end
+
+function TRP3_CompanionBrowserButtonMixin:OnEnter()
+	TRP3_RefreshTooltipForFrame(self);
+end
+
+function TRP3_CompanionBrowserButtonMixin:OnLeave()
+	TRP3_MainTooltip:Hide();
+end
+
 local TRP3_CompanionBrowser = TRP3_CompanionBrowser;
 local companionWidgetTab = {};
 local filteredCompanionList = {};
@@ -666,7 +680,7 @@ local function initCompanionBrowser()
 
 	for row = 0, 5 do
 		for column = 0, 7 do
-			local button = CreateFrame("Button", "TRP3_CompanionBrowserButton_"..row.."_"..column, ui_CompanionBrowserContent, "TRP3_IconBrowserButton");
+			local button = CreateFrame("Button", "TRP3_CompanionBrowserButton_"..row.."_"..column, ui_CompanionBrowserContent, "TRP3_CompanionBrowserButtonTemplate");
 			button:ClearAllPoints();
 			button:SetPoint("TOPLEFT", ui_CompanionBrowserContent, "TOPLEFT", 15 + (column * 45), -15 + (row * (-45)));
 			button:SetScript("OnClick", onCompanionClick);

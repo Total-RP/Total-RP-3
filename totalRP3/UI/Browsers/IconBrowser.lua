@@ -544,7 +544,7 @@ function TRP3_IconBrowserMixin:OnLoad()
 	};
 
 	self.Content.ScrollView = CreateScrollBoxListGridView(GRID_STRIDE, GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING);
-	self.Content.ScrollView:SetElementInitializer("TRP3_IconBrowserButton", function(button, iconInfo) self:OnIconButtonInitialized(button, iconInfo); end);
+	self.Content.ScrollView:SetElementInitializer("TRP3_IconBrowserButtonTemplate", function(button, iconInfo) self:OnIconButtonInitialized(button, iconInfo); end);
 	ScrollUtil.InitScrollBoxListWithScrollBar(self.Content.ScrollBox, self.Content.ScrollBar, self.Content.ScrollView);
 	ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.Content.ScrollBox, self.Content.ScrollBar, scrollBoxAnchorsWithBar, scrollBoxAnchorsWithoutBar);
 	self.Content.ScrollBox:SetDataProvider(CreateIconDataProvider(self.filterModel));

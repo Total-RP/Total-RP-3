@@ -14,7 +14,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</AnimationGroup>
 
-	<CheckButton name="TRP3_IconBrowserButton" mixin="TRP3_IconBrowserButtonMixin" virtual="true">
+	<CheckButton name="TRP3_IconBrowserButtonTemplate" mixin="TRP3_IconBrowserButtonMixin" virtual="true">
 		<Size x="36" y="36"/>
 		<HitRectInsets left="2" right="2" top="2" bottom="2"/>
 		<Layers>
