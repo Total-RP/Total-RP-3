@@ -602,23 +602,6 @@ function TRP3_API.register.inits.dataExchangeInit()
 	end);
 end
 
-local function isUnitToken(token)
-	local tokens = tInvert({ "target", "mouseover", "player", "focus" });
-	local groupPatterns = { "^party%d+$", "^raid%d+$" };
-
-	if tokens[token] then
-		return true;
-	end
-
-	for _, pattern in ipairs(groupPatterns) do
-		if token:find(pattern) then
-			return true;
-		end
-	end
-
-	return false;
-end
-
 function TRP3_API.slash.openProfile(...)
 	local args = {...};
 
@@ -632,7 +615,7 @@ function TRP3_API.slash.openProfile(...)
 	elseif #args == 1 then
 		characterToOpen = table.concat(args, " ");
 
-		if isUnitToken(characterToOpen:lower()) then
+		if UnitExists(characterToOpen:lower()) then
 			-- If we typed a unit token we resolve it
 			characterToOpen = Utils.str.getUnitID(characterToOpen:lower());
 		else
