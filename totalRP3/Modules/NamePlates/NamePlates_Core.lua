@@ -253,7 +253,13 @@ end
 local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 	local displayInfo = GetOrCreateDisplayInfo(unitToken);
 
-	local profile = TRP3_API.companions.register.getCompanionProfile(companionFullID);
+	local owner, companionID = TRP3_API.utils.str.companionIDToInfo(companionFullID);
+	local profile;
+	if owner == TRP3_API.globals.player_id then
+		profile = TRP3_API.companions.player.getCompanionProfile(companionID);
+	else
+		profile = TRP3_API.companions.register.getCompanionProfile(companionFullID);
+	end
 
 	if profile and profile.data then
 		displayInfo.isRoleplayUnit = true;
