@@ -74,7 +74,7 @@ function TRP3_KuiNamePlates:OnModuleInitialize()
 	-- users that they can disable it.
 
 	if TRP3_API.utils.IsAddOnEnabled("totalRP3_KuiNameplates") then
-		DisableAddOn("totalRP3_KuiNameplates", true);
+		DisableAddOn("totalRP3_KuiNameplates");
 		TRP3_API.popup.showAlertPopup(L.KUI_NAMEPLATES_WARN_OUTDATED_MODULE);
 	end
 end
