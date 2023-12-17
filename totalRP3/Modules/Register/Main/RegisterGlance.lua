@@ -20,6 +20,23 @@ local TRP3_Enums = AddOn_TotalRP3.Enums;
 -- CONSTANTS
 local EMPTY = Globals.empty;
 
+TRP3_GlanceBarSlotMixin = {};
+
+function TRP3_GlanceBarSlotMixin:OnLoad()
+	-- This needs to be deferred to OnLoad as NormalTexture children aren't
+	-- created until after all Layer contents are processed.
+	self.Icon:AddMaskTexture(self.IconMask);
+end
+
+function TRP3_GlanceBarSlotMixin:OnEnter()
+	TRP3_RefreshTooltipForFrame(self);
+end
+
+function TRP3_GlanceBarSlotMixin:OnLeave()
+	TRP3_MainTooltip:Hide();
+end
+
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Glance utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -633,7 +650,7 @@ local function displayGlanceSlots()
 				setTooltipForSameFrame(button);
 			end
 
-			Utils.texture.applyRoundTexture("TRP3_GlanceBarSlot" .. i .. "Image", "Interface\\ICONS\\" .. icon);
+			button:SetNormalTexture("Interface\\ICONS\\" .. icon);
 			button.isCurrentMine = isCurrentMine;
 		end
 	end

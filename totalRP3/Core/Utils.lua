@@ -14,10 +14,9 @@ local loc = TRP3_API.loc;
 -- WOW imports
 local pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber = pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber;
 local strsplit, strtrim = strsplit, strtrim;
-local tinsert, assert, _G, tremove, next = tinsert, assert, _G, tremove, next;
+local tinsert, assert, tremove, next = tinsert, assert, tremove, next;
 local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
-local SetPortraitToTexture = SetPortraitToTexture;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
 
 function Utils.pcall(func, ...)
@@ -959,18 +958,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Textures
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-Utils.texture.applyRoundTexture = function(textureFrame, texturePath, failTexture)
-	local ok, errorMess = pcall(SetPortraitToTexture, textureFrame, texturePath);
-	if not ok then
-		TRP3_API.Log("Fail to round texture: " .. tostring(errorMess));
-		if failTexture then
-			SetPortraitToTexture(textureFrame, failTexture);
-		elseif _G[textureFrame] then
-			_G[textureFrame]:SetTexture(texturePath);
-		end
-	end
-end
 
 local function Rainbow(value, max)
 	local movedValue = value - 1;    -- screw Lua lmao
