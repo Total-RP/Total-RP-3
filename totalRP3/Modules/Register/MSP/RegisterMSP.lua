@@ -119,6 +119,9 @@ local function onStart()
 		msp.my['NH'] = nil;
 		msp.my['NI'] = nil;
 		msp.my['PN'] = nil;
+		msp.my['PG'] = nil;
+		msp.my['PR'] = nil;
+		msp.my['PV'] = nil;
 		if dataTab.MI then
 			for _, miscData in pairs(dataTab.MI) do
 				local miscType = TRP3_API.GetMiscInfoTypeFromData(miscData);
