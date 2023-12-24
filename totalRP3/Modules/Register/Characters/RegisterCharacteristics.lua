@@ -24,7 +24,6 @@ local TRP3_RegisterCharact_CharactPanel_Empty = TRP3_RegisterCharact_CharactPane
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local showConfirmPopup, showTextInputPopup = TRP3_API.popup.showConfirmPopup, TRP3_API.popup.showTextInputPopup;
-local showAlertPopup = TRP3_API.popup.showAlertPopup;
 local deleteProfile = TRP3_API.register.deleteProfile;
 local ignoreID = TRP3_API.register.ignoreID;
 local buildZoneText = Utils.str.buildZoneText;

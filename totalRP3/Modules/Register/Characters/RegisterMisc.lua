@@ -12,7 +12,6 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
-local showAlertPopup = TRP3_API.popup.showAlertPopup;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA

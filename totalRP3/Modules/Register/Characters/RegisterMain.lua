@@ -35,7 +35,7 @@ local getPlayerCurrentProfileID, isProfileNameAvailable, createProfile, selectPr
 local showCharacteristicsTab, showAboutTab, showMiscTab, showNotesTab;
 local get = TRP3_API.profile.getData;
 local type = type;
-local showAlertPopup, showTextInputPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showTextInputPopup;
+local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
 local toast = TRP3_API.ui.tooltip.toast;
 
 -- Saved variables references
@@ -660,12 +660,9 @@ local function cleanupProfiles()
 end
 
 local function cleanupMyProfiles()
-	local atLeastOneProfileWasSanitized = false;
 	-- Get the player's profiles and sanitize them, removing all invalid codes manually inserted
 	for _, profile in pairs(TRP3_API.profile.getProfiles()) do
-		if sanitizeFullProfile(profile) then
-			atLeastOneProfileWasSanitized = true;
-		end
+		sanitizeFullProfile(profile);
 	end
 end
 
