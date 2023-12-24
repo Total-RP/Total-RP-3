@@ -24,7 +24,6 @@ local TRP3_RegisterCharact_CharactPanel_Empty = TRP3_RegisterCharact_CharactPane
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local showConfirmPopup, showTextInputPopup = TRP3_API.popup.showConfirmPopup, TRP3_API.popup.showTextInputPopup;
-local showAlertPopup = TRP3_API.popup.showAlertPopup;
 local deleteProfile = TRP3_API.register.deleteProfile;
 local ignoreID = TRP3_API.register.ignoreID;
 local buildZoneText = Utils.str.buildZoneText;
@@ -526,11 +525,6 @@ local function saveInDraft()
 	draftData.RE = stEtN(strtrim(TRP3_RegisterCharact_Edit_ResidenceField:GetText()));
 	draftData.BP = stEtN(strtrim(TRP3_RegisterCharact_Edit_BirthplaceField:GetText()));
 	draftData.RS = tonumber(TRP3_RegisterCharact_Dropdown_RelationshipField:GetSelectedValue());
-
-	if sanitizeCharacteristics(draftData) then
-		-- Yell at the user about their mischieves
-		showAlertPopup(loc.REG_CODE_INSERTION_WARNING);
-	end
 
 	-- Save psycho values
 	for index, psychoStructure in pairs(draftData.PS) do

@@ -342,13 +342,18 @@ local escapes = {
 	["|K.-|k"] = "", -- protected strings
 	["|W(.-)|w"] = "%1", -- word wrapping
 }
-function Utils.str.sanitize(text)
+function Utils.str.sanitize(text, multiLine)
 	if not text then return end
 	-- Repeat until nested tags are eliminated.
 	repeat
 		local originalText = text;
 		for k, v in pairs(escapes) do
 			text = text:gsub(k, v);
+		end
+		if not multiLine then
+			text = text:gsub("\n", "");
+			text = text:gsub("\r", "");
+			text = text:gsub("|n", "");
 		end
 	until originalText == text;
 	return text

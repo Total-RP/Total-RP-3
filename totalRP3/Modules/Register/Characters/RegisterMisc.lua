@@ -12,7 +12,6 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
-local showAlertPopup = TRP3_API.popup.showAlertPopup;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -257,7 +256,7 @@ local function sanitizeMisc(structure)
 			local index = tostring(i);
 			if structure.PE[index] then
 				local sanitizedTIValue = Utils.str.sanitize(structure.PE[index].TI);
-				local sanitizedTXValue = Utils.str.sanitize(structure.PE[index].TX);
+				local sanitizedTXValue = Utils.str.sanitize(structure.PE[index].TX, true);
 				if sanitizedTIValue ~= structure.PE[index].TI then
 					structure.PE[index].TI = sanitizedTIValue;
 					somethingWasSanitized = true;
@@ -295,11 +294,6 @@ local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
 		peekTab.AC = ac;
 		peekTab.TI = ti;
 		peekTab.TX = tx;
-	end
-
-	if sanitizeMisc(dataTab) then
-		-- Yell at the user about their mischieves
-		showAlertPopup(loc.REG_CODE_INSERTION_WARNING);
 	end
 
 	-- version increment
@@ -353,12 +347,7 @@ local function onCurrentlyChanged()
 		local old = character.CU;
 		character.CU = TRP3_RegisterMiscViewCurrentlyIC:GetInputText();
 
-		local sanitizedCU = Utils.str.sanitize(character.CU);
-		if sanitizedCU ~= character.CU then
-			character.CU = sanitizedCU;
-			-- Yell at the user about their mischieves
-			showAlertPopup(loc.REG_CODE_INSERTION_WARNING);
-		end
+		character.CU = Utils.str.sanitize(character.CU, true);
 
 		if old ~= character.CU then
 			character.v = Utils.math.incrementNumber(character.v or 1, 2);
@@ -373,12 +362,7 @@ local function onOOCInfoChanged()
 		local old = character.CO;
 		character.CO = TRP3_RegisterMiscViewCurrentlyOOC:GetInputText();
 
-		local sanitizedCO = Utils.str.sanitize(character.CO);
-		if sanitizedCO ~= character.CO then
-			character.CO = sanitizedCO;
-			-- Yell at the user about their mischieves
-			showAlertPopup(loc.REG_CODE_INSERTION_WARNING);
-		end
+		character.CO = Utils.str.sanitize(character.CO, true);
 
 		if old ~= character.CO then
 			character.v = Utils.math.incrementNumber(character.v or 1, 2);
