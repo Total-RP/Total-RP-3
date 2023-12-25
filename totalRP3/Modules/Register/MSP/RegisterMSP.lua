@@ -475,6 +475,8 @@ local function onStart()
 				profile.characteristics["CH"] = color;
 			end
 
+			TRP3_API.register.sanitizeFullProfile(profile);
+
 			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
 		end
 	end);
