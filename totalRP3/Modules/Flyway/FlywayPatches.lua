@@ -278,8 +278,8 @@ TRP3_API.flyway.patches["17"] = function()
 		if miscInfo then
 			for _, miscData in ipairs(miscInfo) do
 				if miscData.ID ~= TRP3_API.MiscInfoType.Custom then
-					local miscInfo = TRP3_API.GetMiscTypeInfo(miscData.ID)
-					if miscData.NA ~= miscInfo.localizedName and miscData.NA ~= miscInfo.englishName then
+					local miscInfoData = TRP3_API.GetMiscTypeInfo(miscData.ID)
+					if miscData.NA ~= miscInfoData.localizedName and miscData.NA ~= miscInfoData.englishName then
 						miscData.ID = TRP3_API.MiscInfoType.Custom;
 					end
 				end
