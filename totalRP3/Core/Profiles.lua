@@ -602,7 +602,7 @@ function TRP3_API.profile.init()
 						for _, miscData in ipairs(data.player.characteristics.MI) do
 							if not miscData.ID or miscData.ID ~= TRP3_API.MiscInfoType.Custom then
 								-- Adding ID from name if ID missing, or setting a preset to custom if renamed
-								miscData.ID = TRP3_API.GetMiscInfoTypeFromData(miscData);
+								miscData.ID = TRP3_API.GetMiscInfoTypeByName(miscData.NA);
 							end
 						end
 					end
