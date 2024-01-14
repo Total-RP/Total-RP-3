@@ -55,12 +55,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="$parentPresetNameText" parentKey="PresetName" text="[preset]" inherits="GameFontNormal" justifyH="LEFT">
+				<FontString parentKey="PresetName" text="[preset]" inherits="GameFontHighlight" justifyH="LEFT">
 					<Size x="100" y="18"/>
 					<Anchors>
 						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentIcon"/>
 					</Anchors>
-					<Color r="1.0" g="1.0" b="1.0"/>
 				</FontString>
 			</Layer>
 		</Layers>

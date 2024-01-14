@@ -1119,14 +1119,14 @@ function setEditDisplay()
 		frame.miscIndex = frameIndex;
 		_G[frame:GetName() .. "Icon"].IC = miscStructure.IC or TRP3_InterfaceIcons.Default;
 		_G[frame:GetName() .. "NameField"]:SetText(miscStructure.NA or loc.CM_NAME);
-		-- Disabling name edition on presets
+		-- Disable name editing on presets
 		if miscStructure.ID == TRP3_API.MiscInfoType.Custom then
 			_G[frame:GetName() .. "NameField"]:Show();
-			_G[frame:GetName() .. "PresetNameText"]:Hide();
+			frame.PresetName:Hide();
 		else
 			_G[frame:GetName() .. "NameField"]:Hide();
-			_G[frame:GetName() .. "PresetNameText"]:Show();
-			_G[frame:GetName() .. "PresetNameText"]:SetText(miscStructure.NA or loc.CM_NAME);
+			frame.PresetName:Show();
+			frame.PresetName:SetText(miscStructure.NA or loc.CM_NAME);
 		end
 		_G[frame:GetName() .. "ValueField"]:SetText(miscStructure.VA or loc.CM_VALUE);
 		refreshEditIcon(_G[frame:GetName() .. "Icon"]);
