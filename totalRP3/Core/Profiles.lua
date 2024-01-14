@@ -596,6 +596,16 @@ function TRP3_API.profile.init()
 					if data.player and data.player.about and data.player.about.MU and type(data.player.about.MU) == "string" then
 						profiles[profileID].player.about.MU = Utils.music.convertPathToID(data.player.about.MU);
 					end
+
+					-- Misc info ID conversion
+					if data.player and data.player.characteristics and data.player.characteristics.MI then
+						for _, miscData in ipairs(data.player.characteristics.MI) do
+							if not miscData.ID or miscData.ID ~= TRP3_API.MiscInfoType.Custom then
+								-- Adding ID from name if ID missing, or setting a preset to custom if renamed
+								miscData.ID = TRP3_API.GetMiscInfoTypeByName(miscData.NA);
+							end
+						end
+					end
 				end
 
 				TRP3_ProfileImport:Hide();

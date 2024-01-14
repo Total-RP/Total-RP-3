@@ -263,3 +263,24 @@ TRP3_API.flyway.patches["16"] = function()
 	TRP3_Configuration["NamePlates_HideOutOfCharacterUnits"] = nil;
 	TRP3_Configuration["NamePlates_CustomizeFirstName"] = nil;
 end
+
+TRP3_API.flyway.patches["17"] = function()
+	-- Check all non-custom Misc. Info fields
+	-- Names not matching localized or non-localized preset name are turned into custom fields
+
+	if not TRP3_Profiles then
+		return;
+	end
+
+	for _, profile in pairs(TRP3_Profiles) do
+		local miscInfo = SafeGet(profile, "player", "characteristics", "MI");
+
+		if miscInfo then
+			for _, miscData in ipairs(miscInfo) do
+				if miscData.ID ~= TRP3_API.MiscInfoType.Custom then
+					miscData.ID = TRP3_API.GetMiscInfoTypeByName(miscData.NA);
+				end
+			end
+		end
+	end
+end

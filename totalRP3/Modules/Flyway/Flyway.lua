@@ -5,7 +5,7 @@ TRP3_API.flyway = {};
 
 local type, tostring = type, tostring;
 
-local SCHEMA_VERSION = 16;
+local SCHEMA_VERSION = 17;
 
 if not TRP3_Flyway then
 	TRP3_Flyway = {};

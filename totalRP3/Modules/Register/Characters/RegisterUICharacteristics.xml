@@ -53,6 +53,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</Button>
 		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="PresetName" text="[preset]" inherits="GameFontHighlight" justifyH="LEFT">
+					<Size x="100" y="18"/>
+					<Anchors>
+						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentIcon"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
 	</Frame>
 
 	<!-- Register characteristics psycho line jauge -->
