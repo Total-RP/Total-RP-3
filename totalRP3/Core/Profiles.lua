@@ -600,15 +600,9 @@ function TRP3_API.profile.init()
 					-- Misc info ID conversion
 					if data.player and data.player.characteristics and data.player.characteristics.MI then
 						for _, miscData in ipairs(data.player.characteristics.MI) do
-							if not miscData.ID then
-								-- No ID = retrieve ID from name
+							if not miscData.ID or miscData.ID ~= TRP3_API.MiscInfoType.Custom then
+								-- Adding ID from name if ID missing, or setting a preset to custom if renamed
 								miscData.ID = TRP3_API.GetMiscInfoTypeFromData(miscData);
-							elseif miscData.ID ~= TRP3_API.MiscInfoType.Custom then
-								-- Existing non-custom ID = check name matches ID, convert to custom otherwise
-								local miscInfoData = TRP3_API.GetMiscTypeInfo(miscData.ID)
-								if miscData.NA ~= miscInfoData.localizedName and miscData.NA ~= miscInfoData.englishName then
-									miscData.ID = TRP3_API.MiscInfoType.Custom;
-								end
 							end
 						end
 					end

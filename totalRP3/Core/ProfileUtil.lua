@@ -130,9 +130,6 @@ function TRP3_API.GetMiscFields(miscInfo)
 end
 
 function TRP3_API.GetMiscInfoTypeByName(miscName)
-	-- This is a legacy function that will be removed one day.
-	-- Callers should use the GetMiscInfoTypeFromData function instead.
-
 	if miscName == "House name" or miscName == L.REG_PLAYER_MSP_HOUSE then
 		return TRP3_API.MiscInfoType.House;
 	elseif miscName == "Nickname" or miscName == L.REG_PLAYER_MSP_NICK then
