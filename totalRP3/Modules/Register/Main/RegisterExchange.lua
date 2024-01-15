@@ -602,9 +602,6 @@ function TRP3_API.register.inits.dataExchangeInit()
 	end);
 end
 
-local UNIT_TOKENS = { "target", "mouseover", "player", "focus" };
-UNIT_TOKENS = tInvert(UNIT_TOKENS);
-
 function TRP3_API.slash.openProfile(...)
 	local args = {...};
 
@@ -618,7 +615,7 @@ function TRP3_API.slash.openProfile(...)
 	elseif #args == 1 then
 		characterToOpen = table.concat(args, " ");
 
-		if UNIT_TOKENS[characterToOpen:lower()] then
+		if UnitExists(characterToOpen:lower()) then
 			-- If we typed a unit token we resolve it
 			characterToOpen = Utils.str.getUnitID(characterToOpen:lower());
 		else
