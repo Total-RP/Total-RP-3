@@ -37,8 +37,8 @@ local CONFIG_REGISTER_ABOUT_H3_SIZE = "config_register_about_h3_size";
 local defaultFontParameters;
 local refreshTemplate2EditDisplay, saveInDraft, template2SaveToDraft; -- Function reference
 
-local showIconBrowser = function(callback)
-	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback});
+local showIconBrowser = function(callback, selectedIcon)
+	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback, nil, nil, selectedIcon});
 end;
 
 local function updateAboutTemplateFonts(frame)
@@ -337,7 +337,7 @@ function refreshTemplate2EditDisplay()
 			showIconBrowser(function(icon)
 				frame.frameData.IC = icon;
 				setupIconButton(_G[frame:GetName().."Icon"], icon);
-			end);
+			end, frameData.IC);
 		end);
 		-- Buttons
 		if frameIndex == 1 then
@@ -894,9 +894,9 @@ function TRP3_API.register.inits.aboutInit()
 	setupListBox(TRP3_RegisterAbout_Edit_Template3_PhysBkg, bkgTab, setTemplate3PhysBkg, nil, 150, true);
 	setupListBox(TRP3_RegisterAbout_Edit_Template3_PsyBkg, bkgTab, setTemplate3PsyBkg, nil, 150, true);
 	setupListBox(TRP3_RegisterAbout_Edit_Template3_HistBkg, bkgTab, setTemplate3HistBkg, nil, 150, true);
-	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("OnClick", function() showIconBrowser(onPhisIconSelected) end );
-	TRP3_RegisterAbout_Edit_Template3_PsyIcon:SetScript("OnClick", function() showIconBrowser(onPsychoIconSelected) end );
-	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("OnClick", function() showIconBrowser(onHistoIconSelected) end );
+	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("OnClick", function() showIconBrowser(onPhisIconSelected, draftData.T3.PH.IC) end );
+	TRP3_RegisterAbout_Edit_Template3_PsyIcon:SetScript("OnClick", function() showIconBrowser(onPsychoIconSelected, draftData.T3.PS.IC) end );
+	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("OnClick", function() showIconBrowser(onHistoIconSelected, draftData.T3.HI.IC) end );
 	TRP3_RegisterAbout_Edit_Music_Action:SetScript("OnClick", onMusicEditClicked);
 	TRP3_RegisterAbout_Edit_Template2_Add:SetScript("OnClick", template2AddFrame);
 	TRP3_RegisterAbout_AboutPanel_EditButton:SetScript("OnClick", onEdit);

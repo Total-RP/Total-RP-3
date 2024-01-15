@@ -5,6 +5,18 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
+	<Button name="TRP3_CompanionBrowserButtonTemplate" mixin="TRP3_CompanionBrowserButtonMixin" virtual="true">
+		<Size x="40" y="40"/>
+		<NormalTexture file="Interface\ICONS\INV_Misc_QuestionMark"/>
+		<PushedTexture file="Interface\ICONS\INV_Misc_QuestionMark"/>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+
 	<!-- Icon browser  -->
 	<Frame name="TRP3_CompanionBrowser" parent="TRP3_PopupsFrame" hidden="true" inherits="BackdropTemplate">
 		<KeyValues>

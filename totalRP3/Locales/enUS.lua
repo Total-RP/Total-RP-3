@@ -821,7 +821,7 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 This will works:|cff00ff00
 - On any item in your bags
 - On any icon in the spellbook|r]],
-	UI_ICON_BROWSER_SEARCHING = "Searching... (%d%%)",
+	UI_ICON_BROWSER_SEARCHING = "Searching...",
 	UI_COMPANION_BROWSER_HELP = "Select a battle pet",
 	UI_COMPANION_BROWSER_HELP_TT = "|cffffff00Warning: |rOnly renamed battle pets can be linked to a profile.\n\n|cff00ff00This section lists these battle pets only.",
 	UI_ICON_SELECT = "Select icon",
@@ -840,6 +840,8 @@ This will works:|cff00ff00
 	UI_IMAGE_BROWSER = "Image browser",
 	UI_IMAGE_SELECT = "Select image",
 	UI_FILTER = "Filter",
+	UI_FILTER_NO_RESULTS_FOUND_TITLE = "No results found.",
+	UI_FILTER_NO_RESULTS_FOUND_TEXT = "Try adjusting your search criteria.",
 	UI_LINK_URL = "http://your.url.here",
 	UI_LINK_TEXT = "Your text here",
 	UI_LINK_SAFE = [[Here's the link URL.]],

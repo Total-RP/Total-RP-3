@@ -1,6 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+---@class TRP3_API
 local TRP3_API = select(2, ...);
 
 -- Prototype factory
@@ -53,14 +54,22 @@ function PrototypeMetatableFactory:GetOrCreate(prototype)
 	return metatable;
 end
 
+---@generic T : table
+---@param prototype T
+---@return T object
 function TRP3_API.CreateFromPrototype(prototype)
 	local metatable = PrototypeMetatableFactory:GetOrCreate(prototype);
 	return setmetatable({}, metatable);
 end
 
+---@generic T : table & { __init: fun(object: table, ...: any)? }
+---@param prototype T
+---@param ... any
+---@return T object
 function TRP3_API.CreateAndInitFromPrototype(prototype, ...)
 	local object = TRP3_API.CreateFromPrototype(prototype);
 
+	---@cast prototype table
 	if prototype.__init then
 		prototype.__init(object, ...);
 	end
@@ -68,6 +77,10 @@ function TRP3_API.CreateAndInitFromPrototype(prototype, ...)
 	return object;
 end
 
+---@generic T : table
+---@param object table
+---@param prototype T
+---@return T object
 function TRP3_API.ApplyPrototypeToObject(object, prototype)
 	local metatable = PrototypeMetatableFactory:GetOrCreate(prototype);
 	return setmetatable(object, metatable);
