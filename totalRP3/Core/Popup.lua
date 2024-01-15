@@ -1028,25 +1028,41 @@ end
 function TRP3_API.popup.showDefaultColorPicker(popupArgs)
 	local setColor, r, g, b = unpack(popupArgs);
 
-	ColorPickerFrame:SetColorRGB((r or 255) / 255, (g or 255) / 255, (b or 255) / 255);
-	ColorPickerFrame.hasOpacity = false;
-	ColorPickerFrame.opacity = 1;
-
-	-- func is called every time the color is changed, whereas opacityFunc is only called when changing opacity or pressing OKAY
-	-- Since we don't have opacity, I put the callback on opacityFunc to have the same behaviour as TRP3 color picker.
-	ColorPickerFrame.func = function()
-	end
-
-	ColorPickerFrame.opacityFunc = function()
+	local function OnColorChanged()
 		local newR, newG, newB = ColorPickerFrame:GetColorRGB();
 		setColor(newR * 255, newG * 255, newB * 255);
 	end
 
-	ColorPickerFrame.cancelFunc = function()
+	local function OnCancel()
 		setColor(r, g, b);
 	end
 
-	ShowUIPanel(ColorPickerFrame);
+	-- For the swatchFunc and opacityFunc callbacks we debounce changes; these
+	-- fire rapidly so long as the user has the mouse held over the color
+	-- wheel or opacity slider. Debouncing means that we won't apply the color
+	-- change until the user stops changing things for 0.1s.
+
+	local options = {
+		swatchFunc = TRP3_FunctionUtil.Debounce(0.1, OnColorChanged),
+		opacityFunc = TRP3_FunctionUtil.Debounce(0.1, OnColorChanged),
+		cancelFunc = OnCancel,
+		hasOpacity = false,
+		r = (r or 255) / 255,
+		g = (g or 255) / 255,
+		b = (b or 255) / 255,
+	};
+
+	if ColorPickerFrame.SetupColorPickerAndShow then
+		ColorPickerFrame:SetupColorPickerAndShow(options);
+	else
+		ColorPickerFrame.func = options.swatchFunc;
+		ColorPickerFrame.hasOpacity = options.hasOpacity;
+		ColorPickerFrame.opacity = options.opacity;
+		ColorPickerFrame.opacityFunc = options.opacityFunc;
+		ColorPickerFrame.cancelFunc = options.cancelFunc;
+		ColorPickerFrame:SetColorRGB(options.r, options.g, options.b);
+		ShowUIPanel(ColorPickerFrame);
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
