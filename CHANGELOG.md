@@ -1,3 +1,29 @@
+# Changelog version 2.7.0
+
+## Added
+
+- Added 97 icons and 11 musics from patch 10.2.5.
+- Added support for party/raid unit tokens in the "/trp3 open" command.
+
+## Changed
+
+- The icon browser has been further updated with a new look:
+  - The list of icons shown is now bigger.
+  - The currently selected icon is now highlighted and shows first in the list.
+  - The search will now ignore punctuation in the icon name.
+  - A text indicator will appear if a search hasn't returned any result.
+- Additional Information preset fields can no longer be renamed to prevent confusion on the field to modify.
+  - Preset fields which were renamed have been turned into custom fields and may need to be set again.
+- Keybindings have been moved to a dedicated Total RP 3 category.
+
+## Fixed
+
+- Fixed own pet nameplate not customizing.
+- Fixed an issue when trying to import a profile with an invalid music (when importing a Retail profile on Classic for instance).
+- Fixed an issue when viewing some icons on first glance slots.
+- Fixed some profile fields showing outdated info on other RP addons.
+- Fixed some fields not being properly cleaned when received from other addons.
+
 # Changelog version 2.6.2
 
 ## Fixed
