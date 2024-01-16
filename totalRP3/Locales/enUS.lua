@@ -1516,7 +1516,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	MACRO_RPSTATUS_INVALID = "Unknown roleplay status: %s",
 
 	LAUNCHER_CONFIG_MENU_TITLE = "Launcher settings",
-	LAUNCHER_CONFIG_PAGE_DESCRIPTION = "This settings on this page control the behavior of various widgets that provide access to the Total RP 3 interface, such as minimap buttons.",
+	LAUNCHER_CONFIG_PAGE_DESCRIPTION = "The settings on this page control the behavior of various widgets that provide access to the Total RP 3 interface, such as minimap buttons.",
 	LAUNCHER_CONFIG_LOCK_MINIMAP_BUTTON = "Lock minimap button",
 	LAUNCHER_CONFIG_LOCK_MINIMAP_BUTTON_HELP = "If checked, prevent the minimap button from being draggable.",
 	LAUNCHER_CONFIG_RESET_MINIMAP_BUTTON = "Reset minimap button position",
