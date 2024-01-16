@@ -1523,7 +1523,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	LAUNCHER_CONFIG_RESET_MINIMAP_BUTTON_HELP = "Resets the position of the minimap button to the default location.",
 	LAUNCHER_CONFIG_ADDON_COMPARTMENT = "Addon compartment",
 	LAUNCHER_CONFIG_SHOW_ADDON_COMPARTMENT_BUTTON = "Show in addon compartment",
-	LAUNCHER_CONFIG_SHOW_ADDON_COMPARTMENT_BUTTON_HELP = "If checked, display an entry for Total RP 3 in Blizzard's addon compartment menu located near the minimap.|n|nThis feature is exclusive to Dragonflight and has no effect in Classic.",
+	LAUNCHER_CONFIG_SHOW_ADDON_COMPARTMENT_BUTTON_HELP = "If checked, display an entry for Total RP 3 in Blizzard's addon compartment menu located near the minimap.|n|nThis feature has no effect in Classic.",
 	LAUNCHER_MODULE_NAME = "Launcher",
 	LAUNCHER_MODULE_DESCRIPTION = "Provides user interface elements such as a minimap button to control the addon.",
 
