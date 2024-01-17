@@ -1783,6 +1783,13 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed some fields not being properly cleaned when received from other addons.
 
 ]],
+	WHATS_NEW_27_4 = [[# Changelog version 2.7.1
+
+## Fixed
+
+- Fixed the addon not loading on Mac.
+
+]],
 
 };
 

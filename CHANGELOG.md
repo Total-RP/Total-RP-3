@@ -1,3 +1,9 @@
+# Changelog version 2.7.1
+
+## Fixed
+
+- Fixed the addon not loading on Mac.
+
 # Changelog version 2.7.0
 
 ## Added
