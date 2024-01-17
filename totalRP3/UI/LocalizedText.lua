@@ -7,7 +7,7 @@ function TRP3_LocalizeTextOnAddOnLoaded(object)
 	local function SetLocalizedText()
 		local textKey;
 
-		if object.textKey == "string" then
+		if type(object.textKey) == "string" then
 			textKey = object.textKey;
 		else
 			textKey = string.match(object:GetText(), "^L.(.+)$");
