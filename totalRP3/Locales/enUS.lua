@@ -816,6 +816,9 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	UI_BKG = "Background %s",
 	UI_ICON_BROWSER = "Icon browser",
 	UI_ICON_BROWSER_HELP = "Copy icon",
+	UI_ICON_BROWSER_SELECT = "Use this icon",
+	UI_ICON_BROWSER_FAVORITE = "Mark this icon as a favorite",
+	UI_ICON_BROWSER_UNFAVORITE = "Unmark this icon as a favorite",
 	UI_ICON_BROWSER_HELP_TT = [[While this frame is open you can |cffffff00ctrl + click|r on a icon to copy its name.
 
 This will works:|cff00ff00

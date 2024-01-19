@@ -14,8 +14,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</AnimationGroup>
 
-	<CheckButton name="TRP3_IconBrowserButtonTemplate" mixin="TRP3_IconBrowserButtonMixin" virtual="true">
-		<Size x="36" y="36"/>
+	<CheckButton name="TRP3_IconBrowserButtonTemplate" mixin="TRP3_IconBrowserButtonMixin" registerForClicks="LeftButton, RightButton" virtual="true">
+		<Size x="40" y="40"/>
 		<HitRectInsets left="2" right="2" top="2" bottom="2"/>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -43,6 +43,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Animations>
 						<AnimationGroup parentKey="PulseAnim" inherits="TRP3_IconBrowserPulseAnimGroupTemplate"/>
 					</Animations>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY" textureSubLevel="1">
+				<Texture parentKey="FavoriteTexture" atlas="PetJournal-FavoritesIcon" useAtlasSize="false">
+					<Size x="16" y="16"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-3" y="-3"/>
+					</Anchors>
 				</Texture>
 			</Layer>
 		</Layers>
@@ -180,7 +188,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_IconBrowserFrame" mixin="TRP3_IconBrowserMixin" parent="TRP3_PopupsFrame" hidden="true" enableMouse="true" toplevel="true">
+	<Frame name="TRP3_IconBrowserFrame" mixin="TRP3_IconBrowserMixin" parent="UIParent" enableMouse="true" toplevel="true">
 		<Size x="425" y="420"/>
 		<Anchors>
 			<Anchor point="CENTER"/>

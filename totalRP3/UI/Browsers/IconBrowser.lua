@@ -1,6 +1,8 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+local L = TRP3_API.loc;
+
 local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
 
 local function GenerateSearchableString(str)
@@ -140,6 +142,7 @@ end
 ---@field file TRP3.FileID?
 ---@field atlas TRP3.AtlasElementID?
 ---@field selected boolean?
+---@field favorite boolean?
 
 --- IconBrowserModel is a basic model that sources icons from LibRPMedia.
 ---
@@ -362,6 +365,126 @@ local function CreateIconBrowserFilterModel(source)
 	return TRP3_API.CreateAndInitFromPrototype(IconBrowserFilterModel, source);
 end
 
+--- IconBrowserFavoriteModel is a proxy model that relocates icons identified
+--- by their name to the start of the list and marks them as favorited.
+local IconBrowserFavoriteModel = {};
+
+function IconBrowserFavoriteModel:__init(source)
+	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.source = source;
+	self.source.RegisterCallback(self, "OnModelUpdated", "OnSourceModelUpdated");
+	self.favoritesByName = { ability_ambush = true, temp = true };
+	self.sourceToProxyIndexMap = {};
+	self.proxyToSourceIndexMap = {};
+	self:RebuildModel();
+end
+
+function IconBrowserFavoriteModel:GetIconCount()
+	return self.source:GetIconCount();
+end
+
+function IconBrowserFavoriteModel:GetIconIndex(name)
+	local sourceIndex = self.source:GetIconIndex(name);
+	local proxyIndex;
+
+	if sourceIndex then
+		proxyIndex = self:GetProxyIndex(sourceIndex);
+	end
+
+	return proxyIndex;
+end
+
+---@param index integer
+---@return TRP3.IconBrowserModelItem? data
+function IconBrowserFavoriteModel:GetIconInfo(index)
+	local sourceIndex = self:GetSourceIndex(index);
+	local iconInfo = self.source:GetIconInfo(sourceIndex);
+
+	if iconInfo then
+		iconInfo.favorite = (not not self.favoritesByName[iconInfo.name]);
+	end
+
+	return iconInfo;
+end
+
+---@param index integer
+---@return string? name
+function IconBrowserFavoriteModel:GetIconName(index)
+	return self.source:GetIconName(self:GetSourceIndex(index));
+end
+
+function IconBrowserFavoriteModel:GetSourceModel()
+	return self.source;
+end
+
+function IconBrowserFavoriteModel:GetSourceIndex(proxyIndex)
+	return self.proxyToSourceIndexMap[proxyIndex];
+end
+
+function IconBrowserFavoriteModel:GetProxyIndex(sourceIndex)
+	return self.sourceToProxyIndexMap[sourceIndex];
+end
+
+---@param iconName string
+---@return boolean favorite
+function IconBrowserFavoriteModel:IsFavoriteIcon(iconName)
+	return not not self.favoritesByName[iconName];
+end
+
+---@param iconName string
+---@param favorite boolean
+function IconBrowserFavoriteModel:SetFavoriteIcon(iconName, favorite)
+	if (not not self.favoritesByName[iconName]) ~= favorite then
+		self.favoritesByName[iconName] = favorite;
+		self:RebuildModel();
+	end
+end
+
+---@private
+function IconBrowserFavoriteModel:OnSourceModelUpdated()
+	self:RebuildModel();
+end
+
+---@private
+function IconBrowserFavoriteModel:RebuildModel()
+	local sourceToProxyIndexMap = {};
+	local proxyToSourceIndexMap = {};
+	local proxyIndex = 0;
+
+	-- This isn't the most efficient but it works; we do two passes over
+	-- the source data set looking for favorites first, then looking for
+	-- everything else.
+
+	for sourceIndex = 1, self.source:GetIconCount() do
+		local iconName = self.source:GetIconName(sourceIndex);
+
+		if self.favoritesByName[iconName] then
+			proxyIndex = proxyIndex + 1;
+			sourceToProxyIndexMap[sourceIndex] = proxyIndex;
+			proxyToSourceIndexMap[proxyIndex] = sourceIndex;
+		end
+	end
+
+	for sourceIndex = 1, self.source:GetIconCount() do
+		local iconName = self.source:GetIconName(sourceIndex);
+
+		if not self.favoritesByName[iconName] then
+			proxyIndex = proxyIndex + 1;
+			sourceToProxyIndexMap[sourceIndex] = proxyIndex;
+			proxyToSourceIndexMap[proxyIndex] = sourceIndex;
+		end
+	end
+
+	self.sourceToProxyIndexMap = sourceToProxyIndexMap;
+	self.proxyToSourceIndexMap = proxyToSourceIndexMap;
+	self.callbacks:Fire("OnModelUpdated");
+end
+
+---@param source TRP3.AbstractIconBrowserModel
+local function CreateIconBrowserFavoriteModel(source)
+	return TRP3_API.CreateAndInitFromPrototype(IconBrowserFavoriteModel, source);
+end
+
 --- IconBrowserSelectionModel is a proxy model that relocates the currently
 --- selected icon to the start of the model.
 ---@class TRP3.IconBrowserSelectionModel : TRP3.AbstractIconBrowserProxyModel
@@ -528,9 +651,10 @@ function TRP3_IconBrowserMixin:OnLoad()
 	self.callbacks = TRP3_API.InitCallbackRegistry(self);
 	self.baseModel = CreateIconBrowserModel();
 	self.selectionModel = CreateIconBrowserSelectionModel(self.baseModel);
-	self.filterModel = CreateIconBrowserFilterModel(self.selectionModel);
+	self.favoriteModel = CreateIconBrowserFavoriteModel(self.selectionModel);
+	self.filterModel = CreateIconBrowserFilterModel(self.favoriteModel);
 
-	local GRID_STRIDE = 10;
+	local GRID_STRIDE = 9;
 	local GRID_PADDING = 4;
 
 	local scrollBoxAnchorsWithBar = {
@@ -579,15 +703,20 @@ function TRP3_IconBrowserMixin:OnFilterTextChanged()
 end
 
 function TRP3_IconBrowserMixin:OnIconButtonInitialized(button, iconInfo)
-	button:SetScript("OnClick", function() self:OnIconButtonClicked(button); end);
+	button:SetScript("OnClick", function(_, mouseButton) self:OnIconButtonClicked(button, mouseButton); end);
 	button:Init(iconInfo);
 end
 
-function TRP3_IconBrowserMixin:OnIconButtonClicked(button)
+function TRP3_IconBrowserMixin:OnIconButtonClicked(button, mouseButton)
 	local iconInfo = button:GetElementData();
-	self.callbacks:Fire("OnIconSelected", iconInfo);
-	PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-	self:Hide();
+
+	if mouseButton == "LeftButton" then
+		self.callbacks:Fire("OnIconSelected", iconInfo);
+		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+		self:Hide();
+	elseif mouseButton == "RightButton" then
+		self.favoriteModel:SetFavoriteIcon(iconInfo.name, not iconInfo.favorite);
+	end
 end
 
 function TRP3_IconBrowserMixin:SetSelectedIcon(iconName)
@@ -614,6 +743,9 @@ function TRP3_IconBrowserButtonMixin:OnEnter()
 
 	TRP3_MainTooltip:SetOwner(self, "ANCHOR_RIGHT");
 	GameTooltip_SetTitle(TRP3_MainTooltip, titleLineText, GREEN_FONT_COLOR, false);
+	GameTooltip_AddBlankLineToTooltip(TRP3_MainTooltip);
+	GameTooltip_AddNormalLine(TRP3_MainTooltip, TRP3_API.FormatShortcutWithInstruction("LCLICK", L.UI_ICON_BROWSER_SELECT));
+	GameTooltip_AddNormalLine(TRP3_MainTooltip, TRP3_API.FormatShortcutWithInstruction("RCLICK", iconInfo.favorite and L.UI_ICON_BROWSER_UNFAVORITE or L.UI_ICON_BROWSER_FAVORITE));
 	TRP3_MainTooltip:Show();
 end
 
@@ -623,6 +755,7 @@ end
 
 ---@param iconInfo TRP3.IconBrowserModelItem
 function TRP3_IconBrowserButtonMixin:Init(iconInfo)
+	self.FavoriteTexture:SetShown(iconInfo and iconInfo.favorite);
 	self.SelectedTexture:SetShown(iconInfo and iconInfo.selected);
 	self.Icon:SetTexture(iconInfo and iconInfo.file or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]]);
 end
