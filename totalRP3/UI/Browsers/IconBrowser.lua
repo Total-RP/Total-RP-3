@@ -530,7 +530,7 @@ function TRP3_IconBrowserMixin:OnLoad()
 	self.selectionModel = CreateIconBrowserSelectionModel(self.baseModel);
 	self.filterModel = CreateIconBrowserFilterModel(self.selectionModel);
 
-	local GRID_STRIDE = 10;
+	local GRID_STRIDE = 8;
 	local GRID_PADDING = 4;
 
 	local scrollBoxAnchorsWithBar = {
