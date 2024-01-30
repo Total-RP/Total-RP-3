@@ -1790,6 +1790,18 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed the addon not loading on Mac.
 
 ]],
+	WHATS_NEW_27_5 = [[# Changelog version 2.7.2
+
+## Added
+
+- Added 4 musics and 8 images from patch 10.2.5.
+
+## Changed
+
+- Icons in the browser have been made bigger once again.
+- The icon browser in the glance editor is no longer smaller than everywhere else.
+
+]],
 
 };
 

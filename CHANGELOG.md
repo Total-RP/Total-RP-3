@@ -1,3 +1,14 @@
+# Changelog version 2.7.2
+
+## Added
+
+- Added 4 musics and 8 images from patch 10.2.5.
+
+## Changed
+
+- Icons in the browser have been made bigger once again.
+- The icon browser in the glance editor is no longer smaller than everywhere else.
+
 # Changelog version 2.7.1
 
 ## Fixed
