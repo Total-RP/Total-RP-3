@@ -493,6 +493,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_HearthstoneStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_HordeWarCampaign",
 		width = 128,
 		height = 128
@@ -4307,6 +4312,41 @@ local IMAGES = {
 		url = "Interface\\QUESTFRAME\\UI-HorizontalBreak",
 		width = 256,
 		height = 64
+	},
+	{
+		url = "Interface\\QUESTFRAME\\answer-ArchaeologyAzerothianArchivesUndead-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QUESTFRAME\\answer-ArchaeologyHistorian-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QUESTFRAME\\answer-ArchaeologyOrcFemale-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QUESTFRAME\\answer-NotaTechnoarch-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QUESTFRAME\\answer-dragoncrate01-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QUESTFRAME\\answer-dragoncratestack01-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QUESTFRAME\\answer-dragoncratestack03-large",
+		width = 512,
+		height = 256
 	},
 	--endregion
 	--region QuestionFrame
