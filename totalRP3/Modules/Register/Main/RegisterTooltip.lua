@@ -305,6 +305,29 @@ local function GenerateColoredTooltipLine(text, color)
 	return color:WrapTextInColorCode(text);
 end
 
+local IconTextureOptions = { width = 32, height = 32, anchor = Enum.TooltipTextureAnchor.LeftCenter };
+local MiscTextureOptions = {};
+
+local function AddTooltipIconDecoration(tooltip, icon)
+	local options = MiscTextureOptions[icon];
+
+	if not options or options.expiry <= GetTime() then
+		options = {
+			file = [[Interface\AddOns\totalRP3\Resources\option]] .. fastrandom(1, 3),
+			width = 16,
+			height = 16,
+			anchor = Enum.TooltipTextureAnchor.LeftCenter,
+			margin = { right = fastrandom(10, 22) },
+			verticalOffset = fastrandom(0, 9),
+			expiry = GetTime() + 30,
+		};
+
+		MiscTextureOptions[icon] = options;
+	end
+
+	tooltip:AddTexture(options.file, options);
+end
+
 ---@class TRP3.TooltipBuilder
 ---@field private tooltip GameTooltip
 local TooltipBuilder = {};
@@ -520,7 +543,9 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	if showIcons() then
 		-- Player icon
 		if info.characteristics and info.characteristics.IC then
-			leftIcons = strconcat(Utils.str.icon(info.characteristics.IC, 25), leftIcons, " ");
+			-- FIXME: This seems to cause a few issues in 11.0...
+			-- leftIcons = strconcat(Utils.str.icon(info.characteristics.IC, 25), leftIcons, " ");
+			tooltipBuilder.icon = info.characteristics.IC;
 		end
 		-- AFK / DND status
 		if UnitIsAFK(targetType) then
