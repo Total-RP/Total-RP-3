@@ -543,9 +543,11 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	if showIcons() then
 		-- Player icon
 		if info.characteristics and info.characteristics.IC then
-			-- FIXME: This seems to cause a few issues in 11.0...
-			-- leftIcons = strconcat(Utils.str.icon(info.characteristics.IC, 25), leftIcons, " ");
-			tooltipBuilder.icon = info.characteristics.IC;
+			if TRP3_API.globals.serious_day then
+				tooltipBuilder.icon = info.characteristics.IC;
+			else
+				leftIcons = strconcat(Utils.str.icon(info.characteristics.IC, 25), leftIcons, " ");
+			end
 		end
 		-- AFK / DND status
 		if UnitIsAFK(targetType) then
