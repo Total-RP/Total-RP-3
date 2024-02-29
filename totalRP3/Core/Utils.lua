@@ -11,14 +11,6 @@ local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 
--- WOW imports
-local pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber = pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber;
-local strsplit, strtrim = strsplit, strtrim;
-local tinsert, assert, tremove, next = tinsert, assert, tremove, next;
-local UnitFullName = UnitFullName;
-local UNKNOWNOBJECT = UNKNOWNOBJECT;
-local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
-
 function Utils.pcall(func, ...)
 	if func then
 		return {pcall(func, ...)};
@@ -110,25 +102,6 @@ function Utils.table.keys(table)
 		tinsert(keys, key);
 	end
 	return keys;
-end
-
--- Create a weak tables pool.
-local TABLE_POOL = setmetatable( {}, { __mode = "k" } );
-
--- Return an already created table, or a new one if the pool is empty
--- It ultra mega important to release the table once you finished using it !
-function Utils.table.getTempTable()
-	local t = next( TABLE_POOL );
-	if t then
-		TABLE_POOL[t] = nil;
-		return wipe(t);
-	end
-	return {};
-end
-
--- Release a temp table.
-function Utils.table.releaseTempTable(table)
-	TABLE_POOL[ table ] = true;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -315,9 +288,9 @@ function Utils.str.nilToEmpty(text)
 end
 
 function Utils.str.buildZoneText()
-	local text = getZoneText() or ""; -- assuming that there is ALWAYS a zone text. Don't know if it's true.
-	if getSubZoneText():len() > 0 then
-		text = strconcat(text, " - ", getSubZoneText());
+	local text = GetZoneText() or ""; -- assuming that there is ALWAYS a zone text. Don't know if it's true.
+	if GetSubZoneText():len() > 0 then
+		text = strconcat(text, " - ", GetSubZoneText());
 	end
 	return text;
 end

@@ -7,7 +7,6 @@ local _, TRP3_API = ...;
 -- imports
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
-local getTempTable, releaseTempTable = Utils.table.getTempTable, Utils.table.releaseTempTable;
 local loc = TRP3_API.loc;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local getIgnoreReason = TRP3_API.register.getIgnoreReason;
@@ -16,14 +15,11 @@ local getCharacterUnitID = Utils.str.getUnitID;
 local get = TRP3_API.profile.getData;
 local getConfigValue = TRP3_API.configuration.getValue;
 local registerConfigKey = TRP3_API.configuration.registerConfigKey;
-local strconcat = strconcat;
 local getCompleteName = TRP3_API.register.getCompleteName;
 local getOtherCharacter = TRP3_API.register.getUnitIDCharacter;
 local getYourCharacter = TRP3_API.profile.getPlayerCharacter;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
-local UnitAffectingCombat = UnitAffectingCombat;
 local Events = TRP3_Addon.Events;
-local GameTooltip, _G, ipairs, tinsert, strtrim = GameTooltip, _G, ipairs, tinsert, strtrim;
 local hasProfile, getRelationColors = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColors;
 local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
 local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
@@ -257,19 +253,6 @@ local function getGameTooltipTexts(tooltip)
 end
 TRP3_API.ui.tooltip.getGameTooltipTexts = getGameTooltipTexts;
 
-local function setLineFont(tooltip, lineIndex, fontSize)
-	local line = _G[strconcat(tooltip:GetName(), "TextLeft", lineIndex)];
-	local font, _ , flag = line:GetFont();
-	line:SetFont(font, fontSize, flag);
-end
-
-local function setDoubleLineFont(tooltip, lineIndex, fontSize)
-	setLineFont(tooltip, lineIndex, fontSize);
-	local line = _G[strconcat(tooltip:GetName(), "TextRight", lineIndex)];
-	local font, _ , flag = line:GetFont();
-	line:SetFont(font, fontSize, flag);
-end
-
 local GetCursorPosition = GetCursorPosition;
 local function placeTooltipOnCursor()
 	local effScale, x, y = ui_CharacterTT:GetEffectiveScale(), GetCursorPosition();
@@ -307,47 +290,7 @@ end
 -- TOOLTIP BUILDER
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local BUILDER_TYPE_LINE = 1;
-local BUILDER_TYPE_DOUBLELINE = 2;
-local BUILDER_TYPE_SPACE = 3;
-
-local function AddLine(self, text, color, lineSize, lineWrap)
-	local lineStructure = getTempTable();
-	lineStructure.type = BUILDER_TYPE_LINE;
-	lineStructure.text = text;
-	lineStructure.red = color.r;
-	lineStructure.green = color.g;
-	lineStructure.blue = color.b;
-	lineStructure.lineSize = lineSize;
-	lineStructure.lineWrap = lineWrap;
-	tinsert(self._content, lineStructure);
-end
-
-local function AddDoubleLine(self, textL, textR, colorL, colorR, lineSize)
-	local lineStructure = getTempTable();
-	lineStructure.type = BUILDER_TYPE_DOUBLELINE;
-	lineStructure.textL = textL;
-	lineStructure.redL = colorL.r;
-	lineStructure.greenL = colorL.g;
-	lineStructure.blueL = colorL.b;
-	lineStructure.textR = textR;
-	lineStructure.redR = colorR.r;
-	lineStructure.greenR = colorR.g;
-	lineStructure.blueR = colorR.b;
-	lineStructure.lineSize = lineSize;
-	tinsert(self._content, lineStructure);
-end
-
-local function AddSpace(self)
-	if #self._content > 0 and self._content[#self._content].type == BUILDER_TYPE_SPACE then
-		return; -- Don't add two spaces in a row.
-	end
-	local lineStructure = getTempTable();
-	lineStructure.type = BUILDER_TYPE_SPACE;
-	tinsert(self._content, lineStructure);
-end
-
-local function GenerateColoredTooltipLine(text, r, g, b)
+local function GenerateColoredTooltipLine(text, color)
 	-- Workaround for issue #606 where certain unicode character ranges make
 	-- GameTooltip:AddLine not respect colors. We wrap the text in an
 	-- enclosing pair of color sequences to force it to be respected.
@@ -358,55 +301,84 @@ local function GenerateColoredTooltipLine(text, r, g, b)
 		text = " ";
 	end
 
-	return string.format("|cff%.2x%.2x%.2x%s|r", r * 255, g * 255, b * 255, text);
+	return color:WrapTextInColorCode(text);
 end
 
-local function Build(self)
-	local size = #self._content;
-	local tooltipLineIndex = 1;
-	for lineIndex, line in ipairs(self._content) do
-		if line.type == BUILDER_TYPE_LINE then
-			local text = GenerateColoredTooltipLine(line.text, line.red, line.green, line.blue);
-			self.tooltip:AddLine(text, 1, 1, 1, line.lineWrap);
-			setLineFont(self.tooltip, tooltipLineIndex, line.lineSize);
-			tooltipLineIndex = tooltipLineIndex + 1;
-		elseif line.type == BUILDER_TYPE_DOUBLELINE then
-			local textL = GenerateColoredTooltipLine(line.textL, line.redL, line.greenL, line.blueL);
-			local textR = GenerateColoredTooltipLine(line.textR, line.redR, line.greenR, line.blueR);
-			self.tooltip:AddDoubleLine(textL, textR, 1, 1, 1, 1, 1, 1);
-			setDoubleLineFont(self.tooltip, tooltipLineIndex, line.lineSize);
-			tooltipLineIndex = tooltipLineIndex + 1;
-		elseif line.type == BUILDER_TYPE_SPACE and showSpacing() and lineIndex ~= size then
-			self.tooltip:AddLine(" ", 1, 0.50, 0);
-			setLineFont(self.tooltip, tooltipLineIndex, getSubLineFontSize());
-			tooltipLineIndex = tooltipLineIndex + 1;
+---@class TRP3.TooltipBuilder
+---@field private tooltip GameTooltip
+local TooltipBuilder = {};
+
+function TooltipBuilder:__init(tooltip)
+	self.tooltip = tooltip;
+	self.lines = 0;
+	self.spaceBeforeNextLine = false;
+end
+
+---@private
+function TooltipBuilder:PreLineAdded()
+	if self.lines == 0 then
+		self.tooltip:ClearLines();
+	end
+
+	if self.spaceBeforeNextLine then
+		if self.lines > 0 and showSpacing() then
+			TRP3_TooltipUtil.AddBlankLine(self.tooltip);
+			self.lines = self.lines + 1;
+			TRP3_TooltipUtil.SetLineFontOptions(self.tooltip, self.lines, getSubLineFontSize());
 		end
-	end
-	self.tooltip:Show();
-	for index, tempTable in ipairs(self._content) do
-		self._content[index] = nil;
-		releaseTempTable(tempTable);
+
+		self.spaceBeforeNextLine = false;
 	end
 end
 
-local function createTooltipBuilder(tooltip)
-	local builder = {
-		_content = {},
-		tooltip = tooltip,
-	};
-	builder.AddLine = AddLine;
-	builder.AddDoubleLine = AddDoubleLine;
-	builder.AddSpace = AddSpace;
-	builder.Build = Build;
-	return builder;
+---@private
+function TooltipBuilder:PostLineAdded()
+	self.lines = self.lines + 1;
 end
-TRP3_API.ui.tooltip.createTooltipBuilder = createTooltipBuilder;
+
+function TooltipBuilder:AddLine(text, color, height, wrap)
+	text = GenerateColoredTooltipLine(text, color);
+
+	self:PreLineAdded();
+	TRP3_TooltipUtil.AddLine(self.tooltip, text, { wrap = wrap });
+	self:PostLineAdded();
+	TRP3_TooltipUtil.SetLineFontOptions(self.tooltip, self.lines, height);
+end
+
+function TooltipBuilder:AddDoubleLine(textL, textR, colorL, colorR, height)
+	textL = GenerateColoredTooltipLine(textL, colorL);
+	textR = GenerateColoredTooltipLine(textR, colorR);
+
+	self:PreLineAdded();
+	TRP3_TooltipUtil.AddDoubleLine(self.tooltip, textL, textR);
+	self:PostLineAdded();
+	TRP3_TooltipUtil.SetLineFontOptions(self.tooltip, self.lines, height);
+end
+
+function TooltipBuilder:AddSpace()
+	self.spaceBeforeNextLine = true;
+end
+
+---@param texture TextureAssetDisk
+---@param options TooltipTextureInfo
+function TooltipBuilder:AddTexture(texture, options)
+	self.tooltip:AddTexture(texture, options);
+end
+
+function TooltipBuilder:Build()
+	self.tooltip:Show();
+	self.lines = 0;
+end
+
+function TRP3_API.ui.tooltip.createTooltipBuilder(tooltip)
+	return TRP3_API.CreateAndInitFromPrototype(TooltipBuilder, tooltip);
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CHARACTER TOOLTIP
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tooltipBuilder = createTooltipBuilder(ui_CharacterTT);
+local tooltipBuilder = TRP3_API.ui.tooltip.createTooltipBuilder(ui_CharacterTT);
 
 local function getUnitID(targetType)
 	local currentTargetType = originalGetTargetType(targetType);
@@ -1068,7 +1040,7 @@ end
 -- MOUNTS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tooltipCompanionBuilder = createTooltipBuilder(ui_CompanionTT);
+local tooltipCompanionBuilder = TRP3_API.ui.tooltip.createTooltipBuilder(ui_CompanionTT);
 local getCurrentMountProfile = TRP3_API.companions.player.getCurrentMountProfile;
 local getCurrentMountSpellID = TRP3_API.companions.player.getCurrentMountSpellID;
 local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
