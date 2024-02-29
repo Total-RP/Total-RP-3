@@ -37,3 +37,13 @@ function string.splittable(delimiter, str, pieces) end
 ---@param str string
 ---@return string str
 function string.trim(str) end
+
+---@class TooltipTextureInfo
+---@field width number? can be 0 to use actual texture width
+---@field height number? can be 0 to use actual texture width
+---@field anchor Enum.TooltipTextureAnchor?
+---@field region Enum.TooltipTextureRelativeRegion?
+---@field verticalOffset number?
+---@field margin { left: number?, right: number?, top: number?, bottom: number? }?
+---@field texCoords { left: number?, right: number?, top: number?, bottom: number? }?
+---@field vertexColor ColorMixin
