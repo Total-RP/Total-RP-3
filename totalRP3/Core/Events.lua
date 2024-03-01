@@ -53,6 +53,11 @@ TRP3_Addon.Events =
 
 	-- Notification for when a map scan has ended.
 	MAP_SCAN_ENDED = "MAP_SCAN_ENDED",
+
+	COMM_MESSAGE_RECEIVED = "COMMS_MESSAGE_RECEIVED",
+	REGISTER_DATA_REQUESTED = "REGISTER_DATA_REQUESTED",
+	REGISTER_DATA_RECEIVED = "REGISTER_DATA_RECEIVED",
+	REGISTER_REQUEST_STATE_CHANGED = "REGISTER_REQUEST_STATE_CHANGED",
 };
 
 -- TODO: Would prefer to move this to OnInitialize, however that first requires

@@ -5,8 +5,33 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
+	<Frame name="TRP3_TooltipRequestSpinnerTemplate" hidden="true" virtual="true">
+		<Size x="18" y="18"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture parentKey="Icon" atlas="UI-RefreshButton">
+					<Size x="16" y="16"/>
+					<Anchors>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Animations>
+			<AnimationGroup parentKey="SpinAnimation" looping="REPEAT">
+				<Rotation childKey="Icon" duration="1.5" degrees="-360" smoothing="OUT"/>
+				<Scripts>
+					<OnLoad method="Play"/>
+				</Scripts>
+			</AnimationGroup>
+		</Animations>
+	</Frame>
+
 	<!-- Character tooltip -->
 	<GameTooltip name="TRP3_CharacterTooltip" frameStrata="TOOLTIP" parent="UIParent" inherits="TRP3_TooltipTemplate">
+		<Frames>
+			<Frame parentKey="ProgressSpinner" inherits="TRP3_TooltipRequestSpinnerTemplate"/>
+		</Frames>
 		<Scripts>
 			<OnHide>
 				self.isFading = nil;

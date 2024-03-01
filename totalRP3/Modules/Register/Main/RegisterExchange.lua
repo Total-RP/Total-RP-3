@@ -458,6 +458,7 @@ function queryInformationType(unitName, informationType)
 
 	Comm.sendObject(INFO_TYPE_QUERY_PREFIX, informationType, unitName, INFO_TYPE_QUERY_PRIORITY);
 	cooldowns[unitName] = currentTime + INFORMATION_QUERY_COOLDOWN;
+	TRP3_Addon:TriggerEvent("REGISTER_DATA_REQUESTED", unitName, informationType);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -517,6 +518,7 @@ local function incomingInformationTypeSent(structure, senderID, channel)
 
 	TRP3_API.Logf("Received %s's %s info!", senderID, informationType);
 	QueryCooldowns[informationType][senderID] = nil;
+	TRP3_Addon:TriggerEvent("REGISTER_DATA_RECEIVED", senderID, informationType);
 
 	local decodedData = data;
 	-- If the data is a string, we assume that it was compressed.

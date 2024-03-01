@@ -41,6 +41,7 @@ local BEGINNER_ICON = "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20:20
 local VOLUNTEER_ICON = "|TInterface\\TARGETINGFRAME\\PortraitQuestBadge:15:15|t";
 local GLANCE_ICON = "|TInterface\\MINIMAP\\TRACKING\\None:18:18|t";
 local NEW_ABOUT_ICON = "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:18:18|t";
+local TRANSPARENT_ICON = "|T982414:18:18|t";
 
 -- Config keys
 local CONFIG_PROFILE_ONLY = "tooltip_profile_only";
@@ -432,6 +433,21 @@ local TOOLTIP_BLOCKED_IGNORED_COLOR = TRP3_API.Colors.Red;
 local TOOLTIP_BLOCKED_MATURE_COLOR = TRP3_API.CreateColor(1.00, 0.75, 0.86, 1.00);
 local TOOLTIP_BLOCKED_MAIN_COLOR = TRP3_API.CreateColor(1.00, 0.75, 0.00, 1.00);
 
+local function SetProgressSpinnerShown(tooltip, shown)
+	local spinner = tooltip.ProgressSpinner;
+
+	if shown then
+		local lineIndex = tooltip:NumLines();
+		local leftFontString = TRP3_TooltipUtil.GetLineFontStrings(tooltip, lineIndex);
+
+		spinner:ClearAllPoints();
+		spinner:SetPoint("RIGHT", leftFontString);
+		spinner:Show();
+	else
+		spinner:Hide();
+	end
+end
+
 --- The complete character's tooltip writing sequence.
 local function writeTooltipForCharacter(targetID, _, targetType)
 	local info = getCharacterInfoTab(targetID);
@@ -786,6 +802,11 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 			table.insert(notifPieces, NEW_ABOUT_ICON);
 		end
 
+		-- Forcing an icon ensures the line height remains consistent. This
+		-- also acts as the anchor for the progress spinner, so needs to be
+		-- the last one.
+		table.insert(notifPieces, TRANSPARENT_ICON);
+
 		local notifText = table.concat(notifPieces, " ");
 
 		local clientText = "";
@@ -814,6 +835,10 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 			end
 			tooltipBuilder:AddDoubleLine(notifText, clientText, colors.MAIN, colors.MAIN, getSmallLineFontSize());
 		end
+
+		SetProgressSpinnerShown(ui_CharacterTT, TRP3_API.register.HasActiveRequest(targetID));
+	else
+		SetProgressSpinnerShown(ui_CharacterTT, false);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1320,10 +1345,18 @@ local function onModuleInit()
 		show(unitID, targetID, targetMode);
 	end);
 
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, _)
-		if not unitID or (ui_CharacterTT.target == unitID) then
+	local function RefreshCharacterTooltip(targetID)
+		if not targetID or ui_CharacterTT.target == targetID then
 			show("mouseover", getUnitID("mouseover"));
 		end
+	end
+
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, targetID, _, _)
+		RefreshCharacterTooltip(targetID);
+	end);
+
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_REQUEST_STATE_CHANGED, function(_, targetID)
+		RefreshCharacterTooltip(targetID);
 	end);
 
 	ui_CharacterTT.TimeSinceLastUpdate = 0;
