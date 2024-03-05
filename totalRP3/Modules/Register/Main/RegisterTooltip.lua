@@ -890,7 +890,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if isIDIgnored(ownerID) then
-		tooltipBuilder:AddLine(loc.REG_TT_IGNORED_OWNER, 1, 0, 0, getSubLineFontSize());
+		tooltipBuilder:AddLine(loc.REG_TT_IGNORED_OWNER, TOOLTIP_BLOCKED_IGNORED_COLOR, getSubLineFontSize());
 		tooltipBuilder:AddLine("\"" .. getIgnoreReason(ownerID) .. "\"", TOOLTIP_BLOCKED_MAIN_COLOR, getSmallLineFontSize());
 		tooltipBuilder:Build();
 		return;
