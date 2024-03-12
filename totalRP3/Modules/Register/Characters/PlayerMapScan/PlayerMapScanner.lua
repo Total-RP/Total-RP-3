@@ -225,7 +225,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			roleplayStatus = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
 		end
 
-		if Map.playerCanSeeTarget(sender, checkWarMode) and ShouldShowRoleplayStatus(roleplayStatus) then
+		if Map.playerCanSeeTarget(sender, checkWarMode) and ShouldShowRoleplayStatus(roleplayStatus) and lastScannerUsed then
 			lastScannerUsed:OnScanDataReceived(sender, x, y, {
 				hasWarModeActive = hasWarModeActive,
 				roleplayStatus = roleplayStatus,
