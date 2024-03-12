@@ -253,8 +253,13 @@ end
 local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 	local displayInfo = GetOrCreateDisplayInfo(unitToken);
 
+	if companionFullID == nil then
+		return displayInfo;
+	end
+
 	local owner, companionID = TRP3_API.utils.str.companionIDToInfo(companionFullID);
 	local profile;
+
 	if owner == TRP3_API.globals.player_id then
 		profile = TRP3_API.companions.player.getCompanionProfile(companionID);
 	else
