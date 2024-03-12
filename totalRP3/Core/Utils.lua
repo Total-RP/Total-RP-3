@@ -916,16 +916,19 @@ function Utils.music.playMusic(music, source)
 end
 
 function Utils.music.getTitle(musicURL)
-	if type(musicURL) == "number" then
-		musicURL = LibRPMedia:GetMusicNameByFile(musicURL);
-	end
-
+	local musicName;
 	local musicTitle;
-	if musicURL then
-		musicTitle = musicURL:match("[%/]?([^%/]+)$");
+
+	if type(musicURL) == "number" then
+		musicName = LibRPMedia:GetMusicNameByFile(musicURL);
 	end
 
-	return musicTitle or musicURL;
+	if not musicName then
+		musicName = format("<File: %s>", tostring(musicURL));
+	end
+
+	musicTitle = musicName:match("[%/]?([^%/]+)$");
+	return musicTitle or musicName;
 end
 
 function Utils.music.convertPathToID(musicURL)
