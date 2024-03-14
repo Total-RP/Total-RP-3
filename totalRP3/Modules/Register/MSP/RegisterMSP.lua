@@ -518,7 +518,9 @@ local function onStart()
 			end
 		end
 	end);
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.MOUSE_OVER_CHANGED, function(_, unitID) TRP3_API.r.sendMSPQuery(unitID); end);
+	TRP3_API.RegisterCallback(TRP3_Addon, Events.MOUSE_OVER_CHANGED, function(_, unitID, targetMode)
+		TRP3_API.r.sendMSPQuery(unitID, targetMode);
+	end);
 end
 
 function TRP3_API.r.sendMSPQuery(name, targetMode)
