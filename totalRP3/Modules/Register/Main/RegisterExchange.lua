@@ -115,6 +115,7 @@ end
 
 local LAST_QUERY, LAST_QUERY_R, LAST_QUERY_STAT = {}, {}, {};
 local COOLDOWN_DURATION = 10; -- Should be integer
+local INFORMATION_QUERY_COOLDOWN = 300;
 local VERNUM_QUERY_PREFIX = "VQ";
 local VERNUM_R_QUERY_PREFIX = "VR";
 local INFO_TYPE_QUERY_PREFIX = "GI";
@@ -444,18 +445,19 @@ end
 -- Query for information
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local CURRENT_QUERY_EXCHANGES = {};
-TRP3_API.register.CURRENT_QUERY_EXCHANGES = CURRENT_QUERY_EXCHANGES;
+local QueryCooldowns = setmetatable({}, { __index = function(t, k) t[k] = {}; return t[k]; end });
 
 function queryInformationType(unitName, informationType)
-	if CURRENT_QUERY_EXCHANGES[unitName] and CURRENT_QUERY_EXCHANGES[unitName][informationType] then
-		return; -- Don't ask again for information that are incoming !
+	local cooldowns = QueryCooldowns[informationType];
+	local currentTime = GetTime();
+	local expirationTime = cooldowns[unitName] or -math.huge;
+
+	if expirationTime > currentTime then
+		return;  -- Outstanding query; still awaiting response.
 	end
-	if not CURRENT_QUERY_EXCHANGES[unitName] then
-		CURRENT_QUERY_EXCHANGES[unitName] = {};
-	end
-	CURRENT_QUERY_EXCHANGES[unitName][informationType] = GetTime();
+
 	Comm.sendObject(INFO_TYPE_QUERY_PREFIX, informationType, unitName, INFO_TYPE_QUERY_PRIORITY);
+	cooldowns[unitName] = currentTime + INFORMATION_QUERY_COOLDOWN;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -504,12 +506,17 @@ local function incomingInformationTypeSent(structure, senderID, channel)
 	local informationType = structure[1];
 	local data = structure[2];
 
-	if not CURRENT_QUERY_EXCHANGES[senderID] or not CURRENT_QUERY_EXCHANGES[senderID][informationType] then
-		return; -- We didn't ask for theses information ...
+	if not QueryCooldowns[informationType][senderID] then
+		-- Receiving data we didn't query; we _could_ probably just accept it
+		-- but the old logic here has always rejected such. The odds of this
+		-- being hit are remote anyway; only feasible scenario is if the
+		-- receiver has reloaded their UI before the sender has sent a single
+		-- data packet.
+		return;
 	end
 
-	TRP3_API.Log(("Received %s's %s info !"):format(senderID, informationType));
-	CURRENT_QUERY_EXCHANGES[senderID][informationType] = nil;
+	TRP3_API.Logf("Received %s's %s info!", senderID, informationType);
+	QueryCooldowns[informationType][senderID] = nil;
 
 	local decodedData = data;
 	-- If the data is a string, we assume that it was compressed.
