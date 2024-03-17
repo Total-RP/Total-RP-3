@@ -45,7 +45,7 @@ function ConditionContext:__init(condition, option)
 end
 
 local function CreateConditionContext(condition, option)
-	return TRP3_API.CreateAndInitFromPrototype(ConditionContext, condition, option);
+	return TRP3_API.CreateObject(ConditionContext, condition, option);
 end
 
 local ActionContext = CreateFromMixins(BaseContext);
@@ -60,7 +60,7 @@ function ActionContext:Apply(...)
 end
 
 local function CreateActionContext(action, option)
-	return TRP3_API.CreateAndInitFromPrototype(ActionContext, action, option);
+	return TRP3_API.CreateObject(ActionContext, action, option);
 end
 
 TRP3_Automation = TRP3_Addon:NewModule("Automation", "AceConsole-3.0");

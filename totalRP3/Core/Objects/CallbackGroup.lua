@@ -48,5 +48,5 @@ function CallbackGroup:Unregister()
 end
 
 function TRP3_API.CreateCallbackGroup()
-	return TRP3_API.CreateAndInitFromPrototype(CallbackGroup);
+	return TRP3_API.CreateObject(CallbackGroup);
 end

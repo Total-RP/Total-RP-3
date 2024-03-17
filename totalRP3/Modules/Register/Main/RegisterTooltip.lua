@@ -371,7 +371,7 @@ function TooltipBuilder:Build()
 end
 
 function TRP3_API.ui.tooltip.createTooltipBuilder(tooltip)
-	return TRP3_API.CreateAndInitFromPrototype(TooltipBuilder, tooltip);
+	return TRP3_API.CreateObject(TooltipBuilder, tooltip);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

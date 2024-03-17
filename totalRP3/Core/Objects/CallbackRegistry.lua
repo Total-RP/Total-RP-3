@@ -109,7 +109,7 @@ function CallbackRegistry:TriggerEvent(event, ...)
 end
 
 function TRP3_API.CreateCallbackRegistry()
-	return TRP3_API.CreateAndInitFromPrototype(CallbackRegistry);
+	return TRP3_API.CreateObject(CallbackRegistry);
 end
 
 function TRP3_API.CreateCallbackRegistryWithEvents(events)

@@ -23,23 +23,23 @@ local L = TRP3_API.loc;
 -- through a "/trp3 statistics" command.
 --
 
-local SinkPrototype = {};
+---@class TRP3_Analytics.BasicSink
+local BasicSink = {};
 
-function SinkPrototype:WriteBoolean(id, state)  -- luacheck: no unused
+function BasicSink:WriteBoolean(id, state)  -- luacheck: no unused
 	-- Override in a custom sink implementation.
 end
 
-function SinkPrototype:WriteCounter(id, count)  -- luacheck: no unused
+function BasicSink:WriteCounter(id, count)  -- luacheck: no unused
 	-- Override in a custom sink implementation.
 end
 
-function SinkPrototype:Flush()
+function BasicSink:Flush()
 	-- Override in a custom sink implementation.
 end
 
--- Chat frame sink
-
-local ChatFrameSink = CreateFromMixins(SinkPrototype);
+---@class TRP3_Analytics.ChatFrameSink : TRP3_Analytics.BasicSink
+local ChatFrameSink = CreateFromMixins(BasicSink);
 
 function ChatFrameSink:__init()
 	self.results = {};
@@ -83,31 +83,32 @@ function ChatFrameSink:Flush()
 end
 
 local function CreateChatFrameSink()
-	return TRP3_API.CreateAndInitFromPrototype(ChatFrameSink);
+	return TRP3_API.CreateObject(ChatFrameSink);
 end
 
 -- Wago analytics sink
 
-local WagoAnalyticsSink = CreateFromMixins(SinkPrototype);
+---@class TRP3_Analytics.WagoSink : TRP3_Analytics.BasicSink
+local WagoSink = CreateFromMixins(BasicSink);
 
-function WagoAnalyticsSink:__init(wagoAddonID)
+function WagoSink:__init(wagoAddonID)
 	self.handle = WagoAnalytics:Register(wagoAddonID);
 end
 
-function WagoAnalyticsSink:WriteBoolean(id, state)
+function WagoSink:WriteBoolean(id, state)
 	self.handle:Switch(id, state);
 end
 
-function WagoAnalyticsSink:WriteCounter(id, count)
+function WagoSink:WriteCounter(id, count)
 	self.handle:SetCounter(id, count);
 end
 
-function WagoAnalyticsSink:Flush()
+function WagoSink:Flush()
 	self.handle:Save();
 end
 
-local function CreateWagoAnalyticsSink(wagoAddonID)
-	return TRP3_API.CreateAndInitFromPrototype(WagoAnalyticsSink, wagoAddonID);
+local function CreateWagoSink(wagoAddonID)
+	return TRP3_API.CreateObject(WagoSink, wagoAddonID);
 end
 
 -- Analytics module
@@ -152,7 +153,7 @@ function TRP3_Analytics:OnAddonsUnloading()
 	local wagoAddonID = GetAddOnMetadata("totalRP3", "X-Wago-ID");
 
 	if WagoAnalytics and wagoAddonID and self:IsDataCollectionEnabled() then
-		local sink = CreateWagoAnalyticsSink(wagoAddonID);
+		local sink = CreateWagoSink(wagoAddonID);
 		self:Collect(sink);
 	end
 end

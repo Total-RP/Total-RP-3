@@ -153,7 +153,7 @@ function ColorCache:Acquire(r, g, b, a)
 		assert(b >= 0 and b <= 1, "invalid color component: b");
 		assert(a >= 0 and a <= 1, "invalid color component: a");
 
-		color = TRP3_API.ApplyPrototypeToObject({ r = r, g = g, b = b, a = a }, Color);
+		color = TRP3_API.SetObjectPrototype({ r = r, g = g, b = b, a = a }, Color);
 		self.cache[key] = color;
 	end
 
@@ -166,7 +166,7 @@ end
 -- inherited from our prototype.
 
 function TRP3_API.ApplyColorPrototype(color)
-	return TRP3_API.ApplyPrototypeToObject(color, Color);
+	return TRP3_API.SetObjectPrototype(color, Color);
 end
 
 function TRP3_API.CreateColor(r, g, b, a)
