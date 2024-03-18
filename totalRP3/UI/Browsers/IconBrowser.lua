@@ -124,7 +124,7 @@ end
 ---@param query string
 ---@param model TRP3.AbstractIconBrowserModel
 local function CreateIconBrowserSearchTask(query, model)
-	return TRP3_API.CreateAndInitFromPrototype(IconBrowserSearchTask, query, model);
+	return TRP3_API.CreateObject(IconBrowserSearchTask, query, model);
 end
 
 -- Icon Browser Data Models
@@ -176,7 +176,7 @@ function IconBrowserModel:GetIconIndex(name)
 end
 
 local function CreateIconBrowserModel()
-	return TRP3_API.CreateAndInitFromPrototype(IconBrowserModel);
+	return TRP3_API.CreateObject(IconBrowserModel);
 end
 
 --- IconBrowserFilterModel is a proxy model that implements asynchronous
@@ -359,7 +359,7 @@ end
 
 ---@param source TRP3.AbstractIconBrowserModel
 local function CreateIconBrowserFilterModel(source)
-	return TRP3_API.CreateAndInitFromPrototype(IconBrowserFilterModel, source);
+	return TRP3_API.CreateObject(IconBrowserFilterModel, source);
 end
 
 --- IconBrowserSelectionModel is a proxy model that relocates the currently
@@ -475,7 +475,7 @@ end
 
 ---@param source TRP3.AbstractIconBrowserModel
 local function CreateIconBrowserSelectionModel(source)
-	return TRP3_API.CreateAndInitFromPrototype(IconBrowserSelectionModel, source);
+	return TRP3_API.CreateObject(IconBrowserSelectionModel, source);
 end
 
 --- Creates a data provider that displays the contents of an icon data model

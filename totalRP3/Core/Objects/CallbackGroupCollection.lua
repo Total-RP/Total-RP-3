@@ -86,5 +86,5 @@ function CallbackGroupCollection:UnregisterGroup(key)
 end
 
 function TRP3_API.CreateCallbackGroupCollection()
-	return TRP3_API.CreateAndInitFromPrototype(CallbackGroupCollection);
+	return TRP3_API.CreateObject(CallbackGroupCollection);
 end

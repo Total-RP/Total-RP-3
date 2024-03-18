@@ -45,7 +45,7 @@ function Callback:Unregister()
 end
 
 function TRP3_API.CreateCallback(registry, event, callback, owner, ...)
-	return TRP3_API.CreateAndInitFromPrototype(Callback, registry, event, callback, owner, ...);
+	return TRP3_API.CreateObject(Callback, registry, event, callback, owner, ...);
 end
 
 function TRP3_API.IsEventValid(registry, event)
