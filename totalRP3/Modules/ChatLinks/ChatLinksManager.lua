@@ -13,11 +13,11 @@ local sentChatLinks, openedChatLinks = {}, {};
 function ChatLinksManager:StoreSentLink(chatLink)
 	local tries = 1;
 	local stem = chatLink:GetIdentifier();
-	local identifier = stem;
+	local identifier = strjoin(":", stem, tries);
 
 	while sentChatLinks[identifier] do
 		tries = tries + 1;
-		identifier = strjoin(" ", stem, tries);
+		identifier = strjoin(":", stem, tries);
 	end
 
 	chatLink:SetIdentifier(identifier);
