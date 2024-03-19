@@ -354,6 +354,12 @@ stds.wow = {
 						"UnitOwner",
 					},
 				},
+
+				TooltipTextureAnchor = {
+					fields = {
+						"LeftCenter",
+					},
+				},
 			},
 		},
 
@@ -408,6 +414,7 @@ stds.wow = {
 		"CreateVector2D",
 		"DisableAddOn",
 		"EventRegistry",
+		"fastrandom",
 		"FCF_GetCurrentChatFrame",
 		"FindInTableIf",
 		"FormatPercentage",
