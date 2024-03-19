@@ -139,6 +139,8 @@ local function isLoggedChannel(channel)
 end
 
 local function onIncrementalMessageReceived(_, data, _, sender, _, _, _, _, _, _, _, _, sessionID, msgID, msgTotal)
+	TRP3_Addon:TriggerEvent("COMM_MESSAGE_RECEIVED", sender, sessionID, msgID, msgTotal);
+
 	if msgID == 1 then
 		local messageToken = extractMessageTokenFromData(data);
 		internalMessageIDToChompSessionIDMatching[sessionID] = messageToken;

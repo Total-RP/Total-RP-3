@@ -21,6 +21,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Characters\PlayerMapScan\PlayerMapScan.xml"/>
 	<Include file="Companions\RegisterUICompanionsMain.xml"/>
 	<Include file="Main\RegisterExchange.lua"/>
+	<Include file="Main\RegisterRequestTracker.lua"/>
 	<Include file="Main\RegisterTooltip.lua"/>
 	<Include file="Main\RegisterList.lua"/>
 	<Include file="Main\RegisterPlayerChatLinksModule.lua"/>
