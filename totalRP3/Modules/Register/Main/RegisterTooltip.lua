@@ -291,6 +291,13 @@ end
 -- TOOLTIP BUILDER
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local ICON_TEXTURE_OPTIONS = {
+	width = 32,
+	height = 32,
+	anchor = Enum.TooltipTextureAnchor.LeftCenter,
+	margin = { left = 0, right = 4, top = 0, bottom = 0 },
+};
+
 local function GenerateColoredTooltipLine(text, color)
 	-- Workaround for issue #606 where certain unicode character ranges make
 	-- GameTooltip:AddLine not respect colors. We wrap the text in an
@@ -305,24 +312,23 @@ local function GenerateColoredTooltipLine(text, color)
 	return color:WrapTextInColorCode(text);
 end
 
-local IconTextureOptions = { width = 32, height = 32, anchor = Enum.TooltipTextureAnchor.LeftCenter };
-local MiscTextureOptions = {};
+local DecorationOptionsCache = setmetatable({}, { __mode = "kv" });
 
 local function AddTooltipIconDecoration(tooltip, icon)
-	local options = MiscTextureOptions[icon];
+	local options = DecorationOptionsCache[icon];
 
 	if not options or options.expiry <= GetTime() then
 		options = {
-			file = [[Interface\AddOns\totalRP3\Resources\option]] .. fastrandom(1, 3),
+			file = [[Interface\AddOns\totalRP3\Resources\option]] .. fastrandom(1, 4),
 			width = 16,
 			height = 16,
 			anchor = Enum.TooltipTextureAnchor.LeftCenter,
-			margin = { right = fastrandom(10, 22) },
-			verticalOffset = fastrandom(0, 9),
-			expiry = GetTime() + 30,
+			margin = { right = fastrandom(6, 18) },
+			verticalOffset = fastrandom(0, 8),
+			expiry = GetTime() + 10,
 		};
 
-		MiscTextureOptions[icon] = options;
+		DecorationOptionsCache[icon] = options;
 	end
 
 	tooltip:AddTexture(options.file, options);
@@ -394,6 +400,7 @@ function TooltipBuilder:Build()
 	self.lines = 0;
 end
 
+---@return TRP3.TooltipBuilder
 function TRP3_API.ui.tooltip.createTooltipBuilder(tooltip)
 	return TRP3_API.CreateObject(TooltipBuilder, tooltip);
 end
@@ -514,7 +521,6 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	local localizedClass, englishClass = UnitClass(targetType);
 	local color = TRP3_API.GetClassDisplayColor(englishClass);
 	local rightIcons = "";
-	local leftIcons = "";
 
 
 	-- Only use custom colors if the option is enabled and if we have one
@@ -541,14 +547,6 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	end
 
 	if showIcons() then
-		-- Player icon
-		if info.characteristics and info.characteristics.IC then
-			if TRP3_API.globals.serious_day then
-				tooltipBuilder.icon = info.characteristics.IC;
-			else
-				leftIcons = strconcat(Utils.str.icon(info.characteristics.IC, 25), leftIcons, " ");
-			end
-		end
 		-- AFK / DND status
 		if UnitIsAFK(targetType) then
 			rightIcons = strconcat(rightIcons, AFK_ICON);
@@ -567,7 +565,16 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		end
 	end
 
-	tooltipBuilder:AddDoubleLine(leftIcons .. completeName, rightIcons, colors.MAIN, colors.MAIN, getMainLineFontSize());
+	tooltipBuilder:AddDoubleLine(completeName, rightIcons, colors.MAIN, colors.MAIN, getMainLineFontSize());
+
+	-- Player icon
+	if showIcons() and info.characteristics and info.characteristics.IC then
+		tooltipBuilder:AddTexture(TRP3_API.utils.getIconTexture(info.characteristics.IC), ICON_TEXTURE_OPTIONS);
+
+		if TRP3_API.globals.serious_day and TRP3_API.configuration.getValue("AF_STUFF_2024") then
+			AddTooltipIconDecoration(ui_CharacterTT, info.characteristics.IC);
+		end
+	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- full title
@@ -952,15 +959,6 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 	-- Icon and name
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local leftIcons = "";
-
-	if showCompanionIcons() then
-		-- Companion icon
-		if info.IC then
-			leftIcons = strconcat(Utils.str.icon(info.IC, 25), leftIcons, " ");
-		end
-	end
-
 	local petName = info.NA or targetName or UNKNOWN;
 
 	if getConfigValue(CONFIG_CROP_TEXT) then
@@ -969,7 +967,18 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 
 	local companionCustomColor = info.NH and TRP3_API.CreateColorFromHexString(info.NH) or TRP3_API.Colors.White
 	companionCustomColor = TRP3_API.GenerateReadableColor(companionCustomColor, TRP3_ReadabilityOptions.TextOnBlackBackground);
-	tooltipBuilder:AddLine(leftIcons .. companionCustomColor:WrapTextInColorCode((petName or companionID)), colors.MAIN, getMainLineFontSize());
+	tooltipBuilder:AddLine(companionCustomColor:WrapTextInColorCode((petName or companionID)), colors.MAIN, getMainLineFontSize());
+
+	if showCompanionIcons() then
+		-- Companion icon
+		if info.IC then
+			tooltipBuilder:AddTexture(TRP3_API.utils.getIconTexture(info.IC), ICON_TEXTURE_OPTIONS);
+
+			if TRP3_API.globals.serious_day and TRP3_API.configuration.getValue("AF_STUFF_2024") then
+				AddTooltipIconDecoration(ui_CharacterTT, info.IC);
+			end
+		end
+	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- full title
@@ -1127,14 +1136,6 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	-- Icon and name
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local leftIcons = "";
-
-	if showCompanionIcons() then
-		-- Companion icon
-		if info.IC then
-			leftIcons = strconcat(Utils.str.icon(info.IC, 25), leftIcons, " ");
-		end
-	end
 	local mountCustomName = info.NA
 
 	if getConfigValue(CONFIG_CROP_TEXT) then
@@ -1143,7 +1144,18 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 
 	local mountCustomColor = info.NH and TRP3_API.CreateColorFromHexString(info.NH) or TRP3_API.Colors.White
 	mountCustomColor = TRP3_API.GenerateReadableColor(mountCustomColor, TRP3_ReadabilityOptions.TextOnBlackBackground);
-	tooltipCompanionBuilder:AddLine(leftIcons .. mountCustomColor:WrapTextInColorCode((mountCustomName or mountName)), colors.MAIN, getMainLineFontSize());
+	tooltipCompanionBuilder:AddLine(mountCustomColor:WrapTextInColorCode((mountCustomName or mountName)), colors.MAIN, getMainLineFontSize());
+
+	if showCompanionIcons() then
+		-- Companion icon
+		if info.IC then
+			tooltipCompanionBuilder:AddTexture(TRP3_API.utils.getIconTexture(info.IC), ICON_TEXTURE_OPTIONS);
+
+			if TRP3_API.globals.serious_day and TRP3_API.configuration.getValue("AF_STUFF_2024") then
+				AddTooltipIconDecoration(ui_CompanionTT, info.IC);
+			end
+		end
+	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- full title
