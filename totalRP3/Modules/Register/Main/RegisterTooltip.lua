@@ -31,14 +31,9 @@ local crop = Utils.str.crop;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 -- ICONS
-local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
-local DND_ICON = "|TInterface\\FriendsFrame\\StatusIcon-DnD:15:15|t";
 local OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15:15|t";
 local ALLIANCE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Alliance:20:20|t";
 local HORDE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Horde:20:20|t";
-local PVP_ICON = "|TInterface\\GossipFrame\\BattleMasterGossipIcon:15:15|t";
-local BEGINNER_ICON = "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20:20|t";
-local VOLUNTEER_ICON = "|TInterface\\TARGETINGFRAME\\PortraitQuestBadge:15:15|t";
 local GLANCE_ICON = "|TInterface\\MINIMAP\\TRACKING\\None:18:18|t";
 local NEW_ABOUT_ICON = "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:18:18|t";
 local TRANSPARENT_ICON = "|T982414:18:18|t";
@@ -547,6 +542,12 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	end
 
 	if showIcons() then
+		local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
+		local DND_ICON = "|TInterface\\FriendsFrame\\StatusIcon-DnD:15:15|t";
+		local PVP_ICON = "|TInterface\\GossipFrame\\BattleMasterGossipIcon:15:15|t";
+		local BEGINNER_ICON = "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20:20|t";
+		local VOLUNTEER_ICON = "|TInterface\\TARGETINGFRAME\\PortraitQuestBadge:15:15|t";
+
 		-- AFK / DND status
 		if UnitIsAFK(targetType) then
 			rightIcons = strconcat(rightIcons, AFK_ICON);
