@@ -1,3 +1,21 @@
+# Changelog version 2.8.0
+
+## Added
+
+- Added a small indicator at the bottom of the tooltip while receiving updates to a profile.
+
+## Changed
+
+- Chat links will no longer display the added number at the end of the name when sent. (We've also learned that after 1 comes 2, not 12.)
+
+## Fixed
+
+- Fixed tooltip display issues when using non-English characters.
+- Fixed error when displaying some NPC companion nameplates.
+- Fixed errors when receiving profiles with a music theme not listed in the current addon version.
+- Pets will no longer be asked to provide their profiles directly, as they can't reply.
+- Fixed an issue where the addon would wait indefinitely for a profile if the transfer was interrupted, preventing from ever receiving that profile again until reload.
+
 # Changelog version 2.7.2
 
 ## Added
