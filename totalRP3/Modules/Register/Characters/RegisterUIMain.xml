@@ -9,7 +9,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size x="18" y="18"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture parentKey="Icon" atlas="UI-RefreshButton">
+				<Texture parentKey="Icon" file="Interface\AddOns\totalRP3\Resources\UI\ui-refresh">
 					<Size x="16" y="16"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
@@ -19,7 +19,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Layers>
 		<Animations>
 			<AnimationGroup parentKey="SpinAnimation" looping="REPEAT">
-				<Rotation childKey="Icon" duration="1.5" degrees="-360" smoothing="OUT"/>
+				<Rotation childKey="Icon" duration="1.5" degrees="-360" smoothing="OUT_IN"/>
 				<Scripts>
 					<OnLoad method="Play"/>
 				</Scripts>
