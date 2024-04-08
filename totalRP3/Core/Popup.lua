@@ -964,8 +964,11 @@ local function initColorBrowser()
 	setTooltipForSameFrame(TRP3_ColorBrowserEditBoxHelp, "RIGHT", 0, 5, loc.BW_COLOR_CODE, loc.BW_COLOR_CODE_TT);
 
 	TRP3_ColorBrowserEditBox:SetScript("OnEnterPressed", function(self)
-		if self:GetText():match("^%x%x%x%x%x%x$") or self:GetText():match("^#%x%x%x%x%x%x$") then -- Checks that it is a 6 figures hexadecimal number (with or without a #)
-			local r, g, b = TRP3_API.CreateColorFromHexString(self:GetText()):GetRGB();
+		local input = string.trim(self:GetText());
+		local color = TRP3_API.ParseColorFromHexString(input);
+
+		if color then
+			local r, g, b = color:GetRGB();
 			TRP3_ColorBrowser.red = r;
 			TRP3_ColorBrowser.green = g;
 			TRP3_ColorBrowser.blue = b;
