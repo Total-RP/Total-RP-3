@@ -328,7 +328,15 @@ function TRP3_API.companions.player.getCurrentSecondaryPetQueryLine()
 
 	local FIRST_STABLE_SLOT = 6; -- Index 1 through 5 are for Call Pet slots.
 
-	local _, petName = GetStablePetInfo(FIRST_STABLE_SLOT);
+	local petName;
+
+	if C_StableInfo.GetStablePetInfo then
+		local petInfo = C_StableInfo.GetStablePetInfo(FIRST_STABLE_SLOT);
+		petName = petInfo and petInfo.name or nil;
+	else
+		petName = select(2, GetStablePetInfo(FIRST_STABLE_SLOT));
+	end
+
 	if not petName or petName == UNKNOWNOBJECT then
 		return nil, nil, nil;
 	end

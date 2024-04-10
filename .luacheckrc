@@ -472,6 +472,7 @@ stds.wow = {
 		"GetSpellDescription",
 		"GetSpellInfo",
 		"GetSpellTexture",
+		"GetStablePetInfo",
 		"GetSubZoneText",
 		"GetTickTime",
 		"GetTime",
