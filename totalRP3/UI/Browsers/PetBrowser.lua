@@ -157,23 +157,23 @@ TRP3_PetBrowserMixin.DialogResult = tInvert({
 function TRP3_PetBrowserMixin:OnLoad()
 	-- Browser state.
 	self.dialogProfileID = nil;
-	self.pageNumber      = 1;
-	self.selectedSlot    = nil;
-	self.tooltipSlot     = nil;
-	self.tooltipFrame    = self.tooltipFrame or TRP3_MainTooltip;
+	self.pageNumber = 1;
+	self.selectedSlot = nil;
+	self.tooltipSlot = nil;
+	self.tooltipFrame = self.tooltipFrame or TRP3_MainTooltip;
 
 	-- Dynamic UI styling.
 	self.AcceptButton:SetText(L.UI_PET_BROWSER_ACCEPT);
 
 	-- Icon grid layout setup.
 	local GRID_DIRECTION = GridLayoutMixin.Direction.TopLeftToBottomRight;
-	local GRID_STRIDE    = self:GetIconGridSize();
+	local GRID_STRIDE = self:GetIconGridSize();
 	local GRID_PADDING_X = 4;
 	local GRID_PADDING_Y = 4;
 
-	self.iconPool    = CreateFramePool("CheckButton", self, "TRP3_PetBrowserIconButton");
-	self.iconAnchor  = AnchorUtil.CreateAnchor("TOPLEFT", self.IconPager, "TOPLEFT", 57, -12);
-	self.iconLayout  = AnchorUtil.CreateGridLayout(GRID_DIRECTION, GRID_STRIDE, GRID_PADDING_X, GRID_PADDING_Y);
+	self.iconPool = CreateFramePool("CheckButton", self, "TRP3_PetBrowserIconButton");
+	self.iconAnchor = AnchorUtil.CreateAnchor("TOPLEFT", self.IconPager, "TOPLEFT", 57, -12);
+	self.iconLayout = AnchorUtil.CreateGridLayout(GRID_DIRECTION, GRID_STRIDE, GRID_PADDING_X, GRID_PADDING_Y);
 	self.iconButtons = {};
 end
 
@@ -254,7 +254,7 @@ end
 
 function TRP3_PetBrowserMixin:Accept()
 	local slotIndex = self:GetSelectedSlot();
-	local petInfo   = GetPetInfoBySlot(slotIndex);
+	local petInfo = GetPetInfoBySlot(slotIndex);
 
 	self:TriggerDialogCallback(self.DialogResult.Accept, petInfo);
 	self:Hide();
@@ -332,7 +332,7 @@ function TRP3_PetBrowserMixin:GetFirstPetSlotByPage(pageNumber)
 	-- filled slots until that number decrements to zero. Once at zero,
 	-- the next slot after that is the first one for the requested page.
 
-	local slotIndex      = 0;
+	local slotIndex = 0;
 	local slotsRemaining = self:GetNumIconsPerPage() * (pageNumber - 1);
 
 	while slotsRemaining > 0 do
@@ -372,9 +372,9 @@ function TRP3_PetBrowserMixin:UpdatePagerVisualization()
 	self.iconButtons = {};
 
 	local iconsPerPage = self:GetNumIconsPerPage();
-	local pageIndex    = self:GetCurrentPage();
-	local pageCount    = self:GetNumPages();
-	local slotIndex    = self:GetFirstPetSlotByPage(pageIndex);
+	local pageIndex = self:GetCurrentPage();
+	local pageCount = self:GetNumPages();
+	local slotIndex = self:GetFirstPetSlotByPage(pageIndex);
 
 	self.IconPager.PrevPageButton:SetEnabled(pageIndex > 1);
 	self.IconPager.NextPageButton:SetEnabled(pageIndex < pageCount);
@@ -435,7 +435,7 @@ end
 
 function TRP3_PetBrowserMixin:UpdateNameVisualization()
 	local slotIndex = self:GetSelectedSlot();
-	local petInfo   = GetPetInfoBySlot(slotIndex);
+	local petInfo = GetPetInfoBySlot(slotIndex);
 
 	if petInfo then
 		self.Header.Text:SetText(petInfo.name);
@@ -446,9 +446,9 @@ function TRP3_PetBrowserMixin:UpdateNameVisualization()
 end
 
 function TRP3_PetBrowserMixin:UpdateTooltipVisualization()
-	local slotIndex  = self:GetTooltipSlot();
+	local slotIndex = self:GetTooltipSlot();
 	local iconButton = self:GetIconButtonBySlot(slotIndex);
-	local petInfo    = GetPetInfoBySlot(slotIndex);
+	local petInfo = GetPetInfoBySlot(slotIndex);
 
 	if petInfo then
 		local titleText = petInfo.name;
