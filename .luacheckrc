@@ -192,6 +192,16 @@ stds.wow = {
 			},
 		},
 
+		Constants = {
+			fields = {
+				PetConsts = {
+					fields = {
+						"NUM_PET_SLOTS",
+					},
+				},
+			},
+		},
+
 		C_AddOns = {
 			fields = {
 				"GetAddOnEnableState",
@@ -318,6 +328,12 @@ stds.wow = {
 			fields = {
 				"DoesSpellExist",
 				"RequestLoadSpellData",
+			},
+		},
+
+		C_StableInfo = {
+			fields = {
+				"GetStablePetInfo",
 			},
 		},
 
@@ -456,7 +472,6 @@ stds.wow = {
 		"GetSpellDescription",
 		"GetSpellInfo",
 		"GetSpellTexture",
-		"GetStablePetInfo",
 		"GetSubZoneText",
 		"GetTickTime",
 		"GetTime",
@@ -590,6 +605,7 @@ stds.wow = {
 		"GameTooltipText",
 		"GridLayoutMixin",
 		"MapCanvasDataProviderMixin",
+		"ModelFrameMixin",
 		"NamePlateDriverFrame",
 		"SystemFont_LargeNamePlate",
 		"SystemFont_NamePlate",
@@ -671,14 +687,12 @@ stds.wow = {
 		"MANA",
 		"MAX_CHANNEL_BUTTONS",
 		"MAX_WOW_CHAT_CHANNELS",
+		"MODELFRAME_MAX_PLAYER_ZOOM",
 		"NO",
 		"NONE",
 		"NORMAL_FONT_COLOR",
 		"NOT_BOUND",
 		"NUM_CHAT_WINDOWS",
-		"NUM_PET_ACTIVE_SLOTS",
-		"NUM_PET_STABLE_PAGES",
-		"NUM_PET_STABLE_SLOTS",
 		"OKAY",
 		"PAIN",
 		"PLAYER_FACTION_COLOR_ALLIANCE",
