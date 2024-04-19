@@ -387,17 +387,17 @@ end
 ---@param texture TextureAssetDisk
 ---@param options TooltipTextureInfo
 function TooltipBuilder:AddTexture(texture, options)
-	-- Hack for Classic; AddTexture is fundamentally broken and doesn't work.
-	--
-	-- We assume this function is only being called in the context of adding
-	-- profile icons to the start of the previous line in Classic.
-	--
-	-- Also - for whatever reason the sizes of textures aren't the same
-	-- between |T strings and AddTexture ¯\_(ツ)_/¯.
-
-	if not TRP3_ClientFeatures.TooltipAddTextureIsBroken then
+	if not TRP3_ClientFeatures.OldTooltipAPI then
 		self.tooltip:AddTexture(texture, options);
 	else
+		-- In Classic, AddTexture won't work on the first line of the tooltip,
+		-- which is also coincidentally the only line that we actually care
+		-- to stick icons on currently.
+		--
+		-- Fall back to a legacy |T string prefix approach for this case. Note
+		-- that we can't use the size values in the options table either, as
+		-- for some reason they aren't equivalent.
+
 		local line = self.tooltip:NumLines();
 		local leftFontString = TRP3_TooltipUtil.GetLineFontStrings(self.tooltip, line);
 		local leftText = leftFontString:GetText();
