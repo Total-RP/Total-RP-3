@@ -71,17 +71,12 @@ TRP3_API.globals = {
 	PSYCHO_MAX_VALUE_V2 = 20,
 };
 
--- TODO: Expansion constants are temporary and can be cleaned up once the next
---       Classic Era patch (1.14.4+/1.15.0) goes live.
-
-local TRP3_EXPANSION_CATACLYSM = LE_EXPANSION_CATACLYSM or 3;
-local TRP3_EXPANSION_BATTLE_FOR_AZEROTH = LE_EXPANSION_BATTLE_FOR_AZEROTH or 7;
-
 TRP3_ClientFeatures = {
 	ChannelBroadcasts = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE),
-	WarMode = (LE_EXPANSION_LEVEL_CURRENT >= TRP3_EXPANSION_BATTLE_FOR_AZEROTH),
-	Transmogrification = (LE_EXPANSION_LEVEL_CURRENT >= TRP3_EXPANSION_CATACLYSM),
+	WarMode = (LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_BATTLE_FOR_AZEROTH),
+	Transmogrification = (LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_CATACLYSM),
 	WaterElementalWorkaround = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE),
+	TooltipAddTextureIsBroken = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE),
 };
 
 TRP3_OOCIndicatorStyle = {
