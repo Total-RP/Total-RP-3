@@ -472,6 +472,7 @@ stds.wow = {
 		"GetLocale",
 		"GetMaxLevelForLatestExpansion",
 		"GetMinimapZoneText",
+		"GetMouseFoci",
 		"GetMouseFocus",
 		"GetNormalizedRealmName",
 		"GetNumLanguages",
