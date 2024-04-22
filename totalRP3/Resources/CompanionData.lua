@@ -540,7 +540,7 @@ do
 	local companionPetsBySpellID = {};
 	local companionMountsByMountID = {};
 	local companionMountsBySpellID = {};
-	local currentSummonedMountID = IsMounted();
+	local currentSummonedMountID = nil;
 	local previousMountedStatus = nil;
 	local rescanSummonedMountID = true;
 
@@ -751,7 +751,8 @@ do
 
 		repeat
 			auraIndex = auraIndex + 1;
-			spellID = select(10, UnitAura("player", auraIndex, "HELPFUL|PLAYER|CANCELABLE"));
+			local auraInfo = C_UnitAuras.GetAuraDataByIndex("player", auraIndex, "HELPFUL|PLAYER|CANCELABLE");
+			spellID = auraInfo and auraInfo.spellId;
 		until spellID == nil or companionMountsBySpellID[spellID] ~= nil;
 
 		local mountInfo = companionMountsBySpellID[spellID];

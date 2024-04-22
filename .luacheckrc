@@ -367,6 +367,12 @@ stds.wow = {
 			},
 		},
 
+		C_UnitAuras = {
+			fields = {
+				"GetAuraDataByIndex",
+			},
+		},
+
 		Enum = {
 			fields = {
 				TooltipDataLineType = {
@@ -547,7 +553,6 @@ stds.wow = {
 		"UIDROPDOWNMENU_INIT_MENU",
 		"UIPanelCloseButton_SetBorderAtlas",
 		"UnitAffectingCombat",
-		"UnitAura",
 		"UnitBattlePetLevel",
 		"UnitBattlePetType",
 		"UnitClass",

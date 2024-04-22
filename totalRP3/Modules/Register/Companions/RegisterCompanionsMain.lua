@@ -506,14 +506,18 @@ end
 
 function TRP3_API.companions.register.getUnitMount(ownerID, unitType)
 	local buffIndex = 1;
-	local spellBuffID = select(10, UnitAura(unitType, buffIndex));
-	while(spellBuffID) do
-		spellBuffID = select(10, UnitAura(unitType, buffIndex));
+	local buffInfo = C_UnitAuras.GetAuraDataByIndex(unitType, buffIndex);
+
+	while buffInfo do
+		local spellBuffID = buffInfo.spellId;
 		local companionFullID = ownerID .. "_" .. tostring(spellBuffID);
+
 		if registerProfileAssociation[companionFullID] then
 			return companionFullID, registerProfileAssociation[companionFullID], tostring(spellBuffID);
 		end
+
 		buffIndex = buffIndex + 1;
+		buffInfo = C_UnitAuras.GetAuraDataByIndex(unitType, buffIndex);
 	end
 end
 
