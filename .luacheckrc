@@ -323,6 +323,7 @@ stds.wow = {
 
 		C_PvP = {
 			fields = {
+				"GetZonePVPInfo",
 				"IsWarModeActive",
 			},
 		},
@@ -479,7 +480,6 @@ stds.wow = {
 		"GetTime",
 		"GetTimePreciseSec",
 		"GetUnitName",
-		"GetZonePVPInfo",
 		"GetZoneText",
 		"hooksecurefunc",
 		"InCombatLockdown",
