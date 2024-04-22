@@ -204,8 +204,10 @@ stds.wow = {
 
 		C_AddOns = {
 			fields = {
+				"DisableAddOn",
 				"GetAddOnEnableState",
 				"GetAddOnMetadata",
+				"IsAddOnLoaded",
 			},
 		},
 
@@ -442,8 +444,6 @@ stds.wow = {
 		"GameTooltip_SetTitle",
 		"GameTooltip_ShowDisabledTooltip",
 		"GenerateClosure",
-		"GetAddOnEnableState",
-		"GetAddOnMetadata",
 		"GetAutoCompleteRealms",
 		"GetBindingText",
 		"GetChannelDisplayInfo",
@@ -482,7 +482,6 @@ stds.wow = {
 		"GetZoneText",
 		"hooksecurefunc",
 		"InCombatLockdown",
-		"IsAddOnLoaded",
 		"IsAltKeyDown",
 		"IsChatAFK",
 		"IsChatDND",

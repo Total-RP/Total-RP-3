@@ -154,7 +154,7 @@ function TRP3_PlaterNamePlates:OnModuleInitialize()
 end
 
 function TRP3_PlaterNamePlates:OnModuleEnable()
-	if not IsAddOnLoaded(PlaterAddonName) then
+	if not C_AddOns.IsAddOnLoaded(PlaterAddonName) then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	end
 

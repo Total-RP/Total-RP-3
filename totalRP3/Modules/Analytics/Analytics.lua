@@ -150,7 +150,7 @@ function TRP3_Analytics:OnEnable()
 end
 
 function TRP3_Analytics:OnAddonsUnloading()
-	local wagoAddonID = GetAddOnMetadata("totalRP3", "X-Wago-ID");
+	local wagoAddonID = C_AddOns.GetAddOnMetadata("totalRP3", "X-Wago-ID");
 
 	if WagoAnalytics and wagoAddonID and self:IsDataCollectionEnabled() then
 		local sink = CreateWagoSink(wagoAddonID);

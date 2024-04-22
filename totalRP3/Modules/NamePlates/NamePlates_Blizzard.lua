@@ -84,7 +84,7 @@ end
 local TRP3_BlizzardNamePlates = {};
 
 function TRP3_BlizzardNamePlates:OnModuleInitialize()
-	if not IsAddOnLoaded("Blizzard_NamePlates") then
+	if not C_AddOns.IsAddOnLoaded("Blizzard_NamePlates") then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	end
 
