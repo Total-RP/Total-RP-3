@@ -261,9 +261,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 				<HitRectInsets left="12" right="12" top="0" bottom="0" />
 				<ThumbTexture parentKey="Thumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
-					<Size>
-						<AbsDimension x="32" y="32"/>
-					</Size>
+					<Size x="32" y="32"/>
 				</ThumbTexture>
 				<Scripts>
 					<OnLoad>

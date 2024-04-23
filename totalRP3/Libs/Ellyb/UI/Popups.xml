@@ -23,9 +23,7 @@
 			<Button parentKey="CloseButton" inherits="UIPanelCloseButton">
 				<Anchors>
 					<Anchor point="TOPRIGHT">
-						<Offset>
-							<AbsDimension x="-3" y="-3" />
-						</Offset>
+						<Offset x="-3" y="-3"/>
 					</Anchor>
 				</Anchors>
 			</Button>
@@ -39,35 +37,25 @@
 				<Layers>
 					<Layer level="BACKGROUND">
 						<Texture parentKey="Left" file="Interface\ChatFrame\UI-ChatInputBorder-Left2">
-							<Size>
-								<AbsDimension x="32" y="32" />
-							</Size>
+							<Size x="32" y="32"/>
 							<Anchors>
 								<Anchor point="LEFT" x="-10" y="0" />
 							</Anchors>
 						</Texture>
 						<Texture parentKey="Right" file="Interface\ChatFrame\UI-ChatInputBorder-Right2">
-							<Size>
-								<AbsDimension x="32" y="32" />
-							</Size>
+							<Size x="32" y="32"/>
 							<Anchors>
 								<Anchor point="RIGHT" x="10" y="0" />
 							</Anchors>
 						</Texture>
 						<Texture parentKey="Mid" file="Interface\ChatFrame\UI-ChatInputBorder-Mid2" horizTile="true">
-							<Size>
-								<AbsDimension x="0" y="32" />
-							</Size>
+							<Size x="0" y="32"/>
 							<Anchors>
 								<Anchor point="TOPLEFT" relativeKey="$parent.Left" relativePoint="TOPRIGHT">
-									<Offset>
-										<AbsDimension x="0" y="0" />
-									</Offset>
+									<Offset x="0" y="0"/>
 								</Anchor>
 								<Anchor point="TOPRIGHT" relativeKey="$parent.Right" relativePoint="TOPLEFT">
-									<Offset>
-										<AbsDimension x="0" y="0" />
-									</Offset>
+									<Offset x="0" y="0"/>
 								</Anchor>
 							</Anchors>
 						</Texture>
