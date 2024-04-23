@@ -111,9 +111,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Anchors>
 					<Anchor point="LEFT" x="0" y="0" />
 				</Anchors>
-				<HitRectInsets>
-					<AbsInset left="0" right="0" top="0" bottom="0" />
-				</HitRectInsets>
+				<HitRectInsets left="0" right="0" top="0" bottom="0"/>
 			</CheckButton>
 		</Frames>
 	</Frame>
