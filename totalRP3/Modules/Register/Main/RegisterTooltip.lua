@@ -36,7 +36,7 @@ local ALLIANCE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Alliance:20:20|t";
 local HORDE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Horde:20:20|t";
 local GLANCE_ICON = "|TInterface\\MINIMAP\\TRACKING\\None:18:18|t";
 local NEW_ABOUT_ICON = "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:18:18|t";
-local TRANSPARENT_ICON = "|T982414:18:18|t";
+local TRANSPARENT_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\transparent:18:18|t";
 
 -- Config keys
 local CONFIG_PROFILE_ONLY = "tooltip_profile_only";
