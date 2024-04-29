@@ -172,6 +172,10 @@ end
 ---@param name string
 ---@return integer? index
 function IconBrowserModel:GetIconIndex(name)
+	if not name or name == "" then
+		return nil;
+	end
+
 	return LibRPMedia:GetIconIndexByName(name);
 end
 
