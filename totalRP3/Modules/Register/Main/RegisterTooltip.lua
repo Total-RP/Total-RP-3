@@ -365,7 +365,24 @@ end
 ---@param texture TextureAssetDisk
 ---@param options TooltipTextureInfo
 function TooltipBuilder:AddTexture(texture, options)
-	self.tooltip:AddTexture(texture, options);
+	if not TRP3_ClientFeatures.OldTooltipAPI then
+		self.tooltip:AddTexture(texture, options);
+	else
+		-- In Classic, AddTexture won't work on the first line of the tooltip,
+		-- which is also coincidentally the only line that we actually care
+		-- to stick icons on currently.
+		--
+		-- Fall back to a legacy |T string prefix approach for this case. Note
+		-- that we can't use the size values in the options table either, as
+		-- for some reason they aren't equivalent.
+
+		local line = self.tooltip:NumLines();
+		local leftFontString = TRP3_TooltipUtil.GetLineFontStrings(self.tooltip, line);
+		local leftText = leftFontString:GetText();
+		local iconText = string.format("|T%s:%d:%d|t ", texture, 24, 24);
+
+		leftFontString:SetText(iconText .. leftText);
+	end
 end
 
 function TooltipBuilder:Build()
