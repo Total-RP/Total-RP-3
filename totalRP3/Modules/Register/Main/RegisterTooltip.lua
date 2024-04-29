@@ -307,28 +307,6 @@ local function GenerateColoredTooltipLine(text, color)
 	return color:WrapTextInColorCode(text);
 end
 
-local DecorationOptionsCache = setmetatable({}, { __mode = "kv" });
-
-local function AddTooltipIconDecoration(tooltip, icon)
-	local options = DecorationOptionsCache[icon];
-
-	if not options or options.expiry <= GetTime() then
-		options = {
-			file = [[Interface\AddOns\totalRP3\Resources\option]] .. fastrandom(1, 4),
-			width = 16,
-			height = 16,
-			anchor = Enum.TooltipTextureAnchor.LeftCenter,
-			margin = { right = fastrandom(6, 18) },
-			verticalOffset = fastrandom(0, 8),
-			expiry = GetTime() + 10,
-		};
-
-		DecorationOptionsCache[icon] = options;
-	end
-
-	tooltip:AddTexture(options.file, options);
-end
-
 ---@class TRP3.TooltipBuilder
 ---@field private tooltip GameTooltip
 local TooltipBuilder = {};
@@ -571,10 +549,6 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	-- Player icon
 	if showIcons() and info.characteristics and info.characteristics.IC then
 		tooltipBuilder:AddTexture(TRP3_API.utils.getIconTexture(info.characteristics.IC), ICON_TEXTURE_OPTIONS);
-
-		if TRP3_API.globals.serious_day and TRP3_API.configuration.getValue("AF_STUFF_2024") then
-			AddTooltipIconDecoration(ui_CharacterTT, info.characteristics.IC);
-		end
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -974,10 +948,6 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 		-- Companion icon
 		if info.IC then
 			tooltipBuilder:AddTexture(TRP3_API.utils.getIconTexture(info.IC), ICON_TEXTURE_OPTIONS);
-
-			if TRP3_API.globals.serious_day and TRP3_API.configuration.getValue("AF_STUFF_2024") then
-				AddTooltipIconDecoration(ui_CharacterTT, info.IC);
-			end
 		end
 	end
 
@@ -1151,10 +1121,6 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 		-- Companion icon
 		if info.IC then
 			tooltipCompanionBuilder:AddTexture(TRP3_API.utils.getIconTexture(info.IC), ICON_TEXTURE_OPTIONS);
-
-			if TRP3_API.globals.serious_day and TRP3_API.configuration.getValue("AF_STUFF_2024") then
-				AddTooltipIconDecoration(ui_CompanionTT, info.IC);
-			end
 		end
 	end
 
