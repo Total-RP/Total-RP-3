@@ -1821,6 +1821,18 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue where the addon would wait indefinitely for a profile if the transfer was interrupted, preventing from ever receiving that profile again until reload.
 
 ]],
+	WHATS_NEW_28_1 = [[# Changelog version 2.8.1
+
+*Profile transfers will currently be much slower on Cataclysm Classic due to rate limit changes. We are looking into changes to alleviate this, but they will take time, please bear with us.*
+
+## Fixed
+
+- Fixed icons not showing in the tooltips on Classic.
+- Fixed the "receiving profile" animated icon appearing as a green square on Classic.
+- Fixed an issue when editing profiles with an invalid icon (for example, a Retail icon on Classic).
+- Pasting a color code into the color picker field will now trim spaces that might have been copied with it to prevent issues.
+
+]],
 
 };
 
