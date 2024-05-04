@@ -11,8 +11,8 @@ local Map = {};
 -- These are the map IDs for zones that have a phase personal to the user (garrisons)
 -- TODO Update with BfA zones ID
 local PERSONAL_PHASED_ZONES = {
-	971, -- Alliance garrison
-	976  -- Horde garrison
+	582, -- Lunarfall (Alliance garrison)
+	590, -- Frostwall (Horde garrison)
 };
 
 ---@return number mapID @ The ID of the zone where the player currently is
