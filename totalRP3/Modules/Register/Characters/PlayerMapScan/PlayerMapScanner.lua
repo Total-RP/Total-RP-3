@@ -226,7 +226,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		end
 
 		if not senderMapID then
-			-- Compatibility for versions older than 2.8.1; hope they can swim.
+			-- Compatibility for versions older than 2.8.2; hope they can swim.
 			senderMapID = 1156;
 		end
 
