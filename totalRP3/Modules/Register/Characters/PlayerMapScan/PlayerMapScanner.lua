@@ -203,13 +203,13 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					local hasWarModeActive = (not TRP3_ClientFeatures.WarMode) or C_PvP.IsWarModeActive();
 					local roleplayStatus = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayStatus();
 
-					broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, hasWarModeActive, roleplayStatus, playerMapID);
+					broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, hasWarModeActive, roleplayStatus);
 				end
 			end
 		end
 	end)
 
-	broadcast.registerP2PCommand(SCAN_COMMAND, function(sender, x, y, hasWarModeActive, roleplayStatus, senderMapID)
+	broadcast.registerP2PCommand(SCAN_COMMAND, function(sender, x, y, hasWarModeActive, roleplayStatus)
 		-- Parameters received from commands are strings, need to cast to appropriate types
 		hasWarModeActive = (hasWarModeActive == "true");
 		roleplayStatus = tonumber(roleplayStatus);
@@ -225,12 +225,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			roleplayStatus = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
 		end
 
-		if not senderMapID then
-			-- Compatibility for versions older than 2.8.2; hope they can swim.
-			senderMapID = 1156;
-		end
-
-		if Map.playerCanSeeTarget(sender, checkWarMode, senderMapID) and ShouldShowRoleplayStatus(roleplayStatus) and lastScannerUsed then
+		local scannedMapID = Map.getDisplayedMapID()
+		if Map.playerCanSeeTarget(sender, checkWarMode, scannedMapID) and ShouldShowRoleplayStatus(roleplayStatus) and lastScannerUsed then
 			lastScannerUsed:OnScanDataReceived(sender, x, y, {
 				hasWarModeActive = hasWarModeActive,
 				roleplayStatus = roleplayStatus,
