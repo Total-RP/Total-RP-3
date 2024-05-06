@@ -497,7 +497,7 @@ Class: 50 characters|r]],
 
 |cffccccccNote: This feature is disabled during combat.|r]],
 	CO_CURSOR_DISABLE_OOC = "Disabled while OOC",
-	CO_CURSOR_DISABLE_OOC_TT = "Disable the cursor modifications when your roleplay status is set to |cffccccccOut Of Character|f.",
+	CO_CURSOR_DISABLE_OOC_TT = "Disable the cursor modifications when your roleplay status is set to |cffccccccOut Of Character|r.",
 	CO_CURSOR_MODIFIER_KEY = "Modifier key",
 	CO_CURSOR_MODIFIER_KEY_TT = "Requires a modifier key to be held down while right-clicking a player, to prevent accidental clicks.",
 	CO_MODULES = "Modules status",
