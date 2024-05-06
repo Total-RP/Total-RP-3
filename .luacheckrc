@@ -192,10 +192,22 @@ stds.wow = {
 			},
 		},
 
+		Constants = {
+			fields = {
+				PetConsts = {
+					fields = {
+						"NUM_PET_SLOTS",
+					},
+				},
+			},
+		},
+
 		C_AddOns = {
 			fields = {
+				"DisableAddOn",
 				"GetAddOnEnableState",
 				"GetAddOnMetadata",
+				"IsAddOnLoaded",
 			},
 		},
 
@@ -245,6 +257,7 @@ stds.wow = {
 				"DoesItemExistByID",
 				"GetItemIconByID",
 				"GetItemNameByID",
+				"IsItemInRange",
 				"RequestLoadItemDataByID",
 			},
 		},
@@ -310,6 +323,7 @@ stds.wow = {
 
 		C_PvP = {
 			fields = {
+				"GetZonePVPInfo",
 				"IsWarModeActive",
 			},
 		},
@@ -318,6 +332,12 @@ stds.wow = {
 			fields = {
 				"DoesSpellExist",
 				"RequestLoadSpellData",
+			},
+		},
+
+		C_StableInfo = {
+			fields = {
+				"GetStablePetInfo",
 			},
 		},
 
@@ -344,6 +364,12 @@ stds.wow = {
 		C_TooltipInfo = {
 			fields = {
 				"GetUnit",
+			},
+		},
+
+		C_UnitAuras = {
+			fields = {
+				"GetAuraDataByIndex",
 			},
 		},
 
@@ -426,8 +452,6 @@ stds.wow = {
 		"GameTooltip_SetTitle",
 		"GameTooltip_ShowDisabledTooltip",
 		"GenerateClosure",
-		"GetAddOnEnableState",
-		"GetAddOnMetadata",
 		"GetAutoCompleteRealms",
 		"GetBindingText",
 		"GetChannelDisplayInfo",
@@ -448,6 +472,7 @@ stds.wow = {
 		"GetLocale",
 		"GetMaxLevelForLatestExpansion",
 		"GetMinimapZoneText",
+		"GetMouseFoci",
 		"GetMouseFocus",
 		"GetNormalizedRealmName",
 		"GetNumLanguages",
@@ -462,11 +487,9 @@ stds.wow = {
 		"GetTime",
 		"GetTimePreciseSec",
 		"GetUnitName",
-		"GetZonePVPInfo",
 		"GetZoneText",
 		"hooksecurefunc",
 		"InCombatLockdown",
-		"IsAddOnLoaded",
 		"IsAltKeyDown",
 		"IsChatAFK",
 		"IsChatDND",
@@ -476,7 +499,6 @@ stds.wow = {
 		"IsInGuild",
 		"IsInInstance",
 		"IsInRaid",
-		"IsItemInRange",
 		"IsMacClient",
 		"IsMetaKeyDown",
 		"IsModifierKeyDown",
@@ -532,7 +554,6 @@ stds.wow = {
 		"UIDROPDOWNMENU_INIT_MENU",
 		"UIPanelCloseButton_SetBorderAtlas",
 		"UnitAffectingCombat",
-		"UnitAura",
 		"UnitBattlePetLevel",
 		"UnitBattlePetType",
 		"UnitClass",
@@ -590,6 +611,7 @@ stds.wow = {
 		"GameTooltipText",
 		"GridLayoutMixin",
 		"MapCanvasDataProviderMixin",
+		"ModelFrameMixin",
 		"NamePlateDriverFrame",
 		"SystemFont_LargeNamePlate",
 		"SystemFont_NamePlate",
@@ -671,14 +693,12 @@ stds.wow = {
 		"MANA",
 		"MAX_CHANNEL_BUTTONS",
 		"MAX_WOW_CHAT_CHANNELS",
+		"MODELFRAME_MAX_PLAYER_ZOOM",
 		"NO",
 		"NONE",
 		"NORMAL_FONT_COLOR",
 		"NOT_BOUND",
 		"NUM_CHAT_WINDOWS",
-		"NUM_PET_ACTIVE_SLOTS",
-		"NUM_PET_STABLE_PAGES",
-		"NUM_PET_STABLE_SLOTS",
 		"OKAY",
 		"PAIN",
 		"PLAYER_FACTION_COLOR_ALLIANCE",

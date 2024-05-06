@@ -186,7 +186,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			configText = loc.CO_TOOLBAR_CONTENT_STATUS,
 			onUpdate = function(Uibutton, buttonStructure)
 				updateToolbarButton(Uibutton, buttonStructure);
-				if GetMouseFocus() == Uibutton then
+				if Uibutton:IsMouseMotionFocus() then
 					refreshTooltip(Uibutton);
 				end
 			end,
@@ -238,7 +238,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			onEnter = function() end,
 			onUpdate = function(Uibutton, buttonStructure)
 				updateToolbarButton(Uibutton, buttonStructure);
-				if GetMouseFocus() == Uibutton then
+				if Uibutton:IsMouseMotionFocus() then
 					refreshTooltip(Uibutton);
 				end
 			end,
@@ -311,7 +311,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				end,
 				onUpdate = function(Uibutton, buttonStructure)
 					updateToolbarButton(Uibutton, buttonStructure);
-					if GetMouseFocus() == Uibutton then
+					if Uibutton:IsMouseMotionFocus() then
 						refreshTooltip(Uibutton);
 					end
 				end,
@@ -356,7 +356,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				end,
 				onUpdate = function(Uibutton, buttonStructure)
 					updateToolbarButton(Uibutton, buttonStructure);
-					if GetMouseFocus() == Uibutton then
+					if Uibutton:IsMouseMotionFocus() then
 						refreshTooltip(Uibutton);
 					end
 				end,

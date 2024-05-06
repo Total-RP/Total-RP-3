@@ -37,7 +37,7 @@ local function shouldAnswerToLocationRequest()
 		if not TRP3_ClientFeatures.WarMode then
 			return not UnitIsPVP("player");
 		elseif C_PvP.IsWarModeActive() then
-			return GetZonePVPInfo() == "sanctuary"
+			return C_PvP.GetZonePVPInfo() == "sanctuary"
 		end
 	end
 	return true;

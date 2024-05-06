@@ -37,11 +37,7 @@ local function GetPetCompanionProfile(petName)
 end
 
 local function GetNumPetSlots()
-	-- These globals are defined in FrameXML\PetStable.lua
-	local NUM_CALLABLE_SLOTS = NUM_PET_ACTIVE_SLOTS;
-	local NUM_STABLE_SLOTS   = NUM_PET_STABLE_PAGES * NUM_PET_STABLE_SLOTS;
-
-	return NUM_CALLABLE_SLOTS + NUM_STABLE_SLOTS;
+	return Constants.PetConsts.NUM_PET_SLOTS;
 end
 
 local function IsValidPetSlot(slotIndex)
@@ -61,13 +57,14 @@ local function GetPetInfoBySlot(slotIndex)
 	-- of the results of the stable master APIs and data on any associated
 	-- companion profile the pet has.
 
-	local icon, name, level, family = GetStablePetInfo(slotIndex);
-	if not name then
+	local petInfo = C_StableInfo.GetStablePetInfo(slotIndex);
+
+	if not petInfo then
 		return nil;
 	end
 
-	local profileID   = TRP3_API.companions.player.getCompanionProfileID(name);
-	local profileData = GetPetCompanionProfile(name);
+	local profileID = TRP3_API.companions.player.getCompanionProfileID(petInfo.name);
+	local profileData = GetPetCompanionProfile(petInfo.name);
 
 	-- The level squish is only applied to pets after they're summoned for the
 	-- first time since the launch of patch 9.0; the stable master APIs will
@@ -75,24 +72,27 @@ local function GetPetInfoBySlot(slotIndex)
 	-- purposes to automatically squish pet levels if they're greater than
 	-- the maximum attainable player level.
 
+	local level = petInfo.level;
+
 	if level > GetMaxLevelForLatestExpansion() then
 		level = C_LevelSquish.ConvertPlayerLevel(level);
 	end
 
 	return {
-		slot        = slotIndex,
-		icon        = icon,
-		name        = name,
-		level       = level,
-		family      = family,
-		profileID   = profileID,
+		slot = slotIndex,
+		icon = petInfo.icon,
+		name = petInfo.name,
+		level = level,
+		family = petInfo.familyName,
+		displayID = petInfo.displayID,
+		profileID = profileID,
 		profileName = profileData and profileData.profileName or nil,
 	};
 end
 
 local function IsPetSlotFilled(slotIndex)
-	local _, name = GetStablePetInfo(slotIndex);
-	return name ~= nil;
+	local petInfo = C_StableInfo.GetStablePetInfo(slotIndex);
+	return petInfo ~= nil;
 end
 
 local function NextFilledPetSlot(slotIndex)
@@ -136,6 +136,13 @@ function AddOn_TotalRP3.Ui.GetPetBrowserFrame()
 	end
 end
 
+TRP3_PetBrowserModelFrameMixin = {};
+
+function TRP3_PetBrowserModelFrameMixin:OnLoad()
+	ModelFrameMixin.OnLoad(self, MODELFRAME_MAX_PLAYER_ZOOM);
+	self:SetCamDistanceScale(1.3);
+end
+
 --
 -- PetBrowserMixin
 --
@@ -150,23 +157,23 @@ TRP3_PetBrowserMixin.DialogResult = tInvert({
 function TRP3_PetBrowserMixin:OnLoad()
 	-- Browser state.
 	self.dialogProfileID = nil;
-	self.pageNumber      = 1;
-	self.selectedSlot    = nil;
-	self.tooltipSlot     = nil;
-	self.tooltipFrame    = self.tooltipFrame or TRP3_MainTooltip;
+	self.pageNumber = 1;
+	self.selectedSlot = nil;
+	self.tooltipSlot = nil;
+	self.tooltipFrame = self.tooltipFrame or TRP3_MainTooltip;
 
 	-- Dynamic UI styling.
 	self.AcceptButton:SetText(L.UI_PET_BROWSER_ACCEPT);
 
 	-- Icon grid layout setup.
 	local GRID_DIRECTION = GridLayoutMixin.Direction.TopLeftToBottomRight;
-	local GRID_STRIDE    = self:GetIconGridSize();
+	local GRID_STRIDE = self:GetIconGridSize();
 	local GRID_PADDING_X = 4;
 	local GRID_PADDING_Y = 4;
 
-	self.iconPool    = CreateFramePool("CheckButton", self, "TRP3_PetBrowserIconButton");
-	self.iconAnchor  = AnchorUtil.CreateAnchor("TOPLEFT", self.IconPager, "TOPLEFT", 57, -12);
-	self.iconLayout  = AnchorUtil.CreateGridLayout(GRID_DIRECTION, GRID_STRIDE, GRID_PADDING_X, GRID_PADDING_Y);
+	self.iconPool = CreateFramePool("CheckButton", self, "TRP3_PetBrowserIconButton");
+	self.iconAnchor = AnchorUtil.CreateAnchor("TOPLEFT", self.IconPager, "TOPLEFT", 57, -12);
+	self.iconLayout = AnchorUtil.CreateGridLayout(GRID_DIRECTION, GRID_STRIDE, GRID_PADDING_X, GRID_PADDING_Y);
 	self.iconButtons = {};
 end
 
@@ -247,7 +254,7 @@ end
 
 function TRP3_PetBrowserMixin:Accept()
 	local slotIndex = self:GetSelectedSlot();
-	local petInfo   = GetPetInfoBySlot(slotIndex);
+	local petInfo = GetPetInfoBySlot(slotIndex);
 
 	self:TriggerDialogCallback(self.DialogResult.Accept, petInfo);
 	self:Hide();
@@ -325,7 +332,7 @@ function TRP3_PetBrowserMixin:GetFirstPetSlotByPage(pageNumber)
 	-- filled slots until that number decrements to zero. Once at zero,
 	-- the next slot after that is the first one for the requested page.
 
-	local slotIndex      = 0;
+	local slotIndex = 0;
 	local slotsRemaining = self:GetNumIconsPerPage() * (pageNumber - 1);
 
 	while slotsRemaining > 0 do
@@ -365,9 +372,9 @@ function TRP3_PetBrowserMixin:UpdatePagerVisualization()
 	self.iconButtons = {};
 
 	local iconsPerPage = self:GetNumIconsPerPage();
-	local pageIndex    = self:GetCurrentPage();
-	local pageCount    = self:GetNumPages();
-	local slotIndex    = self:GetFirstPetSlotByPage(pageIndex);
+	local pageIndex = self:GetCurrentPage();
+	local pageCount = self:GetNumPages();
+	local slotIndex = self:GetFirstPetSlotByPage(pageIndex);
 
 	self.IconPager.PrevPageButton:SetEnabled(pageIndex > 1);
 	self.IconPager.NextPageButton:SetEnabled(pageIndex < pageCount);
@@ -417,10 +424,10 @@ end
 
 function TRP3_PetBrowserMixin:UpdateModelVisualization()
 	local slotIndex = self:GetSelectedSlot();
-	local petInfo   = GetPetInfoBySlot(slotIndex);
+	local petInfo = GetPetInfoBySlot(slotIndex);
 
 	if petInfo then
-		SetPetStablePaperdoll(self.Model, slotIndex);
+		self.Model:SetDisplayInfo(petInfo.displayID);
 	else
 		self.Model:ClearModel();
 	end
@@ -428,7 +435,7 @@ end
 
 function TRP3_PetBrowserMixin:UpdateNameVisualization()
 	local slotIndex = self:GetSelectedSlot();
-	local petInfo   = GetPetInfoBySlot(slotIndex);
+	local petInfo = GetPetInfoBySlot(slotIndex);
 
 	if petInfo then
 		self.Header.Text:SetText(petInfo.name);
@@ -439,9 +446,9 @@ function TRP3_PetBrowserMixin:UpdateNameVisualization()
 end
 
 function TRP3_PetBrowserMixin:UpdateTooltipVisualization()
-	local slotIndex  = self:GetTooltipSlot();
+	local slotIndex = self:GetTooltipSlot();
 	local iconButton = self:GetIconButtonBySlot(slotIndex);
-	local petInfo    = GetPetInfoBySlot(slotIndex);
+	local petInfo = GetPetInfoBySlot(slotIndex);
 
 	if petInfo then
 		local titleText = petInfo.name;
@@ -506,10 +513,14 @@ function TRP3_PetBrowserMixin:OnEvent(event)
 		return;
 	end
 
-	if event == "PET_STABLE_SHOW" or event == "PET_STABLE_UPDATE" or event == "SPELLS_CHANGED" then
+	if event == "PET_INFO_UPDATE" then
 		self:UpdateVisualization();
-	elseif event == "PET_STABLE_UPDATE_PAPERDOLL" then
-		self:UpdateModelVisualization();
+	elseif event == "PET_STABLE_SHOW" then
+		self:UpdateVisualization();
+	elseif event == "PET_STABLE_UPDATE" then
+		self:UpdateVisualization();
+	elseif event == "SPELLS_CHANGED" then
+		self:UpdateVisualization();
 	elseif event == "UNIT_NAME_UPDATE" then
 		self:UpdateNameVisualization();
 		self:UpdateTooltipVisualization();
@@ -519,10 +530,10 @@ end
 function TRP3_PetBrowserMixin:OnShow()
 	PlaySound(SOUNDKIT.IG_ABILITY_OPEN);
 
+	self:RegisterEvent("PET_INFO_UPDATE");
 	self:RegisterEvent("PET_STABLE_SHOW");
 	self:RegisterEvent("PET_STABLE_UPDATE");
 	self:RegisterEvent("SPELLS_CHANGED");
-	self:RegisterEvent("PET_STABLE_UPDATE_PAPERDOLL");
 	self:RegisterUnitEvent("UNIT_NAME_UPDATE", "pet");
 
 	self:UpdateVisualization();

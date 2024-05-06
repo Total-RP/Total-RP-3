@@ -663,12 +663,30 @@ local function onGlanceDragStart(button)
 end
 TRP3_API.register.glance.onGlanceDragStart = onGlanceDragStart;
 
+local function GetGlanceDropTarget()
+	local frames;
+
+	if GetMouseFoci then
+		frames = GetMouseFoci();
+	else
+		frames = { GetMouseFocus(); };  -- Classic can have suboptimal code.
+	end
+
+	for _, frame in ipairs(frames) do
+		if frame.slot then
+			return frame;
+		end
+	end
+
+	return nil;
+end
+
 local function onGlanceDragStop(button)
 	ResetCursor();
 	if button.isCurrentMine and button and button.slot then
 		local from, to = button.slot;
-		local toButton = GetMouseFocus();
-		if toButton.slot then
+		local toButton = GetGlanceDropTarget();
+		if toButton then
 			to = toButton.slot;
 			if to ~= from then
 				if button.targetType == TRP3_Enums.UNIT_TYPE.CHARACTER then

@@ -123,7 +123,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Layers>
 					<Layer level="ARTWORK">
 						<Texture name="TRP3_ColorBrowserSwatch">
-							<Size><AbsDimension x="32" y="32"/></Size>
+							<Size x="32" y="32"/>
 							<Anchors>
 								<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_ColorBrowserColorWheel" x="150" y="0"/>
 							</Anchors>

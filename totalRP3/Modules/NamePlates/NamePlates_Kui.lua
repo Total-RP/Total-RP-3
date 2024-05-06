@@ -63,7 +63,7 @@ end
 local TRP3_KuiNamePlates = {};
 
 function TRP3_KuiNamePlates:OnModuleInitialize()
-	if not IsAddOnLoaded("Kui_Nameplates") then
+	if not C_AddOns.IsAddOnLoaded("Kui_Nameplates") then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	elseif not KuiNameplatesCore or KuiNameplates.layout ~= KuiNameplatesCore then
 		-- For now we only support the "Core" layout for Kui.
@@ -74,7 +74,7 @@ function TRP3_KuiNamePlates:OnModuleInitialize()
 	-- users that they can disable it.
 
 	if TRP3_API.utils.IsAddOnEnabled("totalRP3_KuiNameplates") then
-		DisableAddOn("totalRP3_KuiNameplates");
+		C_AddOns.DisableAddOn("totalRP3_KuiNameplates");
 		TRP3_API.popup.showAlertPopup(L.KUI_NAMEPLATES_WARN_OUTDATED_MODULE);
 	end
 end

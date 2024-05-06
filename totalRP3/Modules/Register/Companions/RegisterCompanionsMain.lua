@@ -328,7 +328,15 @@ function TRP3_API.companions.player.getCurrentSecondaryPetQueryLine()
 
 	local FIRST_STABLE_SLOT = 6; -- Index 1 through 5 are for Call Pet slots.
 
-	local _, petName = GetStablePetInfo(FIRST_STABLE_SLOT);
+	local petName;
+
+	if C_StableInfo.GetStablePetInfo then
+		local petInfo = C_StableInfo.GetStablePetInfo(FIRST_STABLE_SLOT);
+		petName = petInfo and petInfo.name or nil;
+	else
+		petName = select(2, GetStablePetInfo(FIRST_STABLE_SLOT));
+	end
+
 	if not petName or petName == UNKNOWNOBJECT then
 		return nil, nil, nil;
 	end
@@ -498,14 +506,18 @@ end
 
 function TRP3_API.companions.register.getUnitMount(ownerID, unitType)
 	local buffIndex = 1;
-	local spellBuffID = select(10, UnitAura(unitType, buffIndex));
-	while(spellBuffID) do
-		spellBuffID = select(10, UnitAura(unitType, buffIndex));
+	local buffInfo = C_UnitAuras.GetAuraDataByIndex(unitType, buffIndex);
+
+	while buffInfo do
+		local spellBuffID = buffInfo.spellId;
 		local companionFullID = ownerID .. "_" .. tostring(spellBuffID);
+
 		if registerProfileAssociation[companionFullID] then
 			return companionFullID, registerProfileAssociation[companionFullID], tostring(spellBuffID);
 		end
+
 		buffIndex = buffIndex + 1;
+		buffInfo = C_UnitAuras.GetAuraDataByIndex(unitType, buffIndex);
 	end
 end
 

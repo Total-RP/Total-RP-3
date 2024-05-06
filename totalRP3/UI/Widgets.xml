@@ -11,7 +11,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="StyledButton.xml"/>
 	<Include file="FontUtil.lua"/>
 	<Include file="TooltipUtil.lua"/>
-	<Include file="UIButton.xml"/>
 	<Include file="Widgets.lua"/>
 
 	<GameTooltip name="TRP3_TooltipTemplate" mixin="TRP3_TooltipMixin" inherits="GameTooltipTemplate" virtual="true"/>
@@ -23,60 +22,44 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		the menu go through the MSA-DropDownMenu-1.0 library instead.
 	-->
 	<Frame name="TRP3_DropDownMenuTemplate" virtual="true">
-		<Size>
-			<AbsDimension x="40" y="32"/>
-		</Size>
+		<Size x="40" y="32"/>
 		<Layers>
 			<Layer level="ARTWORK">
 				<Texture name="$parentLeft" parentKey="Left" file="Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame">
-					<Size>
-						<AbsDimension x="25" y="64"/>
-					</Size>
+					<Size x="25" y="64"/>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="0" y="17"/>
-							</Offset>
+							<Offset x="0" y="17"/>
 						</Anchor>
 					</Anchors>
 					<TexCoords left="0" right="0.1953125" top="0" bottom="1"/>
 				</Texture>
 				<Texture name="$parentMiddle" parentKey="Middle" file="Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame">
-					<Size>
-						<AbsDimension x="115" y="64"/>
-					</Size>
+					<Size x="115" y="64"/>
 					<Anchors>
 						<Anchor point="LEFT" relativeKey="$parent.Left" relativePoint="RIGHT"/>
 					</Anchors>
 					<TexCoords left="0.1953125" right="0.8046875" top="0" bottom="1"/>
 				</Texture>
 				<Texture name="$parentRight" parentKey="Right" file="Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame">
-					<Size>
-						<AbsDimension x="25" y="64"/>
-					</Size>
+					<Size x="25" y="64"/>
 					<Anchors>
 						<Anchor point="LEFT" relativeKey="$parent.Middle" relativePoint="RIGHT"/>
 					</Anchors>
 					<TexCoords left="0.8046875" right="1" top="0" bottom="1"/>
 				</Texture>
 				<FontString parentKey="Text" name="$parentText" inherits="GameFontHighlightSmall" wordwrap="false" justifyH="RIGHT">
-					<Size>
-						<AbsDimension x="0" y="10"/>
-					</Size>
+					<Size x="0" y="10"/>
 					<Anchors>
 						<Anchor point="RIGHT" relativeKey="$parent.Right">
-							<Offset>
-								<AbsDimension x="-43" y="2"/>
-							</Offset>
+							<Offset x="-43" y="2"/>
 						</Anchor>
 					</Anchors>
 				</FontString>
 			</Layer>
 			<Layer level="OVERLAY">
 				<Texture parentKey="Icon" name="$parentIcon" hidden="true">
-					<Size>
-						<AbsDimension x="16" y="16"/>
-					</Size>
+					<Size x="16" y="16"/>
 					<Anchors>
 						<Anchor point="LEFT">
 							<Offset x="30" y="2"/>
@@ -87,14 +70,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Layers>
 		<Frames>
 			<Button parentKey="Button" name="$parentButton" motionScriptsWhileDisabled="true">
-				<Size>
-					<AbsDimension x="24" y="24"/>
-				</Size>
+				<Size x="24" y="24"/>
 				<Anchors>
 					<Anchor point="TOPRIGHT" relativeKey="$parent.Right">
-						<Offset>
-							<AbsDimension x="-16" y="-18"/>
-						</Offset>
+						<Offset x="-16" y="-18"/>
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -110,33 +89,25 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</OnClick>
 				</Scripts>
 				<NormalTexture name="$parentNormalTexture" parentKey="NormalTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up">
-					<Size>
-						<AbsDimension x="24" y="24"/>
-					</Size>
+					<Size x="24" y="24"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>
 				</NormalTexture>
 				<PushedTexture name="$parentPushedTexture" parentKey="PushedTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down">
-					<Size>
-						<AbsDimension x="24" y="24"/>
-					</Size>
+					<Size x="24" y="24"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>
 				</PushedTexture>
 				<DisabledTexture name="$parentDisabledTexture" parentKey="DisabledTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled">
-					<Size>
-						<AbsDimension x="24" y="24"/>
-					</Size>
+					<Size x="24" y="24"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>
 				</DisabledTexture>
 				<HighlightTexture name="$parentHighlightTexture" parentKey="HighlightTexture" file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD">
-					<Size>
-						<AbsDimension x="24" y="24"/>
-					</Size>
+					<Size x="24" y="24"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>
@@ -515,24 +486,18 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Tab bar tab button -->
 	<Button name="TRP3_TabBar_Tab" virtual="true">
-		<Size>
-			<AbsDimension x="10" y="32"/>
-		</Size>
+		<Size x="10" y="32"/>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture name="$parentLeft" file="Interface\CHATFRAME\ChatFrameTabUnsel-BGLeft">
-					<Size>
-						<AbsDimension x="25" y="32"/>
-					</Size>
+					<Size x="25" y="32"/>
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="0" y="0"/>
 					</Anchors>
 					<TexCoords left="0" right="1" top="0.3" bottom="1"/>
 				</Texture>
 				<Texture name="$parentRight" file="Interface\CHATFRAME\ChatFrameTabUnsel-BGRight">
-					<Size>
-						<AbsDimension x="25" y="32"/>
-					</Size>
+					<Size x="25" y="32"/>
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
 					</Anchors>
@@ -548,14 +513,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<ButtonText name="$parentText">
-			<Size>
-				<AbsDimension x="0" y="32"/>
-			</Size>
+			<Size x="0" y="32"/>
 			<Anchors>
 				<Anchor point="CENTER">
-					<Offset>
-						<AbsDimension x="0" y="-2"/>
-					</Offset>
+					<Offset x="0" y="-2"/>
 				</Anchor>
 			</Anchors>
 		</ButtonText>
@@ -565,14 +526,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<HighlightTexture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight-yellow" alphaMode="ADD">
 			<Anchors>
 				<Anchor point="TOPLEFT">
-					<Offset>
-						<AbsDimension x="5" y="-2"/>
-					</Offset>
+					<Offset x="5" y="-2"/>
 				</Anchor>
 				<Anchor point="BOTTOMRIGHT">
-					<Offset>
-						<AbsDimension x="-5" y="-2"/>
-					</Offset>
+					<Offset x="-5" y="-2"/>
 				</Anchor>
 			</Anchors>
 		</HighlightTexture>
@@ -720,9 +677,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 			<Layer level="BORDER">
 				<Texture file="Interface\ACHIEVEMENTFRAME\UI-Achievement-IconFrame">
-					<Size>
-						<AbsDimension x="45" y="45"/>
-					</Size>
+					<Size x="45" y="45"/>
 					<Anchors>
 						<Anchor x="-5" y="5" point="TOPLEFT"/>
 					</Anchors>
@@ -930,9 +885,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Button>
 
 	<Slider name="TRP3_Scrollbar" virtual="true">
-		<Size>
-			<AbsDimension x="18" y="0"/>
-		</Size>
+		<Size x="18" y="0"/>
 		<Anchors>
 			<Anchor point="TOP" x="0" y="-15"/>
 			<Anchor point="RIGHT" x="0" y="0"/>
@@ -1104,35 +1057,25 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Layers>
 					<Layer level="BACKGROUND">
 						<Texture parentKey="Left" file="Interface\ChatFrame\UI-ChatInputBorder-Left2">
-							<Size>
-								<AbsDimension x="32" y="32" />
-							</Size>
+							<Size x="32" y="32" />
 							<Anchors>
 								<Anchor point="LEFT" x="-10" y="0" />
 							</Anchors>
 						</Texture>
 						<Texture parentKey="Right" file="Interface\ChatFrame\UI-ChatInputBorder-Right2">
-							<Size>
-								<AbsDimension x="32" y="32" />
-							</Size>
+							<Size x="32" y="32" />
 							<Anchors>
 								<Anchor point="RIGHT" x="10" y="0" />
 							</Anchors>
 						</Texture>
 						<Texture parentKey="Mid" file="Interface\ChatFrame\UI-ChatInputBorder-Mid2" horizTile="true">
-							<Size>
-								<AbsDimension x="0" y="32" />
-							</Size>
+							<Size x="0" y="32" />
 							<Anchors>
 								<Anchor point="TOPLEFT" relativeKey="$parent.Left" relativePoint="TOPRIGHT">
-									<Offset>
-										<AbsDimension x="0" y="0" />
-									</Offset>
+									<Offset x="0" y="0" />
 								</Anchor>
 								<Anchor point="TOPRIGHT" relativeKey="$parent.Right" relativePoint="TOPLEFT">
-									<Offset>
-										<AbsDimension x="0" y="0" />
-									</Offset>
+									<Offset x="0" y="0" />
 								</Anchor>
 							</Anchors>
 						</Texture>
@@ -1141,14 +1084,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<FontString inherits="ChatFontNormal" setAllPoints="true" />
 			</EditBox>
 			<Button parentKey="DropdownButton" name="$parentDropdownButton" motionScriptsWhileDisabled="true" >
-				<Size>
-					<AbsDimension x="32" y="32"/>
-				</Size>
+				<Size x="32" y="32"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.CopyText.Right">
-						<Offset>
-							<AbsDimension x="-10" y="0" />
-						</Offset>
+						<Offset x="-10" y="0" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -1164,33 +1103,25 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</OnClick>
 				</Scripts>
 				<NormalTexture name="$parentNormalTexture" parentKey="NormalTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up">
-					<Size>
-						<AbsDimension x="32" y="32"/>
-					</Size>
+					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>
 				</NormalTexture>
 				<PushedTexture name="$parentPushedTexture" parentKey="PushedTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down">
-					<Size>
-						<AbsDimension x="32" y="32"/>
-					</Size>
+					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>
 				</PushedTexture>
 				<DisabledTexture name="$parentDisabledTexture" parentKey="DisabledTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled">
-					<Size>
-						<AbsDimension x="32" y="32"/>
-					</Size>
+					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>
 				</DisabledTexture>
 				<HighlightTexture name="$parentHighlightTexture" parentKey="HighlightTexture" file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD">
-					<Size>
-						<AbsDimension x="32" y="32"/>
-					</Size>
+					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>

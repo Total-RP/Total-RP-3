@@ -52,8 +52,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	end
 
 	MRP.addOnVersion = function()
-		local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata;
-		return "MyRolePlay - " .. GetAddOnMetadata("MyRolePlay", "Version");
+		return "MyRolePlay - " .. C_AddOns.GetAddOnMetadata("MyRolePlay", "Version");
 	end
 
 

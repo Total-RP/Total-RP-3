@@ -44,9 +44,9 @@ local function GetUnitDistance(unit)
 	if not InCombatLockdown() then
 		if CheckInteractDistance(unit, 2) then
 			distance = 11;  -- Trade (11 yards)
-		elseif IsItemInRange(21519, unit) then
+		elseif C_Item.IsItemInRange(21519, unit) then
 			distance = 23;  -- Mistletoe (23 yards)
-		elseif IsItemInRange(1180, unit) then
+		elseif C_Item.IsItemInRange(1180, unit) then
 			distance = 33;  -- Scroll of Stamina (33 yards)
 		end
 	end

@@ -148,7 +148,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Button>
 				</Frames>
 			</Frame>
-			<PlayerModel parentKey="Model" inherits="ModelWithZoomTemplate" mixin="PetStableModelFrameMixin">
+			<PlayerModel parentKey="Model" inherits="ModelWithZoomTemplate" mixin="TRP3_PetBrowserModelFrameMixin">
 				<Anchors>
 					<Anchor point="TOP" relativeKey="$parent.Header" relativePoint="BOTTOM" y="18"/>
 					<Anchor point="BOTTOM" relativeKey="$parent.IconPager" relativePoint="TOP"/>

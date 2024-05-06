@@ -1077,13 +1077,6 @@ end
 
 function Utils.IsAddOnEnabled(addonName)
 	local characterName = UnitNameUnmodified("player");
-	local enableState;
-
-	if C_AddOns and C_AddOns.GetAddOnEnableState then
-		enableState = C_AddOns.GetAddOnEnableState(addonName, characterName);
-	else
-		enableState = GetAddOnEnableState(characterName, addonName);
-	end
-
+	local enableState = C_AddOns.GetAddOnEnableState(addonName, characterName);
 	return enableState == 2;
 end
