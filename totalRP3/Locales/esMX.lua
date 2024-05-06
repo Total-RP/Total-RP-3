@@ -6,7 +6,9 @@
 
 local _, TRP3_API = ...;
 
-TRP3_API.loc:RegisterNewLocale("esMX", "Español (AL)", {
+local L;
+
+L = {
 	["ABOUT_TITLE"] = "Acerca de",
 	["BINDING_NAME_TRP3_OPEN_TARGET_PROFILE"] = "Abrir perfil del objetivo",
 	["BINDING_NAME_TRP3_TOGGLE"] = "Mostrar/ocultar la ventana principal",
@@ -666,4 +668,6 @@ Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplement
 	["TF_IGNORE_TT"] = "|cffffff00Click:|r Ignorar jugador",
 	["UI_TUTO_BUTTON"] = "Modo tutorial",
 	["UI_TUTO_BUTTON_TT"] = "Haz clic para activar/desactivar el modo tutorial"
-});
+};
+
+TRP3_API.loc:RegisterNewLocale("esMX", "Español (AL)", L);

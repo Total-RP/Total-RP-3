@@ -6,7 +6,9 @@
 
 local _, TRP3_API = ...;
 
-TRP3_API.loc:RegisterNewLocale("itIT", "Italiano", {
+local L;
+
+L = {
 	["ABOUT_TITLE"] = "Di",
 	["BINDING_NAME_TRP3_TOGGLE"] = "dis/attivare sezione principale",
 	["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "dis/attivare barra degli strumenti",
@@ -495,4 +497,6 @@ Ci sono diverse maniere per farlo:|c0000ff00
 	["UI_LINK_TEXT"] = "Il tuo testo quì",
 	["UI_LINK_URL"] = "http://ilTuo.url.quì",
 	["UI_MUSIC_SELECT"] = "Seleziona musica"
-});
+};
+
+TRP3_API.loc:RegisterNewLocale("itIT", "Italiano", L);

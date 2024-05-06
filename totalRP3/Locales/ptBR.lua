@@ -6,7 +6,9 @@
 
 local _, TRP3_API = ...;
 
-TRP3_API.loc:RegisterNewLocale("ptBR", "Português", {
+local L;
+
+L = {
 	["ABOUT_TITLE"] = "Sobre",
 	["BINDING_NAME_TRP3_OPEN_TARGET_PROFILE"] = "Abrir perfil do alvo ",
 	["BINDING_NAME_TRP3_TOGGLE"] = "Mostrar/ocultar tela principal",
@@ -1335,4 +1337,6 @@ O Total RP não é responsável por links que levem a conteúdo nocivo.
 	["UNIT_POPUPS_MODULE_NAME"] = "Pop-ups dos personagens",
 	["UNIT_POPUPS_OPEN_PROFILE"] = "Abrir perfil",
 	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "Opções de Roleplay"
-});
+};
+
+TRP3_API.loc:RegisterNewLocale("ptBR", "Português", L);

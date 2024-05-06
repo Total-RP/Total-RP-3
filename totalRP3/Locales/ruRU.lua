@@ -6,7 +6,9 @@
 
 local _, TRP3_API = ...;
 
-TRP3_API.loc:RegisterNewLocale("ruRU", "Pусский", {
+local L;
+
+L = {
 	["ABOUT_TITLE"] = [=[О персонаже
 ]=],
 	["ANALYTICS_CONFIG_ENABLE"] = "Включить %s",
@@ -1305,4 +1307,6 @@ Total RP не несет ответственности, если ссылка �
 	["UNIT_POPUPS_MODULE_NAME"] = "Всплывающее окно единицы",
 	["UNIT_POPUPS_OPEN_PROFILE"] = "Открыть Профиль",
 	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "Настройки Ролевой Игры"
-});
+};
+
+TRP3_API.loc:RegisterNewLocale("ruRU", "Pусский", L);

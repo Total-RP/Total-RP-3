@@ -6,7 +6,9 @@
 
 local _, TRP3_API = ...;
 
-TRP3_API.loc:RegisterNewLocale("zhCN", "简体中文", {
+local L;
+
+L = {
 	["ABOUT_TITLE"] = "关于",
 	["BINDING_NAME_TRP3_OPEN_TARGET_PROFILE"] = "打开目标资料",
 	["BINDING_NAME_TRP3_TOGGLE"] = "切换主界面",
@@ -1352,4 +1354,6 @@ Total RP不对导致有害内容的链接负责。]=],
 	["UNIT_POPUPS_MODULE_NAME"] = "单位弹窗",
 	["UNIT_POPUPS_OPEN_PROFILE"] = "打开人物卡",
 	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "角色扮演状态"
-});
+};
+
+TRP3_API.loc:RegisterNewLocale("zhCN", "简体中文", L);
