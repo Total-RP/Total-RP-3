@@ -17,7 +17,7 @@ L = {
 	["BROADCAST_PASSWORD"] = [=[|cffff0000 C'è una password messa nel canale di trasmissione (%s).
 |cffff9900 TRP3 non proverà più a collegarsi ma non potrai usarealcune funzionalità come vedere la posizione dei giocatori sulla mappa
 |cff00ff00 Puoi disattivare o cambiare il canale di trasmissione nelle impostazioni generali di TRP3]=],
-	["BROADCAST_PASSWORDED"] = [=[|cffff0000L'utente |r%s| cffff0000 ha appena inserito una password sul canale di trasmissione (%s).
+	["BROADCAST_PASSWORDED"] = [=[|cffff0000L'utente|r %s |cffff0000ha appena inserito una password sul canale di trasmissione (%s).
 |cffff9900 Se non sai qual'è la password, non potrai usare alcune funzionalità come vedere la posizione dei giocatori sulla mappa]=],
 	["BW_COLOR_CODE"] = "Codice colore",
 	["BW_COLOR_CODE_ALERT"] = "Codice esadecimale sbagliato!",
@@ -356,7 +356,7 @@ Tenete presente che, anche se il viso del personaggio è costantemente nascosto,
 	["REG_PLAYER_FIRSTNAME"] = "Nome",
 	["REG_PLAYER_FIRSTNAME_TT"] = [=[Questo è il nome del vostro personaggio. Questo è un campo obbligatorio, quindi se non si specifica un nome, verrà utilizzato il nome del personaggio di default (|cffffff00%s|r).
 
-È possibile utilizzare un |c0000ff00soprannome |r!]=],
+È possibile utilizzare un |c0000ff00soprannome|r !]=],
 	["REG_PLAYER_FULLTITLE"] = "Titolo completo",
 	["REG_PLAYER_GLANCE"] = "A prima vista",
 	["REG_PLAYER_GLANCE_TITLE"] = "Nome attributo",

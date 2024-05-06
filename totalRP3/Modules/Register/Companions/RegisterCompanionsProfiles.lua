@@ -623,7 +623,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				buttonStructure.tooltipSub = nil;
 				if unitID == Globals.player_id then
 					local profile = getCurrentMountProfile();
-					buttonStructure.tooltipSub = "|cffffff00" .. loc.CM_CLICK .. ": |r" .. loc.PR_PROFILEMANAGER_ACTIONS;
+					buttonStructure.tooltipSub = "|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.PR_PROFILEMANAGER_ACTIONS;
 					if profile then
 						if profile and profile.data and profile.data.NA then
 							buttonStructure.tooltip = loc.PR_CO_MOUNT .. ": |cff00ff00" .. profile.data.NA;
@@ -637,13 +637,13 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 						end
 					else
 						buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenMount;
-						buttonStructure.tooltipSub = "|cffffff00" .. loc.CM_CLICK .. ": |r" .. loc.REG_COMPANION_TF_BOUND_TO;
+						buttonStructure.tooltipSub = "|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.REG_COMPANION_TF_BOUND_TO;
 						buttonStructure.tooltip = loc.PR_CO_MOUNT;
 					end
 				else
 					local companionFullID = TRP3_API.companions.register.getUnitMount(unitID, "target");
 					local profile = getCompanionRegisterProfile(companionFullID);
-					buttonStructure.tooltipSub = "|cffffff00" .. loc.CM_CLICK .. ": |r" .. loc.TF_OPEN_MOUNT;
+					buttonStructure.tooltipSub = "|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.TF_OPEN_MOUNT;
 					if profile and profile.data and profile.data.NA then
 						buttonStructure.tooltip = loc.PR_CO_MOUNT .. ": |cff00ff00" .. profile.data.NA;
 					else

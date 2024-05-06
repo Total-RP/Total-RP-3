@@ -17,7 +17,7 @@ L = {
 	["BROADCAST_PASSWORD"] = [=[|cffff0000廣播頻道被設置了密碼 (%s).
 |cffff9900Total RP 3不會繼續嘗試連結到廣播頻道，你將無法使用地圖顯示玩家位置的功能。
 |cff00ff00你可以在一般設定中關閉或修改廣播頻道。]=],
-	["BROADCAST_PASSWORDED"] = [=[|cffff0000玩家 |r%s|cffff0000 剛剛修改了廣播頻道的密碼 (%s).
+	["BROADCAST_PASSWORDED"] = [=[|cffff0000玩家|r %s |cffff0000剛剛修改了廣播頻道的密碼 (%s).
 |cffff9900如果你不知道密碼，你將無法使用顯示地圖上玩家的功能。]=],
 	["BW_COLOR_CODE"] = "顏色代碼",
 	["BW_COLOR_CODE_ALERT"] = "十六進制碼錯誤",
@@ -508,7 +508,7 @@ L = {
 	["REG_PLAYER_FIRSTNAME"] = "名字",
 	["REG_PLAYER_FIRSTNAME_TT"] = [=[這裡可以書寫角色的名字。這是必填的，如果你不做任何改變，將會直接使用角色ＩＤ(|cffffff00%s|r)
 
-你也可以使用 |c0000ff00綽號 |r！]=],
+你也可以使用 |c0000ff00綽號|r ！]=],
 	["REG_PLAYER_FULLTITLE"] = "全稱頭銜",
 	["REG_PLAYER_FULLTITLE_TT"] = [=[這裡可以讓你寫下你的角色的全稱頭銜。這會比短頭銜來得更長且完整。
 
@@ -617,7 +617,7 @@ L = {
 	["REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED"] = "喪偶",
 	["REG_PLAYER_RESIDENCE"] = "居住地",
 	["REG_PLAYER_RESIDENCE_SHOW"] = "居住地地圖座標",
-	["REG_PLAYER_RESIDENCE_SHOW_TT"] = [=[|cff00ff00%s 
+	["REG_PLAYER_RESIDENCE_SHOW_TT"] = [=[|cff00ff00%s
 
 |r點擊以在地圖上顯示]=],
 	["REG_PLAYER_RIGHTTRAIT"] = "右側屬性",
@@ -650,7 +650,7 @@ L = {
 	["REG_PLAYER_TITLE"] = "稱號",
 	["REG_PLAYER_TITLE_TT"] = [=[你的角色稱號代表他經常被稱呼的頭銜，避免使用過長的稱號，過長的稱號應該輸入在長稱號區而非此處。
 
-以下為範例的 |c0000ff00合適稱號 |r:
+以下為範例的 |c0000ff00合適稱號|r :
 |c0000ff00- 伯爵夫人
 - 侯爵
 - 法師
@@ -666,15 +666,15 @@ L = {
 	["REG_PLAYER_TRP2_TRAITS"] = "面相",
 	["REG_PLAYER_TUTO_ABOUT_T1"] = [=[這個版面可以讓你 |cff00ff00自由發揮|r你的創意。
 
-描述不必局限於角色的|cffff9900生理狀態|r。自由地揮灑他的|cffff9900背景故事 |r或|cffff9900個性上|r的細節。
+描述不必局限於角色的|cffff9900生理狀態|r。自由地揮灑他的|cffff9900背景故事|r 或|cffff9900個性上|r的細節。
 
 使用此版面，您可以使用工具列來插入許多裝飾和變化，如|cffffff00texts尺寸，顏色和粗體字|r。
 甚至還有|cffffff00圖片，圖標或超連結|r。]=],
-	["REG_PLAYER_TUTO_ABOUT_T2"] = [=[這個版面更加結構化，由| cff00ff00a各自獨立的框架列表| r所組成。
+	["REG_PLAYER_TUTO_ABOUT_T2"] = [=[這個版面更加結構化，由|cff00ff00a各自獨立的框架列表|r所組成。
 
-每個框架又由| cffffff00icon背景和文本| r組成。注意，您可以在這些框架中使用一些文字標籤：如顏色和圖標等。
+每個框架又由|cffffff00icon背景和文本|r組成。注意，您可以在這些框架中使用一些文字標籤：如顏色和圖標等。
 
-敘述時不必局限於| cffff9900生理狀態| r。也可以撰寫他的| cffff9900背景故事 | r或他| cffff9900個性| r上的細節。]=],
+敘述時不必局限於|cffff9900生理狀態|r。也可以撰寫他的|cffff9900背景故事|r 或他|cffff9900個性|r上的細節。]=],
 	["REG_PLAYER_TUTO_ABOUT_T3"] = [=[此樣板被分割為三個部分： |cff00ff00生理描述、個性和歷史。
 
 不一定要填滿所有欄位， |cffff9900if 空白的欄位將不會顯示|r。
@@ -703,7 +703,7 @@ L = {
 	["REG_RELATION_NEUTRAL_TT"] = "%s 對 %s 沒什麼特別的感覺。",
 	["REG_RELATION_NONE"] = "無",
 	["REG_RELATION_NONE_TT"] = "%s 不認識 %s。",
-	["REG_RELATION_TARGET"] = "|cffffff00Click: |r變更關係",
+	["REG_RELATION_TARGET"] = "|cffffff00Click:|r 變更關係",
 	["REG_RELATION_UNFRIENDLY"] = "不友善",
 	["REG_RELATION_UNFRIENDLY_TT"] = "看來 %s 不太喜歡 %s。",
 	["REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT"] = "此玩家為試玩帳號。",
@@ -793,7 +793,7 @@ L = {
 	["UI_COLOR_BROWSER_PRESETS_CUSTOM"] = "自訂",
 	["UI_COLOR_BROWSER_SELECT"] = "選擇顏色",
 	["UI_COMPANION_BROWSER_HELP"] = "請選擇一隻戰寵",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00警告: |r只有已經被重新命名的戰寵才能與簡介連結。 
+	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00警告:|r 只有已經被重新命名的戰寵才能與簡介連結。
 |cff00ff00此處僅列出符合此條件的戰寵。]=],
 	["UI_FILTER"] = "過濾器",
 	["UI_ICON_BROWSER"] = "圖示瀏覽器",

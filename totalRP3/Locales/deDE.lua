@@ -14,10 +14,10 @@ L = {
 	["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "Werkzeugleiste umschalten",
 	["BROADCAST_10"] = "|cffff9900Du bist bereits in zehn Channels. TRP3 wird nicht mehr versuchen sich mit dem Broadcast-Kanal zu verbinden, aber du wirst nicht in der LAge sein einige Funktionen, wie die Spielersuche auf der Karte, zu verwenden.",
 	["BROADCAST_OFFLINE_DISABLED"] = "Broadcast wurde deaktiviert.",
-	["BROADCAST_PASSWORD"] = [=[|cffff0000Der Übertragungs-Channel (%s) ist passwortgeschützt. 
+	["BROADCAST_PASSWORD"] = [=[|cffff0000Der Übertragungs-Channel (%s) ist passwortgeschützt.
 |cffff9900TRP3 wird nicht versuchen, sich zu verbinden, kann jedoch auch keine Features wie die Standortbestimmung von Spielern auf der Karte für dich bereitstellen.
 |cff00ff00Du kannst den Übertragungs-Channel in den Allgemeinen Einstellungen von TRP3 ausschalten oder ändern.]=],
-	["BROADCAST_PASSWORDED"] = [=[|cffff0000Der Benutzer |r%s|cffff0000 hat gerade ein Passwort für den Übertragungs-Channel (%s) festgelegt.
+	["BROADCAST_PASSWORDED"] = [=[|cffff0000Der Benutzer|r %s|cffff0000 hat gerade ein Passwort für den Übertragungs-Channel (%s) festgelegt.
 |cffff9900Wenn du das Passwort nicht kennst, kannst du keine Funktionen nutzen, die in Zusammenhang mit dem Channel stehen, wie etwa der Standortbestimmung von Spielern auf der Karte.]=],
 	["BW_COLOR_CODE"] = "Farbcode",
 	["BW_COLOR_CODE_ALERT"] = "Falscher hexadezimaler Farbcode!",
@@ -191,7 +191,7 @@ Das Importieren des Inhaltes einer anderen Version könnte aufgrund von Inkompat
 
 |TInterface\Cursor\WorkOrders:25|t Dieses Symbol wird an dem Mauszeiger angeheftet, wenn ein Spieler ein Profil hat und Ihr es rechtsklicken könnt.
 
-|cffccccccNote: Diese Funktion wird während eines Kampfes deaktiviert. |r]=],
+|cffccccccNote: Diese Funktion wird während eines Kampfes deaktiviert.|r]=],
 	["CO_CURSOR_TITLE"] = "Cursorinteraktionen",
 	["CO_GENERAL"] = "Allgemeine Einstellungen",
 	["CO_GENERAL_BROADCAST"] = "Broadcast-Kanal nutzen",
@@ -985,7 +985,7 @@ Wenn du die Persönlichkeit deines Charakter auf diese Art nicht angeben möchte
 	["REG_PLAYER_TITLE"] = "Titel",
 	["REG_PLAYER_TITLE_TT"] = [=[Der Titel deines Charakters ist der Titel, mit dem er angesprochen wird. Vermeide bitte lange Titel, für diesen Zweck kannst du das Feld "Kompletter Titel" verwenden.
 
-Beispiele |c0000ff00passender Titel |r:
+Beispiele |c0000ff00passender Titel|r :
 |c0000ff00- Graf,
 - Vogt,
 - Magier,
@@ -1055,7 +1055,7 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 	["REG_RELATION_NEUTRAL_TT"] = "%s hat keine spezielle Beziehung zu %s.",
 	["REG_RELATION_NONE"] = "Keine",
 	["REG_RELATION_NONE_TT"] = "%s kennt %s nicht.",
-	["REG_RELATION_TARGET"] = "|cffffff00Klick: |rBeziehung ändern",
+	["REG_RELATION_TARGET"] = "|cffffff00Klick:|r Beziehung ändern",
 	["REG_RELATION_UNFRIENDLY"] = "Unfreundlich",
 	["REG_RELATION_UNFRIENDLY_TT"] = "%s mag %s offensichtlich nicht.",
 	["REG_REPORT_PLAYER_OPEN_URL"] = "Du kannst Spieler nur direkt im Spiel melden, wenn du sie anvisieren kannst (benutze dafür den Button im TRP3 Ankerfenster) Wenn du %s's Profil melden möchtest, aber nicht anvisieren kannst, musst du ein normales Kundendienstticket bei Blizzard über den folgenden Link öffnen.",
@@ -1105,7 +1105,7 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 	["TF_IGNORE"] = "Spieler ignorieren",
 	["TF_IGNORE_CONFIRM"] = [=[Bist du sicher das du die folgende ID ignorieren willst?
 
-|cffffff00%s|r 
+|cffffff00%s|r
 
 |cffff7700Du kannst optional angeben, warum die diesen Spieler ignorierst. Dies ist eine persönliche Notiz und kann nicht von anderen Spielern eingesehen werden.]=],
 	["TF_IGNORE_NO_REASON"] = "Kein Grund",
@@ -1166,7 +1166,7 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 	["UI_COLOR_BROWSER_PRESETS_RESOURCES"] = "Ressource",
 	["UI_COLOR_BROWSER_SELECT"] = "Farbe auswählen",
 	["UI_COMPANION_BROWSER_HELP"] = "Wähle ein Wildtier",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Warnung: |rNur umbenannte Wildtiere dürfen mit einem Profil verbunden werden.
+	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Warnung:|r Nur umbenannte Wildtiere dürfen mit einem Profil verbunden werden.
 
 |cff00ff00Dieser Bereich enthält nur diese Wildtiere.]=],
 	["UI_FILTER"] = "Filter",
