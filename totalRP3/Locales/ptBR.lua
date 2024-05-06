@@ -19,7 +19,7 @@ TRP3_API.loc:RegisterNewLocale("ptBR", "Português", {
 	["BROADCAST_PASSWORD"] = [=[|cffff0000O canal de transmissão (%s) está protegido por senha.
 |cffff9900O TRP3 não tentará mais conectar-se ao canal de transmissão, mas você não poderá usar algumas opções como localização de jogadores no mapa.
 |cff00ff00Você pode desativar ou trocar o canal de transmissão nas opções gerais do TRP3.]=],
-	["BROADCAST_PASSWORDED"] = [=[|cffff0000O usuário |r%s|cffff0000 acabou de colocar uma senha no canal de transmissão (%s).
+	["BROADCAST_PASSWORDED"] = [=[|cffff0000O usuário|r %s |cffff0000acabou de colocar uma senha no canal de transmissão (%s).
 |cffff9900Se você não sabe a senha, você não poderá usar opções como localização de jogadores no mapa.]=],
 	["BW_COLOR_CODE"] = "Código de cor",
 	["BW_COLOR_CODE_ALERT"] = "Código hexadecimal incorreto!",
@@ -286,7 +286,7 @@ Status possíveis:
 	["CO_REGISTER_ABOUT_H3_SIZE"] = "Tamanho de texto do cabeçalho 3",
 	["CO_REGISTER_ABOUT_H3_SIZE_TT"] = "Tamanho do texto entre marcadores {h3}. Padrão: %d ",
 	["CO_REGISTER_ABOUT_P_SIZE"] = "Tamanho do parágrafo no texto ",
-	["CO_REGISTER_ABOUT_P_SIZE_TT"] = [=[Tamanho do texto fora dos marcadores do cabeçalho. Padrão: %d 
+	["CO_REGISTER_ABOUT_P_SIZE_TT"] = [=[Tamanho do texto fora dos marcadores do cabeçalho. Padrão: %d
 ]=],
 	["CO_REGISTER_ABOUT_SETTINGS"] = "Configurações \"Sobre\"",
 	["CO_REGISTER_AUTO_PURGE"] = "Expurgar diretório automaticamente",
@@ -377,7 +377,7 @@ Status possíveis:
 	["COM_LIST"] = "Lista de comandos:",
 	["COM_RESET_RESET"] = "A posição das telas foi reiniciada!",
 	["COM_RESET_USAGE"] = "Uso: |cff00ff00/trp3 reset frames|r para reiniciar todas as posições das telas.",
-	["COM_STASH_DATA"] = [=[|cffff0000Tem certeza que quer depositar seus dados do Total RP 3? |r
+	["COM_STASH_DATA"] = [=[|cffff0000Tem certeza que quer depositar seus dados do Total RP 3?|r
 
 Seus perfis, perfis de companheiro e configurações serão temporariamente depositados e sua interface irá se reiniciar sem dados, como numa instalação nova do Total RP 3.
 |cff00ff00Use o mesmo comando novamente (|cff999999/trp3 stash|cff00ff00) para restaurar seus dados.|r]=],
@@ -571,7 +571,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Configurações de exibição",
 	["NAMEPLATES_MODULE_ACTIVE_STATUS"] = "Módulo |cff00ff00Ativo|r (%1$s|r)",
 	["NAMEPLATES_MODULE_DESCRIPTION"] = "Ativa a customização das placas de nome com informação obtida nos perfis de roleplay",
-	["NAMEPLATES_MODULE_DISABLE_WARNING"] = "A desativação do módulo de placas de nome impedirá a realização de qualquer personalização de placas de nome. É necessário fazer a recarga da interface do jogador para que isto tenha efeito.|n|n|cffff0000Aviso: |r uma vez desativado, este módulo só pode ser reativado a partir da página |cffffcc00status do módulo|r.|n|n Tem certeza que quer desativar este módulo??",
+	["NAMEPLATES_MODULE_DISABLE_WARNING"] = "A desativação do módulo de placas de nome impedirá a realização de qualquer personalização de placas de nome. É necessário fazer a recarga da interface do jogador para que isto tenha efeito.|n|n|cffff0000Aviso:|r uma vez desativado, este módulo só pode ser reativado a partir da página |cffffcc00status do módulo|r.|n|n Tem certeza que quer desativar este módulo??",
 	["NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY"] = "Este módulo foi desativado automaticamente devido a falta de alguma dependência.",
 	["NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL"] = "Este módulo foi desativado automaticamente devido a um conflito com outro módulo ou Addon!!",
 	["NAMEPLATES_MODULE_INACTIVE_STATUS"] = "módulo |cffff9900Inativo|r (Addon não encontrado)",
@@ -642,7 +642,7 @@ Mudar o nome não afetará qualquer conexão entre este perfil e suas mascotes/m
 Conectá-la assim mesmo?]=],
 	["PR_CREATE_PROFILE"] = "Criar perfil",
 	["PR_DEFAULT_PROFILE_NAME"] = "Perfil padrão",
-	["PR_DEFAULT_PROFILE_WARNING"] = [=[Criar um novo perfil ou link para um que já existe nos perfis para editar as informações do 
+	["PR_DEFAULT_PROFILE_WARNING"] = [=[Criar um novo perfil ou link para um que já existe nos perfis para editar as informações do
  seu personagem.]=],
 	["PR_DELETE_PROFILE"] = "Deletar perfil",
 	["PR_DUPLICATE_PROFILE"] = "Duplicar perfil",
@@ -915,7 +915,7 @@ Pense que, mesmo que o rosto do seu personagem esteja sempre escondido, vale a p
 	["REG_PLAYER_FIRSTNAME"] = "Nome",
 	["REG_PLAYER_FIRSTNAME_TT"] = [=[Este é o nome do seu personagem. Este é um campo obrigatório, então se você não especificar um nome, o nome padrão do personagem (|cffffff00%s|r)  será utilizado.
 
-Você pode usar um |c0000ff00apelido |r!]=],
+Você pode usar um |c0000ff00apelido|r !]=],
 	["REG_PLAYER_FULLTITLE"] = "Título completo",
 	["REG_PLAYER_FULLTITLE_TT"] = [=[Aqui você pode escrever o título completo do seu personagem. Ele pode ser uma versão maior do Título ou um título completamente diferente.
 
@@ -1088,7 +1088,7 @@ Se não quiser indicar a personalidade do seu personagem desta forma, mantenha e
 	["REG_PLAYER_TITLE"] = "Título",
 	["REG_PLAYER_TITLE_TT"] = [=[O título do seu personagem é o título pelo qual seu personagem normalmente é chamado. Evite títulos longos, os quais você deve colocar em "título completo" logo abaixo.
 
-Exemplos de |c0000ff00títulos apropriados |r:
+Exemplos de |c0000ff00títulos apropriados|r :
 |c0000ff00- Condessa,
 - Marquês,
 - Magus,
@@ -1159,7 +1159,7 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["REG_RELATION_NEUTRAL_TT"] = "%s não sente nada em particular em relação a %s.",
 	["REG_RELATION_NONE"] = "Nenhuma",
 	["REG_RELATION_NONE_TT"] = "%s não conhece %s.",
-	["REG_RELATION_TARGET"] = "|cffffff00Clique: |rMudar relação",
+	["REG_RELATION_TARGET"] = "|cffffff00Clique:|r Mudar relação",
 	["REG_RELATION_UNFRIENDLY"] = "Antipático",
 	["REG_RELATION_UNFRIENDLY_TT"] = "%s claramente não gosta de %s.",
 	["REG_REPORT_PLAYER_OPEN_URL"] = "Você somente pode reportar jogadores diretamente de dentro do jogo se os puder Marcar (usando o botão de frame alvo do TRP3). Se desejar reportar o perfil do %s e você não puder os marcar, terá de abrir um ticket com o apoio da Blizzard, utilizando o link abaixo.",
@@ -1183,7 +1183,7 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["REG_TT_ZONE"] = "Área",
 	["SCRIPT_ERROR"] = "Error no script.",
 	["SCRIPT_UNKNOWN_EFFECT"] = "Erro de script, FX desconhecido",
-	["SLASH_CMD_STATUS_HELP"] = "Utilização: |cff00ff00/trp3 Status ic ||| ooc ||| trocar|r Altera o seu status de personagem para a opção especificada: |cffff9900/trp3 status Ic|r definirá o seu estado para |cff00ff00 No Personagem |r. |cffff9900/trp3 status ooc|r definirá o seu status para |cffffff0000Fora do Personagem|r. |cffff9900/trp3 status Alterar|r irá mudar o seu estado para o estado oposto.",
+	["SLASH_CMD_STATUS_HELP"] = "Utilização: |cff00ff00/trp3 Status ic ||| ooc ||| trocar|r Altera o seu status de personagem para a opção especificada: |cffff9900/trp3 status Ic|r definirá o seu estado para |cff00ff00 No Personagem|r. |cffff9900/trp3 status ooc|r definirá o seu status para |cffffff0000Fora do Personagem|r. |cffff9900/trp3 status Alterar|r irá mudar o seu estado para o estado oposto.",
 	["SLASH_CMD_STATUS_USAGE"] = "ic || ooc || Alterar",
 	["TB_AFK_MODE"] = "Ausente",
 	["TB_DND_MODE"] = "Não perturbe",
@@ -1272,7 +1272,7 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["UI_COLOR_BROWSER_PRESETS_RESOURCES"] = "Recurso",
 	["UI_COLOR_BROWSER_SELECT"] = "Selecionar cor",
 	["UI_COMPANION_BROWSER_HELP"] = "Selecionar uma mascote de batalha",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Aviso: |rApenas mascotes de batalha nomeadas podem ser vinculadas a um perfil.
+	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Aviso:|r Apenas mascotes de batalha nomeadas podem ser vinculadas a um perfil.
 
 |cff00ff00Esta seção lista apenas estas mascotes.]=],
 	["UI_FILTER"] = "Filtrar",
@@ -1299,10 +1299,10 @@ O Total RP não é responsável por links que levem a conteúdo nocivo.
 	["UI_MUSIC_DURATION"] = "Duração",
 	["UI_MUSIC_SELECT"] = "Selecionar música",
 	["UI_PET_BROWSER_ACCEPT"] = "Assinar",
-	["UI_PET_BROWSER_BOUND_WARNING"] = "|cffff0000Aviso: |r Este animal de estimação está atualmente atribuído ao perfil |cff00ff00%1$s|r. A atribuição de um perfil a este animal de estimação irá substituir o perfil atual.",
+	["UI_PET_BROWSER_BOUND_WARNING"] = "|cffff0000Aviso:|r Este animal de estimação está atualmente atribuído ao perfil |cff00ff00%1$s|r. A atribuição de um perfil a este animal de estimação irá substituir o perfil atual.",
 	["UI_PET_BROWSER_EMPTY_TEXT"] = "Você não tem animais de estimação a quem possa ser atribuído um perfil.",
 	["UI_PET_BROWSER_INTRO_TEXT"] = "Selecione um pet com os botões abaixo e clique  |cffffff00Assinar|r para vincular ao perfil.",
-	["UI_PET_BROWSER_NAME_WARNING"] = "|cffff0000Aviso: |r Este animal de estimação não foi renomeado. Recomendamos que se renomeie o animal de estimação para evitar mostrar este perfil em outros animais de estimação com o mesmo nome.",
+	["UI_PET_BROWSER_NAME_WARNING"] = "|cffff0000Aviso:|r Este animal de estimação não foi renomeado. Recomendamos que se renomeie o animal de estimação para evitar mostrar este perfil em outros animais de estimação com o mesmo nome.",
 	["UI_TUTO_BUTTON"] = "Modo tutorial",
 	["UI_TUTO_BUTTON_TT"] = "Clique para ativar/desativar o modo tutorial",
 	["UNIT_POPUPS_CHARACTER_STATUS"] = "Status do personagem",
@@ -1331,7 +1331,7 @@ O Total RP não é responsável por links que levem a conteúdo nocivo.
 	["UNIT_POPUPS_CURRENT_PROFILE"] = "Perfil atual",
 	["UNIT_POPUPS_CURRENT_PROFILE_NAME"] = "Perfil atual: %1$s",
 	["UNIT_POPUPS_MODULE_DESCRIPTION"] = "Adiciona integração com o botão direito nos menus dos personagens e nomes de jogadores nas molduras do chat.",
-	["UNIT_POPUPS_MODULE_DISABLE_WARNING"] = "É necessário recarregar a interface do jogador para desativar o módulo de pop-ups do personagem.|n|n|cffff0000Aviso: |ruma vez desativado, este módulo só pode ser reativado a partir da página |cffffcc00 Status do Módulo|r. Tem certeza de que quer desativar este módulo?",
+	["UNIT_POPUPS_MODULE_DISABLE_WARNING"] = "É necessário recarregar a interface do jogador para desativar o módulo de pop-ups do personagem.|n|n|cffff0000Aviso:|r uma vez desativado, este módulo só pode ser reativado a partir da página |cffffcc00 Status do Módulo|r. Tem certeza de que quer desativar este módulo?",
 	["UNIT_POPUPS_MODULE_NAME"] = "Pop-ups dos personagens",
 	["UNIT_POPUPS_OPEN_PROFILE"] = "Abrir perfil",
 	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "Opções de Roleplay"

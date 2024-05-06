@@ -16,7 +16,7 @@ TRP3_API.loc:RegisterNewLocale("zhCN", "简体中文", {
 	["BLIZZARD_NAMEPLATES_MODULE_NAME"] = "暴雪姓名版",
 	["BROADCAST_10"] = "|cffff9900 你已经拥有10个频道。TRP3 不会再次试图连接广播频道，但你将无法使用类似搜索玩家位置这样的功能。",
 	["BROADCAST_OFFLINE_DISABLED"] = "广播频道已经被禁用。",
-	["BROADCAST_PASSWORD"] = [=[|cffff0000 这是一个带密码的广播频道(%s). 
+	["BROADCAST_PASSWORD"] = [=[|cffff0000 这是一个带密码的广播频道(%s).
 |cffff9900 TRP3 不会再次试图连接广播频道，但你将无法使用类似搜索玩家位置这样的功能。
 |cff00ff00 您可以在TRP3常规设置中禁用或更改广播频道。]=],
 	["BROADCAST_PASSWORDED"] = "|cffff0000用户|r%s|cffff0000 给频道加了密 (%s). |cffff9900 如果你不知道密码,您将无法使用类似搜索玩家位置这样的功能。",
@@ -252,7 +252,7 @@ TRP3_API.loc:RegisterNewLocale("zhCN", "简体中文", {
 	["CO_MINIMAP_BUTTON_RESET_BUTTON"] = "重置",
 	["CO_MINIMAP_BUTTON_SHOW_HELP"] = [=[如果您正在使用另一个插件来显示Total rp3的小地图按钮(FuBar, Titan, Bazooka)，您可以从小地图中删除该按钮。
 
-| cff00ff00 提醒:您可以使用 /trp3 switch main |r打开trp3]=],
+|cff00ff00 提醒:您可以使用 /trp3 switch main|r 打开trp3]=],
 	["CO_MINIMAP_BUTTON_SHOW_TITLE"] = "显示小地图按钮",
 	["CO_MODULES"] = "模块状态",
 	["CO_MODULES_DISABLE"] = "禁用模块",
@@ -391,7 +391,7 @@ TRP3_API.loc:RegisterNewLocale("zhCN", "简体中文", {
 	["CO_UI_RELOAD_WARNING"] = [=[需要重新加载界面，以便应用更改。
 您现在要重新加载界面吗?]=],
 	["CO_WIM"] = "|cffff9900 悄悄话频道是禁用的。",
-	["CO_WIM_TT"] = "您正在使用| cff00密语 |r，悄悄话频道的处理出于兼容性的目的被禁用",
+	["CO_WIM_TT"] = "您正在使用|cff00ff00密语|r，悄悄话频道的处理出于兼容性的目的被禁用",
 	["COM_LIST"] = "命令列表：",
 	["COM_RESET_RESET"] = "界面位置已经被重置！",
 	["COM_RESET_USAGE"] = "使用：重置你的所有界面位置。",
@@ -437,7 +437,7 @@ TRP3_API.loc:RegisterNewLocale("zhCN", "简体中文", {
 	["DB_STATUS_RP_OOC_TT"] = [=[你不在扮演你的角色.
 你的言行和你的角色没有必然联系.]=],
 	["DB_STATUS_RP_VOLUNTEER"] = "RP玩家志愿者",
-	["DB_STATUS_RP_VOLUNTEER_TT"] = [=[这个选择将在你的工具提示上显示一个图标, 
+	["DB_STATUS_RP_VOLUNTEER_TT"] = [=[这个选择将在你的工具提示上显示一个图标,
 表示你愿意帮助他们中的角色扮演新手.]=],
 	["DB_STATUS_XP"] = "玩家状态",
 	["DB_STATUS_XP_BEGINNER"] = "RP新人",
@@ -507,7 +507,7 @@ TRP3_API.loc:RegisterNewLocale("zhCN", "简体中文", {
 	["MATURE_FILTER_REMOVE_FROM_SAFELIST_TT"] = "将这个资料卡加入|cffffffff成人信息白名单|r并隐藏其中的成人内容。",
 	["MATURE_FILTER_STRENGTH"] = "分级过滤器强度",
 	["MATURE_FILTER_STRENGTH_TT"] = [=[设置分级过滤器的强度。
-| cffcccccccc1是最弱的(表示需要10个成人词汇)，10个是最强的(表示需要1个成人词汇)]=],
+|cffcccccc1是最弱的(表示需要10个成人词汇)，10个是最强的(表示需要1个成人词汇)]=],
 	["MATURE_FILTER_TITLE"] = "关键字过滤",
 	["MATURE_FILTER_TOOLTIP_WARNING"] = "成年人的内容",
 	["MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT"] = "这个玩家文件包含成年人的内容。你可以使用工具栏的按钮来显示这些内容。",
@@ -587,7 +587,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["NEW_VERSION"] = [=[|cff00ff00TRP3的一个新版本(v %s)已可用。
 
 	|cffffff00我们强烈建议你升级插件。|r
-	
+
 	本消息每次游戏只会显示一次并可在设置中关闭(通用设置=>杂项)。]=],
 	["NEW_VERSION_BEHIND"] = "你当前落后%s个版本因而缺少bug修复和新功能，其他玩家可能无法正确看到你的人物卡。请考虑升级插件。",
 	["NEW_VERSION_TITLE"] = "新的更新可用",
@@ -991,7 +991,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_ICON_TT"] = "为你的角色选一个图标.",
 	["REG_PLAYER_IGNORE"] = "忽略相关特征 (%s)",
 	["REG_PLAYER_IGNORE_WARNING"] = [=[你想忽略这些角色吗?
-| cffff9900%s
+|cffff9900%s
 可以选择输入以下原因。这是一个个人笔记，可以作为提醒。]=],
 	["REG_PLAYER_LASTNAME"] = "姓",
 	["REG_PLAYER_LASTNAME_TT"] = "这是你的角色的姓.",
@@ -1027,13 +1027,13 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_PSYCHO_CUSTOMCOLOR"] = "选择属性颜色",
 	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT"] = [=[选择使用一个颜色来表示左倾属性。
 
-|cffffff00左健:| r选择一个颜色
-|cffffff00右键:| r放弃颜色
+|cffffff00左健:|r选择一个颜色
+|cffffff00右键:|r放弃颜色
 |cffffff00Shift-左键:|r使用默认的颜色]=],
 	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT"] = [=[选择使用一个颜色来表示右倾属性。
 
-|cffffff00左健:| r选择一个颜色
-|cffffff00右键:| r放弃颜色
+|cffffff00左健:|r选择一个颜色
+|cffffff00右键:|r放弃颜色
 |cffffff00Shift-左键:|r使用默认的颜色]=],
 	["REG_PLAYER_PSYCHO_Egoiste"] = "自私",
 	["REG_PLAYER_PSYCHO_Genereux"] = "无私",
@@ -1112,7 +1112,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_TITLE"] = "头衔",
 	["REG_PLAYER_TITLE_TT"] = [=[你的角色的头衔是你的角色通常的称呼。请避免长头衔，你可以在下方输入完整的头衔。
 
-例如 |c0000ff00合适的头衔 |r:
+例如 |c0000ff00合适的头衔|r :
 |c0000ff00- 女伯爵,
 - 侯爵,
 - 占星师,
@@ -1182,7 +1182,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_RELATION_NEUTRAL_TT"] = "%s 对 %s没有什么特别的感觉。",
 	["REG_RELATION_NONE"] = "无",
 	["REG_RELATION_NONE_TT"] = "%s 不认识 %s.",
-	["REG_RELATION_TARGET"] = "|cffffff00Click: |r改变关系",
+	["REG_RELATION_TARGET"] = "|cffffff00Click:|r 改变关系",
 	["REG_RELATION_UNFRIENDLY"] = "不友善",
 	["REG_RELATION_UNFRIENDLY_TT"] = "%s 明显不喜欢 %s。",
 	["REG_REPORT_PLAYER_OPEN_URL"] = [=[你只能在能将其选定为目标的情况下直接举报一个玩家（使用TRP3框架的举报按钮）。
@@ -1191,7 +1191,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_REPORT_PLAYER_OPEN_URL_160"] = "如果你想举报%s的人物卡，你需要你通过下面的链接向暴雪提交表单。",
 	["REG_REPORT_PLAYER_PROFILE"] = "向 |cff449fe0暴雪|r举报玩家",
 	["REG_REPORT_PLAYER_PROFILE_TT"] = [=[你可以举报违反暴雪游戏条款的行为，包括但不限于骚扰，不当言论, 淫秽内容等。
-	
+
 	|cffff0000请注意，本功能并非是用来举报不严谨的RP设定，滥用此功能将遭到惩罚！]=],
 	["REG_REPORT_PLAYER_TEMPLATE"] = "此玩家通过分享 %s 的RP插件信息违反了暴雪的游戏条款。",
 	["REG_REPORT_PLAYER_TEMPLATE_DATE"] = "插件数据是通过 %s 的信息传输的。",
@@ -1287,7 +1287,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["UI_COLOR_BROWSER_PRESETS_RESOURCES"] = "资源",
 	["UI_COLOR_BROWSER_SELECT"] = "选择颜色",
 	["UI_COMPANION_BROWSER_HELP"] = "选择一个战斗的宠物",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00警告: |r只有重命名过的战斗宠物可以绑定到同伴卡。
+	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00警告:|r 只有重命名过的战斗宠物可以绑定到同伴卡。
 
 |cff00ff00此处仅列出符合条件的战斗宠物。]=],
 	["UI_FILTER"] = "筛选",
@@ -1308,7 +1308,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["UI_LINK_WARNING"] = [=[这是链接URL。
 您可以在web浏览器中复制/粘贴它。
 
-| cffff0000 ! !免责声明! ! | r
+|cffff0000 ! !免责声明! !|r
 Total RP不对导致有害内容的链接负责。]=],
 	["UI_MUSIC_ALTTITLE"] = "其他标题",
 	["UI_MUSIC_BROWSER"] = "浏览音乐",
@@ -1334,7 +1334,7 @@ Total RP不对导致有害内容的链接负责。]=],
 	["UNIT_POPUPS_CONFIG_ENTRIES_HEADER"] = "菜单项",
 	["UNIT_POPUPS_CONFIG_MENU_TITLE"] = "菜单设置",
 	["UNIT_POPUPS_CONFIG_PAGE_HELP"] = "单位框体模块会对团队框体和聊天框内右击玩家的动作产生一个右键菜单。",
-	["UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE"] = "|cffffcc00Note: |r 由于10.0版本编辑模式的问题，单位弹窗已暂时|cffff0000禁用|r。我们对带来的不便深表歉意！",
+	["UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE"] = "|cffffcc00Note:|r 由于10.0版本编辑模式的问题，单位弹窗已暂时|cffff0000禁用|r。我们对带来的不便深表歉意！",
 	["UNIT_POPUPS_CONFIG_PAGE_TEXT"] = "菜单设置",
 	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS"] = "显示角色状态按钮",
 	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP"] = "如果勾选，将为你自己的角色头像添加一个可以修改IC/OOC状态的右键菜单。",
@@ -1348,7 +1348,7 @@ Total RP不对导致有害内容的链接负责。]=],
 	["UNIT_POPUPS_CURRENT_PROFILE"] = "当前人物卡",
 	["UNIT_POPUPS_CURRENT_PROFILE_NAME"] = "当前人物卡：%1$s",
 	["UNIT_POPUPS_MODULE_DESCRIPTION"] = "添加团队框架和聊天框中的右键点击菜单。",
-	["UNIT_POPUPS_MODULE_DISABLE_WARNING"] = "关闭框体模块需要重载界面。.|n|n|cffff0000警告： |r一旦关闭，该模块只能从|cffffcc00模块状态|r 页面重新启动。|n|n你确定要关闭该模块吗？",
+	["UNIT_POPUPS_MODULE_DISABLE_WARNING"] = "关闭框体模块需要重载界面。.|n|n|cffff0000警告：|r 一旦关闭，该模块只能从|cffffcc00模块状态|r 页面重新启动。|n|n你确定要关闭该模块吗？",
 	["UNIT_POPUPS_MODULE_NAME"] = "单位弹窗",
 	["UNIT_POPUPS_OPEN_PROFILE"] = "打开人物卡",
 	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "角色扮演状态"

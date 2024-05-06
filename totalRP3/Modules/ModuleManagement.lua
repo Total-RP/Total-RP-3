@@ -151,7 +151,7 @@ local function handleModuleError(module, err)
 		return;
 	end
 
-	DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while loading module \"%s\": |r%s"):format(tostring(module.id), tostring(err)), 1, 1, 1);
+	DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while loading module \"%s\":|r %s"):format(tostring(module.id), tostring(err)), 1, 1, 1);
 end
 
 --- Invokes a given module function with any additional given parameters,

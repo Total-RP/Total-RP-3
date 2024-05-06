@@ -2,10 +2,10 @@
 
 Download on [CurseForge].
 
-Are you having an issue with Total RP 3? Check the [F.A.Q] and our [troubleshooting page]!  
+Are you having an issue with Total RP 3? Check the [F.A.Q] and our [troubleshooting page]!
 
-> “I recently switched over to Total RP 3 and it is so much better! […] Total RP 3 is probably the best [roleplay add-on] that I found.”  
-> — Anne Stickney [@Shadesogrey](https://twitter.com/Shadesogrey), in [Blizzard Watch — Episode 95](http://bit.ly/2gtTgYf)  
+> “I recently switched over to Total RP 3 and it is so much better! […] Total RP 3 is probably the best [roleplay add-on] that I found.”
+> — Anne Stickney [@Shadesogrey](https://twitter.com/Shadesogrey), in [Blizzard Watch — Episode 95](http://bit.ly/2gtTgYf)
 > Senior Editor and Lore Columnist for the [Blizzard Watch website](http://blizzardwatch.com)
 
 </div>

@@ -19,7 +19,7 @@ TRP3_API.loc:RegisterNewLocale("esES", "Español (EU)", {
 	["BROADCAST_PASSWORD"] = [=[|cffff0000Hay una contraseña para el canal de emisión (%s).
 |cffff9900TRP3 no intentará conectarse de nuevo pero no podrás usar algunas características como la localización de jugadores en el mapa.
 |cff00ff00Puedes deshabilitar o cambiar de canal de emisión en la configuración general de TRP3.]=],
-	["BROADCAST_PASSWORDED"] = [=[|cffff0000El usuario |r%s|cffff0000 ha puesto contraseña para el canal de emisión (%s).
+	["BROADCAST_PASSWORDED"] = [=[|cffff0000El usuario|r %s |cffff0000ha puesto contraseña para el canal de emisión (%s).
 |cffff9900Si no conoces la contraseña, no podrás usar algunas características como la localización de personajes en el mapa.]=],
 	["BW_COLOR_CODE"] = "Código de color",
 	["BW_COLOR_CODE_ALERT"] = "¡Código hexadecimal erróneo!",
@@ -340,10 +340,10 @@ Posibles estados:
 	["CO_TOOLTIP_CROP_TEXT"] = "Trunca textos excesivamente largos",
 	["CO_TOOLTIP_CROP_TEXT_TT"] = [=[Limita el número de caracteres que pueden ser expuestos por cada campo en información para prevenir textos excesivamente largos y posibles problemas en el diseño.
 
-|cfffff569Detalles de límites: 
-Nombre: 100 caracteres 
-Título: 150 caracteres 
-Raza: 50 caracteres 
+|cfffff569Detalles de límites:
+Nombre: 100 caracteres
+Título: 150 caracteres
+Raza: 50 caracteres
 Clase: 50 caracteres|r]=],
 	["CO_TOOLTIP_CURRENT"] = "Mostrar información \"actual\"",
 	["CO_TOOLTIP_CURRENT_LINES"] = "Saltos de línea máximos en información \"Actualmente\"",
@@ -697,11 +697,11 @@ Puede causar incompatibilidades.
 	["PR_SLASH_OPEN_WAITING"] = "|cffffff00Solicitando perfil, por favor espera...|r",
 	["PR_SLASH_SWITCH_HELP"] = "Cambiar a otro perfil usando su nombre.",
 	["PR_UNUSED_PROFILE"] = "Este perfil actualmente no está vinculado a ningún personaje de WoW.",
-	["REG_CODE_INSERTION_WARNING"] = [=[|TInterface\AddOns\totalRP3\resources\policegar.tga:50:50|t ¡Espera un momento! 
+	["REG_CODE_INSERTION_WARNING"] = [=[|TInterface\AddOns\totalRP3\resources\policegar.tga:50:50|t ¡Espera un momento!
 
-Hemos descubierto que has insertado códigos inválidos en tu perfil de Total RP 3. 
+Hemos descubierto que has insertado códigos inválidos en tu perfil de Total RP 3.
 No compartimos este comportamiento y desaconsejamos hacerlo.
-Puede conducir a inestabilidades y bugs en el add-on, corrupción de datos/pérdia de perfiles y también crea problemas de compatibilidad con otros add-ons (como MRP). 
+Puede conducir a inestabilidades y bugs en el add-on, corrupción de datos/pérdia de perfiles y también crea problemas de compatibilidad con otros add-ons (como MRP).
 
 Los códigos que has introducido en tu perfil han sido eliminados para prevenir mal funcionamiento del add-on.]=],
 	["REG_COMPANION"] = "Compañero",
@@ -884,7 +884,7 @@ Puedes hacerlo de distintas maneras:|c0000ff00
 
 |cff00ff00Por ejemplo :|r
 Caballero, pirotécnico, nigromante, arcanista...]=],
-	["REG_PLAYER_COLOR_ALWAYS_DEFAULT_TT"] = [=[|cffffff00Clic:|r Selecciona un color 
+	["REG_PLAYER_COLOR_ALWAYS_DEFAULT_TT"] = [=[|cffffff00Clic:|r Selecciona un color
 |cffffff00Clic derecho:|r Descarta un color]=],
 	["REG_PLAYER_COLOR_CLASS"] = "Color de clase",
 	["REG_PLAYER_COLOR_CLASS_TT"] = [=[Esto determina el color en que se visualizará la clase.
@@ -1153,7 +1153,7 @@ Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplement
 	["REG_RELATION_NEUTRAL_TT"] = "%s conoce a %s.",
 	["REG_RELATION_NONE"] = "Ninguna",
 	["REG_RELATION_NONE_TT"] = "%s no conoce a %s.",
-	["REG_RELATION_TARGET"] = "|cffffff00Clic: |rCambiar relación",
+	["REG_RELATION_TARGET"] = "|cffffff00Clic:|r Cambiar relación",
 	["REG_RELATION_UNFRIENDLY"] = "Enemigo",
 	["REG_RELATION_UNFRIENDLY_TT"] = "%s está enemistado con %s.",
 	["REG_REPORT_PLAYER_OPEN_URL"] = [=[Solo puedes denunciar a jugadores desde el juego si los marcas como objetivo (usa el botón de marco de objetivo de TRP3).
@@ -1266,7 +1266,7 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 	["UI_COLOR_BROWSER_PRESETS_RESOURCES"] = "Recursos",
 	["UI_COLOR_BROWSER_SELECT"] = "Seleccionar color",
 	["UI_COMPANION_BROWSER_HELP"] = "Seleccionar compañero",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Advertencia: |rSólo los compañeros renombrados pueden vincularse a un perfil..
+	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Advertencia:|r Sólo los compañeros renombrados pueden vincularse a un perfil..
 
 |cff00ff00Esta sección sólo muestra a estos compañeros.]=],
 	["UI_FILTER"] = "Filtro",

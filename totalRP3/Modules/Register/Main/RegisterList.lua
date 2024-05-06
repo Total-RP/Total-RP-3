@@ -1060,7 +1060,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			end,
 			adapter = function(buttonStructure, unitID)
 				buttonStructure.tooltip = loc.REG_PLAYER;
-				buttonStructure.tooltipSub =  "|cffffff00" .. loc.CM_CLICK .. ": |r" .. loc.TF_OPEN_CHARACTER;
+				buttonStructure.tooltipSub =  "|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.TF_OPEN_CHARACTER;
 				buttonStructure.alert = nil;
 				if unitID ~= Globals.player_id and hasProfile(unitID) then
 					local profile = getUnitIDProfile(unitID);

@@ -92,7 +92,7 @@ TRP3_API.loc:RegisterNewLocale("frFR", "Français", {
 	["BROADCAST_PASSWORD"] = [=[|cffff0000Un mot de passe a été défini pour le canal de diffusion (%s).
 |cffff9900Total RP 3 n'essaiera plus de se connecter mais vous ne serez pas en mesure d'utiliser certaines fonctionnalités, comme l'emplacement des autres utilisateurs sur la carte.
 |cff00ff00Vous pouvez désactiver ou modifier le canal de diffusion dans les réglages de Total RP 3.]=],
-	["BROADCAST_PASSWORDED"] = [=[|cffff0000L'utilisateur |r%s|cffff0000 vient de mettre un mot de passe sur le canal de diffusion (%s).
+	["BROADCAST_PASSWORDED"] = [=[|cffff0000L'utilisateur|r %s |cffff0000vient de mettre un mot de passe sur le canal de diffusion (%s).
 |cffff9900Si vous ne connaissez pas ce mot de passe vous ne serez pas en mesure d'utiliser certaines fonctionnalités, comme l'emplacement des autres utilisateurs sur la carte.
 ]=],
 	["BW_COLOR_CODE"] = "Code couleur",
@@ -457,7 +457,7 @@ Statuts possibles:
 Nom: 100 caractères
 Titre: 150 caractères
 Race: 50 caractères
-Classe: 50 caractères |r]=],
+Classe: 50 caractères|r]=],
 	["CO_TOOLTIP_CURRENT"] = "Afficher l'information \"actuellement\"",
 	["CO_TOOLTIP_CURRENT_LINES"] = "Sauts de ligne max pour \"Actuellement\"",
 	["CO_TOOLTIP_CURRENT_SIZE"] = "Longueur maximale de l'information \"actuellement\"",
@@ -778,7 +778,7 @@ Ajoute un bouton à votre barre d'outils pour activer ou désactiver votre affic
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Paramètres de visibilité",
 	["NAMEPLATES_MODULE_ACTIVE_STATUS"] = "Module |cff00ff00actif|r (%1$s|r)",
 	["NAMEPLATES_MODULE_DESCRIPTION"] = "Active la personnalisation des barres d'info avec les informations contenues dans les profils RP.",
-	["NAMEPLATES_MODULE_DISABLE_WARNING"] = "Désactiver le module de barres d'info bloquera toute personnalisation des barres d'info. L'interface devra être rechargée pour que ce changement prenne effet.|n|n|cffff0000Attention: |rUne fois désactivé, ce module ne peut être réactivé que via l'onglet de |cffffcc00Statut des modules|r.|n|nVoulez-vous vraiment désactiver ce module ?",
+	["NAMEPLATES_MODULE_DISABLE_WARNING"] = "Désactiver le module de barres d'info bloquera toute personnalisation des barres d'info. L'interface devra être rechargée pour que ce changement prenne effet.|n|n|cffff0000Attention:|r Une fois désactivé, ce module ne peut être réactivé que via l'onglet de |cffffcc00Statut des modules|r.|n|nVoulez-vous vraiment désactiver ce module ?",
 	["NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY"] = "Ce module a été automatiquement désactivé dû à une dépendance manquante.",
 	["NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL"] = "Ce module a été automatiquement désactivé dû à un conflit avec un autre module ou addon.",
 	["NAMEPLATES_MODULE_INACTIVE_STATUS"] = "Module |cffff9900inactif|r (pas d'addon détecté)",
@@ -1137,7 +1137,7 @@ Pensez bien que, même si le visage de votre personnage est constamment caché, 
 	["REG_PLAYER_FIRSTNAME"] = "Prénom",
 	["REG_PLAYER_FIRSTNAME_TT"] = [=[C'est le prénom de votre personnage. Ce champ est obligatoire, donc si vous ne spécifiez aucun nom, le nom du personnage par défaut (|cffffff00%s|r) sera utilisé.
 
-Vous pouvez utiliser un |c0000ff00surnom |r!]=],
+Vous pouvez utiliser un |c0000ff00surnom|r !]=],
 	["REG_PLAYER_FULLTITLE"] = "Titre complet",
 	["REG_PLAYER_FULLTITLE_TT"] = [=[Vous pouvez indiquer ici le titre complet de votre personnage. Cela peut être une version plus longue du Titre ou un tout autre titre.
 
@@ -1321,7 +1321,7 @@ Si vous ne voulez pas indiquer la personnalité de votre personnage ainsi, laiss
 	["REG_PLAYER_TITLE"] = "Titre",
 	["REG_PLAYER_TITLE_TT"] = [=[Le titre de votre personnage est le titre par lequel votre personnage est habituellement appelé. Evitez les titres longs, l'attribut de Titre complet y est consacré.
 
-Exemple de |c0000ff00titres appropriés |r:
+Exemple de |c0000ff00titres appropriés|r :
 |c0000ff00- Comtesse,
 - Marquis,
 - Magus,
@@ -1391,7 +1391,7 @@ Il pourrait par exemple être |c0000ff00mince, gros ou musclé...|r Ou tout simp
 	["REG_RELATION_NEUTRAL_TT"] = "%s n'a pas d'affection particulière pour %s.",
 	["REG_RELATION_NONE"] = "Aucune",
 	["REG_RELATION_NONE_TT"] = "%s ne connaît pas %s.",
-	["REG_RELATION_TARGET"] = "|cffffff00Clic gauche: |rChanger la relation",
+	["REG_RELATION_TARGET"] = "|cffffff00Clic gauche:|r Changer la relation",
 	["REG_RELATION_UNFRIENDLY"] = "Hostile",
 	["REG_RELATION_UNFRIENDLY_TT"] = "%s n'aime vraiment pas %s.",
 	["REG_REPORT_PLAYER_OPEN_URL"] = [=[Vous pouvez uniquement signaler les joueurs en jeu depuis la barre de ciblage de Total RP 3, via le bouton de signalement.
@@ -1539,7 +1539,7 @@ Change le statut de votre personnage en fonction de l'option spécifiée:
 	["UI_COLOR_BROWSER_PRESETS_RESOURCES"] = "Ressources",
 	["UI_COLOR_BROWSER_SELECT"] = "Choisir une couleur",
 	["UI_COMPANION_BROWSER_HELP"] = "Sélectionner une mascotte",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Attention: |rSeules les mascottes renommées peuvent être associées à un profil.
+	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Attention:|r Seules les mascottes renommées peuvent être associées à un profil.
 
 |cff00ff00Cette section ne liste que ces mascottes.]=],
 	["UI_FILTER"] = "Filtre",
@@ -1569,10 +1569,10 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 	["UI_MUSIC_DURATION"] = "Durée",
 	["UI_MUSIC_SELECT"] = "Choisir une musique",
 	["UI_PET_BROWSER_ACCEPT"] = "Assigner",
-	["UI_PET_BROWSER_BOUND_WARNING"] = "|cffff0000Attention: |rCe familier est actuellement assigné au profil |cff00ff00%1$s|r. Assigner un profil à ce familier remplacera le profil actuel.",
+	["UI_PET_BROWSER_BOUND_WARNING"] = "|cffff0000Attention:|r Ce familier est actuellement assigné au profil |cff00ff00%1$s|r. Assigner un profil à ce familier remplacera le profil actuel.",
 	["UI_PET_BROWSER_EMPTY_TEXT"] = "Vous n'avez pas de familier pouvant être associé à ce profil.",
 	["UI_PET_BROWSER_INTRO_TEXT"] = "Sélectionnez un familier avec les boutons ci-dessous et cliquez |cffffff00Assigner|r pour le lier au profil.",
-	["UI_PET_BROWSER_NAME_WARNING"] = "|cffff0000Attention: |rCe familier n'a pas été renommé. Il est recommandé de renommer le familier pour éviter d'afficher ce profil sur les autres familiers que vous possédez partageant le même nom.",
+	["UI_PET_BROWSER_NAME_WARNING"] = "|cffff0000Attention:|r Ce familier n'a pas été renommé. Il est recommandé de renommer le familier pour éviter d'afficher ce profil sur les autres familiers que vous possédez partageant le même nom.",
 	["UI_TUTO_BUTTON"] = "Mode tutoriel",
 	["UI_TUTO_BUTTON_TT"] = "Cliquer pour afficher ou masquer le mode tutoriel",
 	["UNIT_POPUPS_CHARACTER_STATUS"] = "Statut de personnage",
@@ -1588,7 +1588,7 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 	["UNIT_POPUPS_CONFIG_ENTRIES_HEADER"] = "Eléments de menu",
 	["UNIT_POPUPS_CONFIG_MENU_TITLE"] = "Paramètres de menu",
 	["UNIT_POPUPS_CONFIG_PAGE_HELP"] = "Le module de menus d'unités ajoute des éléments additionnels aux menus de clic-droit sur les portraits d'unités et les noms dans la fenêtre de discussion.",
-	["UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE"] = "|cffffcc00Note: |r A cause de problèmes avec le Mode Edition du patch 10.0.0, le module de menus d'unités a été |cffff0000désactivé|r. Désolé pour le dérangement !",
+	["UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE"] = "|cffffcc00Note:|r A cause de problèmes avec le Mode Edition du patch 10.0.0, le module de menus d'unités a été |cffff0000désactivé|r. Désolé pour le dérangement !",
 	["UNIT_POPUPS_CONFIG_PAGE_TEXT"] = "Paramètres de menu",
 	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS"] = "Afficher le bouton de statut de personnage",
 	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP"] = "Si coché, ajoute une case à cocher au menu de votre propre portrait d'unité vous permettant de changer votre statut RP/HRP.",
@@ -1602,7 +1602,7 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 	["UNIT_POPUPS_CURRENT_PROFILE"] = "Profil actuel",
 	["UNIT_POPUPS_CURRENT_PROFILE_NAME"] = "Profil actuel: %1$s",
 	["UNIT_POPUPS_MODULE_DESCRIPTION"] = "Ajoute l'intégration aux menus de clic-droit sur les portraits d'unités et les noms de joueurs dans les fenêtres de discussion.",
-	["UNIT_POPUPS_MODULE_DISABLE_WARNING"] = "L'interface devra être rechargée pour désactiver le module de menus d'unités.|n|n|cffff0000Attention: |rUne fois désactivé, ce module ne peut être réactivé que via l'onglet de |cffffcc00Statut des modules|r.|n|nVoulez-vous vraiment désactiver ce module ?",
+	["UNIT_POPUPS_MODULE_DISABLE_WARNING"] = "L'interface devra être rechargée pour désactiver le module de menus d'unités.|n|n|cffff0000Attention:|r Une fois désactivé, ce module ne peut être réactivé que via l'onglet de |cffffcc00Statut des modules|r.|n|nVoulez-vous vraiment désactiver ce module ?",
 	["UNIT_POPUPS_MODULE_NAME"] = "Menus d'unités",
 	["UNIT_POPUPS_OPEN_PROFILE"] = "Ouvrir profil",
 	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "Options roleplay",

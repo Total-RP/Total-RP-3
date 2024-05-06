@@ -93,7 +93,7 @@
 - Added 448 icons, 10 images and 118 musics from patch 10.2.
 - Added 5 Classic icons from patch 3.4.3.
 - Added profiles to the automation system to allow you to set different automation rules for different characters, especially useful for alternate forms, stance or specialization conditionals.
-- Added a new "Launcher settings" category letting you control visibility of the minimap button and addon compartment entry, as well as modifying what actions are executed depending on how you click them (left/middle/right mouse button, with modifier key...). 
+- Added a new "Launcher settings" category letting you control visibility of the minimap button and addon compartment entry, as well as modifying what actions are executed depending on how you click them (left/middle/right mouse button, with modifier key...).
 - Added a guild members map scan.
 
 ## Changed
