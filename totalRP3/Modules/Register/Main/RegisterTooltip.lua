@@ -1082,6 +1082,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 	-- Build tooltip
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+	SetProgressSpinnerShown(ui_CharacterTT, false);
 	tooltipBuilder:Build();
 end
 
