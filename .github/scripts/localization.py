@@ -18,6 +18,7 @@ LOCALE_DIR: Path
 
 
 class Locale(enum.Enum):
+    enUS = 'enUS'
     deDE = 'deDE'
     esES = 'esES'
     esMX = 'esMX'
@@ -104,7 +105,7 @@ def cf_prepare_session():
     return session
 
 
-def cf_upload_localization(path: Path, *, delete_missing_phrases: bool, dry_run: bool):
+def cf_upload_single(locale: Locale, path: Path, *, delete_missing_phrases: bool, dry_run: bool):
     session = cf_prepare_session()
 
     with path.open('r', encoding='utf-8') as f:
@@ -125,7 +126,7 @@ def cf_upload_localization(path: Path, *, delete_missing_phrases: bool, dry_run:
         f'https://wow.curseforge.com/api/projects/{CF_PROJECT_ID}/localization/import',
         files={
             'metadata': (None, json.dumps({
-                'language': 'enUS',
+                'language': locale.value,
                 'missing-phrase-handling': 'DeletePhrase' if delete_missing_phrases else 'DoNothing',
             })),
             'localizations': (None, translations),
@@ -135,7 +136,7 @@ def cf_upload_localization(path: Path, *, delete_missing_phrases: bool, dry_run:
     r.raise_for_status()
 
 
-def cf_download_localization(locale: Locale, path: Path, *, dry_run: bool):
+def cf_download_single(locale: Locale, path: Path, *, dry_run: bool):
     url = f"https://wow.curseforge.com/api/projects/{CF_PROJECT_ID}/localization/export"
     params = {'lang': locale.value, 'export-type': 'Table', 'unlocalized': 'Ignore'}
 
@@ -158,20 +159,42 @@ def cf_download_localization(locale: Locale, path: Path, *, dry_run: bool):
 
 local _, TRP3_API = ...;
 
-TRP3_API.loc:RegisterNewLocale("{locale.value}", "{locale.name()}", {contents[4:]});
+local L;
+
+L = {contents[4:]};
+
+TRP3_API.loc:RegisterNewLocale("{locale.value}", "{locale.name()}", L);
 """)
 
 
-def cf_download_multiple_localizations(locales: list[Locale] | None, *, dry_run: bool):
-    if locales:
-        locales = [Locale(l) for l in locales]
+def cf_download_batched(locales: list[Locale] | None, *, dry_run: bool):
+    DEFAULT_DOWNLOAD_LOCALES = [l for l in Locale if l != Locale.enUS]
+
+    if not locales:
+        locales = DEFAULT_DOWNLOAD_LOCALES
     else:
-        locales = Locale
+        locales = [Locale(l) for l in locales]
 
     for locale in locales:
         print(f'Processing locale: {locale.value}...')
         path = LOCALE_DIR / f'{locale.value}.lua'
-        cf_download_localization(locale, path, dry_run=dry_run)
+        cf_download_single(locale, path, dry_run=dry_run)
+
+
+def cf_upload_batched(locales: list[Locale] | None, *, delete_missing_phrases: bool, dry_run: bool):
+    DEFAULT_UPLOAD_LOCALES = [Locale.enUS]
+
+    if not locales:
+        locales = DEFAULT_UPLOAD_LOCALES
+    elif len(locales) == 1 and '*' in locales:
+        locales = Locale
+    else:
+        locales = [Locale(l) for l in locales]
+
+    for locale in locales:
+        print(f'Processing locale: {locale.value}...')
+        path = LOCALE_DIR / f'{locale.value}.lua'
+        cf_upload_single(locale, path, delete_missing_phrases=delete_missing_phrases, dry_run=dry_run)
 
 
 # fmt: off
@@ -182,15 +205,16 @@ parser.add_argument('-r', '--locale-dir', help='Path to the directory of localiz
 
 commands = parser.add_subparsers(title='commands', metavar=None)
 
+download = commands.add_parser('download', help='Fetches translation strings from CurseForge')
+download.add_argument('-l', '--locale', help='Locale(s) to download. Can be repeated for multiple locales. Defaults to enUS only.', action='extend', nargs='*')
+download.add_argument('-n', '--dry-run', help='Do not write localization strings to disk; only print them.', action='store_true')
+download.set_defaults(func=lambda args: cf_download_batched(args.locale, dry_run=args.dry_run))
+
 upload = commands.add_parser('upload', help='Uploads translation strings to CurseForge')
 upload.add_argument('-d', '--delete-missing-phrases', help='Mark missing phrases as deleted.', action='store_true')
+upload.add_argument('-l', '--locale', help='Locale(s) to download. Can be repeated for multiple locales, or set to "*" for all locales. Defaults to all locales except enUS.', action='extend', nargs='*')
 upload.add_argument('-n', '--dry-run', help='Do not submit localization strings to CurseForge; only print them.', action='store_true')
-upload.set_defaults(func=lambda args: cf_upload_localization(LOCALE_DIR / 'enUS.lua', delete_missing_phrases=args.delete_missing_phrases, dry_run=args.dry_run))
-
-download = commands.add_parser('download', help='Fetches translation strings from CurseForge')
-download.add_argument('-l', '--locale', help='Locale to download. Can be repeated for multiple locales. If not supplied, download all locales.', action='extend', nargs='*')
-download.add_argument('-n', '--dry-run', help='Do not write localization strings to disk; only print them.', action='store_true')
-download.set_defaults(func=lambda args: cf_download_multiple_localizations(args.locale, dry_run=args.dry_run))
+upload.set_defaults(func=lambda args: cf_upload_batched(args.locale, delete_missing_phrases=args.delete_missing_phrases, dry_run=args.dry_run))
 
 # fmt: on
 

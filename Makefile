@@ -34,5 +34,8 @@ translations/download:
 translations/upload:
 	$(PYTHON) .github/scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) upload
 
+translations/upload-all:
+	$(PYTHON) .github/scripts/localization.py --project-id=$(CF_PROJECT_ID) --locale-dir=$(LOCALE_DIR) upload -l "*"
+
 .github/scripts/ui.xsd: .FORCE
 	curl -s $(SCHEMA_URL) -o $@
