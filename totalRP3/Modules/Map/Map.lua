@@ -34,13 +34,13 @@ end
 ---@param target string @ A valid unit token
 ---@param targetHasWarModeEnabled bool|nil @ Indicate if the target has War Mode enabled or not. If nil, the check for War Mode will be ignored.
 ---@return boolean canSeeTarget @ Return true if the player can see the target, or false if something like phases prevent them from seeing each other.
-function Map.playerCanSeeTarget(target, targetHasWarModeEnabled)
+function Map.playerCanSeeTarget(target, targetHasWarModeEnabled, targetMapID)
 	-- Players should not see themselves (answer their own requests), except if in DEBUG_MODE, for testing
 	if target == TRP3_API.globals.player_id and not TRP3_API.globals.DEBUG_MODE then
 		return false;
 	end
 	local currentMapID = Map.getPlayerMapID();
-	if tContains(PERSONAL_PHASED_ZONES, currentMapID) then
+	if tContains(PERSONAL_PHASED_ZONES, targetMapID or currentMapID) then
 		-- If the player is in a personal phased zone, the target has to be in their group to be seen
 		return UnitInParty(Ambiguate(target, "none"));
 	end
