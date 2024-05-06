@@ -6,7 +6,9 @@
 
 local _, TRP3_API = ...;
 
-TRP3_API.loc:RegisterNewLocale("esES", "Español (EU)", {
+local L;
+
+L = {
 	["ABOUT_TITLE"] = "Acerca de",
 	["BINDING_NAME_TRP3_OPEN_TARGET_PROFILE"] = "Abrir perfil del objetivo",
 	["BINDING_NAME_TRP3_TOGGLE"] = "Mostrar/ocultar la ventana principal",
@@ -1299,4 +1301,6 @@ Total RP no es responsable de los enlaces que conducen a contenidos nocivos.]=],
 	["UNIT_POPUPS_CURRENT_PROFILE_NAME"] = "Perfil Actual: %1$s",
 	["UNIT_POPUPS_OPEN_PROFILE"] = "Abrir Perfil",
 	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "Opciones de Roleplay"
-});
+};
+
+TRP3_API.loc:RegisterNewLocale("esES", "Español (EU)", L);

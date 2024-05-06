@@ -6,7 +6,9 @@
 
 local _, TRP3_API = ...;
 
-TRP3_API.loc:RegisterNewLocale("frFR", "Français", {
+local L;
+
+L = {
 	["ABOUT_TITLE"] = "À propos",
 	["ANALYTICS_COMMAND_HELP"] = "Affiche les statistiques d'utilisation de l'addon dans la fenêtre de discussion.",
 	["ANALYTICS_CONFIG_ENABLE"] = "Activer %s",
@@ -1629,4 +1631,6 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 
 - Suppression temporaire des options dans les menus au clic droit pour Retail dû à un conflit avec le Mode Edition pouvant bloquer l'utilisation de compétences en combat. Elles seront rajoutées lorsque le conflit sera résolu.
 ]=]
-});
+};
+
+TRP3_API.loc:RegisterNewLocale("frFR", "Français", L);

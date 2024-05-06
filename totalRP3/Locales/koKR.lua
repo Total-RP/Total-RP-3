@@ -6,7 +6,9 @@
 
 local _, TRP3_API = ...;
 
-TRP3_API.loc:RegisterNewLocale("koKR", "한국어", {
+local L;
+
+L = {
 	["ABOUT_TITLE"] = "약",
 	["BW_COLOR_CODE"] = "색상 코드",
 	["BW_COLOR_CODE_ALERT"] = "잘못된 16 진수 코드!",
@@ -44,4 +46,6 @@ TRP3_API.loc:RegisterNewLocale("koKR", "한국어", {
 	["CO_ANCHOR_RIGHT"] = "권리",
 	["COM_LIST"] = "명령의 목록:",
 	["GEN_WELCOME_MESSAGE"] = "Total RP 3 (v %s)를 사용하여 주셔서 감사합니다! 재미를!"
-});
+};
+
+TRP3_API.loc:RegisterNewLocale("koKR", "한국어", L);

@@ -6,7 +6,9 @@
 
 local _, TRP3_API = ...;
 
-TRP3_API.loc:RegisterNewLocale("deDE", "Deutsch", {
+local L;
+
+L = {
 	["ABOUT_TITLE"] = "Über",
 	["BINDING_NAME_TRP3_TOGGLE"] = "Hauptfenster umschalten",
 	["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "Werkzeugleiste umschalten",
@@ -1192,4 +1194,6 @@ Total RP ist NICHT für Links verantwortlich, die auf schädlichen oder illegale
 	["UI_MUSIC_SELECT"] = "Musik auswählen",
 	["UI_TUTO_BUTTON"] = "Tutorialmodus",
 	["UI_TUTO_BUTTON_TT"] = "Klicke, um den Tutorialmodus ein/aus zu schalten"
-});
+};
+
+TRP3_API.loc:RegisterNewLocale("deDE", "Deutsch", L);

@@ -6,7 +6,9 @@
 
 local _, TRP3_API = ...;
 
-TRP3_API.loc:RegisterNewLocale("zhTW", "繁體中文", {
+local L;
+
+L = {
 	["ABOUT_TITLE"] = "關於",
 	["BINDING_NAME_TRP3_TOGGLE"] = "開啟主頁面",
 	["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "開啟工具欄",
@@ -816,4 +818,6 @@ TRP3_API.loc:RegisterNewLocale("zhTW", "繁體中文", {
 	["UI_MUSIC_SELECT"] = "選擇音樂",
 	["UI_TUTO_BUTTON"] = "教學模式",
 	["UI_TUTO_BUTTON_TT"] = "點擊以開啟／關閉教學模式"
-});
+};
+
+TRP3_API.loc:RegisterNewLocale("zhTW", "繁體中文", L);
