@@ -40,6 +40,43 @@ local function ShouldShowCharacterStatus()
 	return false;
 end
 
+local function GetUnitCompanionProfileInfo(unitToken)
+	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
+	local companionFullID = TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType);
+	local owner, companionID = TRP3_API.utils.str.companionIDToInfo(companionFullID);
+	local profileType, profileID;
+
+	if owner == TRP3_API.globals.player_id then
+		profileType = "SELF";
+		profileID = TRP3_API.companions.player.getCompanionProfileID(companionID);
+	else
+		profileType = "OTHER";
+		profileID = TRP3_API.companions.register.companionHasProfile(companionFullID);
+	end
+
+	if profileType and profileID then
+		return { type = profileType, id = profileID };
+	else
+		return nil;
+	end
+end
+
+local function ShouldShowOpenCompanionProfile()
+	if not ShouldShowOpenProfile() then
+		return false;
+	end
+
+	local dropdownFrame = UIDROPDOWNMENU_INIT_MENU;
+	local unitToken = dropdownFrame.unit or "none";
+	local profileInfo = GetUnitCompanionProfileInfo(unitToken);
+
+	if not profileInfo then
+		return false;
+	else
+		return true;
+	end
+end
+
 --
 -- Unit Popups Module
 --
@@ -145,6 +182,22 @@ local function OpenProfile(button)  -- luacheck: ignore 212 (unused button)
 	end
 end
 
+local function OpenCompanionProfile(button)  -- luacheck: ignore 212 (unused button)
+	local dropdownFrame = UIDROPDOWNMENU_INIT_MENU;
+	local unitToken = dropdownFrame.unit;
+	local profileInfo = GetUnitCompanionProfileInfo(unitToken);
+
+	if not profileInfo then
+		return;  -- Maybe something unlinked it while the menu was open?
+	elseif profileInfo.type == "SELF" then
+		TRP3_API.companions.openPage(profileInfo.id);
+		TRP3_API.navigation.openMainFrame();
+	elseif profileInfo.type == "OTHER" then
+		TRP3_API.companions.register.openPage(profileInfo.id);
+		TRP3_API.navigation.openMainFrame();
+	end
+end
+
 local function IsOutOfCharacter(button)  -- luacheck: ignore 212 (unused button)
 	local player = AddOn_TotalRP3.Player.GetCurrentUser();
 	local roleplayStatus = player:GetRoleplayStatus();
@@ -181,6 +234,13 @@ Mixin(UnitPopupsModule.MenuButtons, {
 		ShouldShow = ShouldShowOpenProfile,
 	},
 
+	OpenCompanionProfile = {
+		text = L.UNIT_POPUPS_OPEN_PROFILE,
+		notCheckable = true,
+		func = OpenCompanionProfile,
+		ShouldShow = ShouldShowOpenCompanionProfile,
+	},
+
 	CharacterStatus = {
 		text = L.DB_STATUS_RP_OOC,
 		notCheckable = false,
@@ -193,12 +253,16 @@ Mixin(UnitPopupsModule.MenuButtons, {
 });
 
 Mixin(UnitPopupsModule.MenuEntries, {
+	BATTLEPET      = { "OpenCompanionProfile" },
 	CHAT_ROSTER    = { "OpenProfile" },
 	FRIEND         = { "OpenProfile" },
 	FRIEND_OFFLINE = { "OpenProfile" },
 	GUILD          = { "OpenProfile" },
 	GUILD_OFFLINE  = { "OpenProfile" },
+	OTHERBATTLEPET = { "OpenCompanionProfile" },
+	OTHERPET       = { "OpenCompanionProfile" },
 	PARTY          = { "OpenProfile" },
+	PET            = { "OpenCompanionProfile" },
 	PLAYER         = { "OpenProfile" },
 	RAID           = { "OpenProfile" },
 	RAID_PLAYER    = { "OpenProfile" },
