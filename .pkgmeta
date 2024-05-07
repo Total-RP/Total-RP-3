@@ -37,6 +37,9 @@ externals:
   totalRP3/Libs/LibRPMedia: https://github.com/wow-rp-addons/LibRPMedia
   totalRP3/Libs/LibStub: https://repos.curseforge.com/wow/libstub/trunk
   totalRP3/Libs/LibWindow-1.1: https://repos.curseforge.com/wow/libwindow-1-1/trunk/LibWindow-1.1
+  totalRP3/Libs/TaintLess:
+    url: https://www.townlong-yak.com/addons.git/taintless
+    commit: default
   totalRP3/Libs/UTF8: https://repos.curseforge.com/wow/utf8/trunk
 
 embedded-libraries:
