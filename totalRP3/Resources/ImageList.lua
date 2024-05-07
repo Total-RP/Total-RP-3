@@ -3113,6 +3113,11 @@ local IMAGES = {
 		height = 421
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_MapPirate",
+		width = 748,
+		height = 421
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion07\\Main\\LoadingScreen_MechagonArena",
 		width = 748,
 		height = 421
