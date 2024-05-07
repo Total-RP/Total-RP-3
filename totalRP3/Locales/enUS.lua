@@ -713,7 +713,7 @@ Possible status:
 	PR_CO_PROFILE_HELP = [[A profile contains all information about a |cffffff00"pet"|r as a |cff00ff00roleplay character|r.
 
 A companion profile can be linked to:
-- A battle pet |cffff9900(only if it has been renamed)|r
+- A battle pet
 - A hunter pet
 - A warlock minion
 - A mage elemental
@@ -823,7 +823,7 @@ This will works:|cff00ff00
 - On any icon in the spellbook|r]],
 	UI_ICON_BROWSER_SEARCHING = "Searching...",
 	UI_COMPANION_BROWSER_HELP = "Select a battle pet",
-	UI_COMPANION_BROWSER_HELP_TT = "|cffffff00Warning:|r Only renamed battle pets can be linked to a profile.\n\n|cff00ff00This section lists these battle pets only.",
+	UI_COMPANION_BROWSER_RENAME_WARNING = "|cffff0000Warning:|r It is strongly recommended to only link companion profiles to renamed pets.",
 	UI_ICON_SELECT = "Select icon",
 	UI_MUSIC_BROWSER = "Music browser",
 	UI_MUSIC_SELECT = "Select music",

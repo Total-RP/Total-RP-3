@@ -7,6 +7,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Button name="TRP3_CompanionBrowserButtonTemplate" mixin="TRP3_CompanionBrowserButtonMixin" virtual="true">
 		<Size x="40" y="40"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture parentKey="RenameWarning" atlas="services-icon-warning" useAtlasSize="false" hidden="true">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" x="-2" y="2"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
 		<NormalTexture file="Interface\ICONS\INV_Misc_QuestionMark"/>
 		<PushedTexture file="Interface\ICONS\INV_Misc_QuestionMark"/>
 		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
@@ -80,38 +90,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="BOTTOM" x="0" y="10"/>
 						</Anchors>
 					</EditBox>
-					<Button name="TRP3_CompanionBrowserFilterHelp" inherits="TRP3_HelpButton">
-						<Anchors>
-							<Anchor point="TOPRIGHT" x="-10" y="-10"/>
-						</Anchors>
-						<Layers>
-							<Layer level="OVERLAY">
-
-								<Texture file="Interface\Calendar\EventNotificationGlow" name="$parentBlink" alpha="0.0" alphaMode="ADD">
-									<Animations>
-										<AnimationGroup name="$parentAnimate" looping="REPEAT">
-											<Alpha duration="0.4" toAlpha="0.3" fromAlpha="0" smoothing="IN" order="1"/>
-											<Alpha duration="0.4" toAlpha="0" fromAlpha="0.3" smoothing="OUT" startDelay="0.4" order="1"/>
-										</AnimationGroup>
-									</Animations>
-									<Size x="25" y="25"/>
-									<Anchors>
-										<Anchor x="0" y="0" point="CENTER"/>
-									</Anchors>
-								</Texture>
-							</Layer>
-						</Layers>
-						<Scripts>
-							<OnEnter>
-								TRP3_CompanionBrowserFilterHelpBlinkAnimate:Stop();
-								self.animationShown = true;
-								TRP3_RefreshTooltipForFrame(self);
-							</OnEnter>
-							<OnLoad>
-								self.animationShown = false;
-							</OnLoad>
-						</Scripts>
-					</Button>
 				</Frames>
 			</Frame>
 		</Frames>

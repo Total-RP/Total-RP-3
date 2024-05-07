@@ -306,6 +306,7 @@ stds.wow = {
 				"IsPetTypeChecked",
 				"SetAllPetSourcesChecked",
 				"SetAllPetTypesChecked",
+				"SetCustomName",
 				"SetFilterChecked",
 				"SetPetSortParameter",
 				"SetPetSourceChecked",

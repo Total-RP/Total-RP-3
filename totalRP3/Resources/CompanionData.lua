@@ -33,7 +33,7 @@
 --    GROUP BY CritterSpeciesID, CritterCreatureID
 --    ORDER BY CritterSpeciesID ASC
 
-TRP3_CompanionPetData = C_PetJournal and {} or {
+TRP3_CompanionPetData = {
 	{ speciesID = 39, creatureID = 2671, spellID = 4055, itemID = 4401 },  -- Mechanical Squirrel
 	{ speciesID = 40, creatureID = 7385, spellID = 10673, itemID = 8485 },  -- Bombay Cat
 	{ speciesID = 41, creatureID = 7384, spellID = 10674, itemID = 8486 },  -- Cornish Rex Cat
@@ -235,7 +235,7 @@ TRP3_CompanionPetData = C_PetJournal and {} or {
 --         )
 --     ORDER BY MountID ASC
 
-TRP3_CompanionMountData = C_MountJournal and {} or {
+TRP3_CompanionMountData = {
 	{ mountID = 6, spellID = 458, factionGroup = nil },  -- Brown Horse
 	{ mountID = 7, spellID = 459, factionGroup = nil },  -- Gray Wolf
 	{ mountID = 8, spellID = 468, factionGroup = nil },  -- White Stallion
@@ -769,7 +769,7 @@ do
 		-- Finding the summoned mount is hard work on Classic so we only rescan
 		-- when unit auras change for the player.
 
-		if not C_PetJournal then
+		if not C_MountJournal then
 			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "UNIT_AURA", function(_, unit)
 				local currentMountedStatus = IsMounted();
 				rescanSummonedMountID = rescanSummonedMountID or (unit == "player") and (previousMountedStatus ~= currentMountedStatus);
