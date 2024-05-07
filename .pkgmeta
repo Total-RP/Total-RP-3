@@ -24,6 +24,7 @@ externals:
   totalRP3/Libs/AceEvent-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceEvent-3.0
   totalRP3/Libs/AceSerializer-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceSerializer-3.0
   totalRP3/Libs/CallbackHandler-1.0: https://repos.curseforge.com/wow/callbackhandler/trunk/CallbackHandler-1.0
+  totalRP3/Libs/ChatThrottleLib: https://repos.curseforge.com/wow/chatthrottlelib/trunk
   totalRP3/Libs/Chomp: https://github.com/wow-rp-addons/Chomp
   totalRP3/Libs/LibChatAnims: https://repos.curseforge.com/wow/libchatanims/trunk/LibChatAnims
   totalRP3/Libs/LibCompress: https://repos.curseforge.com/wow/libcompress/trunk
