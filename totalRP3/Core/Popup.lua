@@ -528,7 +528,6 @@ local function decorateCompanion(button, index)
 	local tooltipTitle = "|T" .. icon .. ":40|t " .. name;
 	local tooltipText = text;
 
-
 	-- For Retail clients we strongly recommend that battle pets be renamed
 	-- to be bound, but this is only possible there and not in Classic.
 
