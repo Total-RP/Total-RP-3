@@ -1,3 +1,19 @@
+# Changelog version 2.8.2
+
+*The rate limit changes mentioned last version no longer apply in the outdoor world or garrisons. Instances are still heavily limited.*
+
+## Added
+
+- Added "Open Profile" right-click menu option for pets and battle pets.
+- Added 94 icons and 47 images from patch 10.2.7 (and earlier).
+
+## Fixed
+
+- Fixed battle pets not being able to get a profile assigned on Cataclysm Classic.
+  - As part of this fix, it is now possible to attach a profile to a non-renamed battle pet on Retail. It is still strongly advised to rename battle pets before assigning them a profile.
+- Fixed map scan not working if the player was in Telogrus Rift.
+- Fixed loading icon sometimes showing on companion tooltips.
+
 # Changelog version 2.8.1
 
 *Profile transfers will currently be much slower on Cataclysm Classic due to rate limit changes. We are looking into changes to alleviate this, but they will take time, please bear with us.*
