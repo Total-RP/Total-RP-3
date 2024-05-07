@@ -533,6 +533,16 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_OutlandCupEnd",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_OutlandCupStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_PandariaCupEnd",
 		width = 128,
 		height = 128
@@ -3014,6 +3024,223 @@ local IMAGES = {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-ZULGURUB",
 		width = 256,
 		height = 128
+	},
+	--endregion
+	--region Loading Screens
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_AberrusRaid",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_AmirdrassilRaid",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_ArcaneVaultsDungeon",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_BastionArena",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadingScreen_BastionBlizzconDEMO",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_BrackenhideHollowDungeon",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_CastleNathriaRaid",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_CentaurArena",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_DarkmaulCitadel",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_DawnOfTheInfinite",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_DragonIslesContinent",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_EmeraldDreamZone",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_EnigmaArena",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_HallsOfAtonement",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_HallsOfInfusion",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_LifePoolsDungeon",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_MaldraxxusColiseum",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion07\\Main\\LoadingScreen_MechagonArena",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion07\\Main\\LoadingScreen_MechagonCity",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion07\\Main\\LoadingScreen_MechagonZone",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion07\\Main\\LoadingScreen_Nazjatar",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion07\\Main\\LoadingScreen_Nazjatar_RAID",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadingScreen_NecroticWake",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_NeltharusDungeon",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_NewPlayerExperience",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_NokhudOffensiveDungeon",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion07\\Main\\LOADINGSCREEN_NzothRAID",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion07\\Main\\Loadscreen_NzothRaid_Visions",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_PlagueFallDungeon",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_SanctumofDomination",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_SanguineDepthsDungeon",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_SepulcherOfTheFirstOnes",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\Loadscreen_ShadowlandsContinent",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_SpiresofAscension",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_TazaveshTheVeiledMarket",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_TheAcademyDungeon",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_TheOtherSide",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_TheaterOfPain",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadingScreen_TirnaScitheDungeon",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_Torghast",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_UldamanDungeon",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_VaultOfTheIncarnates",
+		width = 748,
+		height = 421
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_ZerethMortis",
+		width = 748,
+		height = 421
 	},
 	--endregion
 	--region Pet Battles
