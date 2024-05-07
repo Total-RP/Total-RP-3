@@ -593,6 +593,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_TimerunningStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_TombofSargerasStart",
 		width = 128,
 		height = 128
