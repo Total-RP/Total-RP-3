@@ -524,8 +524,21 @@ local function decorateCompanion(button, index)
 	if description and description:len() > 0 then
 		text = text .. "\n\"" .. description .. "\"";
 	end
-	setTooltipForFrame(button, TRP3_CompanionBrowser, "RIGHT", 0, -100,
-		"|T" .. icon .. ":40|t " .. name, text);
+
+	local tooltipTitle = "|T" .. icon .. ":40|t " .. name;
+	local tooltipText = text;
+
+	-- For Retail clients we strongly recommend that battle pets be renamed
+	-- to be bound, but this is only possible there and not in Classic.
+
+	if C_PetJournal and C_PetJournal.SetCustomName and (name == speciesName) then
+		button.RenameWarning:Show();
+		tooltipText = tooltipText .. "|n|n" .. TRP3_API.loc.UI_COMPANION_BROWSER_RENAME_WARNING;
+	else
+		button.RenameWarning:Hide();
+	end
+
+	setTooltipForFrame(button, TRP3_CompanionBrowser, "RIGHT", 0, -100, tooltipTitle, tooltipText);
 	button.index = index;
 end
 
@@ -617,13 +630,20 @@ local function SearchFilterPredicate(value, filter)
 end
 
 local function CollectBattlePets(filter)
+	local uniquePetNames = {};
+
 	local function CollectUnfilteredBattlePets()
 		local battlePets = {};
 
 		for i = 1, GetNumPets() do
-			local _, _, _, customName, _, _, _, speciesName, icon, _, _, _, description = GetPetInfoByIndex(i);
+			local _, _, owned, customName, _, _, _, speciesName, icon, _, _, _, description = GetPetInfoByIndex(i);
 
-			if SearchFilterPredicate(customName, filter) then
+			if not customName or customName == "" then
+				customName = speciesName
+			end
+
+			if owned and not uniquePetNames[customName] and SearchFilterPredicate(customName, filter) then
+				uniquePetNames[customName] = true;
 				table.insert(battlePets, { customName, icon, description, speciesName });
 			end
 		end
@@ -634,6 +654,19 @@ local function CollectBattlePets(filter)
 	return CallWithUnfilteredPetJournal(CollectUnfilteredBattlePets);
 end
 
+local function BattlePetNameComparator(a, b)
+	local customNameA = a[1]
+	local customNameB = b[1]
+	local isRenamedA = customNameA ~= a[4]
+	local isRenamedB = customNameB ~= b[4]
+
+	if isRenamedA ~= isRenamedB then
+		return isRenamedA;
+	else
+		return strcmputf8i(customNameA, customNameB) < 0;
+	end
+end
+
 local function getWoWCompanionFilteredList(filter)
 	local count = 0;
 	wipe(filteredCompanionList);
@@ -642,6 +675,7 @@ local function getWoWCompanionFilteredList(filter)
 		-- Battle pets
 		Mixin(filteredCompanionList, CollectBattlePets(filter));
 		count = #filteredCompanionList;
+		table.sort(filteredCompanionList, BattlePetNameComparator);
 	elseif currentCompanionType == TRP3_Enums.UNIT_TYPE.MOUNT then
 		-- Mounts
 		for _, id in pairs(GetMountIDs()) do
@@ -652,9 +686,9 @@ local function getWoWCompanionFilteredList(filter)
 				count = count + 1;
 			end
 		end
+		table.sort(filteredCompanionList, nameComparator);
 	end
 
-	table.sort(filteredCompanionList, nameComparator);
 
 	return count;
 end
@@ -690,7 +724,6 @@ local function initCompanionBrowser()
 
 	TRP3_CompanionBrowserFilterBox:SetScript("OnTextChanged", filteredCompanionBrowser);
 	TRP3_CompanionBrowserClose:SetScript("OnClick", onCompanionClose);
-	setTooltipForSameFrame(TRP3_CompanionBrowserFilterHelp, "TOPLEFT", 0, 0, loc.UI_COMPANION_BROWSER_HELP ,loc.UI_COMPANION_BROWSER_HELP_TT);
 
 	TRP3_CompanionBrowserFilterBoxText:SetText(loc.UI_FILTER);
 end
@@ -699,19 +732,8 @@ function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback,
 	currentCompanionType = companionType or TRP3_Enums.UNIT_TYPE.BATTLE_PET;
 	if currentCompanionType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
 		TRP3_CompanionBrowserTitle:SetText(loc.REG_COMPANION_BROWSER_BATTLE);
-		TRP3_RefreshTooltipForFrame(TRP3_CompanionBrowserFilterHelp);
-
-		-- For Retail clients we have a restriction that battle pets
-		-- must be renamed to be bound, this is communicated in a help tooltip
-		-- but isn't relevant for Classic so it's hidden there.
-		if C_PetJournal then
-			TRP3_CompanionBrowserFilterHelp:Show();
-		else
-			TRP3_CompanionBrowserFilterHelp:Hide();
-		end
 	else
 		TRP3_CompanionBrowserTitle:SetText(loc.REG_COMPANION_BROWSER_MOUNT);
-		TRP3_CompanionBrowserFilterHelp:Hide();
 	end
 	ui_CompanionBrowserContent.onSelectCallback = onSelectCallback;
 	ui_CompanionBrowserContent.onCancelCallback = onCancelCallback;
@@ -719,10 +741,6 @@ function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback,
 	filteredCompanionBrowser();
 	showPopup(TRP3_CompanionBrowser);
 	TRP3_CompanionBrowserFilterBox:SetFocus();
-
-	if currentCompanionType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
-		TRP3_RefreshTooltipForFrame(TRP3_CompanionBrowserFilterHelp);
-	end
 end
 
 function TRP3_API.popup.showPetBrowser(profileID, onSelectCallback, onCancelCallback)
