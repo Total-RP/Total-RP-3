@@ -22,12 +22,12 @@ jobs:
         run: pip install -r .github/scripts/requirements.txt
 
       - name: Upload CurseForge Translations
-        run: make translations/upload
+        run: make push-locales
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
 
       - name: Download CurseForge Translations
-        run: make translations/download
+        run: make pull-locales
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
 
