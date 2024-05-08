@@ -2,19 +2,14 @@
 
 import argparse
 import enum
+import io
 import json
 import os
-from pathlib import Path
+import sys
+import typing
 
 import requests
-from luaparser import ast, astnodes
 from requests.adapters import HTTPAdapter, Retry
-
-CF_PROJECT_ID: str
-"""CurseForge project ID."""
-
-LOCALE_DIR: Path
-"""Directory path containing localization files of the form 'enUS.lua'."""
 
 
 class Locale(enum.Enum):
@@ -53,43 +48,12 @@ class Locale(enum.Enum):
             return '繁體中文'
 
 
-def find_table_assignment(variable_name: str, statements: list[astnodes.Statement]):
-    """
-    Extracts the first statement from the given list that represents an
-    assignment of a table constructor literal to a named variable, returning
-    a tuple of the assigned variable name and the table constructor expression.
-
-    If no table constructor assignment to the named variable is present in the
-    given list of statements, None is returned.
-    """
-
-    for stmt in statements:
-        if not isinstance(stmt, astnodes.Assign):
-            continue
-
-        for target, value in zip(stmt.targets, stmt.values):
-            if isinstance(target, astnodes.Name) and target.id == variable_name and isinstance(value, astnodes.Table):
-                return (target, value)
-
-    return None
-
-
-def convert_to_table_additions(target: astnodes.Name, value: astnodes.Table):
-    """
-    Converts a table constructor literal ('{ foo = "bar", ...}') to a block of
-    table assignment statements.
-    """
-
-    body: list[astnodes.Statement] = []
-
-    for field in value.fields:
-        key = astnodes.String(field.key.id) if isinstance(
-            field.key, astnodes.Name) else field.key
-
-        index = astnodes.Index(key, target, notation=astnodes.IndexNotation.SQUARE)
-        body.append(astnodes.Assign([index], [field.value]))
-
-    return astnodes.Block(body)
+def read_translation_table(f: typing.TextIO):
+    import itertools
+    iter = itertools.dropwhile(lambda line: line.rstrip() != r"L = {", f)
+    iter = itertools.islice(iter, 1, None)
+    iter = itertools.takewhile(lambda line: line.rstrip() != r"};", iter)
+    return f'{{\n{"".join(iter)}}}'
 
 
 def cf_prepare_session():
@@ -105,39 +69,31 @@ def cf_prepare_session():
     return session
 
 
-def cf_upload_single(locale: Locale, path: Path, *, delete_missing_phrases: bool, dry_run: bool):
-    session = cf_prepare_session()
+def cf_upload_translations(locale: Locale, *, delete_missing_phrases: bool, project_id: str):
+    with io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8') as r:
+        translations = read_translation_table(r)
 
-    with path.open('r', encoding='utf-8') as f:
-        chunk = ast.parse(f.read())
-        assignment = find_table_assignment('L', chunk.body.body)
-
-        if not assignment:
-            raise RuntimeError(f'Failed to find translations in file: {path}')
-
-        additions = convert_to_table_additions(*assignment)
-        translations = ast.to_lua_source(additions)
-
-    if dry_run:
+    if not project_id or int(project_id) <= 0:
         print(translations)
         return
 
-    r = session.post(
-        f'https://wow.curseforge.com/api/projects/{CF_PROJECT_ID}/localization/import',
+    session = cf_prepare_session()
+    res = session.post(
+        f'https://wow.curseforge.com/api/projects/{project_id}/localization/import',
         files={
             'metadata': (None, json.dumps({
                 'language': locale.value,
+                'formatType': 'SimpleTable',
                 'missing-phrase-handling': 'DeletePhrase' if delete_missing_phrases else 'DoNothing',
             })),
             'localizations': (None, translations),
         }
     )
+    res.raise_for_status()
 
-    r.raise_for_status()
 
-
-def cf_download_single(locale: Locale, path: Path, *, dry_run: bool):
-    url = f"https://wow.curseforge.com/api/projects/{CF_PROJECT_ID}/localization/export"
+def cf_download_translations(locale: Locale, *, project_id: str):
+    url = f"https://wow.curseforge.com/api/projects/{project_id}/localization/export"
     params = {'lang': locale.value, 'export-type': 'Table', 'unlocalized': 'Ignore'}
 
     session = cf_prepare_session()
@@ -145,12 +101,8 @@ def cf_download_single(locale: Locale, path: Path, *, dry_run: bool):
     res.raise_for_status()
     contents = res.content.decode('utf-8').replace('\r\n', '\n')
 
-    if dry_run:
-        print(contents)
-        return
-
-    with path.open('w+', encoding='utf-8', newline='\r\n') as f:
-        f.write(f"""\
+    with io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8') as w:
+        w.write(f"""\
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
@@ -166,62 +118,25 @@ L = {contents[4:]};
 TRP3_API.loc:RegisterNewLocale("{locale.value}", "{locale.name()}", L);
 """)
 
-
-def cf_download_batched(locales: list[Locale] | None, *, dry_run: bool):
-    DEFAULT_DOWNLOAD_LOCALES = [l for l in Locale if l != Locale.enUS]
-
-    if not locales:
-        locales = DEFAULT_DOWNLOAD_LOCALES
-    else:
-        locales = [Locale(l) for l in locales]
-
-    for locale in locales:
-        print(f'Processing locale: {locale.value}...')
-        path = LOCALE_DIR / f'{locale.value}.lua'
-        cf_download_single(locale, path, dry_run=dry_run)
-
-
-def cf_upload_batched(locales: list[Locale] | None, *, delete_missing_phrases: bool, dry_run: bool):
-    DEFAULT_UPLOAD_LOCALES = [Locale.enUS]
-
-    if not locales:
-        locales = DEFAULT_UPLOAD_LOCALES
-    elif len(locales) == 1 and '*' in locales:
-        locales = Locale
-    else:
-        locales = [Locale(l) for l in locales]
-
-    for locale in locales:
-        print(f'Processing locale: {locale.value}...')
-        path = LOCALE_DIR / f'{locale.value}.lua'
-        cf_upload_single(locale, path, delete_missing_phrases=delete_missing_phrases, dry_run=dry_run)
-
-
 # fmt: off
 
 parser = argparse.ArgumentParser(prog='upload-localization.py', description='CurseForge localization toolkit.')
-parser.add_argument('-p', '--project-id', help='CurseForge project ID', required=True)
-parser.add_argument('-r', '--locale-dir', help='Path to the directory of localization scripts', required=True, type=Path)
-
 commands = parser.add_subparsers(title='commands', metavar=None)
 
 download = commands.add_parser('download', help='Fetches translation strings from CurseForge')
-download.add_argument('-l', '--locale', help='Locale(s) to download. Can be repeated for multiple locales. Defaults to enUS only.', action='extend', nargs='*')
-download.add_argument('-n', '--dry-run', help='Do not write localization strings to disk; only print them.', action='store_true')
-download.set_defaults(func=lambda args: cf_download_batched(args.locale, dry_run=args.dry_run))
+download.add_argument('-l', '--locale', help='Locale to download.', required=True, type=Locale)
+download.add_argument('-p', '--project-id', help='CurseForge project ID', required=True)
+download.set_defaults(func=lambda args: cf_download_translations(args.locale, project_id=args.project_id))
 
 upload = commands.add_parser('upload', help='Uploads translation strings to CurseForge')
 upload.add_argument('-d', '--delete-missing-phrases', help='Mark missing phrases as deleted.', action='store_true')
-upload.add_argument('-l', '--locale', help='Locale(s) to download. Can be repeated for multiple locales, or set to "*" for all locales. Defaults to all locales except enUS.', action='extend', nargs='*')
-upload.add_argument('-n', '--dry-run', help='Do not submit localization strings to CurseForge; only print them.', action='store_true')
-upload.set_defaults(func=lambda args: cf_upload_batched(args.locale, delete_missing_phrases=args.delete_missing_phrases, dry_run=args.dry_run))
+upload.add_argument('-l', '--locale', help='Locale to upload.', required=True, type=Locale)
+upload.add_argument('-p', '--project-id', help='CurseForge project ID')
+upload.set_defaults(func=lambda args: cf_upload_translations(args.locale, delete_missing_phrases=args.delete_missing_phrases, project_id=args.project_id))
 
 # fmt: on
 
 args = parser.parse_args()
-
-CF_PROJECT_ID = args.project_id
-LOCALE_DIR = args.locale_dir
 
 if 'func' in args:
     args.func(args)
