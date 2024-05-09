@@ -62,11 +62,38 @@ end
 
 local TRP3_KuiNamePlates = {};
 
+function TRP3_KuiNamePlates:OnLoad()
+	if not KuiNameplates then
+		return;
+	end
+
+	-- Our Kui plugin needs to be eagerly registered. This is dependent upon
+	-- us having it as an optional dependency in the TOC to work.
+
+	local maxMinor = nil;
+	local enableOnLoad = true;
+
+	self.plugin = KuiNameplates:NewPlugin("TotalRP3", 250, maxMinor, enableOnLoad);
+	self.plugin.OnEnable = function(_) self:OnPluginEnable() end;
+	self.plugin.Create = function(_, ...) return self:OnNamePlateCreate(...); end;
+	self.plugin.Show = function(_, nameplate) return self:OnNamePlateShow(nameplate); end;
+	self.plugin.HealthUpdate = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.HealthColourChange = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.GlowColourChange = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.GainedTarget = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.LostTarget = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.Combat = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
+	self.plugin.Hide = function(_, nameplate) return self:OnNamePlateHide(nameplate); end;
+end
+
 function TRP3_KuiNamePlates:OnModuleInitialize()
 	if not C_AddOns.IsAddOnLoaded("Kui_Nameplates") then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	elseif not KuiNameplatesCore or KuiNameplates.layout ~= KuiNameplatesCore then
 		-- For now we only support the "Core" layout for Kui.
+		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
+	elseif not self.plugin then
+		-- Something really hecked up happened.
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	end
 
@@ -85,21 +112,6 @@ function TRP3_KuiNamePlates:OnModuleEnable()
 	self.unitDisplayInfo = {};
 	self.initialized = {};
 
-	local maxMinor = nil;
-	local enableOnLoad = true;
-
-	self.plugin = KuiNameplates:NewPlugin("TotalRP3", 250, maxMinor, enableOnLoad);
-	self.plugin.OnEnable = function(_) self:OnPluginEnable() end;
-	self.plugin.Create = function(_, ...) return self:OnNamePlateCreate(...); end;
-	self.plugin.Show = function(_, nameplate) return self:OnNamePlateShow(nameplate); end;
-	self.plugin.HealthUpdate = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
-	self.plugin.HealthColourChange = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
-	self.plugin.GlowColourChange = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
-	self.plugin.GainedTarget = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
-	self.plugin.LostTarget = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
-	self.plugin.Combat = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
-	self.plugin.Hide = function(_, nameplate) return self:OnNamePlateHide(nameplate); end;
-
 	self.plugin:RegisterMessage("Create");
 	self.plugin:RegisterMessage("Show");
 	self.plugin:RegisterMessage("HealthUpdate");
@@ -109,9 +121,6 @@ function TRP3_KuiNamePlates:OnModuleEnable()
 	self.plugin:RegisterMessage("LostTarget");
 	self.plugin:RegisterMessage("Combat");
 	self.plugin:RegisterMessage("Hide");
-
-
-	self.fading = KuiNameplates:GetPlugin("Fading");
 end
 
 function TRP3_KuiNamePlates:OnPluginEnable()
@@ -124,6 +133,7 @@ function TRP3_KuiNamePlates:OnPluginEnable()
 	local FADE_PRIORITY = 15;
 	local FADE_RULE_ID = "TRP3_KuiNamePlates";
 
+	self.fading = KuiNameplates:GetPlugin("Fading");
 	self.fading:AddFadeRule(GenerateClosure(self.EvaluateNamePlateVisibility, self), FADE_PRIORITY, FADE_RULE_ID);
 end
 
@@ -347,7 +357,9 @@ function TRP3_KuiNamePlates:EvaluateNamePlateVisibility(nameplate)
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlateVisibility(nameplate)
-	self.fading:UpdateFrame(nameplate);
+	if self.fading then
+		self.fading:UpdateFrame(nameplate);
+	end
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlate(nameplate)
@@ -411,3 +423,4 @@ TRP3_API.module.registerModule({
 });
 
 _G.TRP3_KuiNamePlates = TRP3_KuiNamePlates;
+TRP3_KuiNamePlates:OnLoad();
