@@ -629,6 +629,7 @@ stds.wow = {
 		"AMMOSLOT",
 		"ARCANE_CHARGES",
 		"BATTLENET_FONT_COLOR",
+		"BNET_CLIENT_WOW",
 		"CANCEL",
 		"CHI",
 		"CLOSE",
