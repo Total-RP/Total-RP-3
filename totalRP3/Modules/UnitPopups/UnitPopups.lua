@@ -61,6 +61,50 @@ local function GetUnitCompanionProfileInfo(unitToken)
 	end
 end
 
+local function GetBattleNetCharacterID(gameAccountInfo)
+	local characterName = gameAccountInfo.characterName;
+	local realmName = gameAccountInfo.realmName;
+	local ambiguatedName;
+
+	characterName = (characterName ~= "" and characterName or UNKNOWNOBJECT);
+	realmName = (realmName ~= "" and realmName or GetNormalizedRealmName());
+	ambiguatedName = Ambiguate(string.join("-", characterName, realmName), "none");
+
+	if string.find(ambiguatedName, UNKNOWNOBJECT, 1, true) == 1 then
+		ambiguatedName = nil;
+	end
+
+	return ambiguatedName;
+end
+
+local function ShouldShowOpenBattleNetProfile()
+	if not ShouldShowOpenProfile() then
+		return false;
+	end
+
+	local dropdownFrame = UIDROPDOWNMENU_INIT_MENU;
+	local accountInfo = dropdownFrame.accountInfo;
+	local gameAccountInfo = accountInfo and accountInfo.gameAccountInfo or nil;
+
+	if not gameAccountInfo then
+		return false;
+	elseif gameAccountInfo.clientProgram ~= BNET_CLIENT_WOW then
+		return false;
+	elseif gameAccountInfo.wowProjectID ~= WOW_PROJECT_ID then
+		return false;
+	elseif not gameAccountInfo.isInCurrentRegion then
+		return false;
+	end
+
+	local characterID = GetBattleNetCharacterID(gameAccountInfo);
+
+	if not characterID then
+		return false;
+	else
+		return true;
+	end
+end
+
 local function ShouldShowOpenCompanionProfile()
 	if not ShouldShowOpenProfile() then
 		return false;
@@ -168,7 +212,24 @@ end
 -- Menu Commands
 --
 
-local function OpenProfile(button)  -- luacheck: ignore 212 (unused button)
+local function OpenBattleNetProfile(button)  -- luacheck: ignore 212 (unused button)
+	local dropdownFrame = UIDROPDOWNMENU_INIT_MENU;
+	local accountInfo = dropdownFrame.accountInfo;
+	local gameAccountInfo = accountInfo and accountInfo.gameAccountInfo or nil;
+
+	-- Only a basic sanity test is required here.
+	if not gameAccountInfo then
+		return;
+	end
+
+	local characterID = GetBattleNetCharacterID(gameAccountInfo);
+
+	if characterID then
+		TRP3_API.slash.openProfile(characterID);
+	end
+end
+
+local function OpenCharacterProfile(button)  -- luacheck: ignore 212 (unused button)
 	local dropdownFrame = UIDROPDOWNMENU_INIT_MENU;
 	local unit = dropdownFrame.unit;
 	local name = dropdownFrame.name;
@@ -227,10 +288,17 @@ Mixin(UnitPopupsModule.MenuButtons, {
 		notCheckable = true,
 	},
 
-	OpenProfile = {
+	OpenBattleNetProfile = {
 		text = L.UNIT_POPUPS_OPEN_PROFILE,
 		notCheckable = true,
-		func = OpenProfile,
+		func = OpenBattleNetProfile,
+		ShouldShow = ShouldShowOpenBattleNetProfile,
+	},
+
+	OpenCharacterProfile = {
+		text = L.UNIT_POPUPS_OPEN_PROFILE,
+		notCheckable = true,
+		func = OpenCharacterProfile,
 		ShouldShow = ShouldShowOpenProfile,
 	},
 
@@ -254,19 +322,20 @@ Mixin(UnitPopupsModule.MenuButtons, {
 
 Mixin(UnitPopupsModule.MenuEntries, {
 	BATTLEPET      = { "OpenCompanionProfile" },
-	CHAT_ROSTER    = { "OpenProfile" },
-	FRIEND         = { "OpenProfile" },
-	FRIEND_OFFLINE = { "OpenProfile" },
-	GUILD          = { "OpenProfile" },
-	GUILD_OFFLINE  = { "OpenProfile" },
+	BN_FRIEND      = { "OpenBattleNetProfile" },
+	CHAT_ROSTER    = { "OpenCharacterProfile" },
+	FRIEND         = { "OpenCharacterProfile" },
+	FRIEND_OFFLINE = { "OpenCharacterProfile" },
+	GUILD          = { "OpenCharacterProfile" },
+	GUILD_OFFLINE  = { "OpenCharacterProfile" },
 	OTHERBATTLEPET = { "OpenCompanionProfile" },
 	OTHERPET       = { "OpenCompanionProfile" },
-	PARTY          = { "OpenProfile" },
+	PARTY          = { "OpenCharacterProfile" },
 	PET            = { "OpenCompanionProfile" },
-	PLAYER         = { "OpenProfile" },
-	RAID           = { "OpenProfile" },
-	RAID_PLAYER    = { "OpenProfile" },
-	SELF           = { "OpenProfile", "CharacterStatus" },
+	PLAYER         = { "OpenCharacterProfile" },
+	RAID           = { "OpenCharacterProfile" },
+	RAID_PLAYER    = { "OpenCharacterProfile" },
+	SELF           = { "OpenCharacterProfile", "CharacterStatus" },
 });
 
 --
