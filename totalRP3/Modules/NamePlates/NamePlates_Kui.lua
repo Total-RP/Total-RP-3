@@ -85,7 +85,11 @@ function TRP3_KuiNamePlates:OnModuleEnable()
 	self.unitDisplayInfo = {};
 	self.initialized = {};
 
-	self.plugin = KuiNameplates:NewPlugin("TotalRP3", 250);
+	local maxMinor = nil;
+	local enableOnLoad = true;
+
+	self.plugin = KuiNameplates:NewPlugin("TotalRP3", 250, maxMinor, enableOnLoad);
+	self.plugin.OnEnable = function(_) self:OnPluginEnable() end;
 	self.plugin.Create = function(_, ...) return self:OnNamePlateCreate(...); end;
 	self.plugin.Show = function(_, nameplate) return self:OnNamePlateShow(nameplate); end;
 	self.plugin.HealthUpdate = function(_, nameplate) return self:UpdateNamePlate(nameplate); end;
@@ -106,13 +110,20 @@ function TRP3_KuiNamePlates:OnModuleEnable()
 	self.plugin:RegisterMessage("Combat");
 	self.plugin:RegisterMessage("Hide");
 
+
+	self.fading = KuiNameplates:GetPlugin("Fading");
+end
+
+function TRP3_KuiNamePlates:OnPluginEnable()
 	-- Nameplate visibility is handled through a fade rule. As we only ever
 	-- forcefully hide nameplates with this rule we give it a high priority.
+	--
+	-- This has to be deferred to the OnEnable of the *plugin* and not
+	-- our module due to timing issues with ADDON_LOADED/PLAYER_LOGIN.
 
 	local FADE_PRIORITY = 15;
 	local FADE_RULE_ID = "TRP3_KuiNamePlates";
 
-	self.fading = KuiNameplates:GetPlugin("Fading");
 	self.fading:AddFadeRule(GenerateClosure(self.EvaluateNamePlateVisibility, self), FADE_PRIORITY, FADE_RULE_ID);
 end
 
