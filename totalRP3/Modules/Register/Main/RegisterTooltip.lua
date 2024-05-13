@@ -1370,6 +1370,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		if not GameTooltip:GetUnit() then
 			ui_CharacterTT:Hide();
 			ui_CompanionTT:Hide();
+			UpdateCharacterTooltipClampInsets();
 		end
 	end);
 end);
