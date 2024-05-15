@@ -1195,9 +1195,23 @@ end
 
 local GameTooltip_SetDefaultAnchor, UIParent = GameTooltip_SetDefaultAnchor, UIParent;
 
+local function UpdateCharacterTooltipClampInsets()
+	local left = 0;
+	local right = 0;
+	local top = 15;
+	local bottom = 0;
+
+	if ui_CompanionTT:IsShown() then
+		top = top + ui_CompanionTT:GetHeight();
+	end
+
+	ui_CharacterTT:SetClampRectInsets(left, right, top, bottom);
+end
+
 local function show(targetType, targetID, targetMode)
 	ui_CharacterTT:Hide();
 	ui_CompanionTT:Hide();
+	UpdateCharacterTooltipClampInsets();
 
 	-- If option is to only show tooltips when player is in character and player is out of character, stop here
 	if getConfigValue(CONFIG_IN_CHARACTER_ONLY) and not isPlayerIC() then return end
@@ -1262,12 +1276,14 @@ local function show(targetType, targetID, targetMode)
 						local mountName = getCompanionNameFromSpellID(mountSpellID);
 						ui_CompanionTT:SetOwner(ui_CharacterTT, "ANCHOR_TOPLEFT");
 						writeTooltipForMount(Globals.player_id, nil, mountName);
+						UpdateCharacterTooltipClampInsets();
 					else
 						local companionFullID, profileID, mountSpellID = TRP3_API.companions.register.getUnitMount(targetID, "mouseover");
 						if profileID then
 							local mountName = getCompanionNameFromSpellID(mountSpellID);
 							ui_CompanionTT:SetOwner(ui_CharacterTT, "ANCHOR_TOPLEFT");
 							writeTooltipForMount(targetID, companionFullID, mountName);
+							UpdateCharacterTooltipClampInsets();
 						end
 					end
 				elseif targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET then
@@ -1354,6 +1370,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		if not GameTooltip:GetUnit() then
 			ui_CharacterTT:Hide();
 			ui_CompanionTT:Hide();
+			UpdateCharacterTooltipClampInsets();
 		end
 	end);
 end);
