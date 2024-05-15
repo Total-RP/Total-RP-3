@@ -1850,6 +1850,21 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed loading icon sometimes showing on companion tooltips.
 
 ]],
+	WHATS_NEW_28_3 = [[# Changelog version 2.8.3
+
+## Added
+
+- Added "Open Profile" right-click menu option on Battle.net friends.
+  - This will only be shown if the other player is in the same region and using the same client.
+
+## Fixed
+
+- Added a temporary workaround to prevent disconnects under specific conditions.
+  - The proper fix will come from Blizzard, this is just a short-term safety measure.
+- Fixed an issue where the Kui nameplates customization wouldn't properly hide friendly nameplates according to the settings under specific circumstances.
+- Fixed mount and character tooltips overlapping in some cases when the tooltip is anchored on the cursor.
+
+]],
 
 };
 
