@@ -734,6 +734,10 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 		characterName = characterName .. ",";
 	end
 
+	if C_ChatInfo.IsTimerunningPlayer(GUID) then
+		characterName = TimerunningUtil.AddSmallIcon(characterName);
+	end
+
 	return characterName;
 end
 
