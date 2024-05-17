@@ -220,6 +220,7 @@ stds.wow = {
 		C_ChatInfo = {
 			fields = {
 				"GetChannelShortcut",
+				"IsTimerunningPlayer",
 				"RegisterAddonMessagePrefix",
 				"SwapChatChannelsByChannelIndex",
 			},
@@ -410,6 +411,12 @@ stds.wow = {
 				"InitScrollBoxListWithScrollBar",
 				"RegisterScrollBoxWithScrollBar",
 			},
+		},
+
+		TimerunningUtil = {
+		    fields = {
+                "AddSmallIcon",
+            },
 		},
 
 		"AbbreviateLargeNumbers",
