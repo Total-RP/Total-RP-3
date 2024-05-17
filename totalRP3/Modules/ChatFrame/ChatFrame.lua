@@ -715,6 +715,10 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 		characterName = OOC_INDICATOR_TEXT .. characterName;
 	end
 
+	if C_ChatInfo.IsTimerunningPlayer and C_ChatInfo.IsTimerunningPlayer(GUID) then
+		characterName = TimerunningUtil.AddSmallIcon(characterName);
+	end
+
 	if getConfigValue(CONFIG_SHOW_ICON) then
 		local info = getCharacterInfoTab(unitID);
 		if info and info.characteristics and info.characteristics.IC then
@@ -732,10 +736,6 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	-- We remove the space so the comma is placed right after the name
 	if emoteStartingWithACommaID == messageID then
 		characterName = characterName .. ",";
-	end
-
-	if C_ChatInfo.IsTimerunningPlayer and C_ChatInfo.IsTimerunningPlayer(GUID) then
-		characterName = TimerunningUtil.AddSmallIcon(characterName);
 	end
 
 	return characterName;
