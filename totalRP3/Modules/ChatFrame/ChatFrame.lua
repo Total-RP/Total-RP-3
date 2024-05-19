@@ -726,7 +726,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 		end
 	end
 
-	-- Check if this message was flagged as containing a 's at the beggning.
+	-- Check if this message was flagged as containing a 's at the beginning.
 	-- To avoid having a space between the name of the player and the 's we previously removed the 's
 	-- from the message. We now need to insert it after the player's name, without a space.
 	if ownershipNameId == messageID then
