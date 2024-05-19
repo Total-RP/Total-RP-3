@@ -241,6 +241,18 @@ local function ShouldDisplayCustomGuild(displayOption, customName)
 	end
 end
 
+local function ShouldDisplayUnmodifiedTooltip()
+	local modifierKey = getConfigValue(ConfigKeys.HIDE_ON_MODIFIER);
+
+	if modifierKey == "" then
+		return false;
+	elseif TRP3_BindingUtil.IsKeyDown(modifierKey) then
+		return true;
+	else
+		return false;
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UTIL METHOD
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1215,6 +1227,7 @@ local function show(targetType, targetID, targetMode)
 	-- If option is to only show tooltips when player is in character and player is out of character, stop here
 	if getConfigValue(ConfigKeys.IN_CHARACTER_ONLY) and not isPlayerIC() then return end
 	if getConfigValue(ConfigKeys.HIDE_IN_INSTANCE) and IsInInstance() then return end
+	if ShouldDisplayUnmodifiedTooltip() then return; end
 
 	-- If using TRP TT
 	if not UnitAffectingCombat("player") or not getConfigValue(ConfigKeys.CHARACT_COMBAT) then
@@ -1382,11 +1395,10 @@ local function NotifyTooltipUnitChanged()
 	end
 end
 
-local function ShowTooltipForCurrentUnit()
-	local unitToken = GetCurrentTooltipUnit();
+local function ShowUnitTooltip(unitToken)
+	local targetID, targetMode = getUnitID(unitToken);
 
-	if unitToken then
-		local targetID, targetMode = getUnitID(unitToken);
+	if targetID and targetMode then
 		show(unitToken, targetID, targetMode);
 	end
 end
@@ -1419,8 +1431,10 @@ local function onModuleInit()
 	end);
 
 	local function RefreshCharacterTooltip(targetID)
-		if not targetID or ui_CharacterTT.target == targetID then
-			ShowTooltipForCurrentUnit();
+		local unitToken = GetCurrentTooltipUnit();
+
+		if unitToken and (not targetID or ui_CharacterTT.target == targetID) then
+			ShowUnitTooltip(unitToken);
 		end
 	end
 
@@ -1430,6 +1444,19 @@ local function onModuleInit()
 
 	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_REQUEST_STATE_CHANGED, function(_, targetID)
 		RefreshCharacterTooltip(targetID);
+	end);
+
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "MODIFIER_STATE_CHANGED", function()
+		if TRP3_CharacterTooltip:IsShown() and ShouldDisplayUnmodifiedTooltip() then
+			local unitToken = TRP3_CharacterTooltip.targetType;
+			TRP3_CharacterTooltip:Hide();
+			GameTooltip_SetDefaultAnchor(GameTooltip, UIParent);
+			GameTooltip:SetUnit(unitToken);
+			GameTooltip:Show();
+		elseif GameTooltip:IsShown() then
+			local unitToken = (select(2, GameTooltip:GetUnit())) or "none";
+			ShowUnitTooltip(unitToken);
+		end
 	end);
 
 	ui_CharacterTT.TimeSinceLastUpdate = 0;
@@ -1448,6 +1475,7 @@ local function onModuleInit()
 	registerConfigKey(ConfigKeys.CHARACT_ANCHORED_FRAME, "GameTooltip");
 	registerConfigKey(ConfigKeys.CHARACT_ANCHOR, "ANCHOR_TOPRIGHT");
 	registerConfigKey(ConfigKeys.CHARACT_HIDE_ORIGINAL, true);
+	registerConfigKey(ConfigKeys.HIDE_ON_MODIFIER, "ALT");
 	registerConfigKey(ConfigKeys.CHARACT_MAIN_SIZE, 16);
 	registerConfigKey(ConfigKeys.CHARACT_SUB_SIZE, 12);
 	registerConfigKey(ConfigKeys.CHARACT_TER_SIZE, 10);
@@ -1533,6 +1561,20 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_HIDE_IN_INSTANCE,
 				configKey = ConfigKeys.HIDE_IN_INSTANCE,
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				title = loc.CO_TOOLTIP_HIDE_ON_MODIFIER,
+				help = loc.CO_TOOLTIP_HIDE_ON_MODIFIER_TT,
+				listContent = {
+					{loc.CO_TOOLTIP_HIDE_ON_MODIFIED_NEVER, ""},
+					{loc.CM_ALT, "ALT"},
+					{loc.CM_CTRL, "CTRL"},
+					{loc.CM_SHIFT, "SHIFT"},
+				},
+				configKey = ConfigKeys.HIDE_ON_MODIFIER,
+				listWidth = nil,
+				listCancel = true,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
