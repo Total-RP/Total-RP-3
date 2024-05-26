@@ -1396,7 +1396,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	-- Listen to the mouse over event
 	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "UPDATE_MOUSEOVER_UNIT", NotifyTooltipUnitChanged);
 	hooksecurefunc(GameTooltip, "SetUnit", NotifyTooltipUnitChanged);
-	hooksecurefunc(GameTooltip, "SetWorldCursor", NotifyTooltipUnitChanged);
+	if GameTooltip.SetWorldCursor then
+		hooksecurefunc(GameTooltip, "SetWorldCursor", NotifyTooltipUnitChanged);
+	end
 	GameTooltip:HookScript("OnShow", function()
 		if not GameTooltip:GetUnit() then
 			ui_CharacterTT:Hide();
