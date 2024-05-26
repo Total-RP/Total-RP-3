@@ -1278,7 +1278,7 @@ local function show(targetType, targetID, targetMode)
 						writeTooltipForMount(Globals.player_id, nil, mountName);
 						UpdateCharacterTooltipClampInsets();
 					else
-						local companionFullID, profileID, mountSpellID = TRP3_API.companions.register.getUnitMount(targetID, "mouseover");
+						local companionFullID, profileID, mountSpellID = TRP3_API.companions.register.getUnitMount(targetID, targetType);
 						if profileID then
 							local mountName = getCompanionNameFromSpellID(mountSpellID);
 							ui_CompanionTT:SetOwner(ui_CharacterTT, "ANCHOR_TOPLEFT");
@@ -1313,7 +1313,7 @@ local function onUpdate(self, elapsed)
 	if (self.TimeSinceLastUpdate > getFadeTime()) then
 		self.TimeSinceLastUpdate = 0;
 		if self.target and self.targetType and not self.isFading then
-			if self.target ~= getUnitID(self.targetType) or not getUnitID("mouseover") then
+			if self.target ~= getUnitID(self.targetType) or not getUnitID(self.targetType) then
 				self.isFading = true;
 				self.target = nil;
 				if fadeOutEnabled() then
@@ -1331,7 +1331,7 @@ local function onUpdateCompanion(self, elapsed)
 	if (self.TimeSinceLastUpdate > getFadeTime()) then
 		self.TimeSinceLastUpdate = 0;
 		if self.target and self.targetType and not self.isFading then
-			if self.target ~= getUnitID(self.targetType) or not getUnitID("mouseover") then
+			if self.target ~= getUnitID(self.targetType) or not getUnitID(self.targetType) then
 				self.isFading = true;
 				self.target = nil;
 				if fadeOutEnabled() then
@@ -1348,24 +1348,55 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function GetWorldCursorUnit()
+	local tooltipData;
+
+	if C_TooltipInfo and C_TooltipInfo.GetWorldCursor then
+		tooltipData = C_TooltipInfo.GetWorldCursor();
+	end
+
+	if tooltipData and tooltipData.type == Enum.TooltipDataType.Unit then
+		return UnitTokenFromGUID(tooltipData.guid);
+	else
+		return nil;
+	end
+end
+
+local function GetCurrentTooltipUnit()
+	local unitToken;
+
+	if UnitExists("mouseover") then
+		unitToken = "mouseover";
+	else
+		unitToken = GetWorldCursorUnit();
+	end
+
+	return unitToken;
+end
+
+local function NotifyTooltipUnitChanged()
+	local unitToken = GetCurrentTooltipUnit();
+
+	if unitToken then
+		local targetID, targetMode = getUnitID(unitToken);
+		TRP3_Addon:TriggerEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode, unitToken);
+	end
+end
+
+local function ShowTooltipForCurrentUnit()
+	local unitToken = GetCurrentTooltipUnit();
+
+	if unitToken then
+		local targetID, targetMode = getUnitID(unitToken);
+		show(unitToken, targetID, targetMode);
+	end
+end
+
 TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 	-- Listen to the mouse over event
-	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "UPDATE_MOUSEOVER_UNIT", function()
-		-- The event UPDATE_MOUSEOVER_UNIT is fired even when there is no unit on tooltip
-		-- But there is a target on mouseover (maintaining ALT on spell buttons)
-		-- So we need to check that we have indeed a unit before displaying our tooltip.
-		if GameTooltip:GetUnit() then
-			local targetID, targetMode = getUnitID("mouseover");
-			TRP3_Addon:TriggerEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode, "mouseover");
-		end
-	end);
-	hooksecurefunc(GameTooltip, "SetUnit", function()
-		local _, unitID = GameTooltip:GetUnit();
-		if unitID then
-			local targetID, targetMode = getUnitID(unitID);
-			TRP3_Addon:TriggerEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode, unitID);
-		end
-	end);
+	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "UPDATE_MOUSEOVER_UNIT", NotifyTooltipUnitChanged);
+	hooksecurefunc(GameTooltip, "SetUnit", NotifyTooltipUnitChanged);
+	hooksecurefunc(GameTooltip, "SetWorldCursor", NotifyTooltipUnitChanged);
 	GameTooltip:HookScript("OnShow", function()
 		if not GameTooltip:GetUnit() then
 			ui_CharacterTT:Hide();
@@ -1388,7 +1419,7 @@ local function onModuleInit()
 
 	local function RefreshCharacterTooltip(targetID)
 		if not targetID or ui_CharacterTT.target == targetID then
-			show("mouseover", getUnitID("mouseover"));
+			ShowTooltipForCurrentUnit();
 		end
 	end
 
