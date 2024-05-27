@@ -982,7 +982,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 			if getConfigValue(CONFIG_CROP_TEXT) then
 				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
 			end
-			tooltipBuilder:AddLine(fullTitle, colors.TITLE, getSubLineFontSize());
+			tooltipBuilder:AddLine(fullTitle, colors.TITLE, getSubLineFontSize(), true);
 		end
 	end
 
