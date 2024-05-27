@@ -10,6 +10,7 @@ local L;
 
 L = {
 	["ABOUT_TITLE"] = "О персонаже",
+	["ANALYTICS_COMMAND_HELP"] = "Печатает статистику использования аддона в окно чата.",
 	["ANALYTICS_CONFIG_ENABLE"] = "Включить %s",
 	["ANALYTICS_OUTPUT_HEADER"] = "Статистика использования расширения:",
 	["AUTOMATION_ACTION_CHARACTER_EQUIPSET"] = "Надеть комплект экипировки",
