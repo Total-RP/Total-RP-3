@@ -366,6 +366,7 @@ stds.wow = {
 		C_TooltipInfo = {
 			fields = {
 				"GetUnit",
+				"GetWorldCursor",
 			},
 		},
 
@@ -380,6 +381,12 @@ stds.wow = {
 				TooltipDataLineType = {
 					fields = {
 						"UnitOwner",
+					},
+				},
+
+				TooltipDataType = {
+					fields = {
+						"Unit",
 					},
 				},
 
@@ -591,6 +598,7 @@ stds.wow = {
 		"UnitPVPName",
 		"UnitRace",
 		"UnitSex",
+		"UnitTokenFromGUID",
 		"Wrap",
 		"WrapTextInColorCode",
 
