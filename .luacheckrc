@@ -514,6 +514,7 @@ stds.wow = {
 		"IsInGuild",
 		"IsInInstance",
 		"IsInRaid",
+		"IsKeyDown",
 		"IsMacClient",
 		"IsMetaKeyDown",
 		"IsModifierKeyDown",
