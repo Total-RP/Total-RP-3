@@ -24,6 +24,24 @@ function TRP3_BindingUtil.IsModifierKey(key)
 	return ModifierKeyPriorities[key] ~= nil;
 end
 
+function TRP3_BindingUtil.IsKeyDown(key)
+	-- The IsKeyDown function only considers directioned keys (left/right)
+	-- as valid for modifiers, whereas this function accepts them and tests
+	-- via the appropriate Is*KeyDown() functions.
+
+	if key == "ALT" then
+		return IsAltKeyDown();
+	elseif key == "CTRL" then
+		return IsControlKeyDown();
+	elseif key == "SHIFT" then
+		return IsShiftKeyDown();
+	elseif key == "META" then
+		return IsMetaKeyDown();
+	else
+		return IsKeyDown(key);
+	end
+end
+
 local function KeyComparator(a, b)
 	local priorityA = ModifierKeyPriorities[a];
 	local priorityB = ModifierKeyPriorities[b];
