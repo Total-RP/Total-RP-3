@@ -1264,13 +1264,15 @@ local function show(targetType, targetID, targetMode)
 				elseif getAnchoredPosition() == "ANCHOR_CURSOR" then
 					GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
 					placeTooltipOnCursor(ui_CharacterTT);
-				else
-					if getAnchoredFrame() == GameTooltip and getConfigValue(ConfigKeys.CHARACT_HIDE_ORIGINAL) then
+				elseif getAnchoredFrame() == GameTooltip and getConfigValue(ConfigKeys.CHARACT_HIDE_ORIGINAL) then
+					if GameTooltip:GetNumPoints() > 0 then
 						ui_CharacterTT:SetOwner(UIParent, "ANCHOR_NONE");
 						ui_CharacterTT:SetPoint(GameTooltip:GetPoint(1));
 					else
-						ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
+						GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
 					end
+				else
+					ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
 				end
 
 				ui_CharacterTT:SetBorderColor(1, 1, 1);
