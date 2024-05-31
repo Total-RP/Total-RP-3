@@ -28,8 +28,6 @@ function TRP3_Launcher:OnLoad()
 	self.callbacks = TRP3_API.InitCallbackRegistry(self);
 
 	self.events = TRP3_API.CreateCallbackGroup();
-	self.events:AddCallback(TRP3_API.GameEvents, "ADDONS_UNLOADING", self.OnUninitialize, self);
-	self.events:AddCallback(TRP3_Addon, "CONFIGURATION_CHANGED", self.OnConfigurationChanged, self);
 
 	self:SetEnabledState(false);
 end
@@ -49,6 +47,9 @@ function TRP3_Launcher:OnInitialize()
 	LibDBCompartment:Register(self.objectName, self.object);
 
 	self:LoadBindings(TRP3_LauncherSettings.GetSavedBindings());
+
+	self.events:AddCallback(TRP3_API.GameEvents, "ADDONS_UNLOADING", self.OnUninitialize, self);
+	self.events:AddCallback(TRP3_Addon, "CONFIGURATION_CHANGED", self.OnConfigurationChanged, self);
 end
 
 function TRP3_Launcher:OnEnable()
