@@ -160,7 +160,6 @@ local function OpenLegacyContextMenu(ownerRegion, rootMenuItems, onClickFunction
 					info.menuList = value;
 				elseif value ~= nil then
 					info.func = function()
-						ownerRegion:GetParent().selectedValue = value;
 						if onClickFunction then
 							onClickFunction(value, ownerRegion);
 						end
@@ -202,7 +201,7 @@ local function OpenModernContextMenu(ownerRegion, rootMenuItems, onClickFunction
 		GameTooltip_AddNormalLine(tooltipFrame, itemTooltipText, true);
 	end
 
-	function GenerateContextMenuElement(itemData, ownerRegion, menuDescription)  -- luacheck: ignore 432 (shadowing ownerRegion)
+	function GenerateContextMenuElement(itemData, ownerRegion, menuDescription)  -- luacheck: no redefined (ownerRegion)
 		local text, value, tooltipText = unpack(itemData, 1, 3);
 		local elementDescription;
 
@@ -227,13 +226,13 @@ local function OpenModernContextMenu(ownerRegion, rootMenuItems, onClickFunction
 		return elementDescription;
 	end
 
-	function GenerateContextMenu(menuItems, ownerRegion, menuDescription)  -- luacheck: ignore 432 (shadowing ownerRegion)
+	function GenerateContextMenu(menuItems, ownerRegion, menuDescription)  -- luacheck: no redefined (ownerRegion)
 		for _, itemData in ipairs(menuItems) do
 			GenerateContextMenuElement(itemData, ownerRegion, menuDescription);
 		end
 	end
 
-	local function OnCreateContextMenu(ownerRegion, rootDescription)  -- luacheck: ignore 432 (shadowing ownerRegion)
+	local function OnCreateContextMenu(ownerRegion, rootDescription)  -- luacheck: no redefined (ownerRegion)
 		GenerateContextMenu(rootMenuItems, ownerRegion, rootDescription);
 	end
 
@@ -265,63 +264,161 @@ TRP3_API.ui.listbox.setupDropDownMenu = setupDropDownMenu;
 -- ListBox tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function listBoxSetSelected(self, index)
-	assert(self and self.values, "Badly initialized listbox");
-	assert(self.values[index], "Array index out of bound");
-	_G[self:GetName().."Text"]:SetText(self.values[index][1]);
-	self.selectedValue = self.values[index][2];
-	if self.callback then
-		self.callback(self.values[index][2], self);
-	end
-end
+local function SetupLegacyDropdownMenu(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth)
+	dropdown.callback = onClickFunction;
+	dropdown.values = rootMenuItems;
 
-local function listBoxSetSelectedValue(self, value)
-	assert(self and self.values, "Badly initialized listbox");
-	for index, tab in pairs(self.values) do
-		local val = tab[2];
-		if val == value then
-			listBoxSetSelected(self, index);
-			break;
+	function dropdown:GetSelectedValue()
+		return self.selectedValue;
+	end
+
+	function dropdown:SetSelectedIndex(index)
+		local value = rootMenuItems[index] and rootMenuItems[index][2] or nil;
+		self:SetSelectedValue(value);
+	end
+
+	function dropdown:SetSelectedValue(value)
+		self.selectedValue = value;
+		self:Update();
+
+		if onClickFunction then
+			securecallfunction(onClickFunction, value, self);
 		end
 	end
+
+	function dropdown:Update()
+		local text;
+
+		for _, menuItem in ipairs(rootMenuItems) do
+			if menuItem[2] == self.selectedValue then
+				text = menuItem[1];
+				break;
+			end
+		end
+
+		if not text then
+			text = defaultText or loc.CM_UNKNOWN;
+		end
+
+		UIDropDownMenu_SetText(self.Menu, text);
+	end
+
+	local function SetSelectedElement(value)
+		dropdown:SetSelectedValue(value);
+	end
+
+	if not dropdown.Menu then
+		dropdown.Menu = CreateFrame("Frame", "$parentMenu", dropdown, "UIDropDownMenuTemplate");
+		dropdown.Menu:SetAllPoints(dropdown);
+		setupDropDownMenu(_G[dropdown:GetName().."MenuButton"], rootMenuItems, SetSelectedElement);
+		_G[dropdown:GetName().."MenuMiddle"]:SetWidth(dropdownWidth);
+		_G[dropdown:GetName().."MenuText"]:SetWidth(dropdownWidth - 20);
+		dropdown:SetSize(dropdownWidth + 50, 28);
+	end
+
+	dropdown:Update();
 end
 
-local function listBoxGetValue(self)
-	return self.selectedValue;
+local function SetupModernDropdownMenu(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth)
+	local GenerateMenuDescription;
+	local GenerateMenuElement;
+
+	local function IsSelectedElement(elementData)
+		local value = elementData[2];
+		return dropdown.selectedValue == value;
+	end
+
+	local function SetSelectedElement(elementData)
+		local value = elementData[2];
+		dropdown:SetSelectedValue(value);
+	end
+
+	local function OnMenuElementTooltip(tooltip, elementDescription)
+		local itemData = elementDescription:GetData();
+		local itemText = MenuUtil.GetElementText(elementDescription);
+		local itemTooltipText = itemData[3];
+
+		GameTooltip_SetTitle(tooltip, itemText);
+		GameTooltip_AddNormalLine(tooltip, itemTooltipText, true);
+	end
+
+	function GenerateMenuElement(elementData, ownerRegion, menuDescription)  -- luacheck: no redefined (dropdown)
+		local text, value, tooltipText = unpack(elementData, 1, 3);
+		local elementDescription;
+
+		if text == nil or text == "" then
+			elementDescription = menuDescription:CreateDivider();
+		elseif value == nil then
+			elementDescription = menuDescription:CreateTitle(text);
+		elseif type(value) ~= "table" then
+			elementDescription = menuDescription:CreateRadio(text, IsSelectedElement, SetSelectedElement, elementData);
+		else
+			elementDescription = menuDescription:CreateButton(text);
+		end
+
+		if tooltipText ~= nil and tooltipText ~= "" then
+			elementDescription:SetTooltip(OnMenuElementTooltip);
+		end
+
+		if type(value) == "table" then
+			GenerateMenuDescription(value, ownerRegion, elementDescription);
+		end
+
+		return elementDescription;
+	end
+
+	function GenerateMenuDescription(menuItems, dropdown, menuDescription)  -- luacheck: no redefined (dropdown)
+		for _, itemData in ipairs(menuItems) do
+			GenerateMenuElement(itemData, dropdown, menuDescription);
+		end
+	end
+
+	local function GenerateRootMenuDescription(dropdown, rootDescription)  -- luacheck: no redefined (dropdown)
+		GenerateMenuDescription(rootMenuItems, dropdown, rootDescription);
+	end
+
+	function dropdown:GetSelectedValue()
+		return self.selectedValue;
+	end
+
+	function dropdown:SetSelectedValue(value)
+		self.selectedValue = value;
+		self.Button:Update();
+
+		if onClickFunction then
+			securecallfunction(onClickFunction, value, dropdown);
+		end
+	end
+
+	function dropdown:SetSelectedIndex(index)
+		local value = rootMenuItems[index] and rootMenuItems[index][2] or nil;
+		self:SetSelectedValue(value);
+	end
+
+	if not dropdown.Button then
+		dropdown.Button = CreateFrame("DropdownButton", nil, dropdown, "WowStyle1DropdownTemplate");
+		dropdown.Button:SetAllPoints(dropdown);
+		dropdown.Button:SetDefaultText(defaultText or "");
+		dropdown.Button:SetupMenu(GenerateRootMenuDescription);
+	end
+
+	-- Classic has chonkier dropdowns.
+	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+		dropdown:SetSize(dropdownWidth, 25);
+	else
+		dropdown:SetSize(dropdownWidth, 30);
+	end
 end
 
 -- Setup a ListBox. When the player choose a value, it triggers the function passing the value of the selected element
-local function setupListBox(listBox, values, callback, defaultText, boxWidth, addCancel)
-	assert(listBox and values, "Invalid arguments");
-	assert(_G[listBox:GetName().."Button"], "Invalid arguments: listbox doesn't have a button");
-	boxWidth = boxWidth or 115;
-	listBox.values = values;
-	listBox.callback = callback;
-	local listCallback = function(value)
-		for _, tab in pairs(values) do
-			local text = tab[1];
-			local val = tab[2];
-			if val == value then
-				_G[listBox:GetName().."Text"]:SetText(text);
-			end
-		end
-		if callback then
-			callback(value, listBox);
-		end
-	end;
+local function setupListBox(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth)
+	dropdownWidth = dropdownWidth or 115;
 
-	setupDropDownMenu(_G[listBox:GetName().."Button"], values, listCallback, boxWidth, addCancel, false);
-
-	listBox.SetSelectedIndex = listBoxSetSelected;
-	listBox.GetSelectedValue = listBoxGetValue;
-	listBox.SetSelectedValue = listBoxSetSelectedValue;
-
-	if defaultText then
-		_G[listBox:GetName().."Text"]:SetText(defaultText);
+	if MenuUtil then
+		SetupModernDropdownMenu(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth);
+	else
+		SetupLegacyDropdownMenu(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth);
 	end
-	_G[listBox:GetName().."Middle"]:SetWidth(boxWidth);
-	_G[listBox:GetName().."Text"]:SetWidth(boxWidth-20);
-	listBox:SetWidth(boxWidth+50);
 end
 TRP3_API.ui.listbox.setupListBox = setupListBox;
 
