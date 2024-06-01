@@ -683,21 +683,18 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	---@type Player
 	local player = AddOn_TotalRP3.Player.static.CreateFromNameAndRealm(character, realm);
 
-	-- Default profile, don't customize
-	if TRP3_API.profile.isDefaultProfile(player:GetProfileID()) then
-		return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12);
-	end
-
 	-- Character name is without the server name is they are from the same realm or if the option to remove realm info is enabled
 	if realm == Globals.player_realm_id or getConfigValue(CONFIG_REMOVE_REALM) then
 		characterName = character;
 	end
 
-	-- Retrieve the character full RP name
-	local customizedName = getFullnameForUnitUsingChatMethod(unitID);
+	-- Retrieve the character full RP name (if not default profile)
+	if player:GetProfileID() and TRP3_API.profile.isDefaultProfile(player:GetProfileID()) == false then
+		local customizedName = getFullnameForUnitUsingChatMethod(unitID);
 
-	if customizedName then
-		characterName = customizedName;
+		if customizedName then
+			characterName = customizedName;
+		end
 	end
 
 	if GetCVar("chatClassColorOverride") ~= "1" then
