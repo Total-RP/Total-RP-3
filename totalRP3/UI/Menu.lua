@@ -403,6 +403,7 @@ function TRP3_LegacyDropdownButtonMixin:OnLoad()
 	self.defaultText = "";
 
 	UIDropDownMenu_SetWidth(self.Inner, self:GetWidth());
+	self:SetHeight(28);
 end
 
 function TRP3_LegacyDropdownButtonMixin:GetDefaultText()
@@ -543,6 +544,13 @@ local TRP3_ModernDropdownButtonMixin = {};
 function TRP3_ModernDropdownButtonMixin:OnLoad()
 	self.Inner = CreateFrame("DropdownButton", nil, self, "WowStyle1DropdownTemplate");
 	self.Inner:SetAllPoints(self);
+
+	-- Classic has chonkier dropdowns.
+	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+		self:SetHeight(25);
+	else
+		self:SetHeight(30);
+	end
 end
 
 function TRP3_ModernDropdownButtonMixin:GetDefaultText()
