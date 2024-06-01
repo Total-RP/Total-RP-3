@@ -355,7 +355,7 @@ local function getCharacterLines()
 		local nameIsConform, guildIsConform, realmIsConform, notesIsConform = false, false, false, false;
 
 		-- Don't add default profiles to the directory
-		if not TRP3_API.profile.isDefaultProfile(Player:GetProfileID()) and profile.characteristics and next(profile.characteristics) ~= nil then
+		if not TRP3_API.profile.isDefaultProfile(profileID) and profile.characteristics and next(profile.characteristics) ~= nil then
 
 			-- Defines if at least one character is conform to the search criteria
 			for unitID, _ in pairs(profile.link or Globals.empty) do
