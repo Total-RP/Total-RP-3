@@ -119,85 +119,140 @@ end
 local DROPDOWN_FRAME = "TRP3_UIDD";
 local dropDownFrame;
 
-local function openDropDown(anchoredFrame, values, callback, space, addCancel)
-	assert(anchoredFrame, "No anchoredFrame");
+local function openDropDown(ownerRegion, rootMenuItems, onClickFunction)
+	local GenerateContextMenu;
+	local GenerateContextMenuElement;
 
-	if not dropDownFrame then
-		dropDownFrame = MSA_DropDownMenu_Create(DROPDOWN_FRAME, UIParent);
+	local function OnMenuItemClick(menuItem)
+		if onClickFunction then
+			local value = menuItem[2];
+			securecallfunction(onClickFunction, value, ownerRegion);
+		end
 	end
 
-	if _G["MSA_DropDownList1"]:IsVisible() then
-		MSA_HideDropDownMenu(1);
-		return;
+	local function OnMenuItemTooltip(tooltipFrame, elementDescription)
+		local itemData = elementDescription:GetData();
+		local itemText = MenuUtil.GetElementText(elementDescription);
+		local itemTooltipText = itemData[3];
+
+		GameTooltip_SetTitle(tooltipFrame, itemText);
+		GameTooltip_AddNormalLine(tooltipFrame, itemTooltipText, true);
 	end
 
-	MSA_DropDownMenu_Initialize(dropDownFrame,
-		function(_, level, menuList)
-			local levelValues = menuList or values;
-			level = level or 1;
-			for _, tab in pairs(levelValues) do
-				assert(type(tab) == "table", "Level value is not a table !");
-				local text = tab[1];
-				local value = tab[2];
-				local tooltipText = tab[3];
-				local info = MSA_DropDownMenu_CreateInfo();
-				info.notCheckable = "true";
-				if text == "" then
-					info.dist = 0;
-					info.isTitle = true;
-					info.isUninteractable = true;
-					info.iconOnly = 1;
-					info.icon = "Interface\\Common\\UI-TooltipDivider-Transparent";
-					info.iconInfo = {
-						tCoordLeft = 0,
-						tCoordRight = 1,
-						tCoordTop = 0,
-						tCoordBottom = 1,
-						tSizeX = 0,
-						tSizeY = 8,
-						tFitDropDownSizeX = true
-					};
-				else
-					info.text = text;
-					info.isTitle = false;
-					info.tooltipOnButton = tooltipText ~= nil;
-					info.tooltipTitle = text;
-					info.tooltipText = tooltipText;
-					if type(value) == "table" then
-						info.hasArrow = true;
-						info.keepShownOnClick = true;
-						info.menuList = value;
-					elseif value ~= nil then
-						info.func = function()
-							anchoredFrame:GetParent().selectedValue = value;
-							if callback then
-								callback(value, anchoredFrame);
-							end
-							if level > 1 then
-								ToggleDropDownMenu(nil, nil, dropDownFrame);
-							end
-						end;
-					else
-						info.disabled = true;
-						info.isTitle = tooltipText == nil;
-					end
-				end
-				MSA_DropDownMenu_AddButton(info, level);
-			end
-			if menuList == nil and addCancel then
-				local info = {};
-				info.notCheckable = "true";
-				info.text = CANCEL;
-				MSA_DropDownMenu_AddButton(info, level);
-			end
+	function GenerateContextMenuElement(itemData, ownerRegion, menuDescription)
+		local text, value, tooltipText = unpack(itemData, 1, 3);
+		local elementDescription;
 
-		end,
-		"MENU"
-	);
-	dropDownFrame:SetParent(anchoredFrame);
-	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName() or "cursor", -((space or -10)), 0);
+		if text == nil or text == "" then
+			elementDescription = menuDescription:CreateDivider();
+		elseif value == nil then
+			elementDescription = menuDescription:CreateTitle(text);
+		elseif type(value) ~= "table" then
+			elementDescription = menuDescription:CreateButton(text, OnMenuItemClick, itemData);
+		else
+			elementDescription = menuDescription:CreateButton(text);
+		end
+
+		if tooltipText ~= nil and tooltipText ~= "" then
+			elementDescription:SetTooltip(OnMenuItemTooltip);
+		end
+
+		if type(value) == "table" then
+			GenerateContextMenu(value, ownerRegion, elementDescription);
+		end
+
+		return elementDescription;
+	end
+
+	function GenerateContextMenu(menuItems, ownerRegion, menuDescription)
+		for _, itemData in ipairs(menuItems) do
+			GenerateContextMenuElement(itemData, ownerRegion, menuDescription);
+		end
+	end
+
+	local function OnCreateContextMenu(ownerRegion, rootDescription)
+		GenerateContextMenu(rootMenuItems, ownerRegion, rootDescription);
+	end
+
+	MenuUtil.CreateContextMenu(ownerRegion, OnCreateContextMenu);
+
+	-- if not dropDownFrame then
+	-- 	dropDownFrame = MSA_DropDownMenu_Create(DROPDOWN_FRAME, UIParent);
+	-- end
+
+	-- if _G["MSA_DropDownList1"]:IsVisible() then
+	-- 	MSA_HideDropDownMenu(1);
+	-- 	return;
+	-- end
+
+	-- MSA_DropDownMenu_Initialize(dropDownFrame,
+	-- 	function(_, level, menuList)
+	-- 		local levelValues = menuList or values;
+	-- 		level = level or 1;
+	-- 		for _, tab in pairs(levelValues) do
+	-- 			assert(type(tab) == "table", "Level value is not a table !");
+	-- 			local text = tab[1];
+	-- 			local value = tab[2];
+	-- 			local tooltipText = tab[3];
+	-- 			local info = MSA_DropDownMenu_CreateInfo();
+	-- 			info.notCheckable = "true";
+	-- 			if text == "" then
+	-- 				info.dist = 0;
+	-- 				info.isTitle = true;
+	-- 				info.isUninteractable = true;
+	-- 				info.iconOnly = 1;
+	-- 				info.icon = "Interface\\Common\\UI-TooltipDivider-Transparent";
+	-- 				info.iconInfo = {
+	-- 					tCoordLeft = 0,
+	-- 					tCoordRight = 1,
+	-- 					tCoordTop = 0,
+	-- 					tCoordBottom = 1,
+	-- 					tSizeX = 0,
+	-- 					tSizeY = 8,
+	-- 					tFitDropDownSizeX = true
+	-- 				};
+	-- 			else
+	-- 				info.text = text;
+	-- 				info.isTitle = false;
+	-- 				info.tooltipOnButton = tooltipText ~= nil;
+	-- 				info.tooltipTitle = text;
+	-- 				info.tooltipText = tooltipText;
+	-- 				if type(value) == "table" then
+	-- 					info.hasArrow = true;
+	-- 					info.keepShownOnClick = true;
+	-- 					info.menuList = value;
+	-- 				elseif value ~= nil then
+	-- 					info.func = function()
+	-- 						ownerRegion:GetParent().selectedValue = value;
+	-- 						if callback then
+	-- 							callback(value, ownerRegion);
+	-- 						end
+	-- 						if level > 1 then
+	-- 							ToggleDropDownMenu(nil, nil, dropDownFrame);
+	-- 						end
+	-- 					end;
+	-- 				else
+	-- 					info.disabled = true;
+	-- 					info.isTitle = tooltipText == nil;
+	-- 				end
+	-- 			end
+	-- 			MSA_DropDownMenu_AddButton(info, level);
+	-- 		end
+	-- 		if menuList == nil and addCancel then
+	-- 			local info = {};
+	-- 			info.notCheckable = "true";
+	-- 			info.text = CANCEL;
+	-- 			MSA_DropDownMenu_AddButton(info, level);
+	-- 		end
+
+	-- 	end,
+	-- 	"MENU"
+	-- );
+	-- dropDownFrame:SetParent(ownerRegion);
+	-- ToggleDropDownMenu(1, nil, dropDownFrame, ownerRegion:GetName() or "cursor", -((space or -10)), 0);
 	TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 end
+
 TRP3_API.ui.listbox.displayDropDown = openDropDown;
 
 --- Setup a drop down menu for a clickable (Button ...)
