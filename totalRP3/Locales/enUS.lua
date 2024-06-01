@@ -1868,6 +1868,23 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed mount and character tooltips overlapping in some cases when the tooltip is anchored on the cursor.
 
 ]],
+	WHATS_NEW_28_4 = [[# Changelog version 2.8.4
+
+## Added
+
+- The original tooltip can now be shown instead of the TRP tooltip by pressing Alt.
+  - This can be disabled (or the modifier key can be changed) in Tooltip settings > "Hide on modifier key".
+- Added profile tooltip support for soft targets.
+  - This is mostly relevant to ConsolePort users with "Enable Soft Friend Targeting" and "Show Friendly Tooltip", but impacts anyone with the SoftTargetFriend and SoftTargetTooltipFriend CVars enabled.
+
+## Fixed
+
+- Fixed companion titles not wrapping properly on tooltips.
+- Fixed the timerunner icon not showing when names are customized in chat (unless the profile icon is included in the customization).
+- The temporary workaround for disconnects has been extended indefinitely.
+  - It was set to expire at the end of May assuming the issue would be fixed by then, which has not been the case. As we don't know for sure when it will, we'll just release a new version to remove it once it has.
+
+]],
 
 };
 
