@@ -104,10 +104,13 @@ end
 TRP3_API.profile.isProfileNameAvailable = isProfileNameAvailable;
 
 -- Duplicate an existing profile
-local function duplicateProfile(duplicatedProfile, profileName)
+local function duplicateProfile(duplicatedProfile, profileName, isDefaultProfile)
 	assert(duplicatedProfile, "Nil profile");
 	assert(isProfileNameAvailable(profileName), "Unavailable profile name: "..tostring(profileName));
 	local profileID = Utils.str.id();
+	if isDefaultProfile then
+		profileID = string.sub(profileID, 1, -2) .. "*";
+	end
 	profiles[profileID] = {};
 	Utils.table.copy(profiles[profileID], duplicatedProfile);
 	profiles[profileID].profileName = profileName;
@@ -117,8 +120,8 @@ end
 TRP3_API.profile.duplicateProfile = duplicateProfile;
 
 -- Creating a new profile using PR_DEFAULT_PROFILE as a template
-local function createProfile(profileName)
-	return duplicateProfile(PR_DEFAULT_PROFILE, profileName);
+local function createProfile(profileName, isDefaultProfile)
+	return duplicateProfile(PR_DEFAULT_PROFILE, profileName, isDefaultProfile);
 end
 TRP3_API.profile.createProfile = createProfile;
 
@@ -174,6 +177,10 @@ local function updateDefaultProfile()
 	profileCharacteristics.CL = Globals.player_class_loc;
 	profileCharacteristics.FN = Globals.player;
 	profileCharacteristics.IC = TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
+end
+
+function TRP3_API.profile.isDefaultProfile(profileID)
+	return string.sub(profileID, -1) == "*";
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -453,13 +460,13 @@ function TRP3_API.profile.init()
 				break;
 			end
 		end
-		TRP3_API.configuration.setValue("default_profile_id", createProfile(loc.PR_DEFAULT_PROFILE_NAME));
+		TRP3_API.configuration.setValue("default_profile_id", createProfile(loc.PR_DEFAULT_PROFILE_NAME, true));
 	else
 		updateDefaultProfile();
 	end
 
 	-- First time this character is connected with TRP3 or if deleted profile through another character
-	-- So we create a new profile named by his username.
+	-- So we select the default profile.
 	if not character.profileID or not profiles[character.profileID] then
 		selectProfile(getConfigValue("default_profile_id"));
 	else
