@@ -180,6 +180,7 @@ local function updateDefaultProfile()
 end
 
 function TRP3_API.profile.isDefaultProfile(profileID)
+	if not profileID then return false end
 	return string.sub(profileID, -1) == "*";
 end
 
