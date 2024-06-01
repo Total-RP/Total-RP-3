@@ -139,7 +139,7 @@ local function openDropDown(ownerRegion, rootMenuItems, onClickFunction)
 		GameTooltip_AddNormalLine(tooltipFrame, itemTooltipText, true);
 	end
 
-	function GenerateContextMenuElement(itemData, ownerRegion, menuDescription)
+	function GenerateContextMenuElement(itemData, ownerRegion, menuDescription)  -- luacheck: ignore 432 (shadowing ownerRegion)
 		local text, value, tooltipText = unpack(itemData, 1, 3);
 		local elementDescription;
 
@@ -164,13 +164,13 @@ local function openDropDown(ownerRegion, rootMenuItems, onClickFunction)
 		return elementDescription;
 	end
 
-	function GenerateContextMenu(menuItems, ownerRegion, menuDescription)
+	function GenerateContextMenu(menuItems, ownerRegion, menuDescription)  -- luacheck: ignore 432 (shadowing ownerRegion)
 		for _, itemData in ipairs(menuItems) do
 			GenerateContextMenuElement(itemData, ownerRegion, menuDescription);
 		end
 	end
 
-	local function OnCreateContextMenu(ownerRegion, rootDescription)
+	local function OnCreateContextMenu(ownerRegion, rootDescription)  -- luacheck: ignore 432 (shadowing ownerRegion)
 		GenerateContextMenu(rootMenuItems, ownerRegion, rootDescription);
 	end
 

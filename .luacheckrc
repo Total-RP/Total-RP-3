@@ -412,6 +412,13 @@ stds.wow = {
 			},
 		},
 
+		MenuUtil = {
+			fields = {
+				"CreateContextMenu",
+				"GetElementText",
+			},
+		},
+
 		ScrollUtil = {
 			fields = {
 				"AddManagedScrollBarVisibilityBehavior",
