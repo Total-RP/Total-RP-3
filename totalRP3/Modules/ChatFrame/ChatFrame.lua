@@ -689,7 +689,8 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	end
 
 	-- Retrieve the character full RP name (if not default profile)
-	if player:GetProfileID() and TRP3_API.profile.isDefaultProfile(player:GetProfileID()) == false then
+	local hasNonDefaultProfile = player:GetProfileID() and TRP3_API.profile.isDefaultProfile(player:GetProfileID()) == false;
+	if hasNonDefaultProfile then
 		local customizedName = getFullnameForUnitUsingChatMethod(unitID);
 
 		if customizedName then
@@ -721,7 +722,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 		characterName = TimerunningUtil.AddSmallIcon(characterName);
 	end
 
-	if getConfigValue(CONFIG_SHOW_ICON) then
+	if hasNonDefaultProfile and getConfigValue(CONFIG_SHOW_ICON) then
 		local info = getCharacterInfoTab(unitID);
 		if info and info.characteristics and info.characteristics.IC then
 			characterName = Utils.str.icon(info.characteristics.IC, 15) .. " " .. characterName;
