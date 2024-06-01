@@ -7,13 +7,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Include file="StatusPanel.lua"/>
 
-	<Frame name="TRP3_DashboardStatusMenuTemplate" virtual="true" inherits="TRP3_DropDownMenuTemplate" mixin="TRP3_DashboardStatusMenuMixin">
-		<Scripts>
-			<OnLoad method="OnLoad" inherit="prepend"/>
-			<OnShow method="OnShow" inherit="prepend"/>
-		</Scripts>
-	</Frame>
-
 	<Frame name="TRP3_DashboardStatusPanelTemplate" virtual="true" inherits="TRP3_FieldSetFrame" mixin="TRP3_DashboardStatusPanelMixin">
 		<Layers>
 			<Layer level="OVERLAY">
@@ -34,19 +27,22 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame parentKey="RPStatusMenu" name="$parentRPStatus" inherits="TRP3_DashboardStatusMenuTemplate" mixin="TRP3_DashboardRPStatusMenuMixin">
+			<Frame parentKey="RPStatusMenu" name="$parentRPStatus" inherits="TRP3_DropdownButtonTemplate">
+				<Size x="170" y="28"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeKey="$parent.RPStatusLabel" relativePoint="RIGHT" x="10" y="-2"/>
 				</Anchors>
 			</Frame>
-			<Frame parentKey="XPStatusMenu" name="$parentXPStatus" inherits="TRP3_DashboardStatusMenuTemplate" mixin="TRP3_DashboardXPStatusMenuMixin">
+			<Frame parentKey="XPStatusMenu" name="$parentXPStatus" inherits="TRP3_DropdownButtonTemplate">
+				<Size x="170" y="28"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeKey="$parent.XPStatusLabel" relativePoint="RIGHT" x="10" y="-2"/>
 				</Anchors>
 			</Frame>
 		</Frames>
 		<Scripts>
-			<OnLoad inherit="prepend" method="OnLoad"/>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
 		</Scripts>
 	</Frame>
 </Ui>
