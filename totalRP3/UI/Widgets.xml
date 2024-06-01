@@ -12,6 +12,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="FontUtil.lua"/>
 	<Include file="TooltipUtil.lua"/>
 	<Include file="Widgets.lua"/>
+	<Include file="Menu.xml"/>
 
 	<GameTooltip name="TRP3_TooltipTemplate" mixin="TRP3_TooltipMixin" inherits="GameTooltipTemplate" virtual="true"/>
 
