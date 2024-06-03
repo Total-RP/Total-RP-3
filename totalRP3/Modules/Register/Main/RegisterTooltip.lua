@@ -122,6 +122,10 @@ local function getSmallLineFontSize()
 end
 TRP3_API.ui.tooltip.getSmallLineFontSize = getSmallLineFontSize;
 
+function TRP3_API.ui.tooltip.setTooltipDefaultAnchor(tooltip, parent)
+	GameTooltip_SetDefaultAnchor(tooltip, parent);
+end
+
 function TRP3_API.ui.tooltip.shouldCropTexts()
 	if not registerTooltipModuleIsEnabled then
 		return true;
@@ -1452,7 +1456,10 @@ local function onModuleInit()
 		if TRP3_CharacterTooltip:IsShown() and ShouldDisplayUnmodifiedTooltip() then
 			local unitToken = TRP3_CharacterTooltip.targetType;
 			TRP3_CharacterTooltip:Hide();
-			GameTooltip_SetDefaultAnchor(GameTooltip, UIParent);
+
+			-- Need to use the global ref to this function since it may be overridden by another module
+			TRP3_API.ui.tooltip.setTooltipDefaultAnchor(GameTooltip, UIParent);
+
 			GameTooltip:SetUnit(unitToken);
 			GameTooltip:Show();
 		elseif GameTooltip:IsShown() then
