@@ -47,14 +47,14 @@ local function GenerateRPStatusMenu(_, rootDescription)
 	do  -- In character
 		local status = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
 		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_RP_IC, IsRoleplayStatus, SetRoleplayStatus, status);
-		TRP3_MenuUtil.SetElementIcon(elementDescription, [[Interface\COMMON\Indicator-Green]]);
+		TRP3_MenuUtil.AddIconToElement(elementDescription, [[Interface\COMMON\Indicator-Green]]);
 		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_RP_IC_TT);
 	end
 
 	do  -- Out of character
 		local status = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
 		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_RP_OOC, IsRoleplayStatus, SetRoleplayStatus, status);
-		TRP3_MenuUtil.SetElementIcon(elementDescription, [[Interface\COMMON\Indicator-Red]]);
+		TRP3_MenuUtil.AddIconToElement(elementDescription, [[Interface\COMMON\Indicator-Red]]);
 		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_RP_OOC_TT);
 	end
 end
@@ -63,7 +63,7 @@ local function GenerateXPStatusMenu(_, rootDescription)
 	do -- Beginner/Rookie Roleplayer
 		local level = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.BEGINNER;
 		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_XP_BEGINNER, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
-		TRP3_MenuUtil.SetElementIcon(elementDescription, [[Interface\TARGETINGFRAME\UI-TargetingFrame-Seal]]);
+		TRP3_MenuUtil.AddIconToElement(elementDescription, [[Interface\TARGETINGFRAME\UI-TargetingFrame-Seal]]);
 		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_XP_BEGINNER_TT);
 	end
 
@@ -76,7 +76,7 @@ local function GenerateXPStatusMenu(_, rootDescription)
 	do -- Volunteer Roleplayer
 		local level = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VOLUNTEER;
 		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_RP_VOLUNTEER, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
-		TRP3_MenuUtil.SetElementIcon(elementDescription, [[Interface\TARGETINGFRAME\PortraitQuestBadge]]);
+		TRP3_MenuUtil.AddIconToElement(elementDescription, [[Interface\TARGETINGFRAME\PortraitQuestBadge]]);
 		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_RP_VOLUNTEER_TT);
 	end
 end

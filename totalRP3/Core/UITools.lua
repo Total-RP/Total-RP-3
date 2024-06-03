@@ -182,61 +182,43 @@ local function OpenLegacyContextMenu(ownerRegion, rootMenuItems, onClickFunction
 end
 
 local function OpenModernContextMenu(ownerRegion, rootMenuItems, onClickFunction)
-	local GenerateContextMenu;
-	local GenerateContextMenuElement;
-
-	local function OnMenuItemClick(menuItem)
+	local function OnButtonClick(elementData)
 		if onClickFunction then
-			local value = menuItem[2];
+			local value = elementData[2];
 			securecallfunction(onClickFunction, value, ownerRegion);
 		end
 	end
 
-	local function OnMenuItemTooltip(tooltipFrame, elementDescription)
-		local itemData = elementDescription:GetData();
-		local itemText = MenuUtil.GetElementText(elementDescription);
-		local itemTooltipText = itemData[3];
+	local function GenerateMenuDescription(menuItems, menuDescription)
+		for _, elementData in ipairs(menuItems) do
+			local text, value, tooltipText = unpack(elementData, 1, 3);
+			local elementDescription;
 
-		GameTooltip_SetTitle(tooltipFrame, itemText);
-		GameTooltip_AddNormalLine(tooltipFrame, itemTooltipText, true);
-	end
+			if text == nil or text == "" then
+				elementDescription = menuDescription:CreateDivider();
+			elseif value == nil then
+				elementDescription = menuDescription:CreateTitle(text);
+			elseif type(value) ~= "table" then
+				elementDescription = menuDescription:CreateButton(text, OnButtonClick, elementData);
+			else
+				elementDescription = menuDescription:CreateButton(text);
+			end
 
-	function GenerateContextMenuElement(itemData, ownerRegion, menuDescription)  -- luacheck: no redefined (ownerRegion)
-		local text, value, tooltipText = unpack(itemData, 1, 3);
-		local elementDescription;
+			if tooltipText ~= nil and tooltipText ~= "" then
+				TRP3_MenuUtil.SetElementTooltip(elementDescription, tooltipText);
+			end
 
-		if text == nil or text == "" then
-			elementDescription = menuDescription:CreateDivider();
-		elseif value == nil then
-			elementDescription = menuDescription:CreateTitle(text);
-		elseif type(value) ~= "table" then
-			elementDescription = menuDescription:CreateButton(text, OnMenuItemClick, itemData);
-		else
-			elementDescription = menuDescription:CreateButton(text);
-		end
-
-		if tooltipText ~= nil and tooltipText ~= "" then
-			elementDescription:SetTooltip(OnMenuItemTooltip);
-		end
-
-		if type(value) == "table" then
-			GenerateContextMenu(value, ownerRegion, elementDescription);
-		end
-
-		return elementDescription;
-	end
-
-	function GenerateContextMenu(menuItems, ownerRegion, menuDescription)  -- luacheck: no redefined (ownerRegion)
-		for _, itemData in ipairs(menuItems) do
-			GenerateContextMenuElement(itemData, ownerRegion, menuDescription);
+			if type(value) == "table" then
+				GenerateMenuDescription(value, elementDescription);
+			end
 		end
 	end
 
-	local function OnCreateContextMenu(ownerRegion, rootDescription)  -- luacheck: no redefined (ownerRegion)
-		GenerateContextMenu(rootMenuItems, ownerRegion, rootDescription);
+	local function GenerateRootMenuDescription(_, rootDescription)
+		GenerateMenuDescription(rootMenuItems, rootDescription);
 	end
 
-	MenuUtil.CreateContextMenu(ownerRegion, OnCreateContextMenu);
+	MenuUtil.CreateContextMenu(ownerRegion, GenerateRootMenuDescription);
 end
 
 local function OpenContextMenu(ownerRegion, rootMenuItems, onClickFunction)
@@ -264,65 +246,8 @@ TRP3_API.ui.listbox.setupDropDownMenu = setupDropDownMenu;
 -- ListBox tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function SetupLegacyDropdownMenu(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth)
-	dropdown.callback = onClickFunction;
-	dropdown.values = rootMenuItems;
-
-	function dropdown:GetSelectedValue()
-		return self.selectedValue;
-	end
-
-	function dropdown:SetSelectedIndex(index)
-		local value = rootMenuItems[index] and rootMenuItems[index][2] or nil;
-		self:SetSelectedValue(value);
-	end
-
-	function dropdown:SetSelectedValue(value)
-		self.selectedValue = value;
-		self:Update();
-
-		if onClickFunction then
-			securecallfunction(onClickFunction, value, self);
-		end
-	end
-
-	function dropdown:Update()
-		local text;
-
-		for _, menuItem in ipairs(rootMenuItems) do
-			if menuItem[2] == self.selectedValue then
-				text = menuItem[1];
-				break;
-			end
-		end
-
-		if not text then
-			text = defaultText or loc.CM_UNKNOWN;
-		end
-
-		UIDropDownMenu_SetText(self.Menu, text);
-	end
-
-	local function SetSelectedElement(value)
-		dropdown:SetSelectedValue(value);
-	end
-
-	if not dropdown.Menu then
-		dropdown.Menu = CreateFrame("Frame", "$parentMenu", dropdown, "UIDropDownMenuTemplate");
-		dropdown.Menu:SetAllPoints(dropdown);
-		setupDropDownMenu(_G[dropdown:GetName().."MenuButton"], rootMenuItems, SetSelectedElement);
-		_G[dropdown:GetName().."MenuMiddle"]:SetWidth(dropdownWidth);
-		_G[dropdown:GetName().."MenuText"]:SetWidth(dropdownWidth - 20);
-		dropdown:SetSize(dropdownWidth + 50, 28);
-	end
-
-	dropdown:Update();
-end
-
-local function SetupModernDropdownMenu(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth)
-	local GenerateMenuDescription;
-	local GenerateMenuElement;
-
+-- Setup a ListBox. When the player choose a value, it triggers the function passing the value of the selected element
+local function setupListBox(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth)
 	local function IsSelectedElement(elementData)
 		local value = elementData[2];
 		return dropdown.selectedValue == value;
@@ -333,48 +258,37 @@ local function SetupModernDropdownMenu(dropdown, rootMenuItems, onClickFunction,
 		dropdown:SetSelectedValue(value);
 	end
 
-	local function OnMenuElementTooltip(tooltip, elementDescription)
-		local itemData = elementDescription:GetData();
-		local itemText = MenuUtil.GetElementText(elementDescription);
-		local itemTooltipText = itemData[3];
+	local function GenerateMenuDescription(menuItems, menuDescription)
+		for _, elementData in ipairs(menuItems) do
+			local text, value, tooltipText = unpack(elementData, 1, 3);
+			local elementDescription;
 
-		GameTooltip_SetTitle(tooltip, itemText);
-		GameTooltip_AddNormalLine(tooltip, itemTooltipText, true);
-	end
+			if text == nil or text == "" then
+				elementDescription = menuDescription:CreateDivider();
+			elseif value == nil then
+				elementDescription = menuDescription:CreateTitle(text);
+			elseif type(value) ~= "table" then
+				elementDescription = menuDescription:CreateRadio(text, IsSelectedElement, SetSelectedElement, elementData);
+			else
+				elementDescription = menuDescription:CreateButton(text);
+			end
 
-	function GenerateMenuElement(elementData, ownerRegion, menuDescription)  -- luacheck: no redefined (dropdown)
-		local text, value, tooltipText = unpack(elementData, 1, 3);
-		local elementDescription;
+			if tooltipText ~= nil and tooltipText ~= "" then
+				TRP3_MenuUtil.SetElementTooltip(elementDescription, tooltipText);
+			end
 
-		if text == nil or text == "" then
-			elementDescription = menuDescription:CreateDivider();
-		elseif value == nil then
-			elementDescription = menuDescription:CreateTitle(text);
-		elseif type(value) ~= "table" then
-			elementDescription = menuDescription:CreateRadio(text, IsSelectedElement, SetSelectedElement, elementData);
-		else
-			elementDescription = menuDescription:CreateButton(text);
-		end
-
-		if tooltipText ~= nil and tooltipText ~= "" then
-			elementDescription:SetTooltip(OnMenuElementTooltip);
-		end
-
-		if type(value) == "table" then
-			GenerateMenuDescription(value, ownerRegion, elementDescription);
-		end
-
-		return elementDescription;
-	end
-
-	function GenerateMenuDescription(menuItems, dropdown, menuDescription)  -- luacheck: no redefined (dropdown)
-		for _, itemData in ipairs(menuItems) do
-			GenerateMenuElement(itemData, dropdown, menuDescription);
+			if type(value) == "table" then
+				GenerateMenuDescription(value, elementDescription);
+			end
 		end
 	end
 
-	local function GenerateRootMenuDescription(dropdown, rootDescription)  -- luacheck: no redefined (dropdown)
-		GenerateMenuDescription(rootMenuItems, dropdown, rootDescription);
+	local function GenerateRootMenuDescription(_, rootDescription)
+		if dropdownWidth then
+			rootDescription:SetMinimumWidth(dropdownWidth);
+		end
+
+		GenerateMenuDescription(rootMenuItems, rootDescription);
 	end
 
 	function dropdown:GetSelectedValue()
@@ -383,7 +297,7 @@ local function SetupModernDropdownMenu(dropdown, rootMenuItems, onClickFunction,
 
 	function dropdown:SetSelectedValue(value)
 		self.selectedValue = value;
-		self.Button:Update();
+		self:Update();
 
 		if onClickFunction then
 			securecallfunction(onClickFunction, value, dropdown);
@@ -395,30 +309,8 @@ local function SetupModernDropdownMenu(dropdown, rootMenuItems, onClickFunction,
 		self:SetSelectedValue(value);
 	end
 
-	if not dropdown.Button then
-		dropdown.Button = CreateFrame("DropdownButton", nil, dropdown, "WowStyle1DropdownTemplate");
-		dropdown.Button:SetAllPoints(dropdown);
-		dropdown.Button:SetDefaultText(defaultText or "");
-		dropdown.Button:SetupMenu(GenerateRootMenuDescription);
-	end
-
-	-- Classic has chonkier dropdowns.
-	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
-		dropdown:SetSize(dropdownWidth, 25);
-	else
-		dropdown:SetSize(dropdownWidth, 30);
-	end
-end
-
--- Setup a ListBox. When the player choose a value, it triggers the function passing the value of the selected element
-local function setupListBox(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth)
-	dropdownWidth = dropdownWidth or 115;
-
-	if MenuUtil then
-		SetupModernDropdownMenu(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth);
-	else
-		SetupLegacyDropdownMenu(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth);
-	end
+	dropdown:SetDefaultText(defaultText or loc.CM_UNKNOWN);
+	dropdown:SetupMenu(GenerateRootMenuDescription);
 end
 TRP3_API.ui.listbox.setupListBox = setupListBox;
 

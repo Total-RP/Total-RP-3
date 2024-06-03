@@ -12,10 +12,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="FontUtil.lua"/>
 	<Include file="TooltipUtil.lua"/>
 	<Include file="Widgets.lua"/>
-	<Include file="Menu.xml"/>
+	<Include file="Menu\Menu.xml"/>
 
 	<GameTooltip name="TRP3_TooltipTemplate" mixin="TRP3_TooltipMixin" inherits="GameTooltipTemplate" virtual="true"/>
-	<Frame name="TRP3_DropDownMenuTemplate" virtual="true"/>
+	<Frame name="TRP3_DropDownMenuTemplate" virtual="true" inherits="TRP3_DropdownButtonTemplate"/>
 
 	<!--
 		TRP3_TruncatedTextTemplate

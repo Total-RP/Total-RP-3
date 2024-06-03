@@ -28,13 +28,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Layers>
 		<Frames>
 			<Frame parentKey="RPStatusMenu" name="$parentRPStatus" inherits="TRP3_DropdownButtonTemplate">
-				<Size x="170"/>
+				<Size x="200" y="30"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeKey="$parent.RPStatusLabel" relativePoint="RIGHT" x="10" y="-2"/>
 				</Anchors>
 			</Frame>
 			<Frame parentKey="XPStatusMenu" name="$parentXPStatus" inherits="TRP3_DropdownButtonTemplate">
-				<Size x="170"/>
+				<Size x="200" y="30"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeKey="$parent.XPStatusLabel" relativePoint="RIGHT" x="10" y="-2"/>
 				</Anchors>
