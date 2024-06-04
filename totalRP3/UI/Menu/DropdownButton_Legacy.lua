@@ -90,10 +90,7 @@ function TRP3_DropdownButtonMixin:OpenMenu()
 		return;
 	end
 
-	local level = nil;
-	local value = nil;
-	local ownerRegion = self.Menu;
-	ToggleDropDownMenu(level, value, ownerRegion);
+	TRP3_Menu.OpenMenu(self.Menu, self.menuDescription);
 end
 
 function TRP3_DropdownButtonMixin:SetMenuAnchor(anchor)
@@ -166,68 +163,11 @@ function TRP3_DropdownButtonMixin:HasElements()
 end
 
 function TRP3_DropdownButtonMixin:RegisterMenu(rootDescription)
-	local function OnMenuButtonClick(_, description, level, _, buttonName)
-		local menuInputData = {
-			context = TRP3_MenuInputContext.MouseButton,
-			buttonName = buttonName,
-		};
-
-		if not description:CanOpenSubmenu() then
-			PlaySound(description:GetSoundKit());
-		end
-
-		local response = description:Pick(menuInputData);
-
-		if response == nil or response == TRP3_MenuResponse.CloseAll then
-			-- Only close if the clicked button isn't a submenu container.
-			if not description:HasElements() then
-				CloseDropDownMenus();
-			end
-		elseif response == TRP3_MenuResponse.Close then
-			CloseDropDownMenus(level);
-		elseif response == TRP3_MenuResponse.Refresh then
-			UIDropDownMenu_RefreshAll(UIDROPDOWNMENU_OPEN_MENU);
-		end
-
-		self:UpdateText();
-	end
-
-	local function OnMenuInitialize(_, level, menuList)
-		if level == nil then
-			level = 1;
-		end
-
-		if level == 1 then
-			menuList = self.menuDescription;
-		end
-
-		for _, description in menuList:EnumerateElementDescriptions() do
-			local info = {};
-			info.arg1 = description;
-			info.arg2 = level;
-			info.func = OnMenuButtonClick;
-			info.funcOnEnter = function(button) description:HandleOnEnter(button); end;
-			info.funcOnLeave = function(button) description:HandleOnLeave(button); end;
-			info.keepShownOnClick = true;
-			info.menuList = description;
-			info.minWidth = menuList:GetMinimumWidth();
-			info.noClickSound = true;
-			info.notCheckable = true;
-
-			if level == 1 then
-				info.minWidth = math.max(info.minWidth, CalculateMinimumMenuWidth(self));
-			end
-
-			for _, initializer in ipairs(description:GetInitializers()) do
-				securecallfunction(initializer, info, description, self);
-			end
-
-			UIDropDownMenu_AddButton(info, level);
-		end
-	end
-
 	self.menuDescription = rootDescription;
-	UIDropDownMenu_SetInitializeFunction(self.Menu, OnMenuInitialize);
+	self.menuDescription:AddMenuResponseCallback(function() self:UpdateText(); end);
+	self.menuDescription:SetMinimumWidth(CalculateMinimumMenuWidth(self));
+
+	TRP3_Menu.SetMenuInitializer(self.Menu, self.menuDescription);
 
 	if self:IsMenuOpen() then
 		-- Open menus require a full reinitialization; unlike modern menus

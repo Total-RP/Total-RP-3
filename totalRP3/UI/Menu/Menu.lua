@@ -248,3 +248,108 @@ end
 function TRP3_Menu.CreateRootMenuDescription()
 	return TRP3_API.CreateObject(RootMenuDescription);
 end
+
+local function OpenMenuInternal(dropdown, anchorName)
+	local level = nil;
+	local value = nil;
+
+	if not ToggleDropDownMenu(level, value, dropdown, anchorName) then
+		return;
+	end
+
+	local menu = {};
+
+	function menu:Close()
+		if UIDROPDOWNMENU_OPEN_MENU == dropdown then
+			CloseDropDownMenus();
+		end
+	end
+
+	return menu;
+end
+
+function TRP3_Menu.OpenMenu(ownerRegion)
+	local anchorName = nil;
+	return OpenMenuInternal(ownerRegion, anchorName);
+end
+
+function TRP3_Menu.OpenContextMenu(ownerRegion, menuGenerator)
+	if not TRP3_ContextMenuParent then
+		CreateFrame("Frame", "TRP3_ContextMenuParent", UIParent, "UIDropDownMenuTemplate");
+		UIDropDownMenu_SetDisplayMode(TRP3_ContextMenuParent, "MENU");
+	end
+
+	local menuDescription = TRP3_Menu.CreateRootMenuDescription();
+	securecallfunction(menuGenerator, ownerRegion, menuDescription);
+
+	if not menuDescription:HasElements() then
+		return;
+	end
+
+	local anchorName = "cursor";
+	TRP3_ContextMenuParent:SetParent(ownerRegion);
+	TRP3_Menu.SetMenuInitializer(TRP3_ContextMenuParent, menuDescription);
+	return OpenMenuInternal(TRP3_ContextMenuParent, anchorName);
+end
+
+function TRP3_Menu.SetMenuInitializer(dropdown, menuDescription)
+	local function OnMenuButtonClick(_, description, level, _, buttonName)
+		local menuInputData = {
+			context = TRP3_MenuInputContext.MouseButton,
+			buttonName = buttonName,
+		};
+
+		if not description:CanOpenSubmenu() then
+			PlaySound(description:GetSoundKit());
+		end
+
+		local response = description:Pick(menuInputData);
+
+		if response == nil or response == TRP3_MenuResponse.CloseAll then
+			-- Only close if the clicked button isn't a submenu container.
+			if not description:HasElements() then
+				CloseDropDownMenus();
+			end
+		elseif response == TRP3_MenuResponse.Close then
+			CloseDropDownMenus(level);
+		elseif response == TRP3_MenuResponse.Refresh then
+			UIDropDownMenu_RefreshAll(UIDROPDOWNMENU_OPEN_MENU);
+		end
+
+		for _, callback in ipairs(description:GetMenuResponseCallbacks()) do
+			securecallfunction(callback);
+		end
+	end
+
+	local function OnMenuInitialize(_, level, menuList)
+		if level == nil then
+			level = 1;
+		end
+
+		if level == 1 then
+			menuList = menuDescription;
+		end
+
+		for _, description in menuList:EnumerateElementDescriptions() do
+			local info = {};
+			info.arg1 = description;
+			info.arg2 = level;
+			info.func = OnMenuButtonClick;
+			info.funcOnEnter = function(button) description:HandleOnEnter(button); end;
+			info.funcOnLeave = function(button) description:HandleOnLeave(button); end;
+			info.keepShownOnClick = true;
+			info.menuList = description;
+			info.minWidth = menuList:GetMinimumWidth();
+			info.noClickSound = true;
+			info.notCheckable = true;
+
+			for _, initializer in ipairs(description:GetInitializers()) do
+				securecallfunction(initializer, info, description, dropdown);
+			end
+
+			UIDropDownMenu_AddButton(info, level);
+		end
+	end
+
+	UIDropDownMenu_SetInitializeFunction(dropdown, OnMenuInitialize);
+end

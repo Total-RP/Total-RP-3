@@ -164,3 +164,11 @@ function TRP3_MenuUtil.GetSelections(elementDescription, condition)
 
 	return selections;
 end
+
+function TRP3_MenuUtil.CreateContextMenu(ownerRegion, menuGenerator)
+	if TRP3_USE_MODERN_MENUS then
+		return MenuUtil.CreateContextMenu(ownerRegion, menuGenerator);
+	else
+		return TRP3_Menu.OpenContextMenu(ownerRegion, menuGenerator);
+	end
+end

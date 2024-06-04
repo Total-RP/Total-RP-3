@@ -116,72 +116,7 @@ end
 -- Drop down
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local LegacyDropdownFrame;
-
-local function OpenLegacyContextMenu(ownerRegion, rootMenuItems, onClickFunction)
-	if not LegacyDropdownFrame then
-		LegacyDropdownFrame = CreateFrame("Frame", "TRP3_UIDD", UIParent, "UIDropDownMenuTemplate");
-	end
-
-	local function OnContextMenuInitialize(_, level, menuList)
-		local levelValues = menuList or rootMenuItems;
-		level = level or 1;
-		for _, tab in pairs(levelValues) do
-			assert(type(tab) == "table", "Level value is not a table !");
-			local text = tab[1];
-			local value = tab[2];
-			local tooltipText = tab[3];
-			local info = {};
-			info.notCheckable = "true";
-			if text == "" then
-				info.dist = 0;
-				info.isTitle = true;
-				info.isUninteractable = true;
-				info.iconOnly = 1;
-				info.icon = "Interface\\Common\\UI-TooltipDivider-Transparent";
-				info.iconInfo = {
-					tCoordLeft = 0,
-					tCoordRight = 1,
-					tCoordTop = 0,
-					tCoordBottom = 1,
-					tSizeX = 0,
-					tSizeY = 8,
-					tFitDropDownSizeX = true
-				};
-			else
-				info.text = text;
-				info.isTitle = false;
-				info.tooltipOnButton = tooltipText ~= nil;
-				info.tooltipTitle = text;
-				info.tooltipText = tooltipText;
-				if type(value) == "table" then
-					info.hasArrow = true;
-					info.keepShownOnClick = true;
-					info.menuList = value;
-				elseif value ~= nil then
-					info.func = function()
-						if onClickFunction then
-							onClickFunction(value, ownerRegion);
-						end
-						if level > 1 then
-							ToggleDropDownMenu(nil, nil, LegacyDropdownFrame);
-						end
-					end;
-				else
-					info.disabled = true;
-					info.isTitle = tooltipText == nil;
-				end
-			end
-			UIDropDownMenu_AddButton(info, level);
-		end
-	end
-
-	UIDropDownMenu_Initialize(LegacyDropdownFrame, OnContextMenuInitialize, "MENU");
-	LegacyDropdownFrame:SetParent(ownerRegion);
-	ToggleDropDownMenu(1, nil, LegacyDropdownFrame, "cursor");
-end
-
-local function OpenModernContextMenu(ownerRegion, rootMenuItems, onClickFunction)
+function TRP3_API.ui.listbox.displayDropDown(ownerRegion, rootMenuItems, onClickFunction)
 	local function OnButtonClick(elementData)
 		if onClickFunction then
 			local value = elementData[2];
@@ -218,36 +153,25 @@ local function OpenModernContextMenu(ownerRegion, rootMenuItems, onClickFunction
 		GenerateMenuDescription(rootMenuItems, rootDescription);
 	end
 
-	MenuUtil.CreateContextMenu(ownerRegion, GenerateRootMenuDescription);
-end
-
-local function OpenContextMenu(ownerRegion, rootMenuItems, onClickFunction)
-	if MenuUtil and MenuUtil.CreateContextMenu then
-		OpenModernContextMenu(ownerRegion, rootMenuItems, onClickFunction);
-	else
-		OpenLegacyContextMenu(ownerRegion, rootMenuItems, onClickFunction);
+	if TRP3_MenuUtil.CreateContextMenu(ownerRegion, GenerateRootMenuDescription) then
+		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 	end
-
-	TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 end
-
-TRP3_API.ui.listbox.displayDropDown = OpenContextMenu;
 
 --- Setup a drop down menu for a clickable (Button ...)
-local function setupDropDownMenu(hasClickFrame, values, callback, _, _, rightClick)
+function TRP3_API.ui.listbox.setupDropDownMenu(hasClickFrame, values, callback, _, _, rightClick)
 	hasClickFrame:SetScript("OnClick", function(_, button)
 		if (rightClick and button ~= "RightButton") or (not rightClick and button ~= "LeftButton") then return; end
-		OpenContextMenu(hasClickFrame, values, callback);
+		TRP3_API.ui.listbox.displayDropDown(hasClickFrame, values, callback);
 	end);
 end
-TRP3_API.ui.listbox.setupDropDownMenu = setupDropDownMenu;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- ListBox tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Setup a ListBox. When the player choose a value, it triggers the function passing the value of the selected element
-local function setupListBox(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth)
+function TRP3_API.ui.listbox.setupListBox(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth)
 	local function IsSelectedElement(elementData)
 		local value = elementData[2];
 		return dropdown.selectedValue == value;
@@ -312,7 +236,6 @@ local function setupListBox(dropdown, rootMenuItems, onClickFunction, defaultTex
 	dropdown:SetDefaultText(defaultText or loc.CM_UNKNOWN);
 	dropdown:SetupMenu(GenerateRootMenuDescription);
 end
-TRP3_API.ui.listbox.setupListBox = setupListBox;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List tools
@@ -1030,7 +953,9 @@ local function onContainerTagClicked(button, frame, isP)
 		tinsert(values, {loc.CM_CENTER, 1});
 		tinsert(values, {loc.CM_RIGHT, 2});
 	end
-	OpenContextMenu(button, values, function(alignIndex, mouseButton) insertContainerTag(alignIndex, mouseButton, frame) end);
+	TRP3_API.ui.listbox.displayDropDown(button, values, function(alignIndex, mouseButton)
+		insertContainerTag(alignIndex, mouseButton, frame);
+	end);
 end
 
 function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, parentPoint)
