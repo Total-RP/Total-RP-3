@@ -1,6 +1,24 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+local SharedMenuProperties = {};
+
+function SharedMenuProperties:__init()
+	self.menuResponseCallbacks = {};
+end
+
+function SharedMenuProperties:AddMenuResponseCallback(callback)
+	table.insert(self.menuResponseCallbacks, callback);
+end
+
+function SharedMenuProperties:GetMenuResponseCallbacks()
+	return self.menuResponseCallbacks;
+end
+
+local function CreateSharedMenuProperties()
+	return TRP3_API.CreateObject(SharedMenuProperties);
+end
+
 local BaseMenuDescription = {};
 
 function BaseMenuDescription:__init()
@@ -9,6 +27,8 @@ function BaseMenuDescription:__init()
 end
 
 function BaseMenuDescription:Insert(description, index)
+	description:SetSharedMenuProperties(self:GetSharedMenuProperties());
+
 	if index then
 		table.insert(self.elementDescriptions, index, description);
 	else
@@ -45,6 +65,18 @@ end
 
 function BaseMenuDescription:GetInitializers()
 	return self.initializers;
+end
+
+function BaseMenuDescription:GetSharedMenuProperties()
+	return self.sharedMenuProperties;
+end
+
+function BaseMenuDescription:SetSharedMenuProperties(sharedMenuProperties)
+	self.sharedMenuProperties = sharedMenuProperties;
+end
+
+function BaseMenuDescription:GetMenuResponseCallbacks()
+	return self:GetSharedMenuProperties():GetMenuResponseCallbacks();
 end
 
 local MenuElementDescription = CreateFromMixins(BaseMenuDescription);
@@ -196,6 +228,17 @@ function MenuElementDescription:CreateTitle(text, color)
 	return self:Insert(TRP3_MenuUtil.CreateTitle(text, color));
 end
 
+local RootMenuDescription = CreateFromMixins(MenuElementDescription);
+
+function RootMenuDescription:__init()
+	BaseMenuDescription.__init(self);
+	self.sharedMenuProperties = CreateSharedMenuProperties();
+end
+
+function RootMenuDescription:AddMenuResponseCallback(callback)
+	self:GetSharedMenuProperties():AddMenuResponseCallback(callback);
+end
+
 TRP3_Menu = {};
 
 function TRP3_Menu.CreateMenuElementDescription()
@@ -203,5 +246,5 @@ function TRP3_Menu.CreateMenuElementDescription()
 end
 
 function TRP3_Menu.CreateRootMenuDescription()
-	return TRP3_API.CreateObject(MenuElementDescription);
+	return TRP3_API.CreateObject(RootMenuDescription);
 end
