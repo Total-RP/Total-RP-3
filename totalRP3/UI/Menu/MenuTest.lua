@@ -21,7 +21,7 @@ if SHOW_TEST_MENU then
 		button2:SetTooltip(function(tt) tt:AddLine("foo"); end);
 
 		local button3 = rootDescription:CreateButton("Button 3", print, "foo");
-		TRP3_MenuUtil.AddIconToElement(button3, [[Interface\Scenarios\ScenarioIcon-Interact]]);
+		TRP3_MenuUtil.AttachTexture(button3, [[Interface\Scenarios\ScenarioIcon-Interact]]);
 
 		rootDescription:CreateDivider();
 		rootDescription:CreateTitle("Checkboxes");

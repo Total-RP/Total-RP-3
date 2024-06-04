@@ -94,7 +94,7 @@ function TRP3_MenuUtil.SetElementTooltip(elementDescription, tooltipText)
 	elementDescription:SetTooltip(OnTooltipShow);
 end
 
-function TRP3_MenuUtil.AddIconToElement(elementDescription, icon)
+function TRP3_MenuUtil.AttachTexture(elementDescription, icon)
 	if TRP3_USE_MODERN_MENUS then
 		local function Initializer(button)
 			local iconTexture = button:AttachTexture();
