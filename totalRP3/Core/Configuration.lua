@@ -136,7 +136,7 @@ local function buildConfigurationPage(structure)
 		-- Specific for Dropdown
 		if _G[widget:GetName().."DropDown"] then
 			local dropDown = _G[widget:GetName().."DropDown"];
-			element.controller = _G[widget:GetName().."DropDownButton"];
+			element.controller = dropDown;
 			if element.configKey then
 				if not element.listCallback then
 					element.listCallback = function(value)
@@ -220,11 +220,7 @@ local function buildConfigurationPage(structure)
 							dependentOption.widget:SetAlpha(optionIsEnabled and 1 or 0.5);
 
 							if dependentOption.controller then
-								if optionIsEnabled then
-									dependentOption.controller:Enable();
-								else
-									dependentOption.controller:Disable();
-								end
+								dependentOption.controller:SetEnabled(optionIsEnabled);
 							end
 						end
 					end
@@ -302,7 +298,7 @@ local function buildConfigurationPage(structure)
 				element.widget:SetAlpha(0.5);
 
 				if element.controller then
-					element.controller:Disable();
+					element.controller:SetEnabled(false);
 				end
 			end
 
