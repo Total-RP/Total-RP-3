@@ -12,16 +12,18 @@ end
 TRP3_DropdownButtonMixin = {};
 
 function TRP3_DropdownButtonMixin:OnLoad()
+	self:SetHitRectInsets(8, 8, 4, 4);
+	self:SetMouseMotionEnabled(true);
+	self:SetMouseClickEnabled(true);
+
 	self.Menu = CreateFrame("Frame", "$parentMenu", self, "UIDropDownMenuTemplate");
 	self.Menu:SetPoint("LEFT", -13, 0);
 	self.Menu:SetPoint("RIGHT");
-	UIDropDownMenu_SetWidth(self.Menu, CalculateMinimumMenuWidth(self));
-
 	-- Force truncation of the text label if it exceeds button bounds.
 	self.Menu.Text:ClearAllPoints();
 	self.Menu.Text:SetPoint("LEFT", self.Menu.Left, 27, 2);
 	self.Menu.Text:SetPoint("RIGHT", self.Menu.Right, -43, 2);
-	self:SetHitRectInsets(8, 8, 4, 4);
+	UIDropDownMenu_SetWidth(self.Menu, CalculateMinimumMenuWidth(self));
 
 	self.defaultText = nil;
 	self.menuGenerator = nil;

@@ -19,9 +19,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Scripts>
 			<OnLoad method="OnLoad"/>
 			<OnShow method="OnShow"/>
-			<OnEnter method="OnEnter"/>
-			<OnLeave method="OnLeave"/>
-			<OnMouseDown method="OnMouseDown"/>
+			<OnEnter method="OnEnter" autoEnableInput="false"/>
+			<OnLeave method="OnLeave" autoEnableInput="false"/>
+			<OnMouseDown method="OnMouseDown" autoEnableInput="false"/>
 			<OnSizeChanged method="OnSizeChanged"/>
 		</Scripts>
 	</Frame>
