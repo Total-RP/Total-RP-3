@@ -119,6 +119,21 @@ function TRP3_PlayerMapPinMixin:Decorate(displayData)
 	Ellyb.Tooltips.getTooltip(self):SetTitle(ORANGE(loc.REG_PLAYERS)):ClearLines();
 end
 
+local function GeneratePinContextMenu(pins, _, rootDescription)
+	local MAX_CHARACTER_COUNT = 25;
+
+	rootDescription:CreateTitle(loc.MAP_SCAN_CHAR_TITLE);
+
+	for i = 1, math.min(#pins, MAX_CHARACTER_COUNT) do
+		local pin = pins[i];
+		local text = string.format("%1$s: %2$s", loc.CL_OPEN_PROFILE, pin.playerNameColored);
+		local sender = pin.sender;
+		local callback = function(...) TRP3_API.slash.openProfile((...)); end;
+
+		rootDescription:CreateButton(text, callback, sender);
+	end
+end
+
 function TRP3_PlayerMapPinMixin:OnMouseDown(button)
 	if button ~= "RightButton" then
 		return;
@@ -131,50 +146,11 @@ function TRP3_PlayerMapPinMixin:OnMouseDown(button)
 		-- Single pin; open straight to profile.
 		TRP3_API.slash.openProfile(pins[1].sender);
 	else
-		-- More than one pin; user can select from a context menu.
-		local level = 1;
-		local anchor = "cursor";
-		MSA_ToggleDropDownMenu(level, pins, TRP3_PlayerMapPinDropDown, anchor);
+		TRP3_MenuUtil.CreateContextMenu(self, function(...) GeneratePinContextMenu(pins, ...); end);
 	end
 end
 
 function TRP3_PlayerMapPinMixin:OnTooltipAboutToShow(tooltip)
 	tooltip:AddTempLine([[|TInterface\Common\UI-TooltipDivider-Transparent:8:128:0:0:8:8:0:128:0:8:255:255:255|t]]);
 	tooltip:AddTempLine(TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.CL_OPEN_PROFILE), WHITE_FONT_COLOR);
-end
-
-TRP3_PlayerMapPinDropDownMixin = {};
-
-function TRP3_PlayerMapPinDropDownMixin:OnLoad()
-	self.maximumCharacterCount = 25;
-
-	MSA_DropDownMenu_SetInitializeFunction(self, self.OnInitialize);
-end
-
-function TRP3_PlayerMapPinDropDownMixin:OnInitialize(level)
-	local pins = MSA_DROPDOWNMENU_MENU_VALUE;
-
-	if level ~= 1 or type(pins) ~= "table" or #pins == 0 then
-		return;
-	end
-
-	MSA_DropDownMenu_AddButton({ text = loc.MAP_SCAN_CHAR_TITLE, isTitle = true, notCheckable = true });
-
-	for i = 1, math.min(#pins, self.maximumCharacterCount) do
-		-- Sender is cached as an upvalue to avoid any edge case if the pin is
-		-- released while the context menu is kept open.
-
-		local pin = pins[i];
-		local sender = pin.sender;
-
-		local info = {};
-		info.text = string.format("%1$s: %2$s", loc.CL_OPEN_PROFILE, pin.playerNameColored);
-		info.func = function() TRP3_API.slash.openProfile(sender); end;
-		info.notCheckable = true;
-
-		MSA_DropDownMenu_AddButton(info);
-	end
-
-	MSA_DropDownMenu_AddSeparator({});
-	MSA_DropDownMenu_AddButton({ text = CANCEL, notCheckable = true });
 end

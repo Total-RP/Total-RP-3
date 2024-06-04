@@ -13,14 +13,5 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_PlayerMapPinDropDown" inherits="TRP3_DropDownMenuTemplate" mixin="TRP3_PlayerMapPinDropDownMixin">
-		<KeyValues>
-			<KeyValue key="displayMode" value="MENU" type="string"/>
-		</KeyValues>
-		<Scripts>
-			<OnLoad method="OnLoad"/>
-		</Scripts>
-	</Frame>
-
 	<Frame name="TRP3_PlayerHousePinTemplate" inherits="BaseHighlightableMapPoiPinTemplate" mixin="TRP3_PlayerHousePinMixin" virtual="true"/>
 </Ui>
