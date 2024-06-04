@@ -78,12 +78,9 @@ function TRP3_DropdownButtonMixin:CloseMenu()
 end
 
 function TRP3_DropdownButtonMixin:OpenMenu()
-	if not self:IsEnabled() then
-		return;
-	end
-
 	if self:IsMenuOpen() then
-		CloseDropDownMenus();
+		return;
+	elseif not self:IsEnabled() then
 		return;
 	end
 
@@ -235,8 +232,7 @@ function TRP3_DropdownButtonMixin:RegisterMenu(rootDescription)
 	if self:IsMenuOpen() then
 		-- Open menus require a full reinitialization; unlike modern menus
 		-- this unfortunately means that we need to close + reopen it.
-		self:CloseMenu();
-		self:OpenMenu();
+		self:ToggleMenu();
 	end
 
 	self:UpdateText();
