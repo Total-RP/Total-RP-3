@@ -9,6 +9,7 @@ function TRP3_DropdownButtonMixin:OnLoad()
 	self.Button = CreateFrame("DropdownButton", nil, self, "WowStyle1DropdownTemplate");
 	self.Button:SetPoint("LEFT");
 	self.Button:SetPoint("RIGHT");
+	self.Button:SetPropagateMouseMotion(true);
 
 	local anchor = AnchorUtil.CreateAnchor(self.menuPoint, self, self.menuRelativePoint, self.menuPointX, self.menuPointY);
 	self:SetMenuAnchor(anchor);
