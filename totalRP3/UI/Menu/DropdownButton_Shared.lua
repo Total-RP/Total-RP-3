@@ -110,3 +110,7 @@ end
 function TRP3_DropdownButtonMixin:UpdateText()
 	-- No-op; override in another file.
 end
+
+function TRP3_DropdownButtonMixin:OverrideText(text)  -- luacheck: no unused
+	-- No-op; override in another file.
+end

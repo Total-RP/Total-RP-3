@@ -201,5 +201,14 @@ function TRP3_DropdownButtonMixin:Update()
 end
 
 function TRP3_DropdownButtonMixin:UpdateText()
+	if self.disableSelectionText then
+		return;
+	end
+
 	self:SetText(self:GetUpdateText());
+end
+
+function TRP3_DropdownButtonMixin:OverrideText(text)
+	self.disableSelectionText = true;
+	self:SetText(text);
 end

@@ -85,3 +85,7 @@ end
 function TRP3_DropdownButtonMixin:UpdateText()
 	self.Button:UpdateText();
 end
+
+function TRP3_DropdownButtonMixin:OverrideText(text)
+	self.Button:OverrideText(text);
+end
