@@ -89,25 +89,6 @@ read_globals = {
 	"XRP_NT",
 	"XRP_RA",
 	"XRP_RC",
-
-	-- MSA-DropDownMenu-1.0
-	"MSA_CloseDropDownMenus",
-	"MSA_DropDownMenu_AddButton",
-	"MSA_DropDownMenu_AddSeparator",
-	"MSA_DropDownMenu_Create",
-	"MSA_DropDownMenu_CreateInfo",
-	"MSA_DROPDOWNMENU_INIT_MENU",
-	"MSA_DropDownMenu_Initialize",
-	"MSA_DROPDOWNMENU_MENU_LEVEL",
-	"MSA_DROPDOWNMENU_MENU_VALUE",
-	"MSA_DROPDOWNMENU_OPEN_MENU",
-	"MSA_DropDownMenu_RefreshAll",
-	"MSA_DropDownMenu_SetInitializeFunction",
-	"MSA_DropDownMenu_SetSelectedValue",
-	"MSA_DropDownMenu_SetText",
-	"MSA_DropDownMenu_SetWidth",
-	"MSA_HideDropDownMenu",
-	"MSA_ToggleDropDownMenu",
 };
 
 std = "lua51+wow";

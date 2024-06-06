@@ -42,9 +42,6 @@ externals:
     commit: default
   totalRP3/Libs/UTF8: https://repos.curseforge.com/wow/utf8/trunk
 
-embedded-libraries:
-  - msa-dropdownmenu-10
-
 manual-changelog:
   filename: CHANGELOG.md
   markup-type: markdown
