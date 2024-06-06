@@ -23,11 +23,28 @@ local BaseMenuDescription = {};
 
 function BaseMenuDescription:__init()
 	self.elementDescriptions = {};
+	self.queuedDescriptions = {};
 	self.initializers = {};
+end
+
+function BaseMenuDescription:AddQueuedDescription(description)
+	table.insert(self.queuedDescriptions, description);
+end
+
+function BaseMenuDescription:ClearQueuedDescriptions()
+	self.queuedDescriptions = {};
+end
+
+local function InsertQueuedDescriptions(self)
+	for i, description in ipairs(self.queuedDescriptions) do
+		table.insert(self.elementDescriptions, description);
+		self.queuedDescriptions[i] = nil;
+	end
 end
 
 function BaseMenuDescription:Insert(description, index)
 	description:SetSharedMenuProperties(self:GetSharedMenuProperties());
+	InsertQueuedDescriptions(self);
 
 	if index then
 		table.insert(self.elementDescriptions, index, description);
@@ -226,6 +243,22 @@ end
 
 function MenuElementDescription:CreateTitle(text, color)
 	return self:Insert(TRP3_MenuUtil.CreateTitle(text, color));
+end
+
+local function QueueDescription(description, queueDescription, clearQueue)
+	if clearQueue then
+		description:ClearQueuedDescriptions();
+	end
+
+	description:AddQueuedDescription(queueDescription);
+end
+
+function MenuElementDescription:QueueDivider(clearQueue)
+	QueueDescription(self, TRP3_MenuUtil.CreateDivider(), clearQueue);
+end
+
+function MenuElementDescription:QueueTitle(text, color, clearQueue)
+	QueueDescription(self, TRP3_MenuUtil.CreateTitle(text, color), clearQueue);
 end
 
 local RootMenuDescription = CreateFromMixins(MenuElementDescription);
