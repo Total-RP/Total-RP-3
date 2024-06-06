@@ -979,7 +979,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Layers>
 				<FontString inherits="ChatFontNormal" setAllPoints="true" />
 			</EditBox>
-			<Button parentKey="DropdownButton" name="$parentDropdownButton" motionScriptsWhileDisabled="true" >
+			<Button parentKey="DropdownButton" motionScriptsWhileDisabled="true" >
 				<Size x="32" y="32"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.CopyText.Right">
@@ -993,30 +993,26 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<OnLeave>
 						ExecuteFrameScript(self:GetParent(), "OnLeave");
 					</OnLeave>
-					<OnClick>
-						MSA_ToggleDropDownMenu(nil, nil, self:GetParent());
-						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-					</OnClick>
 				</Scripts>
-				<NormalTexture name="$parentNormalTexture" parentKey="NormalTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up">
+				<NormalTexture parentKey="NormalTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up">
 					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>
 				</NormalTexture>
-				<PushedTexture name="$parentPushedTexture" parentKey="PushedTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down">
+				<PushedTexture parentKey="PushedTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down">
 					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>
 				</PushedTexture>
-				<DisabledTexture name="$parentDisabledTexture" parentKey="DisabledTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled">
+				<DisabledTexture parentKey="DisabledTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled">
 					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>
 				</DisabledTexture>
-				<HighlightTexture name="$parentHighlightTexture" parentKey="HighlightTexture" file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD">
+				<HighlightTexture parentKey="HighlightTexture" file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD">
 					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
@@ -1080,9 +1076,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				insets = { left = 11, right = 12, top = 12, bottom = 11 },
 				});
 			</OnLoad>
-			<OnHide>
-				MSA_CloseDropDownMenus();
-			</OnHide>
 		</Scripts>
 	</Frame>
 
