@@ -191,6 +191,14 @@ function MenuElementDescription:SetResponder(callback)
 	self.responder = callback;
 end
 
+function MenuElementDescription:SetRespondIfSubmenu(respondIfSubmenu)
+	self.respondIfSubmenu = respondIfSubmenu;
+end
+
+function MenuElementDescription:CanSubmenuRespond()
+	return self.respondIfSubmenu;
+end
+
 function MenuElementDescription:Pick(menuInputData)
 	local response;
 
@@ -223,6 +231,14 @@ end
 
 function MenuElementDescription:SetSoundKit(soundKit)
 	self.soundKit = soundKit;
+end
+
+function MenuElementDescription:SetShouldPlaySoundOnSubmenuClick(shouldPlaySoundOnSubmenuClick)
+	self.shouldPlaySoundOnSubmenuClick = shouldPlaySoundOnSubmenuClick;
+end
+
+function MenuElementDescription:ShouldPlaySoundOnSubmenuClick()
+	return self.shouldPlaySoundOnSubmenuClick;
 end
 
 function MenuElementDescription:CreateButton(text, callback, data)
@@ -332,7 +348,7 @@ function TRP3_Menu.SetMenuInitializer(dropdown, menuDescription)
 			buttonName = buttonName,
 		};
 
-		if not description:CanOpenSubmenu() then
+		if not description:CanOpenSubmenu() or description:ShouldPlaySoundOnSubmenuClick() then
 			PlaySound(description:GetSoundKit());
 		end
 
@@ -340,7 +356,7 @@ function TRP3_Menu.SetMenuInitializer(dropdown, menuDescription)
 
 		if response == nil or response == TRP3_MenuResponse.CloseAll then
 			-- Only close if the clicked button isn't a submenu container.
-			if not description:HasElements() then
+			if not description:HasElements() or description:CanSubmenuRespond() then
 				CloseDropDownMenus();
 			end
 		elseif response == TRP3_MenuResponse.Close then
