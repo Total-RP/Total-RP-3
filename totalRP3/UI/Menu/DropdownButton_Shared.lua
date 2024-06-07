@@ -45,9 +45,9 @@ end
 
 function TRP3_DropdownButtonMixin:SetMenuOpen(open)
 	if open then
-		self:CloseMenu();
-	else
 		self:OpenMenu();
+	else
+		self:CloseMenu();
 	end
 end
 
