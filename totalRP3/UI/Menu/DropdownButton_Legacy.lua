@@ -109,7 +109,7 @@ end
 
 function TRP3_DropdownButtonMixin:OnMouseDown()
 	self.Button:SetButtonState(self:IsEnabled() and "PUSHED" or "DISABLED");
-	self:ToggleMenu();
+	self:OpenMenu();
 end
 
 function TRP3_DropdownButtonMixin:OnMouseUp()
