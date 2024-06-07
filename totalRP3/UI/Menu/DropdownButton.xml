@@ -9,7 +9,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="DropdownButton_Modern.lua"/>
 
 	<Frame name="TRP3_DropdownButtonTemplate" mixin="TRP3_DropdownButtonMixin" virtual="true">
-		<Size x="120" y="30"/>
+		<Size x="120" y="32"/>
 		<KeyValues>
 			<KeyValue key="menuPoint" type="global" value="TRP3_DROPDOWN_MENU_POINT"/>
 			<KeyValue key="menuPointX" type="global" value="TRP3_DROPDOWN_MENU_OFFSET_X"/>
@@ -19,10 +19,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Scripts>
 			<OnLoad method="OnLoad"/>
 			<OnShow method="OnShow"/>
+			<OnHide method="OnHide"/>
 			<OnEnter method="OnEnter" autoEnableInput="false"/>
 			<OnLeave method="OnLeave" autoEnableInput="false"/>
 			<OnMouseDown method="OnMouseDown" autoEnableInput="false"/>
-			<OnSizeChanged method="OnSizeChanged"/>
+			<OnMouseUp method="OnMouseUp" autoEnableInput="false"/>
 		</Scripts>
 	</Frame>
 </Ui>

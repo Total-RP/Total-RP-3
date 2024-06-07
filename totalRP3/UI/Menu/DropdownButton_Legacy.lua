@@ -5,25 +5,73 @@ if TRP3_USE_MODERN_MENUS then
 	return;
 end
 
-local function CalculateMinimumMenuWidth(dropdown)
-	return dropdown:GetWidth() - UIDROPDOWNMENU_DEFAULT_WIDTH_PADDING;
-end
-
-TRP3_DropdownButtonMixin = {};
-
 function TRP3_DropdownButtonMixin:OnLoad()
 	self:SetHitRectInsets(8, 8, 4, 4);
 	self:SetMouseMotionEnabled(true);
 	self:SetMouseClickEnabled(true);
 
-	self.Menu = CreateFrame("Frame", "$parentMenu", self, "UIDropDownMenuTemplate");
-	self.Menu:SetPoint("LEFT", -13, 0);
-	self.Menu:SetPoint("RIGHT");
-	-- Force truncation of the text label if it exceeds button bounds.
-	self.Menu.Text:ClearAllPoints();
-	self.Menu.Text:SetPoint("LEFT", self.Menu.Left, 27, 2);
-	self.Menu.Text:SetPoint("RIGHT", self.Menu.Right, -43, 2);
-	UIDropDownMenu_SetWidth(self.Menu, CalculateMinimumMenuWidth(self));
+	self.Left = self:CreateTexture(nil, "ARTWORK");
+	self.Left:SetTexture([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]]);
+	self.Left:SetTexCoord(0, 0.1953125, 0, 1);
+	self.Left:SetSize(25, 64);
+	self.Left:SetPoint("TOPLEFT", -13, 17);
+
+	self.Right = self:CreateTexture(nil, "ARTWORK");
+	self.Right:SetTexture([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]]);
+	self.Right:SetTexCoord(0.8046875, 1, 0, 1);
+	self.Right:SetSize(25, 64);
+	self.Right:SetPoint("TOPRIGHT", 13, 17);
+
+	self.Middle = self:CreateTexture(nil, "ARTWORK");
+	self.Middle:SetTexture([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]]);
+	self.Middle:SetTexCoord(0.1953125, 0.8046875, 0, 1);
+	self.Middle:SetSize(115, 64);
+	self.Middle:SetPoint("LEFT", self.Left, "RIGHT");
+	self.Middle:SetPoint("RIGHT", self.Right, "LEFT");
+
+	self.Text = self:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall");
+	self.Text:SetWordWrap(false);
+	self.Text:SetJustifyH("RIGHT");
+	self.Text:SetPoint("LEFT", self.Left, "LEFT", 27, 2);
+	self.Text:SetPoint("RIGHT", self.Right, "RIGHT", -43, 2);
+
+	self.Icon = self:CreateTexture(nil, "OVERLAY");
+	self.Icon:SetShown(false);
+	self.Icon:SetSize(16, 16);
+	self.Icon:SetPoint("LEFT", 30, 2);
+
+	self.Button = CreateFrame("Button", nil, self);
+	self.Button:SetSize(24, 24);
+	self.Button:SetPoint("TOPRIGHT", self.Right, "TOPRIGHT", -16, -19);
+	self.Button:SetMouseClickEnabled(false);
+	self.Button:SetMouseMotionEnabled(false);
+	self.Button:RegisterForClicks();
+	self.Button:RegisterForMouse();
+
+	self.Button.NormalTexture = self.Button:CreateTexture(nil, "ARTWORK");
+	self.Button.NormalTexture:SetTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up]]);
+	self.Button.NormalTexture:SetSize(24, 24);
+	self.Button.NormalTexture:SetPoint("RIGHT");
+	self.Button:SetNormalTexture(self.Button.NormalTexture);
+
+	self.Button.PushedTexture = self.Button:CreateTexture(nil, "ARTWORK");
+	self.Button.PushedTexture:SetTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down]]);
+	self.Button.PushedTexture:SetSize(24, 24);
+	self.Button.PushedTexture:SetPoint("RIGHT");
+	self.Button:SetPushedTexture(self.Button.PushedTexture);
+
+	self.Button.DisabledTexture = self.Button:CreateTexture(nil, "ARTWORK");
+	self.Button.DisabledTexture:SetTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled]]);
+	self.Button.DisabledTexture:SetSize(24, 24);
+	self.Button.DisabledTexture:SetPoint("RIGHT");
+	self.Button:SetDisabledTexture(self.Button.DisabledTexture);
+
+	self.Button.HighlightTexture = self.Button:CreateTexture(nil, "ARTWORK");
+	self.Button.HighlightTexture:SetTexture([[Interface\Buttons\UI-Common-MouseHilight]]);
+	self.Button.HighlightTexture:SetBlendMode("ADD");
+	self.Button.HighlightTexture:SetSize(24, 24);
+	self.Button.HighlightTexture:SetPoint("RIGHT");
+	self.Button:SetHighlightTexture(self.Button.HighlightTexture);
 
 	self.defaultText = nil;
 	self.menuGenerator = nil;
@@ -38,29 +86,34 @@ function TRP3_DropdownButtonMixin:OnShow()
 	self:Update();
 end
 
+function TRP3_DropdownButtonMixin:OnHide()
+	self:CloseMenu();
+end
+
 function TRP3_DropdownButtonMixin:OnEnter()
-	if self.Menu.Text:IsTruncated() then
+	if self.Text:IsTruncated() then
 		local function Initialize(tooltip)
-			GameTooltip_SetTitle(tooltip, self.Menu.Text:GetText());
+			GameTooltip_SetTitle(tooltip, self.Text:GetText());
 		end
 
 		TRP3_MenuUtil.ShowTooltip(self, Initialize);
 	end
 
-	self.Menu.Button:SetHighlightLocked(true);
+	self.Button:SetHighlightLocked(self:IsEnabled());
 end
 
 function TRP3_DropdownButtonMixin:OnLeave()
-	self.Menu.Button:SetHighlightLocked(false);
+	self.Button:SetHighlightLocked(false);
 	TRP3_MenuUtil.HideTooltip(self);
 end
 
 function TRP3_DropdownButtonMixin:OnMouseDown()
-	self:OpenMenu();
+	self.Button:SetButtonState(self:IsEnabled() and "PUSHED" or "DISABLED");
+	self:ToggleMenu();
 end
 
-function TRP3_DropdownButtonMixin:OnSizeChanged()
-	UIDropDownMenu_SetWidth(self.Menu, CalculateMinimumMenuWidth(self));
+function TRP3_DropdownButtonMixin:OnMouseUp()
+	self.Button:SetButtonState(self:IsEnabled() and "NORMAL" or "DISABLED");
 end
 
 function TRP3_DropdownButtonMixin:HandlesGlobalMouseEvent(buttonName, event)
@@ -90,20 +143,20 @@ function TRP3_DropdownButtonMixin:OpenMenu()
 		return;
 	end
 
-	TRP3_Menu.OpenMenu(self.Menu, self.menuDescription);
+	TRP3_Menu.OpenMenu(self, self.menuDescription);
 end
 
 function TRP3_DropdownButtonMixin:SetMenuAnchor(anchor)
 	self.menuAnchor = anchor;
-	UIDropDownMenu_SetAnchor(self.Menu, anchor.x, anchor.y, anchor.point, anchor.relativeTo, anchor.relativePoint);
+	UIDropDownMenu_SetAnchor(self, anchor.x, anchor.y, anchor.point, anchor.relativeTo, anchor.relativePoint);
 end
 
 function TRP3_DropdownButtonMixin:IsEnabled()
-	return UIDropDownMenu_IsEnabled(self.Menu);
+	return UIDropDownMenu_IsEnabled(self);
 end
 
 function TRP3_DropdownButtonMixin:SetEnabled(enabled)
-	UIDropDownMenu_SetDropDownEnabled(self.Menu, enabled);
+	UIDropDownMenu_SetDropDownEnabled(self, enabled);
 end
 
 function TRP3_DropdownButtonMixin:GetDefaultText()
@@ -116,11 +169,11 @@ function TRP3_DropdownButtonMixin:SetDefaultText(defaultText)
 end
 
 function TRP3_DropdownButtonMixin:GetText()
-	return UIDropDownMenu_GetText(self.Menu);
+	return UIDropDownMenu_GetText(self);
 end
 
 function TRP3_DropdownButtonMixin:SetText(text)
-	UIDropDownMenu_SetText(self.Menu, text);
+	UIDropDownMenu_SetText(self, text);
 end
 
 local function GetTextFromSelections(rootDescription)
@@ -162,12 +215,16 @@ function TRP3_DropdownButtonMixin:HasElements()
 	return self.menuDescription and self.menuDescription:HasElements() or false;
 end
 
+local function CalculateMinimumMenuWidth(self)
+	return self:GetWidth() - UIDROPDOWNMENU_DEFAULT_WIDTH_PADDING;
+end
+
 function TRP3_DropdownButtonMixin:RegisterMenu(rootDescription)
 	self.menuDescription = rootDescription;
 	self.menuDescription:AddMenuResponseCallback(function() self:UpdateText(); end);
 	self.menuDescription:SetMinimumWidth(CalculateMinimumMenuWidth(self));
 
-	TRP3_Menu.SetMenuInitializer(self.Menu, self.menuDescription);
+	TRP3_Menu.SetMenuInitializer(self, self.menuDescription);
 
 	if self:IsMenuOpen() then
 		-- Open menus require a full reinitialization; unlike modern menus

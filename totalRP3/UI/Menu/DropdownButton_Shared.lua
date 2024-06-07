@@ -11,6 +11,10 @@ function TRP3_DropdownButtonMixin:OnShow()
 	-- No-op; override in another file.
 end
 
+function TRP3_DropdownButtonMixin:OnHide()
+	-- No-op; override in another file.
+end
+
 function TRP3_DropdownButtonMixin:OnEnter()
 	-- No-op; override in another file.
 end
@@ -23,7 +27,7 @@ function TRP3_DropdownButtonMixin:OnMouseDown()
 	-- No-op; override in another file.
 end
 
-function TRP3_DropdownButtonMixin:OnSizeChanged()
+function TRP3_DropdownButtonMixin:OnMouseUp()
 	-- No-op; override in another file.
 end
 
