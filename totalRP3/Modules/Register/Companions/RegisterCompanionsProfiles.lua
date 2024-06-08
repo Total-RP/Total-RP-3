@@ -24,7 +24,7 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local TRP3_CompanionsProfilesList, TRP3_CompanionsProfilesListSlider, TRP3_CompanionsProfilesListEmpty = TRP3_CompanionsProfilesList, TRP3_CompanionsProfilesListSlider, TRP3_CompanionsProfilesListEmpty;
-local EMPTY, PetCanBeRenamed = Globals.empty, PetCanBeRenamed;
+local EMPTY = Globals.empty;
 local getCompanionProfile, getCompanionProfileID = TRP3_API.companions.player.getCompanionProfile, TRP3_API.companions.player.getCompanionProfileID;
 local getCompanionProfiles = TRP3_API.companions.player.getProfiles;
 local getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
@@ -322,7 +322,7 @@ local displayMessage = Utils.message.displayMessage;
 local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 
 ui_boundPlayerCompanion = function (companionID, profileID, targetType)
-	if targetType == TRP3_Enums.UNIT_TYPE.PET and UnitName("pet") == companionID and PetCanBeRenamed() then
+	if targetType == TRP3_Enums.UNIT_TYPE.PET and UnitName("pet") == companionID and PetCanBeAbandoned() then
 		showConfirmPopup(loc.PR_CO_WARNING_RENAME, function()
 			boundPlayerCompanion(companionID, profileID, targetType);
 		end);
