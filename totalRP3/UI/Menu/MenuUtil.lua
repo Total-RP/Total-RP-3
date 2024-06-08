@@ -84,15 +84,18 @@ function TRP3_MenuUtil.SetElementText(elementDescription, text)
 end
 
 function TRP3_MenuUtil.SetElementTooltip(elementDescription, tooltipText)
-	local function OnTooltipShow(tooltip)
-		local tooltipTitle = TRP3_MenuUtil.GetElementText(elementDescription);
+	if TRP3_USE_MODERN_MENUS then
+		local function OnTooltipShow(tooltip)
+			local tooltipTitle = TRP3_MenuUtil.GetElementText(elementDescription);
 
-		GameTooltip_SetTitle(tooltip, tooltipTitle);
-		GameTooltip_AddNormalLine(tooltip, tooltipText, true);
+			GameTooltip_SetTitle(tooltip, tooltipTitle);
+			GameTooltip_AddNormalLine(tooltip, tooltipText, true);
+		end
+
+		elementDescription:SetTooltip(OnTooltipShow);
+	else
+		elementDescription:SetTooltipText(tooltipText);
 	end
-
-	elementDescription:SetTooltip(OnTooltipShow);
-	elementDescription:SetTooltipText(tooltipText);
 end
 
 function TRP3_MenuUtil.AttachTexture(elementDescription, icon)

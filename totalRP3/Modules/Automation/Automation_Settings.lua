@@ -15,8 +15,8 @@ function TRP3_AutomationSettingsMixin:OnLoad()
 
 	self.Actions:SetDefaultText(NONE);
 	self.Actions:SetupMenu(function(_, menuDescription) self:SetupActionDropdownMenu(menuDescription); end);
-	self.Actions:SetScript("OnEnter", function() self:OnActionDropDownEnter(); end);
-	self.Actions:SetScript("OnLeave", function() self:OnActionDropDownLeave(); end);
+	self.Actions:HookScript("OnEnter", function() self:OnActionDropDownEnter(); end);
+	self.Actions:HookScript("OnLeave", function() self:OnActionDropDownLeave(); end);
 
 	self.Profiles:SetDefaultText(NONE);
 	self.Profiles:SetupMenu(function(_, menuDescription) self:SetupProfileDropdownMenu(menuDescription); end);
@@ -90,6 +90,14 @@ function TRP3_AutomationSettingsMixin:SetupActionDropdownMenu(menuDescription)
 
 	table.sort(actions, SortCompareActions);
 
+	local function IsSelected(action)
+		return action.id == self:GetSelectedActionID();
+	end
+
+	local function SetSelected(action)
+		self:SetSelectedActionID(action.id);
+	end
+
 	local category = nil;
 
 	for _, action in ipairs(actions) do
@@ -101,14 +109,12 @@ function TRP3_AutomationSettingsMixin:SetupActionDropdownMenu(menuDescription)
 		local displayText = action.name;
 		local displayIcon;
 		local tooltipText = string.join("|n|n", action.description, action.help);
-		local callback = function() self:SetSelectedActionID(action.id); end;
 
 		if action.expression and action.expression ~= "" then
-			displayText = string.format("|cff33ff99%s|r", displayText);
-			displayIcon = [[Interface\Scenarios\ScenarioIcon-Interact]];
+			displayIcon = [[Interface\WorldMap\GEAR_64GREY]];
 		end
 
-		local button = menuDescription:CreateButton(displayText, callback);
+		local button = menuDescription:CreateRadio(displayText, IsSelected, SetSelected, action);
 		TRP3_MenuUtil.AttachTexture(button, displayIcon);
 		TRP3_MenuUtil.SetElementTooltip(button, tooltipText);
 	end
@@ -198,15 +204,16 @@ function TRP3_AutomationSettingsMixin:SetupProfileDropdownMenu(menuDescription)
 
 	table.sort(profiles, SortCompareProfiles);
 
+	local function IsSelected(profileName)
+		return profileName == currentProfileName;
+	end
+
+	local function SetSelected(profileName)
+		OnEnableProfileSelected(profileName);
+	end
+
 	for _, profileName in ipairs(profiles) do
-		local displayText = profileName;
-		local callback = function() OnEnableProfileSelected(profileName); end;
-
-		if profileName == currentProfileName then
-			displayText = string.format("|cff33ff99%s|r", profileName);
-		end
-
-		local button = menuDescription:CreateButton(displayText, callback);
+		local button = menuDescription:CreateRadio(profileName, IsSelected, SetSelected, profileName);
 		if button.SetRespondIfSubmenu then
 			-- FIXME: Remove the if check in a future 11.0 build when these
 			--        are added. Can't *not* use them after they were
