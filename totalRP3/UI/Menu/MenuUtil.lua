@@ -94,7 +94,13 @@ function TRP3_MenuUtil.SetElementTooltip(elementDescription, tooltipText)
 
 		elementDescription:SetTooltip(OnTooltipShow);
 	else
-		elementDescription:SetTooltipText(tooltipText);
+		local function Initializer(info, description, menu)  -- luacheck: no unused
+			info.tooltipTitle = TRP3_MenuUtil.GetElementText(elementDescription);
+			info.tooltipText = tooltipText;
+			info.tooltipOnButton = true;
+		end
+
+		elementDescription:AddInitializer(Initializer);
 	end
 end
 
