@@ -1377,6 +1377,10 @@ local function GetWorldCursorUnit()
 end
 
 local function GetCurrentTooltipUnit()
+	if not GameTooltip:GetOwner() then
+		return nil;
+	end
+
 	local unitToken;
 
 	if UnitExists("mouseover") then
