@@ -206,9 +206,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="RIGHT" x="-10" y="0"/>
 						</Anchors>
 						<Frames>
-							<Frame name="$parent_BckField" inherits="TRP3_DropDownMenuTemplate" enableMouse="true">
+							<Frame name="$parent_BckField" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
+								<Size x="170" y="32"/>
 								<Anchors>
-									<Anchor point="TOPLEFT" x="0" y="-15"/>
+									<Anchor point="TOPLEFT" x="13" y="-15"/>
 								</Anchors>
 							</Frame>
 

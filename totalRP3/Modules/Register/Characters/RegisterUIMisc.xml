@@ -27,15 +27,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame name="$parentValues" inherits="TRP3_DropDownMenuTemplate" enableMouse="true">
+			<Frame name="$parentValues" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
+				<Size x="225" y="32"/>
 				<Anchors>
 					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentFieldName" x="0" y="0"/>
 				</Anchors>
 				<Scripts>
-					<OnEnter>
+					<OnEnter inherit="prepend">
 						TRP3_RefreshTooltipForFrame(self);
 					</OnEnter>
-					<OnLeave>
+					<OnLeave inherit="prepend">
 						TRP3_MainTooltip:Hide();
 					</OnLeave>
 				</Scripts>

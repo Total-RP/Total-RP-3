@@ -85,15 +85,15 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="TOPLEFT" x="15" y="-12"/>
 				</Anchors>
 			</Button>
-			<Frame name="$parentBkg" inherits="TRP3_DropDownMenuTemplate" enableMouse="true">
+			<Frame name="$parentBkg" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentIcon" x="-20" y="-5"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentIcon" x="-7" y="-5"/>
 				</Anchors>
 				<Scripts>
-					<OnEnter>
+					<OnEnter inherit="prepend">
 						TRP3_RefreshTooltipForFrame(self);
 					</OnEnter>
-					<OnLeave>
+					<OnLeave inherit="prepend">
 						TRP3_MainTooltip:Hide();
 					</OnLeave>
 				</Scripts>
@@ -172,15 +172,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<PushedTexture file="Interface\Buttons\UI-Panel-CollapseButton-Down"/>
 				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 			</Button>
-			<Frame name="$parentBkg" inherits="TRP3_DropDownMenuTemplate" enableMouse="true">
+			<Frame name="$parentBkg" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
+				<Size x="170" y="32"/>
 				<Anchors>
-					<Anchor point="BOTTOMLEFT" x="42" y="5"/>
+					<Anchor point="BOTTOMLEFT" x="58" y="5"/>
 				</Anchors>
 				<Scripts>
-					<OnEnter>
+					<OnEnter inherit="prepend">
 						TRP3_RefreshTooltipForFrame(self);
 					</OnEnter>
-					<OnLeave>
+					<OnLeave inherit="prepend">
 						TRP3_MainTooltip:Hide();
 					</OnLeave>
 				</Scripts>
@@ -241,14 +242,15 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							</Layer>
 						</Layers>
 					</Frame>
-					<Frame name="TRP3_RegisterAbout_Edit_BckField" inherits="TRP3_DropDownMenuTemplate" enableMouse="true">
+					<Frame name="TRP3_RegisterAbout_Edit_BckField" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
+						<Size x="170" y="32"/>
 						<Anchors>
-							<Anchor point="TOPLEFT" x="0" y="-35"/>
+							<Anchor point="TOPLEFT" x="13" y="-35"/>
 						</Anchors>
 					</Frame>
-					<Frame name="TRP3_RegisterAbout_Edit_TemplateField" inherits="TRP3_DropDownMenuTemplate" enableMouse="true">
+					<Frame name="TRP3_RegisterAbout_Edit_TemplateField" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
 						<Anchors>
-							<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="0" relativeTo="TRP3_RegisterAbout_Edit_BckField"/>
+							<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="0" relativeTo="TRP3_RegisterAbout_Edit_BckField"/>
 						</Anchors>
 					</Frame>
 					<!-- Toolbar -->

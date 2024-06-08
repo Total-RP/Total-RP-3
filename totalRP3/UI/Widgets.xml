@@ -892,23 +892,23 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 	</Frame>
-	<Frame name="TRP3_TitledDropdown" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" virtual="true">
+	<Frame name="TRP3_TitledDropdown" inherits="TRP3_DropDownButtonTemplate" enableMouse="true" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString name="$parentTitle" parentKey="title" text="" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="27" y="4"/>
-						<Anchor point="TOPRIGHT" x="22" y="4"/>
+						<Anchor point="TOPLEFT" x="10" y="8"/>
+						<Anchor point="TOPRIGHT" x="-10" y="8"/>
 					</Anchors>
 					<Color r="0.95" g="0.75" b="0.1"/>
 				</FontString>
 			</Layer>
 		</Layers>
 		<Scripts>
-			<OnEnter>
+			<OnEnter inherit="prepend">
 				TRP3_RefreshTooltipForFrame(self);
 			</OnEnter>
-			<OnLeave>
+			<OnLeave inherit="prepend">
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
 		</Scripts>
