@@ -14,13 +14,13 @@ function TRP3_DropdownButtonMixin:OnLoad()
 	self.Left:SetTexture([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]]);
 	self.Left:SetTexCoord(0, 0.1953125, 0, 1);
 	self.Left:SetSize(25, 64);
-	self.Left:SetPoint("TOPLEFT", -13, 17);
+	self.Left:SetPoint("TOPLEFT", -16, 17);
 
 	self.Right = self:CreateTexture(nil, "ARTWORK");
 	self.Right:SetTexture([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]]);
 	self.Right:SetTexCoord(0.8046875, 1, 0, 1);
 	self.Right:SetSize(25, 64);
-	self.Right:SetPoint("TOPRIGHT", 13, 17);
+	self.Right:SetPoint("TOPRIGHT", 18, 17);
 
 	self.Middle = self:CreateTexture(nil, "ARTWORK");
 	self.Middle:SetTexture([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]]);
@@ -218,9 +218,7 @@ function TRP3_DropdownButtonMixin:HasElements()
 end
 
 local function CalculateMinimumMenuWidth(self)
-	-- Constant not defined in Classic >:(
-	local UIDROPDOWNMENU_DEFAULT_WIDTH_PADDING = 25;
-	return self:GetWidth() - UIDROPDOWNMENU_DEFAULT_WIDTH_PADDING;
+	return self:GetWidth() - 23;
 end
 
 function TRP3_DropdownButtonMixin:RegisterMenu(rootDescription)
