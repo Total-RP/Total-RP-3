@@ -40,6 +40,8 @@ function TRP3_DropdownButtonMixin:OnLoad()
 	self.Icon:SetSize(16, 16);
 	self.Icon:SetPoint("LEFT", 30, 2);
 
+	-- This is a button purely for tax reasons. We make it non-interactive
+	-- and instead rely on its parent region to handle all interactions.
 	self.Button = CreateFrame("Button", nil, self);
 	self.Button:SetSize(24, 24);
 	self.Button:SetPoint("TOPRIGHT", self.Right, "TOPRIGHT", -16, -19);
