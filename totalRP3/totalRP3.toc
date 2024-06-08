@@ -40,6 +40,7 @@ Libs\LibWindow-1.1\LibWindow-1.1.lua
 Libs\UTF8\lib.xml
 
 totalRP3.xml
+Deprecated.xml
 
 #@do-not-package@
 ## OptionalDeps: _DebugLog, WoWUnit

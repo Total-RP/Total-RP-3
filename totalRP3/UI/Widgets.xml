@@ -15,7 +15,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Menu\Menu.xml"/>
 
 	<GameTooltip name="TRP3_TooltipTemplate" mixin="TRP3_TooltipMixin" inherits="GameTooltipTemplate" virtual="true"/>
-	<Frame name="TRP3_DropDownMenuTemplate" virtual="true" inherits="TRP3_DropdownButtonTemplate"/>
 
 	<!--
 		TRP3_TruncatedTextTemplate
