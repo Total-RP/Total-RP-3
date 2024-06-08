@@ -187,6 +187,16 @@ function MenuElementDescription:SetTooltip(initializer)
 	self:SetOnEnter(OnEnter);
 end
 
+function MenuElementDescription:GetTooltipText()
+	-- Non-standard API for Classic only.
+	return self.tooltipText;
+end
+
+function MenuElementDescription:SetTooltipText(tooltipText)
+	-- Non-standard API for Classic only.
+	self.tooltipText = tooltipText;
+end
+
 function MenuElementDescription:SetResponder(callback)
 	self.responder = callback;
 end
@@ -391,9 +401,15 @@ function TRP3_Menu.SetMenuInitializer(dropdown, menuDescription)
 			info.minWidth = menuList:GetMinimumWidth();
 			info.noClickSound = true;
 			info.notCheckable = true;
+			info.tooltipOnButton = true;
+			info.tooltipText = description:GetTooltipText();
 
 			for _, initializer in ipairs(description:GetInitializers()) do
 				securecallfunction(initializer, info, description, dropdown);
+			end
+
+			if info.tooltipText then
+				info.tooltipTitle = info.text;
 			end
 
 			UIDropDownMenu_AddButton(info, level);

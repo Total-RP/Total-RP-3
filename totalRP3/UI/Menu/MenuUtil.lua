@@ -92,6 +92,7 @@ function TRP3_MenuUtil.SetElementTooltip(elementDescription, tooltipText)
 	end
 
 	elementDescription:SetTooltip(OnTooltipShow);
+	elementDescription:SetTooltipText(tooltipText);
 end
 
 function TRP3_MenuUtil.AttachTexture(elementDescription, icon)
