@@ -218,6 +218,8 @@ function TRP3_DropdownButtonMixin:HasElements()
 end
 
 local function CalculateMinimumMenuWidth(self)
+	-- Constant not defined in Classic >:(
+	local UIDROPDOWNMENU_DEFAULT_WIDTH_PADDING = 25;
 	return self:GetWidth() - UIDROPDOWNMENU_DEFAULT_WIDTH_PADDING;
 end
 
