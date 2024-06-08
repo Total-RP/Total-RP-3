@@ -6,7 +6,7 @@ if TRP3_USE_MODERN_MENUS then
 end
 
 function TRP3_DropdownButtonMixin:OnLoad()
-	self:SetHitRectInsets(8, 8, 4, 4);
+	self:SetHitRectInsets(4, 4, 2, 2);
 	self:SetMouseMotionEnabled(true);
 	self:SetMouseClickEnabled(true);
 
