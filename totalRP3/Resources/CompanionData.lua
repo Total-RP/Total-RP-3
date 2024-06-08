@@ -577,6 +577,9 @@ do
 
 		if LE_EXPANSION_LEVEL_CURRENT <= LE_EXPANSION_BURNING_CRUSADE then
 			name = C_Item.GetItemNameByID(petInfo.itemID);
+		elseif C_Spell and C_Spell.GetSpellInfo then
+			local spellInfo = C_Spell.GetSpellInfo(petInfo.spellID);
+			name = spellInfo and spellInfo.name;
 		else
 			name = GetSpellInfo(petInfo.spellID);
 		end
@@ -704,7 +707,15 @@ do
 			return;
 		end
 
-		local name = GetSpellInfo(mountInfo.spellID);
+		local name;
+
+		if C_Spell and C_Spell.GetSpellInfo then
+			local spellInfo = C_Spell.GetSpellInfo(mountInfo.spellID);
+			name = spellInfo and spellInfo.name;
+		else
+			name = GetSpellInfo(mountInfo.spellID);
+		end
+
 		local spellID = mountInfo.spellID;
 		local icon = GetSpellTexture(mountInfo.spellID);
 		local isActive = TRP3_API.utils.resources.GetSummonedMountID() == mountInfo.mountID;

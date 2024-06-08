@@ -333,6 +333,7 @@ stds.wow = {
 		C_Spell = {
 			fields = {
 				"DoesSpellExist",
+				"GetSpellInfo",
 				"RequestLoadSpellData",
 			},
 		},

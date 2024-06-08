@@ -35,9 +35,21 @@ end
 
 TRP3_API.navigation.menu.id.COMPANIONS_MAIN = "main_20_companions";
 
-function TRP3_API.companions.getCompanionNameFromSpellID(spellID)
-	local name = GetSpellInfo(tonumber(spellID));
-	return name or spellID;
+function TRP3_API.companions.getCompanionNameFromSpellID(spellIDString)
+	local name;
+	local spellID = tonumber(spellIDString);
+
+	-- C_Spell.GetSpellInfo will error if spellID is nil.
+	if spellID then
+		if C_Spell and C_Spell.GetSpellInfo then
+			local spellInfo = C_Spell.GetSpellInfo(spellID);
+			name = spellInfo and spellInfo.name;
+		else
+			name = GetSpellInfo(spellID);
+		end
+	end
+
+	return name or spellIDString;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
