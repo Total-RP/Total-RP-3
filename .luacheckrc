@@ -393,6 +393,12 @@ stds.wow = {
 			},
 		},
 
+		Menu = {
+			fields = {
+				"ModifyMenu",
+			},
+		},
+
 		MenuUtil = {
 			fields = {
 				"CreateButton",

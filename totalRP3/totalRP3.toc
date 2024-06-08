@@ -34,7 +34,6 @@ Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\LibDBCompartment\lib.xml
 Libs\LibDBIcon-1.0\lib.xml
 Libs\LibDeflate\lib.xml
-Libs\LibDropDownExtension\LibDropDownExtension.lua
 Libs\LibMSP\LibMSP.xml
 Libs\LibRPMedia\lib.xml
 Libs\LibWindow-1.1\LibWindow-1.1.lua
