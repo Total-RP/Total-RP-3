@@ -5,7 +5,6 @@ TRP3_API.module = {};
 
 -- imports
 local Globals = TRP3_API.globals;
-local pairs, type, assert, pcall, tinsert, table, _G, tostring = pairs, type, assert, pcall, tinsert, table, _G, tostring;
 local loc = TRP3_API.loc;
 local MODULE_REGISTRATION = {};
 local MODULE_ACTIVATION;
@@ -139,21 +138,6 @@ end
 -- MODULES LIFECYCLE
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
---- Error handler function for modules in release builds.
---
---  Reports the error information for the given module to the default chat
---  frame, if present.
---
---  @param module The module to handle an error for.
---  @param err    The error to be reported.
-local function handleModuleError(module, err)
-	if not DEFAULT_CHAT_FRAME then
-		return;
-	end
-
-	DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while loading module \"%s\":|r %s"):format(tostring(module.id), tostring(err)), 1, 1, 1);
-end
-
 --- Invokes a given module function with any additional given parameters,
 --  capturing error information and returning it as if via pcall or xpcall.
 --
@@ -172,33 +156,17 @@ end
 --
 --  @return true if no error occurred, false and an error message if not.
 local function callModuleFunction(module, funcName, ...)
-	-- In debug mode, pass the error information through the global error
-	-- handler. This will flag it in BugSack or any other error reporter,
-	-- but will allow the loading process to continue.
-	local ok, err, message;
-	if Globals.DEBUG_MODE then
-		TRP3_API.Log("Calling module function: " .. module.id .. "." .. funcName);
-		ok, err, message = xpcall(module[funcName], CallErrorHandler, ...);
-	else
-		-- In release builds swallow the error via pcall. We'll forward it
-		-- to our own error handler instead.
-		ok, err, message = pcall(module[funcName], ...);
-		if not ok then
-			handleModuleError(module, err);
-		end
+	local ok, message = false, nil;
+	securecallfunction(function(...) ok, message = module[funcName](...); end, ...);
+
+	if ok == nil then
+		ok = true;
+		message = nil;
+	elseif ok == false and message == nil then
+		message = loc.MO_SCRIPT_ERROR;
 	end
 
-	-- Some modules on failure will return a true/false status if they didn't
-	-- explicitly error out. If so, shift the returns over to the left.
-	--
-	-- These aren't considered "real" errors, but rather optional failures, so
-	-- they're never passed through the error handler implementations.
-	if ok and err == false then
-		-- We'll assume message isn't nil, but if it is then default it.
-		ok, err = err, message or "<no error information>";
-	end
-
-	return ok, err;
+	return ok, message;
 end
 
 --- Initializes the given module.

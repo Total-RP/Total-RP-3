@@ -288,7 +288,7 @@ function TRP3_PetBrowserMixin:TriggerDialogCallback(result, ...)
 	self.dialogCallback = nil;
 
 	if dialogCallback then
-		xpcall(dialogCallback, CallErrorHandler, result, ...);
+		securecallfunction(dialogCallback, result, ...);
 	end
 end
 

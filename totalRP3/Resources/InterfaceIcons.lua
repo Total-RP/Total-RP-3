@@ -230,7 +230,7 @@ do
 		local name = GetFirstValidTexturePath(candidates, [[interface\icons\]]);
 
 		if not name and TRP3_API.globals.DEBUG_MODE then
-			CallErrorHandler(string.format("Invalid interface icon %q: No valid texture file found", id));
+			securecallfunction(error, string.format("Invalid interface icon %q: No valid texture file found", id));
 		end
 
 		TRP3_InterfaceIcons[id] = name or DEFAULT_ICON_NAME;
