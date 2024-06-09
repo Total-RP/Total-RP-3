@@ -53,4 +53,6 @@ function TRP3_TabButtonMixin:Update()
 	self.LeftActive:SetShown(selected);
 	self.MiddleActive:SetShown(selected);
 	self.RightActive:SetShown(selected);
+	self.Text:SetPoint("LEFT", 10, selected and -3 or -6);
+	self.Text:SetPoint("RIGHT", -10, selected and -3 or -6);
 end
