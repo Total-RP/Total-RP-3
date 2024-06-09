@@ -224,27 +224,24 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size x="100" y="18"/>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture parentKey="Left" file="Interface\Common\Common-Input-Border">
-					<Size x="12" y="28"/>
+				<Texture parentKey="Left" atlas="common-search-border-left" useAtlasSize="false">
+					<Size x="8" y="20"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" x="-5" y="0"/>
+						<Anchor point="LEFT" x="-5" y="0"/>
 					</Anchors>
-					<TexCoords left="0" right="0.09375" top="0" bottom="1.0"/>
 				</Texture>
-				<Texture parentKey="Right" file="Interface\Common\Common-Input-Border">
-					<Size x="12" y="28"/>
+				<Texture parentKey="Right" atlas="common-search-border-right">
+					<Size x="8" y="20"/>
 					<Anchors>
-						<Anchor point="TOPRIGHT" x="5" y="0"/>
+						<Anchor point="RIGHT" x="0" y="0"/>
 					</Anchors>
-					<TexCoords left="0.90625" right="1.0" top="0" bottom="1.0"/>
 				</Texture>
-				<Texture parentKey="Center" file="Interface\Common\Common-Input-Border">
-					<Size x="0" y="28"/>
+				<Texture parentKey="Middle" atlas="common-search-border-middle">
+					<Size x="10" y="20"/>
 					<Anchors>
 						<Anchor point="LEFT" relativeKey="$parent.Left" relativePoint="RIGHT"/>
 						<Anchor point="RIGHT" relativeKey="$parent.Right" relativePoint="LEFT"/>
 					</Anchors>
-					<TexCoords left="0.09375" right="0.90625" top="0" bottom="1.0"/>
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
