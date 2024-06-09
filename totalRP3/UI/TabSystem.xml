@@ -16,13 +16,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture parentKey="LeftActive" atlas="uiframe-activetab-left" useAtlasSize="false" rotation="180">
-					<Size x="35" y="32"/>
+					<Size x="26" y="32"/>
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT"/>
 					</Anchors>
 				</Texture>
 				<Texture parentKey="RightActive" atlas="uiframe-activetab-right" useAtlasSize="false" rotation="180">
-					<Size x="37" y="32"/>
+					<Size x="28" y="32"/>
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="-6"/>
 					</Anchors>
@@ -35,13 +35,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Anchors>
 				</Texture>
 				<Texture parentKey="Left" atlas="uiframe-tab-left" useAtlasSize="false" rotation="180">
-					<Size x="35" y="28"/>
+					<Size x="27" y="28"/>
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT"/>
 					</Anchors>
 				</Texture>
 				<Texture parentKey="Right" atlas="uiframe-tab-right" useAtlasSize="false" rotation="180">
-					<Size x="37" y="28"/>
+					<Size x="29" y="28"/>
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="-6"/>
 					</Anchors>
@@ -56,7 +56,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 			<Layer level="HIGHLIGHT">
 				<Texture parentKey="LeftHighlight" atlas="uiframe-tab-left" useAtlasSize="false" alphaMode="ADD" alpha="0.4" rotation="180">
-					<Size x="35" y="28"/>
+					<Size x="27" y="28"/>
 					<Anchors>
 						<Anchor point="TOPRIGHT" relativeKey="$parent.Left"/>
 					</Anchors>
@@ -69,7 +69,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Anchors>
 				</Texture>
 				<Texture parentKey="RightHighlight" atlas="uiframe-tab-right" useAtlasSize="false" alphaMode="ADD" alpha="0.4" rotation="180">
-					<Size x="37" y="28"/>
+					<Size x="29" y="28"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeKey="$parent.Right"/>
 					</Anchors>
