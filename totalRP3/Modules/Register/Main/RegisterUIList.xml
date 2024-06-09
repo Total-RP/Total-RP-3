@@ -118,7 +118,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_RegisterList" hidden="true">
 		<Frames>
-			<Frame name="TRP3_RegisterListContainer" parentKey="Container" inherits="TRP3_GoldTooltipEdgeBackdropTemplate">
+			<Frame name="TRP3_RegisterListContainer" parentKey="Container" inherits="TRP3_TooltipBackdropEdgeTemplate">
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
 					<Anchor point="BOTTOMRIGHT"/>

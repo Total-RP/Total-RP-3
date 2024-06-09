@@ -5,7 +5,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
-	<Frame name="TRP3_ConfigurationModuleFrame" virtual="true" inherits="TRP3_GoldTooltipBackdropTemplate">
+	<Frame name="TRP3_ConfigurationModuleFrame" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
 		<Size x="0" y="60"/>
 		<Layers>
 			<Layer level="OVERLAY">
@@ -53,7 +53,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true" inherits="TRP3_GoldTooltipEdgeBackdropTemplate">
+	<Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+		</KeyValues>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString name="TRP3_ConfigurationModuleTitle" inherits="GameFontNormalHuge" justifyH="CENTER" text="[modules_settings]">

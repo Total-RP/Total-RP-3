@@ -329,7 +329,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Frame>
 
 			<!-- RIGHT PART : STATIC POPUP : blocking access to content behind it -->
-			<Frame name="TRP3_PopupsFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="TRP3_GoldTooltipBackdropTemplate">
+			<Frame name="TRP3_PopupsFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="TRP3_TooltipBackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
 					<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
@@ -338,7 +341,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Frame>
 
 			<!-- Update alert popup -->
-			<Frame name="TRP3_UpdateFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="TRP3_GoldTooltipBackdropTemplate">
+			<Frame name="TRP3_UpdateFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="TRP3_TooltipBackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+				</KeyValues>
 
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-20" y="-20"/>

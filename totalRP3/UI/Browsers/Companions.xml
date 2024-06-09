@@ -30,6 +30,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Icon browser  -->
 	<Frame name="TRP3_CompanionBrowser" parent="TRP3_PopupsFrame" hidden="true" inherits="TRP3_BrowserDialogBackdropTemplate">
 		<Size x="420" y="400"/>
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_LIGHT_GREY" type="global"/>
+		</KeyValues>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -59,8 +62,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Frames>
 			</Frame>
 			<!-- Filter section -->
-			<Frame name="TRP3_CompanionBrowserFilter" inherits="TRP3_GoldTooltipBackdropTemplate">
+			<Frame name="TRP3_CompanionBrowserFilter" inherits="TRP3_TooltipBackdropTemplate">
 				<Size x="0" y="60"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_LIGHT_GREY" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="BOTTOMLEFT" x="10" y="10"/>
 					<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>

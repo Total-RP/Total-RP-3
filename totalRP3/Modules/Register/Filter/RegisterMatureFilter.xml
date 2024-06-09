@@ -4,7 +4,10 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	<Frame name="TRP3_MatureFilterPopup" hidden="true" inherits="TRP3_GoldTooltipEdgeBackdropTemplate">
+	<Frame name="TRP3_MatureFilterPopup" hidden="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_LIGHT_GREY" type="global"/>
+		</KeyValues>
 		<Size x="420" y="400"/>
 		<Anchors>
 			<Anchor point="LEFT" x="0" y="0"/>
@@ -131,6 +134,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Mature dictionary editor  -->
 	<Frame name="TRP3_MatureDictionaryEditor" hidden="true" inherits="TRP3_BrowserDialogBackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_LIGHT_GREY" type="global"/>
+		</KeyValues>
 		<Size x="420" y="410"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
@@ -160,7 +166,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Slider parentKey="slider" inherits="TRP3_Scrollbar" />
 				</Frames>
 			</Frame>
-			<Frame parentKey="addNewWord" inherits="TRP3_GoldTooltipBackdropTemplate">
+			<Frame parentKey="addNewWord" inherits="TRP3_TooltipBackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_LIGHT_GREY" type="global"/>
+				</KeyValues>
 				<Size x="0" y="60"/>
 				<Anchors>
 					<Anchor point="BOTTOMLEFT" x="15" y="10"/>
