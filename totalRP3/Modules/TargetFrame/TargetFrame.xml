@@ -22,7 +22,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Button>
 
 	<!-- Target Frame -->
-	<Frame name="TRP3_TargetFrameTemplate" toplevel="true" enableMouse="true" hidden="true" inherits="TRP3_FieldSetFrame" virtual="true">
+	<Frame name="TRP3_TargetFrameTemplate" toplevel="true" enableMouse="true" hidden="true" inherits="TRP3_GroupBoxTemplate" virtual="true">
 		<Size x="200" y="50" />
 		<Scripts>
 			<OnLoad inherit="prepend">

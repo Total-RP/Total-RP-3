@@ -11,7 +11,6 @@ local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local hasProfile = TRP3_API.register.hasProfile;
 local openMainFrame = TRP3_API.navigation.openMainFrame;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
-local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local stEtN = TRP3_API.utils.str.emptyToNil;
 
@@ -88,7 +87,7 @@ function TRP3_API.register.inits.notesInit()
 		TRP3_Notes = {};
 	end
 
-	setupFieldSet(TRP3_RegisterNotesView, loc.REG_PLAYER_NOTES, 150);
+	TRP3_RegisterNotesViewContainer:SetTitleText(loc.REG_PLAYER_NOTES);
 
 	TRP3_RegisterNotesViewAccount.Title:SetText(loc.REG_PLAYER_NOTES_ACCOUNT);
 

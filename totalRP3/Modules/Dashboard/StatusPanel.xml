@@ -7,7 +7,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Include file="StatusPanel.lua"/>
 
-	<Frame name="TRP3_DashboardStatusPanelTemplate" virtual="true" inherits="TRP3_FieldSetFrame" mixin="TRP3_DashboardStatusPanelMixin">
+	<Frame name="TRP3_DashboardStatusPanelTemplate" virtual="true" inherits="TRP3_GroupBoxTemplate" mixin="TRP3_DashboardStatusPanelMixin">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+		</KeyValues>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="RPStatusLabel" inherits="GameFontNormal" justifyH="LEFT">

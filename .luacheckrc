@@ -622,6 +622,12 @@ stds.wow = {
 
 		-- Global Mixins and UI Objects
 
+		BackdropTemplateMixin = {
+			fields = {
+				"SetBackdropBorderColor",
+			},
+		},
+
 		ColorPickerFrame = {
 			fields = {
 				"GetColorRGB",
