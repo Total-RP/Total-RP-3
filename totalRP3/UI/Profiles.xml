@@ -6,10 +6,7 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Profile manager : Line -->
-	<Frame name="TRP3_ProfileManagerLine" virtual="true" inherits="BackdropTemplate">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_TOOLTIP" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_ProfileManagerLine" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
 		<Size x="0" y="65"/>
 		<Frames>
 			<Frame name="$parentIcon" inherits="TRP3_SimpleIcon">
@@ -114,11 +111,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Profile manager -->
 	<Frame name="TRP3_ProfileManagerTemplate" hidden="true" virtual="true">
 		<Frames>
-			<Frame frameLevel="2" parentKey="list" inherits="BackdropTemplate">
-				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_EDGE_16" type="global"/>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-				</KeyValues>
+			<Frame frameLevel="2" parentKey="list" inherits="TRP3_GoldTooltipEdgeBackdropTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
 					<Anchor point="BOTTOMRIGHT"/>

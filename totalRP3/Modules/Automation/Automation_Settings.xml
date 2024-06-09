@@ -6,11 +6,7 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Automation_Settings.lua"/>
 
-	<Frame name="TRP3_AutomationSettingsTemplate" inherits="BackdropTemplate" mixin="TRP3_AutomationSettingsMixin" virtual="true">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_EDGE_16" type="global"/>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_AutomationSettingsTemplate" inherits="TRP3_GoldTooltipEdgeBackdropTemplate" mixin="TRP3_AutomationSettingsMixin" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="TitleText" inherits="GameFontHighlightHuge" justifyH="LEFT" justifyV="TOP">

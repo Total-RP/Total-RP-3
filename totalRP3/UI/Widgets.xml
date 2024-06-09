@@ -228,17 +228,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Slider>
 
 	<!-- A bordered frame with a title -->
-	<Frame name="TRP3_FieldSetFrame" virtual="true" inherits="BackdropTemplate">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_TOOLTIP" type="global"/>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_FieldSetFrame" virtual="true" inherits="TRP3_GoldTooltipBackdropTemplate">
 		<Frames>
-			<Frame name="$parentCaptionPanel" parentKey="caption" inherits="BackdropTemplate">
-				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_COLLECTIONS_TOOLTIP" type="global"/>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-				</KeyValues>
+			<Frame name="$parentCaptionPanel" parentKey="caption" inherits="TRP3_GoldSolidTooltipBackdropTemplate">
 				<Size x="150" y="23"/>
 				<Layers>
 					<Layer level="OVERLAY">
@@ -609,10 +601,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<!-- More classic style hovered frame -->
-	<Frame name="TRP3_AltHoveredFrame" virtual="true" inherits="BackdropTemplate">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="BACKDROP_GOLD_DIALOG_32_32" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_AltHoveredFrame" virtual="true" inherits="TRP3_GoldDialogBackdropTemplate">
 		<Size x="220" y="100"/>
 		<Layers>
 			<Layer level="BACKGROUND">

@@ -6,11 +6,7 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Color browser  -->
-	<Frame name="TRP3_ColorBrowser" parent="TRP3_PopupsFrame" hidden="true" inherits="BackdropTemplate">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_ACHIEVEMENT_TOOLTIP" type="global"/>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_ColorBrowser" parent="TRP3_PopupsFrame" hidden="true" inherits="TRP3_BrowserDialogBackdropTemplate">
 		<Size x="440" y="285"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
@@ -44,11 +40,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Frame inherits="BackdropTemplate">
-				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_TOOLTIP" type="global"/>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-				</KeyValues>
+			<Frame inherits="TRP3_GoldTooltipBackdropTemplate">
 				<Size x="0" y="60"/>
 				<Anchors>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ColorBrowserTitle" x="0" y="-10"/>
