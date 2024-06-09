@@ -7,7 +7,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Register characteristics panel -->
 	<Frame name="TRP3_CompanionsPageInformationTemplate" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24_5555" type="global"/>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_EDGE_16" type="global"/>
 		</KeyValues>
 		<Layers>
 			<Layer level="BACKGROUND">

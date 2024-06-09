@@ -30,7 +30,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Icon browser  -->
 	<Frame name="TRP3_CompanionBrowser" parent="TRP3_PopupsFrame" hidden="true" inherits="BackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_16_3333" type="global"/>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_ACHIEVEMENT_TOOLTIP" type="global"/>
 		</KeyValues>
 		<Size x="420" y="400"/>
 		<Anchors>
@@ -64,7 +64,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<!-- Filter section -->
 			<Frame name="TRP3_CompanionBrowserFilter" inherits="BackdropTemplate">
 				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_3333" type="global"/>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_TOOLTIP" type="global"/>
 					<KeyValue key="backdropColor" value="TRP3_BACKDROP_COLOR_DARK" type="global"/>
 				</KeyValues>
 				<Size x="0" y="60"/>

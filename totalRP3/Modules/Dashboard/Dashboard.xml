@@ -69,7 +69,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Dashboard -->
 	<Frame name="TRP3_Dashboard" hidden="true" inherits="BackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_16" type="global"/>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_EDGE_16" type="global"/>
 		</KeyValues>
 		<Layers>
 			<Layer level="BACKGROUND">

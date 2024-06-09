@@ -21,7 +21,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Frames>
 			<Frame name="$parentContainer" inherits="BackdropTemplate">
 				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_20_20_5555" type="global"/>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_16_16" type="global"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-18" />
@@ -30,7 +30,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<!-- Cadre Titre -->
 			<Frame name="$parentTopFrame" inherits="BackdropTemplate">
 				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_PARTY_DIALOG_16_16_5555" type="global"/>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_16_16" type="global"/>
 				</KeyValues>
 				<Size x="80" y="25" />
 				<Anchors>
