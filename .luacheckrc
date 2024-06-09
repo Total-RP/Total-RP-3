@@ -453,6 +453,7 @@ stds.wow = {
 		"CreateFramePool",
 		"CreateFromMixins",
 		"CreateIndexRangeDataProvider",
+		"CreateMinimalSliderFormatter",
 		"CreateScrollBoxListGridView",
 		"CreateTextureMarkup",
 		"CreateVector2D",
@@ -633,6 +634,16 @@ stds.wow = {
 				"GetColorRGB",
 				"SetColorRGB",
 				"SetupColorPickerAndShow",
+			},
+		},
+
+		MinimalSliderWithSteppersMixin = {
+			fields = {
+				Label = {
+					fields = {
+						"Left",
+					},
+				},
 			},
 		},
 
