@@ -14,21 +14,21 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Layer level="OVERLAY">
 				<FontString parentKey="TitleText" inherits="GameFontHighlightHuge" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="20" y="-20"/>
-						<Anchor point="RIGHT" x="-20"/>
+						<Anchor point="TOPLEFT" x="16" y="-20"/>
+						<Anchor point="RIGHT" x="-16"/>
 					</Anchors>
 				</FontString>
 				<FontString parentKey="DescriptionText" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP" wordwrap="true">
 					<Size x="475"/>
 					<Anchors>
-						<Anchor point="LEFT" x="20"/>
+						<Anchor point="LEFT" x="16"/>
 						<Anchor point="TOP" relativeKey="$parent.TitleText" relativePoint="BOTTOM" y="-10"/>
 					</Anchors>
 				</FontString>
 				<FontString parentKey="HelpText" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP" wordwrap="true">
 					<Size x="475"/>
 					<Anchors>
-						<Anchor point="LEFT" x="20"/>
+						<Anchor point="LEFT" x="16"/>
 						<Anchor point="TOP" relativeKey="$parent.DescriptionText" relativePoint="BOTTOM" y="-10"/>
 					</Anchors>
 				</FontString>
@@ -52,7 +52,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<EventButton parentKey="SaveButton" parentArray="editorFrames" text="SAVE" inherits="UIPanelButtonTemplate">
 				<Size x="130" y="22"/>
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
+					<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
 				</Anchors>
 			</EventButton>
 			<EventButton parentKey="TestButton" parentArray="editorFrames" inherits="UIPanelButtonNoTooltipTemplate" mixin="UIButtonMixin">
@@ -61,7 +61,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</KeyValues>
 				<Size x="130" y="22"/>
 				<Anchors>
-					<Anchor point="BOTTOMLEFT" x="20" y="20"/>
+					<Anchor point="BOTTOMLEFT" x="16" y="16"/>
 				</Anchors>
 				<Scripts>
 					<OnEnter method="OnEnter"/>
@@ -75,8 +75,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<KeyValue key="backdropColorAlpha" value="0.8" type="number"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="LEFT" x="20"/>
-					<Anchor point="RIGHT" x="-20"/>
+					<Anchor point="LEFT" x="16"/>
+					<Anchor point="RIGHT" x="-16"/>
 					<Anchor point="TOP" relativeKey="$parent.Actions" relativePoint="BOTTOM" y="-10"/>
 					<Anchor point="BOTTOM" relativeKey="$parent.SaveButton" relativePoint="TOP" y="10"/>
 				</Anchors>

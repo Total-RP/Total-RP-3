@@ -296,12 +296,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="0"/>
 								</Anchors>
 							</Button>
-							<ScrollFrame name="TRP3_RegisterAbout_Edit_Template2_Scroll" inherits="UIPanelScrollFrameTemplate">
+							<ScrollFrame name="TRP3_RegisterAbout_Edit_Template2_Scroll" inherits="ScrollFrameTemplate">
+								<KeyValues>
+									<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
+									<KeyValue key="scrollBarX" value="0" type="number"/>
+									<KeyValue key="scrollBarTopY" value="-4" type="number"/>
+									<KeyValue key="scrollBarBottomY" value="4" type="number"/>
+									<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
+								</KeyValues>
 								<Anchors>
-									<Anchor point="TOP" x="0" y="-10"/>
-									<Anchor point="BOTTOM" x="0" y="10"/>
-									<Anchor point="LEFT" x="15" y="0"/>
-									<Anchor point="RIGHT" x="-18" y="0"/>
+									<Anchor point="TOPLEFT" x="5" y="-5"/>
+									<Anchor point="BOTTOMRIGHT" x="-20" y="5"/>
 								</Anchors>
 								<ScrollChild>
 									<Frame name="TRP3_RegisterAbout_Edit_Template2_Container">
@@ -358,10 +363,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Layer>
 				</Layers>
 				<Frames>
-					<ScrollFrame name="TRP3_RegisterAbout_AboutPanel_Scroll" inherits="UIPanelScrollFrameTemplate">
+					<ScrollFrame name="TRP3_RegisterAbout_AboutPanel_Scroll" inherits="ScrollFrameTemplate">
+						<KeyValues>
+							<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
+							<KeyValue key="scrollBarX" value="10" type="number"/>
+							<KeyValue key="scrollBarTopY" value="-4" type="number"/>
+							<KeyValue key="scrollBarBottomY" value="4" type="number"/>
+							<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
+						</KeyValues>
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-11"/>
-							<Anchor point="BOTTOMRIGHT" x="-14" y="9"/>
+							<Anchor point="TOPLEFT" x="10" y="-5"/>
+							<Anchor point="BOTTOMRIGHT" x="-30" y="5"/>
 						</Anchors>
 						<ScrollChild>
 							<Frame name="TRP3_RegisterAbout_AboutPanel_Container">
@@ -375,7 +387,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<Frame name="TRP3_RegisterAbout_AboutPanel_Template2">
 										<Size x="0" y="50"/>
 										<Anchors>
-											<Anchor point="TOPLEFT" x="0" y="-5"/>
+											<Anchor point="TOPLEFT" x="0" y="-10"/>
 											<Anchor point="RIGHT" x="0" y="0"/>
 										</Anchors>
 										<Layers>

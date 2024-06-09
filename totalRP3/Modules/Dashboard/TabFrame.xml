@@ -18,18 +18,25 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="TOPLEFT" x="17" y="30"/>
 				</Anchors>
 			</Frame>
-			<ScrollFrame parentKey="ScrollFrame" inherits="UIPanelScrollFrameTemplate">
+			<ScrollFrame parentKey="ScrollFrame" inherits="ScrollFrameTemplate">
+				<KeyValues>
+					<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
+					<KeyValue key="scrollBarX" value="0" type="number"/>
+					<KeyValue key="scrollBarTopY" value="-4" type="number"/>
+					<KeyValue key="scrollBarBottomY" value="4" type="number"/>
+					<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
+				</KeyValues>
 				<Anchors>
-					<Anchor point="TOPLEFT" x="10" y="-11"/>
-					<Anchor point="BOTTOMRIGHT" x="-20" y="9"/>
+					<Anchor point="TOPLEFT" x="5" y="-5"/>
+					<Anchor point="BOTTOMRIGHT" x="-20" y="5"/>
 				</Anchors>
 				<ScrollChild>
 					<Frame>
-						<Size x="10" y="10"/>
+						<Size x="1" y="1"/>
 						<Frames>
 							<SimpleHTML parentKey="HTML" inherits="TRP3_DashboardHTMLContent">
 								<Anchors>
-									<Anchor point="TOPLEFT" x="5" y="-5"/>
+									<Anchor point="TOPLEFT" x="10" y="-10"/>
 								</Anchors>
 							</SimpleHTML>
 						</Frames>

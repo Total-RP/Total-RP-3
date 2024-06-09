@@ -133,10 +133,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							</Layer>
 						</Layers>
 						<Frames>
-							<ScrollFrame name="$parent_Scroll" inherits="UIPanelScrollFrameTemplate">
+							<ScrollFrame name="$parent_Scroll" inherits="ScrollFrameTemplate">
+								<KeyValues>
+									<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
+									<KeyValue key="scrollBarX" value="0" type="number"/>
+									<KeyValue key="scrollBarTopY" value="-2" type="number"/>
+									<KeyValue key="scrollBarBottomY" value="4" type="number"/>
+									<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
+								</KeyValues>
 								<Anchors>
-									<Anchor point="TOPLEFT" x="10" y="-11"/>
-									<Anchor point="BOTTOMRIGHT" x="-18" y="9"/>
+									<Anchor point="TOPLEFT" x="5" y="-13"/>
+									<Anchor point="BOTTOMRIGHT" x="-20" y="5"/>
 								</Anchors>
 								<ScrollChild>
 									<Frame>
@@ -179,7 +186,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Button name="$parent_SaveButton" inherits="TRP3_CommonButton">
 								<Size x="75" y="20"/>
 								<Anchors>
-									<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="15"/>
+									<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="20"/>
 								</Anchors>
 							</Button>
 							<Button name="$parent_CancelButton" inherits="TRP3_CommonButton">

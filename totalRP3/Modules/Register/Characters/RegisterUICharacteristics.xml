@@ -470,10 +470,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Layer>
 				</Layers>
 				<Frames>
-					<ScrollFrame name="TRP3_RegisterCharact_CharactPanel_Scroll" inherits="UIPanelScrollFrameTemplate">
+					<ScrollFrame name="TRP3_RegisterCharact_CharactPanel_Scroll" inherits="ScrollFrameTemplate">
+						<KeyValues>
+							<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
+							<KeyValue key="scrollBarX" value="0" type="number"/>
+							<KeyValue key="scrollBarTopY" value="-2" type="number"/>
+							<KeyValue key="scrollBarBottomY" value="4" type="number"/>
+							<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
+						</KeyValues>
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-11"/>
-							<Anchor point="BOTTOMRIGHT" x="-28" y="9"/>
+							<Anchor point="TOPLEFT" x="5" y="-13"/>
+							<Anchor point="BOTTOMRIGHT" x="-20" y="5"/>
 						</Anchors>
 						<ScrollChild>
 							<Frame name="TRP3_RegisterCharact_CharactPanel_Container">
@@ -530,7 +537,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Button name="TRP3_RegisterCharact_NamePanel_Edit_SaveButton" inherits="TRP3_CommonButton">
 						<Size x="75" y="20"/>
 						<Anchors>
-							<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="15"/>
+							<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="20"/>
 						</Anchors>
 					</Button>
 					<Button name="TRP3_RegisterCharact_NamePanel_Edit_CancelButton" inherits="TRP3_CommonButton">
@@ -575,10 +582,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
 				</Anchors>
 				<Frames>
-					<ScrollFrame name="TRP3_RegisterCharact_Edit_CharactPanel_Scroll" inherits="UIPanelScrollFrameTemplate">
+					<ScrollFrame name="TRP3_RegisterCharact_Edit_CharactPanel_Scroll" inherits="ScrollFrameTemplate">
+						<KeyValues>
+							<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
+							<KeyValue key="scrollBarX" value="0" type="number"/>
+							<KeyValue key="scrollBarTopY" value="-2" type="number"/>
+							<KeyValue key="scrollBarBottomY" value="4" type="number"/>
+							<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
+						</KeyValues>
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-11"/>
-							<Anchor point="BOTTOMRIGHT" x="-28" y="9"/>
+							<Anchor point="TOPLEFT" x="5" y="-13"/>
+							<Anchor point="BOTTOMRIGHT" x="-20" y="5"/>
 						</Anchors>
 						<ScrollChild>
 							<Frame name="TRP3_RegisterCharact_Edit_CharactPanel_Container">

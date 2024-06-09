@@ -325,9 +325,9 @@ function refreshTemplate2EditDisplay()
 		frame:SetPoint("LEFT", 0, 0);
 		frame:SetPoint("RIGHT", 0, 0);
 		if previous == nil then
-			frame:SetPoint("TOPLEFT", TRP3_RegisterAbout_Edit_Template2_Container, "TOPLEFT", -5, -5);
+			frame:SetPoint("TOPLEFT", TRP3_RegisterAbout_Edit_Template2_Container, "TOPLEFT", 10, -10);
 		else
-			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, -5);
+			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, -10);
 		end
 		-- Values
 		frame.index = frameIndex;

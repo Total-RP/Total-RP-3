@@ -355,12 +355,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_TextAreaBase" mixin="TRP3_TextAreaBaseMixin" virtual="true" enableMouse="true">
 		<Frames>
-			<ScrollFrame parentKey="scroll" name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
+			<ScrollFrame parentKey="scroll" name="$parentScroll" inherits="ScrollFrameTemplate">
+				<KeyValues>
+					<KeyValue key="scrollBarTemplate" value="WowTrimScrollBar" type="string"/>
+					<KeyValue key="scrollBarX" value="-22" type="number"/>
+					<KeyValue key="scrollBarTopY" value="0" type="number"/>
+					<KeyValue key="scrollBarBottomY" value="-2" type="number"/>
+					<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
+				</KeyValues>
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-10"/>
-					<Anchor point="BOTTOM" x="0" y="10"/>
-					<Anchor point="LEFT" x="15" y="0"/>
-					<Anchor point="RIGHT" x="-18" y="0"/>
+					<Anchor point="TOPLEFT" x="8" y="-6"/>
+					<Anchor point="BOTTOMRIGHT" x="-8" y="4"/>
 				</Anchors>
 				<ScrollChild>
 					<EditBox name="$parentText" mixin="TRP3_TextAreaBaseEditBoxMixin" parentKey="text" multiLine="true" enableMouse="false" autoFocus="false">

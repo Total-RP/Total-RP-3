@@ -353,7 +353,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	-- Resizing
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
 		for _, structure in pairs(registeredConfiPage) do
-			structure.parent:SetSize(containerWidth - 70, 50);
+			structure.parent:SetSize(containerWidth - 45, 50);
 		end
 	end);
 

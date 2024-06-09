@@ -520,6 +520,6 @@ TRP3_API.module.init = function()
 
 	-- Resizing
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
-		TRP3_ConfigurationModuleContainer:SetSize(containerWidth - 70, 50);
+		TRP3_ConfigurationModuleContainer:SetSize(containerWidth - 45, 50);
 	end);
 end

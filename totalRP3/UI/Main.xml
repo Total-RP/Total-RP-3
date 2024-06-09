@@ -279,8 +279,24 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
+			<!-- RIGHT PART : Place for content. Needs to be defined first as the menu scroll invokes OnSizeChanged. -->
+			<Frame name="TRP3_MainFramePageContainer">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
+					<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
+					<Anchor point="LEFT" x="215" y="0"/>
+				</Anchors>
+			</Frame>
+
 			<!-- LEFT PART : Menu -->
-			<ScrollFrame name="TRP3_MainFrameMenuScroll" inherits="UIPanelScrollFrameTemplate">
+			<ScrollFrame name="TRP3_MainFrameMenuScroll" inherits="ScrollFrameTemplate">
+				<KeyValues>
+					<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
+					<KeyValue key="scrollBarX" value="6" type="number"/>
+					<KeyValue key="scrollBarTopY" value="0" type="number"/>
+					<KeyValue key="scrollBarBottomY" value="4" type="number"/>
+					<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
+				</KeyValues>
 				<Size x="175" y="0"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" x="20" y="-23"/>
@@ -318,15 +334,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Button>
 				</Frames>
 			</ScrollFrame>
-
-			<!-- RIGHT PART : Place for content -->
-			<Frame name="TRP3_MainFramePageContainer">
-				<Anchors>
-					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
-					<Anchor point="BOTTOMRIGHT" x="-20" y="17"/>
-					<Anchor point="LEFT" x="215" y="0"/>
-				</Anchors>
-			</Frame>
 
 			<!-- RIGHT PART : STATIC POPUP : blocking access to content behind it -->
 			<Frame name="TRP3_PopupsFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="TRP3_TooltipBackdropTemplate">
