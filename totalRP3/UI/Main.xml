@@ -255,12 +255,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<!--Interface\BlackMarket\BlackMarketBackground-Tile-->
-				<!--Interface\BankFrame\Bank-Background-->
-				<!--Interface\Collections\CollectionsBackgroundTile-->
-				<!--Interface\GuildBankFrame\GuildVaultBG-->
-
-				<Texture file="Interface\GuildBankFrame\GuildVaultBG" horizTile="true" vertTile="true">
+				<Texture parentKey="ContentBackground" horizTile="true" vertTile="true">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="16" y="-16"/>
 						<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
@@ -271,8 +266,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Texture file="Interface\AchievementFrame\UI-Achievement-Parchment">
 					<Size x="195" y="0"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" x="22" y="-20"/>
-						<Anchor point="BOTTOMLEFT" x="20" y="23"/>
+						<Anchor point="TOPLEFT" x="20" y="-20"/>
+						<Anchor point="BOTTOMLEFT" x="20" y="20"/>
 					</Anchors>
 					<TexCoords left="0" right="0.5" top="0" bottom="1"/>
 				</Texture>
@@ -310,21 +305,32 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Frames>
 					<Button name="TRP3_MainTutorialButton">
 						<Size x="46" y="46"/>
-						<Anchors><Anchor point="BOTTOMLEFT" x="75" y="-15"/></Anchors>
+						<Anchors>
+							<Anchor point="BOTTOMLEFT" x="75" y="-15"/>
+						</Anchors>
 						<Layers>
 							<Layer level="BACKGROUND">
 								<Texture parentKey="I" file="Interface\common\help-i">
-									<Size x="46" y="46"/><Anchors><Anchor point="CENTER"/></Anchors>
+									<Size x="46" y="46"/>
+									<Anchors>
+										<Anchor point="CENTER"/>
+									</Anchors>
 								</Texture>
 							</Layer>
 							<Layer level="BORDER">
 								<Texture parentKey="Ring" file="Interface\Minimap\MiniMap-TrackingBorder">
-									<Size x="64" y="64"/><Anchors><Anchor point="CENTER" x="12" y="-13"/></Anchors>
+									<Size x="64" y="64"/>
+									<Anchors>
+										<Anchor point="CENTER" x="12" y="-13"/>
+									</Anchors>
 								</Texture>
 							</Layer>
 						</Layers>
 						<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight">
-							<Size x="46" y="46"/><Anchors><Anchor point="CENTER" x="-1" y="1"/></Anchors>
+							<Size x="46" y="46"/>
+							<Anchors>
+								<Anchor point="CENTER" x="-1" y="1"/>
+							</Anchors>
 						</HighlightTexture>
 						<Scripts>
 							<PostClick>
