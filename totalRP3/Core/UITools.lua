@@ -387,6 +387,7 @@ local function refreshTooltip(Frame)
 end
 TRP3_API.ui.tooltip.refresh = refreshTooltip;
 TRP3_RefreshTooltipForFrame = refreshTooltip; -- For XML integration without too much perf' issue
+TRP3_HideTooltipForFrame = TRP3_TooltipUtil.HideTooltip;
 
 local function tooltipSimpleOnEnter(self)
 	refreshTooltip(self);

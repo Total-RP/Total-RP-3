@@ -309,20 +309,22 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</EditBox>
 
-	<!-- Checkbox with small label and TT compatible -->
-	<CheckButton name="TRP3_CheckBox" inherits="InterfaceOptionsCheckButtonTemplate" virtual="true" checked="false">
+	<CheckButton name="TRP3_CheckBox" checked="false" virtual="true">
+		<Size x="27" y="26"/>
+		<NormalTexture atlas="checkbox-minimal" useAtlasSize="true"/>
+		<PushedTexture atlas="checkbox-minimal" useAtlasSize="true"/>
+		<CheckedTexture atlas="checkmark-minimal" useAtlasSize="true"/>
+		<DisabledCheckedTexture atlas="checkmark-minimal-disabled" useAtlasSize="true"/>
+		<ButtonText parentKey="Text">
+			<Anchors>
+				<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0"/>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="GameFontNormalSmall"/>
+		<DisabledFont style="GameFontDisableSmall"/>
 		<Scripts>
-			<OnLoad>
-				self.Text = _G[self:GetName() .. "Text"];
-				self.Text:SetFontObject(GameFontNormalSmall);
-			</OnLoad>
-			<OnEnter>
-				TRP3_RefreshTooltipForFrame(self);
-			</OnEnter>
-			<OnLeave>
-				TRP3_MainTooltip:Hide();
-			</OnLeave>
-			<OnClick/>
+			<OnEnter function="TRP3_RefreshTooltipForFrame"/>
+			<OnLeave function="TRP3_HideTooltipForFrame"/>
 			<PostClick>
 				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			</PostClick>

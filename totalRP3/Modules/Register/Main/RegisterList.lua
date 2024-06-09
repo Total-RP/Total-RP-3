@@ -977,8 +977,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	setTooltipForSameFrame(TRP3_RegisterListCharactFilterButton, "LEFT", 0, 5, loc.REG_LIST_FILTERS, loc.REG_LIST_FILTERS_TT);
 	TRP3_RegisterListFilterCharactNameText:SetText(loc.REG_LIST_NAME);
 	TRP3_RegisterListFilterCharactGuildText:SetText(loc.REG_LIST_GUILD);
-	TRP3_RegisterListFilterCharactRealmText:SetText(loc.REG_LIST_REALMONLY);
-	TRP3_RegisterListFilterCharactNotesText:SetText(loc.REG_LIST_NOTESONLY);
+	TRP3_RegisterListFilterCharactRealm:SetText(loc.REG_LIST_REALMONLY);
+	TRP3_RegisterListFilterCharactNotes:SetText(loc.REG_LIST_NOTESONLY);
 	TRP3_RegisterListHeaderAddon:SetText(loc.REG_LIST_ADDON);
 	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListFilterCharactName, TRP3_RegisterListFilterCharactGuild});
 
