@@ -123,10 +123,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_EDGE_16" type="global"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="TOPLEFT" x="0" y="-30" />
-					<Anchor point="TOPRIGHT" x="2" y="-30" />
-					<Anchor point="BOTTOMLEFT" x="0" y="2" />
-					<Anchor point="BOTTOMRIGHT" x="2" y="2" />
+					<Anchor point="TOPLEFT" y="-30"/>
+					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 				<Layers>
 					<Layer level="BACKGROUND">
