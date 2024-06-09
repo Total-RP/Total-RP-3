@@ -230,11 +230,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Frame name="TRP3_FieldSetFrame" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_TOOLTIP" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Frames>
 			<Frame name="$parentCaptionPanel" parentKey="caption" inherits="BackdropTemplate">
 				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_BANK_TOOLTIP" type="global"/>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_COLLECTIONS_TOOLTIP" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 				</KeyValues>
 				<Size x="150" y="23"/>
 				<Layers>

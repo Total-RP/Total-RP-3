@@ -6,6 +6,7 @@
 --]]
 
 TRP3_BACKDROP_COLOR_DARK = TRP3_API.CreateColor(0.4, 0.4, 0.4);
+TRP3_BACKDROP_COLOR_GOLD = TRP3_API.CreateColor(1, 0.675, 0.125);
 
 TRP3_BACKDROP_DIALOG_TOOLTIP = {
 	bgFile   = "Interface\\DialogFrame\\UI-DialogBox-Background",
@@ -24,12 +25,12 @@ TRP3_BACKDROP_TOOLTIP_EDGE_16 = {
 	insets   = { left = 4, right = 4, top = 4, bottom = 4 },
 };
 
-TRP3_BACKDROP_BANK_TOOLTIP = {
-	bgFile   = "Interface\\BankFrame\\Bank-Background",
+TRP3_BACKDROP_COLLECTIONS_TOOLTIP = {
+	bgFile   = "Interface\\Collections\\COLLECTIONSBACKGROUNDTILE",
 	edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
 	tile     = true,
 	tileEdge = true,
-	tileSize = 32,
+	tileSize = 256,
 	edgeSize = 16,
 	insets   = { left = 4, right = 4, top = 4, bottom = 4 },
 };

@@ -332,6 +332,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Frame name="TRP3_PopupsFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_TOOLTIP" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
@@ -344,6 +345,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Frame name="TRP3_UpdateFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_TOOLTIP" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 				</KeyValues>
 
 				<Anchors>

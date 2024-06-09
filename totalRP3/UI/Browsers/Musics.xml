@@ -9,6 +9,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Button name="TRP3_MusicBrowserLine" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_EDGE_16" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Size x="0" y="28"/>
 		<Anchors>
@@ -59,6 +60,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Frame name="TRP3_MusicBrowser" parent="TRP3_PopupsFrame" hidden="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_ACHIEVEMENT_TOOLTIP" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Size x="420" y="400"/>
 		<Anchors>
@@ -93,6 +95,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Frame name="TRP3_MusicBrowserFilter" inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_TOOLTIP" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 				</KeyValues>
 				<Size x="0" y="60"/>
 				<Anchors>

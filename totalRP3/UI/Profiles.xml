@@ -117,6 +117,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Frame frameLevel="2" parentKey="list" inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_EDGE_16" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
