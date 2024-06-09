@@ -10,6 +10,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="ScrollingEditBox.xml"/>
 	<Include file="FocusRegion.xml"/>
 	<Include file="StyledButton.xml"/>
+	<Include file="GroupBox.xml"/>
 	<Include file="FontUtil.lua"/>
 	<Include file="TooltipUtil.lua"/>
 	<Include file="Widgets.lua"/>
@@ -225,29 +226,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</OnLeave>
 		</Scripts>
 	</Slider>
-
-	<!-- A bordered frame with a title -->
-	<Frame name="TRP3_FieldSetFrame" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
-		<Frames>
-			<Frame name="$parentCaptionPanel" parentKey="caption" inherits="TRP3_SolidTooltipBackdropTemplate">
-				<Size x="150" y="23"/>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString name="$parentCaption" text="[Caption text]" inherits="GameFontNormal" wordwrap="false">
-							<Anchors>
-								<Anchor point="LEFT" x="10" y="0"/>
-								<Anchor point="RIGHT" x="-10" y="0"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95"/>
-						</FontString>
-					</Layer>
-				</Layers>
-				<Anchors>
-					<Anchor point="TOPLEFT" x="16" y="10"/>
-				</Anchors>
-			</Frame>
-		</Frames>
-	</Frame>
 
 	<!-- A bordered icon -->
 	<Frame name="TRP3_SimpleIcon" virtual="true">

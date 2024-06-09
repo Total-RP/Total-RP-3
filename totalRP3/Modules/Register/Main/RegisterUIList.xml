@@ -350,8 +350,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Frame>
 
 					<!-- Characters filters -->
-					<Frame name="TRP3_RegisterListCharactFilter" parentKey="CharacterFilters" inherits="TRP3_FieldSetFrame">
+					<Frame name="TRP3_RegisterListCharactFilter" parentKey="CharacterFilters" inherits="TRP3_GroupBoxTemplate">
 						<Size x="0" y="65" />
+						<KeyValues>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+						</KeyValues>
 						<Anchors>
 							<Anchor point="BOTTOMLEFT" x="8" y="8" />
 							<Anchor point="BOTTOMRIGHT" x="-8" y="8" />
@@ -388,8 +391,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Frame>
 
 					<!-- Companions filters -->
-					<Frame name="TRP3_RegisterListPetFilter" parentKey="CompanionFilters" inherits="TRP3_FieldSetFrame">
+					<Frame name="TRP3_RegisterListPetFilter" parentKey="CompanionFilters" inherits="TRP3_GroupBoxTemplate">
 						<Size x="0" y="65" />
+						<KeyValues>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+						</KeyValues>
 						<Anchors>
 							<Anchor point="BOTTOMLEFT" x="8" y="8" />
 							<Anchor point="BOTTOMRIGHT" x="-8" y="8" />

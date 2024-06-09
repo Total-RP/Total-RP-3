@@ -26,8 +26,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Frames>
 
 					<!-- Names and titles -->
-					<Frame name="$parent_NamePanel" inherits="TRP3_FieldSetFrame">
+					<Frame name="$parent_NamePanel" inherits="TRP3_GroupBoxTemplate">
 						<Size x="0" y="70"/>
+						<KeyValues>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+						</KeyValues>
 						<Anchors>
 							<Anchor point="TOPLEFT" x="10" y="-20"/>
 							<Anchor point="RIGHT" x="-95" y="0"/>
@@ -74,8 +77,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Frame>
 
 					<!-- At a glance -->
-					<Frame name="$parent_Glance" inherits="TRP3_FieldSetFrame">
+					<Frame name="$parent_Glance" inherits="TRP3_GroupBoxTemplate">
 						<Size x="0" y="70"/>
+						<KeyValues>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+						</KeyValues>
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="$parent_NamePanel"/>
 							<Anchor point="TOPRIGHT" x="-15" y="0"/>
@@ -106,7 +112,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Frame>
 
 					<!-- Description -->
-					<Frame name="$parent_About" inherits="TRP3_FieldSetFrame">
+					<Frame name="$parent_About" inherits="TRP3_GroupBoxTemplate">
+						<KeyValues>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+						</KeyValues>
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="$parent_Glance"/>
 							<Anchor point="BOTTOM" x="0" y="10"/>
@@ -152,8 +161,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Frames>
 
 					<!-- Names and titles -->
-					<Frame name="$parent_NamePanel" inherits="TRP3_FieldSetFrame">
+					<Frame name="$parent_NamePanel" inherits="TRP3_GroupBoxTemplate">
 						<Size x="0" y="70"/>
+						<KeyValues>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+						</KeyValues>
 						<Anchors>
 							<Anchor point="TOPLEFT" x="10" y="-20"/>
 							<Anchor point="RIGHT" x="-95" y="0"/>
@@ -199,7 +211,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Frame>
 
 					<!-- Description -->
-					<Frame name="$parent_About" inherits="TRP3_FieldSetFrame">
+					<Frame name="$parent_About" inherits="TRP3_GroupBoxTemplate">
+						<KeyValues>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+						</KeyValues>
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="$parent_NamePanel"/>
 							<Anchor point="BOTTOM" x="0" y="10"/>

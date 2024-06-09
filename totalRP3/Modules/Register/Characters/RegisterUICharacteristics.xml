@@ -405,8 +405,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Layers>
 		<Frames>
 			<!-- CONSULT MODE -->
-			<Frame name="TRP3_RegisterCharact_NamePanel" inherits="TRP3_FieldSetFrame">
+			<Frame name="TRP3_RegisterCharact_NamePanel" inherits="TRP3_GroupBoxTemplate">
 				<Size x="0" y="70"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-20"/>
 					<Anchor point="LEFT" x="10" y="0"/>
@@ -447,12 +450,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Layer>
 				</Layers>
 			</Frame>
-			<Frame name="TRP3_RegisterCharact_CharactPanel" inherits="TRP3_FieldSetFrame">
+			<Frame name="TRP3_RegisterCharact_CharactPanel" inherits="TRP3_GroupBoxTemplate">
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+				</KeyValues>
 				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_NamePanel" x="0" y="-20"/>
-					<Anchor point="LEFT" x="10" y="0"/>
-					<Anchor point="RIGHT" x="-10" y="0"/>
-					<Anchor point="BOTTOM" x="0" y="10"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_NamePanel" y="-10"/>
+					<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
@@ -507,8 +511,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Button>
 
 			<!-- EDIT MODE -->
-			<Frame name="TRP3_RegisterCharact_Edit_NamePanel" inherits="TRP3_FieldSetFrame">
+			<Frame name="TRP3_RegisterCharact_Edit_NamePanel" inherits="TRP3_GroupBoxTemplate">
 				<Size x="0" y="70"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-20"/>
 					<Anchor point="LEFT" x="10" y="0"/>
@@ -558,12 +565,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</EditBox>
 				</Frames>
 			</Frame>
-			<Frame name="TRP3_RegisterCharact_Edit_CharactPanel" inherits="TRP3_FieldSetFrame">
+			<Frame name="TRP3_RegisterCharact_Edit_CharactPanel" inherits="TRP3_GroupBoxTemplate">
 				<Size x="0" y="70"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+				</KeyValues>
 				<Anchors>
-					<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_NamePanel"/>
-					<Anchor point="BOTTOM" x="0" y="10"/>
-					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="TOPLEFT" y="-10" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_NamePanel"/>
+					<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
 				</Anchors>
 				<Frames>
 					<ScrollFrame name="TRP3_RegisterCharact_Edit_CharactPanel_Scroll" inherits="UIPanelScrollFrameTemplate">

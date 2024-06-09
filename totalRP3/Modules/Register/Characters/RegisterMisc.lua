@@ -10,7 +10,6 @@ local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
-local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -448,8 +447,8 @@ function TRP3_API.register.inits.miscInit()
 	buildStyleStructure();
 	createTutorialStructure();
 
-	setupFieldSet(TRP3_RegisterMiscViewGlance, loc.REG_PLAYER_GLANCE, 150);
-	setupFieldSet(TRP3_RegisterMiscViewCurrently, loc.REG_PLAYER_STATUS, 150);
+	TRP3_RegisterMiscViewGlance:SetTitleText(loc.REG_PLAYER_GLANCE);
+	TRP3_RegisterMiscViewCurrently:SetTitleText(loc.REG_PLAYER_STATUS);
 	TRP3_AtFirstGlanceEditorApply:SetText(loc.CM_APPLY);
 	TRP3_AtFirstGlanceEditorNameText:SetText(loc.REG_PLAYER_GLANCE_TITLE);
 	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc.REG_PLAYER_STYLE_EMPTY);
@@ -482,7 +481,7 @@ function TRP3_API.register.inits.miscInit()
 	end
 
 	-- RP style
-	setupFieldSet(TRP3_RegisterMiscViewRPStyle, loc.REG_PLAYER_STYLE_RPSTYLE, 150);
+	TRP3_RegisterMiscViewRPStyle:SetTitleText(loc.REG_PLAYER_STYLE_RPSTYLE);
 
 	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 		if getCurrentPageID() == "player_main" and unitID == Globals.player_id and (not dataType or dataType == "misc") then

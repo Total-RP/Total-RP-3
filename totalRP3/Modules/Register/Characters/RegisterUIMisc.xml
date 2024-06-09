@@ -88,8 +88,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 				<Frames>
 					<!-- PEEK -->
-					<Frame name="TRP3_RegisterMiscViewGlance" inherits="TRP3_FieldSetFrame">
+					<Frame name="TRP3_RegisterMiscViewGlance" inherits="TRP3_GroupBoxTemplate">
 						<Size x="0" y="70"/>
+						<KeyValues>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+						</KeyValues>
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="0"/>
 							<Anchor point="TOPRIGHT" x="-3" y="0"/>
@@ -130,8 +133,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Frame>
 
 					<!-- RP Style -->
-					<Frame name="TRP3_RegisterMiscViewRPStyle" inherits="TRP3_FieldSetFrame">
+					<Frame name="TRP3_RegisterMiscViewRPStyle" inherits="TRP3_GroupBoxTemplate">
 						<Size x="0" y="200"/>
+						<KeyValues>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+						</KeyValues>
 						<Anchors>
 							<Anchor point="LEFT" x="0" y="0"/>
 							<Anchor point="RIGHT" x="-3" y="0"/>
@@ -151,8 +157,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Frame>
 
 					<!-- Currently -->
-					<Frame name="TRP3_RegisterMiscViewCurrently" inherits="TRP3_FieldSetFrame">
+					<Frame name="TRP3_RegisterMiscViewCurrently" inherits="TRP3_GroupBoxTemplate">
 						<Size x="0" y="100"/>
+						<KeyValues>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+						</KeyValues>
 						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterMiscViewGlance" x="0" y="-10"/>
 							<Anchor point="LEFT" x="0" y="0"/>

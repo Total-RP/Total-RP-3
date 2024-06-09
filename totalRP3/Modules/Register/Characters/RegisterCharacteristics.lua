@@ -14,7 +14,6 @@ local setupDropDownMenu = TRP3_API.ui.listbox.setupDropDownMenu;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
-local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
 local getRelationTexture = TRP3_API.register.relation.getRelationTexture;
 local RELATIONS = TRP3_API.register.relation;
@@ -1574,10 +1573,10 @@ function TRP3_API.register.inits.characteristicsInit()
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeButton, "RIGHT", 0, 5, loc.REG_PLAYER_EYE, loc.REG_PLAYER_COLOR_TT);
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassButton, "RIGHT", 0, 5, loc.REG_PLAYER_COLOR_CLASS, loc.REG_PLAYER_COLOR_CLASS_TT .. loc.REG_PLAYER_COLOR_TT);
 
-	setupFieldSet(TRP3_RegisterCharact_NamePanel, loc.REG_PLAYER_NAMESTITLES, 150);
-	setupFieldSet(TRP3_RegisterCharact_Edit_NamePanel, loc.REG_PLAYER_NAMESTITLES, 150);
-	setupFieldSet(TRP3_RegisterCharact_CharactPanel, loc.REG_PLAYER_CHARACTERISTICS, 150);
-	setupFieldSet(TRP3_RegisterCharact_Edit_CharactPanel, loc.REG_PLAYER_CHARACTERISTICS, 150);
+	TRP3_RegisterCharact_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
+	TRP3_RegisterCharact_Edit_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
+	TRP3_RegisterCharact_CharactPanel:SetTitleText(loc.REG_PLAYER_CHARACTERISTICS);
+	TRP3_RegisterCharact_Edit_CharactPanel:SetTitleText(loc.REG_PLAYER_CHARACTERISTICS);
 
 	setupEditBoxesNavigation({
 		TRP3_RegisterCharact_Edit_RaceField,

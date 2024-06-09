@@ -1,0 +1,33 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="GroupBox.lua"/>
+
+	<Frame name="TRP3_GroupBoxTemplate" mixin="TRP3_GroupBoxMixin" inherits="TRP3_TooltipBackdropTemplate" virtual="true">
+		<Frames>
+			<Frame parentKey="Header" inherits="TRP3_SolidTooltipBackdropTemplate">
+				<Size x="150" y="24"/>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="Text" inherits="GameFontHighlight" wordwrap="false">
+							<Anchors>
+								<Anchor point="LEFT" x="10"/>
+								<Anchor point="RIGHT" x="-10"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="16" y="10"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad inherit="prepend" function="RaiseFrameLevelByTwo"/>
+				</Scripts>
+			</Frame>
+		</Frames>
+	</Frame>
+</Ui>

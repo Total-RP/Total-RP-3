@@ -21,7 +21,7 @@ local function onStart()
 	local getUnitID, unitIDToInfo, companionIDToInfo = Utils.str.getUnitID, Utils.str.unitIDToInfo, Utils.str.companionIDToInfo;
 	local setTooltipForSameFrame, mainTooltip, refreshTooltip = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_MainTooltip, TRP3_API.ui.tooltip.refresh;
 	local get = TRP3_API.profile.getData;
-	local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
+
 	local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
 	local getCompanionRegisterProfile, getCompanionProfile, companionHasProfile, isCurrentMine;
 	local TRP3_Enums = AddOn_TotalRP3.Enums;
@@ -177,24 +177,22 @@ local function onStart()
 		return profile;
 	end
 
-	local TARGET_NAME_WIDTH = 168;
-
 	local function displayTargetName()
 		if currentTargetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
 			local info = getCharacterInfo(currentTargetID);
 			local name = unitIDToInfo(currentTargetID);
 			if info.characteristics then
-				setupFieldSet(ui_TargetFrame, (info.characteristics.FN or name) .. " " .. (info.characteristics.LN or ""), TARGET_NAME_WIDTH);
+				ui_TargetFrame:SetTitleText((info.characteristics.FN or name) .. " " .. (info.characteristics.LN or ""));
 			else
-				setupFieldSet(ui_TargetFrame, name, TARGET_NAME_WIDTH);
+				ui_TargetFrame:SetTitleText(name);
 			end
 		elseif currentTargetType == TRP3_Enums.UNIT_TYPE.PET or currentTargetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
 			local owner, companionID = companionIDToInfo(currentTargetID);
 			local companionInfo = getCompanionInfo(owner, companionID, currentTargetID);
 			local info = companionInfo and companionInfo.data or EMPTY;
-			setupFieldSet(ui_TargetFrame, info.NA or companionID, TARGET_NAME_WIDTH);
+			ui_TargetFrame:SetTitleText(info.NA or companionID);
 		elseif currentTargetType == TRP3_Enums.UNIT_TYPE.NPC then
-			setupFieldSet(ui_TargetFrame, UnitName("target"), TARGET_NAME_WIDTH);
+			ui_TargetFrame:SetTitleText(UnitName("target"));
 		end
 	end
 
@@ -272,14 +270,14 @@ local function onStart()
 		setConfigValue(CONFIG_TARGET_POS_Y, y);
 	end);
 
-	ui_TargetFrame.caption:ClearAllPoints();
-	ui_TargetFrame.caption:SetPoint("TOP", 0, 15);
-	ui_TargetFrame.caption:EnableMouse(true);
-	ui_TargetFrame.caption:RegisterForDrag("LeftButton");
-	ui_TargetFrame.caption:SetScript("OnDragStart", function(self)
+	ui_TargetFrame.Header:ClearAllPoints();
+	ui_TargetFrame.Header:SetPoint("TOP", 0, 15);
+	ui_TargetFrame.Header:EnableMouse(true);
+	ui_TargetFrame.Header:RegisterForDrag("LeftButton");
+	ui_TargetFrame.Header:SetScript("OnDragStart", function(self)
 		ui_TargetFrame:GetScript("OnDragStart")(ui_TargetFrame);
 	end);
-	ui_TargetFrame.caption:SetScript("OnDragStop", function(self)
+	ui_TargetFrame.Header:SetScript("OnDragStop", function(self)
 		ui_TargetFrame:GetScript("OnDragStop")(ui_TargetFrame);
 	end);
 

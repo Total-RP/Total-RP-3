@@ -30,7 +30,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
 				<Frames>
-					<Frame name="TRP3_RegisterNotesView" inherits="TRP3_FieldSetFrame">
+					<Frame name="TRP3_RegisterNotesViewContainer" inherits="TRP3_GroupBoxTemplate">
+						<KeyValues>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+						</KeyValues>
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="0"/>
 							<Anchor point="BOTTOMRIGHT" x="-3" y="0"/>

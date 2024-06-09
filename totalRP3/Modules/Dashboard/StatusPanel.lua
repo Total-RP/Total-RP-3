@@ -103,7 +103,7 @@ function TRP3_DashboardStatusPanelMixin:OnLoad()
 end
 
 function TRP3_DashboardStatusPanelMixin:OnShow()
-	TRP3_API.ui.frame.setupFieldPanel(self, L.DB_STATUS, 150);
+	self:SetTitleText(L.DB_STATUS);
 	self.RPStatusLabel:SetText(L.DB_STATUS_RP);
 	self.XPStatusLabel:SetText(L.DB_STATUS_XP);
 	self.RPStatusMenu:SetSelectionTranslator(GetRoleplayStatusButtonText);
