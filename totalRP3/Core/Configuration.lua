@@ -236,35 +236,29 @@ local function buildConfigurationPage(structure)
 
 		-- Specific for Sliders
 		if _G[widget:GetName().."Slider"] then
-			local slider = _G[widget:GetName().."Slider"];
-			local text = _G[widget:GetName().."SliderValText"];
-			local min = element.min or 0;
-			local max = element.max or 100;
+			local Label = MinimalSliderWithSteppersMixin.Label;
 
-			slider:SetMinMaxValues(min, max);
-			_G[widget:GetName().."SliderLow"]:SetText(min);
-			_G[widget:GetName().."SliderHigh"]:SetText(max);
-			slider:SetValueStep(element.step);
-			slider:SetObeyStepOnDrag(element.integer);
+			local control = _G[widget:GetName().."Slider"];
+			local minValue = element.min or 0;
+			local maxValue = element.max or 100;
+			local value = tonumber(getValue(element.configKey)) or minValue;
+			local steps = math.floor((maxValue - minValue) / element.step);
+			local formatters = { [Label.Left] = CreateMinimalSliderFormatter(Label.Left) };
 
-			local onChange = function(_, value)
+			control:Init(value, minValue, maxValue, steps, formatters);
+			control.Slider:SetObeyStepOnDrag(element.integer);
+
+			local function OnValueChanged(_, value)  -- luacheck: no redefined
 				if element.integer then
 					value = math.floor(value);
 				end
-				text:SetText(value);
+
 				if element.configKey then
 					setValue(element.configKey, value);
 				end
 			end
-			slider:SetScript("OnValueChanged", onChange);
 
-			if element.configKey then
-				slider:SetValue(tonumber(getValue(element.configKey)) or min);
-			else
-				slider:SetValue(0);
-			end
-
-			onChange(slider, slider:GetValue());
+			control:RegisterCallback("OnValueChanged", OnValueChanged);
 		end
 
 		if element.dependentOnOptions then

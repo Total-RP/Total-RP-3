@@ -136,24 +136,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ConfigSlider" inherits="TRP3_ConfigNote" virtual="true">
 		<Frames>
-			<Slider name="$parentSlider" inherits="OptionsSliderTemplate">
+			<Frame name="$parentSlider" parentKey="Slider" inherits="MinimalSliderWithSteppersTemplate">
 				<Size x="140" y="15"/>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString name="$parentValText" inherits="GameFontNormal" justifyH="CENTER" text="[value]">
-							<Size x="0" y="10"/>
-							<Anchors>
-								<Anchor point="LEFT"/>
-								<Anchor point="RIGHT"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95"/>
-						</FontString>
-					</Layer>
-				</Layers>
 				<Anchors>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 				</Anchors>
-			</Slider>
+			</Frame>
 		</Frames>
 	</Frame>
 
