@@ -506,6 +506,7 @@ stds.wow = {
 		"GetTime",
 		"GetTimePreciseSec",
 		"GetUnitName",
+		"GetValueOrCallFunction",
 		"GetZoneText",
 		"hooksecurefunc",
 		"InCombatLockdown",

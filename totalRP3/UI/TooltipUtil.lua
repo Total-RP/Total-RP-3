@@ -95,6 +95,21 @@ function TRP3_TooltipUtil.SetLineFontOptions(tooltip, line, height, flags)
 	end
 end
 
+function TRP3_TooltipUtil.HideTooltip(owner)
+	local tooltip = TRP3_MainTooltip;
+
+	if tooltip:IsOwned(owner) then
+		tooltip:Hide();
+	end
+end
+
+function TRP3_TooltipUtil.ShowTooltip(owner, initializer, ...)
+	local tooltip = TRP3_MainTooltip;
+	tooltip:SetOwner(owner, "ANCHOR_RIGHT");
+	initializer(tooltip, ...);
+	tooltip:Show();
+end
+
 ---@class TRP3_TooltipUtil.LineOptions
 ---@field color ColorMixin? The color to apply to the line.
 ---@field wrap boolean? If true, automatically wrap text on the line.
