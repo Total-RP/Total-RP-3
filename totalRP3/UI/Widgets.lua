@@ -21,6 +21,7 @@ TRP3_BACKDROP_TOOLTIP_EDGE_16 = {
 	edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
 	tileEdge = true,
 	edgeSize = 16,
+	insets   = { left = 4, right = 4, top = 4, bottom = 4 },
 };
 
 TRP3_BACKDROP_BANK_TOOLTIP = {
