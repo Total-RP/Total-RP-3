@@ -11,6 +11,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="FocusRegion.xml"/>
 	<Include file="StyledButton.xml"/>
 	<Include file="GroupBox.xml"/>
+	<Include file="TabSystem.xml"/>
 	<Include file="FontUtil.lua"/>
 	<Include file="TooltipUtil.lua"/>
 	<Include file="Widgets.lua"/>
@@ -351,62 +352,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</PostClick>
 		</Scripts>
 	</CheckButton>
-
-	<!-- Tab bar tab button -->
-	<Button name="TRP3_TabBar_Tab" virtual="true">
-		<Size x="10" y="32"/>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture name="$parentLeft" file="Interface\CHATFRAME\ChatFrameTabUnsel-BGLeft">
-					<Size x="25" y="32"/>
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="0" y="0"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="0.3" bottom="1"/>
-				</Texture>
-				<Texture name="$parentRight" file="Interface\CHATFRAME\ChatFrameTabUnsel-BGRight">
-					<Size x="25" y="32"/>
-					<Anchors>
-						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="0.3" bottom="1"/>
-				</Texture>
-				<Texture name="$parentMiddle" file="Interface\CHATFRAME\ChatFrameTabUnsel-BGMid">
-					<Anchors>
-						<Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="TOPRIGHT"/>
-						<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight" relativePoint="BOTTOMLEFT"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="0.3" bottom="1"/>
-				</Texture>
-			</Layer>
-		</Layers>
-		<ButtonText name="$parentText">
-			<Size x="0" y="32"/>
-			<Anchors>
-				<Anchor point="CENTER">
-					<Offset x="0" y="-2"/>
-				</Anchor>
-			</Anchors>
-		</ButtonText>
-		<NormalFont style="GameFontHighlightSmall"/>
-		<HighlightFont style="GameFontHighlightSmall"/>
-		<DisabledFont style="GameFontHighlight"/>
-		<HighlightTexture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight-yellow" alphaMode="ADD">
-			<Anchors>
-				<Anchor point="TOPLEFT">
-					<Offset x="5" y="-2"/>
-				</Anchor>
-				<Anchor point="BOTTOMRIGHT">
-					<Offset x="-5" y="-2"/>
-				</Anchor>
-			</Anchors>
-		</HighlightTexture>
-		<Scripts>
-			<PostClick>
-				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
-			</PostClick>
-		</Scripts>
-	</Button>
 
 	<Frame name="TRP3_TextAreaBase" mixin="TRP3_TextAreaBaseMixin" virtual="true" enableMouse="true">
 		<Frames>
