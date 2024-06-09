@@ -6,9 +6,9 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Register Notes panel -->
-	<Frame name="TRP3_RegisterNotesTemplate" virtual="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_RegisterNotesTemplate" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Layers>
 			<Layer level="BACKGROUND">

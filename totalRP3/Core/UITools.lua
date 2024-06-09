@@ -92,7 +92,9 @@ function TRP3_API.ui.frame.setBackdropToBackground(frame, index)
 	backdropInfo.tile = backgroundInfo.tile;
 	backdropInfo.tileSize = backgroundInfo.tileSize;
 
+	local borderColor = TRP3_API.CreateColor(frame:GetBackdropBorderColor());
 	frame:SetBackdrop(backdropInfo);
+	frame:SetBackdropBorderColor(borderColor:GetRGBA());
 end
 
 function TRP3_API.ui.frame.getTiledBackgroundList()

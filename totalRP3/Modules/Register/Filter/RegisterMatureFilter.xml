@@ -4,10 +4,9 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	<Frame name="TRP3_MatureFilterPopup" hidden="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_MatureFilterPopup" hidden="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_415_16_3333" type="global"/>
-			<KeyValue key="backdropColor" value="TRP3_BACKDROP_COLOR_DARK" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_LIGHT_GREY" type="global"/>
 		</KeyValues>
 		<Size x="420" y="400"/>
 		<Anchors>
@@ -85,10 +84,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 
 	<!-- Mature dictionary browser line  -->
-	<Button name="TRP3_MatureDictionaryLine" virtual="true" inherits="BackdropTemplate">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_3333" type="global"/>
-		</KeyValues>
+	<Button name="TRP3_MatureDictionaryLine" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
 		<Size x="0" y="28"/>
 		<Anchors>
 			<Anchor point="LEFT" x="8" y="0"/>
@@ -137,9 +133,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Button>
 
 	<!-- Mature dictionary editor  -->
-	<Frame name="TRP3_MatureDictionaryEditor" hidden="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_MatureDictionaryEditor" hidden="true" inherits="TRP3_BrowserDialogBackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_16_3333" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_LIGHT_GREY" type="global"/>
 		</KeyValues>
 		<Size x="420" y="410"/>
 		<Anchors>
@@ -170,9 +166,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Slider parentKey="slider" inherits="TRP3_Scrollbar" />
 				</Frames>
 			</Frame>
-			<Frame parentKey="addNewWord" inherits="BackdropTemplate">
+			<Frame parentKey="addNewWord" inherits="TRP3_TooltipBackdropTemplate">
 				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_0_16_3333" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_LIGHT_GREY" type="global"/>
 				</KeyValues>
 				<Size x="0" y="60"/>
 				<Anchors>

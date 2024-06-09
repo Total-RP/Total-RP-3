@@ -1,0 +1,44 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="Backdrop.lua"/>
+
+	<Frame name="TRP3_TooltipBackdropTemplate" inherits="BackdropTemplate" virtual="true">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_TOOLTIP" type="global"/>
+		</KeyValues>
+	</Frame>
+
+	<Frame name="TRP3_TooltipBackdropEdgeTemplate" inherits="BackdropTemplate" virtual="true">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_EDGE_16" type="global"/>
+		</KeyValues>
+	</Frame>
+
+	<Frame name="TRP3_DialogBackdropTemplate" inherits="BackdropTemplate" virtual="true">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="BACKDROP_DIALOG_32_32" type="global"/>
+		</KeyValues>
+	</Frame>
+
+	<Frame name="TRP3_ThinDialogBackdropTemplate" inherits="BackdropTemplate" virtual="true">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_16_16" type="global"/>
+		</KeyValues>
+	</Frame>
+
+	<Frame name="TRP3_BrowserDialogBackdropTemplate" inherits="BackdropTemplate" virtual="true">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_ACHIEVEMENT_TOOLTIP" type="global"/>
+		</KeyValues>
+	</Frame>
+
+	<Frame name="TRP3_SolidTooltipBackdropTemplate" inherits="BackdropTemplate" virtual="true">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_COLLECTIONS_TOOLTIP" type="global"/>
+		</KeyValues>
+	</Frame>
+</Ui>

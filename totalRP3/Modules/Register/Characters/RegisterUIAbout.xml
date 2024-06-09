@@ -6,11 +6,11 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Toolbar -->
-	<Frame name="TRP3_TextToolbar" virtual="true" inherits="BackdropTemplate">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_24_5555" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_TextToolbar" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
 		<Size x="0" y="30"/>
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+		</KeyValues>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="title" inherits="GameFontNormal" justifyH="CENTER" text="[formatting_tool]">
@@ -25,7 +25,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Button parentKey="h1" inherits="TRP3_CommonButton" text="H1">
 				<Size x="50" y="20"/>
 				<Anchors>
-					<Anchor point="LEFT" x="10" y="2"/>
+					<Anchor point="LEFT" x="10"/>
 				</Anchors>
 			</Button>
 			<Button parentKey="h2" inherits="TRP3_CommonButton" text="H2">
@@ -74,9 +74,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_RegisterAbout_Edit_Template3Frame" virtual="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_RegisterAbout_Edit_Template3Frame" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_400_24_5555" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Size x="0" y="105"/>
 		<Frames>
@@ -121,9 +121,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<!-- Register about template 2 frame -->
-	<Frame name="TRP3_RegisterAbout_Template2_Frame" virtual="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_RegisterAbout_Template2_Frame" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_400_24_5555" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Frames>
 			<Frame name="$parentIcon" inherits="TRP3_SimpleIcon">
@@ -137,11 +137,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<!-- Register about template 2 edit frame -->
-	<Frame name="TRP3_RegisterAbout_Template2_Edit" virtual="true" inherits="BackdropTemplate">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_400_24_5555" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_RegisterAbout_Template2_Edit" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
 		<Size x="0" y="120"/>
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+		</KeyValues>
 		<Frames>
 			<Button name="$parentIcon" inherits="TRP3_IconButton">
 				<Anchors>
@@ -198,9 +198,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<!-- Register characteristics panel -->
-	<Frame name="TRP3_RegisterAboutTemplate" virtual="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_RegisterAboutTemplate" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24_5555" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Frames>
 			<Frame name="TRP3_RegisterAbout_AboutPanel_Edit" setAllPoints="true">
@@ -279,9 +279,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							</Frame>
 						</Frames>
 					</Frame>
-					<Frame name="TRP3_RegisterAbout_Edit_Template2" inherits="BackdropTemplate">
+					<Frame name="TRP3_RegisterAbout_Edit_Template2" inherits="TRP3_TooltipBackdropTemplate">
 						<KeyValues>
-							<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_24_5555" type="global"/>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 						</KeyValues>
 						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Toolbar" x="0" y="-5"/>
@@ -398,9 +398,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 											<Anchor point="RIGHT" x="0" y="0"/>
 										</Anchors>
 										<Frames>
-											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_1" inherits="BackdropTemplate">
+											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_1" inherits="TRP3_SolidTooltipBackdropTemplate">
 												<KeyValues>
-													<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_BANK_TOOLTIP_400_24_5555" type="global"/>
+													<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 												</KeyValues>
 												<Anchors>
 													<Anchor point="TOPLEFT" x="0" y="-5"/>
@@ -428,9 +428,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 													</SimpleHTML>
 												</Frames>
 											</Frame>
-											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_2" inherits="BackdropTemplate">
+											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_2" inherits="TRP3_SolidTooltipBackdropTemplate">
 												<KeyValues>
-													<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_BANK_TOOLTIP_400_24_5555" type="global"/>
+													<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 												</KeyValues>
 												<Anchors>
 													<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_1"/>
@@ -458,9 +458,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 													</SimpleHTML>
 												</Frames>
 											</Frame>
-											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_3" inherits="BackdropTemplate">
+											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_3" inherits="TRP3_SolidTooltipBackdropTemplate">
 												<KeyValues>
-													<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_BANK_TOOLTIP_400_24_5555" type="global"/>
+													<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 												</KeyValues>
 												<Anchors>
 													<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_2"/>
@@ -501,11 +501,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								</Anchors>
 							</Button>
 							<!-- Music player -->
-							<Frame name="TRP3_RegisterAbout_AboutPanel_MusicPlayer" inherits="BackdropTemplate">
-								<KeyValues>
-									<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_MARBLE_TOOLTIP_415_24_5555" type="global"/>
-								</KeyValues>
+							<Frame name="TRP3_RegisterAbout_AboutPanel_MusicPlayer" inherits="TRP3_TooltipBackdropTemplate">
 								<Size x="200" y="65"/>
+								<KeyValues>
+									<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+								</KeyValues>
 								<Anchors>
 									<Anchor point="BOTTOM" x="0" y="5"/>
 								</Anchors>

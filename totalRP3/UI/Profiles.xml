@@ -6,22 +6,19 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Profile manager : Line -->
-	<Frame name="TRP3_ProfileManagerLine" virtual="true" inherits="BackdropTemplate">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_16_5353" type="global"/>
-		</KeyValues>
-		<Size x="0" y="65" />
+	<Frame name="TRP3_ProfileManagerLine" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
+		<Size x="0" y="65"/>
 		<Frames>
 			<Frame name="$parentIcon" inherits="TRP3_SimpleIcon">
-				<Size x="40" y="40" />
+				<Size x="40" y="40"/>
 				<Anchors>
-					<Anchor point="LEFT" x="15" y="0" />
+					<Anchor point="LEFT" x="15" y="0"/>
 				</Anchors>
 			</Frame>
 			<Button name="$parentBound" inherits="UIPanelButtonTemplate" hidden="true">
-				<Size x="95" y="25" />
+				<Size x="95" y="25"/>
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-8" y="-8" />
+					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
 				</Anchors>
 				<Scripts>
 					<PostClick>
@@ -31,12 +28,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Button>
 			<Button name="$parentAction" inherits="TRP3_ActionButton">
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="-4" y="4" />
+					<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
 				</Anchors>
 			</Button>
 			<Button name="$parentInfo" inherits="TRP3_HelpButton">
 				<Anchors>
-					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="5" y="2" />
+					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="5" y="2"/>
 				</Anchors>
 			</Button>
 			<Frame name="$parentHighlight" inherits="GlowBorderTemplate" hidden="true">
@@ -65,31 +62,31 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Layer level="BORDER">
 				<FontString name="$parentCurrent" inherits="GameFontNormalSmall" justifyH="RIGHT" text="[current_profile]" hidden="true">
 					<Anchors>
-						<Anchor point="TOPRIGHT" x="-10" y="-10" />
+						<Anchor point="TOPRIGHT" x="-10" y="-10"/>
 					</Anchors>
-					<Color r="0.0" g="0.95" b="0.0" />
+					<Color r="0.0" g="0.95" b="0.0"/>
 				</FontString>
 				<FontString name="$parentName" inherits="GameFontNormalLarge" justifyH="LEFT" text="[PROFILE_NAME]">
-					<Size x="0" y="20" />
+					<Size x="0" y="20"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentIcon" x="5" y="0" />
-						<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentBound" x="-5" y="0" />
+						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentIcon" x="5" y="0"/>
+						<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentBound" x="-5" y="0"/>
 					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95" />
+					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
 				<FontString name="$parentCount" inherits="GameFontNormalSmall" justifyH="LEFT" text="[PROFILE_COUNT]">
-					<Size x="0" y="10" />
+					<Size x="0" y="10"/>
 					<Anchors>
-						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="25" y="5" />
-						<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentAction" x="-5" y="0" />
+						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="25" y="5"/>
+						<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentAction" x="-5" y="0"/>
 					</Anchors>
-					<Color r="0.95" g="0.75" b="0.10" />
+					<Color r="0.95" g="0.75" b="0.10"/>
 				</FontString>
 			</Layer>
 			<Layer level="OVERLAY">
 				<Texture alphaMode="ADD" alpha="0" name="$parentHighlight" file="Interface/ACHIEVEMENTFRAME/UI-Achievement-Alert-Glow">
 					<Size x="150" y="60"/>
-					<TexCoords left="0.8" right="1" top="0.1" bottom="0.22" />
+					<TexCoords left="0.8" right="1" top="0.1" bottom="0.22"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" x="-20" y="-2"/>
 					</Anchors>
@@ -114,13 +111,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Profile manager -->
 	<Frame name="TRP3_ProfileManagerTemplate" hidden="true" virtual="true">
 		<Frames>
-			<Frame frameLevel="2" parentKey="list" inherits="BackdropTemplate">
+			<Frame frameLevel="2" parentKey="list" inherits="TRP3_TooltipBackdropEdgeTemplate">
 				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="2" y="-28" />
-					<Anchor point="BOTTOMLEFT" x="2" y="0" />
+					<Anchor point="TOPLEFT" y="-30"/>
+					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 				<Layers>
 					<Layer level="BACKGROUND">
@@ -130,83 +127,83 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								<Anchor point="BOTTOMRIGHT" x="-5" y="-2"/>
 								<Anchor point="LEFT" x="5" y="0"/>
 							</Anchors>
-							<TexCoords left="0.07" right="1" top="0" bottom="0.975" />
+							<TexCoords left="0.07" right="1" top="0" bottom="0.975"/>
 						</Texture>
 					</Layer>
 				</Layers>
 				<Frames>
 					<Frame name="$parentList" inherits="TRP3_InnerFrame">
-						<Size x="0" y="350" />
+						<Size x="0" y="350"/>
 						<Anchors>
-							<Anchor point="LEFT" x="33" y="0" />
-							<Anchor point="RIGHT" x="-20" y="0" />
+							<Anchor point="LEFT" x="33" y="0"/>
+							<Anchor point="RIGHT" x="-20" y="0"/>
 						</Anchors>
 						<Layers>
 							<Layer level="OVERLAY">
 								<FontString name="$parentEmpty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]" hidden="true">
-									<Size x="0" y="10" />
+									<Size x="0" y="10"/>
 									<Anchors>
-										<Anchor point="CENTER" x="0" y="0" />
+										<Anchor point="CENTER" x="0" y="0"/>
 									</Anchors>
-									<Color r="0.95" g="0.95" b="0.95" />
+									<Color r="0.95" g="0.95" b="0.95"/>
 								</FontString>
 							</Layer>
 						</Layers>
 						<Frames>
 							<Frame name="$parentLine1" inherits="TRP3_ProfileManagerLine">
 								<Anchors>
-									<Anchor point="TOP" x="0" y="-12" />
-									<Anchor point="LEFT" x="8" y="0" />
-									<Anchor point="RIGHT" x="-22" y="0" />
+									<Anchor point="TOP" x="0" y="-12"/>
+									<Anchor point="LEFT" x="8" y="0"/>
+									<Anchor point="RIGHT" x="-22" y="0"/>
 								</Anchors>
 							</Frame>
 							<Frame name="$parentLine2" inherits="TRP3_ProfileManagerLine">
 								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine1" x="0" y="-1" />
-									<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1" />
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine1" x="0" y="-1"/>
+									<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1"/>
 									<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentLine1"/>
 								</Anchors>
 							</Frame>
 							<Frame name="$parentLine3" inherits="TRP3_ProfileManagerLine">
 								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine2" x="0" y="-1" />
-									<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1" />
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine2" x="0" y="-1"/>
+									<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1"/>
 									<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentLine1"/>
 								</Anchors>
 							</Frame>
 							<Frame name="$parentLine4" inherits="TRP3_ProfileManagerLine">
 								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine3" x="0" y="-1" />
-									<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1" />
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine3" x="0" y="-1"/>
+									<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1"/>
 									<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentLine1"/>
 								</Anchors>
 							</Frame>
 							<Frame name="$parentLine5" inherits="TRP3_ProfileManagerLine">
 								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine4" x="0" y="-1" />
-									<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1" />
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine4" x="0" y="-1"/>
+									<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1"/>
 									<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentLine1"/>
 								</Anchors>
 							</Frame>
-							<Slider name="$parentSlider" parentKey="slider" inherits="TRP3_Scrollbar" />
+							<Slider name="$parentSlider" parentKey="slider" inherits="TRP3_Scrollbar"/>
 						</Frames>
 					</Frame>
 					<Button name="$parentAdd" inherits="UIPanelButtonTemplate">
-						<Size x="150" y="20" />
+						<Size x="150" y="20"/>
 						<Anchors>
-							<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="$parentList" x="0" y="5" />
+							<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="$parentList" x="0" y="5"/>
 						</Anchors>
 					</Button>
 					<Button name="$parentInfo" inherits="TRP3_HelpButton" hidden="true">
-						<Size x="15" y="15" />
+						<Size x="15" y="15"/>
 						<Anchors>
-							<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" relativeTo="$parentList" x="3" y="8" />
+							<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" relativeTo="$parentList" x="3" y="8"/>
 						</Anchors>
 					</Button>
 					<EditBox name="$parentSearch" inherits="TRP3_TitledEditBox">
-						<Size x="125" y="18" />
+						<Size x="125" y="18"/>
 						<Anchors>
-							<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeTo="$parentList" x="10" y="5" />
+							<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeTo="$parentList" x="10" y="5"/>
 						</Anchors>
 					</EditBox>
 				</Frames>
@@ -214,7 +211,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_ProfileManager" inherits="TRP3_ProfileManagerTemplate" hidden="true" />
+	<Frame name="TRP3_ProfileManager" inherits="TRP3_ProfileManagerTemplate" hidden="true"/>
 
 	<Frame name="TRP3_ProfileExport" parentKey="export" parent="TRP3_ProfileManager" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
 		<Size x="400" y="300"/>
@@ -232,15 +229,15 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<Anchor point="RIGHT" x="-10" y="0"/>
 						<Anchor point="LEFT" x="10" y="0"/>
 					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95" />
+					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
 				<FontString parentKey="warning" inherits="GameFontNormalSmall" justifyH="LEFT">
 					<Anchors>
-						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" />
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title"/>
 						<Anchor point="RIGHT" x="-30" y="0"/>
 						<Anchor point="LEFT" x="30" y="0"/>
 					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95" />
+					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
 			</Layer>
 		</Layers>
@@ -299,7 +296,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<Anchor point="RIGHT" x="-10" y="0"/>
 						<Anchor point="LEFT" x="10" y="0"/>
 					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95" />
+					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
 			</Layer>
 		</Layers>

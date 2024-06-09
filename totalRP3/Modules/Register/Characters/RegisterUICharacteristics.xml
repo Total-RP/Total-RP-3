@@ -92,48 +92,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Layers>
 	</Frame>
 
-	<!-- Register characteristics psycho line jauge -->
-	<Frame name="TRP3_RegisterCharact_PsychoInfoLineJauge" virtual="true" inherits="BackdropTemplate">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_PARCHMENT_TOOLTIP_415_16_5555" type="global"/>
-		</KeyValues>
-		<Size x="105" y="20"/>
-		<Layers>
-			<Layer level="OVERLAY">
-				<Texture name="$parentDot1" file="Interface\Minimap\OBJECTICONS">
-					<Size x="20" y="20"/>
-					<Anchors><Anchor point="LEFT" x="5" y="0"/></Anchors>
-					<TexCoords left="0" right="0.125" top="0" bottom="0.125"/>
-				</Texture>
-				<Texture name="$parentDot2" file="Interface\Minimap\OBJECTICONS">
-					<Size x="20" y="20"/>
-					<Anchors><Anchor point="LEFT" x="-5" y="0" relativePoint="RIGHT" relativeTo="$parentDot1"/></Anchors>
-					<TexCoords left="0" right="0.125" top="0" bottom="0.125"/>
-				</Texture>
-				<Texture name="$parentDot3" file="Interface\Minimap\OBJECTICONS">
-					<Size x="20" y="20"/>
-					<Anchors><Anchor point="LEFT" x="-5" y="0" relativePoint="RIGHT" relativeTo="$parentDot2"/></Anchors>
-					<TexCoords left="0" right="0.125" top="0" bottom="0.125"/>
-				</Texture>
-				<Texture name="$parentDot4" file="Interface\Minimap\OBJECTICONS">
-					<Size x="20" y="20"/>
-					<Anchors><Anchor point="LEFT" x="-5" y="0" relativePoint="RIGHT" relativeTo="$parentDot3"/></Anchors>
-					<TexCoords left="0" right="0.125" top="0" bottom="0.125"/>
-				</Texture>
-				<Texture name="$parentDot5" file="Interface\Minimap\OBJECTICONS">
-					<Size x="20" y="20"/>
-					<Anchors><Anchor point="LEFT" x="-5" y="0" relativePoint="RIGHT" relativeTo="$parentDot4"/></Anchors>
-					<TexCoords left="0" right="0.125" top="0" bottom="0.125"/>
-				</Texture>
-				<Texture name="$parentDot6" file="Interface\Minimap\OBJECTICONS">
-					<Size x="20" y="20"/>
-					<Anchors><Anchor point="LEFT" x="-5" y="0" relativePoint="RIGHT" relativeTo="$parentDot5"/></Anchors>
-					<TexCoords left="0" right="0.125" top="0" bottom="0.125"/>
-				</Texture>
-			</Layer>
-		</Layers>
-	</Frame>
-
 	<StatusBar name="TRP3_RegisterCharact_PsychoInfoLineBar" virtual="true">
 		<Size x="105" y="14"/>
 		<Anchors>
@@ -429,9 +387,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<!-- Register characteristics panel -->
-	<Frame name="TRP3_RegisterCharactTemplate" virtual="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_RegisterCharactTemplate" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Layers>
 			<Layer level="BACKGROUND">

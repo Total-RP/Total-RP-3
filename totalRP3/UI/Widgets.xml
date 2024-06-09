@@ -5,6 +5,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
+	<Include file="Backdrop.xml"/>
 	<Include file="LocalizedText.xml"/>
 	<Include file="ScrollingEditBox.xml"/>
 	<Include file="FocusRegion.xml"/>
@@ -226,15 +227,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Slider>
 
 	<!-- A bordered frame with a title -->
-	<Frame name="TRP3_FieldSetFrame" virtual="true" inherits="BackdropTemplate">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_380_16_3333" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_FieldSetFrame" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
 		<Frames>
-			<Frame name="$parentCaptionPanel" parentKey="caption" inherits="BackdropTemplate">
-				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_BANK_TOOLTIP_100_16_4222" type="global"/>
-				</KeyValues>
+			<Frame name="$parentCaptionPanel" parentKey="caption" inherits="TRP3_SolidTooltipBackdropTemplate">
 				<Size x="150" y="23"/>
 				<Layers>
 					<Layer level="OVERLAY">
@@ -661,9 +656,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<!-- More classic style hovered frame -->
-	<Frame name="TRP3_AltHoveredFrame" virtual="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_AltHoveredFrame" virtual="true" inherits="TRP3_DialogBackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_GOLD_DIALOG_0_26" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Size x="220" y="100"/>
 		<Layers>

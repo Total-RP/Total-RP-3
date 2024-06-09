@@ -5,9 +5,9 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Register characteristics panel -->
-	<Frame name="TRP3_CompanionsPageInformationTemplate" virtual="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_CompanionsPageInformationTemplate" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24_5555" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -245,8 +245,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Frames>
 			<Frame name="TRP3_CompanionsPageInformation" inherits="TRP3_CompanionsPageInformationTemplate" frameLevel="2">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="2" y="-28" />
-					<Anchor point="BOTTOMLEFT" x="2" y="0" />
+					<Anchor point="TOPLEFT" y="-30"/>
+					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 			</Frame>
 		</Frames>
