@@ -113,7 +113,14 @@ function TRP3_DropdownButtonMixin:OnMouseDown()
 	self.Button:SetButtonState(self:IsEnabled() and "PUSHED" or "DISABLED");
 	-- This should just be OpenMenu, however Classic lacks the global mouse
 	-- handler and so menus don't close automatically on clicks elsewhere.
-	self:ToggleMenu();
+
+	if self:IsMenuOpen() then
+		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF);
+		self:CloseMenu();
+	else
+		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+		self:OpenMenu();
+	end
 end
 
 function TRP3_DropdownButtonMixin:OnMouseUp()
