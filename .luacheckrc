@@ -655,6 +655,7 @@ stds.wow = {
 		"ChatTypeInfo",
 		"FontableFrameMixin",
 		"GameFontDisableSmall",
+		"GameFontHighlight",
 		"GameFontHighlightSmall",
 		"GameFontNormal",
 		"GameFontNormalHuge",

@@ -91,7 +91,7 @@ local function rebuildMenu()
 			if uiButton == nil then -- Create the button
 				uiButton = CreateFrame("Button", "TRP3_MainFrameMenuButton"..index, TRP3_MainFrameMenuContainer, "TRP3_CategoryButton");
 				uiButton:SetScript("OnClick", onMenuClick);
-				_G[uiButton:GetName().."Close"]:SetScript("OnClick", onMenuClosed);
+				uiButton.Close:SetScript("OnClick", onMenuClosed);
 				tinsert(uiMenuWidgets, uiButton);
 			end
 			uiButton:Enable();
@@ -103,13 +103,13 @@ local function rebuildMenu()
 			end
 			uiButton:ClearAllPoints();
 
-			local label = _G[uiButton:GetName().."Label"];
-			local close = _G[uiButton:GetName().."Close"];
+			local label = uiButton.Label;
+			local close = uiButton.Close;
 			close:Hide();
 			if menuStructure.isChildOf then
 				uiButton:SetPoint("LEFT", 30, y);
 				uiButton:SetPoint("RIGHT", -15, y);
-				label:SetTextColor(HIGHLIGHT_FONT_COLOR:GetRGB());
+				label:SetFontObject(GameFontHighlight);
 				label:SetJustifyH(menuStructure.align or "RIGHT");
 				if isCloseable(id) then
 					closeableChildCount = closeableChildCount + 1;
@@ -118,12 +118,12 @@ local function rebuildMenu()
 			else
 				uiButton:SetPoint("LEFT", 0, y);
 				uiButton:SetPoint("RIGHT", -15, y);
-				label:SetTextColor(NORMAL_FONT_COLOR:GetRGB());
+				label:SetFontObject(GameFontNormal);
 				label:SetJustifyH(menuStructure.align or "LEFT");
 			end
 			label:SetText(menuStructure.text);
 
-			local icon = _G[uiButton:GetName().."Icon"];
+			local icon = uiButton.Icon;
 			icon:Hide();
 			if menuStructure.icon then
 				icon:Show();
