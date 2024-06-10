@@ -109,7 +109,7 @@ local function rebuildMenu()
 			if menuStructure.isChildOf then
 				uiButton:SetPoint("LEFT", 30, y);
 				uiButton:SetPoint("RIGHT", -15, y);
-				label:SetTextColor(1, 1, 1);
+				label:SetTextColor(HIGHLIGHT_FONT_COLOR:GetRGB());
 				label:SetJustifyH(menuStructure.align or "RIGHT");
 				if isCloseable(id) then
 					closeableChildCount = closeableChildCount + 1;
@@ -118,7 +118,7 @@ local function rebuildMenu()
 			else
 				uiButton:SetPoint("LEFT", 0, y);
 				uiButton:SetPoint("RIGHT", -15, y);
-				label:SetTextColor(1, 0.75, 0);
+				label:SetTextColor(NORMAL_FONT_COLOR:GetRGB());
 				label:SetJustifyH(menuStructure.align or "LEFT");
 			end
 			label:SetText(menuStructure.text);
