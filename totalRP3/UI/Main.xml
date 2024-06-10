@@ -260,6 +260,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<Anchor point="TOPLEFT" x="16" y="-16"/>
 						<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
 					</Anchors>
+					<Color r="0.6" g="0.6" b="0.6"/>
 				</Texture>
 			</Layer>
 			<Layer level="ARTWORK">
