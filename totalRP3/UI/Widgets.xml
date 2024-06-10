@@ -158,7 +158,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Button>
 
 	<!-- Category button -->
-	<Button name="TRP3_CategoryButton" virtual="true">
+	<Button name="TRP3_CategoryButton" mixin="TRP3_CategoryButtonMixin" motionScriptsWhileDisabled="true" virtual="true">
 		<Size x="158" y="24"/>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -177,19 +177,26 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Texture parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark" hidden="true">
 					<Size x="16" y="16"/>
 					<Anchors>
-						<Anchor point="LEFT" x="9" y="-2"/>
+						<Anchor point="LEFT" x="10" y="-2"/>
 					</Anchors>
 				</Texture>
 			</Layer>
-			<Layer level="ARTWORK">
-				<FontString parentKey="Label" inherits="GameFontNormal" wordwrap="false" justifyH="CENTER">
-					<Anchors>
-						<Anchor point="TOPLEFT" x="16" y="-6"/>
-						<Anchor point="BOTTOMRIGHT" x="-16" y="2"/>
-					</Anchors>
-				</FontString>
-			</Layer>
 		</Layers>
+		<Frames>
+			<Button parentKey="CloseButton" inherits="TRP3_CloseButton">
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" x="5" y="-2"/>
+				</Anchors>
+			</Button>
+		</Frames>
+		<ButtonText parentKey="Text" wordwrap="false" justifyH="CENTER">
+			<Anchors>
+				<Anchor point="TOPLEFT" x="24" y="-6"/>
+				<Anchor point="BOTTOMRIGHT" x="-16" y="2"/>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="GameFontNormal"/>
+		<DisabledFont style="GameFontNormal"/>
 		<HighlightTexture file="Interface\AchievementFrame\UI-Achievement-Category-Highlight" alphaMode="ADD">
 			<Anchors>
 				<Anchor point="TOPLEFT"/>
@@ -199,13 +206,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<TextureSliceMargins left="16" top="16" bottom="16" right="16"/>
 			<TextureSliceMode mode="Stretched"/>
 		</HighlightTexture>
-		<Frames>
-			<Button parentKey="Close" inherits="TRP3_CloseButton">
-				<Anchors>
-					<Anchor point="RIGHT" relativePoint="LEFT" x="5" y="-2"/>
-				</Anchors>
-			</Button>
-		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
 	</Button>
 
 	<!-- A bordered icon -->

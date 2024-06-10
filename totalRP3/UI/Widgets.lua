@@ -130,3 +130,49 @@ end
 function TRP3_TextAreaBaseEditBoxMixin:GetScrollFrame()
 	return self:GetParent();
 end
+
+TRP3_CategoryButtonMixin = {};
+
+function TRP3_CategoryButtonMixin:OnLoad()
+end
+
+function TRP3_CategoryButtonMixin:OnEnter()
+	if self.Text:IsTruncated() then
+		local function Initializer(tooltip)
+			GameTooltip_SetTitle(tooltip, self:GetText());
+		end
+
+		TRP3_TooltipUtil.ShowTooltip(self, Initializer);
+	end
+end
+
+function TRP3_CategoryButtonMixin:OnLeave()
+	TRP3_TooltipUtil.HideTooltip(self);
+end
+
+function TRP3_CategoryButtonMixin:SetCloseCallback(callback)
+	self.CloseButton:SetScript("OnClick", function() callback(); end);
+	self.CloseButton:SetShown(callback ~= nil);
+end
+
+function TRP3_CategoryButtonMixin:SetJustifyH(justifyH)
+	self.Text:SetJustifyH(justifyH);
+end
+
+function TRP3_CategoryButtonMixin:SetIcon(icon)
+	self.Icon:SetShown(icon ~= nil);
+
+	if icon then
+		if C_Texture.GetAtlasInfo(icon) then
+			local useAtlasSize = false;
+			self.Icon:SetAtlas(icon, useAtlasSize);
+		else
+			self.Icon:SetTexture(icon);
+		end
+	end
+end
+
+function TRP3_CategoryButtonMixin:SetSelected(selected)
+	self:SetEnabled(not selected);
+	self:SetHighlightLocked(selected);
+end
