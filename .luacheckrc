@@ -461,6 +461,7 @@ stds.wow = {
 		"DisableAddOn",
 		"DoesTemplateExist",
 		"EventRegistry",
+		"ExecuteFrameScript",
 		"fastrandom",
 		"FCF_GetCurrentChatFrame",
 		"FindInTableIf",

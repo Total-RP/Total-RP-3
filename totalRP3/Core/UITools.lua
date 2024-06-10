@@ -767,7 +767,7 @@ end
 local function tabBar_selectTab(tabGroup, index)
 	assert(tabGroup.tabs[index], "Tab index out of bound.");
 	assert(tabGroup.tabs[index]:IsShown(), "Try to select a hidden tab.");
-	tabGroup.tabs[index]:Click();
+	ExecuteFrameScript(tabGroup.tabs[index], "OnClick");
 end
 
 function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback, confirmCallback)
