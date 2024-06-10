@@ -34,7 +34,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_LauncherClickBindingElementTemplate" mixin="TRP3_LauncherClickBindingElementMixin" inherits="TRP3_ConfigNote" virtual="true">
 		<Frames>
-			<Button parentKey="Button" inherits="TRP3_LauncherClickBindingButtonTemplate">
+			<Button parentKey="BindingButton" inherits="TRP3_LauncherClickBindingButtonTemplate">
 				<Anchors>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 				</Anchors>
