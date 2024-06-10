@@ -130,6 +130,12 @@ TRP3_API.module.registerModule({
 				end
 			end
 
+			-- Override default tooltip anchoring behavior to use ElvUI anchors
+			local function setElvUITooltipDefaultAnchor(tooltip, parent)
+				TT:GameTooltip_SetDefaultAnchor(tooltip, parent);
+			end
+			TRP3_API.ui.tooltip.setTooltipDefaultAnchor = setElvUITooltipDefaultAnchor;
+
 			-- Apply the skinning if the settings are enabled
 			if TRP3_API.configuration.getValue(CONFIG.SKIN_TOOLTIPS) then
 				skinTooltips();
