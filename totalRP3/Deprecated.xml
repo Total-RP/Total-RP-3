@@ -9,7 +9,7 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Deprecated.lua"/>
 	<!--
-		Use TRP3_DropdownButton template instead.
+		Use TRP3_DropdownButtonTemplate instead.
 
 		Note that anchors may need adjusting by approximately 13 units
 		horizontally, as the old template had a lot of padding around the
