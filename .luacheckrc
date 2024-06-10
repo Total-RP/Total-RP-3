@@ -531,7 +531,7 @@ stds.wow = {
 		"NeutralPlayerSelectFaction",
 		"nop",
 		"OpenWorldMap",
-		"PetCanBeRenamed",
+		"PetCanBeAbandoned",
 		"PlayMusic",
 		"PlaySound",
 		"PlaySoundFile",
