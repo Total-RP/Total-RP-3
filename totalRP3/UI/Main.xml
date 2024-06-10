@@ -255,12 +255,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture atlas="UI-Frame-Neutral-BackgroundTile" useAtlasSize="true" horizTile="true" vertTile="true">
+				<Texture parentKey="ContentBackground" horizTile="true" vertTile="true">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="16" y="-16"/>
 						<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
 					</Anchors>
-					<Color r="0.6" g="0.6" b="0.6"/>
 				</Texture>
 			</Layer>
 			<Layer level="ARTWORK">
