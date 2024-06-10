@@ -591,11 +591,11 @@ local function CallWithUnfilteredPetJournal(func, ...)
 	};
 
 	local function RestoreFiltersAndReturn(ok, ...)
-		xpcall(RestoreIndexedMutator, CallErrorHandler, C_PetJournal.SetFilterChecked, filters.options);
-		xpcall(RestoreIndexedMutator, CallErrorHandler, C_PetJournal.SetPetSourceChecked, filters.sources);
-		xpcall(RestoreIndexedMutator, CallErrorHandler, C_PetJournal.SetPetTypeFilter, filters.types);
-		xpcall(C_PetJournal.SetSearchFilter, CallErrorHandler, filters.search);
-		xpcall(C_PetJournal.SetPetSortParameter, CallErrorHandler, filters.sort);
+		securecallfunction(RestoreIndexedMutator, C_PetJournal.SetFilterChecked, filters.options);
+		securecallfunction(RestoreIndexedMutator, C_PetJournal.SetPetSourceChecked, filters.sources);
+		securecallfunction(RestoreIndexedMutator, C_PetJournal.SetPetTypeFilter, filters.types);
+		securecallfunction(C_PetJournal.SetSearchFilter, filters.search);
+		securecallfunction(C_PetJournal.SetPetSortParameter, filters.sort);
 
 		if not ok then
 			error((...), 3);

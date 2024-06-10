@@ -1261,6 +1261,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 {col:ffffff}Thanks to Horionne for sending us the magazine Gamer Culte Online #14 with an article about Total RP.{/col}]],
 
 	MO_ADDON_NOT_INSTALLED = "The %s add-on is not installed, custom Total RP 3 integration disabled.",
+	MO_SCRIPT_ERROR = "This module encountered a fatal script error.",
 	MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that your tooltip preferences are applied to Total RP 3's tooltips.",
 	MO_CHAT_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that chat messages and player names are modified by Total RP 3 in that add-on.",
 	CO_TOOLTIP_PREFERRED_OOC_INDICATOR = "Preferred OOC indicator",
