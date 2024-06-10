@@ -335,13 +335,13 @@ end
 TRP3_LauncherClickBindingElementMixin = {};
 
 function TRP3_LauncherClickBindingElementMixin:Init(elementData)
-	self.Button:SetAction(elementData.id);
+	self.BindingButton:SetAction(elementData.id);
 end
 
 function TRP3_LauncherClickBindingElementMixin:GetAction()
-	return self.Button:GetAction();
+	return self.BindingButton:GetAction();
 end
 
 function TRP3_LauncherClickBindingElementMixin:Refresh()
-	self.Button:Refresh();
+	self.BindingButton:Refresh();
 end

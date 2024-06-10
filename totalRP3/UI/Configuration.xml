@@ -10,9 +10,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	-->
 
 	<Frame name="TRP3_ConfigH1" virtual="true">
-		<Size x="0" y="35"/>
+		<Size y="35"/>
 		<Frames>
-			<Frame name="$parentTitle" parentKey="Title" inherits="TRP3_TruncatedTextTemplate">
+			<Frame parentKey="Title" inherits="TRP3_TruncatedTextTemplate">
 				<Size y="10"/>
 				<Anchors>
 					<Anchor point="LEFT"/>
@@ -20,9 +20,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString parentKey="Text" inherits="GameFontNormalHuge" setAllPoints="true" justifyH="LEFT" wordwrap="true">
-							<Color r="0.95" g="0.95" b="0.95"/>
-						</FontString>
+						<FontString parentKey="Text" inherits="GameFontHighlightLarge" setAllPoints="true" justifyH="LEFT" wordwrap="true"/>
 					</Layer>
 				</Layers>
 			</Frame>
@@ -30,18 +28,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<Frame name="TRP3_ConfigParagraph" virtual="true">
-		<Size x="0" y="65"/>
+		<Size y="65"/>
 		<Frames>
-			<Frame name="$parentTitle" parentKey="Title" inherits="TRP3_TruncatedTextTemplate">
+			<Frame parentKey="Title" inherits="TRP3_TruncatedTextTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT"/>
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString parentKey="Text" inherits="GameFontNormalSmall" setAllPoints="true" justifyH="LEFT" wordwrap="true">
-							<Color r="0.95" g="0.95" b="0.95"/>
-						</FontString>
+						<FontString parentKey="Text" inherits="GameFontHighlightSmall" setAllPoints="true" justifyH="LEFT" wordwrap="true"/>
 					</Layer>
 				</Layers>
 			</Frame>
@@ -49,26 +45,24 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<Frame name="TRP3_ConfigNote" virtual="true">
-		<Size x="0" y="35"/>
+		<Size y="35"/>
 		<Frames>
-			<Frame name="$parentTitle" parentKey="Title" inherits="TRP3_TruncatedTextTemplate">
+			<Frame parentKey="Title" inherits="TRP3_TruncatedTextTemplate">
 				<Size y="10"/>
 				<Anchors>
-					<Anchor point="LEFT" x="25" y="0"/>
-					<Anchor point="RIGHT" x="-150" y="0"/>
+					<Anchor point="LEFT" x="25"/>
+					<Anchor point="RIGHT" x="-200"/>
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString parentKey="Text" inherits="GameFontNormal" setAllPoints="true" justifyH="LEFT">
-							<Color r="0.95" g="0.95" b="0.95"/>
-						</FontString>
+						<FontString parentKey="Text" inherits="GameFontHighlight" setAllPoints="true" justifyH="LEFT"/>
 					</Layer>
 				</Layers>
 			</Frame>
-			<Button name="$parentHelp" inherits="TRP3_HelpButton">
+			<Button parentKey="Help" inherits="TRP3_HelpButton">
 				<Size x="14" y="14"/>
 				<Anchors>
-					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentTitle" x="-10" y="1"/>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.Title" x="-10" y="1"/>
 				</Anchors>
 			</Button>
 		</Frames>
@@ -76,9 +70,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ConfigColorPicker" inherits="TRP3_ConfigNote" virtual="true">
 		<Frames>
-			<Button name="$parentPicker" inherits="TRP3_ColorPickerButton">
+			<Button name="$parentColorPicker" parentKey="ColorSwatch" inherits="TRP3_ColorPickerButton">
 				<Anchors>
-					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="RIGHT" x="-14"/>
 				</Anchors>
 			</Button>
 		</Frames>
@@ -86,16 +80,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ConfigEditBox" inherits="TRP3_ConfigNote" virtual="true">
 		<Frames>
-			<EditBox name="$parentBox" inherits="TRP3_TitledEditBox">
-				<Size x="140" y="18"/>
+			<EditBox parentKey="EditBox" inherits="TRP3_TitledEditBox">
+				<Size x="140" y="20"/>
 				<Anchors>
-					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="RIGHT" x="-10"/>
 				</Anchors>
 				<Layers>
 					<Layer level="BORDER">
-						<FontString parentKey="Instructions" justifyH="LEFT" justifyV="MIDDLE" inherits="GameFontDisableSmall" setAllPoints="true">
-							<Color r="0.35" g="0.35" b="0.35"/>
-						</FontString>
+						<FontString parentKey="Instructions" justifyH="LEFT" justifyV="MIDDLE" inherits="GameFontDisableSmall" setAllPoints="true"/>
 					</Layer>
 				</Layers>
 			</EditBox>
@@ -104,10 +96,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ConfigDropDown" inherits="TRP3_ConfigNote" virtual="true">
 		<Frames>
-			<Frame name="$parentDropDown" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
+			<Frame parentKey="Dropdown" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
 				<Size x="150" y="32"/>
 				<Anchors>
-					<Anchor point="RIGHT"/>
+					<Anchor point="RIGHT" x="-10"/>
 				</Anchors>
 			</Frame>
 		</Frames>
@@ -115,9 +107,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ConfigCheck" inherits="TRP3_ConfigNote" virtual="true">
 		<Frames>
-			<CheckButton name="$parentCheck" inherits="TRP3_CheckBox" enableMouse="true">
+			<CheckButton parentKey="Checkbox" inherits="TRP3_CheckBox" enableMouse="true">
 				<Anchors>
-					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="RIGHT" x="-10"/>
 				</Anchors>
 			</CheckButton>
 		</Frames>
@@ -125,10 +117,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ConfigButton" inherits="TRP3_ConfigNote" virtual="true">
 		<Frames>
-			<Button name="$parentButton" inherits="TRP3_CommonButton" enableMouse="true">
+			<Button parentKey="Button" inherits="TRP3_CommonButton" enableMouse="true">
 				<Size x="150" y="22"/>
 				<Anchors>
-					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="RIGHT" x="-10"/>
 				</Anchors>
 			</Button>
 		</Frames>
@@ -136,10 +128,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ConfigSlider" inherits="TRP3_ConfigNote" virtual="true">
 		<Frames>
-			<Frame name="$parentSlider" parentKey="Slider" inherits="MinimalSliderWithSteppersTemplate">
+			<Frame parentKey="Slider" inherits="MinimalSliderWithSteppersTemplate">
 				<Size x="140" y="15"/>
 				<Anchors>
-					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="RIGHT" x="-10"/>
 				</Anchors>
 			</Frame>
 		</Frames>
@@ -155,43 +147,38 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</KeyValues>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="$parentTitle" inherits="GameFontNormalHuge" justifyH="LEFT" text="[settings_title]">
+				<FontString parentKey="Title" inherits="GameFontHighlightHuge" justifyH="LEFT">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="16" y="-20"/>
 						<Anchor point="RIGHT" x="-16"/>
 					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
+				<Texture parentKey="Divider" atlas="Options_HorizontalDivider" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Title" relativePoint="BOTTOMLEFT" y="-16"/>
+						<Anchor point="RIGHT" relativeKey="$parent.Title" relativePoint="RIGHT"/>
+					</Anchors>
+					<Color r="1" g="0.675" b="0.125"/>
+				</Texture>
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame name="$parentInner" inherits="TRP3_InnerFrame">
+			<ScrollFrame parentKey="ScrollFrame" inherits="ScrollFrameTemplate">
+				<KeyValues>
+					<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
+					<KeyValue key="scrollBarX" value="-8" type="number"/>
+					<KeyValue key="scrollBarTopY" value="-8" type="number"/>
+					<KeyValue key="scrollBarBottomY" value="8" type="number"/>
+					<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
+				</KeyValues>
 				<Anchors>
-					<Anchor point="TOP" relativeTo="$parentTitle" relativePoint="BOTTOM" x="0" y="-12"/>
-					<Anchor point="LEFT" x="8" y="0"/>
-					<Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
+					<Anchor point="TOPLEFT" relativeKey="$parent.Divider" relativePoint="BOTTOMLEFT" y="-1"/>
+					<Anchor point="BOTTOMRIGHT" x="-16" y="4"/>
 				</Anchors>
-				<Frames>
-					<ScrollFrame name="$parentScroll" inherits="ScrollFrameTemplate">
-						<KeyValues>
-							<KeyValue key="scrollBarTemplate" value="WowTrimScrollBar" type="string"/>
-							<KeyValue key="scrollBarX" value="-16" type="number"/>
-							<KeyValue key="scrollBarTopY" value="2" type="number"/>
-							<KeyValue key="scrollBarBottomY" value="-4" type="number"/>
-							<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
-						</KeyValues>
-						<Anchors>
-							<Anchor point="TOPLEFT" x="4" y="-4"/>
-							<Anchor point="BOTTOMRIGHT" x="-4"/>
-						</Anchors>
-						<ScrollChild>
-							<Frame name="$parentContainer">
-								<Size x="463" y="50"/>
-							</Frame>
-						</ScrollChild>
-					</ScrollFrame>
-				</Frames>
-			</Frame>
+				<ScrollChild>
+					<Frame parentKey="Content"/>
+				</ScrollChild>
+			</ScrollFrame>
 		</Frames>
 	</Frame>
 

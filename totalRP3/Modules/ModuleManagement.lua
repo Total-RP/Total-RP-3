@@ -263,7 +263,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function moduleInit()
-	TRP3_ConfigurationModuleTitle:SetText(loc.CO_MODULES);
+	TRP3_ConfigurationModule.Title:SetText(loc.CO_MODULES);
 end
 
 local function moduleStatusText(statusCode)
@@ -424,7 +424,7 @@ function onModuleStarted()
 	local previous;
 	for _, moduleID in pairs(sortedID) do
 		local module = modules[moduleID];
-		local frame = CreateFrame("Frame", "TRP3_ConfigurationModule_" .. i, TRP3_ConfigurationModuleContainer, "TRP3_ConfigurationModuleFrame");
+		local frame = CreateFrame("Frame", "TRP3_ConfigurationModule_" .. i, TRP3_ConfigurationModule.ScrollFrame.Content, "TRP3_ConfigurationModuleFrame");
 		frame.module = module;
 		frame:SetPoint("LEFT", 0, 0);
 		frame:SetPoint("RIGHT", 0, 0);
@@ -491,7 +491,7 @@ TRP3_API.module.init = function()
 	local TUTORIAL_STRUCTURE = {
 		{
 			box = {
-				allPoints = TRP3_ConfigurationModuleFrame,
+				allPoints = TRP3_ConfigurationModule.ScrollFrame,
 			},
 			button = {
 				x = 0, y = 10, anchor = "BOTTOM",
@@ -520,6 +520,6 @@ TRP3_API.module.init = function()
 
 	-- Resizing
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
-		TRP3_ConfigurationModuleContainer:SetSize(containerWidth - 45, 50);
+		TRP3_ConfigurationModule.ScrollFrame.Content:SetSize(containerWidth - 55, 50);
 	end);
 end
