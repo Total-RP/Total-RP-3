@@ -51,7 +51,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Size y="10"/>
 				<Anchors>
 					<Anchor point="LEFT" x="25"/>
-					<Anchor point="RIGHT" x="-150"/>
+					<Anchor point="RIGHT" x="-200"/>
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
