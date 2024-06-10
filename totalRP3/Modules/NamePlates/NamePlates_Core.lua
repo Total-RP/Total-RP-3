@@ -163,6 +163,11 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 		local player = GetOrCreatePlayerFromCharacterID(characterID);
 		local classToken = UnitClassBase(unitToken);
 
+		-- Don't customize default profile nameplates
+		if TRP3_API.profile.isDefaultProfile(player:GetProfileID()) then
+			return displayInfo;
+		end
+
 		displayInfo.isRoleplayUnit = true;
 
 		do  -- Names/Titles

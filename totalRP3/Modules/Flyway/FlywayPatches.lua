@@ -284,3 +284,23 @@ TRP3_API.flyway.patches["17"] = function()
 		end
 	end
 end
+
+TRP3_API.flyway.patches["18"] = function()
+	-- Modify default profile ID to include an identifier
+
+	if not TRP3_Profiles or not TRP3_Configuration then
+		return;
+	end
+
+	if TRP3_Configuration["default_profile_id"] then
+		local oldDefaultProfileID = TRP3_Configuration["default_profile_id"];
+		local newDefaultProfileID = string.sub(oldDefaultProfileID, 1, -2) .. "*";
+
+		-- Replacing the config key
+		TRP3_Configuration["default_profile_id"] = newDefaultProfileID;
+
+		-- Replacing the profile entry
+		TRP3_Profiles[newDefaultProfileID] = TRP3_Profiles[oldDefaultProfileID];
+		TRP3_Profiles[oldDefaultProfileID] = nil;
+	end
+end

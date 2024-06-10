@@ -664,7 +664,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 
 	-- We don't have a unit ID for this message (WTF? Some other add-on must be doing some weird shit again…)
 	-- Bail out, let the fallback function handle that shit.
-	if not unitID then return fallback(event, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12) end ;
+	if not unitID then return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12) end ;
 
 	-- Check if this message ID was flagged as containing NPC chat
 	-- If it does we use the NPC name that was saved before.
@@ -676,7 +676,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	local character, realm = unitIDToInfo(unitID);
 	if not realm then
 		-- if realm is nil (i.e. globals haven't been set yet) just run the vanilla version of the code to prevent errors.
-		return fallback(event, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12);
+		return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12);
 	end
 	-- Make sure we have a unitID formatted as "Player-Realm"
 	unitID = unitInfoToID(character, realm);
@@ -688,11 +688,14 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 		characterName = character;
 	end
 
-	-- Retrieve the character full RP name
-	local customizedName = getFullnameForUnitUsingChatMethod(unitID);
+	-- Retrieve the character full RP name (if not default profile)
+	local hasNonDefaultProfile = player:GetProfileID() and TRP3_API.profile.isDefaultProfile(player:GetProfileID()) == false;
+	if hasNonDefaultProfile then
+		local customizedName = getFullnameForUnitUsingChatMethod(unitID);
 
-	if customizedName then
-		characterName = customizedName;
+		if customizedName then
+			characterName = customizedName;
+		end
 	end
 
 	if GetCVar("chatClassColorOverride") ~= "1" then
@@ -719,7 +722,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 		characterName = TimerunningUtil.AddSmallIcon(characterName);
 	end
 
-	if getConfigValue(CONFIG_SHOW_ICON) then
+	if hasNonDefaultProfile and getConfigValue(CONFIG_SHOW_ICON) then
 		local info = getCharacterInfoTab(unitID);
 		if info and info.characteristics and info.characteristics.IC then
 			characterName = Utils.str.icon(info.characteristics.IC, 15) .. " " .. characterName;
