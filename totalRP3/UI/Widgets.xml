@@ -158,50 +158,59 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Button>
 
 	<!-- Category button -->
-	<Button name="TRP3_CategoryButton" virtual="true">
+	<Button name="TRP3_CategoryButton" mixin="TRP3_CategoryButtonMixin" motionScriptsWhileDisabled="true" virtual="true">
 		<Size x="158" y="24"/>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="$parentBackground" file="Interface\AchievementFrame\UI-Achievement-Category-Background">
+				<Texture parentKey="Background" file="Interface\AchievementFrame\UI-Achievement-Category-Background">
 					<Size x="170" y="32"/>
 					<Anchors>
 						<Anchor point="TOPLEFT"/>
 						<Anchor point="TOPRIGHT"/>
 					</Anchors>
 					<TexCoords left="0" right="0.6640625" top="0" bottom="1"/>
+					<TextureSliceMargins left="16" top="16" bottom="16" right="16"/>
+					<TextureSliceMode mode="Stretched"/>
 				</Texture>
 			</Layer>
 			<Layer level="BORDER">
-				<Texture name="$parentIcon" file="Interface\ICONS\INV_Misc_QuestionMark" hidden="true">
+				<Texture parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark" hidden="true">
 					<Size x="16" y="16"/>
 					<Anchors>
-						<Anchor point="LEFT" x="9" y="-2"/>
+						<Anchor point="LEFT" x="10" y="-2"/>
 					</Anchors>
 				</Texture>
 			</Layer>
-			<Layer level="ARTWORK">
-				<FontString name="$parentLabel" inherits="GameFontNormal" wordwrap="false" justifyH="CENTER">
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="24" y="2"/>
-						<Anchor point="TOPRIGHT" x="-16" y="-6"/>
-					</Anchors>
-				</FontString>
-			</Layer>
 		</Layers>
-		<HighlightTexture file="Interface\AchievementFrame\UI-Achievement-Category-Highlight" alphaMode="ADD">
-			<Anchors>
-				<Anchor point="TOPLEFT" x="0" y="0"/>
-				<Anchor point="BOTTOMRIGHT" x="-1" y="-7"/>
-			</Anchors>
-			<TexCoords left="0" right="0.6640625" top="0" bottom="1"/>
-		</HighlightTexture>
 		<Frames>
-			<Button name="$parentClose" inherits="TRP3_CloseButton">
+			<Button parentKey="CloseButton" inherits="TRP3_CloseButton">
 				<Anchors>
 					<Anchor point="RIGHT" relativePoint="LEFT" x="5" y="-2"/>
 				</Anchors>
 			</Button>
 		</Frames>
+		<ButtonText parentKey="Text" wordwrap="false" justifyH="CENTER">
+			<Anchors>
+				<Anchor point="TOPLEFT" x="24" y="-6"/>
+				<Anchor point="BOTTOMRIGHT" x="-16" y="2"/>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="GameFontNormal"/>
+		<DisabledFont style="GameFontNormal"/>
+		<HighlightTexture file="Interface\AchievementFrame\UI-Achievement-Category-Highlight" alphaMode="ADD">
+			<Anchors>
+				<Anchor point="TOPLEFT"/>
+				<Anchor point="TOPRIGHT"/>
+			</Anchors>
+			<TexCoords left="0" right="0.6640625" top="0" bottom="1"/>
+			<TextureSliceMargins left="16" top="16" bottom="16" right="16"/>
+			<TextureSliceMode mode="Stretched"/>
+		</HighlightTexture>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
 	</Button>
 
 	<!-- A bordered icon -->
