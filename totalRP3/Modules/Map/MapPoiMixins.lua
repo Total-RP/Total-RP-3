@@ -177,7 +177,7 @@ function AnimatedPinMixin:OnLoad()
 	createBounceAnimation(self)
 
 	hooksecurefunc(self, "OnAcquired", function(_, poiInfo)
-		if poiInfo.position and self.Bounce and TRP3_API.ui.misc.shouldPlayUIAnimation() then
+		if poiInfo.position and self.Bounce then
 			self:Hide();
 			C_Timer.After(AddOn_TotalRP3.Map.getDistanceFromMapCenterFactor(poiInfo.position), function()
 				self:Show();
