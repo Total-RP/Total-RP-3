@@ -32,26 +32,47 @@ local CONFIG_UI_ANIMATIONS = "ui_animations";
 -- Frame utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- Note: Background index is stored in profile data. Do not reorder!
 local tiledBackgrounds = {
-	{ bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background", tile = false },
-	{ bgFile = "Interface\\BankFrame\\Bank-Background", tile = false },
-	{ bgFile = "Interface\\FrameGeneral\\UI-Background-Marble", tile = false },
-	{ bgFile = "Interface\\FrameGeneral\\UI-Background-Rock", tile = false },
-	{ bgFile = "Interface\\GuildBankFrame\\GuildVaultBG", tile = false },
-	{ bgFile = "Interface\\HELPFRAME\\DarkSandstone-Tile", tile = false },
-	{ bgFile = "Interface\\HELPFRAME\\Tileable-Parchment", tile = false },
-	{ bgFile = "Interface\\QuestionFrame\\question-background", tile = false },
-	{ bgFile = "Interface\\RAIDFRAME\\UI-RaidFrame-GroupBg", tile = false },
-	{ bgFile = "Interface\\Destiny\\EndscreenBG", tile = false },
-	{ bgFile = "Interface\\Stationery\\AuctionStationery1", tile = false },
-	{ bgFile = "Interface\\Stationery\\Stationery_ill1", tile = false },
-	{ bgFile = "Interface\\Stationery\\Stationery_OG1", tile = false },
-	{ bgFile = "Interface\\Stationery\\Stationery_TB1", tile = false },
-	{ bgFile = "Interface\\Stationery\\Stationery_UC1", tile = false },
-	{ bgFile = "Interface\\Stationery\\StationeryTest1", tile = false },
-	{ bgFile = "Interface\\WorldMap\\UI-WorldMap-Middle1", tile = false },
-	{ bgFile = "Interface\\WorldMap\\UI-WorldMap-Middle2", tile = false },
-	{ bgFile = "Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground", tile = false },
+	[1] = { bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background", tile = true, tileSize = 64 },
+	[2] = { bgFile = "Interface\\BankFrame\\Bank-Background", tile = true, tileSize = 256 },
+	[3] = { bgFile = "Interface\\FrameGeneral\\UI-Background-Marble", tile = true, tileSize = 256 },
+	[4] = { bgFile = "Interface\\FrameGeneral\\UI-Background-Rock", tile = true, tileSize = 1024 },
+	[5] = { bgFile = "Interface\\GuildBankFrame\\GuildVaultBG", tile = true, tileSize = 256 },
+	[6] = { bgFile = "Interface\\HELPFRAME\\DarkSandstone-Tile", tile = true, tileSize = 256 },
+	[7] = { bgFile = "Interface\\HELPFRAME\\Tileable-Parchment", tile = true, tileSize = 256 },
+	[8] = { bgFile = "Interface\\QuestionFrame\\question-background", tile = true, tileSize = 256 },
+	[9] = { bgFile = "Interface\\RAIDFRAME\\UI-RaidFrame-GroupBg", tile = false },
+	[10] = { bgFile = "Interface\\Destiny\\EndscreenBG", tile = false },
+	[11] = { bgFile = "Interface\\Stationery\\AuctionStationery1", tile = false },
+	[12] = { bgFile = "Interface\\Stationery\\Stationery_ill1", tile = false },
+	[13] = { bgFile = "Interface\\Stationery\\Stationery_OG1", tile = false },
+	[14] = { bgFile = "Interface\\Stationery\\Stationery_TB1", tile = false },
+	[15] = { bgFile = "Interface\\Stationery\\Stationery_UC1", tile = false },
+	[16] = { bgFile = "Interface\\Stationery\\StationeryTest1", tile = false },
+	[17] = { bgFile = "Interface\\WorldMap\\UI-WorldMap-Middle1", tile = false },
+	[18] = { bgFile = "Interface\\WorldMap\\UI-WorldMap-Middle2", tile = false },
+	[19] = { bgFile = "Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground", tile = false },
+	[20] = { bgFile = "interface\\adventuremap\\adventuremapparchmenttile", tile = true, tileSize = 512 },
+	[21] = { bgFile = "interface\\collections\\collectionsbackgroundtile", tile = true, tileSize = 256 },
+	[22] = { bgFile = "interface\\framegeneral\\uiframealliancebackground", tile = true, tileSize = 256 },
+	[23] = { bgFile = "interface\\framegeneral\\uiframedragonflightbackground", tile = true, tileSize = 256 },
+	[24] = { bgFile = "interface\\framegeneral\\uiframehordebackground", tile = true, tileSize = 256 },
+	[25] = { bgFile = "interface\\framegeneral\\uiframekyrianbackground", tile = true, tileSize = 256 },
+	[26] = { bgFile = "interface\\framegeneral\\uiframemarinebackground", tile = true, tileSize = 256 },
+	[27] = { bgFile = "interface\\framegeneral\\uiframemechagonbackground", tile = true, tileSize = 256 },
+	[28] = { bgFile = "interface\\framegeneral\\uiframenecrolordbackground", tile = true, tileSize = 256 },
+	[29] = { bgFile = "interface\\framegeneral\\uiframeneutralbackground", tile = true, tileSize = 256 },
+	[30] = { bgFile = "interface\\framegeneral\\uiframenightfaebackground", tile = true, tileSize = 256 },
+	[31] = { bgFile = "interface\\framegeneral\\uiframeoribosbackground", tile = true, tileSize = 256 },
+	[32] = { bgFile = "interface\\framegeneral\\uiframeventhyrbackground", tile = true, tileSize = 256 },
+	[33] = { bgFile = "interface\\garrison\\classhallbackground", tile = true, tileSize = 256 },
+	[34] = { bgFile = "interface\\garrison\\classhallinternalbackground", tile = true, tileSize = 256 },
+	[35] = { bgFile = "interface\\garrison\\garrisonlandingpagemiddletile", tile = true, tileSize = 256 },
+	[36] = { bgFile = "interface\\garrison\\garrisonmissionuiinfoboxbackgroundtile", tile = true, tileSize = 256 },
+	[37] = { bgFile = "interface\\garrison\\garrisonshipmissionparchment", tile = true, tileSize = 256 },
+	[38] = { bgFile = "interface\\garrison\\garrisonuibackground", tile = true, tileSize = 256 },
+	[39] = { bgFile = "interface\\garrison\\garrisonuibackground2", tile = true, tileSize = 256 },
 };
 
 function TRP3_API.ui.frame.getTiledBackground(index)
@@ -85,8 +106,10 @@ end
 
 function TRP3_API.ui.frame.getTiledBackgroundList()
 	local tab = {};
-	for index, info in pairs(tiledBackgrounds) do
-		tinsert(tab, {loc.UI_BKG:format(tostring(index)), index, "|T" .. info.bgFile .. ":200:200|t"});
+	for index, info in ipairs(tiledBackgrounds) do
+		if GetFileIDFromPath(info.bgFile) then
+			tinsert(tab, {loc.UI_BKG:format(tostring(index)), index, "|T" .. info.bgFile .. ":200:200|t"});
+		end
 	end
 	return tab;
 end
