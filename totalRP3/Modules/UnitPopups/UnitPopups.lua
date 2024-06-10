@@ -1,10 +1,11 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-local L = TRP3_API.loc;
+if not Menu or not Menu.ModifyMenu then
+	return;
+end
 
-local LibDropDownExtension = LibStub:GetLibrary("LibDropDownExtension-1.0");
+local L = TRP3_API.loc;
 
 local GenerateConfigurationPage;
 
@@ -24,20 +25,12 @@ local function ShouldDisableOnUnitFrames()
 	return TRP3_API.configuration.getValue("UnitPopups_DisableOnUnitFrames");
 end
 
-local function ShouldShowHeaderText()
-	return TRP3_API.configuration.getValue("UnitPopups_ShowHeaderText");
-end
-
-local function ShouldShowOpenProfile()
+local function ShouldShowOpenProfile(contextData)  -- luacheck: no unused
 	return TRP3_API.configuration.getValue("UnitPopups_ShowOpenProfile");
 end
 
-local function ShouldShowCharacterStatus()
-	-- Character status is disabled as LibDropDownExtension has a rather silly
-	-- bug where it doesn't anchor the text to the right of the check texture
-	-- correctly, leading to two overlapping one another.
-
-	return false;
+local function ShouldShowCharacterStatus(contextData)  -- luacheck: no unused
+	return TRP3_API.configuration.getValue("UnitPopups_ShowCharacterStatus");
 end
 
 local function GetUnitCompanionProfileInfo(unitToken)
@@ -77,13 +70,12 @@ local function GetBattleNetCharacterID(gameAccountInfo)
 	return ambiguatedName;
 end
 
-local function ShouldShowOpenBattleNetProfile()
-	if not ShouldShowOpenProfile() then
+local function ShouldShowOpenBattleNetProfile(contextData)
+	if not ShouldShowOpenProfile(contextData) then
 		return false;
 	end
 
-	local dropdownFrame = UIDROPDOWNMENU_INIT_MENU;
-	local accountInfo = dropdownFrame.accountInfo;
+	local accountInfo = contextData.accountInfo;
 	local gameAccountInfo = accountInfo and accountInfo.gameAccountInfo or nil;
 
 	if not gameAccountInfo then
@@ -105,13 +97,12 @@ local function ShouldShowOpenBattleNetProfile()
 	end
 end
 
-local function ShouldShowOpenCompanionProfile()
-	if not ShouldShowOpenProfile() then
+local function ShouldShowOpenCompanionProfile(contextData)
+	if not ShouldShowOpenProfile(contextData) then
 		return false;
 	end
 
-	local dropdownFrame = UIDROPDOWNMENU_INIT_MENU;
-	local unitToken = dropdownFrame.unit or "none";
+	local unitToken = contextData.unit or "none";
 	local profileInfo = GetUnitCompanionProfileInfo(unitToken);
 
 	if not profileInfo then
@@ -127,7 +118,7 @@ end
 
 local UnitPopupsModule = {};
 
-UnitPopupsModule.MenuButtons = {};
+UnitPopupsModule.MenuElementFactories = {};
 UnitPopupsModule.MenuEntries = {};
 
 function UnitPopupsModule:OnModuleInitialize()
@@ -139,42 +130,46 @@ function UnitPopupsModule:OnModuleInitialize()
 end
 
 function UnitPopupsModule:OnModuleEnable()
-	local MAX_DROPDOWN_LEVEL = 1;
+	for menuTagSuffix in pairs(UnitPopupsModule.MenuEntries) do
+		-- The closure supplied to ModifyMenu needs to be unique on each
+		-- iteration of the loop as it acts as an "owner" in a callback
+		-- registry behind the scenes. If not unique, successive registrations
+		-- will replace previous ones.
 
-	LibDropDownExtension:RegisterEvent("OnShow", GenerateClosure(self.OnUnitPopupShown, self), MAX_DROPDOWN_LEVEL);
+		local function OnMenuOpen(owner, rootDescription, contextData)
+			self:OnMenuOpen(owner, rootDescription, contextData);
+		end
+
+		local menuTag = "MENU_UNIT_" .. menuTagSuffix;
+		Menu.ModifyMenu(menuTag, OnMenuOpen);
+	end
 end
 
-function UnitPopupsModule:OnUnitPopupShown(dropdownMenu, _, options)
-	if not dropdownMenu or dropdownMenu:IsForbidden() then
-		return;  -- Invalid or forbidden menu.
+function UnitPopupsModule:OnMenuOpen(owner, rootDescription, contextData)
+	if not owner or owner:IsForbidden() then
+		return;  -- Invalid or forbidden owner.
 	elseif not self:ShouldCustomizeMenus() then
 		return;  -- Menu customizations are disabled.
-	elseif ShouldDisableOnUnitFrames() and dropdownMenu:GetParent() and dropdownMenu:GetParent():IsProtected() then
-		return;  -- Parent of the menu is a protected probably-unit frame.
+	elseif ShouldDisableOnUnitFrames() and owner:IsProtected() then
+		return;  -- Owner of the menu is a protected probably-unit frame.
 	end
 
-	-- The table of options that we insert to is local to our instance of the
-	-- event registration; as such we're safe to wipe it each time the menu
-	-- is shown to prevent entries getting duplicated each time.
+	local menuEntries = self.MenuEntries[contextData.which];
 
-	table.wipe(options);
+	if menuEntries then
+		rootDescription:QueueDivider();
+		rootDescription:QueueTitle(L.UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER);
 
-	local menuType = dropdownMenu.which;
-	local buttons = self:GetButtonsForMenu(menuType);
+		for _, elementFactoryKey in ipairs(menuEntries) do
+			local factory = self.MenuElementFactories[elementFactoryKey];
 
-	if #buttons == 0 then
-		return;  -- No buttons to be shown.
+			if factory then
+				factory(rootDescription, contextData);
+			end
+		end
+
+		rootDescription:ClearQueuedDescriptions();
 	end
-
-	if ShouldShowHeaderText() then
-		table.insert(options, self.MenuButtons.RoleplayOptions);
-	end
-
-	for _, button in ipairs(buttons) do
-		table.insert(options, button);
-	end
-
-	return true;
 end
 
 function UnitPopupsModule:ShouldCustomizeMenus()
@@ -191,136 +186,132 @@ function UnitPopupsModule:ShouldCustomizeMenus()
 	end
 end
 
-function UnitPopupsModule:GetButtonsForMenu(menuType)
-	local entries = self.MenuEntries[menuType];
-	local buttons = {};
+--
+-- Menu element factories
+--
 
-	if entries then
-		for _, buttonId in ipairs(entries) do
-			local button = self.MenuButtons[buttonId];
+local function CreateOpenBattleNetProfileButton(menuDescription, contextData)
+	if not ShouldShowOpenBattleNetProfile(contextData) then
+		return nil;
+	end
 
-			if button:ShouldShow() then
-				table.insert(buttons, button);
-			end
+	local function OnClick(contextData)  -- luacheck: no redefined
+		local accountInfo = contextData.accountInfo;
+		local gameAccountInfo = accountInfo and accountInfo.gameAccountInfo or nil;
+
+		-- Only a basic sanity test is required here.
+		if not gameAccountInfo then
+			return;
+		end
+
+		local characterID = GetBattleNetCharacterID(gameAccountInfo);
+
+		if characterID then
+			TRP3_API.slash.openProfile(characterID);
 		end
 	end
 
-	return buttons;
+	local elementDescription = menuDescription:CreateButton(L.UNIT_POPUPS_OPEN_PROFILE);
+	elementDescription:SetResponder(OnClick);
+	elementDescription:SetData(contextData);
+	return elementDescription;
 end
 
---
--- Menu Commands
---
-
-local function OpenBattleNetProfile(button)  -- luacheck: ignore 212 (unused button)
-	local dropdownFrame = UIDROPDOWNMENU_INIT_MENU;
-	local accountInfo = dropdownFrame.accountInfo;
-	local gameAccountInfo = accountInfo and accountInfo.gameAccountInfo or nil;
-
-	-- Only a basic sanity test is required here.
-	if not gameAccountInfo then
-		return;
+local function CreateOpenCharacterProfileButton(menuDescription, contextData)
+	if not ShouldShowOpenProfile(contextData) then
+		return nil;
 	end
 
-	local characterID = GetBattleNetCharacterID(gameAccountInfo);
+	local function OnClick(contextData)  -- luacheck: no redefined
+		local unit = contextData.unit;
+		local name = contextData.name;
+		local server = contextData.server;
+		local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
 
-	if characterID then
-		TRP3_API.slash.openProfile(characterID);
+		if UnitExists(unit) then
+			TRP3_API.slash.openProfile(unit);
+		elseif not string.find(fullName, UNKNOWNOBJECT, 1, true) then
+			TRP3_API.slash.openProfile(fullName);
+		end
 	end
+
+	local elementDescription = menuDescription:CreateButton(L.UNIT_POPUPS_OPEN_PROFILE);
+	elementDescription:SetResponder(OnClick);
+	elementDescription:SetData(contextData);
+	return elementDescription;
 end
 
-local function OpenCharacterProfile(button)  -- luacheck: ignore 212 (unused button)
-	local dropdownFrame = UIDROPDOWNMENU_INIT_MENU;
-	local unit = dropdownFrame.unit;
-	local name = dropdownFrame.name;
-	local server = dropdownFrame.server;
-	local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
-
-	if UnitExists(unit) then
-		TRP3_API.slash.openProfile(unit);
-	elseif not string.find(fullName, UNKNOWNOBJECT, 1, true) then
-		TRP3_API.slash.openProfile(fullName);
+local function CreateOpenCompanionProfileButton(menuDescription, contextData)
+	if not ShouldShowOpenCompanionProfile(contextData) then
+		return nil;
 	end
+
+	local function OnClick(contextData)  -- luacheck: no redefined
+		local unitToken = contextData.unit;
+		local profileInfo = GetUnitCompanionProfileInfo(unitToken);
+
+		if not profileInfo then
+			return;  -- Maybe something unlinked it while the menu was open?
+		elseif profileInfo.type == "SELF" then
+			TRP3_API.companions.openPage(profileInfo.id);
+			TRP3_API.navigation.openMainFrame();
+		elseif profileInfo.type == "OTHER" then
+			TRP3_API.companions.register.openPage(profileInfo.id);
+			TRP3_API.navigation.openMainFrame();
+		end
+	end
+
+	local elementDescription = menuDescription:CreateButton(L.UNIT_POPUPS_OPEN_PROFILE);
+	elementDescription:SetResponder(OnClick);
+	elementDescription:SetData(contextData);
+	return elementDescription;
 end
 
-local function OpenCompanionProfile(button)  -- luacheck: ignore 212 (unused button)
-	local dropdownFrame = UIDROPDOWNMENU_INIT_MENU;
-	local unitToken = dropdownFrame.unit;
-	local profileInfo = GetUnitCompanionProfileInfo(unitToken);
-
-	if not profileInfo then
-		return;  -- Maybe something unlinked it while the menu was open?
-	elseif profileInfo.type == "SELF" then
-		TRP3_API.companions.openPage(profileInfo.id);
-		TRP3_API.navigation.openMainFrame();
-	elseif profileInfo.type == "OTHER" then
-		TRP3_API.companions.register.openPage(profileInfo.id);
-		TRP3_API.navigation.openMainFrame();
+local function CreateCharacterStatusMenu(menuDescription, contextData)
+	if not ShouldShowCharacterStatus(contextData) then
+		return nil;
 	end
-end
 
-local function IsOutOfCharacter(button)  -- luacheck: ignore 212 (unused button)
-	local player = AddOn_TotalRP3.Player.GetCurrentUser();
-	local roleplayStatus = player:GetRoleplayStatus();
-
-	return roleplayStatus == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
-end
-
-local function ToggleCharacterStatus(button)
-	local player = AddOn_TotalRP3.Player.GetCurrentUser();
-
-	if button.option.checked() then
-		player:SetRoleplayStatus(AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER);
-	else
-		player:SetRoleplayStatus(AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER);
+	local function IsSelected(status)
+		local player = AddOn_TotalRP3.Player.GetCurrentUser();
+		local roleplayStatus = player:GetRoleplayStatus();
+		return roleplayStatus == status;
 	end
+
+	local function SetSelected(status)
+		local player = AddOn_TotalRP3.Player.GetCurrentUser();
+		player:SetRoleplayStatus(status);
+	end
+
+	local elementDescription = menuDescription:CreateButton(L.DB_STATUS_RP);
+
+	do
+		local state = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
+		local button = elementDescription:CreateRadio(L.DB_STATUS_RP_IC, IsSelected, SetSelected, state);
+		TRP3_MenuUtil.SetElementTooltip(button, L.DB_STATUS_RP_IC_TT);
+	end
+
+	do
+		local state = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+		local button = elementDescription:CreateRadio(L.DB_STATUS_RP_OOC, IsSelected, SetSelected, state);
+		TRP3_MenuUtil.SetElementTooltip(button, L.DB_STATUS_RP_OOC_TT);
+	end
+
+	return elementDescription;
 end
 
 --
 -- Menu Data
 --
 
-Mixin(UnitPopupsModule.MenuButtons, {
-	RoleplayOptions = {
-		text = L.UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER,
-		isTitle = true,
-		isUninteractable = true,
-		notCheckable = true,
-	},
+UnitPopupsModule.MenuElementFactories = {
+	OpenBattleNetProfile = CreateOpenBattleNetProfileButton,
+	OpenCharacterProfile = CreateOpenCharacterProfileButton,
+	OpenCompanionProfile = CreateOpenCompanionProfileButton,
+	CharacterStatus = CreateCharacterStatusMenu,
+};
 
-	OpenBattleNetProfile = {
-		text = L.UNIT_POPUPS_OPEN_PROFILE,
-		notCheckable = true,
-		func = OpenBattleNetProfile,
-		ShouldShow = ShouldShowOpenBattleNetProfile,
-	},
-
-	OpenCharacterProfile = {
-		text = L.UNIT_POPUPS_OPEN_PROFILE,
-		notCheckable = true,
-		func = OpenCharacterProfile,
-		ShouldShow = ShouldShowOpenProfile,
-	},
-
-	OpenCompanionProfile = {
-		text = L.UNIT_POPUPS_OPEN_PROFILE,
-		notCheckable = true,
-		func = OpenCompanionProfile,
-		ShouldShow = ShouldShowOpenCompanionProfile,
-	},
-
-	CharacterStatus = {
-		text = L.DB_STATUS_RP_OOC,
-		notCheckable = false,
-		isNotRadio = true,
-		keepShownOnClick = true,
-		checked = IsOutOfCharacter,
-		func = ToggleCharacterStatus,
-		ShouldShow = ShouldShowCharacterStatus,
-	},
-});
-
-Mixin(UnitPopupsModule.MenuEntries, {
+UnitPopupsModule.MenuEntries = {
 	BATTLEPET      = { "OpenCompanionProfile" },
 	BN_FRIEND      = { "OpenBattleNetProfile" },
 	CHAT_ROSTER    = { "OpenCharacterProfile" },
@@ -336,7 +327,7 @@ Mixin(UnitPopupsModule.MenuEntries, {
 	RAID           = { "OpenCharacterProfile" },
 	RAID_PLAYER    = { "OpenCharacterProfile" },
 	SELF           = { "OpenCharacterProfile", "CharacterStatus" },
-});
+};
 
 --
 -- Module Registration
@@ -375,11 +366,6 @@ UnitPopupsModule.Configuration = {
 	DisableOnUnitFrames = {
 		key = "UnitPopups_DisableOnUnitFrames",
 		default = false,
-	},
-
-	ShowHeaderText = {
-		key = "UnitPopups_ShowHeaderText",
-		default = true,
 	},
 
 	ShowOpenProfile = {
@@ -449,23 +435,16 @@ function GenerateConfigurationPage()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = L.UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT,
-				help = L.UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT_HELP,
-				configKey = "UnitPopups_ShowHeaderText",
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE,
 				help = L.UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE_HELP,
 				configKey = "UnitPopups_ShowOpenProfile",
 			},
-			-- TODO: Re-add this option when LibDropDownExtension is fixed.
-			-- {
-			-- 	inherit = "TRP3_ConfigCheck",
-			-- 	title = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS,
-			-- 	help = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP,
-			-- 	configKey = "UnitPopups_ShowCharacterStatus",
-			-- },
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS,
+				help = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP,
+				configKey = "UnitPopups_ShowCharacterStatus",
+			},
 		},
 	};
 end

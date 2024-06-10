@@ -199,7 +199,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="RIGHT" relativePoint="CENTER" relativeKey="$parent" x="-20"/>
 				</Anchors>
 			</EditBox>
-			<Frame parentKey="channelDropdown" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentChannelDropdown">
+			<Frame parentKey="channelDropdown" inherits="TRP3_DropDownButtonTemplate" enableMouse="true" name="$parentChannelDropdown">
 				<Anchors>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-5"/>
 					<Anchor point="RIGHT" relativePoint="RIGHT" x="-25"/>

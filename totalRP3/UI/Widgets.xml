@@ -12,114 +12,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="FontUtil.lua"/>
 	<Include file="TooltipUtil.lua"/>
 	<Include file="Widgets.lua"/>
+	<Include file="Menu\Menu.xml"/>
 
 	<GameTooltip name="TRP3_TooltipTemplate" mixin="TRP3_TooltipMixin" inherits="GameTooltipTemplate" virtual="true"/>
-
-	<!--
-		Dropdown Menu
-
-		This mirrors UIDropDownMenuTemplate except the scripts for activating
-		the menu go through the MSA-DropDownMenu-1.0 library instead.
-	-->
-	<Frame name="TRP3_DropDownMenuTemplate" virtual="true">
-		<Size x="40" y="32"/>
-		<Layers>
-			<Layer level="ARTWORK">
-				<Texture name="$parentLeft" parentKey="Left" file="Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame">
-					<Size x="25" y="64"/>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset x="0" y="17"/>
-						</Anchor>
-					</Anchors>
-					<TexCoords left="0" right="0.1953125" top="0" bottom="1"/>
-				</Texture>
-				<Texture name="$parentMiddle" parentKey="Middle" file="Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame">
-					<Size x="115" y="64"/>
-					<Anchors>
-						<Anchor point="LEFT" relativeKey="$parent.Left" relativePoint="RIGHT"/>
-					</Anchors>
-					<TexCoords left="0.1953125" right="0.8046875" top="0" bottom="1"/>
-				</Texture>
-				<Texture name="$parentRight" parentKey="Right" file="Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame">
-					<Size x="25" y="64"/>
-					<Anchors>
-						<Anchor point="LEFT" relativeKey="$parent.Middle" relativePoint="RIGHT"/>
-					</Anchors>
-					<TexCoords left="0.8046875" right="1" top="0" bottom="1"/>
-				</Texture>
-				<FontString parentKey="Text" name="$parentText" inherits="GameFontHighlightSmall" wordwrap="false" justifyH="RIGHT">
-					<Size x="0" y="10"/>
-					<Anchors>
-						<Anchor point="RIGHT" relativeKey="$parent.Right">
-							<Offset x="-43" y="2"/>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
-			<Layer level="OVERLAY">
-				<Texture parentKey="Icon" name="$parentIcon" hidden="true">
-					<Size x="16" y="16"/>
-					<Anchors>
-						<Anchor point="LEFT">
-							<Offset x="30" y="2"/>
-						</Anchor>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
-		<Frames>
-			<Button parentKey="Button" name="$parentButton" motionScriptsWhileDisabled="true">
-				<Size x="24" y="24"/>
-				<Anchors>
-					<Anchor point="TOPRIGHT" relativeKey="$parent.Right">
-						<Offset x="-16" y="-18"/>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnEnter>
-						ExecuteFrameScript(self:GetParent(), "OnEnter");
-					</OnEnter>
-					<OnLeave>
-						ExecuteFrameScript(self:GetParent(), "OnLeave");
-					</OnLeave>
-					<OnClick>
-						MSA_ToggleDropDownMenu(nil, nil, self:GetParent());
-						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-					</OnClick>
-				</Scripts>
-				<NormalTexture name="$parentNormalTexture" parentKey="NormalTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up">
-					<Size x="24" y="24"/>
-					<Anchors>
-						<Anchor point="RIGHT"/>
-					</Anchors>
-				</NormalTexture>
-				<PushedTexture name="$parentPushedTexture" parentKey="PushedTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down">
-					<Size x="24" y="24"/>
-					<Anchors>
-						<Anchor point="RIGHT"/>
-					</Anchors>
-				</PushedTexture>
-				<DisabledTexture name="$parentDisabledTexture" parentKey="DisabledTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled">
-					<Size x="24" y="24"/>
-					<Anchors>
-						<Anchor point="RIGHT"/>
-					</Anchors>
-				</DisabledTexture>
-				<HighlightTexture name="$parentHighlightTexture" parentKey="HighlightTexture" file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD">
-					<Size x="24" y="24"/>
-					<Anchors>
-						<Anchor point="RIGHT"/>
-					</Anchors>
-				</HighlightTexture>
-			</Button>
-		</Frames>
-		<Scripts>
-			<OnHide>
-				MSA_CloseDropDownMenus();
-			</OnHide>
-		</Scripts>
-	</Frame>
 
 	<!--
 		TRP3_TruncatedTextTemplate
@@ -996,23 +891,23 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 	</Frame>
-	<Frame name="TRP3_TitledDropdown" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" virtual="true">
+	<Frame name="TRP3_TitledDropdown" inherits="TRP3_DropDownButtonTemplate" enableMouse="true" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString name="$parentTitle" parentKey="title" text="" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="27" y="4"/>
-						<Anchor point="TOPRIGHT" x="22" y="4"/>
+						<Anchor point="TOPLEFT" x="10" y="8"/>
+						<Anchor point="TOPRIGHT" x="-10" y="8"/>
 					</Anchors>
 					<Color r="0.95" g="0.75" b="0.1"/>
 				</FontString>
 			</Layer>
 		</Layers>
 		<Scripts>
-			<OnEnter>
+			<OnEnter inherit="prepend">
 				TRP3_RefreshTooltipForFrame(self);
 			</OnEnter>
-			<OnLeave>
+			<OnLeave inherit="prepend">
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
 		</Scripts>
@@ -1083,7 +978,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Layers>
 				<FontString inherits="ChatFontNormal" setAllPoints="true" />
 			</EditBox>
-			<Button parentKey="DropdownButton" name="$parentDropdownButton" motionScriptsWhileDisabled="true" >
+			<Button parentKey="DropdownButton" motionScriptsWhileDisabled="true" >
 				<Size x="32" y="32"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.CopyText.Right">
@@ -1097,30 +992,26 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<OnLeave>
 						ExecuteFrameScript(self:GetParent(), "OnLeave");
 					</OnLeave>
-					<OnClick>
-						MSA_ToggleDropDownMenu(nil, nil, self:GetParent());
-						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-					</OnClick>
 				</Scripts>
-				<NormalTexture name="$parentNormalTexture" parentKey="NormalTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up">
+				<NormalTexture parentKey="NormalTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up">
 					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>
 				</NormalTexture>
-				<PushedTexture name="$parentPushedTexture" parentKey="PushedTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down">
+				<PushedTexture parentKey="PushedTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down">
 					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>
 				</PushedTexture>
-				<DisabledTexture name="$parentDisabledTexture" parentKey="DisabledTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled">
+				<DisabledTexture parentKey="DisabledTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled">
 					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>
 				</DisabledTexture>
-				<HighlightTexture name="$parentHighlightTexture" parentKey="HighlightTexture" file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD">
+				<HighlightTexture parentKey="HighlightTexture" file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD">
 					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="RIGHT"/>
@@ -1184,9 +1075,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				insets = { left = 11, right = 12, top = 12, bottom = 11 },
 				});
 			</OnLoad>
-			<OnHide>
-				MSA_CloseDropDownMenus();
-			</OnHide>
 		</Scripts>
 	</Frame>
 

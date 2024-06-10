@@ -18,7 +18,7 @@ local globals = TRP3_API.globals;
 local loc = TRP3_API.loc;
 local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat;
 local math = math;
-local MouseIsOver, CreateFrame, ToggleDropDownMenu = MouseIsOver, CreateFrame, MSA_ToggleDropDownMenu;
+local MouseIsOver, CreateFrame = MouseIsOver, CreateFrame;
 local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
 local shiftDown = IsShiftKeyDown;
 local UnitIsPlayer = UnitIsPlayer;
@@ -139,162 +139,126 @@ end
 -- Drop down
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local DROPDOWN_FRAME = "TRP3_UIDD";
-local dropDownFrame;
-
-local function openDropDown(anchoredFrame, values, callback, space, addCancel)
-	assert(anchoredFrame, "No anchoredFrame");
-
-	if not dropDownFrame then
-		dropDownFrame = MSA_DropDownMenu_Create(DROPDOWN_FRAME, UIParent);
+function TRP3_API.ui.listbox.displayDropDown(ownerRegion, rootMenuItems, onClickFunction)
+	local function OnButtonClick(elementData)
+		if onClickFunction then
+			local value = elementData[2];
+			securecallfunction(onClickFunction, value, ownerRegion);
+		end
 	end
 
-	if _G["MSA_DropDownList1"]:IsVisible() then
-		MSA_HideDropDownMenu(1);
-		return;
+	local function GenerateMenuDescription(menuItems, menuDescription)
+		for _, elementData in ipairs(menuItems) do
+			local text, value, tooltipText = unpack(elementData, 1, 3);
+			local elementDescription;
+
+			if text == nil or text == "" then
+				elementDescription = menuDescription:CreateDivider();
+			elseif value == nil then
+				elementDescription = menuDescription:CreateTitle(text);
+			elseif type(value) ~= "table" then
+				elementDescription = menuDescription:CreateButton(text, OnButtonClick, elementData);
+			else
+				elementDescription = menuDescription:CreateButton(text);
+			end
+
+			if tooltipText ~= nil and tooltipText ~= "" then
+				TRP3_MenuUtil.SetElementTooltip(elementDescription, tooltipText);
+			end
+
+			if type(value) == "table" then
+				GenerateMenuDescription(value, elementDescription);
+			end
+		end
 	end
 
-	MSA_DropDownMenu_Initialize(dropDownFrame,
-		function(_, level, menuList)
-			local levelValues = menuList or values;
-			level = level or 1;
-			for _, tab in pairs(levelValues) do
-				assert(type(tab) == "table", "Level value is not a table !");
-				local text = tab[1];
-				local value = tab[2];
-				local tooltipText = tab[3];
-				local info = MSA_DropDownMenu_CreateInfo();
-				info.notCheckable = "true";
-				if text == "" then
-					info.dist = 0;
-					info.isTitle = true;
-					info.isUninteractable = true;
-					info.iconOnly = 1;
-					info.icon = "Interface\\Common\\UI-TooltipDivider-Transparent";
-					info.iconInfo = {
-						tCoordLeft = 0,
-						tCoordRight = 1,
-						tCoordTop = 0,
-						tCoordBottom = 1,
-						tSizeX = 0,
-						tSizeY = 8,
-						tFitDropDownSizeX = true
-					};
-				else
-					info.text = text;
-					info.isTitle = false;
-					info.tooltipOnButton = tooltipText ~= nil;
-					info.tooltipTitle = text;
-					info.tooltipText = tooltipText;
-					if type(value) == "table" then
-						info.hasArrow = true;
-						info.keepShownOnClick = true;
-						info.menuList = value;
-					elseif value ~= nil then
-						info.func = function()
-							anchoredFrame:GetParent().selectedValue = value;
-							if callback then
-								callback(value, anchoredFrame);
-							end
-							if level > 1 then
-								ToggleDropDownMenu(nil, nil, dropDownFrame);
-							end
-						end;
-					else
-						info.disabled = true;
-						info.isTitle = tooltipText == nil;
-					end
-				end
-				MSA_DropDownMenu_AddButton(info, level);
-			end
-			if menuList == nil and addCancel then
-				local info = {};
-				info.notCheckable = "true";
-				info.text = CANCEL;
-				MSA_DropDownMenu_AddButton(info, level);
-			end
+	local function GenerateRootMenuDescription(_, rootDescription)
+		GenerateMenuDescription(rootMenuItems, rootDescription);
+	end
 
-		end,
-		"MENU"
-	);
-	dropDownFrame:SetParent(anchoredFrame);
-	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName() or "cursor", -((space or -10)), 0);
-	TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+	if TRP3_MenuUtil.CreateContextMenu(ownerRegion, GenerateRootMenuDescription) then
+		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+	end
 end
-TRP3_API.ui.listbox.displayDropDown = openDropDown;
 
 --- Setup a drop down menu for a clickable (Button ...)
-local function setupDropDownMenu(hasClickFrame, values, callback, space, addCancel, rightClick)
+function TRP3_API.ui.listbox.setupDropDownMenu(hasClickFrame, values, callback, _, _, rightClick)
 	hasClickFrame:SetScript("OnClick", function(_, button)
 		if (rightClick and button ~= "RightButton") or (not rightClick and button ~= "LeftButton") then return; end
-		openDropDown(hasClickFrame, values, callback, space, addCancel);
+		TRP3_API.ui.listbox.displayDropDown(hasClickFrame, values, callback);
 	end);
 end
-TRP3_API.ui.listbox.setupDropDownMenu = setupDropDownMenu;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- ListBox tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function listBoxSetSelected(self, index)
-	assert(self and self.values, "Badly initialized listbox");
-	assert(self.values[index], "Array index out of bound");
-	_G[self:GetName().."Text"]:SetText(self.values[index][1]);
-	self.selectedValue = self.values[index][2];
-	if self.callback then
-		self.callback(self.values[index][2], self);
-	end
-end
-
-local function listBoxSetSelectedValue(self, value)
-	assert(self and self.values, "Badly initialized listbox");
-	for index, tab in pairs(self.values) do
-		local val = tab[2];
-		if val == value then
-			listBoxSetSelected(self, index);
-			break;
-		end
-	end
-end
-
-local function listBoxGetValue(self)
-	return self.selectedValue;
-end
-
 -- Setup a ListBox. When the player choose a value, it triggers the function passing the value of the selected element
-local function setupListBox(listBox, values, callback, defaultText, boxWidth, addCancel)
-	assert(listBox and values, "Invalid arguments");
-	assert(_G[listBox:GetName().."Button"], "Invalid arguments: listbox doesn't have a button");
-	boxWidth = boxWidth or 115;
-	listBox.values = values;
-	listBox.callback = callback;
-	local listCallback = function(value)
-		for _, tab in pairs(values) do
-			local text = tab[1];
-			local val = tab[2];
-			if val == value then
-				_G[listBox:GetName().."Text"]:SetText(text);
+function TRP3_API.ui.listbox.setupListBox(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth)
+	local function IsSelectedElement(elementData)
+		local value = elementData[2];
+		return dropdown.selectedValue == value;
+	end
+
+	local function SetSelectedElement(elementData)
+		local value = elementData[2];
+		dropdown:SetSelectedValue(value);
+	end
+
+	local function GenerateMenuDescription(menuItems, menuDescription)
+		for _, elementData in ipairs(menuItems) do
+			local text, value, tooltipText = unpack(elementData, 1, 3);
+			local elementDescription;
+
+			if text == nil or text == "" then
+				elementDescription = menuDescription:CreateDivider();
+			elseif value == nil then
+				elementDescription = menuDescription:CreateTitle(text);
+			elseif type(value) ~= "table" then
+				elementDescription = menuDescription:CreateRadio(text, IsSelectedElement, SetSelectedElement, elementData);
+			else
+				elementDescription = menuDescription:CreateButton(text);
+			end
+
+			if tooltipText ~= nil and tooltipText ~= "" then
+				TRP3_MenuUtil.SetElementTooltip(elementDescription, tooltipText);
+			end
+
+			if type(value) == "table" then
+				GenerateMenuDescription(value, elementDescription);
 			end
 		end
-		if callback then
-			callback(value, listBox);
-		end
-	end;
-
-	setupDropDownMenu(_G[listBox:GetName().."Button"], values, listCallback, boxWidth, addCancel, false);
-
-	listBox.SetSelectedIndex = listBoxSetSelected;
-	listBox.GetSelectedValue = listBoxGetValue;
-	listBox.SetSelectedValue = listBoxSetSelectedValue;
-
-	if defaultText then
-		_G[listBox:GetName().."Text"]:SetText(defaultText);
 	end
-	_G[listBox:GetName().."Middle"]:SetWidth(boxWidth);
-	_G[listBox:GetName().."Text"]:SetWidth(boxWidth-20);
-	listBox:SetWidth(boxWidth+50);
+
+	local function GenerateRootMenuDescription(_, rootDescription)
+		if dropdownWidth then
+			rootDescription:SetMinimumWidth(dropdownWidth);
+		end
+
+		GenerateMenuDescription(rootMenuItems, rootDescription);
+	end
+
+	function dropdown:GetSelectedValue()
+		return self.selectedValue;
+	end
+
+	function dropdown:SetSelectedValue(value)
+		self.selectedValue = value;
+		self:Update();
+
+		if onClickFunction then
+			securecallfunction(onClickFunction, value, dropdown);
+		end
+	end
+
+	function dropdown:SetSelectedIndex(index)
+		local value = rootMenuItems[index] and rootMenuItems[index][2] or nil;
+		self:SetSelectedValue(value);
+	end
+
+	dropdown:SetDefaultText(defaultText or loc.CM_UNKNOWN);
+	dropdown:SetupMenu(GenerateRootMenuDescription);
 end
-TRP3_API.ui.listbox.setupListBox = setupListBox;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List tools
@@ -1012,7 +976,9 @@ local function onContainerTagClicked(button, frame, isP)
 		tinsert(values, {loc.CM_CENTER, 1});
 		tinsert(values, {loc.CM_RIGHT, 2});
 	end
-	openDropDown(button, values, function(alignIndex, mouseButton) insertContainerTag(alignIndex, mouseButton, frame) end, 0, true);
+	TRP3_API.ui.listbox.displayDropDown(button, values, function(alignIndex, mouseButton)
+		insertContainerTag(alignIndex, mouseButton, frame);
+	end);
 end
 
 function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, parentPoint)

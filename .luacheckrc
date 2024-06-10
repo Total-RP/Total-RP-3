@@ -89,25 +89,6 @@ read_globals = {
 	"XRP_NT",
 	"XRP_RA",
 	"XRP_RC",
-
-	-- MSA-DropDownMenu-1.0
-	"MSA_CloseDropDownMenus",
-	"MSA_DropDownMenu_AddButton",
-	"MSA_DropDownMenu_AddSeparator",
-	"MSA_DropDownMenu_Create",
-	"MSA_DropDownMenu_CreateInfo",
-	"MSA_DROPDOWNMENU_INIT_MENU",
-	"MSA_DropDownMenu_Initialize",
-	"MSA_DROPDOWNMENU_MENU_LEVEL",
-	"MSA_DROPDOWNMENU_MENU_VALUE",
-	"MSA_DROPDOWNMENU_OPEN_MENU",
-	"MSA_DropDownMenu_RefreshAll",
-	"MSA_DropDownMenu_SetInitializeFunction",
-	"MSA_DropDownMenu_SetSelectedValue",
-	"MSA_DropDownMenu_SetText",
-	"MSA_DropDownMenu_SetWidth",
-	"MSA_HideDropDownMenu",
-	"MSA_ToggleDropDownMenu",
 };
 
 std = "lua51+wow";
@@ -413,6 +394,27 @@ stds.wow = {
 			},
 		},
 
+		Menu = {
+			fields = {
+				"ModifyMenu",
+			},
+		},
+
+		MenuUtil = {
+			fields = {
+				"CreateButton",
+				"CreateCheckbox",
+				"CreateContextMenu",
+				"CreateDivider",
+				"CreateRadio",
+				"CreateTitle",
+				"GetElementText",
+				"HideTooltip",
+				"SetElementText",
+				"ShowTooltip",
+			},
+		},
+
 		ScrollUtil = {
 			fields = {
 				"AddManagedScrollBarVisibilityBehavior",
@@ -443,6 +445,7 @@ stds.wow = {
 		"CheckInteractDistance",
 		"Clamp",
 		"ClampedPercentageBetween",
+		"CloseDropDownMenus",
 		"CopyTable",
 		"CreateAndInitFromMixin",
 		"CreateAtlasMarkup",
@@ -455,6 +458,7 @@ stds.wow = {
 		"CreateTextureMarkup",
 		"CreateVector2D",
 		"DisableAddOn",
+		"DoesTemplateExist",
 		"EventRegistry",
 		"fastrandom",
 		"FCF_GetCurrentChatFrame",
@@ -567,8 +571,20 @@ stds.wow = {
 		"strcmputf8i",
 		"StringToBoolean",
 		"SwapChatChannelByLocalID",
+		"ToggleDropDownMenu",
 		"tostringall",
+		"UIDropDownMenu_AddButton",
+		"UIDropDownMenu_GetText",
 		"UIDROPDOWNMENU_INIT_MENU",
+		"UIDropDownMenu_Initialize",
+		"UIDropDownMenu_IsEnabled",
+		"UIDropDownMenu_RefreshAll",
+		"UIDropDownMenu_SetAnchor",
+		"UIDropDownMenu_SetDisplayMode",
+		"UIDropDownMenu_SetDropDownEnabled",
+		"UIDropDownMenu_SetInitializeFunction",
+		"UIDropDownMenu_SetText",
+		"UIDropDownMenu_SetWidth",
 		"UIPanelCloseButton_SetBorderAtlas",
 		"UnitAffectingCombat",
 		"UnitBattlePetLevel",
@@ -614,6 +630,7 @@ stds.wow = {
 			},
 		},
 
+		"BackdropTemplateMixin",
 		"BaseMapPoiPinMixin",
 		"CallbackRegistryMixin",
 		"ChatFrame1EditBox",
@@ -629,6 +646,8 @@ stds.wow = {
 		"GameTooltipText",
 		"GridLayoutMixin",
 		"MapCanvasDataProviderMixin",
+		"MenuInputContext",
+		"MenuResponse",
 		"ModelFrameMixin",
 		"NamePlateDriverFrame",
 		"SystemFont_LargeNamePlate",
@@ -747,6 +766,8 @@ stds.wow = {
 		"TOOLTIP_DEFAULT_COLOR",
 		"TOOLTIP_UNIT_LEVEL_TYPE",
 		"TRANSMOGRIFY_FONT_COLOR",
+		"UIDROPDOWNMENU_DEFAULT_WIDTH_PADDING",
+		"UIDROPDOWNMENU_OPEN_MENU",
 		"UNIT_TYPE_LEVEL_TEMPLATE",
 		"UNITNAME_TITLE_CHARM",
 		"UNITNAME_TITLE_COMPANION",

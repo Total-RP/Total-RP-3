@@ -36,17 +36,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame parentKey="Actions" name="$parentActions" inherits="TRP3_DropDownMenuTemplate">
+			<Frame parentKey="Actions" inherits="TRP3_DropdownButtonTemplate">
 				<Size x="250" y="32"/>
 				<Anchors>
-					<Anchor point="LEFT" x="5"/>
+					<Anchor point="LEFT" x="18"/>
 					<Anchor point="TOP" relativeKey="$parent.HelpText" relativePoint="BOTTOM" y="-20"/>
 				</Anchors>
 			</Frame>
-			<Frame parentKey="Profiles" name="$parentProfiles" inherits="TRP3_DropDownMenuTemplate">
-				<Size x="130" y="32"/>
+			<Frame parentKey="Profiles" inherits="TRP3_DropdownButtonTemplate">
+				<Size x="170" y="32"/>
 				<Anchors>
-					<Anchor point="RIGHT" x="-5"/>
+					<Anchor point="RIGHT" x="-18"/>
 					<Anchor point="TOP" relativeKey="$parent.HelpText" relativePoint="BOTTOM" y="-20"/>
 				</Anchors>
 			</Frame>

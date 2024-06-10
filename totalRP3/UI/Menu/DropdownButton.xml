@@ -1,0 +1,29 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="DropdownButton_Shared.lua"/>
+	<Include file="DropdownButton_Legacy.lua"/>
+	<Include file="DropdownButton_Modern.lua"/>
+
+	<Frame name="TRP3_DropdownButtonTemplate" mixin="TRP3_DropdownButtonMixin" virtual="true">
+		<Size x="120" y="32"/>
+		<KeyValues>
+			<KeyValue key="menuPoint" type="global" value="TRP3_DROPDOWN_MENU_POINT"/>
+			<KeyValue key="menuPointX" type="global" value="TRP3_DROPDOWN_MENU_OFFSET_X"/>
+			<KeyValue key="menuPointY" type="global" value="TRP3_DROPDOWN_MENU_OFFSET_Y"/>
+			<KeyValue key="menuRelativePoint" type="global" value="TRP3_DROPDOWN_MENU_RELATIVE_POINT"/>
+		</KeyValues>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+			<OnHide method="OnHide"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<OnMouseDown method="OnMouseDown" autoEnableInput="false"/>
+			<OnMouseUp method="OnMouseUp" autoEnableInput="false"/>
+		</Scripts>
+	</Frame>
+</Ui>
