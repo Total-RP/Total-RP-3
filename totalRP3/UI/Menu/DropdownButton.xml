@@ -20,8 +20,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<OnLoad method="OnLoad"/>
 			<OnShow method="OnShow"/>
 			<OnHide method="OnHide"/>
-			<OnEnter method="OnEnter" autoEnableInput="false"/>
-			<OnLeave method="OnLeave" autoEnableInput="false"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
 			<OnMouseDown method="OnMouseDown" autoEnableInput="false"/>
 			<OnMouseUp method="OnMouseUp" autoEnableInput="false"/>
 		</Scripts>
