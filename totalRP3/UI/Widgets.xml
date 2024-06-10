@@ -312,11 +312,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<PushedTexture atlas="checkbox-minimal" useAtlasSize="true"/>
 		<CheckedTexture atlas="checkmark-minimal" useAtlasSize="true"/>
 		<DisabledCheckedTexture atlas="checkmark-minimal-disabled" useAtlasSize="true"/>
-		<ButtonText parentKey="Text" inherits="GameFontNormalSmall">
+		<ButtonText parentKey="Text">
 			<Anchors>
 				<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0"/>
 			</Anchors>
 		</ButtonText>
+		<NormalFont style="GameFontNormalSmall"/>
+		<DisabledFont style="GameFontDisableSmall"/>
 		<Scripts>
 			<OnEnter function="TRP3_RefreshTooltipForFrame"/>
 			<OnLeave function="TRP3_HideTooltipForFrame"/>

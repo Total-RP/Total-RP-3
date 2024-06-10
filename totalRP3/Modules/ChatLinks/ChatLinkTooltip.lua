@@ -32,8 +32,7 @@ function TRP3_ChatLinkTooltipMixin:OnLoad()
 end
 
 function TRP3_ChatLinkTooltipMixin:SetTitleSize(fontSize)
-	local font, _, flag = self.TitleLine:GetFont();
-	self.TitleLine:SetFont(font, fontSize, flag);
+	TRP3_TooltipUtil.SetLineFontOptions(self, 1, fontSize);
 	self.TitleLine:SetWordWrap(false);
 
 	if self:IsVisible() then
