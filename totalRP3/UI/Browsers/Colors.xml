@@ -100,7 +100,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</ColorSelect>
 
 					<Button name="TRP3_ColorBrowserSelect" inherits="TRP3_CommonButton" text="[SELECT]">
-						<Size x="145" y="20"/>
+						<Size x="145" y="22"/>
 						<Anchors>
 							<Anchor point="BOTTOM" x="0" y="15"/>
 						</Anchors>
@@ -113,7 +113,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</EditBox>
 
 					<Button name="TRP3_ColorBrowserPresets" inherits="TRP3_CommonButton" text="[PRESETS]">
-						<Size x="100" y="20"/>
+						<Size x="100" y="22"/>
 						<Anchors>
 							<Anchor point="TOPRIGHT" relativeTo="TRP3_ColorBrowserColor" relativePoint="BOTTOMRIGHT" />
 						</Anchors>

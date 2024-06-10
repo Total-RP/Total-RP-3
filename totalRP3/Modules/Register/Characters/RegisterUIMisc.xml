@@ -271,7 +271,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</Button>
 			<Button name="$parentApply" inherits="TRP3_CommonButton">
-				<Size x="100" y="20"/>
+				<Size x="100" y="22"/>
 				<Anchors>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>

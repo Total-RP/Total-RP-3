@@ -116,7 +116,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Layers>
 						<Frames>
 							<Button name="TRP3_RegisterDefaultViewCreateProfile" inherits="TRP3_CommonButton">
-								<Size x="150" y="20"/>
+								<Size x="150" y="22"/>
 								<Anchors>
 									<Anchor point="TOP" relativePoint="CENTER" y="-10"/>
 								</Anchors>

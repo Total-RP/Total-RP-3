@@ -57,7 +57,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Common red Wow button template  -->
 	<Button name="TRP3_CommonButton" inherits="UIPanelButtonTemplate" virtual="true">
-		<Size x="90" y="20"/>
+		<Size x="90" y="22"/>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
