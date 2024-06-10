@@ -26,7 +26,6 @@ local getUnitID = TRP3_API.utils.str.getUnitID;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 local CONFIG_UI_SOUNDS = "ui_sounds";
-local CONFIG_UI_ANIMATIONS = "ui_animations";
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Frame utils
@@ -1060,21 +1059,13 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function playAnimation(animationGroup, callback)
-	if getConfigValue and getConfigValue(CONFIG_UI_ANIMATIONS) and animationGroup then
-		animationGroup:Stop();
-		animationGroup:Play();
-		if callback then
-			animationGroup:SetScript("OnFinished", callback)
-		end
-	elseif callback then
-		callback();
+	animationGroup:Stop();
+	animationGroup:Play();
+	if callback then
+		animationGroup:SetScript("OnFinished", callback)
 	end
 end
 TRP3_API.ui.misc.playAnimation = playAnimation;
-
-function TRP3_API.ui.misc.shouldPlayUIAnimation()
-	return getConfigValue and getConfigValue(CONFIG_UI_ANIMATIONS);
-end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Hovered frames
