@@ -95,9 +95,10 @@ function TRP3_Launcher:OnTooltipShow(tooltip)
 	for _, binding in ipairs(bindings) do
 		local actionID = self.bindings[binding];
 		local action = self.actions[actionID];
-		local instruction = TRP3_API.FormatShortcutWithInstruction(binding, action.name);
-
-		tooltip:AddLine(instruction);
+		if action then
+			local instruction = TRP3_API.FormatShortcutWithInstruction(binding, action.name);
+			tooltip:AddLine(instruction);
+		end
 	end
 
 	local owner = tooltip:GetOwner();
