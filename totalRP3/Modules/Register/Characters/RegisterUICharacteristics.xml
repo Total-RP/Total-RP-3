@@ -423,7 +423,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 					</Frame>
 					<Button name="TRP3_RegisterCharact_NamePanel_EditButton" inherits="TRP3_CommonButton">
-						<Size x="75" y="20"/>
+						<Size x="75" y="22"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" y="-5"/>
 						</Anchors>
@@ -535,13 +535,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 					</Button>
 					<Button name="TRP3_RegisterCharact_NamePanel_Edit_SaveButton" inherits="TRP3_CommonButton">
-						<Size x="75" y="20"/>
+						<Size x="75" y="22"/>
 						<Anchors>
-							<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="20"/>
+							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" y="-5"/>
 						</Anchors>
 					</Button>
 					<Button name="TRP3_RegisterCharact_NamePanel_Edit_CancelButton" inherits="TRP3_CommonButton">
-						<Size x="75" y="20"/>
+						<Size x="75" y="22"/>
 						<Anchors>
 							<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_NamePanel_Edit_SaveButton"/>
 						</Anchors>
@@ -710,10 +710,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 										</Anchors>
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_MiscAdd" inherits="TRP3_CommonButton">
-										<Size x="220" y="20"/>
+										<Size x="220" y="22"/>
 									</Button>
 									<Button name="TRP3_RegisterCharact_Edit_PsychoAdd" inherits="TRP3_CommonButton">
-										<Size x="220" y="20"/>
+										<Size x="220" y="22"/>
 									</Button>
 								</Frames>
 							</Frame>

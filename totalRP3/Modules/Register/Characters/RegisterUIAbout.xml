@@ -23,49 +23,49 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Layers>
 		<Frames>
 			<Button parentKey="h1" inherits="TRP3_CommonButton" text="H1">
-				<Size x="50" y="20"/>
+				<Size x="50" y="22"/>
 				<Anchors>
 					<Anchor point="LEFT" x="10"/>
 				</Anchors>
 			</Button>
 			<Button parentKey="h2" inherits="TRP3_CommonButton" text="H2">
-				<Size x="50" y="20"/>
+				<Size x="50" y="22"/>
 				<Anchors>
 					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.h1"/>
 				</Anchors>
 			</Button>
 			<Button parentKey="h3" inherits="TRP3_CommonButton" text="H3">
-				<Size x="50" y="20"/>
+				<Size x="50" y="22"/>
 				<Anchors>
 					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.h2"/>
 				</Anchors>
 			</Button>
 			<Button parentKey="p" inherits="TRP3_CommonButton" text="P">
-				<Size x="40" y="20"/>
+				<Size x="40" y="22"/>
 				<Anchors>
 					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.h3"/>
 				</Anchors>
 			</Button>
 			<Button parentKey="image" inherits="TRP3_CommonButton" text="[Image]">
-				<Size x="70" y="20"/>
+				<Size x="70" y="22"/>
 				<Anchors>
 					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.p"/>
 				</Anchors>
 			</Button>
 			<Button parentKey="icon" inherits="TRP3_CommonButton" text="[Icon]">
-				<Size x="70" y="20"/>
+				<Size x="70" y="22"/>
 				<Anchors>
 					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.image"/>
 				</Anchors>
 			</Button>
 			<Button parentKey="color" inherits="TRP3_CommonButton" text="[Color]">
-				<Size x="70" y="20"/>
+				<Size x="70" y="22"/>
 				<Anchors>
 					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.icon"/>
 				</Anchors>
 			</Button>
 			<Button parentKey="link" inherits="TRP3_CommonButton" text="[Link]">
-				<Size x="0" y="20"/>
+				<Size x="0" y="22"/>
 				<Anchors>
 					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.color"/>
 					<Anchor point="RIGHT" x="-5" y="0"/>
@@ -158,7 +158,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 			</Button>
 			<Button name="$parentDelete" inherits="TRP3_CommonButton" text="[DELETE]">
-				<Size x="100" y="20"/>
+				<Size x="100" y="22"/>
 				<Anchors>
 					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentDown" x="-10" y="0"/>
 				</Anchors>
@@ -206,13 +206,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Frame name="TRP3_RegisterAbout_AboutPanel_Edit" setAllPoints="true">
 				<Frames>
 					<Button name="TRP3_RegisterAbout_Edit_SaveButton" inherits="TRP3_CommonButton">
-						<Size x="75" y="20"/>
+						<Size x="75" y="22"/>
 						<Anchors>
 							<Anchor point="TOPRIGHT" x="-15" y="-10"/>
 						</Anchors>
 					</Button>
 					<Button name="TRP3_RegisterAbout_Edit_CancelButton" inherits="TRP3_CommonButton">
-						<Size x="75" y="20"/>
+						<Size x="75" y="22"/>
 						<Anchors>
 							<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_SaveButton"/>
 						</Anchors>
@@ -224,7 +224,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 						<Frames>
 							<Button name="TRP3_RegisterAbout_Edit_Music_Action" inherits="TRP3_CommonButton">
-								<Size x="100" y="20"/>
+								<Size x="100" y="22"/>
 								<Anchors>
 									<Anchor point="TOPLEFT" x="15" y="-5"/>
 								</Anchors>
@@ -291,7 +291,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 						<Frames>
 							<Button name="TRP3_RegisterAbout_Edit_Template2_Add" inherits="TRP3_CommonButton">
-								<Size x="150" y="18"/>
+								<Size x="150" y="22"/>
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="0"/>
 								</Anchors>
@@ -507,7 +507,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</ScrollChild>
 						<Frames>
 							<Button name="TRP3_RegisterAbout_AboutPanel_EditButton" inherits="TRP3_CommonButton">
-								<Size x="70" y="20"/>
+								<Size x="70" y="22"/>
 								<Anchors>
 									<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 								</Anchors>
@@ -540,13 +540,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								</Layers>
 								<Frames>
 									<Button name="TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play" inherits="TRP3_CommonButton">
-										<Size x="70" y="20"/>
+										<Size x="70" y="22"/>
 										<Anchors>
 											<Anchor point="BOTTOMLEFT" x="20" y="10"/>
 										</Anchors>
 									</Button>
 									<Button name="TRP3_RegisterAbout_AboutPanel_MusicPlayer_Stop" inherits="TRP3_CommonButton">
-										<Size x="70" y="20"/>
+										<Size x="70" y="22"/>
 										<Anchors>
 											<Anchor point="BOTTOMRIGHT" x="-17" y="10"/>
 										</Anchors>
