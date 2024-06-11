@@ -221,7 +221,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Titled edit box, TRP2 style -->
 	<EditBox name="TRP3_TitledEditBox" letters="0" historyLines="10" autoFocus="false" virtual="true">
-		<Size x="100" y="18"/>
+		<Size x="100" y="20"/>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture parentKey="Left" atlas="common-search-border-left" useAtlasSize="false">
@@ -332,11 +332,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Frames>
 			<ScrollFrame parentKey="scroll" name="$parentScroll" inherits="ScrollFrameTemplate">
 				<KeyValues>
-					<KeyValue key="scrollBarTemplate" value="WowTrimScrollBar" type="string"/>
-					<KeyValue key="scrollBarX" value="-22" type="number"/>
-					<KeyValue key="scrollBarTopY" value="0" type="number"/>
-					<KeyValue key="scrollBarBottomY" value="-2" type="number"/>
-					<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
+					<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
+					<KeyValue key="scrollBarX" value="-12" type="number"/>
+					<KeyValue key="scrollBarTopY" value="-4" type="number"/>
+					<KeyValue key="scrollBarBottomY" value="4" type="number"/>
+					<KeyValue key="scrollBarHideIfUnscrollable" value="false" type="boolean"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPLEFT" x="8" y="-6"/>
@@ -379,65 +379,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Text area -->
 	<Frame name="TRP3_TextArea" inherits="TRP3_TextAreaBase" virtual="true" enableMouse="true">
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture file="Interface\DialogFrame\UI-DialogBox-Background" horizTile="true" vertTile="true">
-					<Anchors>
-						<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="3" y="-4"/>
-						<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-5" y="2"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer level="BORDER" textureSubLevel="1">
-				<Texture name="$parentInsetBotLeftCorner" inherits="UI-Frame-InnerBotLeftCorner" parentKey="InsetBorderBottomLeft">
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="2" y="0"/>
-					</Anchors>
-				</Texture>
-				<Texture name="$parentInsetBotRightCorner" inherits="UI-Frame-InnerBotRight" parentKey="InsetBorderBottomRight">
-					<Anchors>
-						<Anchor point="BOTTOMRIGHT" x="-3" y="0"/>
-					</Anchors>
-				</Texture>
-				<Texture name="$parentInsetTopLeftCorner" inherits="UI-Frame-InnerTopLeft" parentKey="InsetBorderTopLeft">
-					<Anchors>
-						<Anchor point="TOPLEFT" x="2" y="-3"/>
-					</Anchors>
-				</Texture>
-				<Texture name="$parentInsetTopRightCorner" inherits="UI-Frame-InnerTopRight" parentKey="InsetBorderTopmRight">
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-3" y="-3"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer level="BORDER">
-				<Texture name="$parentInsetBottomBorder" inherits="_UI-Frame-InnerBotTile" parentKey="InsetBorderBottom">
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" relativeKey="$parent.InsetBorderBottomLeft" relativePoint="BOTTOMRIGHT"/>
-						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.InsetBorderBottomRight" relativePoint="BOTTOMLEFT"/>
-					</Anchors>
-				</Texture>
-
-				<Texture name="$parentInsetLeftBorder" inherits="!UI-Frame-InnerLeftTile" parentKey="InsetBorderLeft">
-					<Anchors>
-						<Anchor point="TOPLEFT" x="2" y="-3"/>
-						<Anchor point="BOTTOMLEFT" relativeKey="$parent.InsetBorderBottomLeft" relativePoint="TOPLEFT"/>
-					</Anchors>
-				</Texture>
-				<Texture name="$parentInsetRightBorder" inherits="!UI-Frame-InnerRightTile" parentKey="InsetBorderRight">
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-3" y="-3"/>
-						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.InsetBorderBottomRight" relativePoint="TOPRIGHT"/>
-					</Anchors>
-				</Texture>
-				<Texture name="$parentInsetTopBorder" inherits="_UI-Frame-InnerTopTile" parentKey="InsetBorderBottom">
-					<Anchors>
-						<Anchor point="TOPLEFT" relativeKey="$parent.InsetBorderLeft" relativePoint="TOPLEFT"/>
-						<Anchor point="TOPRIGHT" relativeKey="$parent.InsetBorderRight" relativePoint="TOPRIGHT"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
+		<Frames>
+			<Frame parentKey="InsetFrame" inherits="InsetFrameTemplate3" setAllPoints="true" useParentLevel="true"/>
+		</Frames>
 	</Frame>
 
 	<!-- Color picker button -->

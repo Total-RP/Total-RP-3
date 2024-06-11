@@ -1013,8 +1013,8 @@ function TRP3_API.register.inits.aboutInit()
 		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_3_Text);
 		TRP3_RegisterAbout_Edit_Template3_Phys:SetHeight((containerHeight - 165) * 0.33);
 		TRP3_RegisterAbout_Edit_Template3_Psy:SetHeight((containerHeight - 165) * 0.33);
-		TRP3_RegisterAbout_Edit_Template1ScrollText:SetSize(containerwidth - 75, 5);
-		TRP3_RegisterAbout_Edit_Template2_Container:SetSize(containerwidth - 70, 5);
+		TRP3_RegisterAbout_Edit_Template1ScrollText:SetSize(containerwidth - 65, 5);
+		TRP3_RegisterAbout_Edit_Template2_Container:SetSize(containerwidth - 60, 5);
 		resizeTemplate3();
 		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template1);
 		for _, frame in pairs(template2Frames) do
@@ -1022,13 +1022,13 @@ function TRP3_API.register.inits.aboutInit()
 			resetHTMLText(_G[frame:GetName().."Text"]);
 		end
 		for _, frame in pairs(template2EditFrames) do
-			frame:SetHeight(containerHeight * 0.26);
-			_G[frame:GetName().."TextScrollText"]:SetWidth(containerwidth - 150);
+			frame:SetHeight(containerHeight * 0.45);
+			_G[frame:GetName().."TextScrollText"]:SetWidth(containerwidth - 180);
 		end
 		resizeTemplate2();
 
-		TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText:SetWidth(containerwidth - 290);
-		TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:SetWidth(containerwidth - 290);
-		TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:SetWidth(containerwidth - 290);
+		TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText:SetWidth(containerwidth - 200);
+		TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:SetWidth(containerwidth - 200);
+		TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:SetWidth(containerwidth - 200);
 	end);
 end

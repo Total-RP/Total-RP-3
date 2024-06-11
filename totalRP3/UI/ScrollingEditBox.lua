@@ -144,13 +144,15 @@ function TRP3_InsetScrollingEditBoxMixin:OnLoad()
 	TRP3_ScrollingEditBoxMixin.OnLoad(self);
 
 	local scrollBoxAnchorsWithBar = {
-		AnchorUtil.CreateAnchor("TOPLEFT", self, "TOPLEFT", 5, -5),
-		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self.ScrollBar, "BOTTOMLEFT", -5, 5),
+		AnchorUtil.CreateAnchor("TOPLEFT", self, "TOPLEFT", 8, -6),
+		AnchorUtil.CreateAnchor("BOTTOM", self, "BOTTOM", -8, 4),
+		AnchorUtil.CreateAnchor("RIGHT", self.ScrollBar, "LEFT", -8, 0),
 	};
 
 	local scrollBoxAnchorsWithoutBar = {
 		scrollBoxAnchorsWithBar[1],
-		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self, "BOTTOMRIGHT", -5, 5),
+		scrollBoxAnchorsWithBar[2],
+		AnchorUtil.CreateAnchor("RIGHT", self, "RIGHT", -8, 0),
 	};
 
 	ScrollUtil.RegisterScrollBoxWithScrollBar(self.ScrollBox, self.ScrollBar);

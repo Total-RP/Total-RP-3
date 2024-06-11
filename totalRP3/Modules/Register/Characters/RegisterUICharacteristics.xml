@@ -320,7 +320,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Button>
 
 			<EditBox name="$parentLeftField" parentKey="CustomLeftField" inherits="TRP3_TitledEditBox">
-				<Size x="0" y="18"/>
+				<Size x="0" y="20"/>
 				<Anchors>
 					<Anchor point="RIGHT" relativeKey="$parent.CustomLeftIcon" relativePoint="LEFT" x="-12" y="0"/>
 					<Anchor point="LEFT" relativeKey="$parent.CustomLeftColor" relativePoint="RIGHT" x="12" y="0"/>
@@ -330,7 +330,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</KeyValues>
 			</EditBox>
 			<EditBox name="$parentRightField" parentKey="CustomRightField" inherits="TRP3_TitledEditBox">
-				<Size x="0" y="18"/>
+				<Size x="0" y="20"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeKey="$parent.CustomRightIcon" relativePoint="RIGHT" x="12" y="0"/>
 					<Anchor point="RIGHT" relativeKey="$parent.CustomRightColor" relativePoint="LEFT" x="-12" y="0"/>

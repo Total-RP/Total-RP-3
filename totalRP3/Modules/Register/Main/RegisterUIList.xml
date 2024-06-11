@@ -361,13 +361,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 						<Frames>
 							<EditBox name="TRP3_RegisterListFilterCharactName" parentKey="Name" inherits="TRP3_TitledEditBox">
-								<Size x="125" y="18" />
+								<Size x="125" y="20" />
 								<Anchors>
 									<Anchor point="LEFT" x="25" y="0" />
 								</Anchors>
 							</EditBox>
 							<EditBox name="TRP3_RegisterListFilterCharactGuild" parentKey="Guild" inherits="TRP3_TitledEditBox">
-								<Size x="125" y="18" />
+								<Size x="125" y="20" />
 								<Anchors>
 									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterListFilterCharactName" />
 								</Anchors>
@@ -402,19 +402,19 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 						<Frames>
 							<EditBox name="TRP3_RegisterListPetFilterName" parentKey="Name" inherits="TRP3_TitledEditBox">
-								<Size x="125" y="18" />
+								<Size x="125" y="20" />
 								<Anchors>
 									<Anchor point="LEFT" x="25" y="0" />
 								</Anchors>
 							</EditBox>
 							<EditBox name="TRP3_RegisterListPetFilterType" parentKey="Type" inherits="TRP3_TitledEditBox">
-								<Size x="125" y="18" />
+								<Size x="125" y="20" />
 								<Anchors>
 									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterListPetFilterName" />
 								</Anchors>
 							</EditBox>
 							<EditBox name="TRP3_RegisterListPetFilterMaster" parentKey="Master" inherits="TRP3_TitledEditBox">
-								<Size x="125" y="18" />
+								<Size x="125" y="20" />
 								<Anchors>
 									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterListPetFilterType" />
 								</Anchors>

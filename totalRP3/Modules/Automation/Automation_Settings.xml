@@ -68,7 +68,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<OnLeave method="OnLeave"/>
 				</Scripts>
 			</EventButton>
-			<Frame parentKey="Editor" parentArray="editorFrames" inherits="TooltipBackdropTemplate">
+			<Frame parentKey="Editor" parentArray="editorFrames">
 				<Size y="200"/>
 				<KeyValues>
 					<KeyValue key="backdropColor" value="BLACK_FONT_COLOR" type="global"/>
@@ -81,11 +81,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="BOTTOM" relativeKey="$parent.SaveButton" relativePoint="TOP" y="10"/>
 				</Anchors>
 				<Frames>
+					<Frame parentKey="InsetFrame" inherits="InsetFrameTemplate3" setAllPoints="true" useParentLevel="true"/>
 					<Frame parentKey="ScrollFrame" inherits="ScrollingEditBoxTemplate"/>
-					<EventFrame parentKey="ScrollBar" inherits="WowTrimScrollBar">
+					<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
 						<Anchors>
-							<Anchor point="TOPRIGHT" x="-4" y="-4"/>
-							<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+							<Anchor point="TOPRIGHT" x="-12" y="-8"/>
+							<Anchor point="BOTTOMRIGHT" x="-12" y="8"/>
 						</Anchors>
 					</EventFrame>
 					<Frame parentKey="FocusRegion" inherits="TRP3_FocusRegionTemplate" setAllPoints="true">
