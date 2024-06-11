@@ -83,8 +83,8 @@ local function rebuildMenu()
 
 			if menuStructure.isChildOf then
 				button:SetJustifyH(menuStructure.align or "RIGHT");
-				button:SetDisabledFontObject(GameFontHighlight);
-				button:SetNormalFontObject(GameFontHighlight);
+				button:SetDisabledFontObject(GameFontHighlightSmall);
+				button:SetNormalFontObject(GameFontHighlightSmall);
 				button:SetPoint("LEFT", 30, y);
 				button:SetPoint("RIGHT", -15, y);
 
