@@ -240,7 +240,7 @@ local function buildConfigurationPage(structure)
 			local Label = MinimalSliderWithSteppersMixin.Label;
 
 			local control = widget.Slider;
-			element.controller = control;
+			element.controller = widget;
 			local minValue = element.min or 0;
 			local maxValue = element.max or 100;
 			local value = tonumber(getValue(element.configKey)) or minValue;
@@ -260,12 +260,8 @@ local function buildConfigurationPage(structure)
 				end
 			end
 
-			function control:IsEnabled()
-				return control.Slider:IsEnabled();
-			end
-
-			function control:SetEnabled(enabled)
-				control.Slider:SetEnabled(enabled);
+			function widget:SetEnabled(enabled)
+				control:SetEnabled_(enabled);
 			end
 
 			control:RegisterCallback("OnValueChanged", OnValueChanged);
