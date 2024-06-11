@@ -81,7 +81,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Frame name="TRP3_ConfigEditBox" inherits="TRP3_ConfigNote" virtual="true">
 		<Frames>
 			<EditBox parentKey="EditBox" inherits="TRP3_TitledEditBox">
-				<Size x="140" y="18"/>
+				<Size x="140" y="20"/>
 				<Anchors>
 					<Anchor point="RIGHT" x="-10"/>
 				</Anchors>

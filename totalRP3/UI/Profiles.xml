@@ -201,7 +201,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 					</Button>
 					<EditBox name="$parentSearch" inherits="TRP3_TitledEditBox">
-						<Size x="125" y="18"/>
+						<Size x="125" y="20"/>
 						<Anchors>
 							<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeTo="$parentList" x="10" y="5"/>
 						</Anchors>

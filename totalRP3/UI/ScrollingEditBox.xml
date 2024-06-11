@@ -25,11 +25,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_InsetScrollingEditBoxTemplate" mixin="TRP3_InsetScrollingEditBoxMixin" inherits="TRP3_ScrollingEditBoxTemplate" virtual="true">
 		<Frames>
-			<Frame parentKey="InsetFrame" inherits="InsetFrameTemplate" setAllPoints="true" useParentLevel="true"/>
-			<EventFrame parentKey="ScrollBar" inherits="WowTrimScrollBar">
+			<Frame parentKey="InsetFrame" inherits="InsetFrameTemplate3" setAllPoints="true" useParentLevel="true"/>
+			<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
 				<Anchors>
-					<Anchor point="TOPRIGHT"/>
-					<Anchor point="BOTTOMRIGHT"/>
+					<Anchor point="TOPRIGHT" x="-12" y="-8"/>
+					<Anchor point="BOTTOMRIGHT" x="-12" y="8"/>
 				</Anchors>
 			</EventFrame>
 		</Frames>
