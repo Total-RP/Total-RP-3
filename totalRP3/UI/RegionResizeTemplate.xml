@@ -1,0 +1,66 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="RegionResizeTemplate.lua"/>
+
+	<Frame name="TRP3_RegionResizeTemplate" mixin="TRP3_RegionResizeMixin" virtual="true">
+		<KeyValues>
+			<!--
+				This template supports the following KeyValues.
+
+				Controls the way regions are resized, defaulting to Fill.
+
+				<KeyValue key="resizeMode" value="TRP3_RegionResizeMode.Fill" type="global"/>
+
+				Overrides the size detection for this container frame to
+				use these dimensions instead of those returned by GetSize.
+
+				<KeyValue key="fixedWidth" value="0" type="number"/>
+				<KeyValue key="fixedHeight" value="0" type="number"/>
+
+				Subtracts a relative amount of each dimension from the
+				calculated container size.
+
+				<KeyValue key="paddingWidth" value="0" type="number"/>
+				<KeyValue key="paddingHeight" value="0" type="number"/>
+
+				============================================================
+
+				Child regions support the following KeyValues.
+
+				Additional width and height to add to the calculated region
+				size after resizing has been applied.
+
+				<KeyValue key="extraWidth" value="0" type="number"/>
+				<KeyValue key="extraHeight" value="0" type="number"/>
+
+				Minimum and maximum sizes that the region can be resized to
+				in either dimension. The minimum bound might be useful if
+				you'd rather an asset crop at small dimensions.
+
+				<KeyValue key="minWidth" value="0" type="number"/>
+				<KeyValue key="minHeight" value="0" type="number"/>
+				<KeyValue key="maxWidth" value="0" type="number"/>
+				<KeyValue key="maxHeight" value="0" type="number"/>
+
+				If a child region should not be resized, the following can
+				be used to omit it from automatic selection.
+
+				<KeyValue key="ignoreForResize" value="true" type="boolean"/>
+			-->
+
+			<KeyValue key="resizeMode" value="TRP3_RegionResizeMode.Fill" type="global"/>
+			<!-- <KeyValue key="fixedWidth" value="0" type="number"/> -->
+			<!-- <KeyValue key="fixedHeight" value="0" type="number"/> -->
+			<!-- <KeyValue key="paddingWidth" value="0" type="number"/> -->
+			<!-- <KeyValue key="paddingHeight" value="0" type="number"/> -->
+		</KeyValues>
+		<Scripts>
+			<OnShow method="OnShow"/>
+			<OnSizeChanged method="OnSizeChanged"/>
+		</Scripts>
+	</Frame>
+</Ui>

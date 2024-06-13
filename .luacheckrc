@@ -513,6 +513,7 @@ stds.wow = {
 		"GetZoneText",
 		"hooksecurefunc",
 		"InCombatLockdown",
+		"ipairs_reverse",
 		"IsAltKeyDown",
 		"IsChatAFK",
 		"IsChatDND",
