@@ -30,8 +30,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Texture parentKey="MiddleActive" atlas="_uiframe-activetab-center" useAtlasSize="false" horizTile="true" rotation="180">
 					<Size x="1" y="32"/>
 					<Anchors>
-						<Anchor point="LEFT" relativeKey="$parent.RightActive" relativePoint="RIGHT"/>
-						<Anchor point="RIGHT" relativeKey="$parent.LeftActive" relativePoint="LEFT"/>
+						<Anchor point="TOPLEFT" relativeKey="$parent.RightActive" relativePoint="TOPRIGHT"/>
+						<Anchor point="TOPRIGHT" relativeKey="$parent.LeftActive" relativePoint="TOPLEFT"/>
 					</Anchors>
 				</Texture>
 				<Texture parentKey="Left" atlas="uiframe-tab-left" useAtlasSize="false" rotation="180">
@@ -49,8 +49,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Texture parentKey="Middle" atlas="_uiframe-tab-center" useAtlasSize="false" horizTile="true" rotation="180">
 					<Size x="1" y="28"/>
 					<Anchors>
-						<Anchor point="LEFT" relativeKey="$parent.Right" relativePoint="RIGHT"/>
-						<Anchor point="RIGHT" relativeKey="$parent.Left" relativePoint="LEFT"/>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Right" relativePoint="TOPRIGHT"/>
+						<Anchor point="TOPRIGHT" relativeKey="$parent.Left" relativePoint="TOPLEFT"/>
 					</Anchors>
 				</Texture>
 			</Layer>
@@ -64,8 +64,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Texture parentKey="MiddleHighlight" atlas="_uiframe-tab-center" useAtlasSize="false" horizTile="true" alphaMode="ADD" alpha="0.4" rotation="180">
 					<Size x="1" y="28"/>
 					<Anchors>
-						<Anchor point="LEFT" relativeKey="$parent.Middle" relativePoint="LEFT"/>
-						<Anchor point="RIGHT" relativeKey="$parent.Middle" relativePoint="RIGHT"/>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Middle" relativePoint="TOPLEFT"/>
+						<Anchor point="TOPRIGHT" relativeKey="$parent.Middle" relativePoint="TOPRIGHT"/>
 					</Anchors>
 				</Texture>
 				<Texture parentKey="RightHighlight" atlas="uiframe-tab-right" useAtlasSize="false" alphaMode="ADD" alpha="0.4" rotation="180">
