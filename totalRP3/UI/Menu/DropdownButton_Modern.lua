@@ -90,3 +90,7 @@ end
 function TRP3_DropdownButtonMixin:OverrideText(text)
 	self.Button:OverrideText(text);
 end
+
+function TRP3_DropdownButtonMixin:HandlesGlobalMouseEvent(buttonName, event)
+	return event == "GLOBAL_MOUSE_DOWN" and buttonName == "LeftButton";
+end
