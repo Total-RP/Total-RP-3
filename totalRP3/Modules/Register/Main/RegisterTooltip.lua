@@ -1194,7 +1194,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 			if getConfigValue(ConfigKeys.CROP_TEXT) then
 				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
 			end
-			tooltipCompanionBuilder:AddLine(fullTitle, colors.TITLE, getSubLineFontSize());
+			tooltipCompanionBuilder:AddLine(fullTitle, colors.TITLE, getSubLineFontSize(), true);
 		end
 	end
 
