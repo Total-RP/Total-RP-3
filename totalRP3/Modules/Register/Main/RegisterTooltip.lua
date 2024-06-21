@@ -768,7 +768,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 			---@type Player
 			local targetTarget = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetTargetID)
 			local _, targetEnglishClass = UnitClass(targetType .. "target");
-			local unitType = TRP3_API.ui.misc.getTargetType("target");
+			local unitType = TRP3_API.ui.misc.getTargetType(targetType .. "target");
 
 			local targetClassColor;
 			if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.BATTLE_PET or unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
