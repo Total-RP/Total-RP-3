@@ -765,9 +765,6 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		local name = UnitName(targetType .. "target");
 		local targetTargetID = getUnitID(targetType .. "target");
 		if targetTargetID then
-			---@type Player
-			local targetTarget = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetTargetID)
-			local _, targetEnglishClass = UnitClass(targetType .. "target");
 			local unitType = TRP3_API.ui.misc.getTargetType(targetType .. "target");
 
 			local targetClassColor;
@@ -791,6 +788,9 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 					name = profile.data.NA;
 				end
 			else
+				---@type Player
+				local targetTarget = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetTargetID)
+				local _, targetEnglishClass = UnitClass(targetType .. "target");
 				local targetInfo = getCharacterInfoTab(targetTargetID);
 				targetClassColor = targetEnglishClass and TRP3_API.GetClassDisplayColor(targetEnglishClass) or TRP3_API.Colors.White;
 
