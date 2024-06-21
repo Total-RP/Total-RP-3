@@ -768,14 +768,38 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 			---@type Player
 			local targetTarget = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetTargetID)
 			local _, targetEnglishClass = UnitClass(targetType .. "target");
-			local targetInfo = getCharacterInfoTab(targetTargetID);
-			local targetClassColor = targetEnglishClass and TRP3_API.GetClassDisplayColor(targetEnglishClass) or TRP3_API.CreateColor(1, 1, 1, 1);
+			local unitType = TRP3_API.ui.misc.getTargetType("target");
 
-			if getConfigValue(ConfigKeys.CHARACT_COLOR) then
-				targetClassColor = targetTarget:GetCustomColorForDisplay() or targetClassColor;
+			local targetClassColor;
+			if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.BATTLE_PET or unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
+				local owner, companionID = TRP3_API.utils.str.companionIDToInfo(targetTargetID);
+				targetClassColor = TRP3_API.Colors.White;
+
+				local profile;
+				if owner == TRP3_API.globals.player_id then
+					profile = TRP3_API.companions.player.getCompanionProfile(companionID);
+				else
+					profile = TRP3_API.companions.register.getCompanionProfile(targetTargetID);
+				end
+
+				if profile and profile.data then
+					if getConfigValue(ConfigKeys.CHARACT_COLOR) then
+						targetClassColor = profile.data.NH and TRP3_API.CreateColorFromHexString(profile.data.NH) or targetClassColor;
+						targetClassColor = TRP3_API.GenerateReadableColor(targetClassColor, TRP3_ReadabilityOptions.TextOnBlackBackground);
+					end
+
+					name = profile.data.NA;
+				end
+			else
+				local targetInfo = getCharacterInfoTab(targetTargetID);
+				targetClassColor = targetEnglishClass and TRP3_API.GetClassDisplayColor(targetEnglishClass) or TRP3_API.Colors.White;
+
+				if getConfigValue(ConfigKeys.CHARACT_COLOR) then
+					targetClassColor = targetTarget:GetCustomColorForDisplay() or targetClassColor;
+				end
+
+				name = getCompleteName(targetInfo.characteristics or {}, name, true);
 			end
-
-			name = getCompleteName(targetInfo.characteristics or {}, name, true);
 
 			if getConfigValue(ConfigKeys.CROP_TEXT) then
 				name = crop(name, FIELDS_TO_CROP.NAME);
