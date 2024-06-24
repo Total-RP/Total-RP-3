@@ -343,6 +343,8 @@ TRP3_API.module.registerModule({
 	onStart = function() UnitPopupsModule:OnModuleEnable(); end,
 });
 
+TRP3_UnitPopupsModule = UnitPopupsModule;
+
 --
 -- Configuration Data
 --
