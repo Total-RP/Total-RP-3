@@ -110,6 +110,7 @@ local function onEditStyle(choice, frame)
 			-- version increment
 			assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 			dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
+			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
 		end
 	end
 end
