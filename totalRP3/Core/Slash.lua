@@ -177,11 +177,14 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			return;
 		end
 
+		local player = AddOn_TotalRP3.Player.CreateFromCharacterID(sender);
+		local characterName = player:GenerateFormattedName(TRP3_PlayerNameFormat.Colored);
+
 		if arg.c and arg.d and arg.t then
 			local modifierString = (arg.m == 0) and "" or format("%+d", arg.m); -- we add a + to positive modifiers and don't render a 0 value
-			Utils.message.displayMessage(loc.DICE_ROLL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), sender, arg.c, arg.d, modifierString, arg.t));
+			Utils.message.displayMessage(loc.DICE_ROLL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), characterName, arg.c, arg.d, modifierString, arg.t));
 		elseif arg.t then
-			local totalMessage = loc.DICE_TOTAL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), sender, arg.t);
+			local totalMessage = loc.DICE_TOTAL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), characterName, arg.t);
 			Utils.message.displayMessage(totalMessage);
 		end
 		Utils.music.playSoundID(36629, "SFX", sender);
