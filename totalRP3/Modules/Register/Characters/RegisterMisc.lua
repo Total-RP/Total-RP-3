@@ -456,7 +456,7 @@ function TRP3_API.register.inits.miscInit()
 	createTutorialStructure();
 
 	setupFieldSet(TRP3_RegisterMiscViewGlance, loc.REG_PLAYER_GLANCE, 150);
-	setupFieldSet(TRP3_RegisterMiscViewCurrently, loc.REG_PLAYER_CURRENT, 150);
+	setupFieldSet(TRP3_RegisterMiscViewCurrently, loc.REG_PLAYER_STATUS, 150);
 	TRP3_AtFirstGlanceEditorApply:SetText(loc.CM_APPLY);
 	TRP3_AtFirstGlanceEditorNameText:SetText(loc.REG_PLAYER_GLANCE_TITLE);
 	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc.REG_PLAYER_STYLE_EMPTY);

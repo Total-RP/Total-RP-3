@@ -702,7 +702,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 
 		if text ~= "" then
 			text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
-			tooltipBuilder:AddLine(loc.REG_PLAYER_CURRENT, colors.MAIN, getSubLineFontSize());
+			tooltipBuilder:AddLine(loc.DB_STATUS_CURRENTLY, colors.MAIN, getSubLineFontSize());
 			tooltipBuilder:AddLine(text, colors.SECONDARY, getSmallLineFontSize(), true);
 		end
 	end
