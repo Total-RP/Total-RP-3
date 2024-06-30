@@ -5,13 +5,6 @@
 local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
 
--- Lua imports
-local insert = table.insert;
-
--- WoW imports
-local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow;
-local ChatEdit_GetActiveWindow = ChatEdit_GetActiveWindow;
-
 -- Total RP 3 imports
 local ChatLink = TRP3_API.ChatLink;
 
@@ -60,7 +53,7 @@ function ChatLinkModule:GetActionButtons(linkData)
 	local actionButtons = {};
 	for _, actionButton in pairs(_private[self].actionButtons) do
 		if actionButton:IsVisible(linkData) then
-			insert(actionButtons, {
+			table.insert(actionButtons, {
 				command = actionButton:GetID(),
 				text = actionButton:GetText(),
 			})

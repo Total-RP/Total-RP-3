@@ -5,9 +5,6 @@
 local TRP3_API = select(2, ...);
 local Ellyb = TRP3_API.Ellyb;
 
--- Lua imports
-local tconcat = table.concat;
-
 -- Ellyb imports
 local Class = Ellyb.Class;
 
@@ -31,7 +28,7 @@ local SEGMENTS = {
 
 --- Returns the fully formatted localized text for this view.
 local function getLocalizedText()
-	return strhtml(tconcat(SEGMENTS, "\n"));
+	return strhtml(table.concat(SEGMENTS, "\n"));
 end
 
 --- Toggles a setting and displays a UI toast.

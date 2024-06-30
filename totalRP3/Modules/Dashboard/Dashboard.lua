@@ -18,7 +18,7 @@ local getProfiles = TRP3_API.profile.getProfiles;
 local Utils, Events, Globals = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.globals;
 local color = Utils.str.color;
 local playUISound = TRP3_API.ui.misc.playUISound;
-local refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.refresh, TRP3_MainTooltip;
+local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 local registerMenu, registerPage = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.page.registerPage;
 local setPage = TRP3_API.navigation.page.setPage;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
@@ -277,7 +277,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				end
 			end,
 			onLeave = function()
-				mainTooltip:Hide();
+				TRP3_MainTooltip:Hide();
 			end,
 			visible = 1
 		};
@@ -325,7 +325,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					end
 				end,
 				onLeave = function()
-					mainTooltip:Hide();
+					TRP3_MainTooltip:Hide();
 				end,
 			};
 			TRP3_API.toolbar.toolbarAddButton(Button_Helmet);
@@ -370,7 +370,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					end
 				end,
 				onLeave = function()
-					mainTooltip:Hide();
+					TRP3_MainTooltip:Hide();
 				end,
 			};
 			TRP3_API.toolbar.toolbarAddButton(Button_Cape);

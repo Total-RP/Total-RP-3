@@ -14,12 +14,8 @@ TRP3_API.navigation = {
 };
 
 -- imports
-local CreateFrame = CreateFrame;
 local loc = TRP3_API.loc;
 local playUISound = TRP3_API.ui.misc.playUISound;
-local TRP3_TutorialFrame, TRP3_TutorialTooltip, TRP3_MainTutorialButton = TRP3_TutorialFrame, TRP3_TutorialTooltip, TRP3_MainTutorialButton;
-local TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame = TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame;
-local assert, pairs, tinsert, table, error, type, _G = assert, pairs, tinsert, table, error, type, _G;
 local selectMenu, unregisterMenu;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

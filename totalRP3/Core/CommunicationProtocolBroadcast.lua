@@ -7,12 +7,6 @@ local _, TRP3_API = ...;
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 -- imports
-local GetChannelRosterInfo = GetChannelRosterInfo;
-local GetChannelDisplayInfo = GetChannelDisplayInfo;
-local GetChannelName = GetChannelName;
-local JoinChannelByName = JoinChannelByName;
-local RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix;
-local wipe, string, pairs, strsplit, assert, tinsert, type, tostring = wipe, string, pairs, strsplit, assert, tinsert, type, tostring;
 local Chomp = AddOn_Chomp;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
@@ -385,7 +379,7 @@ Comm.broadcast.init = function()
 	isIDIgnored = TRP3_API.register.isIDIgnored;
 
 	-- First, register prefix
-	RegisterAddonMessagePrefix(BROADCAST_HEADER);
+	C_ChatInfo.RegisterAddonMessagePrefix(BROADCAST_HEADER);
 
 	-- When we receive a broadcast or a P2P response
 	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_ADDON", onMessageReceived);

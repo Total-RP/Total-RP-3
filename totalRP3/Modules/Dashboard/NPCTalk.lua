@@ -6,13 +6,10 @@ local _, TRP3_API = ...;
 
 TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
-	local strconcat = strconcat;
 	local loc = TRP3_API.loc;
 	local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 	local setupMovableFrame = TRP3_API.ui.frame.setupMove;
 	local setupListBox = TRP3_API.ui.listbox.setupListBox;
-	local SendChatMessage = SendChatMessage;
-	local strtrim, pairs, tinsert = strtrim, pairs, tinsert;
 
 	local frame = TRP3_NPCTalkFrame;
 	---@type Button

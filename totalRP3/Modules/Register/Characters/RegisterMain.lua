@@ -27,14 +27,12 @@ local Config = TRP3_API.configuration;
 local registerConfigKey = Config.registerConfigKey;
 local getConfigValue = Config.getValue;
 local Events = TRP3_Addon.Events;
-local assert, tostring, wipe, pairs, tinsert = assert, tostring, wipe, pairs, tinsert;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 local getPlayerCurrentProfileID, isProfileNameAvailable, createProfile, selectProfile = TRP3_API.profile.getPlayerCurrentProfileID, TRP3_API.profile.isProfileNameAvailable, TRP3_API.profile.createProfile, TRP3_API.profile.selectProfile;
 local showCharacteristicsTab, showAboutTab, showMiscTab, showNotesTab;
 local get = TRP3_API.profile.getData;
-local type = type;
 local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
 local toast = TRP3_API.ui.tooltip.toast;
 

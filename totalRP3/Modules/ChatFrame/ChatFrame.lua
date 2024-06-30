@@ -12,11 +12,7 @@ local get = TRP3_API.profile.getData;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local getUnitIDCurrentProfile, getUnitRPName, getUnitRPFirstName, getUnitRPLastName = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.getUnitRPName, TRP3_API.register.getUnitRPFirstName, TRP3_API.register.getUnitRPLastName;
 local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
-local ChatEdit_GetActiveWindow, IsAltKeyDown = ChatEdit_GetActiveWindow, IsAltKeyDown;
 local handleCharacterMessage, hooking;
-local tContains = tContains;
-local assert = assert;
-local select = select;
 
 TRP3_API.chat = {};
 

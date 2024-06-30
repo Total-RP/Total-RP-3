@@ -16,12 +16,6 @@ TRP3_API.ui = {
 -- imports
 local globals = TRP3_API.globals;
 local loc = TRP3_API.loc;
-local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat;
-local math = math;
-local MouseIsOver, CreateFrame = MouseIsOver, CreateFrame;
-local TRP3_MainTooltip = TRP3_MainTooltip;
-local shiftDown = IsShiftKeyDown;
-local UnitIsPlayer = UnitIsPlayer;
 local getUnitID = TRP3_API.utils.str.getUnitID;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
@@ -699,7 +693,7 @@ function TRP3_API.ui.frame.setupEditBoxesNavigation(tabEditBoxes)
 	for index, editbox in pairs(tabEditBoxes) do
 		editbox:SetScript("OnTabPressed", function()
 			local cursor = index
-			if shiftDown() then
+			if IsShiftKeyDown() then
 				if cursor == minBound then
 					cursor = maxBound
 				else
@@ -969,7 +963,7 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 	end);
 	toolbar.color:SetScript("OnClick", function()
 		if toolbar.textFrame then
-			if shiftDown() or (getConfigValue and getConfigValue("default_color_picker")) then
+			if IsShiftKeyDown() or (getConfigValue and getConfigValue("default_color_picker")) then
 				TRP3_API.popup.showDefaultColorPicker({function(red, green, blue) onColorTagSelected(red, green, blue, toolbar.textFrame) end});
 			else
 				TRP3_API.popup.showPopup(

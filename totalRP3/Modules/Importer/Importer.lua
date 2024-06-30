@@ -15,7 +15,6 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local isProfileNameAvailable = TRP3_API.profile.isProfileNameAvailable;
-local assert, pairs = assert, pairs;
 local tsize, tcopy = TRP3_API.utils.table.size, TRP3_API.utils.table.copy;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
 local duplicateProfile = TRP3_API.profile.duplicateProfile;

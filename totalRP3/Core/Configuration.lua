@@ -11,7 +11,6 @@ TRP3_API.configuration = {};
 local loc = TRP3_API.loc;
 local Utils = TRP3_API.utils;
 local Config = TRP3_API.configuration;
-local CreateFrame = CreateFrame;
 local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
