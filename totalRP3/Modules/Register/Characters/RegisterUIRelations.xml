@@ -1,0 +1,175 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+
+	<Frame name="TRP3_ConfigurationRelationsFrame" virtual="true" inherits="BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_200_24_5555" type="global"/>
+		</KeyValues>
+		<Size x="0" y="60"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Title" text="[title]" inherits="GameFontNormal" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="65" y="-16"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+				<FontString parentKey="Text" text="[text]" inherits="GameFontNormalSmall" justifyH="LEFT">
+					<Size x="300" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Title" x="5" y="-5"/>
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.1"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey="Icon" inherits="TRP3_SimpleIcon">
+				<Size x="40" y="40"/>
+				<Anchors>
+					<Anchor point="LEFT" x="10" y="0"/>
+				</Anchors>
+			</Frame>
+			<Button parentKey="Button">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-4" y="-4"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_RelationsList" hidden="true" inherits="BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Title" inherits="GameFontNormalHuge" justifyH="CENTER" text="[settings_title]">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="50" y="-25"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey="Inner" inherits="TRP3_InnerFrame">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.Title" relativePoint="BOTTOM" x="0" y="-20"/>
+					<Anchor point="BOTTOM" x="0" y="20"/>
+					<Anchor point="LEFT" x="20" y="0"/>
+					<Anchor point="RIGHT" x="-20" y="0"/>
+				</Anchors>
+				<Frames>
+					<Button parentKey="CreateNew" inherits="TRP3_CommonButton">
+						<Size x="200" y="20"/>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-10"/>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								TRP3_API.register.relation.showEditor();
+							</OnClick>
+						</Scripts>
+					</Button>
+					<ScrollFrame parentKey="Scroll" inherits="UIPanelScrollFrameTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.CreateNew" relativePoint="BOTTOM" x="0" y="-5"/>
+							<Anchor point="BOTTOM" x="0" y="3"/>
+							<Anchor point="LEFT" x="17" y="0"/>
+							<Anchor point="RIGHT" x="-13" y="0"/>
+						</Anchors>
+						<ScrollChild>
+							<Frame parentKey="Container">
+								<Size x="700" y="50"/>
+							</Frame>
+						</ScrollChild>
+					</ScrollFrame>
+				</Frames>
+			</Frame>
+			<Frame parentKey="Editor" frameStrata="HIGH" enableMouse="true" hidden="true" inherits="BackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_5555" type="global"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
+					<Anchor point="BOTTOMRIGHT" x="-20" y="17"/>
+					<Anchor point="LEFT" x="215" y="0"/>
+				</Anchors>
+				<Frames>
+					<Frame parentKey="Content" inherits="BackdropTemplate">
+						<KeyValues>
+							<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_24_5555" type="global"/>
+						</KeyValues>
+						<Size x="400" y="150"/>
+						<Anchors>
+							<Anchor point="CENTER" x="0" y="0"/>
+						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="Title" text="[placeholder]" inherits="GameFontNormalLarge">
+									<Size x="0" y="10"/>
+									<Anchors>
+										<Anchor point="TOPLEFT" x="0" y="-17"/>
+										<Anchor point="TOPRIGHT" x="0" y="-17"/>
+									</Anchors>
+									<Color b="0.95" r="0.95" g="0.95"/>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Button parentKey="CloseButton" inherits="TRP3_StyledButtonTemplate">
+								<Size x="24" y="24"/>
+								<KeyValues>
+									<KeyValue key="styleName" value="CloseButton" type="string"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="Icon" inherits="TRP3_IconButton">
+								<Size x="45" y="45"/>
+								<Anchors>
+									<Anchor point="LEFT" x="20" y="-10"/>
+								</Anchors>
+							</Button>
+							<Button name="TRP3_RelationEditor_Color" parentKey="Color" inherits="TRP3_ColorPickerButton">
+								<Anchors>
+									<Anchor point="TOPLEFT" x="15" y="0" relativePoint="TOPRIGHT" relativeKey="$parent.Icon"/>
+								</Anchors>
+							</Button>
+							<EditBox parentKey="Name" inherits="TRP3_TitledHelpEditBox">
+								<Size x="150" y="18"/>
+								<Anchors>
+									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeKey="$parent.Color"/>
+								</Anchors>
+							</EditBox>
+							<EditBox parentKey="Description" inherits="TRP3_TitledHelpEditBox">
+								<Size x="0" y="18"/>
+								<Anchors>
+									<Anchor point="BOTTOMLEFT" x="15" y="0" relativePoint="BOTTOMRIGHT" relativeKey="$parent.Icon"/>
+									<Anchor point="RIGHT" x="-30" y="0"/>
+								</Anchors>
+							</EditBox>
+							<Button parentKey="Save" inherits="TRP3_CommonButton">
+								<Size x="150" y="20"/>
+								<Anchors>
+									<Anchor point="BOTTOM" x="0" y="10"/>
+								</Anchors>
+							</Button>
+						</Frames>
+					</Frame>
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+</Ui>

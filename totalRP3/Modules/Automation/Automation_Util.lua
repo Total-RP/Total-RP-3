@@ -209,7 +209,7 @@ end
 --
 
 local SETTINGS_PAGE_ID = "main_automation";
-local SETTINGS_MENU_ID = "main_91_config_main_config_automation";
+local SETTINGS_MENU_ID = "main_42_customization_automation";
 
 function TRP3_AutomationUtil.OpenSettingsPage()
 	if hasRegisteredSettings then
@@ -231,7 +231,7 @@ function TRP3_AutomationUtil.RegisterSettingsPage()
 	TRP3_API.navigation.menu.registerMenu({
 		id = SETTINGS_MENU_ID,
 		text = L.AUTOMATION_MODULE_NAME,
-		isChildOf = "main_90_config",
+		isChildOf = "main_40_customization",
 		onSelected = function() TRP3_API.navigation.page.setPage(SETTINGS_PAGE_ID); end,
 	});
 
