@@ -14,9 +14,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	local SendChatMessage = SendChatMessage;
 	local strtrim, pairs, tinsert = strtrim, pairs, tinsert;
 
-	local frame = TRP3_NPCTalk;
+	local frame = TRP3_NPCTalkFrame;
 	---@type Button
-	local SendButton = frame.send;
+	local SendButton = frame.Send;
 
 	local CHANNEL_TYPES = {
 		SAY = "MONSTER_SAY",
@@ -55,9 +55,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	local function sendNPCTalk()
 
-		local NPCName = strtrim(frame.name:GetText());
-		local channel = frame.channelDropdown:GetSelectedValue();
-		local message = frame.messageText.scroll.text:GetText();
+		local NPCName = strtrim(frame.Name:GetText());
+		local channel = frame.ChannelDropdown:GetSelectedValue();
+		local message = frame.MessageText.scroll.text:GetText();
 
 		-- Always check that the message is not empty before trying to send it
 		if not message or strlen(strtrim(message)) < 1 then return end
@@ -65,7 +65,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		-- Send a chat message via the EMOTE channel
 		SendChatMessage(constructMessage(NPCName, channel, message), "EMOTE");
 		-- Empty the message field (we leave the NPC name field as is in case the user wants to send multiple messages with the same NPC)
-		frame.messageText.scroll.text:SetText("");
+		frame.MessageText.scroll.text:SetText("");
 
 	end
 
@@ -77,9 +77,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	local function checkCharactersLimit()
 
-		local NPCName = strtrim(frame.name:GetText());
-		local channel = frame.channelDropdown:GetSelectedValue();
-		local message = frame.messageText.scroll.text:GetText();
+		local NPCName = strtrim(frame.Name:GetText());
+		local channel = frame.ChannelDropdown:GetSelectedValue();
+		local message = frame.MessageText.scroll.text:GetText();
 
 		local fullMessage = constructMessage(NPCName, channel, message)
 		local numberOfCharactersInMessage = strlen(fullMessage);
@@ -102,8 +102,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			SendButton:Disable();
 		end
 
-		frame.charactersCounter:SetTextColor(color:GetRGBA())
-		frame.charactersCounter:SetText(strconcat(MAX_CHARACTERS_PER_MESSAGES - numberOfCharactersInMessage));
+		frame.CharactersCounter:SetTextColor(color:GetRGBA())
+		frame.CharactersCounter:SetText(strconcat(MAX_CHARACTERS_PER_MESSAGES - numberOfCharactersInMessage));
 	end
 
 	local function buildChannelDropdown()
@@ -117,37 +117,42 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		-- Set the dropdown for the channels
 		-- The checkCharactersLimit() function will be called when a new channel is selected
 		-- as we switching channels changes the string use for the channel (says:, etc.) and so the message length too
-		setupListBox(frame.channelDropdown, channelTypes, checkCharactersLimit, nil, 120, false);
+		setupListBox(frame.ChannelDropdown, channelTypes, checkCharactersLimit, nil, 120, false);
 
 		-- Select the SAY channel by default
-		frame.channelDropdown:SetSelectedValue(CHANNEL_TYPES.SAY);
+		frame.ChannelDropdown:SetSelectedValue(CHANNEL_TYPES.SAY);
 	end
 
 	---
 	-- Display the frame and do everything that needs to be done at show time
-	local function showNPCTalkFrame()
+	local function toggleNPCTalkFrame()
+		if frame:IsShown() then
+			frame:Hide();
+			return;
+		end
+
 		-- We always rebuild the dropdown on show as some of the colors can change during the session
 		buildChannelDropdown();
 		frame:Show();
 	end
-	TRP3_API.r.showNPCTalkFrame = showNPCTalkFrame;
+	TRP3_API.r.toggleNPCTalkFrame = toggleNPCTalkFrame;
 
 	SendButton:SetScript("OnClick", sendNPCTalk);
-	frame.messageText.scroll.text:SetScript("OnEnterPressed", sendNPCTalk);
-	frame.title:SetText(loc.NPC_TALK_TITLE);
-	frame.name.title:SetText(loc.NPC_TALK_NAME);
-	frame.messageLabel:SetText(loc.NPC_TALK_MESSAGE);
-	frame.send:SetText(loc.NPC_TALK_SEND);
+	frame.MessageText.scroll.text:SetScript("OnEnterPressed", sendNPCTalk);
+	frame.Title:SetText(loc.NPC_TALK_TITLE);
+	frame.Name.title:SetText(loc.NPC_TALK_NAME);
+	frame.MessageLabel:SetText(loc.NPC_TALK_MESSAGE);
+	frame.Send:SetText(loc.NPC_TALK_SEND);
 
 	-- Add hooks to check for the length of the message and make sure we don't try to send a message to big
-	frame.messageText.scroll.text:HookScript("OnTextChanged", checkCharactersLimit);
-	frame.messageText.scroll.text:HookScript("OnEditFocusGained", checkCharactersLimit);
-	frame.name:HookScript("OnTextChanged", checkCharactersLimit);
-	frame.name:HookScript("OnEditFocusGained", checkCharactersLimit);
+	frame.MessageText.scroll.text:HookScript("OnTextChanged", checkCharactersLimit);
+	frame.MessageText.scroll.text:HookScript("OnEditFocusGained", checkCharactersLimit);
+	frame.Name:HookScript("OnTextChanged", checkCharactersLimit);
+	frame.Name:HookScript("OnEditFocusGained", checkCharactersLimit);
 
-	setTooltipForSameFrame(frame.name.help, "RIGHT", 0, 5, loc.NPC_TALK_NAME, loc.NPC_TALK_NAME_TT);
+	setTooltipForSameFrame(frame.Name.help, "RIGHT", 0, 5, loc.NPC_TALK_NAME, loc.NPC_TALK_NAME_TT);
 
-	TRP3_API.Ellyb.EditBoxes.setupTabKeyNavigation(frame.name, frame.messageText.scroll.text);
+	TRP3_API.Ellyb.EditBoxes.setupTabKeyNavigation(frame.Name, frame.MessageText.scroll.text);
 
 	setupMovableFrame(frame);
 
@@ -162,11 +167,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			tooltip = loc.NPC_TALK_TITLE,
 			tooltipSub = loc.NPC_TALK_BUTTON_TT,
 			onClick = function()
-				if frame:IsShown() then
-					frame:Hide();
-				else
-					showNPCTalkFrame();
-				end
+				toggleNPCTalkFrame();
 			end,
 		});
 	end
@@ -176,7 +177,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	TRP3_API.slash.registerCommand({
 		id = "npc_speeches",
 		helpLine = " " .. loc.NPC_TALK_COMMAND_HELP,
-		handler = showNPCTalkFrame
+		handler = toggleNPCTalkFrame
 	});
 
 end);
