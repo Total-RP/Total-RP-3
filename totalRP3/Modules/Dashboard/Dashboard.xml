@@ -141,7 +141,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_NPCTalk" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true" movable="true" clampedToScreen="true" parent="UIParent" frameStrata="DIALOG">
+	<Frame name="TRP3_NPCTalk" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true" movable="true" clampedToScreen="true" parent="UIParent" frameStrata="DIALOG" toplevel="true">
 		<Size x="350" y="215"/>
 		<Anchors>
 			<Anchor point="CENTER"/>
