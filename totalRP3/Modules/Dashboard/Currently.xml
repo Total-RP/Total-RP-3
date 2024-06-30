@@ -19,14 +19,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+				<FontString parentKey="Title" inherits="GameFontHighlightLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
 					<Size x="0" y="30"/>
 					<Anchors>
 						<Anchor point="TOP" x="0" y="-10"/>
 						<Anchor point="RIGHT" x="-10" y="0"/>
 						<Anchor point="LEFT" x="10" y="0"/>
 					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
 			</Layer>
 		</Layers>
@@ -43,10 +42,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<OnClick function="HideParentPanel"/>
 				</Scripts>
 			</Button>
-			<Frame parentKey="currentlyText" inherits="TRP3_TextArea">
+			<Frame parentKey="CurrentlyText" inherits="TRP3_TextArea">
 				<Size y="144"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.title" x="11" y="6"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Title" x="11" y="6"/>
 					<Anchor point="RIGHT" x="-20" />
 				</Anchors>
 			</Frame>

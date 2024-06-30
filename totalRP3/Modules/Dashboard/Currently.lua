@@ -19,15 +19,14 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	-- Prepares to show frame, gets player's "currently" and writes it to the scrollbox.
 	local function showCurrentlyFrame()
-		frame.currentlyText.scroll.text:SetText(AddOn_TotalRP3.Player.GetCurrentUser():GetCurrentlyText());
+		frame.CurrentlyText.scroll.text:SetText(AddOn_TotalRP3.Player.GetCurrentUser():GetCurrentlyText());
 
 		frame:Show();
 	end
 	TRP3_API.r.showCurrentlyFrame = showCurrentlyFrame;
 
-	frame.title:SetText(loc.CURRENTLY_TITLE);
-
-	frame.currentlyText.scroll.text:HookScript("OnTextChanged", onCurrentlyChanged);
+	frame.Title:SetText(loc.CURRENTLY_TITLE);
+	frame.CurrentlyText.scroll.text:HookScript("OnTextChanged", onCurrentlyChanged);
 
 	setupMovableFrame(frame);
 
