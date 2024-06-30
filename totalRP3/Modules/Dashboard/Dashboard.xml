@@ -15,7 +15,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="HTMLContent.xml"/>
 	<Include file="TabFrame.xml"/>
 	<Include file="StatusPanel.xml"/>
-	<Include file="Currently.xml" />
+	<Include file="Currently.xml"/>
 
 	<Frame name="TRP3_PartyTime" virtual="true">
 		<Size x="75" y="75"/>

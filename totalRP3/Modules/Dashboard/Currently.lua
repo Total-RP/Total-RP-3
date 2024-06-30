@@ -5,7 +5,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	local loc = TRP3_API.loc;
 	local setupMovableFrame = TRP3_API.ui.frame.setupMove;
 
-	local frame = TRP3_CURRENTLY;
+	local frame = TRP3_CurrentlyFrame;
 
 	-- Called whenever the OnTextChanged event fires for the currentlyText scrollbox,
 	-- which checks if it was triggered by userInput before changing the "Currently" text.

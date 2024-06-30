@@ -7,7 +7,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Include file="Currently.lua"/>
 
-	<Frame name="TRP3_CURRENTLY" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true" movable="true" clampedToScreen="true" parent="UIParent" frameStrata="DIALOG">
+	<Frame name="TRP3_CurrentlyFrame" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true" movable="true" clampedToScreen="true" parent="UIParent" frameStrata="DIALOG">
 		<Size x="350" y="215"/>
 		<Anchors>
 			<Anchor point="CENTER"/>
