@@ -1089,6 +1089,14 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	NPC_TALK_BUTTON_TT = "Open the NPC speeches frame allowing you to do NPC speeches or emotes.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Currently
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	CURRENTLY_TITLE = "Currently",
+	CURRENTLY_COMMAND_HELP = "Open the Currently frame.",
+	CURRENTLY_BUTTON_TT = "Open the Currently frame allowing you to change your currently status.",
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- ANALYTICS
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 

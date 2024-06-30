@@ -1,0 +1,55 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Include file="Currently.lua"/>
+
+	<Frame name="TRP3_CURRENTLY" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true" movable="true" clampedToScreen="true" parent="UIParent" frameStrata="DIALOG">
+		<Size x="350" y="215"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad inherit="prepend">
+				tinsert(UISpecialFrames, self:GetName());
+			</OnLoad>
+		</Scripts>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+					<Size x="0" y="30"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-10"/>
+						<Anchor point="RIGHT" x="-10" y="0"/>
+						<Anchor point="LEFT" x="10" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button parentKey="Close" inherits="TRP3_StyledButtonTemplate">
+				<Size x="24" y="24"/>
+				<KeyValues>
+					<KeyValue key="styleName" value="CloseButton" type="string"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="HideParentPanel"/>
+				</Scripts>
+			</Button>
+			<Frame parentKey="currentlyText" inherits="TRP3_TextArea">
+				<Size y="144"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.title" x="11" y="6"/>
+					<Anchor point="RIGHT" x="-20" />
+				</Anchors>
+			</Frame>
+		</Frames>
+	</Frame>
+</Ui>
