@@ -123,6 +123,7 @@ end
 TRP3_API.ui.tooltip.getSmallLineFontSize = getSmallLineFontSize;
 
 function TRP3_API.ui.tooltip.setTooltipDefaultAnchor(tooltip, parent)
+	-- This function may be overridden by other modules (eg. ElvUI).
 	GameTooltip_SetDefaultAnchor(tooltip, parent);
 end
 
@@ -1236,8 +1237,6 @@ end
 -- MAIN
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local GameTooltip_SetDefaultAnchor, UIParent = GameTooltip_SetDefaultAnchor, UIParent;
-
 local function UpdateCharacterTooltipClampInsets()
 	local left = 0;
 	local right = 0;
@@ -1290,16 +1289,16 @@ local function show(targetType, targetID, targetMode)
 				if (targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and (isIDIgnored(targetID) or isMatureFlagged)) or ((targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and (ownerIsIgnored(targetID) or isMatureFlagged)) then
 					TRP3_CharacterTooltip:SetOwner(GameTooltip, "ANCHOR_TOPRIGHT");
 				elseif not getAnchoredFrame() then
-					GameTooltip_SetDefaultAnchor(TRP3_CharacterTooltip, UIParent);
+					TRP3_API.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
 				elseif getAnchoredPosition() == "ANCHOR_CURSOR" then
-					GameTooltip_SetDefaultAnchor(TRP3_CharacterTooltip, UIParent);
+					TRP3_API.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
 					placeTooltipOnCursor(TRP3_CharacterTooltip);
 				elseif getAnchoredFrame() == GameTooltip and getConfigValue(ConfigKeys.CHARACT_HIDE_ORIGINAL) then
 					if GameTooltip:GetOwner() ~= nil and GameTooltip:GetNumPoints() > 0 then
 						TRP3_CharacterTooltip:SetOwner(UIParent, "ANCHOR_NONE");
 						TRP3_CharacterTooltip:SetPoint(GameTooltip:GetPoint(1));
 					else
-						GameTooltip_SetDefaultAnchor(TRP3_CharacterTooltip, UIParent);
+						TRP3_API.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
 					end
 				else
 					TRP3_CharacterTooltip:SetOwner(getAnchoredFrame(), getAnchoredPosition());
@@ -1482,9 +1481,7 @@ local function onModuleInit()
 			local unitToken = TRP3_CharacterTooltip.targetType;
 			TRP3_CharacterTooltip:Hide();
 
-			-- Need to use the global ref to this function since it may be overridden by another module
 			TRP3_API.ui.tooltip.setTooltipDefaultAnchor(GameTooltip, UIParent);
-
 			GameTooltip:SetUnit(unitToken);
 			GameTooltip:Show();
 		elseif GameTooltip:IsShown() then
