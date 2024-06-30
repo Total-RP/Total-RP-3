@@ -373,7 +373,7 @@ Deine Profile, Begleiterprofile und Einstellungen werden temporär ausgelagert u
 	["DB_MORE"] = "Mehr Module",
 	["DB_NEW"] = "Was ist neu?",
 	["DB_STATUS"] = "Status",
-	["DB_STATUS_CURRENTLY"] = "Aktuelles (IC)",
+	["DB_STATUS_CURRENTLY"] = "Aktuelles",
 	["DB_STATUS_CURRENTLY_COMMON"] = "Der Status wird im Tooltip deines Charakters angezeigt. Halte dich hier kurz, knapp und eindeutig, da |cffff9900standartmäßig alle TRP3 Nutzer nur die ersten 140 Zeichen sehen können!",
 	["DB_STATUS_CURRENTLY_OOC"] = "Andere Informationen (OOC)",
 	["DB_STATUS_CURRENTLY_OOC_TT"] = "Hier kannst du Wichtiges über dich als Spieler oder andere OOC Informationen eintragen.",

@@ -417,7 +417,7 @@ Seus perfis, perfis de companheiro e configurações serão temporariamente depo
 	["DB_MORE"] = "Mais módulos",
 	["DB_NEW"] = "O que há de novo?",
 	["DB_STATUS"] = "Estados",
-	["DB_STATUS_CURRENTLY"] = "Atualmente (IC)",
+	["DB_STATUS_CURRENTLY"] = "Atualmente",
 	["DB_STATUS_CURRENTLY_COMMON"] = "Esses estados vão ser mostrados na tela de informações do seu personagem. Mantenha-os claros e breves uma vez que |cffff9900 por padrão usuários do TRP3 só verão os primeiros 140 caracteres!",
 	["DB_STATUS_CURRENTLY_OOC"] = "Outras informações (OOC)",
 	["DB_STATUS_CURRENTLY_OOC_TT"] = "Aqui você pode indicar algo importante sobre você, como um jogador, ou qualquer coisa fora do seu personagem.",

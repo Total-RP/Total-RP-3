@@ -426,7 +426,7 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["DB_MORE"] = "Más módulos",
 	["DB_NEW"] = "¿Qué hay nuevo?",
 	["DB_STATUS"] = "Estado",
-	["DB_STATUS_CURRENTLY"] = "Actualmente (ER)",
+	["DB_STATUS_CURRENTLY"] = "Actualmente",
 	["DB_STATUS_CURRENTLY_COMMON"] = "Estos estados serán mostrados en la descripción de tu personaje. Mantenlo claro y corto ya que |cffff9900 por defecto los jugadores con TRP3 solo verán los primeros 140 caracteres.",
 	["DB_STATUS_CURRENTLY_OOC"] = "Otra información (FdR)",
 	["DB_STATUS_CURRENTLY_OOC_TT"] = "Aquí puedes indicar algo importante sobre ti como jugador o cualquier cosa fuera de personaje.",
