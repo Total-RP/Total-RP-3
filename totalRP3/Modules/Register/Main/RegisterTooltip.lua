@@ -1254,7 +1254,6 @@ end
 local function show(targetType, targetID, targetMode)
 	TRP3_CharacterTooltip:Hide();
 	TRP3_CompanionTooltip:Hide();
-	UpdateCharacterTooltipClampInsets();
 
 	-- If option is to only show tooltips when player is in character and player is out of character, stop here
 	if getConfigValue(ConfigKeys.IN_CHARACTER_ONLY) and not isPlayerIC() then return end
@@ -1321,14 +1320,12 @@ local function show(targetType, targetID, targetMode)
 						local mountName = getCompanionNameFromSpellID(mountSpellID);
 						TRP3_CompanionTooltip:SetOwner(TRP3_CharacterTooltip, "ANCHOR_TOPLEFT");
 						writeTooltipForMount(Globals.player_id, nil, mountName);
-						UpdateCharacterTooltipClampInsets();
 					else
 						local companionFullID, profileID, mountSpellID = TRP3_API.companions.register.getUnitMount(targetID, targetType);
 						if profileID then
 							local mountName = getCompanionNameFromSpellID(mountSpellID);
 							TRP3_CompanionTooltip:SetOwner(TRP3_CharacterTooltip, "ANCHOR_TOPLEFT");
 							writeTooltipForMount(targetID, companionFullID, mountName);
-							UpdateCharacterTooltipClampInsets();
 						end
 					end
 				elseif targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET then
@@ -1449,7 +1446,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		if not GameTooltip:GetUnit() then
 			TRP3_CharacterTooltip:Hide();
 			TRP3_CompanionTooltip:Hide();
-			UpdateCharacterTooltipClampInsets();
 		end
 	end);
 end);
@@ -1501,6 +1497,8 @@ local function onModuleInit()
 	TRP3_CharacterTooltip:SetScript("OnUpdate", onUpdate);
 	TRP3_CompanionTooltip.TimeSinceLastUpdate = 0;
 	TRP3_CompanionTooltip:SetScript("OnUpdate", onUpdateCompanion);
+	TRP3_CompanionTooltip:HookScript("OnShow", UpdateCharacterTooltipClampInsets);
+	TRP3_CompanionTooltip:HookScript("OnHide", UpdateCharacterTooltipClampInsets);
 
 	-- Config default value
 	local registerConfigKey = TRP3_API.configuration.registerConfigKey;
