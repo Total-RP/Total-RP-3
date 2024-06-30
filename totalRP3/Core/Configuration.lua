@@ -381,8 +381,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 	registerConfigKey("heavy_profile_alert", true);
 	registerConfigKey("new_version_alert", true);
-	registerConfigKey("ui_sounds", true);
-	registerConfigKey("ui_animations", true);
 	registerConfigKey("disable_welcome_message", false);
 	registerConfigKey("hide_maximize_button", false);
 	registerConfigKey("window_layout", {});  -- Contents managed by TRP3_MainFrameMixin.
@@ -408,18 +406,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				max = 25,
 				step = 1,
 				integer = true,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_GENERAL_UI_SOUNDS,
-				configKey = "ui_sounds",
-				help = loc.CO_GENERAL_UI_SOUNDS_TT,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_GENERAL_UI_ANIMATIONS,
-				configKey = "ui_animations",
-				help = loc.CO_GENERAL_UI_ANIMATIONS_TT,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
