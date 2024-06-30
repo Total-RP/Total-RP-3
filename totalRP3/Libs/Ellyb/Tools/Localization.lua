@@ -144,3 +144,7 @@ function Localization:GetText(localizationKey)
 		self:GetDefaultLocale():GetText(localizationKey) or -- Look in the default locale
 		localizationKey; -- As a last resort, to avoid nil strings, return the key itself
 end
+
+function Localization:EnumerateTexts()
+	return self:GetActiveLocale():EnumerateTexts();
+end

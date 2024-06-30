@@ -14,6 +14,14 @@ function Locale.init()
 	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = TRP3_API.loc.BINDING_NAME_TRP3_TOOLBAR_TOGGLE;
 	BINDING_NAME_TRP3_OPEN_TARGET_PROFILE = TRP3_API.loc.BINDING_NAME_TRP3_OPEN_TARGET_PROFILE;
 	BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS = TRP3_API.loc.BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS;
+
+	-- Localization strings are exported globally for use from XML which
+	-- is incapable of performing nested lookups. Longer-term, we may want
+	-- to use global strings everywhere for consistency.
+
+	for key, value in TRP3_API.loc:EnumerateTexts() do
+		_G["TRP3_L_" .. key] = value;
+	end
 end
 
 -- Shortcut formatting
