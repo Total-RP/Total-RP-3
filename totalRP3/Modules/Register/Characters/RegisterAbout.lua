@@ -41,25 +41,30 @@ local showIconBrowser = function(callback, selectedIcon)
 	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback, nil, nil, selectedIcon});
 end;
 
-local function updateAboutTemplateFonts(frame)
-	frame:SetFont("p", defaultFontParameters.p.font, getConfigValue(CONFIG_REGISTER_ABOUT_P_SIZE), "");
-	frame:SetFont("h1", defaultFontParameters.h1.font, getConfigValue(CONFIG_REGISTER_ABOUT_H1_SIZE), "");
-	frame:SetFont("h2", defaultFontParameters.h2.font, getConfigValue(CONFIG_REGISTER_ABOUT_H2_SIZE), "");
-	frame:SetFont("h3", defaultFontParameters.h3.font, getConfigValue(CONFIG_REGISTER_ABOUT_H3_SIZE), "");
+local function CreateFontFamily(fontName, inherits)
+	-- Note that 'inherits' needs to be an XML FontFamily object, not a Font.
+	local fontFamily = CreateFont(fontName);
+	fontFamily:CopyFontObject(inherits);
+	return fontFamily;
 end
 
+CreateFontFamily("TRP3_AboutParagraphFont", SystemFont_Shadow_Med1);
+CreateFontFamily("TRP3_AboutHeader1Font", SystemFont_Shadow_Huge3);
+CreateFontFamily("TRP3_AboutHeader2Font", SystemFont_Shadow_Huge1);
+CreateFontFamily("TRP3_AboutHeader3Font", SystemFont_Shadow_Large);
+
 local function updateAllAboutTemplateFonts()
-	updateAboutTemplateFonts(TRP3_RegisterAbout_AboutPanel_Template1);
-	updateAboutTemplateFonts(TRP3_RegisterAbout_AboutPanel_Template3_1_Text);
-	updateAboutTemplateFonts(TRP3_RegisterAbout_AboutPanel_Template3_2_Text);
-	updateAboutTemplateFonts(TRP3_RegisterAbout_AboutPanel_Template3_3_Text);
+	TRP3_FontUtil.SetFontOptions(TRP3_AboutParagraphFont, getConfigValue(CONFIG_REGISTER_ABOUT_P_SIZE));
+	TRP3_FontUtil.SetFontOptions(TRP3_AboutHeader1Font, getConfigValue(CONFIG_REGISTER_ABOUT_H1_SIZE));
+	TRP3_FontUtil.SetFontOptions(TRP3_AboutHeader2Font, getConfigValue(CONFIG_REGISTER_ABOUT_H2_SIZE));
+	TRP3_FontUtil.SetFontOptions(TRP3_AboutHeader3Font, getConfigValue(CONFIG_REGISTER_ABOUT_H3_SIZE));
 end
 
 local function setupHTMLFonts(frame)
-	frame:SetFontObject("p", GameFontNormal);
-	frame:SetFontObject("h1", GameFontNormalHuge3);
-	frame:SetFontObject("h2", GameFontNormalHuge);
-	frame:SetFontObject("h3", GameFontNormalLarge);
+	frame:SetFontObject("p", TRP3_AboutParagraphFont);
+	frame:SetFontObject("h1", TRP3_AboutHeader1Font);
+	frame:SetFontObject("h2", TRP3_AboutHeader2Font);
+	frame:SetFontObject("h3", TRP3_AboutHeader3Font);
 
 	frame:SetTextColor("h1", 1, 1, 1);
 	frame:SetTextColor("h2", 1, 1, 1);
@@ -209,7 +214,6 @@ local function showTemplate2(dataTab)
 		setupIconButton(icon, frameTab.IC or TRP3_InterfaceIcons.Default);
 
 		setupHTMLFonts(text);
-		updateAboutTemplateFonts(text);
 
 		-- We'll need to access the HTML later when resizing things.
 		text.html = Utils.str.toHTML(frameTab.TX or "")

@@ -394,25 +394,21 @@ local function refreshTooltip(Frame)
 		TRP3_MainTooltip:SetOwner(Frame.GenFrame, Frame.GenFrameAnch,Frame.GenFrameX,Frame.GenFrameY);
 		if not Frame.rightText then
 			TRP3_MainTooltip:AddLine(Frame.titleText, 1, 1, 1, true);
+			TRP3_TooltipUtil.SetLineFontOptions(TRP3_MainTooltip, 1, getTooltipSize() + 4);
 		else
 			TRP3_MainTooltip:AddDoubleLine(Frame.titleText, Frame.rightText);
-			local font, _, flag = TRP3_MainTooltipTextRight1:GetFont();
-			TRP3_MainTooltipTextRight1:SetFont(font, getTooltipSize() + 4, flag);
+			TRP3_TooltipUtil.SetLineFontOptions(TRP3_MainTooltip, 1, getTooltipSize() + 4);
 			TRP3_MainTooltipTextRight1:SetNonSpaceWrap(true);
 			TRP3_MainTooltipTextRight1:SetTextColor(1, 1, 1);
 		end
 		do
-			local font, _, flag = TRP3_MainTooltipTextLeft1:GetFont();
-			TRP3_MainTooltipTextLeft1:SetFont(font, getTooltipSize() + 4, flag);
 			TRP3_MainTooltipTextLeft1:SetNonSpaceWrap(true);
 			TRP3_MainTooltipTextLeft1:SetTextColor(1, 1, 1);
 		end
 		if Frame.bodyText then
 			TRP3_MainTooltip:AddLine(Frame.bodyText, 1, 0.6666, 0, true);
-			local font, _, flag = TRP3_MainTooltipTextLeft2:GetFont();
-			TRP3_MainTooltipTextLeft2:SetFont(font, getTooltipSize(), flag);
+			TRP3_TooltipUtil.SetLineFontOptions(TRP3_MainTooltip, 2, getTooltipSize());
 			TRP3_MainTooltipTextLeft2:SetNonSpaceWrap(true);
-			TRP3_MainTooltipTextLeft2:SetTextColor(1, 0.75, 0);
 		end
 		TRP3_MainTooltip:Show();
 	end
@@ -682,8 +678,7 @@ function TRP3_API.ui.tooltip.toast(text, duration)
 	TRP3_Toast:Hide();
 	TRP3_Toast:SetOwner(TRP3_MainFramePageContainer, "ANCHOR_BOTTOM", 0, 60);
 	TRP3_Toast:AddLine(text, 1, 1, 1, true);
-	local font, _, outline = TRP3_ToastTextLeft1:GetFont();
-	TRP3_ToastTextLeft1:SetFont(font, getTooltipSize(), outline);
+	TRP3_TooltipUtil.SetLineFontOptions(TRP3_Toast, 1, getTooltipSize());
 	TRP3_ToastTextLeft1:SetNonSpaceWrap(true);
 	TRP3_ToastTextLeft1:SetTextColor(1, 1, 1);
 	TRP3_Toast:Show();

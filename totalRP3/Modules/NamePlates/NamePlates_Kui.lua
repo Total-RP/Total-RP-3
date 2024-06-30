@@ -295,7 +295,14 @@ function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 	end
 
 	if displayText and displayFont then
-		nameplate.TRP3_Title:SetFont(nameplate.GuildText:GetFont());
+		local fontObject = nameplate.GuildText:GetFontObject();
+
+		if fontObject then
+			nameplate.TRP3_Title:SetFontObject(fontObject);
+		else
+			nameplate.TRP3_Title:SetFont(nameplate.GuildText:GetFont());
+		end
+
 		nameplate.TRP3_Title:SetTextColor(nameplate.GuildText:GetTextColor());
 		nameplate.TRP3_Title:SetText(displayText);
 		nameplate.TRP3_Title:Show();
