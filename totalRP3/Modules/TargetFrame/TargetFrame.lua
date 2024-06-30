@@ -14,11 +14,10 @@ local function onStart()
 
 	-- imports
 	local Utils, Events, Globals = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.globals;
-	local CreateFrame, EMPTY = CreateFrame, Globals.empty;
+	local EMPTY = Globals.empty;
 	local loc = TRP3_API.loc;
 	local isPlayerIC, isUnitIDKnown, getUnitIDCurrentProfile, hasProfile, isIDIgnored;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
-	local assert, pairs, tinsert, table, math, _G = assert, pairs, tinsert, table, math, _G;
 	local getUnitID, unitIDToInfo, companionIDToInfo = Utils.str.getUnitID, Utils.str.unitIDToInfo, Utils.str.companionIDToInfo;
 	local setTooltipForSameFrame, mainTooltip, refreshTooltip = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_MainTooltip, TRP3_API.ui.tooltip.refresh;
 	local get = TRP3_API.profile.getData;

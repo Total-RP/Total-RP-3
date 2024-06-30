@@ -8,7 +8,6 @@ local Ellyb = TRP3_API.Ellyb;
 -- API
 TRP3_API.register.glance = {};
 local Utils, Events, Globals = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.globals;
-local tostring, _G, pairs, type, tinsert, assert, wipe, bit, strsplit = tostring, _G, pairs, type, tinsert, assert, wipe, bit, strsplit;
 local loc = TRP3_API.loc;
 local getIcon, tableRemove = Utils.str.icon, Utils.table.remove;
 local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.toast;

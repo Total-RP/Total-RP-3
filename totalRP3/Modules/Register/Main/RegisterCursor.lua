@@ -4,15 +4,6 @@
 ---@type TRP3_API
 local _, TRP3_API = ...;
 
--- Lua API imports
-local insert = table.insert;
-
--- WoW API imports
-local InCombatLockdown = InCombatLockdown;
-local IsShiftKeyDown = IsShiftKeyDown;
-local IsControlKeyDown = IsControlKeyDown;
-local IsAltKeyDown = IsAltKeyDown;
-
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
 local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
@@ -111,13 +102,13 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.REGISTER_DATA_UPDATED, function() onMouseOverUnit(); end)
 
 	-- Configuration header
-	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc.CO_CURSOR_TITLE,
 	});
 
 	-- Main checkbox to toggle this feature
-	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc.CO_CURSOR_RIGHT_CLICK,
 		help = loc.CO_CURSOR_RIGHT_CLICK_TT,
@@ -125,7 +116,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	});
 
 	-- Main checkbox to toggle this feature
-	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc.CO_CURSOR_DISABLE_OOC,
 		help = loc.CO_CURSOR_DISABLE_OOC_TT,
@@ -134,7 +125,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	});
 
 	-- Modifier key dropdown option
-	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigDropDown",
 		widgetName = "TRP3_ConfigCursor_ModifierKey",
 		title = loc.CO_CURSOR_MODIFIER_KEY,

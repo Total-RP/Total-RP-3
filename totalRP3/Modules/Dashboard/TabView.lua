@@ -5,9 +5,6 @@
 local TRP3_API = select(2, ...);
 local Ellyb = TRP3_API.Ellyb;
 
--- Lua imports
-local assert = assert;
-
 -- Ellyb imports
 local Class = Ellyb.Class;
 

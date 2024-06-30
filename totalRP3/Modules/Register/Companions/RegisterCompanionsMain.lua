@@ -9,7 +9,6 @@ TRP3_API.companions = {
 -- imports
 local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Events;
 local loc = TRP3_API.loc;
-local pairs, assert, tostring, wipe, tinsert, strtrim, tonumber = pairs, assert, tostring, wipe, tinsert, strtrim, tonumber;
 local registerMenu= TRP3_API.navigation.menu.registerMenu;
 local setPage = TRP3_API.navigation.page.setPage;
 local displayMessage = Utils.message.displayMessage;

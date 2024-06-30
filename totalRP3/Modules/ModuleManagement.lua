@@ -13,7 +13,6 @@ local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
 local registerMenu = TRP3_API.navigation.menu.registerMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
-local CreateFrame = CreateFrame;
 local initModule;
 local startModule;
 local onModuleStarted;

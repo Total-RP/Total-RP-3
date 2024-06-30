@@ -6,7 +6,6 @@ local Globals = TRP3_API.globals;
 local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
 local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
-local UnitIsPlayer = UnitIsPlayer;
 local get, getPlayerCurrentProfile, hasProfile = TRP3_API.profile.getData, TRP3_API.profile.getPlayerCurrentProfile, TRP3_API.register.hasProfile;
 local getProfile, getUnitID = TRP3_API.register.getProfile, TRP3_API.utils.str.getUnitID;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;

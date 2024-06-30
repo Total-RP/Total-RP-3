@@ -5,11 +5,6 @@
 local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
 
---{{{ Lua imports
-local tonumber = tonumber;
-local insert = table.insert;
---}}}
-
 --{{{ Total RP 3 imports
 local loc = TRP3_API.loc;
 local broadcast = AddOn_TotalRP3.Communications.broadcast;
@@ -115,17 +110,17 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	registerConfigKey(CONFIG_SHOW_DIFFERENT_WAR_MODES, false);
 	registerConfigKey(CONFIG_ROLEPLAY_STATUS_VISIBILITY, RoleplayStatusVisibility.ShowInCharacter);
 
-	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc.CO_LOCATION,
 	});
-	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc.CO_LOCATION_ACTIVATE,
 		help = loc.CO_LOCATION_ACTIVATE_TT,
 		configKey = CONFIG_ENABLE_MAP_LOCATION,
 	});
-	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc.CO_LOCATION_DISABLE_OOC,
 		help = loc.CO_LOCATION_DISABLE_OOC_TT,
@@ -133,7 +128,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 	});
 	if not TRP3_ClientFeatures.WarMode then
-		insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = loc.CO_LOCATION_DISABLE_CLASSIC_PVP,
 			help = loc.CO_LOCATION_DISABLE_CLASSIC_PVP_TT,
@@ -141,14 +136,14 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 		});
 	else
-		insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = loc.CO_LOCATION_DISABLE_WAR_MODE,
 			help = loc.CO_LOCATION_DISABLE_WAR_MODE_TT,
 			configKey = CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE,
 			dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 		});
-		insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = loc.CO_LOCATION_SHOW_DIFFERENT_WAR_MODES,
 			help = loc.CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT,
@@ -156,7 +151,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 		});
 	end
-	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc.CO_LOCATION_SHOW_OUT_OF_CHARACTER,
 		help = loc.CO_LOCATION_SHOW_OUT_OF_CHARACTER_TT,

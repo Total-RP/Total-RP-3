@@ -9,12 +9,10 @@ local Ellyb = TRP3_API.Ellyb;
 local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 local initList = TRP3_API.ui.list.initList;
-local tinsert, tremove, _G, pairs, wipe, math, assert = tinsert, tremove, _G, pairs, wipe, math, assert;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForFrame, setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getImageList, getImageListSize, getMusicList, getMusicListSize;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-local max = math.max;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1106,7 +1104,7 @@ end
 local function decorateImage(texture, index)
 	local image = filteredImageList[index];
 	local ratio = image.height / image.width;
-	local maxSize = max(texture:GetHeight(), texture:GetWidth());
+	local maxSize = math.max(texture:GetHeight(), texture:GetWidth());
 	if ratio > 1 then
 		texture:SetHeight(maxSize);
 		texture:SetWidth(texture:GetHeight() / ratio);

@@ -8,8 +8,6 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 local loc = TRP3_API.loc;
 local displayMessage = TRP3_API.utils.message.displayMessage;
-local tonumber, math, tinsert, type, assert, tostring, pairs, sort = tonumber, math, tinsert, type, assert, tostring, pairs, table.sort;
-local IsInGroup, IsInRaid = IsInGroup, IsInRaid;
 
 TRP3_API.slash = {}
 

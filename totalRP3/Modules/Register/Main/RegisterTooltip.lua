@@ -10,7 +10,6 @@ local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local getIgnoreReason = TRP3_API.register.getIgnoreReason;
-local ui_CharacterTT, ui_CompanionTT = TRP3_CharacterTooltip, TRP3_CompanionTooltip;
 local getCharacterUnitID = Utils.str.getUnitID;
 local get = TRP3_API.profile.getData;
 local getConfigValue = TRP3_API.configuration.getValue;
@@ -272,9 +271,9 @@ TRP3_API.ui.tooltip.getGameTooltipTexts = getGameTooltipTexts;
 
 local GetCursorPosition = GetCursorPosition;
 local function placeTooltipOnCursor()
-	local effScale, x, y = ui_CharacterTT:GetEffectiveScale(), GetCursorPosition();
-	ui_CharacterTT:ClearAllPoints();
-	ui_CharacterTT:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", (x / effScale) + 10, (y / effScale) + 10);
+	local effScale, x, y = TRP3_CharacterTooltip:GetEffectiveScale(), GetCursorPosition();
+	TRP3_CharacterTooltip:ClearAllPoints();
+	TRP3_CharacterTooltip:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", (x / effScale) + 10, (y / effScale) + 10);
 end
 
 local function limitText(input, maxCharLength, maxLinesCount)
@@ -420,7 +419,7 @@ end
 -- CHARACTER TOOLTIP
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tooltipBuilder = TRP3_API.ui.tooltip.createTooltipBuilder(ui_CharacterTT);
+local tooltipBuilder = TRP3_API.ui.tooltip.createTooltipBuilder(TRP3_CharacterTooltip);
 
 local function getUnitID(targetType)
 	local currentTargetType = originalGetTargetType(targetType);
@@ -907,9 +906,9 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 			tooltipBuilder:AddDoubleLine(notifText, clientText, colors.MAIN, colors.MAIN, getSmallLineFontSize());
 		end
 
-		SetProgressSpinnerShown(ui_CharacterTT, TRP3_API.register.HasActiveRequest(targetID));
+		SetProgressSpinnerShown(TRP3_CharacterTooltip, TRP3_API.register.HasActiveRequest(targetID));
 	else
-		SetProgressSpinnerShown(ui_CharacterTT, false);
+		SetProgressSpinnerShown(TRP3_CharacterTooltip, false);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1121,7 +1120,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 	-- Build tooltip
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	SetProgressSpinnerShown(ui_CharacterTT, false);
+	SetProgressSpinnerShown(TRP3_CharacterTooltip, false);
 	tooltipBuilder:Build();
 end
 
@@ -1129,7 +1128,7 @@ end
 -- MOUNTS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tooltipCompanionBuilder = TRP3_API.ui.tooltip.createTooltipBuilder(ui_CompanionTT);
+local tooltipCompanionBuilder = TRP3_API.ui.tooltip.createTooltipBuilder(TRP3_CompanionTooltip);
 local getCurrentMountProfile = TRP3_API.companions.player.getCurrentMountProfile;
 local getCurrentMountSpellID = TRP3_API.companions.player.getCurrentMountSpellID;
 local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
@@ -1240,16 +1239,16 @@ local function UpdateCharacterTooltipClampInsets()
 	local top = 15;
 	local bottom = 0;
 
-	if ui_CompanionTT:IsShown() then
-		top = top + ui_CompanionTT:GetHeight();
+	if TRP3_CompanionTooltip:IsShown() then
+		top = top + TRP3_CompanionTooltip:GetHeight();
 	end
 
-	ui_CharacterTT:SetClampRectInsets(left, right, top, bottom);
+	TRP3_CharacterTooltip:SetClampRectInsets(left, right, top, bottom);
 end
 
 local function show(targetType, targetID, targetMode)
-	ui_CharacterTT:Hide();
-	ui_CompanionTT:Hide();
+	TRP3_CharacterTooltip:Hide();
+	TRP3_CompanionTooltip:Hide();
 	UpdateCharacterTooltipClampInsets();
 
 	-- If option is to only show tooltips when player is in character and player is out of character, stop here
@@ -1261,12 +1260,12 @@ local function show(targetType, targetID, targetMode)
 	if not UnitAffectingCombat("player") or not getConfigValue(ConfigKeys.CHARACT_COMBAT) then
 		-- If we have a target
 		if targetID then
-			ui_CharacterTT.target = targetID;
-			ui_CharacterTT.targetType = targetType;
-			ui_CharacterTT.targetMode = targetMode;
-			ui_CompanionTT.target = targetID;
-			ui_CompanionTT.targetType = targetType;
-			ui_CompanionTT.targetMode = targetMode;
+			TRP3_CharacterTooltip.target = targetID;
+			TRP3_CharacterTooltip.targetType = targetType;
+			TRP3_CharacterTooltip.targetMode = targetMode;
+			TRP3_CompanionTooltip.target = targetID;
+			TRP3_CompanionTooltip.targetType = targetType;
+			TRP3_CompanionTooltip.targetMode = targetMode;
 
 			-- Check if has a profile
 			if getConfigValue(ConfigKeys.PROFILE_ONLY) then
@@ -1286,28 +1285,28 @@ local function show(targetType, targetID, targetMode)
 				local isMatureFlagged = unitIDIsFilteredForMatureContent(targetID);
 
 				if (targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and (isIDIgnored(targetID) or isMatureFlagged)) or ((targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and (ownerIsIgnored(targetID) or isMatureFlagged)) then
-					ui_CharacterTT:SetOwner(GameTooltip, "ANCHOR_TOPRIGHT");
+					TRP3_CharacterTooltip:SetOwner(GameTooltip, "ANCHOR_TOPRIGHT");
 				elseif not getAnchoredFrame() then
-					GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
+					GameTooltip_SetDefaultAnchor(TRP3_CharacterTooltip, UIParent);
 				elseif getAnchoredPosition() == "ANCHOR_CURSOR" then
-					GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
-					placeTooltipOnCursor(ui_CharacterTT);
+					GameTooltip_SetDefaultAnchor(TRP3_CharacterTooltip, UIParent);
+					placeTooltipOnCursor(TRP3_CharacterTooltip);
 				elseif getAnchoredFrame() == GameTooltip and getConfigValue(ConfigKeys.CHARACT_HIDE_ORIGINAL) then
 					if GameTooltip:GetNumPoints() > 0 then
-						ui_CharacterTT:SetOwner(UIParent, "ANCHOR_NONE");
-						ui_CharacterTT:SetPoint(GameTooltip:GetPoint(1));
+						TRP3_CharacterTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+						TRP3_CharacterTooltip:SetPoint(GameTooltip:GetPoint(1));
 					else
-						GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
+						GameTooltip_SetDefaultAnchor(TRP3_CharacterTooltip, UIParent);
 					end
 				else
-					ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
+					TRP3_CharacterTooltip:SetOwner(getAnchoredFrame(), getAnchoredPosition());
 				end
 
-				ui_CharacterTT:SetBorderColor(1, 1, 1);
+				TRP3_CharacterTooltip:SetBorderColor(1, 1, 1);
 				if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER then
 					writeTooltipForCharacter(targetID, originalTexts, targetType);
 					if showRelationColor() and targetID ~= Globals.player_id and not isIDIgnored(targetID) and IsUnitIDKnown(targetID) and hasProfile(targetID) then
-						ui_CharacterTT:SetBorderColor(getRelationColors(hasProfile(targetID)));
+						TRP3_CharacterTooltip:SetBorderColor(getRelationColors(hasProfile(targetID)));
 					end
 					if shouldHideGameTooltip() and not (isIDIgnored(targetID) or unitIDIsFilteredForMatureContent(targetID)) then
 						GameTooltip:Hide();
@@ -1316,14 +1315,14 @@ local function show(targetType, targetID, targetMode)
 					if targetID == Globals.player_id and getCurrentMountProfile() then
 						local mountSpellID = getCurrentMountSpellID();
 						local mountName = getCompanionNameFromSpellID(mountSpellID);
-						ui_CompanionTT:SetOwner(ui_CharacterTT, "ANCHOR_TOPLEFT");
+						TRP3_CompanionTooltip:SetOwner(TRP3_CharacterTooltip, "ANCHOR_TOPLEFT");
 						writeTooltipForMount(Globals.player_id, nil, mountName);
 						UpdateCharacterTooltipClampInsets();
 					else
 						local companionFullID, profileID, mountSpellID = TRP3_API.companions.register.getUnitMount(targetID, targetType);
 						if profileID then
 							local mountName = getCompanionNameFromSpellID(mountSpellID);
-							ui_CompanionTT:SetOwner(ui_CharacterTT, "ANCHOR_TOPLEFT");
+							TRP3_CompanionTooltip:SetOwner(TRP3_CharacterTooltip, "ANCHOR_TOPLEFT");
 							writeTooltipForMount(targetID, companionFullID, mountName);
 							UpdateCharacterTooltipClampInsets();
 						end
@@ -1336,7 +1335,7 @@ local function show(targetType, targetID, targetMode)
 				end
 			end
 
-			ui_CharacterTT:ClearAllPoints(); -- Prevent to break parent frame fade out if parent is a tooltip.
+			TRP3_CharacterTooltip:ClearAllPoints(); -- Prevent to break parent frame fade out if parent is a tooltip.
 		end
 	end
 end
@@ -1446,8 +1445,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	end
 	GameTooltip:HookScript("OnShow", function()
 		if not GameTooltip:GetUnit() then
-			ui_CharacterTT:Hide();
-			ui_CompanionTT:Hide();
+			TRP3_CharacterTooltip:Hide();
+			TRP3_CompanionTooltip:Hide();
 			UpdateCharacterTooltipClampInsets();
 		end
 	end);
@@ -1467,7 +1466,7 @@ local function onModuleInit()
 	local function RefreshCharacterTooltip(targetID)
 		local unitToken = GetCurrentTooltipUnit();
 
-		if unitToken and (not targetID or ui_CharacterTT.target == targetID) then
+		if unitToken and (not targetID or TRP3_CharacterTooltip.target == targetID) then
 			ShowUnitTooltip(unitToken);
 		end
 	end
@@ -1496,10 +1495,10 @@ local function onModuleInit()
 		end
 	end);
 
-	ui_CharacterTT.TimeSinceLastUpdate = 0;
-	ui_CharacterTT:SetScript("OnUpdate", onUpdate);
-	ui_CompanionTT.TimeSinceLastUpdate = 0;
-	ui_CompanionTT:SetScript("OnUpdate", onUpdateCompanion);
+	TRP3_CharacterTooltip.TimeSinceLastUpdate = 0;
+	TRP3_CharacterTooltip:SetScript("OnUpdate", onUpdate);
+	TRP3_CompanionTooltip.TimeSinceLastUpdate = 0;
+	TRP3_CompanionTooltip:SetScript("OnUpdate", onUpdateCompanion);
 
 	-- Config default value
 	local registerConfigKey = TRP3_API.configuration.registerConfigKey;

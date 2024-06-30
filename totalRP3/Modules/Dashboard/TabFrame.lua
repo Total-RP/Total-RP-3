@@ -5,12 +5,6 @@
 local TRP3_API = select(2, ...);
 local Ellyb = TRP3_API.Ellyb;
 
--- WoW imports
-local GameFontNormal = GameFontNormal;
-local GameFontNormalHuge3 = GameFontNormalHuge3;
-local GameFontNormalHuge = GameFontNormalHuge;
-local GameFontNormalLarge = GameFontNormalLarge;
-
 -- Total RP 3 imports
 local Events = TRP3_Addon.Events;
 local strhtml = TRP3_API.utils.str.toHTML;

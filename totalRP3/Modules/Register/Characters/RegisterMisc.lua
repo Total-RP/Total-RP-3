@@ -6,7 +6,6 @@ local Utils, Events, Globals = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.globa
 local loc = TRP3_API.loc;
 local get = TRP3_API.profile.getData;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
-local tinsert, pairs, type, tostring = tinsert, pairs, type, tostring;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;

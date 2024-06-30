@@ -27,9 +27,6 @@ local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
--- WoW imports
-local newTimer = C_Timer.NewTimer;
-
 -- Character name for profile opening command
 local characterToOpen = "";
 local commandOpeningTimerHandle;
@@ -669,7 +666,7 @@ function TRP3_API.slash.openProfile(...)
 		displayMessage(loc.PR_SLASH_OPEN_WAITING);
 
 		-- If after 1 minute they didn't reply, abort
-		commandOpeningTimerHandle = newTimer(60, function()
+		commandOpeningTimerHandle = C_Timer.NewTimer(60, function()
 			displayMessage(loc.PR_SLASH_OPEN_ABORTING);
 			characterToOpen = "";
 		end)

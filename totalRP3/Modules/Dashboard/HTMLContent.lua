@@ -5,15 +5,8 @@
 local TRP3_API = select(2, ...);
 local Ellyb = TRP3_API.Ellyb;
 
--- Lua imports
-local strformat = string.format;
-
 -- Ellyb imports
 local Popups = Ellyb.Popups;
-
--- WoW imports
-local hooksecurefunc = hooksecurefunc;
-local twipe = table.wipe;
 
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
@@ -68,7 +61,7 @@ function TRP3_DashboardHTMLContentMixin:OnHyperlinkEnter(_, text)
 	tooltip:Hide();
 	tooltip:SetOwner(self, "ANCHOR_CURSOR");
 	tooltip:AddLine(text, 1, 1, 1, true);
-	tooltip:AddLine(strformat(
+	tooltip:AddLine(string.format(
 		"|cffffff00%s:|r %s",
 		loc.CM_CLICK, loc.CM_OPEN
 	), 1, 1, 1, true);
@@ -99,5 +92,5 @@ end
 
 --- Unregisters all registered URL handler functions.
 function TRP3_DashboardHTMLContentMixin:UnregisterAllHyperlinks()
-	twipe(self.urlHandlers);
+	table.wipe(self.urlHandlers);
 end
