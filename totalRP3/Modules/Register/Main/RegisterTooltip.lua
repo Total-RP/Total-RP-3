@@ -68,6 +68,7 @@ local ConfigKeys = {
 	CHARACT_RELATION = "tooltip_char_relation";
 	CHARACT_SPACING = "tooltip_char_spacing";
 	NO_FADE_OUT = "tooltip_no_fade_out";
+	SHOW_WORLD_CURSOR = "tooltip_show_world_cursor";
 	PREFER_OOC_ICON = "tooltip_prefere_ooc_icon";
 	CHARACT_CURRENT_LINES = "tooltip_char_current_lines";
 	TOOLTIP_TITLE_COLOR = "tooltip_title_color";
@@ -191,6 +192,10 @@ end
 
 local function fadeOutEnabled()
 	return not getConfigValue(ConfigKeys.NO_FADE_OUT);
+end
+
+local function showWorldCursor()
+	return getConfigValue(ConfigKeys.SHOW_WORLD_CURSOR);
 end
 
 local function getCurrentMaxLines()
@@ -489,7 +494,7 @@ local function SetProgressSpinnerShown(tooltip, shown)
 end
 
 --- The complete character's tooltip writing sequence.
-local function writeTooltipForCharacter(targetID, _, targetType)
+local function writeTooltipForCharacter(targetID, targetType)
 	local info = getCharacterInfoTab(targetID);
 	local character = getCharacter(targetID);
 	local targetName = UnitName(targetType);
@@ -961,7 +966,7 @@ local function ownerIsIgnored(compagnonFullID)
 	return isIDIgnored(ownerID);
 end
 
-local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
+local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 	local ownerID, companionID = companionIDToInfo(companionFullID);
 	local data = getCompanionInfo(ownerID, companionID);
 	local info = data.data or EMPTY;
@@ -1249,7 +1254,6 @@ end
 local function show(targetType, targetID, targetMode)
 	TRP3_CharacterTooltip:Hide();
 	TRP3_CompanionTooltip:Hide();
-	UpdateCharacterTooltipClampInsets();
 
 	-- If option is to only show tooltips when player is in character and player is out of character, stop here
 	if getConfigValue(ConfigKeys.IN_CHARACTER_ONLY) and not isPlayerIC() then return end
@@ -1281,7 +1285,6 @@ local function show(targetType, targetID, targetMode)
 			if targetMode then
 
 				-- Stock all the current text from the GameTooltip
-				local originalTexts = getGameTooltipTexts(GameTooltip);
 				local isMatureFlagged = unitIDIsFilteredForMatureContent(targetID);
 
 				if (targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and (isIDIgnored(targetID) or isMatureFlagged)) or ((targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and (ownerIsIgnored(targetID) or isMatureFlagged)) then
@@ -1292,7 +1295,7 @@ local function show(targetType, targetID, targetMode)
 					GameTooltip_SetDefaultAnchor(TRP3_CharacterTooltip, UIParent);
 					placeTooltipOnCursor(TRP3_CharacterTooltip);
 				elseif getAnchoredFrame() == GameTooltip and getConfigValue(ConfigKeys.CHARACT_HIDE_ORIGINAL) then
-					if GameTooltip:GetNumPoints() > 0 then
+					if GameTooltip:GetOwner() ~= nil and GameTooltip:GetNumPoints() > 0 then
 						TRP3_CharacterTooltip:SetOwner(UIParent, "ANCHOR_NONE");
 						TRP3_CharacterTooltip:SetPoint(GameTooltip:GetPoint(1));
 					else
@@ -1304,7 +1307,7 @@ local function show(targetType, targetID, targetMode)
 
 				TRP3_CharacterTooltip:SetBorderColor(1, 1, 1);
 				if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER then
-					writeTooltipForCharacter(targetID, originalTexts, targetType);
+					writeTooltipForCharacter(targetID, targetType);
 					if showRelationColor() and targetID ~= Globals.player_id and not isIDIgnored(targetID) and IsUnitIDKnown(targetID) and hasProfile(targetID) then
 						TRP3_CharacterTooltip:SetBorderColor(getRelationColors(hasProfile(targetID)));
 					end
@@ -1317,18 +1320,16 @@ local function show(targetType, targetID, targetMode)
 						local mountName = getCompanionNameFromSpellID(mountSpellID);
 						TRP3_CompanionTooltip:SetOwner(TRP3_CharacterTooltip, "ANCHOR_TOPLEFT");
 						writeTooltipForMount(Globals.player_id, nil, mountName);
-						UpdateCharacterTooltipClampInsets();
 					else
 						local companionFullID, profileID, mountSpellID = TRP3_API.companions.register.getUnitMount(targetID, targetType);
 						if profileID then
 							local mountName = getCompanionNameFromSpellID(mountSpellID);
 							TRP3_CompanionTooltip:SetOwner(TRP3_CharacterTooltip, "ANCHOR_TOPLEFT");
 							writeTooltipForMount(targetID, companionFullID, mountName);
-							UpdateCharacterTooltipClampInsets();
 						end
 					end
 				elseif targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET then
-					writeCompanionTooltip(targetID, originalTexts, targetType, targetMode);
+					writeCompanionTooltip(targetID, targetType, targetMode);
 					if shouldHideGameTooltip() and not (ownerIsIgnored(targetID) or unitIDIsFilteredForMatureContent(targetID)) then
 						GameTooltip:Hide();
 					end
@@ -1404,15 +1405,13 @@ local function GetWorldCursorUnit()
 end
 
 local function GetCurrentTooltipUnit()
-	if not GameTooltip:GetOwner() then
-		return nil;
-	end
-
 	local unitToken;
 
 	if UnitExists("mouseover") then
 		unitToken = "mouseover";
-	else
+	elseif showWorldCursor() and getAnchoredPosition() ~= "ANCHOR_CURSOR" then
+		-- World cursor units are not consulted if the tooltip is set to
+		-- anchor to the cursor itself, as it looks a bit silly.
 		unitToken = GetWorldCursorUnit();
 	end
 
@@ -1447,7 +1446,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		if not GameTooltip:GetUnit() then
 			TRP3_CharacterTooltip:Hide();
 			TRP3_CompanionTooltip:Hide();
-			UpdateCharacterTooltipClampInsets();
 		end
 	end);
 end);
@@ -1499,6 +1497,8 @@ local function onModuleInit()
 	TRP3_CharacterTooltip:SetScript("OnUpdate", onUpdate);
 	TRP3_CompanionTooltip.TimeSinceLastUpdate = 0;
 	TRP3_CompanionTooltip:SetScript("OnUpdate", onUpdateCompanion);
+	TRP3_CompanionTooltip:HookScript("OnShow", UpdateCharacterTooltipClampInsets);
+	TRP3_CompanionTooltip:HookScript("OnHide", UpdateCharacterTooltipClampInsets);
 
 	-- Config default value
 	local registerConfigKey = TRP3_API.configuration.registerConfigKey;
@@ -1532,6 +1532,7 @@ local function onModuleInit()
 	registerConfigKey(ConfigKeys.CHARACT_CURRENT_SIZE, 140);
 	registerConfigKey(ConfigKeys.CHARACT_RELATION, true);
 	registerConfigKey(ConfigKeys.CHARACT_SPACING, true);
+	registerConfigKey(ConfigKeys.SHOW_WORLD_CURSOR, true);
 	registerConfigKey(ConfigKeys.NO_FADE_OUT, false);
 	registerConfigKey(ConfigKeys.PREFER_OOC_ICON, TRP3_OOCIndicatorStyle.Text);
 	registerConfigKey(ConfigKeys.PETS_ICON, true);
@@ -1697,6 +1698,12 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_NO_FADE_OUT,
 				configKey = ConfigKeys.NO_FADE_OUT,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_SHOW_WORLD_CURSOR,
+				help = loc.CO_TOOLTIP_SHOW_WORLD_CURSOR_TT,
+				configKey = ConfigKeys.SHOW_WORLD_CURSOR,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
