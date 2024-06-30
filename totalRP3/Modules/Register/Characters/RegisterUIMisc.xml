@@ -229,7 +229,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_AtFirstGlanceEditor" inherits="TRP3_HoveredFrame" parent="UIParent" hidden="true">
+	<Frame name="TRP3_AtFirstGlanceEditor" inherits="TRP3_HoveredFrame" parent="UIParent" hidden="true" toplevel="true" enableMouse="true">
 		<Size x="300" y="175"/>
 		<Layers>
 			<Layer level="OVERLAY">
