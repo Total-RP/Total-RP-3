@@ -55,6 +55,7 @@ TRP3_InterfaceIcons = {
 	ToolbarHelmetOn  = { "inv_helmet_13" },
 	ToolbarHelmetOff = { "spell_nature_invisibilty" },
 	ToolbarLanguage  = { "spell_holy_silence" },
+	ToolbarCurrently = { "ui_chat" },
 
 	--
 	-- Player Mode Icons
