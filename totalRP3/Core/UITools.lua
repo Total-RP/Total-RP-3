@@ -1067,7 +1067,10 @@ function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPositio
 	end
 
 	frame:Show();
-	playAnimation(frame[animation]);
+
+	if frame[animation] then
+		playAnimation(frame[animation]);
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
