@@ -5,6 +5,10 @@ if TRP3_USE_MODERN_MENUS then
 	return;
 end
 
+local function DefaultSelectionTranslator(selection)
+	return TRP3_MenuUtil.GetElementText(selection);
+end
+
 function TRP3_DropdownButtonMixin:OnLoad()
 	self:SetHitRectInsets(4, 4, 2, 2);
 	self:SetMouseMotionEnabled(true);
@@ -79,6 +83,7 @@ function TRP3_DropdownButtonMixin:OnLoad()
 	self.menuGenerator = nil;
 	self.menuDescription = nil;
 	self.menuAnchor = nil;
+	self.selectionTranslator = DefaultSelectionTranslator;
 
 	local anchor = AnchorUtil.CreateAnchor(self.menuPoint, self, self.menuRelativePoint, self.menuPointX, self.menuPointY);
 	self:SetMenuAnchor(anchor);
@@ -111,8 +116,6 @@ end
 
 function TRP3_DropdownButtonMixin:OnMouseDown()
 	self.Button:SetButtonState(self:IsEnabled() and "PUSHED" or "DISABLED");
-	-- This should just be OpenMenu, however Classic lacks the global mouse
-	-- handler and so menus don't close automatically on clicks elsewhere.
 
 	if self:IsMenuOpen() then
 		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF);
@@ -187,7 +190,7 @@ function TRP3_DropdownButtonMixin:SetText(text)
 	UIDropDownMenu_SetText(self, text);
 end
 
-local function GetTextFromSelections(rootDescription)
+local function GetTextFromSelections(rootDescription, selectionTranslator)
 	if not rootDescription then
 		return nil;
 	end
@@ -201,7 +204,7 @@ local function GetTextFromSelections(rootDescription)
 	local elementTexts = {};
 
 	for _, elementDescription in ipairs(currentSelections) do
-		local elementText = TRP3_MenuUtil.GetElementText(elementDescription);
+		local elementText = selectionTranslator(elementDescription);
 		table.insert(elementTexts, elementText);
 	end
 
@@ -209,7 +212,7 @@ local function GetTextFromSelections(rootDescription)
 end
 
 function TRP3_DropdownButtonMixin:GetUpdateText()
-	local updateText = GetTextFromSelections(self.menuDescription);
+	local updateText = GetTextFromSelections(self.menuDescription, self.selectionTranslator);
 
 	if not updateText or updateText == "" then
 		updateText = self.defaultText;
@@ -279,4 +282,8 @@ end
 function TRP3_DropdownButtonMixin:OverrideText(text)
 	self.disableSelectionText = true;
 	self:SetText(text);
+end
+
+function TRP3_DropdownButtonMixin:SetSelectionTranslator(translator)
+	self.selectionTranslator = translator;
 end

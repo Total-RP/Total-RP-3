@@ -214,13 +214,8 @@ function TRP3_AutomationSettingsMixin:SetupProfileDropdownMenu(menuDescription)
 
 	for _, profileName in ipairs(profiles) do
 		local button = menuDescription:CreateRadio(profileName, IsSelected, SetSelected, profileName);
-		if button.SetRespondIfSubmenu then
-			-- FIXME: Remove the if check in a future 11.0 build when these
-			--        are added. Can't *not* use them after they were
-			--        literally added just for us...
-			button:SetRespondIfSubmenu(true);
-			button:SetShouldPlaySoundOnSubmenuClick(true);
-		end
+		button:SetShouldRespondIfSubmenu(true);
+		button:SetShouldPlaySoundOnSubmenuClick(true);
 		SetupProfileActionMenu(button, profileName);
 	end
 

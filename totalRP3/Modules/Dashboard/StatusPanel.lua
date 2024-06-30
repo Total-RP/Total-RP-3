@@ -37,6 +37,19 @@ local function SetRoleplayExperienceLevel(level)
 	IncrementCharacterDataVersion(currentUser);
 end
 
+local function GetRoleplayStatusButtonText(selection)
+	local status = selection:GetData();
+	local text = TRP3_MenuUtil.GetElementText(selection);
+
+	if status == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER then
+		text = string.join(" ", "|TInterface\\COMMON\\Indicator-Green:16:16|t ", text);
+	elseif status == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
+		text = string.join(" ", "|TInterface\\COMMON\\Indicator-Red:16:16|t ", text);
+	end
+
+	return text;
+end
+
 
 local function SetRoleplayStatus(status)
 	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
@@ -93,6 +106,7 @@ function TRP3_DashboardStatusPanelMixin:OnShow()
 	TRP3_API.ui.frame.setupFieldPanel(self, L.DB_STATUS, 150);
 	self.RPStatusLabel:SetText(L.DB_STATUS_RP);
 	self.XPStatusLabel:SetText(L.DB_STATUS_XP);
+	self.RPStatusMenu:SetSelectionTranslator(GetRoleplayStatusButtonText);
 	self.RPStatusMenu:SetupMenu(GenerateRPStatusMenu);
 	self.XPStatusMenu:SetupMenu(GenerateXPStatusMenu);
 end
