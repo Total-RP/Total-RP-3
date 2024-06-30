@@ -637,7 +637,7 @@ local function displayGlanceSlots()
 				if glance.IC and glance.IC:len() > 0 then
 					icon = glance.IC;
 				end
-				local TTText = glance.TX or "...";
+				local TTText = glance.TX or "";
 				local glanceTitle = glance.TI or "...";
 				if not isCurrentMine and shouldCropTexts() then
 					TTText = crop(TTText, GLANCE_TOOLTIP_CROP);
