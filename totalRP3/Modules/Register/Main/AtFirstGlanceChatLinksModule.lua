@@ -42,7 +42,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		if glance.IC and glance.IC:len() > 0 then
 			icon = glance.IC;
 		end
-		local TTText = glance.TX or "...";
+		local TTText = glance.TX or "";
 		local glanceTitle = glance.TI or "...";
 		if shouldCropTexts() then
 			TTText = crop(TTText, GLANCE_TOOLTIP_CROP);

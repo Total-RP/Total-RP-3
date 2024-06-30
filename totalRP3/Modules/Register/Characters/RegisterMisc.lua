@@ -192,11 +192,7 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 	button:SetNormalTexture("Interface\\ICONS\\" .. (icon or GLANCE_NOT_USED_ICON));
 	if active then
 		button:SetAlpha(1);
-		if not isMine then
-			setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", text);
-		else
-			setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", (text or "..."));
-		end
+		setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", text or "");
 	else
 		button:SetAlpha(0.1);
 		if not isMine then
