@@ -399,15 +399,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				title = loc.CO_GENERAL_MISC,
 			},
 			{
-				inherit = "TRP3_ConfigSlider",
-				title = loc.CO_GENERAL_TT_SIZE,
-				configKey = TRP3_API.ui.tooltip.CONFIG_TOOLTIP_SIZE,
-				min = 6,
-				max = 25,
-				step = 1,
-				integer = true,
-			},
-			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_GENERAL_DISABLE_WELCOME_MESSAGE,
 				configKey = "disable_welcome_message",

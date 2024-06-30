@@ -19,7 +19,7 @@ local loc = TRP3_API.loc;
 local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat;
 local math = math;
 local MouseIsOver, CreateFrame = MouseIsOver, CreateFrame;
-local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
+local TRP3_MainTooltip = TRP3_MainTooltip;
 local shiftDown = IsShiftKeyDown;
 local UnitIsPlayer = UnitIsPlayer;
 local getUnitID = TRP3_API.utils.str.getUnitID;
@@ -373,43 +373,19 @@ end
 -- Tooltip tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.ui.tooltip.CONFIG_TOOLTIP_SIZE = "CONFIG_TOOLTIP_SIZE";
-local CONFIG_TOOLTIP_SIZE = TRP3_API.ui.tooltip.CONFIG_TOOLTIP_SIZE;
 local getConfigValue = function() end;
-
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-	TRP3_API.configuration.registerConfigKey(TRP3_API.ui.tooltip.CONFIG_TOOLTIP_SIZE, 11);
-	getConfigValue = TRP3_API.configuration.getValue;
-end);
-
-local function getTooltipSize()
-	return getConfigValue(CONFIG_TOOLTIP_SIZE) or 11;
-end
 
 -- Show the tooltip for this Frame (the frame must have been set up with setTooltipForFrame).
 -- If already shown, the tooltip text will be refreshed.
 local function refreshTooltip(Frame)
 	if Frame.titleText and Frame.GenFrame and Frame.GenFrameX and Frame.GenFrameY and Frame.GenFrameAnch then
-		TRP3_MainTooltip:Hide();
-		TRP3_MainTooltip:SetOwner(Frame.GenFrame, Frame.GenFrameAnch,Frame.GenFrameX,Frame.GenFrameY);
-		if not Frame.rightText then
-			TRP3_MainTooltip:AddLine(Frame.titleText, 1, 1, 1, true);
-			TRP3_TooltipUtil.SetLineFontOptions(TRP3_MainTooltip, 1, getTooltipSize() + 4);
-		else
-			TRP3_MainTooltip:AddDoubleLine(Frame.titleText, Frame.rightText);
-			TRP3_TooltipUtil.SetLineFontOptions(TRP3_MainTooltip, 1, getTooltipSize() + 4);
-			TRP3_MainTooltipTextRight1:SetNonSpaceWrap(true);
-			TRP3_MainTooltipTextRight1:SetTextColor(1, 1, 1);
-		end
-		do
-			TRP3_MainTooltipTextLeft1:SetNonSpaceWrap(true);
-			TRP3_MainTooltipTextLeft1:SetTextColor(1, 1, 1);
-		end
+		TRP3_MainTooltip:SetOwner(Frame.GenFrame, Frame.GenFrameAnch, Frame.GenFrameX, Frame.GenFrameY);
+		GameTooltip_SetTitle(TRP3_MainTooltip, Frame.titleText);
+
 		if Frame.bodyText then
-			TRP3_MainTooltip:AddLine(Frame.bodyText, 1, 0.6666, 0, true);
-			TRP3_TooltipUtil.SetLineFontOptions(TRP3_MainTooltip, 2, getTooltipSize());
-			TRP3_MainTooltipTextLeft2:SetNonSpaceWrap(true);
+			GameTooltip_AddNormalLine(TRP3_MainTooltip, Frame.bodyText, true);
 		end
+
 		TRP3_MainTooltip:Show();
 	end
 end
@@ -438,7 +414,7 @@ local function setTooltipForFrame(Frame, GenFrame, GenFrameAnch, GenFrameX, GenF
 		if GenFrameAnch then
 			Frame.GenFrameAnch = "ANCHOR_"..GenFrameAnch;
 		else
-			Frame.GenFrameAnch = "ANCHOR_TOPRIGHT";
+			Frame.GenFrameAnch = "ANCHOR_RIGHT";
 		end
 	end
 end
@@ -661,7 +637,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Toast
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-local TRP3_Toast, TRP3_ToastTextLeft1 = TRP3_Toast, TRP3_ToastTextLeft1;
 
 local function toastUpdate(self, elapsed)
 	self.delay = self.delay - elapsed;
@@ -675,12 +650,8 @@ TRP3_Toast.delay = 0;
 TRP3_Toast:SetScript("OnUpdate", toastUpdate);
 
 function TRP3_API.ui.tooltip.toast(text, duration)
-	TRP3_Toast:Hide();
 	TRP3_Toast:SetOwner(TRP3_MainFramePageContainer, "ANCHOR_BOTTOM", 0, 60);
-	TRP3_Toast:AddLine(text, 1, 1, 1, true);
-	TRP3_TooltipUtil.SetLineFontOptions(TRP3_Toast, 1, getTooltipSize());
-	TRP3_ToastTextLeft1:SetNonSpaceWrap(true);
-	TRP3_ToastTextLeft1:SetTextColor(1, 1, 1);
+	GameTooltip_AddHighlightLine(TRP3_Toast, text, true);
 	TRP3_Toast:Show();
 	TRP3_Toast.delay = duration or 3;
 end
