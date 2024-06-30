@@ -80,3 +80,7 @@ end
 function Locale:LocalizationKeyExists(localizationKey)
 	return self:GetText(localizationKey) ~= nil;
 end
+
+function Locale:EnumerateTexts()
+	return pairs(private[self].content);
+end
