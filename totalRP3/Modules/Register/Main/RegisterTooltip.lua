@@ -1292,7 +1292,7 @@ local function show(targetType, targetID, targetMode)
 					GameTooltip_SetDefaultAnchor(TRP3_CharacterTooltip, UIParent);
 					placeTooltipOnCursor(TRP3_CharacterTooltip);
 				elseif getAnchoredFrame() == GameTooltip and getConfigValue(ConfigKeys.CHARACT_HIDE_ORIGINAL) then
-					if GameTooltip:GetNumPoints() > 0 then
+					if GameTooltip:GetOwner() ~= nil and GameTooltip:GetNumPoints() > 0 then
 						TRP3_CharacterTooltip:SetOwner(UIParent, "ANCHOR_NONE");
 						TRP3_CharacterTooltip:SetPoint(GameTooltip:GetPoint(1));
 					else
@@ -1404,10 +1404,6 @@ local function GetWorldCursorUnit()
 end
 
 local function GetCurrentTooltipUnit()
-	if not GameTooltip:GetOwner() then
-		return nil;
-	end
-
 	local unitToken;
 
 	if UnitExists("mouseover") then
