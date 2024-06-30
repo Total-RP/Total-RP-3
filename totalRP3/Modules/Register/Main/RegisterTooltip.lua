@@ -494,7 +494,7 @@ local function SetProgressSpinnerShown(tooltip, shown)
 end
 
 --- The complete character's tooltip writing sequence.
-local function writeTooltipForCharacter(targetID, _, targetType)
+local function writeTooltipForCharacter(targetID, targetType)
 	local info = getCharacterInfoTab(targetID);
 	local character = getCharacter(targetID);
 	local targetName = UnitName(targetType);
@@ -966,7 +966,7 @@ local function ownerIsIgnored(compagnonFullID)
 	return isIDIgnored(ownerID);
 end
 
-local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
+local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 	local ownerID, companionID = companionIDToInfo(companionFullID);
 	local data = getCompanionInfo(ownerID, companionID);
 	local info = data.data or EMPTY;
@@ -1286,7 +1286,6 @@ local function show(targetType, targetID, targetMode)
 			if targetMode then
 
 				-- Stock all the current text from the GameTooltip
-				local originalTexts = getGameTooltipTexts(GameTooltip);
 				local isMatureFlagged = unitIDIsFilteredForMatureContent(targetID);
 
 				if (targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and (isIDIgnored(targetID) or isMatureFlagged)) or ((targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and (ownerIsIgnored(targetID) or isMatureFlagged)) then
@@ -1309,7 +1308,7 @@ local function show(targetType, targetID, targetMode)
 
 				TRP3_CharacterTooltip:SetBorderColor(1, 1, 1);
 				if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER then
-					writeTooltipForCharacter(targetID, originalTexts, targetType);
+					writeTooltipForCharacter(targetID, targetType);
 					if showRelationColor() and targetID ~= Globals.player_id and not isIDIgnored(targetID) and IsUnitIDKnown(targetID) and hasProfile(targetID) then
 						TRP3_CharacterTooltip:SetBorderColor(getRelationColors(hasProfile(targetID)));
 					end
@@ -1333,7 +1332,7 @@ local function show(targetType, targetID, targetMode)
 						end
 					end
 				elseif targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET then
-					writeCompanionTooltip(targetID, originalTexts, targetType, targetMode);
+					writeCompanionTooltip(targetID, targetType, targetMode);
 					if shouldHideGameTooltip() and not (ownerIsIgnored(targetID) or unitIDIsFilteredForMatureContent(targetID)) then
 						GameTooltip:Hide();
 					end
