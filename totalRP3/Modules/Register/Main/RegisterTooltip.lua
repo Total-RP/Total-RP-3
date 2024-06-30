@@ -68,6 +68,7 @@ local ConfigKeys = {
 	CHARACT_RELATION = "tooltip_char_relation";
 	CHARACT_SPACING = "tooltip_char_spacing";
 	NO_FADE_OUT = "tooltip_no_fade_out";
+	SHOW_WORLD_CURSOR = "tooltip_show_world_cursor";
 	PREFER_OOC_ICON = "tooltip_prefere_ooc_icon";
 	CHARACT_CURRENT_LINES = "tooltip_char_current_lines";
 	TOOLTIP_TITLE_COLOR = "tooltip_title_color";
@@ -191,6 +192,10 @@ end
 
 local function fadeOutEnabled()
 	return not getConfigValue(ConfigKeys.NO_FADE_OUT);
+end
+
+local function showWorldCursor()
+	return getConfigValue(ConfigKeys.SHOW_WORLD_CURSOR);
 end
 
 local function getCurrentMaxLines()
@@ -1408,7 +1413,9 @@ local function GetCurrentTooltipUnit()
 
 	if UnitExists("mouseover") then
 		unitToken = "mouseover";
-	else
+	elseif showWorldCursor() and getAnchoredPosition() ~= "ANCHOR_CURSOR" then
+		-- World cursor units are not consulted if the tooltip is set to
+		-- anchor to the cursor itself, as it looks a bit silly.
 		unitToken = GetWorldCursorUnit();
 	end
 
@@ -1528,6 +1535,7 @@ local function onModuleInit()
 	registerConfigKey(ConfigKeys.CHARACT_CURRENT_SIZE, 140);
 	registerConfigKey(ConfigKeys.CHARACT_RELATION, true);
 	registerConfigKey(ConfigKeys.CHARACT_SPACING, true);
+	registerConfigKey(ConfigKeys.SHOW_WORLD_CURSOR, true);
 	registerConfigKey(ConfigKeys.NO_FADE_OUT, false);
 	registerConfigKey(ConfigKeys.PREFER_OOC_ICON, TRP3_OOCIndicatorStyle.Text);
 	registerConfigKey(ConfigKeys.PETS_ICON, true);
@@ -1693,6 +1701,12 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_NO_FADE_OUT,
 				configKey = ConfigKeys.NO_FADE_OUT,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_SHOW_WORLD_CURSOR,
+				help = loc.CO_TOOLTIP_SHOW_WORLD_CURSOR_TT,
+				configKey = ConfigKeys.SHOW_WORLD_CURSOR,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
