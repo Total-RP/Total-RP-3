@@ -161,9 +161,6 @@ L = {
 	CO_GENERAL_HEAVY = "Heavy profile alert",
 	CO_GENERAL_HEAVY_TT = "Get an alert when your profile total size exceed a reasonable value.",
 	REG_PLAYER_PEEK = "Miscellaneous",
-	REG_PLAYER_CURRENT = "Currently",
-	REG_PLAYER_CURRENTOOC = "Currently (OOC)",
-	REG_PLAYER_CURRENT_OOC = "This is OOC information";
 	REG_PLAYER_GLANCE = "At first glance",
 	REG_PLAYER_GLANCE_USE = "Activate this slot",
 	REG_PLAYER_GLANCE_TITLE = "Attribute name",
@@ -191,6 +188,7 @@ L = {
 	REG_PLAYER_GLANCE_PRESET_GET_CAT = "%s\n\nPlease enter the category name for this preset.",
 	REG_PLAYER_GLANCE_MENU_COPY = "Copy slot",
 	REG_PLAYER_GLANCE_MENU_PASTE = "Paste slot: %s",
+	REG_PLAYER_STATUS = "Status",
 	REG_PLAYER_TUTO_ABOUT_COMMON = [[|cff00ff00Character theme:|r
 You can choose a |cffffff00theme|r for your character. Think of it as an |cffffff00ambiance music for reading your character description|r.
 
@@ -777,7 +775,7 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 
 	DB_STATUS = "Status",
 	DB_STATUS_CURRENTLY_COMMON = "These statuses will be displayed on your character's tooltip. Keep it clear and brief as |cffff9900by default TRP3 players will only see the first 140 characters of them!",
-	DB_STATUS_CURRENTLY = "Currently (IC)",
+	DB_STATUS_CURRENTLY = "Currently",
 	DB_STATUS_CURRENTLY_TT = "Here you can indicate something important about your character.",
 	DB_STATUS_CURRENTLY_OOC = "Other information (OOC)",
 	DB_STATUS_CURRENTLY_OOC_TT = "Here you can indicate something important about you, as a player, or anything out of your character.",

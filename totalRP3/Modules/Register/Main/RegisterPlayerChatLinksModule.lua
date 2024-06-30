@@ -57,7 +57,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		end
 		if profile.character and profile.character.CU then
 			tooltipLines:AddLine(" ");
-			tooltipLines:AddLine(loc.REG_PLAYER_CURRENT .. ": ");
+			tooltipLines:AddLine(loc.DB_STATUS_CURRENTLY .. ": ");
 			tooltipLines:AddLine(profile.character.CU, TRP3_API.Colors.Yellow);
 		end
 		if profile.character and profile.character.CO then
