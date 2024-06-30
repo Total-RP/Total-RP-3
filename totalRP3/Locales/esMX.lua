@@ -277,7 +277,7 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["DB_MORE"] = "Más módulos",
 	["DB_NEW"] = "¿Qué hay nuevo?",
 	["DB_STATUS"] = "Estado",
-	["DB_STATUS_CURRENTLY"] = "Actualmente",
+	["DB_STATUS_CURRENTLY"] = "Actualmente (EP)",
 	["DB_STATUS_CURRENTLY_OOC"] = "Otra información (FdP)",
 	["DB_STATUS_RP"] = "Estado de personaje",
 	["DB_STATUS_RP_EXP"] = "Rolero experimentado",
