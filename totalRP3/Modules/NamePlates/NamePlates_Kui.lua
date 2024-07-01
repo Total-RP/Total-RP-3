@@ -393,7 +393,7 @@ end
 function TRP3_KuiNamePlates:CanCustomizeNamePlate(nameplate)
 	local nameplateKey = nameplate:GetName();
 
-	if not self.initialized[nameplateKey] then
+	if not self.initialized or not self.initialized[nameplateKey] then
 		return false;  -- Reject uninitialized nameplates.
 	elseif nameplate.state.personal or not nameplate.state.reaction then
 		return false;  -- Reject personal and invalid nameplates.
