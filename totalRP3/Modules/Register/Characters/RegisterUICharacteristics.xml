@@ -20,7 +20,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Button>
 
-	<!-- Reoorder button -->
+	<!-- Reorder button -->
 	<Button name="TRP3_RegisterEditReorderButtonTemplate" virtual="true">
 		<Size x="36" y="39"/>
 		<NormalTexture file="Interface/AddOns/totalRP3/Resources/UI/ui-button-reorder">
@@ -41,7 +41,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Frame name="TRP3_RegisterCharact_MiscEditLine" virtual="true">
 		<Size x="20" y="40"/>
 		<Frames>
-			<Button name="$parentDrag" parentKey="DragButton" inherits="TRP3_RegisterEditReorderButtonTemplate">
+			<Button parentKey="DragButton" inherits="TRP3_RegisterEditReorderButtonTemplate">
 				<Size x="22" y="24"/>
 				<Scripts>
 					<OnEnter function="TRP3_RefreshTooltipForFrame"/>
@@ -298,7 +298,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Scripts>
 			</Slider>
 
-			<Button name="$parentDrag" parentKey="DragButton" inherits="TRP3_RegisterEditReorderButtonTemplate">
+			<Button parentKey="DragButton" inherits="TRP3_RegisterEditReorderButtonTemplate">
 				<Size x="22" y="24"/>
 				<Scripts>
 					<OnEnter function="TRP3_RefreshTooltipForFrame"/>

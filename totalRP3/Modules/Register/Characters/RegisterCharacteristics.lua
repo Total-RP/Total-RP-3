@@ -776,7 +776,7 @@ local function reorderInfoQueryCursorIndexPosition(data, editCharFrame)
 
 	-- We need to know the total number of characteristics for a bit later.
 	local lastItemIndex = 0;
-	for frameIndex, _ in pairs(data) do
+	for frameIndex in ipairs(data) do
 		if frameIndex > lastItemIndex then
 			lastItemIndex = frameIndex;
 		end
@@ -910,7 +910,7 @@ local function reorderInfoPerformReorder(data, editCharFrame, sourceIndex, targe
 
 	-- Now fix up all the frames in terms of their referenced indices.
 	local previous = editTitle;
-	for frameIndex, _ in pairs(data) do
+	for frameIndex in ipairs(data) do
 		local frame = editCharFrame[frameIndex];
 		frame.frameIndex = frameIndex;
 
@@ -1018,8 +1018,8 @@ local function setInfoReorderable(handle, node, choice, editTitle, addBtn)
 	handle:EnableMouse(true);
 	handle:RegisterForClicks("AnyDown", "AnyUp");
 
-	-- Differentiate between misc or pyscho here, as drafData and the
-	-- editCharFrame have to be fed in here sso the data is always current
+	-- Differentiate between misc or pyscho here, as draftData and the
+	-- editCharFrame have to be fed in here so the data is always current
 	-- as soon as the user starts to reorder.
 	if choice == "misc" then
 		handle:SetScript("OnMouseDown", function() onInfoDragStart(handle, draftData.MI, miscEditCharFrame, editTitle, addBtn) end);
