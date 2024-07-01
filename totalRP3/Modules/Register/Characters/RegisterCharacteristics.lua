@@ -866,7 +866,7 @@ local function reorderInfoScrollParentTowardCursor()
 end
 
 --- reorderInfoFixupPosition adjusts the points on a given frame, altering
---- the starting with TOP anchor point such that it is made relative to a 
+--- the starting with TOP anchor point such that it is made relative to a
 --- different frame.
 ---
 --- This operation preserves all other points, as well as the offsets of the
@@ -898,7 +898,7 @@ end
 ---@param targetIndex number The index to place the node at.
 ---@param editTitle Frame The character edit title.
 ---@param addBtn Button The add more button.
-local function reorderInfoPerformReorder(data, editCharFrame, sourceIndex, targetIndex, editTitle, addBtn, choice)
+local function reorderInfoPerformReorder(data, editCharFrame, sourceIndex, targetIndex, editTitle, addBtn)
 	-- We'll just do a flat table order change here with a tinsert/tremove.
 	local source = table.remove(data, sourceIndex);
 	table.insert(data, targetIndex, source);
@@ -925,12 +925,12 @@ end
 --- drag ticks. This is responsible for checking the position of the
 --- mouse relative to items in the list.
 ---@param ticker userdata|cbObject The ticker associated with the handle being dragged.
----@param choice string Whether we are interacting with "misc" or "psycho". 
+---@param choice string Whether we are interacting with "misc" or "psycho".
 ---@param data table The info data it requires: draftData.MI or draftData.PS.
 ---@param editCharFrame Frame miscEditCharFrame or psychoEditCharFrame to check.
 ---@param editTitle Frame The character edit title.
 ---@param addBtn Button The add more button.
-local function onInfoDragUpdate(ticker, choice, data, editCharFrame, editTitle, addBtn)
+local function onInfoDragUpdate(ticker, data, editCharFrame, editTitle, addBtn)
 	-- Ensure the scroll frame moves with the cursor.
 	reorderInfoScrollParentTowardCursor();
 
@@ -946,7 +946,7 @@ local function onInfoDragUpdate(ticker, choice, data, editCharFrame, editTitle, 
 		return;
 	end
 
-	reorderInfoPerformReorder(data, editCharFrame, source.frameIndex, targetIndex, editTitle, addBtn, choice);
+	reorderInfoPerformReorder(data, editCharFrame, source.frameIndex, targetIndex, editTitle, addBtn);
 end
 
 --- onInfoDragStart is called when a handle begins being dragged.
@@ -957,7 +957,7 @@ end
 ---@param editCharFrame Frame miscEditCharFrame or psychoEditCharFrame to check.
 ---@param editTitle Frame The character edit title.
 ---@param addBtn Button The add more button.
-local function onInfoDragStart(handle, choice, data, editCharFrame, editTitle, addBtn)
+local function onInfoDragStart(handle, data, editCharFrame, editTitle, addBtn)
 	-- In theory it'll be impossible to have a ticker (you'd need this
 	-- handler to be called twice), but let's be safe. Would rather not
 	-- assert since there's no real harm otherwise.
@@ -966,14 +966,10 @@ local function onInfoDragStart(handle, choice, data, editCharFrame, editTitle, a
 	end
 
 	-- Keep a reference to the handle on the ticker that we create.
-	local ticker = C_Timer.NewTicker(MISC_DRAG_UPDATE_PERIOD, function(ticker) onInfoDragUpdate(ticker, choice, data, editCharFrame, editTitle, addBtn) end);
+	local ticker = C_Timer.NewTicker(MISC_DRAG_UPDATE_PERIOD, function(ticker) onInfoDragUpdate(ticker, data, editCharFrame, editTitle, addBtn) end);
 
 	ticker.handle = handle;
 	handle.infoTicker = ticker;
-
-	-- Stick the icon of the item in question onto the cursor for some feedback.
-	-- Also throw in some sound cues a-la spellbook drag/drop.
-	local node = handle.node;
 
 	-- Change the cursor icon once something is being dragged.
 	SetCursor("Interface\\CURSOR\\UI-Cursor-Move");
@@ -1026,9 +1022,9 @@ local function setInfoReorderable(handle, node, choice, editTitle, addBtn)
 	-- editCharFrame have to be fed in here sso the data is always current
 	-- as soon as the user starts to reorder.
 	if choice == "misc" then
-		handle:SetScript("OnMouseDown", function() onInfoDragStart(handle, choice, draftData.MI, miscEditCharFrame, editTitle, addBtn) end);
+		handle:SetScript("OnMouseDown", function() onInfoDragStart(handle, draftData.MI, miscEditCharFrame, editTitle, addBtn) end);
 	else
-		handle:SetScript("OnMouseDown", function() onInfoDragStart(handle, choice, draftData.PS, psychoEditCharFrame, editTitle, addBtn) end);
+		handle:SetScript("OnMouseDown", function() onInfoDragStart(handle, draftData.PS, psychoEditCharFrame, editTitle, addBtn) end);
 	end
 	handle:SetScript("OnMouseUp", onInfoDragStop);
 
