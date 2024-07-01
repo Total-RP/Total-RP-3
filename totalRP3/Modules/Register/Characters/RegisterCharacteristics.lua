@@ -1020,17 +1020,17 @@ local function setInfoReorderable(handle, node, choice, editTitle, addBtn)
 	handle.infoTicker = nil;
 
 	handle:EnableMouse(true);
-	handle:RegisterForDrag("LeftButton");
+	handle:RegisterForClicks("AnyDown", "AnyUp");
 
 	-- Differentiate between misc or pyscho here, as drafData and the
 	-- editCharFrame have to be fed in here sso the data is always current
 	-- as soon as the user starts to reorder.
 	if choice == "misc" then
-		handle:SetScript("OnDragStart", function() onInfoDragStart(handle, choice, draftData.MI, miscEditCharFrame, editTitle, addBtn) end);
+		handle:SetScript("OnMouseDown", function() onInfoDragStart(handle, choice, draftData.MI, miscEditCharFrame, editTitle, addBtn) end);
 	else
-		handle:SetScript("OnDragStart", function() onInfoDragStart(handle, choice, draftData.PS, psychoEditCharFrame, editTitle, addBtn) end);
+		handle:SetScript("OnMouseDown", function() onInfoDragStart(handle, choice, draftData.PS, psychoEditCharFrame, editTitle, addBtn) end);
 	end
-	handle:SetScript("OnDragStop", onInfoDragStop);
+	handle:SetScript("OnMouseUp", onInfoDragStop);
 
 	-- If the handle stops being shown we should kill the drag.
 	handle:SetScript("OnHide", onInfoDragStop);
