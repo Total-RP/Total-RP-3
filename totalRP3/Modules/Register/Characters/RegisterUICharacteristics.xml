@@ -20,10 +20,37 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Button>
 
+	<!-- Reoorder button -->
+	<Button name="TRP3_RegisterEditReorderButtonTemplate" virtual="true">
+		<Size x="36" y="39"/>
+		<NormalTexture file="Interface/AddOns/totalRP3/Resources/UI/ui-button-reorder">
+			<TexCoords left="0" right="0.75" top="0" bottom="0.8125"/>
+		</NormalTexture>
+		<PushedTexture file="Interface/AddOns/totalRP3/Resources/UI/ui-button-reorder-down">
+			<TexCoords left="0" right="0.75" top="0" bottom="0.8125"/>
+		</PushedTexture>
+		<HighlightTexture inherits="UIPanelButtonHighlightTexture">
+			<Anchors>
+				<Anchor point="TOPLEFT" x="2" y="-2"/>
+				<Anchor point="BOTTOMRIGHT" x="-2" y="2"/>
+			</Anchors>
+		</HighlightTexture>
+	</Button>
+
 	<!-- Register characteristics register line -->
 	<Frame name="TRP3_RegisterCharact_MiscEditLine" virtual="true">
 		<Size x="20" y="40"/>
 		<Frames>
+			<Button name="$parentDrag" parentKey="DragButton" inherits="TRP3_RegisterEditReorderButtonTemplate">
+				<Size x="22" y="24"/>
+				<Scripts>
+					<OnEnter function="TRP3_RefreshTooltipForFrame"/>
+					<OnLeave>TRP3_MainTooltip:Hide();</OnLeave>
+				</Scripts>
+				<Anchors>
+					<Anchor point="LEFT" x="-5"/>
+				</Anchors>
+			</Button>
 			<Button name="$parentIcon" parentKey="Icon" inherits="TRP3_IconButton">
 				<Anchors>
 					<Anchor point="LEFT" x="30" y="0"/>
@@ -270,6 +297,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</OnLoad>
 				</Scripts>
 			</Slider>
+
+			<Button name="$parentDrag" parentKey="DragButton" inherits="TRP3_RegisterEditReorderButtonTemplate">
+				<Size x="22" y="24"/>
+				<Scripts>
+					<OnEnter function="TRP3_RefreshTooltipForFrame"/>
+					<OnLeave>TRP3_MainTooltip:Hide();</OnLeave>
+				</Scripts>
+				<Anchors>
+					<Anchor point="LEFT" x="-5"/>
+				</Anchors>
+			</Button>
 
 			<Button name="$parentLeftIcon" parentKey="CustomLeftIcon" inherits="TRP3_IconButton">
 				<Anchors>
