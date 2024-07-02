@@ -319,6 +319,7 @@ TRP3_API.flyway.patches["19"] = function()
 
 		if character then
 			character.RP = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+			character.v = TRP3_API.utils.math.incrementNumber(character.v or 1, 2);
 		end
 	end
 end
