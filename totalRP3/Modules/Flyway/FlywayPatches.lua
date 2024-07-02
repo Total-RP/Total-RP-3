@@ -325,15 +325,16 @@ end
 
 TRP3_API.flyway.patches["20"] = function()
 	-- Roleplay experience is now a global setting and should be removed
-	-- from all player-owned profiles. Profiles in the register retain the
-	-- data as it is still sent through comms.
+	-- from all player-owned profiles. Register profiles will retain the
+	-- XP field as they're expected to passively shed it as resynchronization
+	-- occurs across the network, or until the point they're pruned.
 
 	if not TRP3_Profiles then
 		return;
 	end
 
 	for _, profile in pairs(TRP3_Profiles) do
-		local character = SafeGet(profile, "player", "character");
+		local character = profile.player and profile.player.character;
 
 		if character then
 			character.XP = nil;

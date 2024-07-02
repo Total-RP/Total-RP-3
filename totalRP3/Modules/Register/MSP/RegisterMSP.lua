@@ -429,9 +429,9 @@ local function onStart()
 							profile.character.CO = value;
 						elseif field == "FR" then
 							if value == "4" then
-								profile.character.XP = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.BEGINNER;
+								character.roleplayExperience = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.BEGINNER;
 							else
-								profile.character.XP = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.EXPERIENCED;
+								character.roleplayExperience = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.EXPERIENCED;
 							end
 						elseif field == "VA" then
 							if value and value:find("/", nil, true) then

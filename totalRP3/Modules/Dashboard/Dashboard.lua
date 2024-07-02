@@ -70,15 +70,7 @@ function TRP3_API.dashboard.isPlayerIC()
 end
 
 function TRP3_API.dashboard.getCharacterExchangeData()
-	local character = get("player/character");
-
-	return {
-		CO = character.CO,
-		CU = character.CU,
-		RP = character.RP,
-		XP = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayExperience(),
-		v = character.v,
-	};
+	return get("player/character");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

@@ -143,6 +143,7 @@ local VERNUM_QUERY_INDEX_EXTENDED_DISPLAY = 19;
 local VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET = 20;
 local VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET_V1 = 21;
 local VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET_V2 = 22;
+local VERNUM_QUERY_INDEX_ROLEPLAY_EXPERIENCE = 23;
 
 local queryInformationType, createVernumQuery;
 
@@ -174,6 +175,7 @@ function createVernumQuery()
 	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT] = mountLine or "";
 	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1] = mountV1 or 0;
 	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2] = mountV2 or 0;
+	query[VERNUM_QUERY_INDEX_ROLEPLAY_EXPERIENCE] = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayExperience();
 
 	-- Extended
 	if Globals.extended_version then
@@ -387,6 +389,7 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	local senderExtendedVersion = structure[VERNUM_QUERY_INDEX_EXTENDED];
 	local senderIsTrial = structure[VERNUM_QUERY_INDEX_TRIALS];
 	local senderExtendedVersionText = structure[VERNUM_QUERY_INDEX_EXTENDED_DISPLAY];
+	local roleplayExperience = structure[VERNUM_QUERY_INDEX_ROLEPLAY_EXPERIENCE];
 
 	senderVersion = tonumber(senderVersion) or 0;
 	senderExtendedVersion = tonumber(senderExtendedVersion) or 0;
@@ -401,7 +404,7 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	if not isUnitIDKnown(senderID) then
 		addCharacter(senderID);
 	end
-	saveClientInformation(senderID, clientName, senderVersionText, false, senderExtendedVersion, senderIsTrial, senderExtendedVersionText);
+	saveClientInformation(senderID, clientName, senderVersionText, false, senderExtendedVersion, senderIsTrial, senderExtendedVersionText, roleplayExperience);
 	saveCurrentProfileID(senderID, senderProfileID);
 
 	-- Query specific data, depending on version number.

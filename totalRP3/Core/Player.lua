@@ -204,7 +204,8 @@ end
 
 function Player:GetRoleplayExperience()
 	-- Note that this will return nil for profiles belonging to this player.
-	return self:GetInfo("character/XP");
+	local characterInfo = TRP3_API.register.getUnitIDCharacter(self:GetCharacterID());
+	return characterInfo and characterInfo.roleplayExperience;
 end
 
 function Player:GetRoleplayStatus()
@@ -465,25 +466,16 @@ function CurrentUser:GetRoleplayExperience()
 end
 
 function CurrentUser:SetRoleplayExperience(experience)
-	-- RP experience field is a bit special in that it's stored globally, but
-	-- transmitted as part of character data - so it must trigger a version
-	-- update and register-related events but can't go through the standard
-	-- UpdateProfileField path to do so.
-	--
-	-- Further, the version must be changed across _all_ player profiles.
-
-	TRP3_API.configuration.setValue("roleplay_experience", experience);
+	-- RP experience field is a bit special in that it's stored globally
+	-- and transferred as part of the vernum exchange. For compatibility
+	-- however we still emit REGISTER_DATA_UPDATED as some parts of the
+	-- code rely upon this (eg. MSP).
 
 	local playerID = TRP3_API.globals.player_id;
+	local profileID = self:GetProfileID();
 
-	for profileID, profile in pairs(TRP3_Profiles) do
-		local character = TRP3_API.profile.getData("player/character", profile);
-
-		if character then
-			character.v = TRP3_API.utils.math.incrementNumber(character.v or 1, 2);
-			TRP3_Addon:TriggerEvent(TRP3_Addon.Events.REGISTER_DATA_UPDATED, playerID, profileID, "character");
-		end
-	end
+	TRP3_API.configuration.setValue("roleplay_experience", experience);
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.REGISTER_DATA_UPDATED, playerID, profileID, "character");
 end
 
 currentUser = CurrentUser()

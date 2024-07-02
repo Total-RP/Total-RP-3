@@ -501,7 +501,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 	local targetName = UnitName(targetType);
 	local colors = getTooltipTextColors();
 	---@type Player
-	local player = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetID)
+	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(targetID)
 
 	local FIELDS_TO_CROP = {
 		TITLE = 150,
@@ -581,13 +581,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 		end
 		-- Beginner icon / volunteer icon
 		do
-			local experience;
-
-			if targetID ~= TRP3_API.globals.player_id then
-				experience = info.character and info.character.XP;
-			else
-				experience = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayExperience();
-			end
+			local experience = player:GetRoleplayExperience();
 
 			if experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.BEGINNER then
 				rightIcons = strconcat(rightIcons, BEGINNER_ICON);
