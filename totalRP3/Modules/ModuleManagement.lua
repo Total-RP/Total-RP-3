@@ -262,10 +262,6 @@ end
 -- MODULES STATUS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function moduleInit()
-	TRP3_ConfigurationModule.Title:SetText(loc.CO_MODULES);
-end
-
 local function moduleStatusText(statusCode)
 	if statusCode == MODULE_STATUS.OK then
 		return "|cff00ff00" .. loc.CO_MODULES_STATUS_1;
@@ -278,7 +274,7 @@ local function moduleStatusText(statusCode)
 	elseif statusCode == MODULE_STATUS.ERROR_ON_LOAD then
 		return "|cffff0000" .. loc.CO_MODULES_STATUS_5;
 	elseif statusCode == MODULE_STATUS.MISSING_DEPENDENCY then
-		return "|cffff0000" .. loc.CO_MODULES_STATUS_0;
+		return "|cff999999" .. loc.CO_MODULES_STATUS_0;
 	end
 	error("Unknown status code");
 end
@@ -327,6 +323,39 @@ local function getModuleTooltip(module)
 	return message;
 end
 
+local function GetSuggestedBorderColor(status)
+	local RED_BORDER_COLOR = TRP3_API.CreateColor(0.6, 0.1, 0.1);
+	local GREEN_BORDER_COLOR = TRP3_API.CreateColor(0.1, 0.8, 0.1);
+	local GREY_BORDER_COLOR = TRP3_API.CreateColor(0.5, 0.5, 0.5);
+	local GOLD_BORDER_COLOR = TRP3_API.CreateColor(1, 0.675, 0.125);
+
+	local STATUS_BORDER_COLORS = {
+		[MODULE_STATUS.MISSING_DEPENDENCY] = GREY_BORDER_COLOR,
+		[MODULE_STATUS.OUT_TO_DATE_TRP3] = RED_BORDER_COLOR,
+		[MODULE_STATUS.ERROR_ON_INIT] = RED_BORDER_COLOR,
+		[MODULE_STATUS.ERROR_ON_LOAD] = RED_BORDER_COLOR,
+		[MODULE_STATUS.DISABLED] = GREY_BORDER_COLOR,
+		[MODULE_STATUS.OK] = GREEN_BORDER_COLOR,
+	};
+
+	return STATUS_BORDER_COLORS[status] or GOLD_BORDER_COLOR;
+end
+
+TRP3_ModuleManagerListElementMixin = {};
+
+function TRP3_ModuleManagerListElementMixin:Init(module)
+	self.ModuleName:SetText(module.name);
+	self.ModuleVersion:SetText(loc.CO_MODULES_VERSION:format(module.version));
+	self.ModuleID:SetText(loc.CO_MODULES_ID:format(module.id));
+	self.Status:SetText(loc.CO_MODULES_STATUS:format(moduleStatusText(module.status)));
+	self.Border:SetVertexColor(GetSuggestedBorderColor(module.status):GetRGB());
+	setTooltipForSameFrame(self.Info, "BOTTOMRIGHT", 0, 0, module.name, getModuleTooltip(module));
+end
+
+local function moduleInit()
+	TRP3_ConfigurationModule.Title:SetText(loc.CO_MODULES);
+end
+
 -- There's a lot of reused code from onModuleStarted() and this can probably be simplified significantly
 -- This function reloads the module frame to show it's new state after enabling/disabling a module that supports hot reload
 -- Should only be called (currently) from onActionSelected()
@@ -366,16 +395,7 @@ local function moduleHotReload(frame, value)
 		startModule(module);
 	end
 
-	-- Update module status on it's frame in the settings menu
-	_G[frame:GetName() .. "Status"]:SetText(loc.CO_MODULES_STATUS:format(moduleStatusText(module.status)));
-	setTooltipForSameFrame(_G[frame:GetName() .. "Info"], "BOTTOMRIGHT", 0, 0, module.name, getModuleTooltip(module));
-
-	-- Update module frame color based on activation status
-	if module.status == MODULE_STATUS.OK then
-		frame:SetBackdropBorderColor(0, 1, 0);
-	else
-		frame:SetBackdropBorderColor(1, 1, 1);
-	end
+	frame:Init(module);
 end
 
 local function onActionSelected(value, button)
@@ -424,7 +444,7 @@ function onModuleStarted()
 	local previous;
 	for _, moduleID in pairs(sortedID) do
 		local module = modules[moduleID];
-		local frame = CreateFrame("Frame", "TRP3_ConfigurationModule_" .. i, TRP3_ConfigurationModule.ScrollFrame.Content, "TRP3_ConfigurationModuleFrame");
+		local frame = CreateFrame("Frame", nil, TRP3_ConfigurationModule.ScrollFrame.Content, "TRP3_ConfigurationModuleFrame");
 		frame.module = module;
 		frame:SetPoint("LEFT", 0, 0);
 		frame:SetPoint("RIGHT", 0, 0);
@@ -434,17 +454,8 @@ function onModuleStarted()
 			frame:SetPoint("TOP", 0, 0);
 		end
 		previous = frame;
-		_G[frame:GetName() .. "ModuleName"]:SetText(module.name);
-		_G[frame:GetName() .. "ModuleVersion"]:SetText(loc.CO_MODULES_VERSION:format(module.version));
-		_G[frame:GetName() .. "ModuleID"]:SetText(loc.CO_MODULES_ID:format(moduleID));
-		_G[frame:GetName() .. "Status"]:SetText(loc.CO_MODULES_STATUS:format(moduleStatusText(module.status)));
-		setTooltipForSameFrame(_G[frame:GetName() .. "Info"], "BOTTOMRIGHT", 0, 0, module.name, getModuleTooltip(module));
-		if module.status == MODULE_STATUS.OK then
-			frame:SetBackdropBorderColor(0, 1, 0);
-		else
-			frame:SetBackdropBorderColor(1, 1, 1);
-		end
-		local actionButton = _G[frame:GetName() .. "Action"];
+		frame:Init(module);
+		local actionButton = frame.Action;
 		setTooltipAll(actionButton, "BOTTOMLEFT", 10, 10, loc.CM_ACTIONS);
 		actionButton:SetScript("OnClick", onActionClicked);
 		i = i + 1;
