@@ -521,6 +521,42 @@ local templatesFunction = {
 	showTemplate3
 }
 
+local function resetHTMLText(frame)
+	frame:SetText(frame.html or "");
+end
+
+local function ResizeTemplateViews()
+	local containerWidth, containerHeight = TRP3_MainFramePageContainer:GetSize();
+
+	TRP3_RegisterAbout_AboutPanel_Container:SetSize(containerWidth - 40, 5);
+	TRP3_RegisterAbout_AboutPanel_Template1:SetSize(containerWidth - 50, 5);
+	TRP3_RegisterAbout_AboutPanel_Template3_1_Text:SetWidth(containerWidth - 70);
+	resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_1_Text);
+	TRP3_RegisterAbout_AboutPanel_Template3_2_Text:SetWidth(containerWidth - 70);
+	resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_2_Text);
+	TRP3_RegisterAbout_AboutPanel_Template3_3_Text:SetWidth(containerWidth - 70);
+	resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_3_Text);
+	TRP3_RegisterAbout_Edit_Template3_Phys:SetHeight((containerHeight - 165) * 0.33);
+	TRP3_RegisterAbout_Edit_Template3_Psy:SetHeight((containerHeight - 165) * 0.33);
+	TRP3_RegisterAbout_Edit_Template1ScrollText:SetSize(containerWidth - 65, 5);
+	TRP3_RegisterAbout_Edit_Template2_Container:SetSize(containerWidth - 60, 5);
+	resizeTemplate3();
+	resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template1);
+	for _, frame in pairs(template2Frames) do
+		_G[frame:GetName().."Text"]:SetWidth(containerWidth - 150);
+		resetHTMLText(_G[frame:GetName().."Text"]);
+	end
+	for _, frame in pairs(template2EditFrames) do
+		frame:SetHeight(containerHeight * 0.45);
+		_G[frame:GetName().."TextScrollText"]:SetWidth(containerWidth - 180);
+	end
+	resizeTemplate2();
+
+	TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText:SetWidth(containerWidth - 200);
+	TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:SetWidth(containerWidth - 200);
+	TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:SetWidth(containerWidth - 200);
+end
+
 local function refreshConsultDisplay(context)
 	local dataTab = context.profile.about or Globals.empty;
 	local template = dataTab.TE or 1;
@@ -552,6 +588,7 @@ local function refreshConsultDisplay(context)
 	templatesFunction[template](dataTab);
 	-- Putting the righ background
 	setConsultBkg(dataTab.BK);
+	ResizeTemplateViews();
 end
 
 function saveInDraft()
@@ -764,10 +801,6 @@ local function onAboutReceived(profileID)
 	if aboutData.MU and type(aboutData) == "string" then
 		aboutData.MU = Utils.music.convertPathToID(aboutData.MU);
 	end
-end
-
-local function resetHTMLText(frame)
-	frame:SetText(frame.html or "");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1002,33 +1035,7 @@ function TRP3_API.register.inits.aboutInit()
 	end);
 
 	-- Resizing
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerwidth, containerHeight)
-		TRP3_RegisterAbout_AboutPanel_Container:SetSize(containerwidth - 40, 5);
-		TRP3_RegisterAbout_AboutPanel_Template1:SetSize(containerwidth - 50, 5);
-		TRP3_RegisterAbout_AboutPanel_Template3_1_Text:SetWidth(containerwidth - 70);
-		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_1_Text);
-		TRP3_RegisterAbout_AboutPanel_Template3_2_Text:SetWidth(containerwidth - 70);
-		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_2_Text);
-		TRP3_RegisterAbout_AboutPanel_Template3_3_Text:SetWidth(containerwidth - 70);
-		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_3_Text);
-		TRP3_RegisterAbout_Edit_Template3_Phys:SetHeight((containerHeight - 165) * 0.33);
-		TRP3_RegisterAbout_Edit_Template3_Psy:SetHeight((containerHeight - 165) * 0.33);
-		TRP3_RegisterAbout_Edit_Template1ScrollText:SetSize(containerwidth - 65, 5);
-		TRP3_RegisterAbout_Edit_Template2_Container:SetSize(containerwidth - 60, 5);
-		resizeTemplate3();
-		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template1);
-		for _, frame in pairs(template2Frames) do
-			_G[frame:GetName().."Text"]:SetWidth(containerwidth - 150);
-			resetHTMLText(_G[frame:GetName().."Text"]);
-		end
-		for _, frame in pairs(template2EditFrames) do
-			frame:SetHeight(containerHeight * 0.45);
-			_G[frame:GetName().."TextScrollText"]:SetWidth(containerwidth - 180);
-		end
-		resizeTemplate2();
-
-		TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText:SetWidth(containerwidth - 200);
-		TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:SetWidth(containerwidth - 200);
-		TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:SetWidth(containerwidth - 200);
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function()
+		ResizeTemplateViews();
 	end);
 end
