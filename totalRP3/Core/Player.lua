@@ -469,14 +469,21 @@ function CurrentUser:SetRoleplayExperience(experience)
 	-- transmitted as part of character data - so it must trigger a version
 	-- update and register-related events but can't go through the standard
 	-- UpdateProfileField path to do so.
-
-	local character = self:GetInfo("character");
-	local playerName = TRP3_API.globals.player_id;
-	local profileID = self:GetProfileID();
+	--
+	-- Further, the version must be changed across _all_ player profiles.
 
 	TRP3_API.configuration.setValue("roleplay_experience", experience);
-	character.v = TRP3_API.utils.math.incrementNumber(character.v or 1, 2);
-	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.REGISTER_DATA_UPDATED, playerName, profileID, "character");
+
+	local playerID = TRP3_API.globals.player_id;
+
+	for profileID, profile in pairs(TRP3_Profiles) do
+		local character = TRP3_API.profile.getData("player/character", profile);
+
+		if character then
+			character.v = TRP3_API.utils.math.incrementNumber(character.v or 1, 2);
+			TRP3_Addon:TriggerEvent(TRP3_Addon.Events.REGISTER_DATA_UPDATED, playerID, profileID, "character");
+		end
+	end
 end
 
 currentUser = CurrentUser()
