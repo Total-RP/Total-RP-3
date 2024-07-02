@@ -304,3 +304,22 @@ TRP3_API.flyway.patches["18"] = function()
 		TRP3_Profiles[oldDefaultProfileID] = nil;
 	end
 end
+
+
+TRP3_API.flyway.patches["19"] = function()
+	-- Modify default profile ID to be OOC.
+
+	if not TRP3_Profiles or not TRP3_Configuration then
+		return;
+	end
+
+	if TRP3_Configuration["default_profile_id"] then
+		local profile = TRP3_Profiles[TRP3_Configuration["default_profile_id"]];
+		local character = SafeGet(profile, "player", "character");
+
+		if character then
+			character.RP = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+			character.v = TRP3_API.utils.math.incrementNumber(character.v or 1, 2);
+		end
+	end
+end
