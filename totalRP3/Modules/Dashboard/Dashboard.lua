@@ -35,7 +35,6 @@ local get, getDefaultProfile = TRP3_API.profile.getData, TRP3_API.profile.getDef
 getDefaultProfile().player.character = {
 	v = 1,
 	RP = TRP3_Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER,
-	XP = TRP3_Enums.ROLEPLAY_EXPERIENCE.EXPERIENCED,
 }
 
 local function incrementCharacterVernum()
@@ -71,7 +70,15 @@ function TRP3_API.dashboard.isPlayerIC()
 end
 
 function TRP3_API.dashboard.getCharacterExchangeData()
-	return get("player/character");
+	local character = get("player/character");
+
+	return {
+		CO = character.CO,
+		CU = character.CU,
+		RP = character.RP,
+		XP = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayExperience(),
+		v = character.v,
+	};
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

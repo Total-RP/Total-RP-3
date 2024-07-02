@@ -580,10 +580,20 @@ local function writeTooltipForCharacter(targetID, targetType)
 			rightIcons = strconcat(rightIcons, PVP_ICON);
 		end
 		-- Beginner icon / volunteer icon
-		if info.character and info.character.XP == 1 then
-			rightIcons = strconcat(rightIcons, BEGINNER_ICON);
-		elseif info.character and info.character.XP == 3 then
-			rightIcons = strconcat(rightIcons, VOLUNTEER_ICON);
+		do
+			local experience;
+
+			if targetID ~= TRP3_API.globals.player_id then
+				experience = info.character and info.character.XP;
+			else
+				experience = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayExperience();
+			end
+
+			if experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.BEGINNER then
+				rightIcons = strconcat(rightIcons, BEGINNER_ICON);
+			elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VOLUNTEER then
+				rightIcons = strconcat(rightIcons, VOLUNTEER_ICON);
+			end
 		end
 	end
 

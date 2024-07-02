@@ -38,14 +38,15 @@ local function onStart()
 
 	local function updateCharacterData()
 		local character = get("player/character");
+		local experience = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayExperience();
 		msp.my['CU'] = character.CU;
 		msp.my['CO'] = character.CO;
-		if character.XP == 1 then
+		if experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.BEGINNER then
 			msp.my['FR'] = "4";
-		elseif character.XP == 2 then
-			msp.my['FR'] = loc.DB_STATUS_RP_EXP;
-		else
+		elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VOLUNTEER then
 			msp.my['FR'] = loc.DB_STATUS_RP_VOLUNTEER;
+		else
+			msp.my['FR'] = loc.DB_STATUS_RP_EXP;
 		end
 		if character.RP == 1 then
 			msp.my['FC'] = "2";
@@ -427,9 +428,10 @@ local function onStart()
 						elseif field == "CO" then
 							profile.character.CO = value;
 						elseif field == "FR" then
-							profile.character.XP = 2;
 							if value == "4" then
-								profile.character.XP = 1;
+								profile.character.XP = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.BEGINNER;
+							else
+								profile.character.XP = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.EXPERIENCED;
 							end
 						elseif field == "VA" then
 							if value and value:find("/", nil, true) then

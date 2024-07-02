@@ -3,15 +3,6 @@
 
 local L = TRP3_API.loc;
 
-local Events = TRP3_Addon.Events;
-local Globals = TRP3_API.globals;
-local Utils = TRP3_API.utils;
-
-local function IncrementCharacterDataVersion(player)
-	local character = player:GetInfo("character");
-	character.v = Utils.math.incrementNumber(character.v or 1, 2);
-	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, player:GetProfileID(), "character");
-end
 
 local function IsRoleplayStatus(status)
 	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
@@ -21,20 +12,13 @@ end
 
 local function IsRoleplayExperienceLevel(level)
 	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
-	local character = currentUser:GetInfo("character");
-	return character.XP == level;
+	local currentExperience = currentUser:GetRoleplayExperience();
+	return currentExperience == level;
 end
 
 local function SetRoleplayExperienceLevel(level)
 	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
-	local character = currentUser:GetInfo("character");
-
-	if character.XP == level then
-		return;
-	end
-
-	character.XP = level;
-	IncrementCharacterDataVersion(currentUser);
+	currentUser:SetRoleplayExperience(level);
 end
 
 local function GetRoleplayStatusButtonText(selection)
@@ -53,7 +37,7 @@ end
 
 local function SetRoleplayStatus(status)
 	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
-	currentUser:SetRoleplayStatus(status);  -- Implicitly updates vernum.
+	currentUser:SetRoleplayStatus(status);
 end
 
 local function GenerateRPStatusMenu(_, rootDescription)

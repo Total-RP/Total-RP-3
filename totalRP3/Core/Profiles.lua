@@ -450,6 +450,7 @@ function TRP3_API.profile.init()
 	character = characters[Globals.player_id];
 
 	TRP3_API.configuration.registerConfigKey("default_profile_id", "");
+	TRP3_API.configuration.registerConfigKey("roleplay_experience", AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.EXPERIENCED);
 
 	-- Creating the default profile
 	if getConfigValue("default_profile_id") == "" or not profiles[getConfigValue("default_profile_id")] then

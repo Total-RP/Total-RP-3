@@ -203,6 +203,7 @@ function Player:GetRoleplayLanguage()
 end
 
 function Player:GetRoleplayExperience()
+	-- Note that this will return nil for profiles belonging to this player.
 	return self:GetInfo("character/XP");
 end
 
@@ -383,7 +384,6 @@ end
 
 local function ShouldAllowFieldModification(player, subtableName, fieldName)
 	return (subtableName == "character" and fieldName == "RP")
-		or (subtableName == "character" and fieldName == "XP")
 		or (not player:IsProfileDefault());
 end
 
@@ -458,6 +458,25 @@ end
 
 function CurrentUser:SetCustomRace(race)
 	UpdateProfileField(self, "characteristics", "RA", race);
+end
+
+function CurrentUser:GetRoleplayExperience()
+	return TRP3_API.configuration.getValue("roleplay_experience");
+end
+
+function CurrentUser:SetRoleplayExperience(experience)
+	-- RP experience field is a bit special in that it's stored globally, but
+	-- transmitted as part of character data - so it must trigger a version
+	-- update and register-related events but can't go through the standard
+	-- UpdateProfileField path to do so.
+
+	local character = self:GetInfo("character");
+	local playerName = TRP3_API.globals.player_id;
+	local profileID = self:GetProfileID();
+
+	TRP3_API.configuration.setValue("roleplay_experience", experience);
+	character.v = TRP3_API.utils.math.incrementNumber(character.v or 1, 2);
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.REGISTER_DATA_UPDATED, playerName, profileID, "character");
 end
 
 currentUser = CurrentUser()
