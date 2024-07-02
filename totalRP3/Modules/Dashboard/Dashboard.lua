@@ -34,7 +34,7 @@ local get, getDefaultProfile = TRP3_API.profile.getData, TRP3_API.profile.getDef
 
 getDefaultProfile().player.character = {
 	v = 1,
-	RP = TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER,
+	RP = TRP3_Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER,
 	XP = TRP3_Enums.ROLEPLAY_EXPERIENCE.EXPERIENCED,
 }
 
