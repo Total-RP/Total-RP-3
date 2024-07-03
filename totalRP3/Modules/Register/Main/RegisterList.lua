@@ -860,17 +860,7 @@ local function createTutorialStructure()
 	TUTORIAL_CHARACTER = {
 		{
 			box = {
-				x = 20, y = -45, anchor = "TOPLEFT", width = 28, height = 340
-			},
-			button = {
-				x = 0, y = 0, anchor = "CENTER",
-				text = loc.REG_LIST_CHAR_TUTO_ACTIONS,
-				arrow = "LEFT"
-			}
-		},
-		{
-			box = {
-				x = 50, y = -45, anchor = "TOPLEFT", width = 470, height = 340
+				allPoints = TRP3_RegisterListTutorialHook
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
@@ -881,7 +871,7 @@ local function createTutorialStructure()
 		},
 		{
 			box = {
-				x = 20, y = -387, anchor = "TOPLEFT", width = 500, height = 60
+				allPoints = TRP3_RegisterListCharactFilter
 			},
 			button = {
 				x = 0, y = 10, anchor = "CENTER",
@@ -1016,8 +1006,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 	-- Resizing
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerwidth, containerHeight)
+		local lineHeight = (containerHeight - 120) * 0.065;
 		for _, line in pairs(widgetTab) do
-			line:SetHeight((containerHeight - 120) * 0.065);
+			line:SetHeight(lineHeight);
 			if containerwidth < 690 then
 				_G[line:GetName() .. "Time"]:SetWidth(2);
 			else
@@ -1039,6 +1030,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		else
 			TRP3_RegisterListHeaderAddon:SetWidth(160);
 		end
+		TRP3_RegisterListSlider:SetPoint("BOTTOM", TRP3_RegisterListSlider:GetParent(), "TOP", 0, -24 - 14 * lineHeight);
 	end);
 
 end);
