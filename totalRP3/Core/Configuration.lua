@@ -372,11 +372,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	};
 
 	-- GENERAL SETTINGS INIT
-	-- localization
-	local localeTab = {};
-	for _, locale in pairs(loc:GetLocales(true)) do
-		tinsert(localeTab, { locale:GetName(), locale:GetCode() });
-	end
 
 	registerConfigKey("heavy_profile_alert", true);
 	registerConfigKey("new_version_alert", true);
