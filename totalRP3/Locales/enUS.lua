@@ -309,19 +309,26 @@ It also works on the |cffffff00"At first glance" bar|r!]],
 	REG_LIST_ACTIONS_MASS_IGNORE_C = [[This action will add |cff00ff00%s |4character:characters;|r to the ignore list.
 
 You can optionally enter the reason below. This is a personal note, it will serve as a reminder.]],
-	REG_LIST_CHAR_TUTO_ACTIONS = "This column allows you to select multiple characters and perform an action on all of them.",
-	REG_LIST_CHAR_TUTO_LIST = [[The first column shows the character's name.
+	REG_LIST_CHAR_TUTO_LIST = [[The checkboxes in the |cnGREEN_FONT_COLOR:first column|r allow you to select multiple characters to perform actions on with the top-left button.
 
-The second column shows the relation between these characters and your current character.
+The |cnGREEN_FONT_COLOR:second column|r shows the character's name.
 
-The last column is for various flags. (ignored ..etc.)]],
-	REG_LIST_CHAR_TUTO_FILTER = [[You can filter the character list.
+The |cnGREEN_FONT_COLOR:third column|r shows the relation between these characters and your current character.
 
-The |cff00ff00name filter|r will perform a search on the profile full name (first name + last name) but also on any linked WoW characters.
+The |cnGREEN_FONT_COLOR:fourth column|r tells you when Total RP 3 last saw this profile.
 
-The |cff00ff00guild filter|r will search on guild name from linked WoW characters.
+The |cnGREEN_FONT_COLOR:fifth column|r shows what type of profile it is (Total RP 3, MyRoleplay, etc.).
 
-The |cff00ff00realm only filter|r will show only profiles linked to a WoW character of your current realm.]],
+The |cnGREEN_FONT_COLOR:last column|r is for various flags (ignored ..etc.).]],
+	REG_LIST_CHAR_TUTO_FILTER = [[These filters apply to the above character profile list.
+
+The |cnGREEN_FONT_COLOR:name filter|r will filter the character profile list by the name (IC or OOC) you enter.
+
+The |cnGREEN_FONT_COLOR:guild filter|r will filter the character profile list by the OOC guild name you enter.
+
+The |cnGREEN_FONT_COLOR:realm only filter|r will filter the character profile list to only show profiles from your current realm.
+
+The |cnGREEN_FONT_COLOR:note only filter|r will filter the character profile list to only show profiles with notes attached.]],
 	REG_LIST_NOTIF_ADD = "New profile discovered for |cff00ff00%s",
 	REG_LIST_NOTIF_ADD_CONFIG = "New profile discovered",
 	REG_LIST_NOTIF_ADD_NOT = "This profile doesn't exist anymore.",
