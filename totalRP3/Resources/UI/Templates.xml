@@ -1,0 +1,45 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Texture name="TRP3_UIFrameSmallEdgeTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-edge" virtual="true">
+		<TextureSliceMargins left="16" top="16" right="16" bottom="16"/>
+		<TextureSliceMode mode="Tiled"/>
+	</Texture>
+
+	<Texture name="TRP3_UIFrameSmallGlowTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-glow" virtual="true">
+		<TextureSliceMargins left="16" top="16" right="16" bottom="16"/>
+		<TextureSliceMode mode="Tiled"/>
+	</Texture>
+
+	<Texture name="TRP3_UIFrameSmallFillTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-fill" virtual="true">
+		<TextureSliceMargins left="16" top="16" right="16" bottom="16"/>
+		<TextureSliceMode mode="Tiled"/>
+	</Texture>
+
+	<Texture name="TRP3_UIFrameSmallMaskTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-mask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE" virtual="true">
+		<Size x="64" y="64"/>
+	</Texture>
+
+	<Texture name="TRP3_UIFrameMediumEdgeTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-md-edge" virtual="true">
+		<TextureSliceMargins left="32" top="32" right="32" bottom="32"/>
+		<TextureSliceMode mode="Tiled"/>
+	</Texture>
+
+	<Texture name="TRP3_UIFrameMediumGlowTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-md-glow" virtual="true">
+		<TextureSliceMargins left="32" top="32" right="32" bottom="32"/>
+		<TextureSliceMode mode="Tiled"/>
+	</Texture>
+
+	<Texture name="TRP3_UIFrameMediumFillTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-md-fill" virtual="true">
+		<TextureSliceMargins left="32" top="32" right="32" bottom="32"/>
+		<TextureSliceMode mode="Tiled"/>
+	</Texture>
+
+	<Texture name="TRP3_UIFrameMediumMaskTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-md-mask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE" virtual="true">
+		<Size x="128" y="128"/>
+	</Texture>
+</Ui>
