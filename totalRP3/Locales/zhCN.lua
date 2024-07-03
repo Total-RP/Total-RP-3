@@ -430,21 +430,12 @@ L = {
 	["DB_STATUS_LC_DEFAULT"] = "默认(%1$s)",
 	["DB_STATUS_LC_TT"] = "设置你扮演时使用的语言，本状态将与其他兼容的RP插件使用者同步。 |cffff9900注意：|r 该选项|cffff0000不会|r改变TRP3的界面语言，修改界面语言的设置位于 |cfffff569高级设置|r页面。",
 	["DB_STATUS_RP"] = "角色状态",
-	["DB_STATUS_RP_EXP"] = "严谨RP玩家",
-	["DB_STATUS_RP_EXP_TT"] = "表明你是一个经验丰富的RP玩家.\\n不会在你的工具提示中显示任何特定的图标.",
 	["DB_STATUS_RP_IC"] = "IC",
 	["DB_STATUS_RP_IC_TT"] = [=[这说明你正在扮演你的角色.
 你所有的动作行为将被解释为你角色的行为.]=],
 	["DB_STATUS_RP_OOC"] = "OOC，不在RP",
 	["DB_STATUS_RP_OOC_TT"] = [=[你不在扮演你的角色.
 你的言行和你的角色没有必然联系.]=],
-	["DB_STATUS_RP_VOLUNTEER"] = "RP玩家志愿者",
-	["DB_STATUS_RP_VOLUNTEER_TT"] = [=[这个选择将在你的工具提示上显示一个图标,
-表示你愿意帮助他们中的角色扮演新手.]=],
-	["DB_STATUS_XP"] = "玩家状态",
-	["DB_STATUS_XP_BEGINNER"] = "RP新人",
-	["DB_STATUS_XP_BEGINNER_TT"] = [=[这个选择将在你的工具提示上显示一个图标，
-表示你是新手玩家.]=],
 	["DB_TUTO_1"] = [=[|cffffff00角色状态|r 表示您当前是否在扮演角色.
 
 |cffffff00角色状态|r 允许你说明你是一个初学者或者是一个愿意帮助新手的老手!

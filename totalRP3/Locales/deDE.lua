@@ -381,20 +381,12 @@ Deine Profile, Begleiterprofile und Einstellungen werden temporär ausgelagert u
 	["DB_STATUS_LC"] = "Rollenspiel Sprache",
 	["DB_STATUS_LC_TT"] = "Speichert deine bevorzugte Rollenspiel Sprache. Diese Einstellung wird mit anderen Benutzern mit kompatiblem RP Addon geteilt. |cffff9900Achtung:|r Diese Option ändert |cffff0000nicht|r die Menüsprache von Total RP 3. Diese Möglichkeit findest du unter |cfffff569Erweiterte Einstellungen|r.",
 	["DB_STATUS_RP"] = "Charakterstatus",
-	["DB_STATUS_RP_EXP"] = "Erfahrener Rollenspieler",
-	["DB_STATUS_RP_EXP_TT"] = [=[Zeigt an, dass du ein erfahrener Rollenspieler bist.
-Zeigt kein spezielles Icon auf deinem Tooltip an.]=],
 	["DB_STATUS_RP_IC"] = "In Character (IC)",
 	["DB_STATUS_RP_IC_TT"] = [=[Die spielst diesen Charakter aktuell aus.
 Dein gesamtes Handeln wird bewertet, als ob dein Charakter diese Aktionen ausführt.]=],
 	["DB_STATUS_RP_OOC"] = "Out of Character (OOC)",
 	["DB_STATUS_RP_OOC_TT"] = [=[Du spielst diesen Charakter aktuell nicht aus.
 Dein Handeln wird nicht mit dem Charakter in Verbindung gebracht.]=],
-	["DB_STATUS_RP_VOLUNTEER"] = "Rollenspiellehrer",
-	["DB_STATUS_RP_VOLUNTEER_TT"] = "Diese Auswahl zeigt mithilfe eines Icons auf deinem Tooltip an, dass du Rollenspielanfängern Hilfestellung gibst.",
-	["DB_STATUS_XP"] = "Rollenspielerfahrung",
-	["DB_STATUS_XP_BEGINNER"] = "Rollenspielanfänger",
-	["DB_STATUS_XP_BEGINNER_TT"] = "Diese Auswahl zeigt mithilfe eines Icons auf deinem Tooltip an, dass du noch Rollenspielanfänger bist.",
 	["DB_TUTO_1"] = [=[|cffffff00Der Charakter Status|r zeigt an, ob du deinen Charakter momentan ausspielst oder nicht.
 
 |cffffff00Die Rollenspielerfahrung|r gibt an, ob du ein blutiger Anfänger oder ein erfahrener Rollenspieler bist, der gerne Neulingen hilft!

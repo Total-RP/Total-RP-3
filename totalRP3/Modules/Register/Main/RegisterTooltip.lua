@@ -566,8 +566,6 @@ local function writeTooltipForCharacter(targetID, targetType)
 		local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
 		local DND_ICON = "|TInterface\\FriendsFrame\\StatusIcon-DnD:15:15|t";
 		local PVP_ICON = "|TInterface\\GossipFrame\\BattleMasterGossipIcon:15:15|t";
-		local BEGINNER_ICON = "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20:20|t";
-		local VOLUNTEER_ICON = "|TInterface\\TARGETINGFRAME\\PortraitQuestBadge:15:15|t";
 
 		-- AFK / DND status
 		if UnitIsAFK(targetType) then
@@ -582,11 +580,10 @@ local function writeTooltipForCharacter(targetID, targetType)
 		-- Beginner icon / volunteer icon
 		do
 			local experience = player:GetRoleplayExperience();
+			local experienceIcon = TRP3_API.GetRoleplayExperienceIconMarkup(experience);
 
-			if experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.BEGINNER then
-				rightIcons = strconcat(rightIcons, BEGINNER_ICON);
-			elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VOLUNTEER then
-				rightIcons = strconcat(rightIcons, VOLUNTEER_ICON);
+			if experienceIcon then
+				rightIcons = strconcat(rightIcons, experienceIcon);
 			end
 		end
 	end

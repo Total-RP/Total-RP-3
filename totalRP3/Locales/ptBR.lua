@@ -427,22 +427,12 @@ Seus perfis, perfis de companheiro e configurações serão temporariamente depo
 	["DB_STATUS_LC_DEFAULT"] = "Padrão (%1$s)",
 	["DB_STATUS_LC_TT"] = "Define a sua linguagem de encenação preferida. Esta será partilhada com outros utilizadores de addon's de RP compatíveis. |cffff9900Note:|r Isto faz |cffffff0000não|r alterar o idioma da interface de utilizador do Total RP 3. Esta opção pode ser encontrada na página. |cfffff569Configurações Avançadas|r. ",
 	["DB_STATUS_RP"] = "Estado do personagem",
-	["DB_STATUS_RP_EXP"] = "Roleplayer experiente",
-	["DB_STATUS_RP_EXP_TT"] = [=[Mostra que você é um roleplayer experiente.
-Não mostrará nenhum ícone específico na sua tela de informações.]=],
 	["DB_STATUS_RP_IC"] = "Interpretando",
 	["DB_STATUS_RP_IC_TT"] = [=[Isso significa que você está atualmente interpretando seu personagem.
 Todas as suas ações vão ser vistas como sendo o seu personagem a fazê-las.]=],
 	["DB_STATUS_RP_OOC"] = "Não interpretando",
 	["DB_STATUS_RP_OOC_TT"] = [=[Você não está interpretando seu personagem.
 Suas ações não podem ser associadas a ele/ela.]=],
-	["DB_STATUS_RP_VOLUNTEER"] = "Roleplayer voluntário",
-	["DB_STATUS_RP_VOLUNTEER_TT"] = [=[Esta seleção mostrará um ícone na sua tela de informações, indicando
-a roleplayers iniciantes que você está disposto a ajudá-los.]=],
-	["DB_STATUS_XP"] = "Estado de roleplayer",
-	["DB_STATUS_XP_BEGINNER"] = "Roleplayer novato",
-	["DB_STATUS_XP_BEGINNER_TT"] = [=[Esta seleção mostrará um ícone na sua tela de informações, indicando
-aos outros que você é um roleplayer iniciante.]=],
 	["DB_TUTO_1"] = [=[|cffffff00O estado do personagem|r indica se você está atualmente interpretando seu personagem ou não.
 
 |cffffff00O estado do roleplayer|r permite que você mostre que é um iniciante ou um veterano disposto a ajudar novatos.

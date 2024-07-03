@@ -795,13 +795,16 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	DB_STATUS_RP_IC_TT = "That means you are currently playing your character.\nAll your actions will be interpreted as if it's your character doing them.",
 	DB_STATUS_RP_OOC = "Out of character",
 	DB_STATUS_RP_OOC_TT = "You are out of your character.\nYour actions can't be associated to him/her.",
-	DB_STATUS_XP = "Roleplayer status",
-	DB_STATUS_XP_BEGINNER = "Rookie roleplayer",
-	DB_STATUS_XP_BEGINNER_TT = "This selection will show an icon on your tooltip, indicating\nto others that you are a beginner roleplayer.",
-	DB_STATUS_RP_EXP = "Experienced roleplayer",
-	DB_STATUS_RP_EXP_TT = "Shows that you are an experienced roleplayer.\nIt will not show any specific icon on your tooltip.",
-	DB_STATUS_RP_VOLUNTEER = "Volunteer roleplayer",
-	DB_STATUS_RP_VOLUNTEER_TT = "This selection will show an icon on your tooltip, indicating\nto beginner roleplayers that you are willing to help them.",
+	DB_STATUS_XP = "Roleplayer experience",
+	DB_STATUS_XP_NEWCOMER = "Newcomer",
+	DB_STATUS_XP_NEWCOMER_TT = "This selection will indicate to other players indicating to others that you are a beginner roleplayer.|n|nThis will be shown in an icon on your tooltip.",
+	DB_STATUS_XP_NORMAL = "Casual",
+	DB_STATUS_XP_NORMAL_TT = "This selection will indicate to other players that you are a casual roleplayer with no specific experience level.|n|nThis will not show any specific icon on your tooltip.",
+	DB_STATUS_XP_VETERAN = "Veteran",
+	DB_STATUS_XP_VETERAN_TT = "This selection will indicate to other players that you consider yourself to be an experienced roleplayer.|n|nThis will not show any specific icon on your tooltip.",
+	DB_STATUS_XP_NEWCOMER_GUIDE = "Newcomer Guide",
+	DB_STATUS_XP_NEWCOMER_GUIDE_TT = "This selection indicate to beginner roleplayers that you are willing to help them.|n|nThis will be shown in an icon on your tooltip.",
+
 	DB_STATUS_LC = "Roleplay language",
 	DB_STATUS_LC_TT = [[Sets your preferred roleplaying language. This will be shared with other compatible RP addon users.
 

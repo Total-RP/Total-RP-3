@@ -250,7 +250,7 @@ local function SanitizeRoleplayExperience(experience)
 	experience = tonumber(experience);
 
 	if not RoleplayExperienceValues[experience] then
-		experience = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.EXPERIENCED;
+		experience = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL;
 	end
 
 	return experience;

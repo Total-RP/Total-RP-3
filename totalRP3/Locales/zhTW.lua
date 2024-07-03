@@ -309,17 +309,10 @@ L = {
 	["DB_STATUS_CURRENTLY_OOC_TT"] = "這裡可以輸入任何對角色還是玩家來說重要的資訊。",
 	["DB_STATUS_CURRENTLY_TT"] = "此欄位搭配「TRP3 Currently frame」使用可以達到不必開啟視窗，即時於畫面上變更的效果。",
 	["DB_STATUS_RP"] = "角色狀態",
-	["DB_STATUS_RP_EXP"] = "老手",
-	["DB_STATUS_RP_EXP_TT"] = "如果您已經是一位經驗豐富的玩家了，那您的角色欄位上將不會顯示任何特別的圖示。",
 	["DB_STATUS_RP_IC"] = "進入角色（IC）",
 	["DB_STATUS_RP_IC_TT"] = "這表示你正在扮演你的角色，所有你的行動都不再依據你本人的好惡抉擇，而是衷於你所設定的角色性格來起心動念。",
 	["DB_STATUS_RP_OOC"] = "脫離角色（OOC）",
 	["DB_STATUS_RP_OOC_TT"] = "你已經脫離你的角色狀態了，你的行為不再依據他／她的性格和行事風格。",
-	["DB_STATUS_RP_VOLUNTEER"] = "新手教學志願者",
-	["DB_STATUS_RP_VOLUNTEER_TT"] = "選擇此項會在你的角色卡欄位顯示黃色的驚嘆號，代表你願意協助任何角色扮演玩家解決他們的問題。",
-	["DB_STATUS_XP"] = "扮演程度",
-	["DB_STATUS_XP_BEGINNER"] = "菜鳥玩家",
-	["DB_STATUS_XP_BEGINNER_TT"] = "選擇此項會在你的角色卡欄位上顯示一隻白色的可愛小海豹，代表你是個初學者，如果有犯錯的地方請不吝賜教哦！",
 	["DB_TUTO_1"] = [=[|cffffff00角色狀態|r 指示你是進入角色還是脫離角色扮演的狀態。
 
 |cffffff00扮演程度|r 顯示你是菜鳥、老鳥還是志願的教學者。

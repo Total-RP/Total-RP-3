@@ -57,24 +57,32 @@ local function GenerateRPStatusMenu(_, rootDescription)
 end
 
 local function GenerateXPStatusMenu(_, rootDescription)
-	do -- Beginner/Rookie Roleplayer
-		local level = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.BEGINNER;
-		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_XP_BEGINNER, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
-		TRP3_MenuUtil.AttachTexture(elementDescription, [[Interface\TARGETINGFRAME\UI-TargetingFrame-Seal]]);
-		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_XP_BEGINNER_TT);
+	do -- Beginner Roleplayer
+		local level = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER;
+		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_XP_NEWCOMER, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
+		TRP3_MenuUtil.AttachTexture(elementDescription, TRP3_API.GetRoleplayExperienceIcon(level));
+		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_XP_NEWCOMER_TT);
+	end
+
+	do -- Casual Roleplayer
+		local level = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL;
+		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_XP_NORMAL, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
+		TRP3_MenuUtil.AttachTexture(elementDescription, TRP3_API.GetRoleplayExperienceIcon(level));
+		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_XP_NORMAL_TT);
 	end
 
 	do -- Experienced Roleplayer
-		local level = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.EXPERIENCED;
-		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_RP_EXP, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
-		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_RP_EXP_TT);
+		local level = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN;
+		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_XP_VETERAN, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
+		TRP3_MenuUtil.AttachTexture(elementDescription, TRP3_API.GetRoleplayExperienceIcon(level));
+		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_XP_VETERAN_TT);
 	end
 
-	do -- Volunteer Roleplayer
-		local level = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VOLUNTEER;
-		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_RP_VOLUNTEER, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
-		TRP3_MenuUtil.AttachTexture(elementDescription, [[Interface\TARGETINGFRAME\PortraitQuestBadge]]);
-		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_RP_VOLUNTEER_TT);
+	do -- Newcomer Guide Roleplayer
+		local level = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE;
+		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_XP_NEWCOMER_GUIDE, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
+		TRP3_MenuUtil.AttachTexture(elementDescription, TRP3_API.GetRoleplayExperienceIcon(level));
+		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_XP_NEWCOMER_GUIDE_TT);
 	end
 end
 
