@@ -164,6 +164,9 @@ local CreditsData =
 			name = "Naeraa",
 		},
 		{
+			name = "Raenore",
+		},
+		{
 			name = "Trinity",
 		},
 	}
