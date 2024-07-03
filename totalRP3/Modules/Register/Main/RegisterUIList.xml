@@ -154,7 +154,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="-48"/>
 							<Anchor point="RIGHT" x="-6" y="0"/>
-							<Anchor point="BOTTOM" x="0" y="90"/>
+							<Anchor point="BOTTOM" relativePoint="TOP" x="0" y="-356"/>
 						</Anchors>
 					</Slider>
 					<Frame name="TRP3_RegisterListHeader" parentKey="Header">
@@ -348,6 +348,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="0" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterListLine13" />
 							<Anchor point="TOPRIGHT" x="0" y="0" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_RegisterListLine13" />
+						</Anchors>
+					</Frame>
+
+					<Frame name="TRP3_RegisterListTutorialHook" parentKey="TutorialHook">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeKey="$parent.Line1" />
+							<Anchor point="BOTTOMRIGHT" relativeKey="$parent.Line14" />
 						</Anchors>
 					</Frame>
 

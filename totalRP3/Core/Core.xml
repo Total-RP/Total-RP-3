@@ -23,6 +23,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="StringUtil.lua"/>
 	<Include file="BindingUtil.lua"/>
 	<Include file="RegionUtil.lua"/>
+	<Include file="MarkupUtil.lua"/>
 
 	<Include file="..\UI\Widgets.xml"/>
 
