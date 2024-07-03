@@ -130,29 +130,13 @@ function TRP3_API.GetMiscFields(miscInfo)
 end
 
 function TRP3_API.GetMiscInfoTypeByName(miscName)
-	if miscName == "House name" or miscName == L.REG_PLAYER_MSP_HOUSE then
-		return TRP3_API.MiscInfoType.House;
-	elseif miscName == "Nickname" or miscName == L.REG_PLAYER_MSP_NICK then
-		return TRP3_API.MiscInfoType.Nickname;
-	elseif miscName == "Motto" or miscName == L.REG_PLAYER_MSP_MOTTO then
-		return TRP3_API.MiscInfoType.Motto;
-	elseif miscName == "Facial features" or miscName == L.REG_PLAYER_TRP2_TRAITS then
-		return TRP3_API.MiscInfoType.FacialFeatures;
-	elseif miscName == "Piercings" or miscName == L.REG_PLAYER_TRP2_PIERCING then
-		return TRP3_API.MiscInfoType.Piercings;
-	elseif miscName == "Pronouns" or miscName == L.REG_PLAYER_MISC_PRESET_PRONOUNS then
-		return TRP3_API.MiscInfoType.Pronouns;
-	elseif miscName == "Guild name" or miscName == L.REG_PLAYER_MISC_PRESET_GUILD_NAME then
-		return TRP3_API.MiscInfoType.GuildName;
-	elseif miscName == "Guild rank" or miscName == L.REG_PLAYER_MISC_PRESET_GUILD_RANK then
-		return TRP3_API.MiscInfoType.GuildRank;
-	elseif miscName == "Tattoos" or miscName == L.REG_PLAYER_TRP2_TATTOO then
-		return TRP3_API.MiscInfoType.Tattoos;
-	elseif miscName == "Voice reference" or miscName == L.REG_PLAYER_MISC_PRESET_VOICE_REFERENCE then
-		return TRP3_API.MiscInfoType.VoiceReference;
-	else
-		return TRP3_API.MiscInfoType.Custom;
+	for miscType, typeInfo in pairs(MiscInfoTypeData) do
+		if miscName == typeInfo.englishName or miscName == typeInfo.localizedName then
+			return miscType;
+		end
 	end
+
+	return TRP3_API.MiscInfoType.Custom;
 end
 
 function TRP3_API.GetMiscInfoTypeFromData(miscData)
