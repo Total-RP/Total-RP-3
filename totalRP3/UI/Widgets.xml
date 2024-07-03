@@ -9,6 +9,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="ScrollingEditBox.xml"/>
 	<Include file="FocusRegion.xml"/>
 	<Include file="StyledButton.xml"/>
+	<Include file="RegionResizeTemplate.xml"/>
 	<Include file="FontUtil.lua"/>
 	<Include file="TooltipUtil.lua"/>
 	<Include file="Widgets.lua"/>
