@@ -134,7 +134,7 @@ function TRP3_MenuUtil.HideTooltip(owner)
 	if TRP3_USE_MODERN_MENUS then
 		MenuUtil.HideTooltip(owner);
 	else
-		local tooltip = GameTooltip;
+		local tooltip = TRP3_MainTooltip;
 
 		if tooltip:IsOwned(owner) then
 			tooltip:Hide();
@@ -146,7 +146,7 @@ function TRP3_MenuUtil.ShowTooltip(owner, func, ...)
 	if TRP3_USE_MODERN_MENUS then
 		MenuUtil.ShowTooltip(owner, func, ...);
 	else
-		local tooltip = GameTooltip;
+		local tooltip = TRP3_MainTooltip;
 		tooltip:SetOwner(owner, "ANCHOR_RIGHT");
 		func(tooltip, ...);
 		tooltip:Show();
