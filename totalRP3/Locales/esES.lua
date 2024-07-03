@@ -791,6 +791,19 @@ Opcionalmente, puede rellenar la razón de ser ignorado abajo. Esta nota es pers
 	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "Descripción no leída",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Relación:
 |cff00ff00%s]=],
+	["REG_LIST_CHAR_TUTO_ACTIONS"] = "Esta columna te permite seleccionar múltiples personajes y realizar una acción en conjunto",
+	["REG_LIST_CHAR_TUTO_FILTER"] = [=[Puedes filtrar la lista de personajes.
+
+El |cff00ff00filtro de nombre|r realizará una búsqueda del nombre completo del perfil (nombre + apellido) y de cualquier personaje de WoW vinculado.
+
+El |cff00ff00filtro de hermandad|r buscará a los personajes de WoW vinculados a la hermandad.
+
+El |cff00ff00filtro de sólo del este reino|r mostrará sólo los perfiles de los personajes del reino actual.]=],
+	["REG_LIST_CHAR_TUTO_LIST"] = [=[La primera columna muestra el nombre del personaje.
+
+La segunda columna muestra la relación entre esos personajes y el tuyo.
+
+La última columna es para varias señales. (ignorados, etc...)]=],
 	["REG_LIST_FILTERS"] = "Filtros",
 	["REG_LIST_FILTERS_TT"] = [=[|cffffff00Click:|r Aplicar filtros
 |cffffff00Click derecho:|r Limpiar filtros]=],

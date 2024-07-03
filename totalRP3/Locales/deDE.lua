@@ -703,6 +703,19 @@ Wo zuletzt gesehen: |cff00ff00%s|r]=],
 	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "Ungelesene Beschreibung",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Beziehung:
 |cff00ff00%s]=],
+	["REG_LIST_CHAR_TUTO_ACTIONS"] = "Diese Spalte erlabt es dir, mehrere Charaktere auszuwählen, um die selbe Aktion auf diese auszuführen.",
+	["REG_LIST_CHAR_TUTO_FILTER"] = [=[Du kannst nach verschiedenen Kriterien filtern.
+
+Der |cff00ff00Namensfilter|r wird nach bestimmten Profilnamen suchen (Vorname + Nachname) sowie nach WoW Charakteren.
+
+Der |cff00ff00Gildenfilter|r wird nach Charakteren einer bestimmten Gilde suchen.
+
+Der |cff00ff00Realm Only Filter|r wird nur nach Charakteren auf dem aktuellen Realm suchen.]=],
+	["REG_LIST_CHAR_TUTO_LIST"] = [=[Die erste Spalte zeigt den Charakternamen.
+
+Die zweite Spalte zeigt die Beziehung zwischen den Charakteren und deinem Charakter.
+
+Die letzte Spalte ist für diverse Angaben. (ignoriert ..etc.)]=],
 	["REG_LIST_FILTERS"] = "Filter",
 	["REG_LIST_FILTERS_TT"] = [=[|cffffff00Links-Klick:|r Filter anwenden
 |cffffff00Rechts-Klicken:|r Filter zurücksetzen]=],

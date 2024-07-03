@@ -1025,6 +1025,19 @@ Vu pour la dernière fois à: |cff00ff00%s|r]=],
 	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "Description non lue",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Relation:
 |cff00ff00%s]=],
+	["REG_LIST_CHAR_TUTO_ACTIONS"] = "Cette colonne vous permet de sélectionner plusieurs personnages afin d'effectuer une action sur tous les personnages sélectionnés.",
+	["REG_LIST_CHAR_TUTO_FILTER"] = [=[Vous pouvez filtrer la liste de personnages.
+
+Le |cff00ff00filtre de nom|r permet de rechercher un personnage à partir du nom complet du profil (prénom + nom) mais aussi des personnages WoW liés.
+
+Le |cff00ff00filtre de guilde|r permet de rechercher à partir du nom de la guilde des personnages WoW liés.
+
+Le |cff00ff00filtre de royaume|r vous montrera uniquement les profils liés à un personnage WoW de votre royaume actuel.]=],
+	["REG_LIST_CHAR_TUTO_LIST"] = [=[La première colonne affiche le nom du personnage.
+
+La deuxième colonne affiche la relation entre ces personnages et votre personnage actuel.
+
+La dernière colonne correspond aux différents marqueurs. (ignoré ..etc.)]=],
 	["REG_LIST_FILTERS"] = "Filtres",
 	["REG_LIST_FILTERS_TT"] = [=[|cffffff00Clic gauche:|r Appliquer les filtres
 |cffffff00Clic droit:|r Effacer les filtres]=],
