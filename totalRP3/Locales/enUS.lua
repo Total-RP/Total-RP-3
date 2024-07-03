@@ -259,12 +259,12 @@ It also works on the |cffffff00"At first glance" bar|r!]],
 	REG_LIST_CHAR_SEL = "Selected character",
 	REG_LIST_CHAR_TT = "Click to show page",
 	REG_LIST_CHAR_TT_RELATION = "Relation:\n|cff00ff00%s",
-	REG_LIST_CHAR_TT_CHAR = "Linked WoW character(s):",
+	REG_LIST_CHAR_TT_CHAR = "Linked WoW characters:",
 	REG_LIST_CHAR_TT_CHAR_NO = "Not linked to any character",
 	REG_LIST_CHAR_TT_DATE = "Last seen date: |cff00ff00%s|r\nLast seen location: |cff00ff00%s|r",
 	REG_LIST_CHAR_TT_GLANCE = "At first glance",
 	REG_LIST_CHAR_TT_NEW_ABOUT = "Unread description",
-	REG_LIST_CHAR_TT_IGNORE = "Ignored character(s)",
+	REG_LIST_CHAR_TT_IGNORE = "Ignored characters",
 	REG_LIST_CHAR_FILTER = "Characters: %s/%s",
 	REG_LIST_CHAR_EMPTY = "No character",
 	REG_LIST_CHAR_EMPTY2 = "No character matches your selection",
@@ -304,24 +304,31 @@ It also works on the |cffffff00"At first glance" bar|r!]],
 	REG_LIST_ACTIONS_PURGE_COUNT = "%s profiles will be removed.",
 	REG_LIST_ACTIONS_MASS = "Action on %s selected profiles",
 	REG_LIST_ACTIONS_MASS_REMOVE = "Remove profiles",
-	REG_LIST_ACTIONS_MASS_REMOVE_C = "This action will remove |cff00ff00%s selected profile(s)|r.",
+	REG_LIST_ACTIONS_MASS_REMOVE_C = "This action will remove |cff00ff00%s selected |4profile:profiles;|r.",
 	REG_LIST_ACTIONS_MASS_IGNORE = "Ignore profiles",
-	REG_LIST_ACTIONS_MASS_IGNORE_C = [[This action will add |cff00ff00%s character(s)|r to the ignore list.
+	REG_LIST_ACTIONS_MASS_IGNORE_C = [[This action will add |cff00ff00%s |4character:characters;|r to the ignore list.
 
 You can optionally enter the reason below. This is a personal note, it will serve as a reminder.]],
-	REG_LIST_CHAR_TUTO_ACTIONS = "This column allows you to select multiple characters and perform an action on all of them.",
-	REG_LIST_CHAR_TUTO_LIST = [[The first column shows the character's name.
+	REG_LIST_CHAR_TUTO_LIST = [[The checkboxes in the |cnGREEN_FONT_COLOR:first column|r allow you to select multiple characters to perform actions on with the top-left button.
 
-The second column shows the relation between these characters and your current character.
+The |cnGREEN_FONT_COLOR:second column|r shows the character's name.
 
-The last column is for various flags. (ignored ..etc.)]],
-	REG_LIST_CHAR_TUTO_FILTER = [[You can filter the character list.
+The |cnGREEN_FONT_COLOR:third column|r shows the relation between these characters and your current character.
 
-The |cff00ff00name filter|r will perform a search on the profile full name (first name + last name) but also on any linked WoW characters.
+The |cnGREEN_FONT_COLOR:fourth column|r tells you when Total RP 3 last saw this profile.
 
-The |cff00ff00guild filter|r will search on guild name from linked WoW characters.
+The |cnGREEN_FONT_COLOR:fifth column|r shows what type of profile it is (Total RP 3, MyRoleplay, etc.).
 
-The |cff00ff00realm only filter|r will show only profiles linked to a WoW character of your current realm.]],
+The |cnGREEN_FONT_COLOR:last column|r is for various flags (ignored ..etc.).]],
+	REG_LIST_CHAR_TUTO_FILTER = [[These filters apply to the above character profile list.
+
+The |cnGREEN_FONT_COLOR:name filter|r will filter the character profile list by the name (IC or OOC) you enter.
+
+The |cnGREEN_FONT_COLOR:guild filter|r will filter the character profile list by the OOC guild name you enter.
+
+The |cnGREEN_FONT_COLOR:realm only filter|r will filter the character profile list to only show profiles from your current realm.
+
+The |cnGREEN_FONT_COLOR:note only filter|r will filter the character profile list to only show profiles with notes attached.]],
 	REG_LIST_NOTIF_ADD = "New profile discovered for |cff00ff00%s",
 	REG_LIST_NOTIF_ADD_CONFIG = "New profile discovered",
 	REG_LIST_NOTIF_ADD_NOT = "This profile doesn't exist anymore.",
@@ -493,7 +500,7 @@ Class: 50 characters|r]],
 	CO_REGISTER_AUTO_PURGE = "Auto purge directory",
 	CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reaches a certain threshold. We strongly recommend to avoid disabling the purge system.",
 	CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
-	CO_REGISTER_AUTO_PURGE_1 = "After %s day(s)",
+	CO_REGISTER_AUTO_PURGE_1 = "After %s |4day:days;",
 	CO_CURSOR_TITLE = "Cursor interactions",
 	CO_CURSOR_RIGHT_CLICK = "Right-click to open profile",
 	CO_CURSOR_RIGHT_CLICK_TT = [[Right-click on a player in the 3D world to open their profile, if they have one.
@@ -690,7 +697,7 @@ Possible status:
 	-- PROFILES
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	PR_PROFILEMANAGER_TITLE = "Characters profiles",
+	PR_PROFILEMANAGER_TITLE = "Character profiles",
 	PR_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile (Character info, inventory, quest log, applied states...) will be destroyed!",
 	PR_PROFILE = "Profile",
 	PR_PROFILES = "Profiles",
@@ -707,14 +714,14 @@ Possible status:
 	PR_PROFILEMANAGER_DUPP_POPUP = "Please enter a name for the new profile.\nThe name cannot be empty.\n\nThis duplication will not change the character's links to %s.",
 	PR_PROFILEMANAGER_EDIT_POPUP = "Please enter a new name for this profile %s.\nThe name cannot be empty.\n\nChanging the name will not change any link between this profile and your characters.",
 	PR_PROFILEMANAGER_ALREADY_IN_USE = "The profile name %s is not available.",
-	PR_PROFILEMANAGER_COUNT = "%s WoW character(s) linked to this profile.",
+	PR_PROFILEMANAGER_COUNT = "%s WoW |4character:characters; linked to this profile.",
 	PR_PROFILEMANAGER_ACTIONS = "Actions",
 	PR_PROFILEMANAGER_SWITCH = "Select profile",
 	PR_PROFILEMANAGER_RENAME = "Rename profile",
 	PR_PROFILEMANAGER_CURRENT = "Current profile",
 	PR_PROFILEMANAGER_SEARCH_PROFILE = "Search profile",
 	PR_PROFILEMANAGER_EMPTY = "No profiles found",
-	PR_CO_PROFILEMANAGER_TITLE = "Companions profiles",
+	PR_CO_PROFILEMANAGER_TITLE = "Companion profiles",
 	PR_CO_PROFILE_HELP = [[A profile contains all information about a |cffffff00"pet"|r as a |cff00ff00roleplay character|r.
 
 A companion profile can be linked to:
@@ -743,8 +750,8 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 	PR_CO_PET = "Pet",
 	PR_CO_BATTLE = "Battle pet",
 	PR_CO_MOUNT = "Mount",
-	PR_IMPORT_CHAR_TAB = "Characters importer",
-	PR_IMPORT_PETS_TAB = "Companions importer",
+	PR_IMPORT_CHAR_TAB = "Character importer",
+	PR_IMPORT_PETS_TAB = "Companion importer",
 	PR_IMPORT_IMPORT_ALL = "Import all",
 	PR_IMPORT_WILL_BE_IMPORTED = "Will be imported",
 	PR_IMPORT_EMPTY = "No importable profile",
@@ -872,14 +879,17 @@ Total RP is not responsible for links leading to harmful content.]],
 	CM_IC = "IC",
 	CM_OOC = "OOC",
 	CM_CLICK = "Click",
-	CM_R_CLICK = "Right-click",
-	CM_L_CLICK = "Left-click",
-	CM_M_CLICK = "Middle-click",
+	CM_R_CLICK = "Right-Click",
+	CM_L_CLICK = "Left-Click",
+	CM_M_CLICK = "Middle-Click",
 	CM_ALT = "Alt",
+	CM_CMD = "Command",
 	CM_CTRL = "Ctrl",
+	CM_META = "Meta",
+	CM_OPT = "Option",
 	CM_SHIFT = "Shift",
-	CM_DRAGDROP = "Drag & drop",
-	CM_DOUBLECLICK = "Double-click",
+	CM_DRAGDROP = "Drag & Drop",
+	CM_DOUBLECLICK = "Double-Click",
 	CM_LINK = "Link",
 	CM_SAVE = "Save",
 	CM_CANCEL = "Cancel",
@@ -922,6 +932,7 @@ Total RP is not responsible for links leading to harmful content.]],
 	CM_RESIZE_TT = "Drag to resize the frame.",
 	CM_TWEET_PROFILE = "Show profile url",
 	CM_TWEET = "Send a tweet",
+	CM_SEARCH = "Search",
 
 	CM_ORANGE = "Orange",
 	CM_WHITE = "White",

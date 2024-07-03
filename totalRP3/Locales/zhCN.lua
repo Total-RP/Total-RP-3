@@ -823,19 +823,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "未读的描述",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[关系:
 |cff00ff00%s]=],
-	["REG_LIST_CHAR_TUTO_ACTIONS"] = "本专栏允许您选择多个角色，并对所有这些角色执行操作.",
-	["REG_LIST_CHAR_TUTO_FILTER"] = [=[你可以在这搜索.
-
-这将对 |cff00ff00姓名搜索|r 包括已知游戏角色的全称 (姓 + 名)。
-
-这将对 |cff00ff00公会搜索|r 包括已知游戏角色的公会名。
-
-这将对 |cff00ff00范围搜索|r 这将只搜索绑定到属于你当前服务器的角色的数据]=],
-	["REG_LIST_CHAR_TUTO_LIST"] = [=[第列显示角色的名称.
-
-第二列显示了其他玩家角色与当前你的角色之间的关系.
-
-最后一列是各种标记. (忽略的 ..等等.)]=],
 	["REG_LIST_FILTERS"] = "过滤",
 	["REG_LIST_FILTERS_TT"] = [=[|cffffff00左击:|r 应用过滤器
 |cffffff00右击:|r 清除过滤器]=],

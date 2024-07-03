@@ -146,6 +146,7 @@ stds.wow = {
 		"date",
 		"floor",
 		"format",
+		"ipairs_reverse",
 		"sort",
 		"strconcat",
 		"strjoin",

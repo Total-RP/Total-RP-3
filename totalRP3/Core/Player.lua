@@ -81,6 +81,16 @@ function Player:GetFullName()
 	end
 end
 
+function Player:GetCustomClass()
+	local characteristics = self:GetCharacteristics();
+	return characteristics and characteristics.CL or nil;
+end
+
+function Player:GetCustomRace()
+	local characteristics = self:GetCharacteristics();
+	return characteristics and characteristics.RA or nil;
+end
+
 ---@return string|nil lastName
 function Player:GetTitle()
 	local characteristics = self:GetCharacteristics();

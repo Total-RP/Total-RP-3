@@ -12,6 +12,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="StyledButton.xml"/>
 	<Include file="GroupBox.xml"/>
 	<Include file="TabSystem.xml"/>
+	<Include file="RegionResizeTemplate.xml"/>
 	<Include file="FontUtil.lua"/>
 	<Include file="TooltipUtil.lua"/>
 	<Include file="Widgets.lua"/>
