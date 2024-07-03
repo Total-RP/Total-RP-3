@@ -1,0 +1,39 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="IconTemplates.lua"/>
+
+	<Texture name="TRP3_IconTextureTemplate" file="Interface\ICONS\INV_MISC_QUESTIONMARK" mixin="TRP3_IconMixin" virtual="true"/>
+
+	<Frame name="TRP3_BorderedIconTemplate" mixin="TRP3_BorderedIconMixin" virtual="true">
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background">
+					<Color color="BLACK_FONT_COLOR"/>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture parentKey="Icon" inherits="TRP3_IconTextureTemplate">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="2" y="-2"/>
+						<Anchor point="BOTTOMRIGHT" x="-2" y="2"/>
+					</Anchors>
+				</Texture>
+				<MaskTexture parentKey="IconMask" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-mask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE">
+					<MaskedTextures>
+						<MaskedTexture childKey="Background"/>
+						<MaskedTexture childKey="Icon"/>
+					</MaskedTextures>
+				</MaskTexture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture parentKey="Border" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-edge">
+					<Color r="0.25" g="0.2" b="0.15"/>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+</Ui>

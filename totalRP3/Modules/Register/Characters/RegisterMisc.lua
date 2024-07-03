@@ -186,12 +186,17 @@ local GLANCE_NOT_USED_ICON = TRP3_InterfaceIcons.Default;
 local function setupGlanceButton(button, active, icon, title, text, isMine)
 	button:Enable();
 	button.isCurrentMine = isMine;
-	button:SetNormalTexture("Interface\\ICONS\\" .. (icon or GLANCE_NOT_USED_ICON));
 	if active then
 		button:SetAlpha(1);
+		button:SetIconTexture(icon or GLANCE_NOT_USED_ICON);
+		button.Icon:SetAlpha(1);
+		button.Icon:SetDesaturated(false);
 		setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", text or "");
 	else
-		button:SetAlpha(0.1);
+		button:SetAlpha(isMine and 1 or 0.1);
+		button:SetIconTexture(GLANCE_NOT_USED_ICON);
+		button.Icon:SetAlpha(isMine and 0.75 or 1);
+		button.Icon:SetDesaturated(true);
 		if not isMine then
 			button:Disable();
 		else
@@ -468,8 +473,6 @@ function TRP3_API.register.inits.miscInit()
 	for index=1,5,1 do
 		-- DISPLAY
 		local button = _G["TRP3_RegisterMiscViewGlanceSlot" .. index];
-		button:SetDisabledTexture("Interface\\ICONS\\" .. GLANCE_NOT_USED_ICON);
-		button:GetDisabledTexture():SetDesaturated(1);
 		button:SetScript("OnClick", TRP3_API.register.glance.onGlanceSlotClick);
 		button:SetScript("OnDoubleClick", TRP3_API.register.glance.onGlanceDoubleClick);
 		button:RegisterForClicks("LeftButtonUp", "RightButtonUp");

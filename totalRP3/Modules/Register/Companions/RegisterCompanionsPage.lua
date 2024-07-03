@@ -191,7 +191,7 @@ function displayConsult(context)
 
 	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetText("|cff" .. (dataTab.NH or "ffffff") .. (dataTab.NA or UNKNOWN));
 	TRP3_CompanionsPageInformationConsult_NamePanel_Title:SetText(dataTab.TI or "");
-	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_Icon, dataTab.IC or TRP3_InterfaceIcons.ProfileDefault);
+	TRP3_CompanionsPageInformationConsult_NamePanel.Icon:SetIconTexture(dataTab.IC or TRP3_InterfaceIcons.ProfileDefault);
 
 	for i=1,5 do
 		local glanceData = (context.profile.PE or {})[tostring(i)] or {};
@@ -452,8 +452,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	for index=1,5,1 do
 		-- DISPLAY
 		local button = _G["TRP3_CompanionsPageInformationConsult_GlanceSlot" .. index];
-		button:SetDisabledTexture("Interface\\ICONS\\" .. TRP3_InterfaceIcons.Default);
-		button:GetDisabledTexture():SetDesaturated(1);
 		button:SetScript("OnClick", TRP3_API.register.glance.onGlanceSlotClick);
 		button:SetScript("OnDoubleClick", TRP3_API.register.glance.onGlanceDoubleClick);
 		button:RegisterForClicks("LeftButtonUp", "RightButtonUp");

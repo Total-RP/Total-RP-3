@@ -45,10 +45,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<!-- Glance consult button : ButtonHilight-Square -->
-	<Button name="TRP3_RegisterMiscGlanceButton" virtual="true">
+	<Button name="TRP3_RegisterMiscGlanceButton" inherits="TRP3_BorderedIconTemplate" virtual="true">
 		<Size x="40" y="40"/>
-		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\UI-Quickslot-Depress"/>
-		<NormalTexture file="Interface\ICONS\INV_Misc_QuestionMark"/>
+		<HighlightTexture parentKey="HighlightBorder" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-glow" alphaMode="ADD">
+			<Color r="1" g="0.675" b="0.125"/>
+		</HighlightTexture>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);

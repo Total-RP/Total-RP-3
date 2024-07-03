@@ -13,11 +13,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
 					<Anchors>
-						<Anchor point="TOPRIGHT" x="-5" y="0"/>
+						<Anchor point="TOPRIGHT" x="-5" y="-2"/>
 						<Anchor point="BOTTOMRIGHT" x="-5" y="-2"/>
-						<Anchor point="LEFT" x="5" y="0"/>
+						<Anchor point="LEFT" x="5"/>
 					</Anchors>
-					<TexCoords left="0.07" right="1" top="0" bottom="0.975" />
+					<TexCoords left="0.07" right="1" top="0" bottom="0.975"/>
 				</Texture>
 			</Layer>
 		</Layers>
@@ -36,10 +36,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="RIGHT" x="-95" y="0"/>
 						</Anchors>
 						<Frames>
-							<Frame name="$parent_Icon" inherits="TRP3_SimpleIcon">
-								<Size x="40" y="40"/>
+							<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
+								<Size x="48" y="48"/>
 								<Anchors>
-									<Anchor point="LEFT" x="15" y="-2"/>
+									<Anchor point="LEFT" x="8" y="-2"/>
 								</Anchors>
 							</Frame>
 							<Button name="$parent_EditButton" inherits="TRP3_CommonButton">
@@ -59,7 +59,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								<FontString name="$parent_Name" text="[Name and titles]" inherits="GameFontNormalLarge" justifyH="LEFT">
 									<Size x="0" y="15"/>
 									<Anchors>
-										<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="10" relativeTo="$parent_Icon"/>
+										<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="10" relativeKey="$parent.Icon"/>
 										<Anchor point="RIGHT" x="-10" y="0"/>
 									</Anchors>
 									<Color b="0.95" r="0.95" g="0.95"/>
@@ -84,7 +84,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</KeyValues>
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="$parent_NamePanel"/>
-							<Anchor point="TOPRIGHT" x="-15" y="0"/>
+							<Anchor point="TOPRIGHT" x="-10" y="0"/>
 						</Anchors>
 						<Frames>
 							<Button name="$parentSlot3" inherits="TRP3_RegisterMiscGlanceButton">
@@ -119,7 +119,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="$parent_Glance"/>
 							<Anchor point="BOTTOM" x="0" y="10"/>
-							<Anchor point="TOPRIGHT" x="-15" y="0"/>
+							<Anchor point="TOPRIGHT" x="-10" y="0"/>
 						</Anchors>
 						<Layers>
 							<Layer level="OVERLAY">

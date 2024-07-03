@@ -161,28 +161,26 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="CENTER" x="0" y="0"/>
 				</Anchors>
 			</StatusBar>
+			<Frame parentKey="LeftIcon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
+				<Size x="30" y="30"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" x="-7" y="0" relativeKey="$parent.Bar"/>
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="HideOnCustom" value="true" type="boolean"/>
+				</KeyValues>
+			</Frame>
+			<Frame parentKey="RightIcon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
+				<Size x="30" y="30"/>
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" x="7" y="0" relativeKey="$parent.Bar"/>
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="HideOnCustom" value="true" type="boolean"/>
+				</KeyValues>
+			</Frame>
 		</Frames>
 		<Layers>
-			<Layer level="ARTWORK">
-				<Texture name="$parentJaugeLeftIcon" parentKey="LeftIcon" file="Interface\ICONS\INV_Misc_QuestionMark">
-					<Size x="30" y="30"/>
-					<Anchors>
-						<Anchor point="RIGHT" relativePoint="LEFT" x="-7" y="0" relativeKey="$parent.Bar"/>
-					</Anchors>
-					<KeyValues>
-						<KeyValue key="HideOnCustom" value="true" type="boolean"/>
-					</KeyValues>
-				</Texture>
-				<Texture name="$parentJaugeRightIcon" parentKey="RightIcon" file="Interface\ICONS\INV_Misc_QuestionMark">
-					<Size x="30" y="30"/>
-					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT" x="7" y="0" relativeKey="$parent.Bar"/>
-					</Anchors>
-					<KeyValues>
-						<KeyValue key="HideOnCustom" value="true" type="boolean"/>
-					</KeyValues>
-				</Texture>
-			</Layer>
 			<Layer level="OVERLAY">
 				<FontString name="$parentLeftText" parentKey="LeftText" text="[left text]" inherits="GameFontNormal" justifyH="RIGHT">
 					<Size x="0" y="10"/>
@@ -350,26 +348,22 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Register characteristics register line -->
 	<Frame name="TRP3_RegisterCharact_RegisterInfoLine" virtual="true">
-		<Size x="0" y="30"/>
-		<Layers>
-			<Layer level="ARTWORK">
-				<Texture parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark">
-					<Size x="16" y="16"/>
-					<Anchors>
-						<Anchor point="LEFT" x="15" y="0"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
+		<Size y="26"/>
 		<Frames>
+			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
+				<Size x="26" y="26"/>
+				<Anchors>
+					<Anchor point="LEFT" x="15"/>
+				</Anchors>
+			</Frame>
 			<Frame parentKey="Name" inherits="TRP3_TruncatedTextTemplate">
+				<Size x="135"/>
 				<KeyValues>
 					<KeyValue key="fontStringTemplate" value="GameFontNormal"/>
 					<KeyValue key="fontStringJustifyH" value="LEFT"/>
 				</KeyValues>
-				<Size x="135" y="10"/>
 				<Anchors>
-					<Anchor point="LEFT" x="35" y="0"/>
+					<Anchor point="LEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="5"/>
 				</Anchors>
 			</Frame>
 			<Frame parentKey="Value" inherits="TRP3_TruncatedTextTemplate">
@@ -379,8 +373,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</KeyValues>
 				<Size x="0" y="10"/>
 				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.Name" relativePoint="RIGHT" x="15" y="0"/>
-					<Anchor point="RIGHT" x="0" y="0"/>
+					<Anchor point="LEFT" relativeKey="$parent.Name" relativePoint="RIGHT" x="15"/>
+					<Anchor point="RIGHT"/>
 				</Anchors>
 			</Frame>
 		</Frames>
@@ -416,10 +410,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="RIGHT" x="-95" y="0"/>
 				</Anchors>
 				<Frames>
-					<Frame name="TRP3_RegisterCharact_NamePanel_Icon" inherits="TRP3_SimpleIcon">
-						<Size x="40" y="40"/>
+					<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
+						<Size x="48" y="48"/>
 						<Anchors>
-							<Anchor point="LEFT" x="15" y="-2"/>
+							<Anchor point="LEFT" x="8" y="-2"/>
 						</Anchors>
 					</Frame>
 					<Button name="TRP3_RegisterCharact_NamePanel_EditButton" inherits="TRP3_CommonButton">
@@ -434,7 +428,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<FontString name="TRP3_RegisterCharact_NamePanel_Name" text="[Name and titles]" inherits="GameFontNormalLarge" justifyH="LEFT">
 							<Size x="0" y="15"/>
 							<Anchors>
-								<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="10" relativeTo="TRP3_RegisterCharact_NamePanel_Icon"/>
+								<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="10" relativeKey="$parent.Icon"/>
 								<Anchor point="RIGHT" x="-10" y="0"/>
 							</Anchors>
 							<Color b="0.95" r="0.95" g="0.95"/>
@@ -484,26 +478,20 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 						<ScrollChild>
 							<Frame name="TRP3_RegisterCharact_CharactPanel_Container">
-								<Layers>
-									<Layer level="OVERLAY">
-										<FontString name="TRP3_RegisterCharact_CharactPanel_RegisterTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
-											<Size x="0" y="50"/>
-											<Anchors>
-												<Anchor point="TOPLEFT" x="10" y="0"/>
-											</Anchors>
-											<Color r="0.95" g="0.95" b="0.95"/>
-										</FontString>
-										<FontString name="TRP3_RegisterCharact_CharactPanel_PsychoTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
-											<Size x="0" y="50"/>
-											<Color r="0.95" g="0.95" b="0.95"/>
-										</FontString>
-										<FontString name="TRP3_RegisterCharact_CharactPanel_MiscTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
-											<Size x="0" y="50"/>
-											<Color r="0.95" g="0.95" b="0.95"/>
-										</FontString>
-									</Layer>
-								</Layers>
 								<Frames>
+									<Frame parentKey="RegisterTitle" inherits="TRP3_RegisterSectionHeaderTemplate">
+										<Size y="50"/>
+										<Anchors>
+											<Anchor point="TOPLEFT" x="10"/>
+											<Anchor point="RIGHT" x="-10"/>
+										</Anchors>
+									</Frame>
+									<Frame parentKey="MiscTitle" inherits="TRP3_RegisterSectionHeaderTemplate">
+										<Size y="50"/>
+									</Frame>
+									<Frame parentKey="TraitsTitle" inherits="TRP3_RegisterSectionHeaderTemplate">
+										<Size y="50"/>
+									</Frame>
 									<Button name="TRP3_RegisterCharact_CharactPanel_ResidenceButton" inherits="TRP3_MapHereButton"/>
 								</Frames>
 							</Frame>
@@ -596,31 +584,24 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 						<ScrollChild>
 							<Frame name="TRP3_RegisterCharact_Edit_CharactPanel_Container">
-								<Layers>
-									<Layer level="OVERLAY">
-										<FontString name="TRP3_RegisterCharact_CharactPanel_Edit_RegisterTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
-											<Size x="0" y="50"/>
-											<Anchors>
-												<Anchor point="TOPLEFT" x="10" y="0"/>
-												<Anchor point="RIGHT" x="-10" y="0"/>
-											</Anchors>
-											<Color r="0.95" g="0.95" b="0.95"/>
-										</FontString>
-										<FontString name="TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
-											<Size x="0" y="50"/>
-											<Anchors>
-												<Anchor point="TOPLEFT" x="10" y="-185"/>
-												<Anchor point="RIGHT" x="-10" y="0"/>
-											</Anchors>
-											<Color r="0.95" g="0.95" b="0.95"/>
-										</FontString>
-										<FontString name="TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
-											<Size x="0" y="50"/>
-											<Color r="0.95" g="0.95" b="0.95"/>
-										</FontString>
-									</Layer>
-								</Layers>
 								<Frames>
+									<Frame parentKey="RegisterTitle" inherits="TRP3_RegisterSectionHeaderTemplate">
+										<Size y="50"/>
+										<Anchors>
+											<Anchor point="TOPLEFT" x="10"/>
+											<Anchor point="RIGHT" x="-10"/>
+										</Anchors>
+									</Frame>
+									<Frame parentKey="MiscTitle" inherits="TRP3_RegisterSectionHeaderTemplate">
+										<Size y="50"/>
+										<Anchors>
+											<Anchor point="TOPLEFT" x="10" y="-185"/>
+											<Anchor point="RIGHT" x="-10"/>
+										</Anchors>
+									</Frame>
+									<Frame parentKey="TraitsTitle" inherits="TRP3_RegisterSectionHeaderTemplate">
+										<Size y="50"/>
+									</Frame>
 									<Frame name="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint">
 										<Size x="10" y="10"/>
 										<Anchors>
@@ -630,7 +611,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<EditBox name="TRP3_RegisterCharact_Edit_RaceField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="0" y="18"/>
 										<Anchors>
-											<Anchor point="TOPLEFT" x="10" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterTitle"/>
+											<Anchor point="TOPLEFT" x="10" y="-5" relativePoint="BOTTOMLEFT" relativeKey="$parent.RegisterTitle"/>
 											<Anchor point="RIGHT" x="0" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
 										</Anchors>
 									</EditBox>

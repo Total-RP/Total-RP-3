@@ -310,7 +310,7 @@ local function setConsultDisplay(context)
 	local completeName = getCompleteName(dataTab, UNKNOWN);
 	TRP3_RegisterCharact_NamePanel_Name:SetText("|cff" .. (dataTab.CH or "ffffff") .. completeName);
 	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.FT or "");
-	setupIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or TRP3_InterfaceIcons.ProfileDefault);
+	TRP3_RegisterCharact_NamePanel.Icon:SetIconTexture(dataTab.IC);
 
 	setBkg(dataTab.bkg or 1);
 
@@ -318,13 +318,13 @@ local function setConsultDisplay(context)
 	for _, regCharFrame in pairs(registerCharFrame) do
 		regCharFrame:Hide();
 	end
-	TRP3_RegisterCharact_CharactPanel_PsychoTitle:Hide();
-	TRP3_RegisterCharact_CharactPanel_MiscTitle:Hide();
+	TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle:Hide();
+	TRP3_RegisterCharact_CharactPanel_Container.MiscTitle:Hide();
 	TRP3_RegisterCharact_CharactPanel_ResidenceButton:Hide();
 
 	-- Previous var helps for layout building
-	local previous = TRP3_RegisterCharact_CharactPanel_RegisterTitle;
-	TRP3_RegisterCharact_CharactPanel_RegisterTitle:Hide();
+	local previous = TRP3_RegisterCharact_CharactPanel_Container.RegisterTitle;
+	TRP3_RegisterCharact_CharactPanel_Container.RegisterTitle:Hide();
 
 	-- Which directory chars must be shown ?
 	local shownCharacteristics = {};
@@ -345,7 +345,7 @@ local function setConsultDisplay(context)
 	end
 	if #shownCharacteristics > 0 then
 		hasCharac = true;
-		TRP3_RegisterCharact_CharactPanel_RegisterTitle:Show();
+		TRP3_RegisterCharact_CharactPanel_Container.RegisterTitle:Show();
 		margin = 0;
 	else
 		margin = 50;
@@ -360,7 +360,7 @@ local function setConsultDisplay(context)
 			tinsert(registerCharFrame, frame);
 		end
 		frame:ClearAllPoints();
-		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 10);
+		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 5);
 		frame:SetPoint("RIGHT", 0, 0);
 		frame.Icon:Hide();
 		frame.Name:SetText(loc:GetText(registerCharLocals[charName]));
@@ -411,10 +411,11 @@ local function setConsultDisplay(context)
 	-- Misc chars
 	if type(dataTab.MI) == "table" and #dataTab.MI > 0 then
 		hasMisc = true;
-		TRP3_RegisterCharact_CharactPanel_MiscTitle:Show();
-		TRP3_RegisterCharact_CharactPanel_MiscTitle:ClearAllPoints();
-		TRP3_RegisterCharact_CharactPanel_MiscTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, margin);
-		previous = TRP3_RegisterCharact_CharactPanel_MiscTitle;
+		TRP3_RegisterCharact_CharactPanel_Container.MiscTitle:Show();
+		TRP3_RegisterCharact_CharactPanel_Container.MiscTitle:ClearAllPoints();
+		TRP3_RegisterCharact_CharactPanel_Container.MiscTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, margin);
+		TRP3_RegisterCharact_CharactPanel_Container.MiscTitle:SetPoint("RIGHT", -10, 0);
+		previous = TRP3_RegisterCharact_CharactPanel_Container.MiscTitle;
 
 		for frameIndex, miscStructure in ipairs(dataTab.MI) do
 			local field = TRP3_API.GetMiscFieldFromData(miscStructure);
@@ -425,9 +426,9 @@ local function setConsultDisplay(context)
 				tinsert(miscCharFrame, frame);
 			end
 			frame:ClearAllPoints();
-			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 7);
+			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 			frame:SetPoint("RIGHT", 0, 0);
-			frame.Icon:SetTexture([[interface\icons\]] .. field.icon);
+			frame.Icon:SetIconTexture(field.icon);
 			frame.Name:SetText(field.localizedName or "");
 			frame.Value:SetText(field.value or "");
 			frame:Show();
@@ -438,10 +439,11 @@ local function setConsultDisplay(context)
 	-- Psycho chars
 	if type(dataTab.PS) == "table" and #dataTab.PS > 0 then
 		hasPsycho = true;
-		TRP3_RegisterCharact_CharactPanel_PsychoTitle:Show();
-		TRP3_RegisterCharact_CharactPanel_PsychoTitle:ClearAllPoints();
-		TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, margin);
-		previous = TRP3_RegisterCharact_CharactPanel_PsychoTitle;
+		TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle:Show();
+		TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle:ClearAllPoints();
+		TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, margin);
+		TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle:SetPoint("RIGHT", -10, 0);
+		previous = TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle;
 
 		for frameIndex, psychoStructure in ipairs(dataTab.PS) do
 			local frame = psychoCharFrame[frameIndex];
@@ -477,8 +479,8 @@ local function setConsultDisplay(context)
 			frame.LeftText:SetText(leftText);
 			frame.RightText:SetText(rightText);
 
-			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.LI or TRP3_InterfaceIcons.Default));
-			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.RI or TRP3_InterfaceIcons.Default));
+			frame.LeftIcon:SetIconTexture(psychoStructure.LI);
+			frame.RightIcon:SetIconTexture(psychoStructure.RI);
 
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 
@@ -1092,7 +1094,7 @@ function setEditDisplay()
 	refreshDraftHouseCoordinates();
 
 	-- Misc
-	local previous = TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle;
+	local previous = TRP3_RegisterCharact_Edit_CharactPanel_Container.MiscTitle;
 	for _, frame in pairs(miscEditCharFrame) do frame:Hide(); end
 	for frameIndex, miscStructure in pairs(draftData.MI) do
 		local frame = miscEditCharFrame[frameIndex];
@@ -1107,7 +1109,7 @@ function setEditDisplay()
 			-- Register the drag/drop handlers for reordering. Use the
 			-- icon as our handle, and make it control this frame.
 			setTooltipForSameFrame(frame.DragButton, "LEFT", 0, 10, loc.REG_PLAYER_REORDER, loc.REG_PLAYER_REORDER_TT);
-			setInfoReorderable(frame.DragButton, frame, "misc", TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle, TRP3_RegisterCharact_Edit_MiscAdd);
+			setInfoReorderable(frame.DragButton, frame, "misc", TRP3_RegisterCharact_Edit_CharactPanel_Container.MiscTitle, TRP3_RegisterCharact_Edit_MiscAdd);
 
 			tinsert(miscEditCharFrame, frame);
 		end
@@ -1144,11 +1146,11 @@ function setEditDisplay()
 	previous = TRP3_RegisterCharact_Edit_MiscAdd;
 
 	-- Psycho
-	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:ClearAllPoints();
-	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetPoint("TOP", previous, "BOTTOM", 0, -5);
-	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetPoint("LEFT", 10, 0);
-	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetPoint("RIGHT", -10, 0);
-	previous = TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle;
+	TRP3_RegisterCharact_Edit_CharactPanel_Container.TraitsTitle:ClearAllPoints();
+	TRP3_RegisterCharact_Edit_CharactPanel_Container.TraitsTitle:SetPoint("TOP", previous, "BOTTOM", 0, -5);
+	TRP3_RegisterCharact_Edit_CharactPanel_Container.TraitsTitle:SetPoint("LEFT", 10, 0);
+	TRP3_RegisterCharact_Edit_CharactPanel_Container.TraitsTitle:SetPoint("RIGHT", -10, 0);
+	previous = TRP3_RegisterCharact_Edit_CharactPanel_Container.TraitsTitle;
 	for _, frame in pairs(psychoEditCharFrame) do frame:Hide(); end
 	for frameIndex, psychoStructure in pairs(draftData.PS) do
 		local frame = psychoEditCharFrame[frameIndex];
@@ -1193,7 +1195,7 @@ function setEditDisplay()
 			-- Register the drag/drop handlers for reordering. Use the
 			-- icon as our handle, and make it control this frame.
 			setTooltipForSameFrame(frame.DragButton, "LEFT", 0, 10, loc.REG_PLAYER_REORDER, loc.REG_PLAYER_REORDER_TT);
-			setInfoReorderable(frame.DragButton, frame, "psycho", TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle, TRP3_RegisterCharact_Edit_PsychoAdd);
+			setInfoReorderable(frame.DragButton, frame, "psycho", TRP3_RegisterCharact_Edit_CharactPanel_Container.TraitsTitle, TRP3_RegisterCharact_Edit_PsychoAdd);
 
 			tinsert(psychoEditCharFrame, frame);
 		end
@@ -1225,8 +1227,8 @@ function setEditDisplay()
 			frame.LeftText:SetText(preset.LT or "");
 			frame.RightText:SetText(preset.RT or "");
 
-			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (preset.LI or TRP3_InterfaceIcons.Default));
-			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (preset.RI or TRP3_InterfaceIcons.Default));
+			frame.LeftIcon:SetIconTexture(preset.LI);
+			frame.RightIcon:SetIconTexture(preset.RI);
 		else
 			frame.CustomLeftField:SetText(psychoStructure.LT or "");
 			frame.CustomRightField:SetText(psychoStructure.RT or "");
@@ -1606,12 +1608,21 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_FirstFieldText:SetText(loc.REG_PLAYER_FIRSTNAME);
 	TRP3_RegisterCharact_Edit_LastFieldText:SetText(loc.REG_PLAYER_LASTNAME);
 	TRP3_RegisterCharact_Edit_FullTitleFieldText:SetText(loc.REG_PLAYER_FULLTITLE);
-	TRP3_RegisterCharact_CharactPanel_RegisterTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.DirectorySection, 25) .. " " .. loc.REG_PLAYER_REGISTER);
-	TRP3_RegisterCharact_CharactPanel_Edit_RegisterTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.DirectorySection, 25) .. " " .. loc.REG_PLAYER_REGISTER);
-	TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.TraitSection, 25) .. " " .. loc.REG_PLAYER_PSYCHO);
-	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.TraitSection, 25) .. " " .. loc.REG_PLAYER_PSYCHO);
-	TRP3_RegisterCharact_CharactPanel_MiscTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.MiscInfoSection, 25) .. " " .. loc.REG_PLAYER_MORE_INFO);
-	TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.MiscInfoSection, 25) .. " " .. loc.REG_PLAYER_MORE_INFO);
+
+	TRP3_RegisterCharact_CharactPanel_Container.RegisterTitle:SetText(loc.REG_PLAYER_REGISTER);
+	TRP3_RegisterCharact_CharactPanel_Container.RegisterTitle:SetIconTexture(TRP3_InterfaceIcons.DirectorySection);
+	TRP3_RegisterCharact_CharactPanel_Container.MiscTitle:SetText(loc.REG_PLAYER_MORE_INFO);
+	TRP3_RegisterCharact_CharactPanel_Container.MiscTitle:SetIconTexture(TRP3_InterfaceIcons.MiscInfoSection);
+	TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle:SetText(loc.REG_PLAYER_PSYCHO);
+	TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle:SetIconTexture(TRP3_InterfaceIcons.TraitSection);
+
+	TRP3_RegisterCharact_Edit_CharactPanel_Container.RegisterTitle:SetText(loc.REG_PLAYER_REGISTER);
+	TRP3_RegisterCharact_Edit_CharactPanel_Container.RegisterTitle:SetIconTexture(TRP3_InterfaceIcons.DirectorySection);
+	TRP3_RegisterCharact_Edit_CharactPanel_Container.MiscTitle:SetText(loc.REG_PLAYER_MORE_INFO);
+	TRP3_RegisterCharact_Edit_CharactPanel_Container.MiscTitle:SetIconTexture(TRP3_InterfaceIcons.MiscInfoSection);
+	TRP3_RegisterCharact_Edit_CharactPanel_Container.TraitsTitle:SetText(loc.REG_PLAYER_PSYCHO);
+	TRP3_RegisterCharact_Edit_CharactPanel_Container.TraitsTitle:SetIconTexture(TRP3_InterfaceIcons.TraitSection);
+
 	TRP3_RegisterCharact_Edit_RaceFieldText:SetText(loc.REG_PLAYER_RACE);
 	TRP3_RegisterCharact_Edit_ClassFieldText:SetText(loc.REG_PLAYER_CLASS);
 	TRP3_RegisterCharact_Edit_AgeFieldText:SetText(loc.REG_PLAYER_AGE);
