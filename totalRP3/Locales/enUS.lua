@@ -795,7 +795,7 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	DB_STATUS_RP_IC_TT = "That means you are currently playing your character.\nAll your actions will be interpreted as if it's your character doing them.",
 	DB_STATUS_RP_OOC = "Out of character",
 	DB_STATUS_RP_OOC_TT = "You are out of your character.\nYour actions can't be associated to him/her.",
-	DB_STATUS_XP = "Roleplayer experience",
+	DB_STATUS_XP = "Roleplay proficiency",
 	DB_STATUS_XP_NEWCOMER = "Newcomer",
 	DB_STATUS_XP_NEWCOMER_TT = "This selection will indicate to other players indicating to others that you are a beginner roleplayer.|n|nThis will be shown in an icon on your tooltip.",
 	DB_STATUS_XP_NORMAL = "Casual",
