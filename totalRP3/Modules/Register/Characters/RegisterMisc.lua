@@ -140,12 +140,10 @@ local function displayRPStyle(context)
 			-- Position
 			frame:ClearAllPoints();
 			if previous == nil then
-				frame:SetPoint("TOPLEFT", TRP3_RegisterMiscViewRPStyle, "TOPLEFT", 25, -12);
+				frame:SetPoint("TOP", TRP3_RegisterMiscViewRPStyle, "TOP", 0, -12);
 			else
-				frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
+				frame:SetPoint("TOP", previous, "BOTTOM", 0, 0);
 			end
-			frame:SetPoint("LEFT", 0, 0);
-			frame:SetPoint("RIGHT", 0, 0);
 
 			-- Value
 			_G[frame:GetName().."FieldName"]:SetText(fieldData.name);

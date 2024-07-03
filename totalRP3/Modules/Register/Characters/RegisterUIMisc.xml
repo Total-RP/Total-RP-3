@@ -6,7 +6,7 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_RegisterRPStyleMain_Edit_Line" virtual="true">
-		<Size x="0" y="30"/>
+		<Size x="465" y="30"/>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString name="$parentFieldName" inherits="GameFontNormal" justifyH="LEFT" text="[Field]">
