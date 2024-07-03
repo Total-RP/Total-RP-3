@@ -37,26 +37,29 @@ end
 -- instead use "LCLICK" for the localized equivalent of "Left-click".
 --
 
-local DEFAULT_SHORTCUT_SEPARATOR = "+";
-local SYSTEM_SHORTCUT_SEPARATOR = IsMacClient() and "-" or DEFAULT_SHORTCUT_SEPARATOR;
-
-local MouseActionLocalizationKeys = {
+local KeyLocalizationOverrides = {
 	CLICK = "CM_CLICK",         -- "Click"
-	DCLICK = "CM_DOUBLECLICK",  -- "Double click"
-	DRAGDROP = "CM_DRAGDROP",   -- "Drag & drop"
-	LCLICK = "CM_L_CLICK",      -- "Left-click"
+	DCLICK = "CM_DOUBLECLICK",  -- "Double-Click"
+	DRAGDROP = "CM_DRAGDROP",   -- "Drag & Drop"
+	LCLICK = "CM_L_CLICK",      -- "Left-Click"
 	BUTTON1 = "CM_L_CLICK",
-	MCLICK = "CM_M_CLICK",      -- "Middle-click"
+	MCLICK = "CM_M_CLICK",      -- "Middle-Click"
 	BUTTON3 = "CM_M_CLICK",
-	RCLICK = "CM_R_CLICK",      -- "Right-click"
+	RCLICK = "CM_R_CLICK",      -- "Right-Click"
 	BUTTON2 = "CM_R_CLICK",
+	ALT = "CM_ALT",
+	CMD = "CM_CMD",
+	CTRL = "CM_CTRL",
+	META = "CM_META",
+	OPT = "CM_OPT",
+	SHIFT = "CM_SHIFT",
 };
 
 local function GetLocalizedKeyText(key)
 	local text;
 
-	if MouseActionLocalizationKeys[key] then
-		text = TRP3_API.loc[MouseActionLocalizationKeys[key]];
+	if KeyLocalizationOverrides[key] then
+		text = TRP3_API.loc[KeyLocalizationOverrides[key]];
 	else
 		text = GetBindingText(key);
 	end
@@ -82,15 +85,13 @@ TRP3_API.ShortcutType = {
 };
 
 function TRP3_API.FormatShortcut(binding, shortcutType)
-	local separator;
+	local separator = "-";
 	local localizer;
 
 	if shortcutType == TRP3_API.ShortcutType.Normal then
 		localizer = GetLocalizedKeyText;
-		separator = DEFAULT_SHORTCUT_SEPARATOR;
 	elseif shortcutType == TRP3_API.ShortcutType.System then
 		localizer = GetLocalizedSystemKeyText;
-		separator = SYSTEM_SHORTCUT_SEPARATOR;
 	else
 		error("invalid shortcut type");
 	end
@@ -106,5 +107,6 @@ end
 
 function TRP3_API.FormatShortcutWithInstruction(binding, instruction, shortcutType)
 	local shortcut = TRP3_API.FormatShortcut(binding, shortcutType);
-	return string.format(TRP3_API.loc.SHORTCUT_INSTRUCTION, TRP3_API.MiscColors.Normal("[" .. shortcut .. "]"), TRP3_API.Colors.White(instruction));
+	local text = string.format(TRP3_API.loc.SHORTCUT_INSTRUCTION, shortcut, instruction);
+	return GREEN_FONT_COLOR:WrapTextInColorCode(text);
 end
