@@ -151,12 +151,9 @@ local function onStart()
 	end
 
 	local RP_STYLE_FIELDS = {
-		RF = "1",  -- In-character frequency
 		RI = "2",  -- Accept injuries
 		RD = "3",  -- Accept death
 		RR = "4",  -- Accept romance
-		RB = "5",  -- Battle resolution
-		RG = "6",  -- Guild membership
 	};
 
 	local function updateMiscData()
@@ -184,12 +181,9 @@ local function onStart()
 		msp.my['PE'] = table.concat(peeks);
 
 		local styleData = get("player/misc/ST");
-		msp.my['RF'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RF] or 0);
 		msp.my['RI'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RI] or 0);
 		msp.my['RD'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RD] or 0);
 		msp.my['RR'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RR] or 0);
-		msp.my['RB'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RB] or 0);
-		msp.my['RG'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RG] or 0);
 	end
 
 	local function onProfileChanged()
