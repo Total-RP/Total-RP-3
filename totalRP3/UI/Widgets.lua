@@ -138,8 +138,8 @@ end
 
 function TRP3_CategoryButtonMixin:OnEnter()
 	if self.Text:IsTruncated() then
-		local function Initializer(tooltip)
-			GameTooltip_SetTitle(tooltip, self:GetText());
+		local function Initializer(_, tooltip)
+			tooltip:AddTitleLine(self:GetText());
 		end
 
 		TRP3_TooltipUtil.ShowTooltip(self, Initializer);
