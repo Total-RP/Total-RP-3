@@ -46,7 +46,7 @@ push-locales: $(addprefix push-locales-,$(PUSH_LOCALES))
 
 .PHONY: $(LOCALE_PUSH_TARGETS)
 $(LOCALE_PUSH_TARGETS): push-locales-%:
-	$(PYTHON) .github/scripts/localization.py upload --locale $* --project-id $(CF_PROJECT_ID) <$(LOCALES_DIR)/$*.lua
+	$(PYTHON) .github/scripts/localization.py upload --delete-missing-phrases --locale $* --project-id $(CF_PROJECT_ID) <$(LOCALES_DIR)/$*.lua
 
 .PHONY: pull-all-locales
 pull-all-locales: $(addprefix pull-locales-,$(LOCALES))
