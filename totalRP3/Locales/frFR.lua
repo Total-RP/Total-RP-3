@@ -572,22 +572,12 @@ Cette fenêtre sera fermée à la copie.]=],
 
 |cffff9900Note:|r Ceci ne change |cffff0000pas|r le langage de l'interface de Total RP 3. Cette option peut être trouvée dans la page de |cfffff569Paramètres avancés|r.]=],
 	["DB_STATUS_RP"] = "Statut du personnage",
-	["DB_STATUS_RP_EXP"] = "Rôliste confirmé",
-	["DB_STATUS_RP_EXP_TT"] = [=[Montre que vous êtes un rôliste confirmé.
-Cela n'affichera aucune icône spécifique sur votre bulle d'aide.]=],
 	["DB_STATUS_RP_IC"] = "Personnage joué",
 	["DB_STATUS_RP_IC_TT"] = [=[Cela signifie que vous jouez actuellement votre personnage.
 Toutes vos actions seront interprétées comme si votre personnage les effectuait.]=],
 	["DB_STATUS_RP_OOC"] = "Hors du personnage",
 	["DB_STATUS_RP_OOC_TT"] = [=[Vous n'êtes pas dans votre personnage.
 Vos actions ne lui seront pas associées.]=],
-	["DB_STATUS_RP_VOLUNTEER"] = "Rôliste volontaire",
-	["DB_STATUS_RP_VOLUNTEER_TT"] = [=[Ce choix affichera une icône dans votre infobulle, indiquant
-aux joueurs débutants que vous êtes enclin à les aider.]=],
-	["DB_STATUS_XP"] = "Statut roleplay",
-	["DB_STATUS_XP_BEGINNER"] = "Rôliste débutant",
-	["DB_STATUS_XP_BEGINNER_TT"] = [=[Ce choix affichera une icône dans votre infobulle, indiquant
-aux autres que vous débutez dans le roleplay.]=],
 	["DB_TUTO_1"] = [=[|cffffff00Le statut du personnage|r indique si vous jouez actuellement le rôle de votre personnage ou non.
 
 |cffffff00Le statut roleplay|r vous permet d'indiquer que vous êtes un débutant ou un vétéran désireux d'aider les novices !

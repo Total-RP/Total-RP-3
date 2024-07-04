@@ -305,7 +305,6 @@ TRP3_API.flyway.patches["18"] = function()
 	end
 end
 
-
 TRP3_API.flyway.patches["19"] = function()
 	-- Modify default profile ID to be OOC.
 
@@ -319,6 +318,26 @@ TRP3_API.flyway.patches["19"] = function()
 
 		if character then
 			character.RP = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+			character.v = TRP3_API.utils.math.incrementNumber(character.v or 1, 2);
+		end
+	end
+end
+
+TRP3_API.flyway.patches["20"] = function()
+	-- Roleplay experience is now a global setting and should be removed
+	-- from all player-owned profiles. Register profiles will retain the
+	-- XP field as they're expected to passively shed it as resynchronization
+	-- occurs across the network, or until the point they're pruned.
+
+	if not TRP3_Profiles then
+		return;
+	end
+
+	for _, profile in pairs(TRP3_Profiles) do
+		local character = profile.player and profile.player.character;
+
+		if character then
+			character.XP = nil;
 			character.v = TRP3_API.utils.math.incrementNumber(character.v or 1, 2);
 		end
 	end

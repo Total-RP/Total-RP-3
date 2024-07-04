@@ -147,3 +147,68 @@ function TRP3_API.GetMiscTypeInfo(miscType)
 	local shallow = true;
 	return CopyTable(MiscInfoTypeData[miscType], shallow);
 end
+
+local RoleplayExperienceIcons = {
+	[AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER] = {
+		atlas = "newplayerchat-chaticon-newcomer",
+		file = "interface/targetingframe/ui-targetingframe-seal",
+	},
+	[AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE] = {
+		atlas = "newplayerchat-chaticon-guide",
+		file = "interface/targetingframe/portraitquestbadge",
+	},
+};
+
+function TRP3_API.GetRoleplayExperienceIcon(experience)
+	local iconInfo = RoleplayExperienceIcons[experience];
+	local iconTexture;
+
+	if iconInfo then
+		if iconInfo.atlas and C_Texture.GetAtlasInfo(iconInfo.atlas) then
+			iconTexture = iconInfo.atlas;
+		elseif iconInfo.file and GetFileIDFromPath(iconInfo.file) then
+			iconTexture = iconInfo.file;
+		end
+	end
+
+	return iconTexture;
+end
+
+function TRP3_API.GetRoleplayExperienceIconMarkup(experience)
+	local iconTexture = TRP3_API.GetRoleplayExperienceIcon(experience);
+	local iconMarkup;
+
+	if iconTexture ~= nil then
+		if string.find(iconTexture, "/") then
+			iconMarkup = string.format("|T%s:%d:%d|t", iconTexture, 16, 16);
+		else
+			iconMarkup = string.format("|A:%s:%d:%d|a", iconTexture, 16, 16)
+		end
+	end
+
+	return iconMarkup;
+end
+
+function TRP3_API.GetRoleplayExperienceText(experience)
+	if experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
+		return L.DB_STATUS_XP_NEWCOMER;
+	elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
+		return L.DB_STATUS_XP_VETERAN;
+	elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE then
+		return L.DB_STATUS_XP_NEWCOMER_GUIDE;
+	else
+		return L.DB_STATUS_XP_NORMAL;
+	end
+end
+
+function TRP3_API.GetRoleplayExperienceTooltipText(experience)
+	if experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
+		return L.DB_STATUS_XP_NEWCOMER_TT;
+	elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
+		return L.DB_STATUS_XP_VETERAN_TT;
+	elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE then
+		return L.DB_STATUS_XP_NEWCOMER_GUIDE_TT;
+	else
+		return L.DB_STATUS_XP_NORMAL_TT;
+	end
+end

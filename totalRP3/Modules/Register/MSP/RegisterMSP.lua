@@ -38,14 +38,17 @@ local function onStart()
 
 	local function updateCharacterData()
 		local character = get("player/character");
+		local experience = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayExperience();
 		msp.my['CU'] = character.CU;
 		msp.my['CO'] = character.CO;
-		if character.XP == 1 then
-			msp.my['FR'] = "4";
-		elseif character.XP == 2 then
-			msp.my['FR'] = loc.DB_STATUS_RP_EXP;
+		if experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
+			msp.my['FR'] = "3";  -- MRP: Full-time/Experienced
+		elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
+			msp.my['FR'] = "4";  -- MRP: Beginner
+		elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE then
+			msp.my['FR'] = loc.DB_STATUS_XP_NEWCOMER_GUIDE;
 		else
-			msp.my['FR'] = loc.DB_STATUS_RP_VOLUNTEER;
+			msp.my['FR'] = "1";  -- MRP: Normal
 		end
 		if character.RP == 1 then
 			msp.my['FC'] = "2";
@@ -427,9 +430,12 @@ local function onStart()
 						elseif field == "CO" then
 							profile.character.CO = value;
 						elseif field == "FR" then
-							profile.character.XP = 2;
-							if value == "4" then
-								profile.character.XP = 1;
+							if value == "3" then
+								character.roleplayExperience = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN;
+							elseif value == "4" then
+								character.roleplayExperience = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER;
+							else
+								character.roleplayExperience = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL;
 							end
 						elseif field == "VA" then
 							if value and value:find("/", nil, true) then

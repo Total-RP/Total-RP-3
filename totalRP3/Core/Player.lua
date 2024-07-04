@@ -203,7 +203,9 @@ function Player:GetRoleplayLanguage()
 end
 
 function Player:GetRoleplayExperience()
-	return self:GetInfo("character/XP");
+	-- Note that this will return nil for profiles belonging to this player.
+	local characterInfo = TRP3_API.register.getUnitIDCharacter(self:GetCharacterID());
+	return characterInfo and characterInfo.roleplayExperience;
 end
 
 function Player:GetRoleplayStatus()
@@ -383,7 +385,6 @@ end
 
 local function ShouldAllowFieldModification(player, subtableName, fieldName)
 	return (subtableName == "character" and fieldName == "RP")
-		or (subtableName == "character" and fieldName == "XP")
 		or (not player:IsProfileDefault());
 end
 
@@ -458,6 +459,23 @@ end
 
 function CurrentUser:SetCustomRace(race)
 	UpdateProfileField(self, "characteristics", "RA", race);
+end
+
+function CurrentUser:GetRoleplayExperience()
+	return TRP3_API.configuration.getValue("roleplay_experience");
+end
+
+function CurrentUser:SetRoleplayExperience(experience)
+	-- RP experience field is a bit special in that it's stored globally
+	-- and transferred as part of the vernum exchange. For compatibility
+	-- however we still emit REGISTER_DATA_UPDATED as some parts of the
+	-- code rely upon this (eg. MSP).
+
+	local playerID = TRP3_API.globals.player_id;
+	local profileID = self:GetProfileID();
+
+	TRP3_API.configuration.setValue("roleplay_experience", experience);
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.REGISTER_DATA_UPDATED, playerID, profileID, "character");
 end
 
 currentUser = CurrentUser()

@@ -435,22 +435,12 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["DB_STATUS_LC"] = "Idioma de roleo",
 	["DB_STATUS_LC_DEFAULT"] = "Por defecto (%1$s)",
 	["DB_STATUS_RP"] = "Estado de personaje",
-	["DB_STATUS_RP_EXP"] = "Rolero experimentado",
-	["DB_STATUS_RP_EXP_TT"] = [=[Muestra que eres un jugador de rol experimentado.
-No se mostrará ningún icono en la descripción.]=],
 	["DB_STATUS_RP_IC"] = "En rol",
 	["DB_STATUS_RP_IC_TT"] = [=[Significa que actualmente estás interpretando tu personaje.
 Todas tus acciones serán interpretadas como si tu personaje las realizara.]=],
 	["DB_STATUS_RP_OOC"] = "Fuera de rol",
 	["DB_STATUS_RP_OOC_TT"] = [=[Estás fuera de rol.
 Tus acciones no se asociarán a tu personaje.]=],
-	["DB_STATUS_RP_VOLUNTEER"] = "Rolero voluntario",
-	["DB_STATUS_RP_VOLUNTEER_TT"] = [=[Esta selección mostrará un icono, indicando
-a roleros novatos que estás dispuesto a ayudarles.]=],
-	["DB_STATUS_XP"] = "Estado de rol",
-	["DB_STATUS_XP_BEGINNER"] = "Rolero novato",
-	["DB_STATUS_XP_BEGINNER_TT"] = [=[Esta selección mostrará un icono que indicará
-a otros que eres recién iniciado en el rol.]=],
 	["DB_TUTO_1"] = [=[|cffffff00El estado del personaje|r indica si actualmente estás interpretando a tu personaje.
 
 |cffffff00El estado del jugador|r indica si eres un jugador de rol principiante o un veterano dispuesto a ayudar.

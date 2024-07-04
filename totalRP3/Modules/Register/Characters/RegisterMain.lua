@@ -244,8 +244,20 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 	end
 end
 
+local RoleplayExperienceValues = tInvert(AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE);
+
+local function SanitizeRoleplayExperience(experience)
+	experience = tonumber(experience);
+
+	if not RoleplayExperienceValues[experience] then
+		experience = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL;
+	end
+
+	return experience;
+end
+
 --- Raises error if unknown unitName
-function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, msp, extended, trialAccount, extendedVersion)
+function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, msp, extended, trialAccount, extendedVersion, roleplayExperience)
 	local character = getUnitIDCharacter(unitID);
 	character.client = Utils.str.sanitize(client);
 	character.clientVersion = Utils.str.sanitizeVersion(clientVersion);
@@ -253,6 +265,7 @@ function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, 
 	character.extended = extended;
 	character.isTrial = trialAccount;
 	character.extendedVersion = Utils.str.sanitizeVersion(extendedVersion);
+	character.roleplayExperience = SanitizeRoleplayExperience(roleplayExperience);
 end
 
 --- Raises error if unknown unitName

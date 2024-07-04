@@ -30,9 +30,10 @@ AddOn_TotalRP3.Enums.ROLEPLAY_STATUS = {
 -- ROLEPLAY_EXPERIENCE is an enumeration of roleplay experience entries for
 -- a player, for example "beginner roleplayer".
 AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE = {
-	BEGINNER = 1,
-	EXPERIENCED = 2,
-	VOLUNTEER = 3,
+	NEWCOMER = 1,
+	VETERAN = 2,
+	NEWCOMER_GUIDE = 3,
+	CASUAL = 4,
 };
 
 -- UNIT_TYPE describes the base type of a unit, such as whether it represents
