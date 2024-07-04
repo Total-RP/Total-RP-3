@@ -126,6 +126,7 @@ local function displayRPStyle(context)
 	-- Roleplay proficiency is displayed on its own line in consult-mode.
 
 	local previous;
+	TRP3_RegisterMiscViewRPStyle.RoleplayExperience:Hide();
 
 	if not context.isPlayer then
 		local frame = TRP3_RegisterMiscViewRPStyle.RoleplayExperience;
@@ -140,8 +141,6 @@ local function displayRPStyle(context)
 			frame.FieldValue:SetText(string.trim(string.join(" ", icon or "", text)));
 			frame:Show(true);
 			previous = frame;
-		else
-			frame:Hide();
 		end
 	end
 
