@@ -123,13 +123,33 @@ local function displayRPStyle(context)
 		frame:Hide();
 	end
 
+	-- Roleplay proficiency is displayed on its own line in consult-mode.
+
 	local previous;
-	local count = 0;
+
+	if not context.isPlayer then
+		local frame = TRP3_RegisterMiscViewRPStyle.RoleplayExperience;
+		local player = AddOn_TotalRP3.Player.CreateFromProfileID(context.profileID);
+		local experience = player:GetRoleplayExperience();
+
+		if experience then
+			local text = TRP3_API.GetRoleplayExperienceText(experience);
+			local icon = TRP3_API.GetRoleplayExperienceIconMarkup(experience);
+
+			frame.FieldName:SetText(loc.DB_STATUS_XP);
+			frame.FieldValue:SetText(string.trim(string.join(" ", icon or "", text)));
+			frame:Show(true);
+			previous = frame;
+		else
+			frame:Hide();
+		end
+	end
+
 	for index, fieldData in pairs(STYLE_FIELDS) do
 		local frame = styleLines[index];
 		if frame == nil then
-			frame = CreateFrame("Frame", "TRP3_RegisterMiscViewRPStyle_line"..index, TRP3_RegisterMiscViewRPStyle, "TRP3_RegisterRPStyleMain_Edit_Line");
-			setupListBox(_G[frame:GetName().."Values"], fieldData.values, onEditStyle, nil, 180, true);
+			frame = CreateFrame("Frame", nil, TRP3_RegisterMiscViewRPStyle, "TRP3_RegisterRPStyleMain_Edit_Line");
+			setupListBox(frame.Values, fieldData.values, onEditStyle, nil, 180, true);
 			frame.fieldData = fieldData;
 			tinsert(styleLines, frame);
 		end
@@ -146,14 +166,16 @@ local function displayRPStyle(context)
 			end
 
 			-- Value
-			_G[frame:GetName().."FieldName"]:SetText(fieldData.name);
-			local dropDown = _G[frame:GetName().."Values"];
-			local readOnlyValue = _G[frame:GetName().."FieldValue"];
+			frame.FieldName:SetText(fieldData.name);
+			local dropDown = frame.Values;
+			local readOnlyValue = frame.FieldValue;
 			if context.isPlayer then
+				frame:SetHeight(30);
 				dropDown:SetSelectedValue(selectedValue);
 				dropDown:Show();
 				readOnlyValue:Hide();
 			else
+				frame:SetHeight(24);
 				dropDown:Hide();
 				readOnlyValue:Show();
 				local valueText;
@@ -168,12 +190,11 @@ local function displayRPStyle(context)
 
 			frame:Show();
 			previous = frame;
-			count = count + 1;
 		end
 	end
 
 	TRP3_RegisterMiscViewRPStyleEmpty:Hide();
-	if not context.isPlayer and count == 0 then
+	if not context.isPlayer and previous == nil then
 		TRP3_RegisterMiscViewRPStyleEmpty:Show();
 	end
 end

@@ -57,32 +57,21 @@ local function GenerateRPStatusMenu(_, rootDescription)
 end
 
 local function GenerateXPStatusMenu(_, rootDescription)
-	do -- Beginner Roleplayer
-		local level = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER;
-		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_XP_NEWCOMER, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
-		TRP3_MenuUtil.AttachTexture(elementDescription, TRP3_API.GetRoleplayExperienceIcon(level));
-		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_XP_NEWCOMER_TT);
-	end
+	local levels = {
+		AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER,
+		AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL,
+		AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN,
+		AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE,
+	};
 
-	do -- Casual Roleplayer
-		local level = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL;
-		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_XP_NORMAL, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
-		TRP3_MenuUtil.AttachTexture(elementDescription, TRP3_API.GetRoleplayExperienceIcon(level));
-		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_XP_NORMAL_TT);
-	end
+	for _, level in ipairs(levels) do
+		local text = TRP3_API.GetRoleplayExperienceText(level);
+		local icon = TRP3_API.GetRoleplayExperienceIcon(level);
+		local tooltipText = TRP3_API.GetRoleplayExperienceTooltipText(level);
 
-	do -- Experienced Roleplayer
-		local level = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN;
-		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_XP_VETERAN, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
-		TRP3_MenuUtil.AttachTexture(elementDescription, TRP3_API.GetRoleplayExperienceIcon(level));
-		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_XP_VETERAN_TT);
-	end
-
-	do -- Newcomer Guide Roleplayer
-		local level = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE;
-		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_XP_NEWCOMER_GUIDE, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
-		TRP3_MenuUtil.AttachTexture(elementDescription, TRP3_API.GetRoleplayExperienceIcon(level));
-		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_XP_NEWCOMER_GUIDE_TT);
+		local elementDescription = rootDescription:CreateRadio(text, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
+		TRP3_MenuUtil.AttachTexture(elementDescription, icon);
+		TRP3_MenuUtil.SetElementTooltip(elementDescription, tooltipText);
 	end
 end
 

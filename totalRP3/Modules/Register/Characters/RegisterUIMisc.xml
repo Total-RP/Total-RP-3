@@ -5,37 +5,37 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
-	<Frame name="TRP3_RegisterRPStyleMain_Edit_Line" virtual="true">
-		<Size x="465" y="30"/>
+	<Frame name="TRP3_RegisterRPStyleMain_Basic_Line" virtual="true">
+		<Size x="465" y="24"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="$parentFieldName" inherits="GameFontNormal" justifyH="LEFT" text="[Field]">
+				<FontString parentKey="FieldName" inherits="GameFontNormal" justifyH="LEFT">
 					<Size x="240" y="10"/>
 					<Anchors>
-						<Anchor point="LEFT" x="0" y="0"/>
+						<Anchor point="LEFT"/>
 					</Anchors>
-					<Color r="0.95" g="0.75" b="0.10"/>
 				</FontString>
-				<FontString name="$parentFieldValue" inherits="GameFontNormal" justifyH="LEFT" text="[Value]">
+				<FontString parentKey="FieldValue" inherits="GameFontHighlight" justifyH="LEFT">
 					<Size x="0" y="10"/>
 					<Anchors>
-						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentFieldName"/>
-						<Anchor point="RIGHT" x="0" y="0"/>
+						<Anchor point="LEFT" relativeKey="$parent.FieldName" relativePoint="RIGHT" x="15"/>
+						<Anchor point="RIGHT"/>
 					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
 			</Layer>
 		</Layers>
+	</Frame>
+
+	<Frame name="TRP3_RegisterRPStyleMain_Edit_Line" inherits="TRP3_RegisterRPStyleMain_Basic_Line" virtual="true">
+		<Size x="465" y="30"/>
 		<Frames>
-			<Frame name="$parentValues" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
+			<Frame parentKey="Values" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
 				<Size x="225" y="32"/>
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentFieldName" x="0" y="0"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.FieldName"/>
 				</Anchors>
 				<Scripts>
-					<OnEnter inherit="prepend">
-						TRP3_RefreshTooltipForFrame(self);
-					</OnEnter>
+					<OnEnter inherit="prepend" function="TRP3_RefreshTooltipForFrame"/>
 					<OnLeave inherit="prepend">
 						TRP3_MainTooltip:Hide();
 					</OnLeave>
@@ -139,15 +139,21 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 						<Layers>
 							<Layer level="OVERLAY">
-								<FontString name="TRP3_RegisterMiscViewRPStyleEmpty" text="[EMPTY]" inherits="GameFontNormalLarge">
-									<Size x="0" y="10"/>
+								<FontString name="TRP3_RegisterMiscViewRPStyleEmpty" inherits="GameFontHighlightLarge">
+									<Size y="10"/>
 									<Anchors>
-										<Anchor point="CENTER" x="0" y="0"/>
+										<Anchor point="CENTER"/>
 									</Anchors>
-									<Color b="0.95" r="0.95" g="0.95"/>
 								</FontString>
 							</Layer>
 						</Layers>
+						<Frames>
+							<Frame parentKey="RoleplayExperience" inherits="TRP3_RegisterRPStyleMain_Basic_Line" hidden="true">
+								<Anchors>
+									<Anchor point="TOP" y="-12"/>
+								</Anchors>
+							</Frame>
+						</Frames>
 					</Frame>
 
 					<!-- Currently -->

@@ -188,3 +188,27 @@ function TRP3_API.GetRoleplayExperienceIconMarkup(experience)
 
 	return iconMarkup;
 end
+
+function TRP3_API.GetRoleplayExperienceText(experience)
+	if experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
+		return L.DB_STATUS_XP_NEWCOMER;
+	elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
+		return L.DB_STATUS_XP_VETERAN;
+	elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE then
+		return L.DB_STATUS_XP_NEWCOMER_GUIDE;
+	else
+		return L.DB_STATUS_XP_NORMAL;
+	end
+end
+
+function TRP3_API.GetRoleplayExperienceTooltipText(experience)
+	if experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
+		return L.DB_STATUS_XP_NEWCOMER_TT;
+	elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
+		return L.DB_STATUS_XP_VETERAN_TT;
+	elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE then
+		return L.DB_STATUS_XP_NEWCOMER_GUIDE_TT;
+	else
+		return L.DB_STATUS_XP_NORMAL_TT;
+	end
+end
