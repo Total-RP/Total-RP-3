@@ -14,7 +14,6 @@ L = {
 	["BW_COLOR_CODE_ALERT"] = "잘못된 16 진수 코드!",
 	["BW_COLOR_PRESET_SAVE"] = "현재 색상 저장",
 	["BW_COLOR_PRESET_TITLE"] = "색상 사전 설정",
-	["CL_EXPIRED"] = "이 링크가 만료되었습니다.",
 	["CL_IMPORT_PROFILE"] = "프로필 가져 오기",
 	["CM_ACTIONS"] = "행위",
 	["CM_APPLY"] = "적용",

@@ -490,9 +490,6 @@ L = {
 	["REG_PLAYER_COLOR_TT"] = [=[|cffffff00Click:|r 選擇顏色
 |cffffff00Right-click:|r 放棄顏色
 |cffffff00Shift-Click:|r 直接使用調色盤]=],
-	["REG_PLAYER_CURRENT"] = "目前狀況",
-	["REG_PLAYER_CURRENT_OOC"] = "這裡是ＯＯＣ資訊",
-	["REG_PLAYER_CURRENTOOC"] = "當前狀況（ＯＯＣ）",
 	["REG_PLAYER_EDIT_MUSIC_THEME"] = "主題音樂",
 	["REG_PLAYER_EYE"] = "眼睛顏色",
 	["REG_PLAYER_EYE_TT"] = [=[這裡可以描述你的腳色眼睛的顏色。
@@ -786,8 +783,6 @@ L = {
 	["UI_COLOR_BROWSER_PRESETS_CUSTOM"] = "自訂",
 	["UI_COLOR_BROWSER_SELECT"] = "選擇顏色",
 	["UI_COMPANION_BROWSER_HELP"] = "請選擇一隻戰寵",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00警告:|r 只有已經被重新命名的戰寵才能與簡介連結。
-|cff00ff00此處僅列出符合此條件的戰寵。]=],
 	["UI_FILTER"] = "過濾器",
 	["UI_ICON_BROWSER"] = "圖示瀏覽器",
 	["UI_ICON_BROWSER_HELP"] = "複製圖示",

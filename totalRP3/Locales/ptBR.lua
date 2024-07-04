@@ -10,35 +10,17 @@ local L;
 
 L = {
 	["ABOUT_TITLE"] = "Sobre",
-	["BINDING_NAME_TRP3_OPEN_TARGET_PROFILE"] = "Abrir perfil do alvo ",
 	["BINDING_NAME_TRP3_TOGGLE"] = "Mostrar/ocultar tela principal",
-	["BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS"] = "Mudar status do personagem ",
 	["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "Mostrar/ocultar barra de ferramentas",
-	["BLIZZARD_NAMEPLATES_MODULE_DESCRIPTION"] = "Ativar a customização das placas de nomes da Blizzard",
-	["BLIZZARD_NAMEPLATES_MODULE_NAME"] = "Placas de nomes da blizzard",
 	["BROADCAST_10"] = "|cffff9900Você já está em 10 canais. O TRP3 não tentará se conectar novamente ao canal de transmissão e você não poderá usar algumas opções como localização de jogadores no mapa.",
 	["BROADCAST_OFFLINE_DISABLED"] = "Transmissão Offline foi desativada.",
-	["BROADCAST_PASSWORD"] = [=[|cffff0000O canal de transmissão (%s) está protegido por senha.
-|cffff9900O TRP3 não tentará mais conectar-se ao canal de transmissão, mas você não poderá usar algumas opções como localização de jogadores no mapa.
-|cff00ff00Você pode desativar ou trocar o canal de transmissão nas opções gerais do TRP3.]=],
-	["BROADCAST_PASSWORDED"] = [=[|cffff0000O usuário|r %s |cffff0000acabou de colocar uma senha no canal de transmissão (%s).
-|cffff9900Se você não sabe a senha, você não poderá usar opções como localização de jogadores no mapa.]=],
 	["BW_COLOR_CODE"] = "Código de cor",
 	["BW_COLOR_CODE_ALERT"] = "Código hexadecimal incorreto!",
 	["BW_COLOR_CODE_TT"] = "Você pode colar um código de cor hexadecimal de 6 caracteres aqui e pressionar Enter.",
-	["BW_COLOR_PRESET_DELETE"] = "Deletar %s predefinidos ",
-	["BW_COLOR_PRESET_RENAME"] = "Renomear %s predefinidos ",
 	["BW_COLOR_PRESET_SAVE"] = "Salvar cor atual ",
 	["BW_COLOR_PRESET_TITLE"] = "Cores predefinidas ",
 	["BW_CUSTOM_NAME"] = "Nome de cor personalizada",
-	["BW_CUSTOM_NAME_TITLE"] = "Nome (Opcional)",
-	["BW_CUSTOM_NAME_TT"] = "\" Você pode nomear a cor personalizada que está salvando. Se deixar vazio, será usado o código de cor.",
-	["CL_COMPANION_PROFILE"] = "Perfil do Companheiro",
-	["CL_CONTENT_SIZE"] = "Tamanho: %s",
-	["CL_DIRECTORY_COMPANION_PROFILE"] = "Diretório do perfil do Companheiro",
-	["CL_DIRECTORY_PLAYER_PROFILE"] = "Diretório do perfil do jogador ",
 	["CL_DOWNLOADING"] = "Baixando: %0.1f %% ",
-	["CL_EXPIRED"] = "O link Expirou. ",
 	["CL_GLANCE"] = "Á primeira vista",
 	["CL_IMPORT_COMPANION"] = "Importar perfil do companion.",
 	["CL_IMPORT_GLANCE"] = "Importar na primeira vista ",
@@ -49,14 +31,7 @@ L = {
 	["CL_OPEN_COMPANION"] = "Abrir perfil do companion ",
 	["CL_OPEN_PROFILE"] = "Abrir perfil ",
 	["CL_PLAYER_PROFILE"] = "Perfil do Jogador ",
-	["CL_REQUESTING_DATA"] = "Requisitando Link de Arquivos de %s ",
-	["CL_SENDING_COMMAND"] = "Enviando comando... ",
-	["CL_SENT_BY"] = "Link enviado por: %s",
 	["CL_TOOLTIP"] = "Criar link de chat ",
-	["CL_TYPE"] = "Tipo de link TRP3: %s ",
-	["CL_VERSIONS_DIFFER"] = [=[Este link foi gerado usando uma versão diferente o Total RP 3.
-
-Importar conteúdo vindo de uma versão diferente pode causar problemas em casos de incompatibilidade. Deseja prosseguir mesmo assim? ]=],
 	["CM_ACTIONS"] = "Ações",
 	["CM_ALT"] = "Alt",
 	["CM_APPLY"] = "Aplicar",
@@ -65,7 +40,6 @@ Importar conteúdo vindo de uma versão diferente pode causar problemas em casos
 	["CM_CANCEL"] = "Cancelar",
 	["CM_CENTER"] = "Centro",
 	["CM_CLASS_DEATHKNIGHT"] = "Cavaleiro da Morte",
-	["CM_CLASS_DEMONHUNTER"] = "Caçador de demônios ",
 	["CM_CLASS_DRUID"] = "Druida",
 	["CM_CLASS_HUNTER"] = "Caçador",
 	["CM_CLASS_MAGE"] = "Mago",
@@ -122,17 +96,7 @@ Importar conteúdo vindo de uma versão diferente pode causar problemas em casos
 	["CM_VALUE"] = "Valor",
 	["CM_WHITE"] = "Branco",
 	["CM_YELLOW"] = "Amarelo",
-	["CO_ADVANCED_BROADCAST"] = "Comunicações adicionais ",
-	["CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST"] = "Manter último canal de transmissão ",
-	["CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST_TT"] = "Esta opção garantirá que o canal de  transmissão seja sempre o ultimo canal em sua lista de canais. ",
-	["CO_ADVANCED_LANGUAGE_WORKAROUND"] = "Ativa Alternativas contra resets de idioma ",
-	["CO_ADVANCED_LANGUAGE_WORKAROUND_TT"] = "Desde o patch 8.0.1, o jogo irá repor a língua selecionada para a língua predefinida da sua facção durante cada tela de carregamento. Esta solução garante o restabelecimento da língua selecionada após uma tela de carregamento. ",
-	["CO_ADVANCED_LANGUAGES"] = "Idiomas",
-	["CO_ADVANCED_LANGUAGES_REMEMBER"] = "Lembrar do último idioma utilizado",
-	["CO_ADVANCED_LANGUAGES_REMEMBER_TT"] = "Total RP 3 lembrará qual idioma você estava usando quando saiu do jogo e automaticamente selecionará esse idioma no seu próximo login.",
 	["CO_ADVANCED_SETTINGS"] = "Configurações avançadas ",
-	["CO_ADVANCED_SETTINGS_MENU_NAME"] = "Avançado ",
-	["CO_ADVANCED_SETTINGS_POPUP"] = "Se você modificou uma configuração avançada. Tenha em mente que a alteração dessas configurações pode alterar a sua experiência com o add-on e pode impedir algumas funcionalidades de funcionar corretamente. Utilize por sua conta e risco. ",
 	["CO_ADVANCED_SETTINGS_RESET"] = "Resetar configurações avançadas ",
 	["CO_ADVANCED_SETTINGS_RESET_TT"] = "Resete todas configurações para o valor padrão. Use isto caso tenha problemas depois de modificar as configurações ",
 	["CO_ANCHOR_BOTTOM"] = "Baixo",
@@ -175,25 +139,12 @@ Importar conteúdo vindo de uma versão diferente pode causar problemas em casos
 	["CO_CHAT_MAIN_OOC_COLOR"] = "Cor de OOC",
 	["CO_CHAT_MAIN_OOC_PATTERN"] = "Padrão de detecção de OOC",
 	["CO_CHAT_MAIN_OOC_USE"] = "Detecção de OOC",
-	["CO_CHAT_MAIN_SPEECH"] = "Detecção de fala ",
-	["CO_CHAT_MAIN_SPEECH_USE"] = "Usar detecção de fala ",
-	["CO_CHAT_MAIN_SPEECH_USE_TT"] = "O texto rodeado de aspas será colorido como se fosse escrito em /say. ",
-	["CO_CHAT_NPCSPEECH_REPLACEMENT"] = "Customize nomes de Companheiros em falas dos NPC'S ",
-	["CO_CHAT_NPCSPEECH_REPLACEMENT_TT"] = [=[Se um nome do Companheiro estiver entre parênteses em uma fala de NPC, será colorido e o seu ícone será mostrado dependendo das suas configurações acima.
-]=],
 	["CO_CHAT_REMOVE_REALM"] = "Remover reino dos nomes dos jogadores ",
-	["CO_CHAT_SHOW_OOC"] = "Mostrar indicador de OOC (Fora do Personagem)",
 	["CO_CHAT_USE"] = "Canais de conversa usados",
 	["CO_CHAT_USE_ICONS"] = "Mostrar ícones do jogador ",
 	["CO_CHAT_USE_SAY"] = "Canal Say",
 	["CO_CONFIGURATION"] = "Configurações",
-	["CO_CURSOR_DISABLE_OOC"] = "Desativado enquanto estiver OOC (Fora do Personagem)",
-	["CO_CURSOR_DISABLE_OOC_TT"] = "Desativar as modificações do cursor quando o seu status de Roleplay estiver definido para Fora do Personagem.",
-	["CO_CURSOR_MODIFIER_KEY"] = "Tecla de modificação ",
-	["CO_CURSOR_MODIFIER_KEY_TT"] = "Uma tecla de modificação precisar estar pressionada enquanto se clica com o botão direito do mouse, para evitar cliques acidentais. ",
 	["CO_CURSOR_RIGHT_CLICK"] = "Clique com o botão direito do mouse para abrir o perfil ",
-	["CO_CURSOR_RIGHT_CLICK_TT"] = "Clique com o botão direito do mouse em um jogador no mundo 3D para abrir o seu perfil, se o tiver. |TInterface\\Cursor\\WorkOrders:25|t Este ícone será anexado ao cursor quando um jogador tem um perfil e poderá clicar com o botão direito do mouse sobre eles. Note: Esta função é desativada durante o combate. ",
-	["CO_CURSOR_TITLE"] = "Interações do cursor ",
 	["CO_GENERAL"] = "Configurações gerais",
 	["CO_GENERAL_BROADCAST"] = "Usar canal de anúncio",
 	["CO_GENERAL_BROADCAST_C"] = "Nome do canal de anúncio",
@@ -202,17 +153,12 @@ Importar conteúdo vindo de uma versão diferente pode causar problemas em casos
 
 Se não recarregar, a linguagem será alterada na próxima vez que conectar.]=],
 	["CO_GENERAL_COM"] = "Comunicação",
-	["CO_GENERAL_DEFAULT_COLOR_PICKER"] = "Selecionador de cores padrão ",
-	["CO_GENERAL_DEFAULT_COLOR_PICKER_TT"] = "Ative para sempre usar o selecionador de cores padrão. Útil caso use um Addon de selecionador de cores. ",
 	["CO_GENERAL_HEAVY"] = "Alerta de perfil pesado",
 	["CO_GENERAL_HEAVY_TT"] = "Receber alerta quando o tamanho total de seu perfil exceder um valor aceitável.",
 	["CO_GENERAL_LOCALE"] = "Local do addon",
 	["CO_GENERAL_MISC"] = "Diversos",
 	["CO_GENERAL_NEW_VERSION"] = "Alerta de atualização",
 	["CO_GENERAL_NEW_VERSION_TT"] = "Receber alerta quando uma nova versão estiver disponível.",
-	["CO_GENERAL_RESET_CUSTOM_COLORS"] = "Resetar cores Customizadas ",
-	["CO_GENERAL_RESET_CUSTOM_COLORS_TT"] = "Remove todas cores salvas no selecionador de cores ",
-	["CO_GENERAL_RESET_CUSTOM_COLORS_WARNING"] = "Tem certeza que quer remover todas cores customizadas salvas no selecionador de cores? ",
 	["CO_GENERAL_TT_SIZE"] = "Tamanho do texto da tela de informações",
 	["CO_GENERAL_UI_ANIMATIONS"] = "Animações de interface",
 	["CO_GENERAL_UI_ANIMATIONS_TT"] = "Ativar animações de interface",
@@ -228,18 +174,12 @@ Se não recarregar, a linguagem será alterada na próxima vez que conectar.]=],
 	["CO_GLANCE_PRESET_TRP3_HELP"] = "Atalho para barra de configuração no estilo TRP3: abaixo da janela alvo.",
 	["CO_GLANCE_RESET_TT"] = "Recolocar a barra de posição para baixo-esquerda da tela guia.",
 	["CO_GLANCE_TT_ANCHOR"] = "Ponto de referência para janela de informações",
-	["CO_HIDE_EMPTY_MAP_BUTTON"] = "Esconder quando nenhum Scan está disponível ",
 	["CO_LOCATION"] = "Configurações de localização",
 	["CO_LOCATION_ACTIVATE"] = "Habilitar localização de personagens",
 	["CO_LOCATION_ACTIVATE_TT"] = "Habilita o sistema de localização de personagens, permitindo que você busque por outros usuários do Total RP no mapa do mundo e permitindo que eles o encontrem.",
-	["CO_LOCATION_DISABLE_CLASSIC_PVP"] = "Desativar local quando estiver marcado PvP ",
-	["CO_LOCATION_DISABLE_CLASSIC_PVP_TT"] = "Você não irá responder a pedidos de localização de outros jogadores quando estiver marcado para PvP. Esta opção é particularmente útil para evitar abusos do sistema de localização para o localizar você. ",
 	["CO_LOCATION_DISABLE_OOC"] = "Desabilitar localização quando OOC",
 	["CO_LOCATION_DISABLE_OOC_TT"] = "Você não irá responder a pedidos de localização de outros jogadores quando seu status de RP estiver em Não Interpretando",
 	["CO_LOCATION_DISABLE_WAR_MODE"] = "Desativar local enquanto estiver no Modo de Guerra ",
-	["CO_LOCATION_DISABLE_WAR_MODE_TT"] = "Você não irá responder pedidos de localização de outros jogadores quando tiver o Modo de Guerra ativado e estiver fora de um |cff69CCF0Santuário|r.  Esta opção é particularmente útil para evitar abusos do sistema de localização para localizar você.",
-	["CO_LOCATION_SHOW_DIFFERENT_WAR_MODES"] = "Mostrar Jogadores em diferentes Modos de Guerra ",
-	["CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT"] = "Os jogadores que se encontram atualmente na àrea mas que têm um status de Modo de Guerra diferente do que  será mostrado a você no mapa, com uma opacidade inferior e um ícone especial na ponta da ferramenta. ",
 	["CO_MAP_BUTTON"] = "Botão de escaneamento de mapa ",
 	["CO_MAP_BUTTON_POS"] = "Botão de trava de escaneamento no mapa",
 	["CO_MINIMAP_BUTTON"] = "Botão no minimapa",
@@ -267,7 +207,6 @@ Se não recarregar, a linguagem será alterada na próxima vez que conectar.]=],
 	["CO_MODULES_TT_ERROR"] = [=[|cffff0000Erro:|r
 %s]=],
 	["CO_MODULES_TT_NONE"] = "Sem dependências",
-	["CO_MODULES_TT_TRP"] = "%sPara Total RP 3 versão mínima %s.|r",
 	["CO_MODULES_TUTO"] = [=[Um módulo é uma característica independente que pode ser ativada ou desativada.
 
 Status possíveis:
@@ -281,16 +220,6 @@ Status possíveis:
 	["CO_MODULES_VERSION"] = "Versão: %s",
 	["CO_MSP"] = "Protocolo Mary Sue",
 	["CO_REGISTER"] = "Configuração de registros",
-	["CO_REGISTER_ABOUT_H1_SIZE"] = "Tamanho de texto do cabeçalho 1",
-	["CO_REGISTER_ABOUT_H1_SIZE_TT"] = "Tamanho do texto entre marcadores {h1}. Padrão: %d",
-	["CO_REGISTER_ABOUT_H2_SIZE"] = "Tamanho de texto do cabeçalho 2",
-	["CO_REGISTER_ABOUT_H2_SIZE_TT"] = "Tamanho do texto entre marcadores {h2}. Padrão: %d ",
-	["CO_REGISTER_ABOUT_H3_SIZE"] = "Tamanho de texto do cabeçalho 3",
-	["CO_REGISTER_ABOUT_H3_SIZE_TT"] = "Tamanho do texto entre marcadores {h3}. Padrão: %d ",
-	["CO_REGISTER_ABOUT_P_SIZE"] = "Tamanho do parágrafo no texto ",
-	["CO_REGISTER_ABOUT_P_SIZE_TT"] = [=[Tamanho do texto fora dos marcadores do cabeçalho. Padrão: %d
-]=],
-	["CO_REGISTER_ABOUT_SETTINGS"] = "Configurações \"Sobre\"",
 	["CO_REGISTER_AUTO_PURGE"] = "Expurgar diretório automaticamente",
 	["CO_REGISTER_AUTO_PURGE_0"] = "Desativar expurgo",
 	["CO_REGISTER_AUTO_PURGE_1"] = "Depois de %s dia(s)",
@@ -300,7 +229,6 @@ Status possíveis:
 
 |cffff9900Há um bug no WoW que perde todos os dados salvos quando atinge um certo limite. Recomendamos evitar desativar o sistema de expurgo.]=],
 	["CO_SANITIZER"] = "Limpar perfis recebidos",
-	["CO_SANITIZER_TT"] = "Remover sequências em campos de telas de informações de perfis recebidos quando o TRP não os permitir (cores, imagens...)",
 	["CO_TARGETFRAME"] = "Configurações do frame alvo",
 	["CO_TARGETFRAME_ICON_SIZE"] = "Tamanho dos ícones",
 	["CO_TARGETFRAME_USE"] = "Mostrar condições",
@@ -310,12 +238,8 @@ Status possíveis:
 	["CO_TARGETFRAME_USE_TT"] = "Determina em quais condições o frame alvo deve ser mostrado quando selecionado.",
 	["CO_TOOLBAR"] = "Configurações de frame",
 	["CO_TOOLBAR_CONTENT"] = "Configurações de barra de ferramentas",
-	["CO_TOOLBAR_CONTENT_CAPE"] = "Alternar visualização de capa",
-	["CO_TOOLBAR_CONTENT_HELMET"] = "Alternar visualização de elmo",
 	["CO_TOOLBAR_CONTENT_RPSTATUS"] = "Status do personagem (IC/OOC)",
 	["CO_TOOLBAR_CONTENT_STATUS"] = "Status do jogador (AFK/DND)",
-	["CO_TOOLBAR_HIDE_TITLE"] = "Esconder título da barra de ferramentas ",
-	["CO_TOOLBAR_HIDE_TITLE_HELP"] = "Esconde o Título em cima da barra de ferramentas ",
 	["CO_TOOLBAR_ICON_SIZE"] = "Tamanho dos ícones",
 	["CO_TOOLBAR_MAX"] = "Número máximo de ícones por linha",
 	["CO_TOOLBAR_MAX_TT"] = "Use o valor 1 para mostrar a barra verticalmente!",
@@ -334,17 +258,9 @@ Status possíveis:
 	["CO_TOOLTIP_CROP_TEXT"] = "Cortar textos excessivamente longos ",
 	["CO_TOOLTIP_CROP_TEXT_TT"] = "Limite o número de caracteres que podem ser exibidos por cada campo na Tooltip para evitar textos excessivamente longos e possíveis problemas de exibição. |cfffff569Detalhes dos limites: Nome: 100 caracteres Título: 150 caracteres Raça: 50 caracteres Classe: 50 caracteres| ",
 	["CO_TOOLTIP_CURRENT"] = "Mostrar informação \"atual\"",
-	["CO_TOOLTIP_CURRENT_LINES"] = "Máxima \"Atuais\" quebras de linhas ",
 	["CO_TOOLTIP_CURRENT_SIZE"] = "Tamanho da informação \"atual\"",
 	["CO_TOOLTIP_FT"] = "Mostrar título completo",
 	["CO_TOOLTIP_GUILD"] = "Mostrar informações da guilda",
-	["CO_TOOLTIP_HEALTH"] = "Mostrar saúde ",
-	["CO_TOOLTIP_HEALTH_BOTH"] = "Número + Porcentagem ",
-	["CO_TOOLTIP_HEALTH_DISABLED"] = "Desativado ",
-	["CO_TOOLTIP_HEALTH_NUMBER"] = "Número ",
-	["CO_TOOLTIP_HEALTH_PERCENT"] = "Porcentagem ",
-	["CO_TOOLTIP_HEALTH_TT"] = "Isto apenas mostrará caso o alvo não esteja com saúde cheia. ",
-	["CO_TOOLTIP_HIDE_IN_INSTANCE"] = "Esconder quando estiver instanciado ",
 	["CO_TOOLTIP_HIDE_ORIGINAL"] = "Esconder tooltip original",
 	["CO_TOOLTIP_ICONS"] = "Mostrar ícones",
 	["CO_TOOLTIP_IN_CHARACTER_ONLY"] = "Ocultar quando fora do personagem",
@@ -355,11 +271,7 @@ Status possíveis:
 	["CO_TOOLTIP_OWNER"] = "Mostrar dono",
 	["CO_TOOLTIP_PETS"] = "Janela de informações de companheiros",
 	["CO_TOOLTIP_PETS_INFO"] = "Mostrar informações de companheiros",
-	["CO_TOOLTIP_PREFERRED_OOC_INDICATOR"] = "Indicador OOC preferido ",
-	["CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON"] = "ícone: ",
-	["CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT"] = "Texto: ",
 	["CO_TOOLTIP_PROFILE_ONLY"] = "Usar apenas se o alvo possuir um perfil",
-	["CO_TOOLTIP_PRONOUNS"] = "Mostrar Pronomes ",
 	["CO_TOOLTIP_RACE"] = "Mostrar raça, classe e nível",
 	["CO_TOOLTIP_REALM"] = "Mostrar reino",
 	["CO_TOOLTIP_RELATION"] = "Mostrar cor de relacionamento",
@@ -371,47 +283,9 @@ Status possíveis:
 	["CO_TOOLTIP_TERSIZE"] = "Tamanho de fonte terciária",
 	["CO_TOOLTIP_TITLE"] = "Mostrar título",
 	["CO_TOOLTIP_USE"] = "Usar tela de informações de personagens/companheiros",
-	["CO_TOOLTIP_ZONE"] = "Mostrar Área ",
-	["CO_TOOLTIP_ZONE_TT"] = "Isto irá mostrar apenas se o alvo não estiver na mesma área que você. ",
-	["CO_UI_RELOAD_WARNING"] = "A interface precisa ser recarregada para as mudanças serem aplicadas. Você gostaria de reiniciar a interface agora? ",
 	["CO_WIM"] = "Canais de |cffff9900sussurro estão desativados.",
-	["CO_WIM_TT"] = "Você está usando |cff00ff00WIM|r, a manipulação de canais de sussurro está desativada para fins de compatibilidade",
 	["COM_LIST"] = "Lista de comandos:",
 	["COM_RESET_RESET"] = "A posição das telas foi reiniciada!",
-	["COM_RESET_USAGE"] = "Uso: |cff00ff00/trp3 reset frames|r para reiniciar todas as posições das telas.",
-	["COM_STASH_DATA"] = [=[|cffff0000Tem certeza que quer depositar seus dados do Total RP 3?|r
-
-Seus perfis, perfis de companheiro e configurações serão temporariamente depositados e sua interface irá se reiniciar sem dados, como numa instalação nova do Total RP 3.
-|cff00ff00Use o mesmo comando novamente (|cff999999/trp3 stash|cff00ff00) para restaurar seus dados.|r]=],
-	["COM_SWITCH_USAGE"] = "Uso: |cff00ff00/trp3 switch main|r para mudar para tela principal ou |cff00ff00/trp3 switch toolbar|r para mudar a barra de ferramentas.",
-	["CONFIG_COMMS_QUEUE_POOL_COUNT"] = "Tamanho da fila de espera ",
-	["CONFIG_COMMS_QUEUE_POOL_COUNT_DESCRIPTION"] = "Controla o tamanho da fila de espera utilizada para as comunicações de perfil.|n|n Valores mais baixos reduzirão a latência de comunicações adicionais para dados de perfil não-RP, mas podem aumentar o tempo antes de outros jogadores começarem a receber quaisquer dados de perfil em cenários de carga elevada. ",
-	["CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD"] = "Limiar de peso dos dados da fila de espera ",
-	["CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION"] = "Controla o peso mínimo que os dados do seu perfil RP devem ter antes de se utilizarem as filas de espera.|n|nPara perfis maiores, o aumento deste valor pode |cffff0000severamente deteriorar| o desempenho de todos addons. ",
-	["CONFIG_COMMS_SETTINGS_HEADER"] = "Configuração de comunicações ",
-	["COPY_DROPDOWN_POPUP_TEXT"] = "copie com %1$s. cole com %2$s. Este frame irá fechar depois da cópia ",
-	["COPY_SYSTEM_MESSAGE"] = "Copiado para área de Transferência.  ",
-	["CREDITS_DISCORD_LINK_TEXT"] = "Junte-se ao nosso Discord ",
-	["CREDITS_GUILD_NAME"] = "<%1$s>",
-	["CREDITS_NAME_WITH_ROLE"] = "%1$s (%2$s)",
-	["CREDITS_THANK_YOU_ROLE_1"] = "Líder do projeto ",
-	["CREDITS_THANK_YOU_ROLE_2"] = "Autor",
-	["CREDITS_THANK_YOU_ROLE_3"] = "Desenvolvedor",
-	["CREDITS_THANK_YOU_ROLE_4"] = "Gerente da Comunidade",
-	["CREDITS_THANK_YOU_ROLE_5"] = "Mascote",
-	["CREDITS_THANK_YOU_SECTION_1"] = "{h1:c}Total RP 3{/h1}",
-	["CREDITS_THANK_YOU_SECTION_10"] = "{col:ffffff}Agradecimentos a nossa comunidade ativa no Discord:{/col}",
-	["CREDITS_THANK_YOU_SECTION_11"] = "{col:ffffff}Agradecimentos ao Bor Blasthammer por sua ajuda nos testes em Bfa.{/col}",
-	["CREDITS_THANK_YOU_SECTION_2"] = "{h2}%1$s Criado por{/h2}",
-	["CREDITS_THANK_YOU_SECTION_3"] = "{h2}%1$s Outros da equipe{/h2}",
-	["CREDITS_THANK_YOU_SECTION_4"] = "{h2}%1$s Agradecimentos{/h2}",
-	["CREDITS_THANK_YOU_SECTION_5"] = "{col:ffffff}Logo e ícone do botão do mini mapa:{/col} %1$s",
-	["CREDITS_THANK_YOU_SECTION_6"] = "{col:ffffff}Nosso time pré-alpha de perguntas e respostas:{/col}",
-	["CREDITS_THANK_YOU_SECTION_7"] = "{col:ffffff}Agradecimentos a todos nossos amigos por seus suportes todos esses anos:{/col}",
-	["CREDITS_THANK_YOU_SECTION_8"] = "{col:ffffff}Por nos ajudar na criação  da guilda do Total RP no Kirin Tor (EU):{/col}",
-	["CREDITS_THANK_YOU_SECTION_9"] = "{col:ffffff}agradecimentos a Horionne por nos enviar revistas Gamer Culte Online #14 com uma máteria sobre o Total RP.{/col}",
-	["CREDITS_VERSION_TEXT"] = "Versão %s",
-	["CREDITS_WEBSITE_LINK_TEXT"] = "Website",
 	["DB_ABOUT"] = "Sobre o Total RP 3",
 	["DB_HTML_GOTO"] = "Clique para abrir",
 	["DB_MORE"] = "Mais módulos",
@@ -422,10 +296,6 @@ Seus perfis, perfis de companheiro e configurações serão temporariamente depo
 	["DB_STATUS_CURRENTLY_OOC"] = "Outras informações (OOC)",
 	["DB_STATUS_CURRENTLY_OOC_TT"] = "Aqui você pode indicar algo importante sobre você, como um jogador, ou qualquer coisa fora do seu personagem.",
 	["DB_STATUS_CURRENTLY_TT"] = "Aqui você pode indicar algo importante sobre seu personagem.",
-	["DB_STATUS_ICON_ITEM"] = "%1$s %2$s",
-	["DB_STATUS_LC"] = "Idioma do Roleplay ",
-	["DB_STATUS_LC_DEFAULT"] = "Padrão (%1$s)",
-	["DB_STATUS_LC_TT"] = "Define a sua linguagem de encenação preferida. Esta será partilhada com outros utilizadores de addon's de RP compatíveis. |cffff9900Note:|r Isto faz |cffffff0000não|r alterar o idioma da interface de utilizador do Total RP 3. Esta opção pode ser encontrada na página. |cfffff569Configurações Avançadas|r. ",
 	["DB_STATUS_RP"] = "Estado do personagem",
 	["DB_STATUS_RP_IC"] = "Interpretando",
 	["DB_STATUS_RP_IC_TT"] = [=[Isso significa que você está atualmente interpretando seu personagem.
@@ -450,132 +320,15 @@ Suas ações não podem ser associadas a ele/ela.]=],
 	["DTBK_RP"] = "Total RP 3 - IC/OOC",
 	["GEN_VERSION"] = "Versão: %s (Build %s)",
 	["GEN_WELCOME_MESSAGE"] = "Obrigado por usar o Total RP 3 (v %s) ! Divirta-se !",
-	["KUI_NAMEPLATES_MODULE_DESCRIPTION"] = "Ativa a customização de placas de nomes Kui.",
-	["KUI_NAMEPLATES_MODULE_NAME"] = "Placas de nomes Kui",
-	["KUI_NAMEPLATES_WARN_OUTDATED_MODULE"] = "Os plugins das |cff9966ffPlaquetas|r Kui para Total RP 3 foi integrado diretamente no addon principal.|n|n O antigo plugin foi desativado automaticamente, e |cffffcc00 recomendamos que o desinstale|r uma vez que já não é necessário. ",
-	["LANG_CHANGE_CAUSED_REVERT_TO_DEFAULT"] = "A linguagem falada foi revertida ao padrão %s porque você não sabe a linguagem predefinida anteriormente %s.",
 	["MAP_BUTTON_NO_SCAN"] = "Escaneamento não disponível",
 	["MAP_BUTTON_SCANNING"] = "Escaneando",
 	["MAP_BUTTON_SUBTITLE"] = "Clique para mostrar escaneamentos disponíveis",
-	["MAP_BUTTON_SUBTITLE_80_DISABLED"] = "Scans temporariamente desativados por causa das mudanças no 8.0 ",
-	["MAP_BUTTON_SUBTITLE_CONNECTING"] = "O escaneamento do mapa está sendo preparada. Espere por favor. ",
-	["MAP_BUTTON_SUBTITLE_OFFLINE"] = "Escaneamento do mapa não está disponível no momento: %s ",
 	["MAP_BUTTON_TITLE"] = "Escanear por roleplay ",
 	["MAP_SCAN_CHAR"] = "Escanear por personagens",
 	["MAP_SCAN_CHAR_TITLE"] = "Personagens",
-	["MATURE_FILTER_ADD_TO_SAFELIST"] = "Add este perfil para o |cffffffffLista segura Adulta|r ",
-	["MATURE_FILTER_ADD_TO_SAFELIST_OPTION"] = "add para o o |cffffffffLista segura Adulta|r ",
-	["MATURE_FILTER_ADD_TO_SAFELIST_TEXT"] = "confirme que você quer add %s para o o |cffffffffLista segura Adulta|r. O conteúdo destes perfis não irá mais ser escondido. ",
-	["MATURE_FILTER_ADD_TO_SAFELIST_TT"] = "Adicionar este perfil para a |cffffffffLista segura Adulta|r e revele o conteúdo adulto encontrado nele.",
-	["MATURE_FILTER_EDIT_DICTIONARY"] = "Editar dicionário personalizado",
-	["MATURE_FILTER_EDIT_DICTIONARY_ADD_BUTTON"] = "Adicionar",
-	["MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT"] = "Adicionar uma nova palavra ao dicionário",
-	["MATURE_FILTER_EDIT_DICTIONARY_BUTTON"] = "Editar",
-	["MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD"] = "Suprimir a palavra do dicionário personalizado",
-	["MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD"] = "Editar esta palavra",
-	["MATURE_FILTER_EDIT_DICTIONARY_RESET_BUTTON"] = "Resetar ",
-	["MATURE_FILTER_EDIT_DICTIONARY_RESET_TITLE"] = "Resetar dicionário ",
-	["MATURE_FILTER_EDIT_DICTIONARY_RESET_WARNING"] = "Você tem certeza que quer resetar o dicionário atual? isto irá esvaziar  e preencher ele com palavras padrão providas pela sua atual linguagem ( Se estiver Disponível)",
-	["MATURE_FILTER_EDIT_DICTIONARY_TITLE"] = "Editor dicionário personalizado",
-	["MATURE_FILTER_EDIT_DICTIONARY_TT"] = "Editar o dicionário personalizado utilizado para filtrar perfis adultos.",
-	["MATURE_FILTER_FLAG_PLAYER"] = "Sinalizar como adulto",
-	["MATURE_FILTER_FLAG_PLAYER_OPTION"] = "Sinalizar como adulto",
-	["MATURE_FILTER_FLAG_PLAYER_TEXT"] = [=[Confirme que quer sinalizar o perfil de %s como contendo conteúdo adulto. O conteúdo deste perfil será ocultado.
-
-|cffffff00Opcional:|r Indique as palavras ofensivas que encontrar neste perfil (separadas por um espaço) para adicioná-las no filtro.]=],
-	["MATURE_FILTER_FLAG_PLAYER_TT"] = "Sinalizar este perfil como contendo conteúdo adulto. O conteúdo do perfil será ocultado.",
-	["MATURE_FILTER_OPTION"] = "Filtrar perfis adultos",
-	["MATURE_FILTER_OPTION_TT"] = [=[Marque esta opção para ativar a filtragem de perfis adultos. O Total RP 3 irá analisar perfis recebidos por palavras-chave específicas que tenham sido sinalizadas como sendo direcionadas a um público adulto e irá marcar o perfil como adulto se encontrar tais palavras.
-
-Um perfil adulto terá uma tela de informações simplificada e você terá que confirmar que quer visualizar o perfil na primeira vez que o abrir.]=],
-	["MATURE_FILTER_REMOVE_FROM_SAFELIST"] = "Remover este perfil da |cffffffffLista segura Adulta|r ",
-	["MATURE_FILTER_REMOVE_FROM_SAFELIST_OPTION"] = "Remover da |cffffffffLista segura Adulta|r",
-	["MATURE_FILTER_REMOVE_FROM_SAFELIST_TEXT"] = "Confirme que você quer remover %s da |cffffffffLista segura Adulta|r. O conteúdo destes perfis irão ser escondidos novamente. ",
-	["MATURE_FILTER_REMOVE_FROM_SAFELIST_TT"] = "Remover este perfil da |cffffffffLista segura Adulta|r e esconder novamente o conteúdo Adulto encontrado nele. ",
-	["MATURE_FILTER_STRENGTH"] = "Força do Filtro Adulto ",
-	["MATURE_FILTER_STRENGTH_TT"] = "Marque a força do filtro de conteúdo adulto.  |cffcccccc1 é FRACO (10 palavrões são necessárias para marcar), 10 é FORTE ( somente 1 palavrão é necessário para marcar).|r ",
-	["MATURE_FILTER_TITLE"] = "Filtro de perfis adultos",
-	["MATURE_FILTER_TOOLTIP_WARNING"] = "Conteúdo adulto",
-	["MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT"] = "O perfil deste personagem contém conteúdo adulto. Use o botão na barra de alvo para revelar o conteúdo se quiser...",
-	["MATURE_FILTER_WARNING_CONTINUE"] = "Continuar",
-	["MATURE_FILTER_WARNING_GO_BACK"] = "Voltar",
-	["MATURE_FILTER_WARNING_TEXT"] = [=[Você está com o sistema de filtro de conteúdo adulto do Total RP 3 ativado.
-
-Este perfil foi sinalizado como contendo conteúdo adulto.
-
-Tem certeza que quer visualizar este perfil?]=],
-	["MATURE_FILTER_WARNING_TITLE"] = "Conteúdo adulto",
 	["MM_SHOW_HIDE_MAIN"] = "Exibir/esconder a janela principal",
 	["MM_SHOW_HIDE_MOVE"] = "Mover botão",
 	["MM_SHOW_HIDE_SHORTCUT"] = "Exibir/esconder a barra de ferramentas",
-	["MO_ADDON_NOT_INSTALLED"] = "O Addon %s não foi instalado. A integração customizada do Total RP3 foi desativada.",
-	["MO_CHAT_CUSTOMIZATIONS_DESCRIPTION"] = "Adicione compatibilidade customizada para o Addon %s, Então as mensagens e nomes de jogadores serão modificadas pelo Total RP 3 naquele Addon. ",
-	["MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION"] = "Adicione customização  de compatibilidade para o Addon %s, então as preferências serão aplicadas para barra de ferramentas do Total RP 3",
-	["MORE_MODULES_2"] = [=[{h2:c}Módulos opcionais{/h2}
-{h3}Total RP 3: Extendido |cffF87431|r{/h3}
-|cff9999ffTotal RP 3: Extendido|r adiciona a possibilidade de criar novo conteúdo no WoW: campanhas com missões e diálogos, itens, documentos (livros, placas, contratos...) e muito mais!
-{link*https://www.curseforge.com/wow/addons/total-rp-3-extended*Faça download no CurseForge}
-
-{h3}TRP3 Currently Frame{/h3}
-Adds a standalone frame to your UI that displays your "Currently" text and allows you to edit it easily.
-{link*https://www.curseforge.com/wow/addons/trp3-currently-frame*Faça download no CurseForge}
-
-{h3}TRP3 Location Toggle{/h3}
-Adds a simple button to the toolbar to toggle on and off the map scan location feature.
-{link*https://www.curseforge.com/wow/addons/trp3-location-toggle*Faça download no CurseForge}]=],
-	["NAMEPLATES_CONFIG_ACTIVE_QUERY"] = "Busca automática de perfis ",
-	["NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP"] = "Se marcado, procura automaticamente perfis de roleplay  com placas de nome anexadas.",
-	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY"] = "Esconder barras em placas de nome da  |cff449fe0Blizzard|r ",
-	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP"] = "Se Marcado, isto permite o uso do modo só de nome para as placas da  |cff449fe0Blizzard|r .|n|n|n Deste modo, todas as placas de nome terão as suas barras de saúde escondidas, incluindo os de personagens inimigos e outros jogadores com ou sem perfis de roleplay.|n|n Esta opção requer uma recarga UI para ter efeito.",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES"] = "Mostrar títulos Completos ",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES_HELP"] = "Se marcado mostrará o título inteiro das placas de nome da |n|nFor |cff449fe0Blizzard| e placas |cff9966ffKui|r, Títulos completos apenas serão mostrados no modo \"somente nome\".",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS"] = "Mostrar cores customizadas da saúde.",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP"] = "Se marcado Sobrepõe a cor das barras de saúde com a cor de classe do perfil. ",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_ICONS"] = "Mostrar ícones",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_ICONS_HELP"] = "Se marcado, mostra os ícones do perfil nas placas de nomes",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS"] = "Mostrar cores personalizadas de nome ",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS_HELP"] = "Se marcado, sobrepõe a cor do texto dos nomes com a cor de classe do perfil",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_NAMES"] = "Mostrar nomes customizados ",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_NAMES_HELP"] = "se marcado, substitui o nome mostrado nas placas de nome.",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS"] = "Mostrar o indicador de status de roleplay",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS_HELP"] = "Se marcado, mostra um indicador de status de roleplay (IC ou OOC) nas placas de nome ",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_TITLES"] = "Mostrar prefixo de títulos",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_TITLES_HELP"] = " Se marcado, Mostra o título curto em uma placa de nome antes de seu nome.",
-	["NAMEPLATES_CONFIG_DISABLE_IN_COMBAT"] = "Desativar customização quando estiver em combate",
-	["NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP"] = "Se marcado, desativa a customização das placas de nomes enquanto estiver em combate. ",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER"] = [=[Desativar customizações enquanto estiver OOC (fora do personagem)
-]=],
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP"] = "Se marcado desativa todas customizações nas placas de nome enquanto você estiver fora do personagem (OOC).",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS"] = "desative customizações nos personagens em OOC",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP"] = "Se marcado, desativa customizações nas placa de nomes em personagens que estão em OOC (fora do personagem).",
-	["NAMEPLATES_CONFIG_ELEMENT_HEADER"] = "Configurações de customização.",
-	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK"] = "Usar cor de classe por padrão",
-	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP"] = "Se marcado, isto permite a utilização de cores de classe para os nomes e barras de saúde como uma alternativa para as unidades que não têm uma cor de classe personalizada em seu perfil.|n|npersonagens que não têm perfis de roleplay não são afetadas por esta configuração e não serão de cor de classe.",
-	["NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS"] = "Esconder personagens não roleplay.",
-	["NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP"] = "Se marcado. esconde placas de nome do jogador e companion que não tem perfis de roleplay",
-	["NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS"] = "Esconder personagens \"Fora do personagem\" (OOC)",
-	["NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP"] = "Se marcado, esconde as placas de nome de personagens que estão fora do personagem",
-	["NAMEPLATES_CONFIG_ICON_SIZE"] = "Tamanho de ícone",
-	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "Configura o tamanho dos ícones exibidos nas placas de nome se  a opção |cffffff00Mostrar ícones|r estiver ativo.",
-	["NAMEPLATES_CONFIG_MENU_TITLE"] = "placa de nome",
-	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Por favor note que apenas as placas de nome da |cff449fe0Blizzard|r, |cff9966ffKui|r e |cffa8deffPlater|r são atualmente suportadas. Consulte a dica de ajuda em cada configuração abaixo para informações adicionais.",
-	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "Configurações das placas de nome",
-	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Configurações de exibição",
-	["NAMEPLATES_MODULE_ACTIVE_STATUS"] = "Módulo |cff00ff00Ativo|r (%1$s|r)",
-	["NAMEPLATES_MODULE_DESCRIPTION"] = "Ativa a customização das placas de nome com informação obtida nos perfis de roleplay",
-	["NAMEPLATES_MODULE_DISABLE_WARNING"] = "A desativação do módulo de placas de nome impedirá a realização de qualquer personalização de placas de nome. É necessário fazer a recarga da interface do jogador para que isto tenha efeito.|n|n|cffff0000Aviso:|r uma vez desativado, este módulo só pode ser reativado a partir da página |cffffcc00status do módulo|r.|n|n Tem certeza que quer desativar este módulo??",
-	["NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY"] = "Este módulo foi desativado automaticamente devido a falta de alguma dependência.",
-	["NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL"] = "Este módulo foi desativado automaticamente devido a um conflito com outro módulo ou Addon!!",
-	["NAMEPLATES_MODULE_INACTIVE_STATUS"] = "módulo |cffff9900Inativo|r (Addon não encontrado)",
-	["NAMEPLATES_MODULE_NAME"] = "Placas de nome",
-	["NEW_VERSION"] = [=[|cff00ff00Uma nova versão do Total RP 3 (v %s) está disponível.
-
-|cffffff00Nós fortemente o(a) encorajamos a ficar atualizado(a).|r
-
-Esta mensagem só vai aparecer uma vez por sessão e pode ser desativada nas opções
-(Opções gerais => Diversos).]=],
-	["NEW_VERSION_BEHIND"] = "Você está atualmente com a versão %s atrasada e te falta muitas correções de bugs e novas funcionalidades. Outros jogadores poderão não conseguir ver corretamente o seu perfil. Por favor, considere a atualização do addon.",
-	["NEW_VERSION_TITLE"] = "Nova atualização disponível",
 	["NPC_TALK_BUTTON_TT"] = "Abre a tela de fala de NPC, permitindo fazer falas ou emotes de NPC.",
 	["NPC_TALK_CHANNEL"] = "Canal:",
 	["NPC_TALK_COMMAND_HELP"] = "Abre a tela de fala de NPC.",
@@ -590,10 +343,6 @@ Você também pode deixar este campo vazio para criar emotes sem um nome de NPC.
 	["NPC_TALK_TITLE"] = "Falas de NPC",
 	["NPC_TALK_WHISPER_PATTERN"] = "sussurra:",
 	["NPC_TALK_YELL_PATTERN"] = "grita:",
-	["OPTION_DISABLED_TOAST"] = "Opção desativada",
-	["OPTION_ENABLED_TOAST"] = "Opção ativada",
-	["PATTERN_ERROR"] = "Erro no padrão",
-	["PATTERN_ERROR_TAG"] = "Erro no padrão : tag texto não fechada",
 	["PR_CO_BATTLE"] = "Mascote de batalha",
 	["PR_CO_COUNT"] = "%s mascotes/montarias vinculadas a este perfil.",
 	["PR_CO_EMPTY"] = "Sem perfil de companheiro",
@@ -602,75 +351,27 @@ Você também pode deixar este campo vazio para criar emotes sem um nome de NPC.
 	["PR_CO_NEW_PROFILE"] = "Novo perfil de companheiro",
 	["PR_CO_PET"] = "Mascote",
 	["PR_CO_PROFILE_DETAIL"] = "Este perfil está atualmente vinculado a",
-	["PR_CO_PROFILE_HELP"] = [=[Um perfil contém toda informação sobre uma |cffffff00"mascote"|r como um |cff00ff00personagem de roleplay|r.
-
-Um perfil de companheiro pode ser conectado a:
-- Uma mascote de batalha |cffff9900(apenas se houver sido renomeado)|r
-- Um ajudante de caçador
-- Um lacaio de bruxo
-- Um elemental de mago
-- Um carniçal de cavaleiro da morte |cffff9900(ver abaixo)|r
-
-Assim como perfis de personagens, um |cff00ff00perfil de companheiro|r pode ser conectado a |cffffff00várias mascotes|r, e uma |cffffff00mascote|r pode trocar facilmente de um perfil para outro.
-
-|cffff9900Carniçais:|r Como carniçais recebem um novo nome cada vez que são conjurados, você terá que reconectar o perfil ao carniçal para todos os nomes possíveis.]=],
-	["PR_CO_PROFILE_HELP2"] = [=[Clique aqui para criar um novo perfil de companheiro.
-
-|cff00ff00Para conectar um perfil a uma mascote (ajudante de caçador, lacaio de bruxo ...), simplesmente conjure a mascote, selecione-a e use a tela de seleção para conectá-la a um perfil existente (ou crie um novo).|r]=],
-	["PR_CO_PROFILEMANAGER_DELETE_WARNING"] = [=[Você tem certeza que quer deletar o perfil de companheiro %s?
-Esta ação não pode ser desfeita e toda informação do TRP3 conectada a este perfil será destruída!]=],
-	["PR_CO_PROFILEMANAGER_DUPP_POPUP"] = [=[Por favor insira um nome para o novo perfil.
-O nome não pode estar vazio.
-
-Esta duplicação não mudará suas mascotes/montarias vinculadas a %s.]=],
-	["PR_CO_PROFILEMANAGER_EDIT_POPUP"] = [=[Por favor insira um novo nome para este perfil.
-O nome não pode estar vazio.
-
-Mudar o nome não afetará qualquer conexão entre este perfil e suas mascotes/montarias.]=],
 	["PR_CO_PROFILEMANAGER_TITLE"] = "Perfis de companheiros",
 	["PR_CO_UNUSED_PROFILE"] = "Este perfil não está atualmente vinculado a nenhuma mascote ou montaria.",
-	["PR_CO_WARNING_RENAME"] = [=[|cffff0000Aviso:|r é altamente recomendado que você renomeie sua mascote antes de conectá-la a um perfil.
-
-Conectá-la assim mesmo?]=],
 	["PR_CREATE_PROFILE"] = "Criar perfil",
-	["PR_DEFAULT_PROFILE_NAME"] = "Perfil padrão",
-	["PR_DEFAULT_PROFILE_WARNING"] = [=[Criar um novo perfil ou link para um que já existe nos perfis para editar as informações do
- seu personagem.]=],
 	["PR_DELETE_PROFILE"] = "Deletar perfil",
 	["PR_DUPLICATE_PROFILE"] = "Duplicar perfil",
-	["PR_EXPORT_IMPORT_HELP"] = [=[Você pode exportar e importar perfis usando as opções na lista de opções.
-
-Use a opção |cffffff00Exportar perfil|r para gerar um de texto contendo os dados serializados do perfil. Você pode copiar o texto usando Control-C (ou Command-C em um Mac) e colar em outro lugar como cópia de segurança.
-(|cffff0000Note que algumas ferramentas de edição de texto avançadas como Microsoft Word irão reformatar caracteres especiais como aspas, alterando os dados. Use ferramentas de edição de texto mais simples como o Bloco de Notas.|r)
-
-Use a opção |cffffff00Importar perfil|r para colar dados de uma exportação passada em um perfil existente. Os dados existentes nesse perfil serão substituídos pelos que você colou. Você não pode importar dados diretamente no perfil atualmente selecionado.]=],
 	["PR_EXPORT_IMPORT_TITLE"] = "Exportação/importação de perfil",
-	["PR_EXPORT_NAME"] = "Código de série para o perfil %s (tamanho %0.2f kB)",
 	["PR_EXPORT_PROFILE"] = "Exportação de perfil",
 	["PR_EXPORT_TOO_LARGE"] = [=[Este perfil é muito grande e não pode ser exportado.
 
 Tamanho do perfil: %0.2f kB
 Máximo: 20 kB]=],
-	["PR_EXPORT_WARNING_MAC"] = "Note por favor que algumas ferramentas avançadas de edição de texto como Text Edit ou Discord reformatarão caracteres especiais como citações, alterando o conteúdo dos dados. Se estiver planejando copiar o texto abaixo dentro de um documento, utilize ferramentas de edição de texto mais simples que não alterem automaticamente os caracteres (em Text Edit vá para Format > Fazer texto simples antes de colar).",
-	["PR_EXPORT_WARNING_TITLE"] = "Aviso!! :",
-	["PR_EXPORT_WARNING_WINDOWS"] = "Note que algumas ferramentas avançadas de edição de texto como o Microsoft Word ou Discord reformatarão caracteres especiais como citações, alterando o conteúdo dos dados. Se estiver planejando copiar o texto abaixo dentro de um documento, utilize por favor ferramentas de edição de texto mais simples que não alterem automaticamente os caracteres, como o Bloco de Notas.",
 	["PR_IMPORT"] = "Importar",
 	["PR_IMPORT_CHAR_TAB"] = "Importador de personagens",
 	["PR_IMPORT_EMPTY"] = "Nenhum perfil importável",
 	["PR_IMPORT_IMPORT_ALL"] = "Importar todos",
 	["PR_IMPORT_PETS_TAB"] = "Importador de companions",
 	["PR_IMPORT_PROFILE"] = "Importaçao de perfil",
-	["PR_IMPORT_PROFILE_TT"] = "Cole aqui o código de série de um perfil",
-	["PR_IMPORT_WILL_BE_IMPORTED"] = "Serão importados",
 	["PR_PROFILE"] = "Perfil",
 	["PR_PROFILE_CREATED"] = "Perfil %s criado.",
 	["PR_PROFILE_DELETED"] = "Perfil %s deletado.",
 	["PR_PROFILE_DETAIL"] = "Este perfil está atualmente vinculado a estes personagens do WoW.",
-	["PR_PROFILE_HELP"] = [=[Um perfil contém toda informação sobre um |cffffff00"personagem"|r como um |cff00ff00personagem de roleplay|r.
-
-Um |cffffff00"personagem do WoW"|r real pode ser vinculado a apenas um perfil de cada vez, mas pode trocar de um para outro quando quiser.
-
-Você também pode vincular vários |cffffff00"personagens do WoW"|r ao mesmo |cff00ff00perfil|r !]=],
 	["PR_PROFILE_LOADED"] = "O perfil %s está carregado.",
 	["PR_PROFILE_MANAGEMENT_TITLE"] = "Gerenciamento de perfil",
 	["PR_PROFILEMANAGER_ACTIONS"] = "Ações",
@@ -689,28 +390,16 @@ Esta duplicação não mudará a conexão ao personagem %s.]=],
 Este nome não pode estar vazio.
 
 Mudar o nome não vai mudar nenhuma conexão entre este perfil e seus personagens.]=],
-	["PR_PROFILEMANAGER_EMPTY"] = "Nenhum perfil encontrado",
 	["PR_PROFILEMANAGER_IMPORT_WARNING"] = "Substituir todo o conteúdo do perfil %s por estes dados importados?",
 	["PR_PROFILEMANAGER_IMPORT_WARNING_2"] = [=[Aviso: este código de série de perfil foi feito em uma versão antiga do TRP3.
 Isso pode causar incompatibilidades.
 
 Substituir todo o conteúdo do perfil %s por estes dados importados?]=],
 	["PR_PROFILEMANAGER_RENAME"] = "Renomear perfil",
-	["PR_PROFILEMANAGER_SEARCH_PROFILE"] = "Procurar perfil",
 	["PR_PROFILEMANAGER_SWITCH"] = "Selecionar perfil",
 	["PR_PROFILEMANAGER_TITLE"] = "Perfis de personagens",
 	["PR_PROFILES"] = "Perfis",
-	["PR_SLASH_EXAMPLE"] = "|cffffff00Uso do comando:|r |cffcccccc/trp3 profile Millidan Foamrage|r |cffffff00para ativar o perfil de Millidan Foamrage.|r",
-	["PR_SLASH_NOT_FOUND"] = "|cffff0000Não foi encontrado nenhum perfil chamado|r |cffffff00%s|r|cffff0000.|r",
-	["PR_SLASH_OPEN_ABORTING"] = "|cffffff00requisição de perfil cancelado.|r",
-	["PR_SLASH_OPEN_EXAMPLE"] = "|cffffff00Utilização de comando:|r |cffcccccc/Abrir TRP3|r |cffffff00para abrir o perfil dos eu alvo ou |cffcccccc/trp3 Abrir nome do Personagem/Nome do Reino|r |cffffff00Para abrir o perfil daquele Personagem.|r ",
-	["PR_SLASH_OPEN_HELP"] = "Abrir um perfil de personagem usando o nome dele dentro do jogo, ou o perfil do seu alvo se o nome dele não for fornecido.",
-	["PR_SLASH_OPEN_WAITING"] = "|cffffff00Requisitando perfil, Espere por favor...|r",
-	["PR_SLASH_SWITCH_HELP"] = "Trocar para outro perfil usando seu nome.",
 	["PR_UNUSED_PROFILE"] = "Este perfil não está atualmente conectado a nenhum personagem do WoW.",
-	["REG_CODE_INSERTION_WARNING"] = "|Typolicegar.tga:50:50|t Espere um minuto! Descobrimos que você inseriu manualmente códigos inválidos dentro do seu perfil do Total RP 3. Este comportamento não é de todo apoiado e desencorajamos fortemente qualquer pessoa fazer. Pode levar a instabilidades e bugs dentro do addon, corrupção/perda de dados de perfis e também cria problemas de incompatibilidade com outros addons (tais como MRP). Os códigos que inseriu no seu perfil foram removidos para o impedir o addon de parar de funcionar.",
-	["REG_COMPANION"] = "Companheiro",
-	["REG_COMPANION_BIND_TO_PET"] = "Mascote",
 	["REG_COMPANION_BOUND_TO"] = "Vinculado a ...",
 	["REG_COMPANION_BOUND_TO_TARGET"] = "Alvo",
 	["REG_COMPANION_BOUNDS"] = "Vínculos",
@@ -721,122 +410,35 @@ Substituir todo o conteúdo do perfil %s por estes dados importados?]=],
 	["REG_COMPANION_LINKED_NO"] = "O(a) companheiro(a) %s não está mais conectado(a) a nenhum perfil.",
 	["REG_COMPANION_NAME"] = "Nome",
 	["REG_COMPANION_NAME_COLOR"] = "Cor do nome",
-	["REG_COMPANION_PAGE_TUTO_C_1"] = "Consultar",
-	["REG_COMPANION_PAGE_TUTO_E_1"] = [=[Esta é a |cff00ff00informação principal do seu companheiro|r.
-
-Toda essa informação vai aparecer na |cffff9900tela de informações do seu companheiro|r.]=],
-	["REG_COMPANION_PAGE_TUTO_E_2"] = [=[Esta é a |cff00ff00descrição do seu companheiro|r.
-
-Ela não é limitada a uma |cffff9900descrição física|r. Sinta-se livre para indicar partes da sua |cffff9900história|r ou detalhes sobre sua |cffff9900personalidade|r.
-
-Há muitas maneiras de personalizar a descrição.
-Você pode escolher uma |cffffff00textura de fundo|r para a descrição. Você também pode usar as ferramentas de formatação para acessar vários parâmetros de layout como |cffffff00tamanhos, cores e alinhamentos de texto|r.
-Estas ferramentas também permitem que você insira |cffffff00imagens, ícones ou links para websites externos|r.]=],
-	["REG_COMPANION_PROFILES"] = "Perfis de companheiros",
-	["REG_COMPANION_TARGET_NO"] = "Seu alvo não é um ajudante, lacaio, carniçal, elemental de mago ou mascote de batalha renomeado válido.",
-	["REG_COMPANION_TF_BOUND_TO"] = "Selecione um perfil",
 	["REG_COMPANION_TF_CREATE"] = "Criar novo perfil",
-	["REG_COMPANION_TF_NO"] = "Sem perfil",
-	["REG_COMPANION_TF_OPEN"] = "Abrir página",
 	["REG_COMPANION_TF_OWNER"] = "Dono: %s",
-	["REG_COMPANION_TF_PROFILE"] = "Perfil de companheiro",
-	["REG_COMPANION_TF_PROFILE_MOUNT"] = "Perfil de montaria",
-	["REG_COMPANION_TF_UNBOUND"] = "Desconectar de perfil",
 	["REG_COMPANION_TITLE"] = "Título",
-	["REG_COMPANION_UNBOUND"] = "Desvincular de ...",
 	["REG_COMPANIONS"] = "Companheiros",
 	["REG_DELETE_WARNING"] = "Você tem certeza que quer deletar o perfil de %s?",
 	["REG_IGNORE_TOAST"] = "Personagem ignorado",
-	["REG_LIST_ACTIONS_MASS"] = "Ação nos %s perfis selecionados",
-	["REG_LIST_ACTIONS_MASS_IGNORE"] = "Ignorar perfis",
-	["REG_LIST_ACTIONS_MASS_IGNORE_C"] = [=[Esta ação irá adicionar |cff00ff00%s personagem(s)|r à lista de ignorados.
-
-Você pode opcionalmente inserir o motivo abaixo. Essa é uma nota pessoal, que servirá como um lembrete.]=],
-	["REG_LIST_ACTIONS_MASS_REMOVE"] = "Remover perfis",
-	["REG_LIST_ACTIONS_MASS_REMOVE_C"] = "Esta ação removerá |cff00ff00%s perfis selecionados|r.",
-	["REG_LIST_ACTIONS_PURGE"] = "Expurgar registro",
-	["REG_LIST_ACTIONS_PURGE_ALL"] = "Remover todos os perfis",
-	["REG_LIST_ACTIONS_PURGE_ALL_C"] = [=[Este expurgo irá remover todos os perfis e personagens conectados do diretório.
-
-|cff00ff00%s personagens.]=],
-	["REG_LIST_ACTIONS_PURGE_ALL_COMP_C"] = [=[Este expurgo irá remover todos os companheiros do diretório.
-
-|cff00ff00%s companheiros.]=],
-	["REG_LIST_ACTIONS_PURGE_COUNT"] = "%s perfis serão removidos.",
-	["REG_LIST_ACTIONS_PURGE_EMPTY"] = "Sem perfis para expurgar.",
-	["REG_LIST_ACTIONS_PURGE_IGNORE"] = "Perfis de personagens ignorados.",
-	["REG_LIST_ACTIONS_PURGE_IGNORE_C"] = [=[Este expurgo irá remover todos os perfis conectados a um personagem do WoW ignorado.
-
-|cff00ff00%s]=],
-	["REG_LIST_ACTIONS_PURGE_TIME"] = "Perfis não vistos por 1 mês",
-	["REG_LIST_ACTIONS_PURGE_TIME_C"] = [=[Este expurgo irá remover todos os perfis que não foram vistos por um mês.
-
-|cff00ff00%s]=],
-	["REG_LIST_ACTIONS_PURGE_UNLINKED"] = "Perfis não vinculados a um personagem",
-	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Este expurgo irá remover todos os perfis que não estão conectados a um personagem do WoW.
-
-|cff00ff00%s]=],
-	["REG_LIST_ADDON"] = "Tipo de perfil",
 	["REG_LIST_CHAR_EMPTY"] = "Sem personagem",
 	["REG_LIST_CHAR_EMPTY2"] = "Nenhum personagem se encaixa na sua seleção",
-	["REG_LIST_CHAR_FILTER"] = "Personagens: %s / %s",
 	["REG_LIST_CHAR_IGNORED"] = "Ignorado",
-	["REG_LIST_CHAR_NAME_COPY"] = "Copiar nome do personagem",
 	["REG_LIST_CHAR_SEL"] = "Personagem selecionado",
 	["REG_LIST_CHAR_TITLE"] = "Lista de personagens",
-	["REG_LIST_CHAR_TT"] = "Clique para mostrar página",
-	["REG_LIST_CHAR_TT_CHAR"] = "Personagens do WoW vinculados:",
-	["REG_LIST_CHAR_TT_CHAR_NO"] = "Não vinculado a nenhum personagem",
-	["REG_LIST_CHAR_TT_DATE"] = [=[Data visto pela última vez: |cff00ff00%s|r
-Local visto pela última vez: |cff00ff00%s|r]=],
 	["REG_LIST_CHAR_TT_GLANCE"] = "À primeira vista",
 	["REG_LIST_CHAR_TT_IGNORE"] = "Personagens ignorados",
 	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "Descrição não lida",
-	["REG_LIST_CHAR_TT_RELATION"] = [=[Relação:
-|cff00ff00%s]=],
-	["REG_LIST_FILTERS"] = "Filtros",
-	["REG_LIST_FILTERS_TT"] = [=[|cffffff00Clique:|r Aplicar filtros
-|cffffff00Clique direito:|r Limpar filtros]=],
-	["REG_LIST_FLAGS"] = "Marcadores",
 	["REG_LIST_GUILD"] = "Guilda do personagem",
 	["REG_LIST_IGNORE_EMPTY"] = "Sem personagens ignorados",
 	["REG_LIST_IGNORE_TITLE"] = "Lista de ignorados",
-	["REG_LIST_IGNORE_TT"] = [=[Motivo:
-|cff00ff00%s
-
-|cffffff00Clique para remover da lista de ignorados]=],
 	["REG_LIST_NAME"] = "Nome do personagem",
-	["REG_LIST_NOTESONLY"] = "Tem somente anotações",
-	["REG_LIST_NOTIF_ADD"] = "Novo perfil descoberto para |cff00ff00%s",
-	["REG_LIST_NOTIF_ADD_CONFIG"] = "Novo perfil descoberto",
-	["REG_LIST_NOTIF_ADD_NOT"] = "Este perfil não existe mais.",
 	["REG_LIST_PET_MASTER"] = "Nome do mestre",
 	["REG_LIST_PET_NAME"] = "Nome do companheiro",
 	["REG_LIST_PET_TYPE"] = "Tipo do companheiro",
 	["REG_LIST_PETS_EMPTY"] = "Sem companheiro",
 	["REG_LIST_PETS_EMPTY2"] = "Nenhum companheiro se encaixa na sua seleção",
-	["REG_LIST_PETS_FILTER"] = "Companheiros: %s / %s",
 	["REG_LIST_PETS_TITLE"] = "Lista de companheiros",
-	["REG_LIST_PETS_TOOLTIP"] = "Foi visto em",
-	["REG_LIST_PETS_TOOLTIP2"] = "Foi visto com",
 	["REG_LIST_REALMONLY"] = "Apenas neste reino",
-	["REG_LOCATION_DIFFERENT_WAR_MODE"] = "Modo de guerra diferente",
-	["REG_MSP_ALERT"] = [=[|cffff0000AVISO
-
-Você não pode ter simultaneamente mais de um addon usando o Protocolo Mary Sue, pois entrariam em conflito.|r
-
-Atualmente carregado: |cff00ff00%s
-
-|cffff9900Logo o suporte a PMS para o Total RP3 será desativado.|r
-
-Se você não quer que TRP3 seja seu addon de PMS e não quer mais ver este alerta, você pode desativar o módulo de Protocolo Mary Sue nas Opções do TRP3 -> Status de módulo.]=],
-	["REG_NOTES_PROFILE"] = "Anotações",
-	["REG_NOTES_PROFILE_TT"] = "Abra a janela de anotações para o personagem alvo.",
 	["REG_PLAYER"] = "Personagem",
 	["REG_PLAYER_ABOUT"] = "Sobre",
 	["REG_PLAYER_ABOUT_ADD_FRAME"] = "Adicionar uma janela",
 	["REG_PLAYER_ABOUT_EMPTY"] = "Sem descrição",
-	["REG_PLAYER_ABOUT_HEADER"] = "Nota título",
 	["REG_PLAYER_ABOUT_MUSIC_LISTEN"] = "Tocar tema",
 	["REG_PLAYER_ABOUT_MUSIC_REMOVE"] = "De-selecionar tema",
 	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Selecionar tema do personagem",
@@ -846,7 +448,6 @@ Se você não quer que TRP3 seja seu addon de PMS e não quer mais ver este aler
 	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Sem tema",
 	["REG_PLAYER_ABOUT_P"] = "Marcação de parágrafo",
 	["REG_PLAYER_ABOUT_REMOVE_FRAME"] = "Remover esta janela",
-	["REG_PLAYER_ABOUT_SOME"] = "Algum texto ...",
 	["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "Seu texto aqui",
 	["REG_PLAYER_ABOUT_TAGS"] = "Ferramentas de formatação",
 	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Tema desconhecido",
@@ -858,14 +459,11 @@ Se você não quer que TRP3 seja seu addon de PMS e não quer mais ver este aler
 Há várias formas de fazer isso:|c0000ff00
 - Ou usar anos
 - Ou um adjetivo (Jovem, Maduro, Adulto, Venerável, etc.)]=],
-	["REG_PLAYER_ALERT_HEAVY_SMALL"] = [=[|cffff0000O tamanho total do seu perfil é bem grande.
-|cffff9900Você devia reduzi-lo.]=],
 	["REG_PLAYER_BIRTHPLACE"] = "Local de nascimento",
 	["REG_PLAYER_BIRTHPLACE_TT"] = [=[Aqui você pode indicar o local de nascimento do seu personagem. Isso pode ser uma região, uma zona ou até mesmo um continente. Você decide o quão preciso quer ser.
 
 |c00ffff00Você pode usar o botão à direita para facilmente colocar sua localidade atual como local de nascimento.]=],
 	["REG_PLAYER_BKG"] = "Layout de fundo",
-	["REG_PLAYER_BKG_TT"] = "Isso representa o fundo gráfico para usar para seu layout de Características.",
 	["REG_PLAYER_CARACT"] = "Características",
 	["REG_PLAYER_CHANGE_CONFIRM"] = [=[Você pode ter mudanças não-salvas.
 Você quer mudar de página assim mesmo ?
@@ -883,9 +481,6 @@ Cavaleiro, Pirotecnista, Necromante, Atirador de elite, Arcanista ...]=],
 ]=],
 	["REG_PLAYER_COLOR_TT"] = [=[|cffffff00Clique:|r Selecionar uma cor
 |cffffff00Clique-direito:|r Descartar cor]=],
-	["REG_PLAYER_CURRENT"] = "Atualmente",
-	["REG_PLAYER_CURRENT_OOC"] = "Esta é uma informação OOC",
-	["REG_PLAYER_CURRENTOOC"] = "Atualmente (OOC)",
 	["REG_PLAYER_EDIT_MUSIC_THEME"] = "Música tema",
 	["REG_PLAYER_EYE"] = "Cor dos olhos",
 	["REG_PLAYER_EYE_TT"] = [=[Aqui você pode indicar a cor dos olhos do seu personagem.
@@ -900,15 +495,6 @@ Você pode usar um |c0000ff00apelido|r !]=],
 
 Porém, você pode querer evitar repetições, no caso de não haver informação adicional para mencionar.]=],
 	["REG_PLAYER_GLANCE"] = "À primeira vista",
-	["REG_PLAYER_GLANCE_BAR_DELETED"] = "Preset de grupo |cffff9900%s|r deletado.",
-	["REG_PLAYER_GLANCE_BAR_EMPTY"] = "O nome da predefinição não pode estar vazio.",
-	["REG_PLAYER_GLANCE_BAR_LOAD"] = "Predefinição de grupo",
-	["REG_PLAYER_GLANCE_BAR_LOAD_SAVE"] = "Predefinições de grupo",
-	["REG_PLAYER_GLANCE_BAR_NAME"] = [=[Insira o nome da predefinição.
-
-|cff00ff00Nota: Se o nome já estiver em uso por outra predefinição de grupo, este outro grupo será substituído.]=],
-	["REG_PLAYER_GLANCE_BAR_SAVE"] = "Salvar grupo como predefinição",
-	["REG_PLAYER_GLANCE_BAR_SAVED"] = "Predefinição de grupo |cff00ff00%s|r foi criada.",
 	["REG_PLAYER_GLANCE_BAR_TARGET"] = "Predefinições de \"À primeira vista\"",
 	["REG_PLAYER_GLANCE_CONFIG"] = [=[|cff00ff00"À primeira vista"|r é um conjunto de slots que você pode usar para definir informações importantes sobre este personagem.
 
@@ -930,55 +516,38 @@ Você pode usar estas ações nos slots:
 Por favor insira o nome da categoria para essa predefinição.]=],
 	["REG_PLAYER_GLANCE_PRESET_NAME"] = "Nome da predefinição",
 	["REG_PLAYER_GLANCE_PRESET_REMOVE"] = "Removida predefinição |cff00ff00%s|r.",
-	["REG_PLAYER_GLANCE_PRESET_SAVE"] = "Salvar informação como predefinição",
 	["REG_PLAYER_GLANCE_PRESET_SAVE_SMALL"] = "Salvar como predefinição",
 	["REG_PLAYER_GLANCE_PRESET_SELECT"] = "Selecionar uma predefinição",
 	["REG_PLAYER_GLANCE_TITLE"] = "Atribuir nome",
 	["REG_PLAYER_GLANCE_UNUSED"] = "Slot não-utilizado",
 	["REG_PLAYER_GLANCE_USE"] = "Ativar este slot",
 	["REG_PLAYER_HEIGHT"] = "Altura",
-	["REG_PLAYER_HEIGHT_TT"] = [=[Esta é a altura do seu personagem.
-Há várias maneiras de mostrar isso:|c0000ff00
-- Um número preciso: 170 cm, 6'5" ...
-- Um qualificativo: Alto, baixo ...]=],
 	["REG_PLAYER_HERE"] = "Designar posição",
 	["REG_PLAYER_HERE_HOME_PRE_TT"] = [=[Coordenadas do mapa de moradia atuais:
 |cff00ff00%s|r.]=],
 	["REG_PLAYER_HERE_HOME_TT"] = [=[|cffffff00Clique|r: Usar as coordenadas atuais como a posição de moradia.
 |cffffff00Clique-direito|r: Descartar sua posição de moradia.]=],
 	["REG_PLAYER_HERE_TT"] = "|cffffff00Clique|r: Designar para sua posição atual",
-	["REG_PLAYER_HISTORY"] = "História",
 	["REG_PLAYER_ICON"] = "Ícone do personagem",
 	["REG_PLAYER_ICON_TT"] = "Selecione uma representação gráfica para seu personagem.",
-	["REG_PLAYER_IGNORE"] = "Ignorar personagens conectados (%s)",
-	["REG_PLAYER_IGNORE_WARNING"] = [=[Você quer ignorar estes personagens ?
-
-|cffff9900%s
-
-|rVocê pode inserir o motivo abaixo. Isto é uma nota pessoal e servirá como lembrete.]=],
 	["REG_PLAYER_LASTNAME"] = "Sobrenome",
 	["REG_PLAYER_LASTNAME_TT"] = "Este é o nome de família do seu personagem.",
 	["REG_PLAYER_LEFTTRAIT"] = "Atributo da esquerda",
 	["REG_PLAYER_MISC_ADD"] = "Adicionar um campo adicional",
-	["REG_PLAYER_MISC_PRESET_PRONOUNS"] = "Pronomes",
 	["REG_PLAYER_MORE_INFO"] = "Informação adicional",
 	["REG_PLAYER_MSP_HOUSE"] = "Nome de Casa",
 	["REG_PLAYER_MSP_MOTTO"] = "Lema",
 	["REG_PLAYER_MSP_NICK"] = "Apelido",
 	["REG_PLAYER_NAMESTITLES"] = "Nomes e títulos",
-	["REG_PLAYER_NO_CHAR"] = "Sem características",
 	["REG_PLAYER_NOTES"] = "Anotações",
-	["REG_PLAYER_NOTES_ACCOUNT"] = "Anotações comuns",
 	["REG_PLAYER_NOTES_ACCOUNT_HELP"] = "Estas anotações privadas estão vinculadas a sua conta e serão compartilhadas com todos seus perfis.",
 	["REG_PLAYER_NOTES_PROFILE"] = "Anotações de %s",
 	["REG_PLAYER_NOTES_PROFILE_HELP"] = "Estar anotações privadas estão vinculadas ao seu perfil atual e irão mudar baseado em qual perfil você tem atualmente ativo.",
-	["REG_PLAYER_NOTES_PROFILE_NONAME"] = "Anotações do perfil",
 	["REG_PLAYER_PEEK"] = "Diversos",
 	["REG_PLAYER_PHYSICAL"] = "Descrição Física",
 	["REG_PLAYER_PSYCHO"] = "Traços de personalidade",
 	["REG_PLAYER_PSYCHO_Acete"] = "Ascético",
 	["REG_PLAYER_PSYCHO_ADD"] = "Adicionar um traço de personalidade",
-	["REG_PLAYER_PSYCHO_ATTIBUTENAME_TT"] = "Nome do atributo",
 	["REG_PLAYER_PSYCHO_Bonvivant"] = "Bon vivant",
 	["REG_PLAYER_PSYCHO_CHAOTIC"] = "Caótico",
 	["REG_PLAYER_PSYCHO_Chaste"] = "Casto",
@@ -987,7 +556,6 @@ Há várias maneiras de mostrar isso:|c0000ff00
 	["REG_PLAYER_PSYCHO_CREATENEW"] = "Criar um traço",
 	["REG_PLAYER_PSYCHO_Cruel"] = "Brutal",
 	["REG_PLAYER_PSYCHO_CUSTOM"] = "Traço personalizado",
-	["REG_PLAYER_PSYCHO_CUSTOMCOLOR"] = "Selecione a cor do atributo",
 	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT"] = "Selecione uma cor utilizada pela barra para o atributo esquerdo. |cffffff00clique:|r Seleciona uma cor |cffffffff00Botão direito:|r Descarte a cor |cffffffff00Shift+clique:|r Usa o seletor de cor predefinido",
 	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT"] = "Selecione uma cor utilizada pela barra para o atributo certo. |cffffff00Clique:|r Seleciona uma cor |cffffffff00botão direito:|r Descartar cor |cffffffff00Shift-Clique:|r Utiliza o seletor de cor predefinido",
 	["REG_PLAYER_PSYCHO_Egoiste"] = "Egoísta",
@@ -998,10 +566,8 @@ Há várias maneiras de mostrar isso:|c0000ff00
 	["REG_PLAYER_PSYCHO_Loyal"] = "Leal",
 	["REG_PLAYER_PSYCHO_Luxurieux"] = "Luxurioso",
 	["REG_PLAYER_PSYCHO_Misericordieux"] = "Gentil",
-	["REG_PLAYER_PSYCHO_MORE"] = "Adicionar um ponto a \"%s\"",
 	["REG_PLAYER_PSYCHO_PERSONAL"] = "Traços pessoais",
 	["REG_PLAYER_PSYCHO_Pieux"] = "Supersticioso",
-	["REG_PLAYER_PSYCHO_POINT"] = "Adicionar um ponto",
 	["REG_PLAYER_PSYCHO_Pragmatique"] = "Renegado",
 	["REG_PLAYER_PSYCHO_Rationnel"] = "Racional",
 	["REG_PLAYER_PSYCHO_Reflechi"] = "Cauteloso",
@@ -1027,15 +593,8 @@ Há várias maneiras de mostrar isso:|c0000ff00
 	["REG_PLAYER_RESIDENCE_SHOW_TT"] = [=[|cff00ff00%s
 
 |rClique para mostrar no mapa]=],
-	["REG_PLAYER_RESIDENCE_TT"] = [=[Aqui você pode indicar onde seu personagem normalmente vive. Pode ser seu endereço residencial ou um lugar onde ele pode ser encontrado.
-Note que se seu personagem é um errante ou até mesmo sem-teto, você terá que mudar a informação de acordo.
-
-|c00ffff00Você pode usar o botão à direita para facilmente registrar sua localidade atual como sua Residência]=],
 	["REG_PLAYER_RIGHTTRAIT"] = "Atributo da direita",
 	["REG_PLAYER_SHOWMISC"] = "Exibir janela de Outros",
-	["REG_PLAYER_SHOWMISC_TT"] = [=[Marque se quiser exibir campos personalizados para seu personagem.
-
-Se não quiser mostrar campos personalizados, mantenha essa caixa desmarcada e a janela de miscelânea ficará completamente escondida.]=],
 	["REG_PLAYER_SHOWPSYCHO"] = "Exibir janela de personalidade",
 	["REG_PLAYER_SHOWPSYCHO_TT"] = [=[Marque se quiser usar a descrição de personalidade.
 
@@ -1043,11 +602,9 @@ Se não quiser indicar a personalidade do seu personagem desta forma, mantenha e
 	["REG_PLAYER_STYLE_ASSIST"] = "Assistência de roleplay",
 	["REG_PLAYER_STYLE_BATTLE"] = "Resolução de batalha roleplay",
 	["REG_PLAYER_STYLE_BATTLE_1"] = "PVP do World of Warcraft",
-	["REG_PLAYER_STYLE_BATTLE_2"] = "Batalha de dados do TRP",
 	["REG_PLAYER_STYLE_BATTLE_3"] = "Batalha por /roll",
 	["REG_PLAYER_STYLE_BATTLE_4"] = "Batalha por emotes",
 	["REG_PLAYER_STYLE_DEATH"] = "Aceitar morte do personagem",
-	["REG_PLAYER_STYLE_EMPTY"] = "Nenhum atributo de roleplay compartilhado",
 	["REG_PLAYER_STYLE_FREQ"] = "Frequência de RolePlay",
 	["REG_PLAYER_STYLE_FREQ_1"] = "O tempo todo, sem OOC",
 	["REG_PLAYER_STYLE_FREQ_2"] = "A maior parte do tempo",
@@ -1063,7 +620,6 @@ Se não quiser indicar a personalidade do seu personagem desta forma, mantenha e
 	["REG_PLAYER_STYLE_ROMANCE"] = "Aceitar romance com personagem",
 	["REG_PLAYER_STYLE_RPSTYLE"] = "Estilo de roleplay",
 	["REG_PLAYER_STYLE_RPSTYLE_SHORT"] = "Estilo de RP",
-	["REG_PLAYER_STYLE_WOWXP"] = "Experiência de World of Warcraft",
 	["REG_PLAYER_TITLE"] = "Título",
 	["REG_PLAYER_TITLE_TT"] = [=[O título do seu personagem é o título pelo qual seu personagem normalmente é chamado. Evite títulos longos, os quais você deve colocar em "título completo" logo abaixo.
 
@@ -1081,23 +637,6 @@ Exemplos de |c0000ff00títulos apropriados|r :
 	["REG_PLAYER_TRP2_PIERCING"] = "Piercings",
 	["REG_PLAYER_TRP2_TATTOO"] = "Tatuagens",
 	["REG_PLAYER_TRP2_TRAITS"] = "Fisionomia",
-	["REG_PLAYER_TUTO_ABOUT_COMMON"] = [=[|cff00ff00Tema do personagem:|r
-Você pode escolher um |cffffff00tema|r para seu personagem. Pense nele como uma |cffffff00música ambiente para ler a descrição do seu personagem|r.
-
-|cff00ff00Fundo:|r
-Isto é uma |cffffff00textura de fundo|r para a descrição do seu personagem.
-
-|cff00ff00Modelo:|r
-O modelo escolhido define o |cffffff00layout geral e possibilidades de escrita|r para sua descrição.
-|cffff9900Apenas o modelo escolhido é visível aos outros, então você não precisa preencher todos.|r
-Uma vez que um modelo for escolhido, você pode abrir este tutorial novamente para mais ajuda sobre cada modelo.]=],
-	["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[Esta seção possui |cffffff005 slots|r onde você pode descrever |cff00ff00as mais importantes informações sobre seu personagem|r.
-
-Esses slots estarão visíveis na sua |cffffff00"barra de À primeira vista"|r quando alguém selecionar seu personagem.
-
-|cff00ff00Dica: Você pode arrastar e soltar os slots para reordená-los.|r
-Também funciona na |cffffff00"barra À primeira vista"|r!]=],
-	["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "Esta seção contém |cffffff00uma lista de marcadores|r para responder muitas |cffffff00perguntas comuns que as pessoas poderiam fazer a respeito de você, seu personagem e a maneira como você o interpreta|r.",
 	["REG_PLAYER_TUTO_ABOUT_T1"] = [=[Este molde permite que você |cff00ff00estruture livremente sua descrição|r.
 
 A descrição não precisa se limitar à |cffff9900descrição física|r do seu personagem. Sinta-se livre para indicar partes da sua |cffff9900história|r ou detalhes sobre sua |cffff9900personalidade|r.
@@ -1141,16 +680,8 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["REG_RELATION_TARGET"] = "|cffffff00Clique:|r Mudar relação",
 	["REG_RELATION_UNFRIENDLY"] = "Antipático",
 	["REG_RELATION_UNFRIENDLY_TT"] = "%s claramente não gosta de %s.",
-	["REG_REPORT_PLAYER_OPEN_URL"] = "Você somente pode reportar jogadores diretamente de dentro do jogo se os puder Marcar (usando o botão de frame alvo do TRP3). Se desejar reportar o perfil do %s e você não puder os marcar, terá de abrir um ticket com o apoio da Blizzard, utilizando o link abaixo.",
-	["REG_REPORT_PLAYER_OPEN_URL_160"] = "Se você deseja reportar o perfil %s, você precisar abrir um ticket com o suporte da blizzard usando o link abaixo:",
-	["REG_REPORT_PLAYER_PROFILE"] = "Reportar perfil para |cff449fe0Blizzard|r",
-	["REG_REPORT_PLAYER_PROFILE_TT"] = "Você pode denunciar um perfil que infrinja os Termos de Serviço da Blizzard. Isto pode incluir assédio, doxxing, discurso de ódio, conteúdo obsceno ou outra forma de conteúdo perturbador. |cffff0000Por favor note que esta opção NÃO é denunciar perfis RP de qualidade contestável ou de luto. Os abusos desta característica são puníveis!",
-	["REG_REPORT_PLAYER_TEMPLATE"] = "Este jogador esta usando o Addon de perfil RP %s para compartilhar conteúdo que vai contra os termos de serviço",
-	["REG_REPORT_PLAYER_TEMPLATE_DATE"] = "Os Arquivos do addon foi transferido através do addon de mensagem logado em %s",
 	["REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT"] = "Este jogador está em uma conta de teste.",
-	["REG_TIME"] = "Última vez visto",
 	["REG_TRIAL_ACCOUNT"] = "Conta de teste",
-	["REG_TT_GUILD"] = "%s de %s",
 	["REG_TT_GUILD_IC"] = "Membro IC",
 	["REG_TT_GUILD_OOC"] = "Membro OOC",
 	["REG_TT_IGNORED"] = "< Personagem está ignorado >",
@@ -1159,11 +690,8 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["REG_TT_NOTIF"] = "Descrição não-lida",
 	["REG_TT_REALM"] = "Reino: |cffff9900%s",
 	["REG_TT_TARGET"] = "Alvo: |cffff9900%s",
-	["REG_TT_ZONE"] = "Área",
 	["SCRIPT_ERROR"] = "Error no script.",
 	["SCRIPT_UNKNOWN_EFFECT"] = "Erro de script, FX desconhecido",
-	["SLASH_CMD_STATUS_HELP"] = "Utilização: |cff00ff00/trp3 Status ic ||| ooc ||| trocar|r Altera o seu status de personagem para a opção especificada: |cffff9900/trp3 status Ic|r definirá o seu estado para |cff00ff00 No Personagem|r. |cffff9900/trp3 status ooc|r definirá o seu status para |cffffff0000Fora do Personagem|r. |cffff9900/trp3 status Alterar|r irá mudar o seu estado para o estado oposto.",
-	["SLASH_CMD_STATUS_USAGE"] = "ic || ooc || Alterar",
 	["TB_AFK_MODE"] = "Ausente",
 	["TB_DND_MODE"] = "Não perturbe",
 	["TB_GO_TO_MODE"] = "Mudar para modo %s",
@@ -1200,46 +728,9 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["TF_PLAY_THEME"] = "Tocar tema do personagem",
 	["TF_PLAY_THEME_TT"] = [=[|cffffff00Clique:|r Tocar |cff00ff00%s
 |cffffff00Duplo-clique:|r Parar tema]=],
-	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
-{p:c}{col:6eff51}Versão %s (build %s){/col}{/p}
-{p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
-{p:c}{link*http://discord.totalrp3.info*Junte-se a nós no Discord}{/p}
-
-{h2}{icon:INV_Eng_gizmo1:20} Criado por{/h2}
-- Morgane "{twitter*EllypseCelwe*Ellypse}" Parize
-- Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement
-
-
-{h2}{icon:THUMBUP:20} Reconhecimentos{/h2}
-{col:ffffff}Logo and minimap button icon:{/col}
-- {link*https://twitter.com/Kelandiir*@Kelandiir}
-
-{col:ffffff}Nossa equipe de QA do pré-alpha:{/col}
-- Saelora
-- Erzan
-- Calian
-- Kharess
-- Alnih
-- 611
-
-{col:ffffff}Obrigado a todos os nossos amigos por seus suporte por todos esses anos:{/col}
-- Por Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
-- Por Ellypse: As guildas Église du Saint Gamon, Maison Celwë'Belore, Mercenaires Atal'ai, e mais particularmente Erzan, Elenna, Caleb, Siana e Adaeria
-
-{col:ffffff}Por nos ajudar a criar a guilda Total RP no Kirin Tor (EU):{/col}
-- Azane
-- Hellclaw
-- Leylou
-
-{col:ffffff}Agradecimentos a Horionne por nos enviar a revista Gamer Culte Online #14 com um artigo sobre o Total RP.{/col}]=],
 	["THANK_YOU_ROLE_AUTHOR"] = "Autor",
-	["THANK_YOU_ROLE_COMMUNITY_MANAGER"] = "Gerente da comunidade",
-	["THANK_YOU_ROLE_CONTRIBUTOR"] = "Contribuidor",
 	["THANK_YOU_ROLE_GUILD_MEMBER"] = "Membro da Guilda",
 	["THANK_YOU_ROLE_TESTER"] = "Equipe de perguntas e respostas",
-	["TT_ELVUI_SKIN"] = "ElvUI skin ",
-	["TT_ELVUI_SKIN_ENABLE_TARGET_FRAME"] = "Moldura do alvo de skin",
-	["TT_ELVUI_SKIN_ENABLE_TOOLTIPS"] = "Ferramentas de skin",
 	["UI_BKG"] = "Fundo %s",
 	["UI_CLOSE_ALL"] = "Fechar tudo",
 	["UI_COLOR_BROWSER"] = "Navegador de cores",
@@ -1247,13 +738,8 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["UI_COLOR_BROWSER_PRESETS_BASIC"] = "Básico ",
 	["UI_COLOR_BROWSER_PRESETS_CLASSES"] = "Classe",
 	["UI_COLOR_BROWSER_PRESETS_CUSTOM"] = "Customizado",
-	["UI_COLOR_BROWSER_PRESETS_ITEMS"] = "Qualidade de item",
-	["UI_COLOR_BROWSER_PRESETS_RESOURCES"] = "Recurso",
 	["UI_COLOR_BROWSER_SELECT"] = "Selecionar cor",
 	["UI_COMPANION_BROWSER_HELP"] = "Selecionar uma mascote de batalha",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Aviso:|r Apenas mascotes de batalha nomeadas podem ser vinculadas a um perfil.
-
-|cff00ff00Esta seção lista apenas estas mascotes.]=],
 	["UI_FILTER"] = "Filtrar",
 	["UI_ICON_BROWSER"] = "Navegador de ícones",
 	["UI_ICON_BROWSER_HELP"] = "Copiar ícone",
@@ -1273,47 +759,10 @@ Você pode copiar/colar no seu navegador da web.
 |cffff0000!! Aviso !!|r
 O Total RP não é responsável por links que levem a conteúdo nocivo.
 ]=],
-	["UI_MUSIC_ALTTITLE"] = "Título alternativo",
 	["UI_MUSIC_BROWSER"] = "Navegador de músicas",
-	["UI_MUSIC_DURATION"] = "Duração",
 	["UI_MUSIC_SELECT"] = "Selecionar música",
-	["UI_PET_BROWSER_ACCEPT"] = "Assinar",
-	["UI_PET_BROWSER_BOUND_WARNING"] = "|cffff0000Aviso:|r Este animal de estimação está atualmente atribuído ao perfil |cff00ff00%1$s|r. A atribuição de um perfil a este animal de estimação irá substituir o perfil atual.",
-	["UI_PET_BROWSER_EMPTY_TEXT"] = "Você não tem animais de estimação a quem possa ser atribuído um perfil.",
-	["UI_PET_BROWSER_INTRO_TEXT"] = "Selecione um pet com os botões abaixo e clique  |cffffff00Assinar|r para vincular ao perfil.",
-	["UI_PET_BROWSER_NAME_WARNING"] = "|cffff0000Aviso:|r Este animal de estimação não foi renomeado. Recomendamos que se renomeie o animal de estimação para evitar mostrar este perfil em outros animais de estimação com o mesmo nome.",
 	["UI_TUTO_BUTTON"] = "Modo tutorial",
-	["UI_TUTO_BUTTON_TT"] = "Clique para ativar/desativar o modo tutorial",
-	["UNIT_POPUPS_CHARACTER_STATUS"] = "Status do personagem",
-	["UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT"] = "Esconder menu de entradas no combate",
-	["UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT_HELP"] = "Se marcado, entradas adicionais no menu  não serão mostradas em combate.",
-	["UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES"] = "Esconder entradas do menu enquanto estiver em instância",
-	["UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES_HELP"] = "Se marcado, entradas adicionais no menu não irão ser mostradas enquanto estiver em conteúdo instanciado",
-	["UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES"] = "Esconder entradas no menu dos frames dos personagens ",
-	["UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES_HELP"] = "Se marcado, as entradas adicionais do menu não serão mostradas nos menus ativados por molduras de unidades com um clique no botão direito do mouse.",
-	["UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER"] = "Esconder entradas do menu enquanto estiver Fora do Personagem",
-	["UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP"] = "Se marcado. entradas adicionais no menu não serão mostradas enquanto estiver Fora do Personagem",
-	["UNIT_POPUPS_CONFIG_ENABLE_MODULE"] = "Módulo |cff00ff00Ativado|r",
-	["UNIT_POPUPS_CONFIG_ENTRIES_HEADER"] = "Entradas do menu",
-	["UNIT_POPUPS_CONFIG_MENU_TITLE"] = "Configurações do menu",
-	["UNIT_POPUPS_CONFIG_PAGE_HELP"] = "O módulo de pop-ups de personagens adiciona entradas adicionais aos menus de clique do botão direito do mouse encontrados nas molduras dos personagens e nomes na moldura do chat.",
-	["UNIT_POPUPS_CONFIG_PAGE_TEXT"] = "Configurações do menu",
-	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS"] = "Mostrar alternador de status do personagem",
-	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP"] = "Se marcado, adiciona uma caixa de verificação ao seu próprio menu de moldura do personagem que lhe permite alternar o seu estado dentro do personagem/fora do personagem.",
-	["UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT"] = "Mostrar texto do cabeçalho",
-	["UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT_HELP"] = "Se marcado, mostra um cabeçalho \"Opções de Roleplay\" acima de quaisquer entradas de menu adicionadas.",
-	["UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE"] = "Mostrar botão Abrir perfil",
-	["UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE_HELP"] = "Se marcado, adiciona um botão que abre o perfil RP dos personagens selecionados quando clicado.|n|nEsta opção será visível em todos os menus de frame e chat dos personagens.",
-	["UNIT_POPUPS_CONFIG_SHOW_SEPARATOR"] = "Mostrar separador",
-	["UNIT_POPUPS_CONFIG_SHOW_SEPARATOR_HELP"] = "Se marcado, mostra uma barra separadora acima de qualquer entrada de menu.",
-	["UNIT_POPUPS_CONFIG_VISIBILITY_HEADER"] = "Opções de visibilidade",
-	["UNIT_POPUPS_CURRENT_PROFILE"] = "Perfil atual",
-	["UNIT_POPUPS_CURRENT_PROFILE_NAME"] = "Perfil atual: %1$s",
-	["UNIT_POPUPS_MODULE_DESCRIPTION"] = "Adiciona integração com o botão direito nos menus dos personagens e nomes de jogadores nas molduras do chat.",
-	["UNIT_POPUPS_MODULE_DISABLE_WARNING"] = "É necessário recarregar a interface do jogador para desativar o módulo de pop-ups do personagem.|n|n|cffff0000Aviso:|r uma vez desativado, este módulo só pode ser reativado a partir da página |cffffcc00 Status do Módulo|r. Tem certeza de que quer desativar este módulo?",
-	["UNIT_POPUPS_MODULE_NAME"] = "Pop-ups dos personagens",
-	["UNIT_POPUPS_OPEN_PROFILE"] = "Abrir perfil",
-	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "Opções de Roleplay"
+	["UI_TUTO_BUTTON_TT"] = "Clique para ativar/desativar o modo tutorial"
 };
 
 TRP3_API.loc:RegisterNewLocale("ptBR", "Português", L);

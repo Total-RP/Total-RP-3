@@ -10,12 +10,8 @@ local L;
 
 L = {
 	["ABOUT_TITLE"] = "关于",
-	["BINDING_NAME_TRP3_OPEN_TARGET_PROFILE"] = "打开目标资料",
 	["BINDING_NAME_TRP3_TOGGLE"] = "切换主界面",
-	["BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS"] = "切换角色状态",
 	["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "切换工具栏",
-	["BLIZZARD_NAMEPLATES_MODULE_DESCRIPTION"] = "启动对暴雪默认姓名版的自定义功能。",
-	["BLIZZARD_NAMEPLATES_MODULE_NAME"] = "暴雪姓名版",
 	["BROADCAST_10"] = "|cffff9900 你已经拥有10个频道。TRP3 不会再次试图连接广播频道，但你将无法使用类似搜索玩家位置这样的功能。",
 	["BROADCAST_OFFLINE_DISABLED"] = "广播频道已经被禁用。",
 	["BROADCAST_PASSWORD"] = [=[|cffff0000 这是一个带密码的广播频道(%s).
@@ -25,19 +21,10 @@ L = {
 	["BW_COLOR_CODE"] = "颜色代码",
 	["BW_COLOR_CODE_ALERT"] = "错误的十六进制代码！",
 	["BW_COLOR_CODE_TT"] = "你可以在这里粘贴6个十六进制颜色代码并按Enter键.",
-	["BW_COLOR_PRESET_DELETE"] = "删除%s预设",
-	["BW_COLOR_PRESET_RENAME"] = "重命名%s预设",
 	["BW_COLOR_PRESET_SAVE"] = "保存当前颜色",
 	["BW_COLOR_PRESET_TITLE"] = "预设颜色",
 	["BW_CUSTOM_NAME"] = "自定义颜色名称",
-	["BW_CUSTOM_NAME_TITLE"] = "名称(可选)",
-	["BW_CUSTOM_NAME_TT"] = "您可以为保存的自定义颜色设置名称。如果是空的，它将使用十六进制颜色代码。",
-	["CL_COMPANION_PROFILE"] = "同伴介绍",
-	["CL_CONTENT_SIZE"] = "大小：%s",
-	["CL_DIRECTORY_COMPANION_PROFILE"] = "同伴介绍的目录",
-	["CL_DIRECTORY_PLAYER_PROFILE"] = "角色配置目录",
 	["CL_DOWNLOADING"] = "下载：%0.1f %%",
-	["CL_EXPIRED"] = "这个链接已经过期。",
 	["CL_GLANCE"] = "第一印象",
 	["CL_IMPORT_COMPANION"] = "导入同伴介绍",
 	["CL_IMPORT_GLANCE"] = "导入第一印象",
@@ -50,14 +37,7 @@ L = {
 	["CL_OPEN_COMPANION"] = "打开同伴介绍",
 	["CL_OPEN_PROFILE"] = "打开简介",
 	["CL_PLAYER_PROFILE"] = "角色简介",
-	["CL_REQUESTING_DATA"] = "从%s请求链接数据。",
-	["CL_SENDING_COMMAND"] = "发送命令……",
-	["CL_SENT_BY"] = "由%s发送的链接",
 	["CL_TOOLTIP"] = "创建一个聊天链接",
-	["CL_TYPE"] = "TRP3链接类型:%s",
-	["CL_VERSIONS_DIFFER"] = [=[此链接是使用不同版本的Total rp3生成的。
-
-可能不兼容，从不同版本导入内容可能会导致问题。你想继续吗?]=],
 	["CM_ACTIONS"] = "动作",
 	["CM_ALT"] = "Alt键",
 	["CM_APPLY"] = "应用",
@@ -66,9 +46,7 @@ L = {
 	["CM_CANCEL"] = "取消",
 	["CM_CENTER"] = "中央",
 	["CM_CLASS_DEATHKNIGHT"] = "死亡骑士",
-	["CM_CLASS_DEMONHUNTER"] = "恶魔猎手",
 	["CM_CLASS_DRUID"] = "德鲁伊",
-	["CM_CLASS_EVOKER"] = "唤魔师",
 	["CM_CLASS_HUNTER"] = "猎人",
 	["CM_CLASS_MAGE"] = "法师",
 	["CM_CLASS_MONK"] = "武僧",
@@ -124,19 +102,7 @@ L = {
 	["CM_VALUE"] = "值",
 	["CM_WHITE"] = "白色",
 	["CM_YELLOW"] = "黄色",
-	["CO_ADVANCED_BROADCAST"] = "插件通讯",
-	["CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST"] = "保持插件通讯频道位于最后",
-	["CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST_TT"] = "启用该选项将保持你的TRP3插件通讯频道位于通讯频道列表的最后一个。",
-	["CO_ADVANCED_LANGUAGE_WORKAROUND"] = "启动语言重置反制机制",
-	["CO_ADVANCED_LANGUAGE_WORKAROUND_TT"] = "自8.0.1版本以来，在每次进行加载（蓝条）时都会重置玩家当前语言。该功能将确保你使用的语言保持不变。",
-	["CO_ADVANCED_LANGUAGES"] = "语言",
-	["CO_ADVANCED_LANGUAGES_REMEMBER"] = "记录最近使用的语言",
-	["CO_ADVANCED_LANGUAGES_REMEMBER_TT"] = "Total rp3将记录您在注销之前使用的语言，并在下一次登录时自动选择该语言。",
 	["CO_ADVANCED_SETTINGS"] = "高级设置",
-	["CO_ADVANCED_SETTINGS_MENU_NAME"] = "高级",
-	["CO_ADVANCED_SETTINGS_POPUP"] = [=[您刚刚修改了一个高级设置。
-
-请记住，更改这些设置可能会改变您使用附加组件的体验，并可能会阻止某些功能正常工作。后果自负。]=],
 	["CO_ADVANCED_SETTINGS_RESET"] = "重置高级设置",
 	["CO_ADVANCED_SETTINGS_RESET_TT"] = "将所有高级设置重置为默认值。如果在修改设置后出现问题，请使用此选项。",
 	["CO_ANCHOR_BOTTOM"] = "下方",
@@ -176,28 +142,12 @@ L = {
 	["CO_CHAT_MAIN_OOC_COLOR"] = "OOC 检测",
 	["CO_CHAT_MAIN_OOC_PATTERN"] = "OOC 检测方式",
 	["CO_CHAT_MAIN_OOC_USE"] = "开启OOC检测",
-	["CO_CHAT_MAIN_SPEECH"] = "发言检测",
-	["CO_CHAT_MAIN_SPEECH_USE"] = "开启发言检测",
-	["CO_CHAT_MAIN_SPEECH_USE_TT"] = "在/e表情动作当中以半角英文引号圈出的部分将被显示为像/说一样的白字。",
-	["CO_CHAT_NPCSPEECH_REPLACEMENT"] = "在NPC发言中使用自定义的同伴名字",
-	["CO_CHAT_NPCSPEECH_REPLACEMENT_TT"] = "如果一个同伴的名字出现在NPC演讲的对话框里，它将被上色，它的图标颜色将根据你给的设定显示。",
 	["CO_CHAT_REMOVE_REALM"] = "从姓名版中移除角色服务器",
-	["CO_CHAT_SHOW_OOC"] = "显示OOC标识",
 	["CO_CHAT_USE"] = "使用聊天频道",
 	["CO_CHAT_USE_ICONS"] = "显示玩家图标",
 	["CO_CHAT_USE_SAY"] = "说话频道",
 	["CO_CONFIGURATION"] = "设置",
-	["CO_CURSOR_DISABLE_OOC"] = "OOC时禁用",
-	["CO_CURSOR_DISABLE_OOC_TT"] = "当角色|r的角色扮演状态设置为|cffccccccOOC|r.时，禁用光标修改。",
-	["CO_CURSOR_MODIFIER_KEY"] = "修改按键",
-	["CO_CURSOR_MODIFIER_KEY_TT"] = "需要一个修改按键，用来按住并右键单击一个玩家，以防止意外的点击。",
 	["CO_CURSOR_RIGHT_CLICK"] = "右击打开配置文件",
-	["CO_CURSOR_RIGHT_CLICK_TT"] = [=[右键单击一个玩家来打开他的简介，如果他有的话。
-
-|TInterface\Cursor\WorkOrders:25|t 当玩家有一个配置文件时，这个图标将被附加到游标上，你可以右键单击它们。
-
-|cffcccccc注意:此功能在战斗中禁用。|r]=],
-	["CO_CURSOR_TITLE"] = "光标互动",
 	["CO_GENERAL"] = "常规设置",
 	["CO_GENERAL_BROADCAST"] = "使用广播频道",
 	["CO_GENERAL_BROADCAST_C"] = "广播频道名",
@@ -206,17 +156,12 @@ L = {
 
  如果选择不重新加载，界面语言将在下次登录时改变。]=],
 	["CO_GENERAL_COM"] = " 交流",
-	["CO_GENERAL_DEFAULT_COLOR_PICKER"] = "默认的颜色选择器",
-	["CO_GENERAL_DEFAULT_COLOR_PICKER_TT"] = "激活总是使用默认的颜色选择器。如果你正在使用一个颜色选择插件，这是很有用的。",
 	["CO_GENERAL_HEAVY"] = "警告：文件太多.",
 	["CO_GENERAL_HEAVY_TT"] = "当您的文件的总大小超过一个合理的值时，会发出警告.",
 	["CO_GENERAL_LOCALE"] = "插件语言环境",
 	["CO_GENERAL_MISC"] = "其他",
 	["CO_GENERAL_NEW_VERSION"] = "更新提醒",
 	["CO_GENERAL_NEW_VERSION_TT"] = "当有新版本可用时，接收提醒。",
-	["CO_GENERAL_RESET_CUSTOM_COLORS"] = "重设自定义颜色",
-	["CO_GENERAL_RESET_CUSTOM_COLORS_TT"] = "删除保存在颜色选择器中的所有自定义颜色。",
-	["CO_GENERAL_RESET_CUSTOM_COLORS_WARNING"] = "您确定要删除保存在颜色选择器中的所有自定义颜色吗?",
 	["CO_GENERAL_TT_SIZE"] = "信息提示文本大小",
 	["CO_GENERAL_UI_ANIMATIONS"] = "UI 动画",
 	["CO_GENERAL_UI_ANIMATIONS_TT"] = "激活UI动画。",
@@ -232,20 +177,12 @@ L = {
 	["CO_GLANCE_PRESET_TRP3_HELP"] = "使用快捷方式将栏位显示为TRP3风格：在TRP3框架的底部。",
 	["CO_GLANCE_RESET_TT"] = "将栏位复位到框架的左下角.",
 	["CO_GLANCE_TT_ANCHOR"] = "工具提示锚点",
-	["CO_HIDE_EMPTY_MAP_BUTTON"] = "在没有可用搜索时隐藏",
 	["CO_LOCATION"] = "定位设置",
 	["CO_LOCATION_ACTIVATE"] = "使用角色位置",
 	["CO_LOCATION_ACTIVATE_TT"] = "启用角色定位系统，允许您扫描世界地图上的其他totalRP用户，并允许他们找到您。",
-	["CO_LOCATION_DISABLE_CLASSIC_PVP"] = "当PVP状态开启时关闭定位功能",
-	["CO_LOCATION_DISABLE_CLASSIC_PVP_TT"] = "当你处于PVP状态时不再反馈其他玩家的定位请求，这可以防止其他玩家用定位系统追踪你。",
 	["CO_LOCATION_DISABLE_OOC"] = "当OOC时，禁用角色位置",
 	["CO_LOCATION_DISABLE_OOC_TT"] = "当您将RP状态设置为非角色扮演状态OOC时，您将不会响应来自其他玩家的位置请求。",
 	["CO_LOCATION_DISABLE_WAR_MODE"] = "战争模式禁用位置系统",
-	["CO_LOCATION_DISABLE_WAR_MODE_TT"] = [=[在启动战争模式并位于|cff69CCF0安全区|r外时，你不会对其他玩家的位置搜索发出回应。
-
-这可以防止恶意玩家搜索并击杀你。]=],
-	["CO_LOCATION_SHOW_DIFFERENT_WAR_MODES"] = "显示不同战争位面下的玩家",
-	["CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT"] = "和你在同一区域，但位于不同战争位面的玩家将仍然显示在地图上，但他们的图标透明度较高且有着一个特殊的标志。",
 	["CO_MAP_BUTTON"] = "地图搜索按钮",
 	["CO_MAP_BUTTON_POS"] = "搜索按钮在地图上位置",
 	["CO_MINIMAP_BUTTON"] = "小地图按钮",
@@ -274,7 +211,6 @@ L = {
 	["CO_MODULES_TT_ERROR"] = [=[|cffff0000错误:|r
 %s]=],
 	["CO_MODULES_TT_NONE"] = "没有依赖关系",
-	["CO_MODULES_TT_TRP"] = "%s Total RP 3 版本 %s 最小值.|r",
 	["CO_MODULES_TUTO"] = [=[模块是独立的，并可以启用或禁用.
 
 可能的状态:
@@ -287,15 +223,6 @@ L = {
 	["CO_MODULES_VERSION"] = "版本: %s",
 	["CO_MSP"] = "玛丽苏协议",
 	["CO_REGISTER"] = "登记设置",
-	["CO_REGISTER_ABOUT_H1_SIZE"] = "一级标题字号",
-	["CO_REGISTER_ABOUT_H1_SIZE_TT"] = "{h1}标题的字号，当前：%d",
-	["CO_REGISTER_ABOUT_H2_SIZE"] = "二级标题字号",
-	["CO_REGISTER_ABOUT_H2_SIZE_TT"] = "{h2}标题的字号，当前：%d",
-	["CO_REGISTER_ABOUT_H3_SIZE"] = "三级标题字号",
-	["CO_REGISTER_ABOUT_H3_SIZE_TT"] = "{h3}标题的字号，当前：%d",
-	["CO_REGISTER_ABOUT_P_SIZE"] = "文本字号",
-	["CO_REGISTER_ABOUT_P_SIZE_TT"] = "不属于标题的文本的字号，当前：%d",
-	["CO_REGISTER_ABOUT_SETTINGS"] = "\"关于\"设定",
 	["CO_REGISTER_AUTO_PURGE"] = "自动清理玩家目录",
 	["CO_REGISTER_AUTO_PURGE_0"] = "禁用自动清理",
 	["CO_REGISTER_AUTO_PURGE_1"] = "在 %s 天后",
@@ -315,12 +242,8 @@ L = {
 	["CO_TARGETFRAME_USE_TT"] = "确定选定目标时显示目标框架的条件。",
 	["CO_TOOLBAR"] = "框架设置",
 	["CO_TOOLBAR_CONTENT"] = "工具栏设置",
-	["CO_TOOLBAR_CONTENT_CAPE"] = "披风开关",
-	["CO_TOOLBAR_CONTENT_HELMET"] = "头盔开关",
 	["CO_TOOLBAR_CONTENT_RPSTATUS"] = "角色状态 (IC/OOC)",
 	["CO_TOOLBAR_CONTENT_STATUS"] = "玩家状态 (AFK/DND)",
-	["CO_TOOLBAR_HIDE_TITLE"] = "隐藏工具栏标题",
-	["CO_TOOLBAR_HIDE_TITLE_HELP"] = "隐藏工具栏上方显示的标题。",
 	["CO_TOOLBAR_ICON_SIZE"] = "图标设置",
 	["CO_TOOLBAR_MAX"] = "每一行最多图标数",
 	["CO_TOOLBAR_MAX_TT"] = "如果你想垂直显示工具条，请设置为1",
@@ -345,22 +268,12 @@ L = {
 种族:  50 字符
 职业:  50 字符|r]=],
 	["CO_TOOLTIP_CURRENT"] = "显示“当前”的信息",
-	["CO_TOOLTIP_CURRENT_LINES"] = "“当前”信息的最大行数",
 	["CO_TOOLTIP_CURRENT_SIZE"] = "“当前”信息的最大长度",
 	["CO_TOOLTIP_FT"] = "显示完整称号",
 	["CO_TOOLTIP_GUILD"] = "显示公会信息",
-	["CO_TOOLTIP_HEALTH"] = "显示生命值",
-	["CO_TOOLTIP_HEALTH_BOTH"] = "数字+百分比",
-	["CO_TOOLTIP_HEALTH_DISABLED"] = "禁用",
-	["CO_TOOLTIP_HEALTH_NUMBER"] = "数字",
-	["CO_TOOLTIP_HEALTH_PERCENT"] = "百分比",
-	["CO_TOOLTIP_HEALTH_TT"] = "仅在目标生命值不满时显示。",
-	["CO_TOOLTIP_HIDE_IN_INSTANCE"] = "在副本中隐藏",
 	["CO_TOOLTIP_HIDE_ORIGINAL"] = "隐藏原始工具栏",
 	["CO_TOOLTIP_ICONS"] = "显示图标",
 	["CO_TOOLTIP_IN_CHARACTER_ONLY"] = "OOC状态时隐藏描述",
-	["CO_TOOLTIP_MAIN_COLOR"] = "主文字颜色",
-	["CO_TOOLTIP_MAIN_COLOR_HELP"] = "工具栏中显示诸如种族、等级、当前状态和OOC说明标题等的主要文字颜色。",
 	["CO_TOOLTIP_MAINSIZE"] = "主字体大小",
 	["CO_TOOLTIP_NO_FADE_OUT"] = "立即隐藏而不是淡出",
 	["CO_TOOLTIP_NOTIF"] = "显示通知",
@@ -368,53 +281,21 @@ L = {
 	["CO_TOOLTIP_OWNER"] = "显示所有者",
 	["CO_TOOLTIP_PETS"] = "同伴工具栏",
 	["CO_TOOLTIP_PETS_INFO"] = "显示同伴信息",
-	["CO_TOOLTIP_PREFERRED_OOC_INDICATOR"] = "首选OOC指示器",
-	["CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON"] = "图标：",
-	["CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT"] = "文本：",
 	["CO_TOOLTIP_PROFILE_ONLY"] = "仅当目标具有配置文件时才使用。",
-	["CO_TOOLTIP_PRONOUNS"] = "显示人称代词",
 	["CO_TOOLTIP_RACE"] = "显示种族, 职业和等级",
 	["CO_TOOLTIP_REALM"] = "显示服务器",
 	["CO_TOOLTIP_RELATION"] = "显示关系颜色",
 	["CO_TOOLTIP_RELATION_TT"] = "设置一个颜色来表示角色间的关系.",
-	["CO_TOOLTIP_SECONDARY_COLOR"] = "次要文字颜色",
-	["CO_TOOLTIP_SECONDARY_COLOR_HELP"] = "工具栏中显示诸如服务器名、公会名、当前和OOC内容、区域以及生命值等的次要文字颜色。",
 	["CO_TOOLTIP_SPACING"] = "显示间距",
 	["CO_TOOLTIP_SPACING_TT"] = "MyRoleplay 工具栏风格，用额外空间使显示间距更明显。",
 	["CO_TOOLTIP_SUBSIZE"] = "二级字体大小",
 	["CO_TOOLTIP_TARGET"] = "显示目标",
 	["CO_TOOLTIP_TERSIZE"] = "三级字体大小",
 	["CO_TOOLTIP_TITLE"] = "显示标题",
-	["CO_TOOLTIP_TITLE_COLOR"] = "头衔文字颜色",
-	["CO_TOOLTIP_TITLE_COLOR_HELP"] = "工具栏中显示全部角色头衔的文字颜色。",
 	["CO_TOOLTIP_USE"] = "使用字符/同伴工具提示",
-	["CO_TOOLTIP_ZONE"] = "显示地区",
-	["CO_TOOLTIP_ZONE_TT"] = "仅在目标与你不在同一区域时显示。",
-	["CO_UI_RELOAD_WARNING"] = [=[需要重新加载界面，以便应用更改。
-您现在要重新加载界面吗?]=],
 	["CO_WIM"] = "|cffff9900 悄悄话频道是禁用的。",
-	["CO_WIM_TT"] = "您正在使用|cff00ff00密语|r，悄悄话频道的处理出于兼容性的目的被禁用",
 	["COM_LIST"] = "命令列表：",
 	["COM_RESET_RESET"] = "界面位置已经被重置！",
-	["COM_RESET_USAGE"] = "使用：重置你的所有界面位置。",
-	["COM_STASH_DATA"] = [=[|cffff0000你确定你想要隐藏你的 Total RP 3 数据?|r
-
-你的个人资料、伙伴档案和设置会暂时被隐藏起来，你的UI会重新载入临时的空数据，就像你刚安装TRP3时一样。
-|cff00ff00U再次使用相同命令 (|cff999999/trp3 stash|cff00ff00) 恢复您的数据。|r]=],
-	["COM_SWITCH_USAGE"] = "使用：重置界面或者切换工具栏。",
-	["CONFIG_COMMS_QUEUE_POOL_COUNT"] = "排队池大小",
-	["CONFIG_COMMS_QUEUE_POOL_COUNT_DESCRIPTION"] = "控制资料传输时的排队池大小。|n|n较低的值会降低非RP资料传输的延迟，但会在人员密集场合影响向其他玩家传输RP资料的速度。",
-	["CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD"] = "排队池权重阈值",
-	["CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION"] = "控制在使用排队池前RP资料的大小阈值。|n|n对于大数据资料，增加这个值将|cffff0000严重降低|r 插件数据传输的效率。",
-	["CONFIG_COMMS_SETTINGS_HEADER"] = "通信设置",
-	["COPY_DROPDOWN_POPUP_TEXT"] = [=[以%1$s复制。以%2$s粘贴。
-	本窗口会在复制后关闭]=],
-	["COPY_SYSTEM_MESSAGE"] = "已复制到剪切板。",
-	["CREDITS_DISCORD_LINK_TEXT"] = "加入我们的Discord",
-	["CREDITS_GUILD_NAME"] = "<%1$s>",
-	["CREDITS_NAME_WITH_ROLE"] = "%1$s (%2$s)",
-	["CREDITS_VERSION_TEXT"] = "版本 %s",
-	["CREDITS_WEBSITE_LINK_TEXT"] = "网站",
 	["DB_ABOUT"] = "关于 Total RP 3",
 	["DB_HTML_GOTO"] = "单击打开",
 	["DB_MORE"] = "更多模组",
@@ -425,10 +306,6 @@ L = {
 	["DB_STATUS_CURRENTLY_OOC"] = "其它信息 (OOC)",
 	["DB_STATUS_CURRENTLY_OOC_TT"] = "在这里你可以列出你的一些重要的东西，无论是IC的还是OOC的。",
 	["DB_STATUS_CURRENTLY_TT"] = "在这里你可以列出你的一些重要的东西。",
-	["DB_STATUS_ICON_ITEM"] = "%1$s %2$s",
-	["DB_STATUS_LC"] = "角色扮演语言",
-	["DB_STATUS_LC_DEFAULT"] = "默认(%1$s)",
-	["DB_STATUS_LC_TT"] = "设置你扮演时使用的语言，本状态将与其他兼容的RP插件使用者同步。 |cffff9900注意：|r 该选项|cffff0000不会|r改变TRP3的界面语言，修改界面语言的设置位于 |cfffff569高级设置|r页面。",
 	["DB_STATUS_RP"] = "角色状态",
 	["DB_STATUS_RP_IC"] = "IC",
 	["DB_STATUS_RP_IC_TT"] = [=[这说明你正在扮演你的角色.
@@ -453,137 +330,15 @@ L = {
 	["DTBK_RP"] = "Total RP 3 - IC/OOC",
 	["GEN_VERSION"] = "版本: %s (Build %s)",
 	["GEN_WELCOME_MESSAGE"] = "感谢使用 Total RP 3 (v %s) ! Have fun !",
-	["KUI_NAMEPLATES_MODULE_DESCRIPTION"] = "启动对Kui姓名版的自定义功能",
-	["KUI_NAMEPLATES_MODULE_NAME"] = "Kui姓名版",
-	["KUI_NAMEPLATES_WARN_OUTDATED_MODULE"] = "TRP3的Kui|cff9966ff姓名版|r功能已经被整合进插件本体。|n|n旧插件已自动被禁用。|cffffcc00我们推荐将其卸载|r。",
-	["LANG_CHANGE_CAUSED_REVERT_TO_DEFAULT"] = "当前语言恢复到默认的%s，因为您不再了解先前选择的语言%s。",
-	["MACRO_RPSTATUS_INVALID"] = "未知角色扮演状态：%s",
 	["MAP_BUTTON_NO_SCAN"] = "没有搜到",
 	["MAP_BUTTON_SCANNING"] = "搜索",
 	["MAP_BUTTON_SUBTITLE"] = "点击显示可用的搜索",
-	["MAP_BUTTON_SUBTITLE_80_DISABLED"] = "由于8.0更改，扫描暂时不可用",
-	["MAP_BUTTON_SUBTITLE_CONNECTING"] = "地图扫描正在建立。请稍等。",
-	["MAP_BUTTON_SUBTITLE_OFFLINE"] = "地图扫描现在不可用:%s",
 	["MAP_BUTTON_TITLE"] = "搜索RP",
 	["MAP_SCAN_CHAR"] = "搜索角色",
 	["MAP_SCAN_CHAR_TITLE"] = "角色",
-	["MATURE_FILTER_ADD_TO_SAFELIST"] = "将这个资料卡加入|cffffffff成人信息白名单|r",
-	["MATURE_FILTER_ADD_TO_SAFELIST_OPTION"] = "添加到|cffffffff成人信息白名单|r",
-	["MATURE_FILTER_ADD_TO_SAFELIST_TEXT"] = "请确认将%s加入|cffffffff成人信息白名单|r，他们资料卡的信息将不再被隐藏。",
-	["MATURE_FILTER_ADD_TO_SAFELIST_TT"] = "将这个资料卡加入|cffffffff成人信息白名单|r并显示其中的成人内容。",
-	["MATURE_FILTER_EDIT_DICTIONARY"] = "编辑自定义字典",
-	["MATURE_FILTER_EDIT_DICTIONARY_ADD_BUTTON"] = "添加",
-	["MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT"] = "在字典中添加一个新单词",
-	["MATURE_FILTER_EDIT_DICTIONARY_BUTTON"] = "编辑",
-	["MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD"] = "从自定义字典中删除单词",
-	["MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD"] = "编辑这个词",
-	["MATURE_FILTER_EDIT_DICTIONARY_RESET_BUTTON"] = "重置",
-	["MATURE_FILTER_EDIT_DICTIONARY_RESET_TITLE"] = "重置字典",
-	["MATURE_FILTER_EDIT_DICTIONARY_RESET_WARNING"] = "你确定要重新设置字典吗?这将清空字典，并在字典中填充为当前语言提供的默认单词(如果可用)。",
-	["MATURE_FILTER_EDIT_DICTIONARY_TITLE"] = "自定义字典编辑器",
-	["MATURE_FILTER_EDIT_DICTIONARY_TT"] = "编辑用于筛选成年人配置文件的自定义字典.",
-	["MATURE_FILTER_FLAG_PLAYER"] = "标记为成年人玩家",
-	["MATURE_FILTER_FLAG_PLAYER_OPTION"] = "标记成年人内容",
-	["MATURE_FILTER_FLAG_PLAYER_TEXT"] = [=[确认您想要标记 %s的资料含有不适内容. 文本内容会被隐藏.
-
-|cffffff00可选择的:|r 指出在这个玩家文件中找到的攻击性词(由空格分隔开)并将它们添加到过滤器中.]=],
-	["MATURE_FILTER_FLAG_PLAYER_TT"] = "标记这个角色会发布不适内容。标记后该角色发言会被隐藏.",
-	["MATURE_FILTER_OPTION"] = "启动关键字过滤",
-	["MATURE_FILTER_OPTION_TT"] = [=[检查该选项,以过滤玩家信息当中的成人内容。Total RP 3将在扫描玩家信息时检测特定的关键词，并在找到这些词的情况下将玩家数据标记为成年人。
-
-成人信息文件将有一个“消音”的提示，当你首次打开这种文件时，你需要确认是否要打开它。
-
-|cffcccccc注意:成年人的过滤器字典预先填充了来自大众词库的单词列表。您可以使用下面的选项编辑词典|r]=],
-	["MATURE_FILTER_REMOVE_FROM_SAFELIST"] = "将这个资料卡移出|cffffffff成人信息白名单|r",
-	["MATURE_FILTER_REMOVE_FROM_SAFELIST_OPTION"] = "从|cffffffff成人信息白名单|r移除",
-	["MATURE_FILTER_REMOVE_FROM_SAFELIST_TEXT"] = "请确认将%s移出|cffffffff成人信息白名单|r，他们资料卡的信息将再次被隐藏。",
-	["MATURE_FILTER_REMOVE_FROM_SAFELIST_TT"] = "将这个资料卡加入|cffffffff成人信息白名单|r并隐藏其中的成人内容。",
-	["MATURE_FILTER_STRENGTH"] = "分级过滤器强度",
-	["MATURE_FILTER_STRENGTH_TT"] = [=[设置分级过滤器的强度。
-|cffcccccc1是最弱的(表示需要10个成人词汇)，10个是最强的(表示需要1个成人词汇)]=],
-	["MATURE_FILTER_TITLE"] = "关键字过滤",
-	["MATURE_FILTER_TOOLTIP_WARNING"] = "成年人的内容",
-	["MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT"] = "这个玩家文件包含成年人的内容。你可以使用工具栏的按钮来显示这些内容。",
-	["MATURE_FILTER_WARNING_CONTINUE"] = "继续",
-	["MATURE_FILTER_WARNING_GO_BACK"] = "返回",
-	["MATURE_FILTER_WARNING_TEXT"] = [=[TRP 3 内容过滤系统启用。
-
-
-这个玩家文件包含被过滤的关键字内容。
-
-
-你确定你想显示这个文件吗？]=],
-	["MATURE_FILTER_WARNING_TITLE"] = "分级",
 	["MM_SHOW_HIDE_MAIN"] = "显示/隐藏主要框架",
 	["MM_SHOW_HIDE_MOVE"] = "移动按钮",
 	["MM_SHOW_HIDE_SHORTCUT"] = "显示/隐藏工具栏",
-	["MO_ADDON_NOT_INSTALLED"] = "没有安装%s附加组件，自定义Total rp3集成被禁用。",
-	["MO_CHAT_CUSTOMIZATIONS_DESCRIPTION"] = "为%s插件添加自定义兼容性，以便Total rp3可以修改那个插件产生的聊天信息和玩家姓名。",
-	["MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION"] = "为%s加载项添加自定义兼容性，以便您的工具提示首选项应用于Total rp3的工具提示。",
-	["MORE_MODULES_2"] = [=[{h2:c}Optional modules{/h2}
-{h3}Total RP 3: Extended{/h3}
-|cff9999ffTotal RP 3: Extended|r 让你在魔兽世界当中可以自定义内容: 包含任务和对话的剧情，物品，文件 (书本，标志，协议…)以及更多！
-Total RP3扩展包 包括任务 对话 物品 文档等
-{link*https://www.curseforge.com/wow/addons/total-rp-3-extended*Download on CurseForge}
-
-{h3}TRP3 Currently Frame{/h3}
-Adds a standalone frame to your UI that displays your "Currently" text and allows you to edit it easily.
-{link*https://www.curseforge.com/wow/addons/trp3-currently-frame*Download on CurseForge}
-
-{h3}TRP3 Location Toggle{/h3}
-Adds a simple button to the toolbar to toggle on and off the map scan location feature.
-{link*https://www.curseforge.com/wow/addons/trp3-location-toggle*Download on CurseForge}]=],
-	["NAMEPLATES_CONFIG_ACTIVE_QUERY"] = "自动获取人物卡",
-	["NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP"] = "如果勾选，自动获取有姓名版的单位的人物卡。",
-	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY"] = "隐藏|cff449fe0暴雪|r姓名版",
-	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP"] = "如果勾选，将启动|cff449fe0暴雪|r姓名版的仅显示姓名模式。|n|n在该模式下，所有血条会被隐藏，包括敌方单位的和其他玩家的，不论他们是否有人物卡。|n|n本选项需要重载界面生效。",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES"] = "显示全名",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES_HELP"] = "如果勾选，将在姓名版显示单位的全名。|n|n对于|cff449fe0暴雪|r和|cff9966ffKui|r姓名版来说，只有在隐藏姓名版模式下才会显示全名。",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS"] = "显示自定义血条颜色",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP"] = "如果勾选，将用人物卡的职业颜色代替目标血条的颜色。",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_ICONS"] = "显示图标",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_ICONS_HELP"] = "如果勾选，将在姓名版上显示人物卡图标。",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS"] = "显示自定义姓名颜色",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS_HELP"] = "如果勾选，将用人物卡的姓名颜色代替姓名版的颜色",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_NAMES"] = "显示自定义姓名",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_NAMES_HELP"] = "如果勾选，将用人物卡姓名代替姓名版的姓名",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS"] = "显示RP状态",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS_HELP"] = "如果勾选，将在RP姓名版上显示当前RP状态（IC或OOC）。",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_TITLES"] = "显示头衔",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_TITLES_HELP"] = "如果勾选，将在姓名版上显示人物卡中的头衔。",
-	["NAMEPLATES_CONFIG_DISABLE_IN_COMBAT"] = "战斗中关闭姓名版配置",
-	["NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP"] = "如果勾选，将在战斗中还原姓名版设置。",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER"] = "OOC时关闭姓名版配置",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP"] = "如果勾选，将在OOC状态时还原姓名版设置。",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS"] = "关闭OOC目标的姓名版配置",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP"] = "如果勾选，将还原OOC目标的姓名版配置",
-	["NAMEPLATES_CONFIG_ELEMENT_HEADER"] = "姓名版配置",
-	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK"] = "使用默认职业颜色",
-	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP"] = "如果勾选，将在姓名版上用职业颜色代替没有设置职业颜色的角色颜色。|n|n没有RP人物卡的目标不会被此效果影响，会使用默认颜色。",
-	["NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS"] = "隐藏非RP目标姓名版",
-	["NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP"] = "如果勾选，将隐藏没有人物卡的目标（包括玩家和宠物）的姓名版。",
-	["NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS"] = "隐藏OOC目标姓名版",
-	["NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP"] = "如果勾选，将隐藏OOC状态目标的姓名版。",
-	["NAMEPLATES_CONFIG_ICON_SIZE"] = "图标大小",
-	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "如果|cffffff00显示图标|r功能启动，调整姓名版上图标的大小。",
-	["NAMEPLATES_CONFIG_MENU_TITLE"] = "姓名版",
-	["NAMEPLATES_CONFIG_PAGE_HELP"] = "请注意目前只支持|cff449fe0暴雪|r，|cff9966ffKui|r和|cffa8deffPlater|r姓名版。请阅读设置选项下方的说明来了解如何设置。",
-	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "姓名版设置",
-	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "可见度设置",
-	["NAMEPLATES_MODULE_ACTIVE_STATUS"] = "模块|cff00ff00启动|r (%1$s|r)",
-	["NAMEPLATES_MODULE_DESCRIPTION"] = "启动基于人物卡信息的姓名版功能。",
-	["NAMEPLATES_MODULE_DISABLE_WARNING"] = "关闭姓名版模块将关闭所有的自定义姓名版功能，本选项需要重载界面生效。|n|n|cffff0000警告|r一旦关闭，本模组只能从|cffffcc00模组状态|r窗口重新启动。|n|n你确定要关闭这个模组吗？",
-	["NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY"] = "由于缺少关联文件，本模组已自动关闭。",
-	["NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL"] = "由于与其他模组或插件冲突，本模组已自动关闭。",
-	["NAMEPLATES_MODULE_INACTIVE_STATUS"] = "模组|cffff9900未生效|r（未找到插件）",
-	["NAMEPLATES_MODULE_NAME"] = "姓名版",
-	["NEW_VERSION"] = [=[|cff00ff00TRP3的一个新版本(v %s)已可用。
-
-	|cffffff00我们强烈建议你升级插件。|r
-
-	本消息每次游戏只会显示一次并可在设置中关闭(通用设置=>杂项)。]=],
-	["NEW_VERSION_BEHIND"] = "你当前落后%s个版本因而缺少bug修复和新功能，其他玩家可能无法正确看到你的人物卡。请考虑升级插件。",
-	["NEW_VERSION_TITLE"] = "新的更新可用",
 	["NPC_TALK_BUTTON_TT"] = "打开NPC发言界面，允许你让 NPC 说话或做表情。",
 	["NPC_TALK_CHANNEL"] = "频道: ",
 	["NPC_TALK_COMMAND_HELP"] = "打开 NPC 发言界面.",
@@ -599,10 +354,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["NPC_TALK_TITLE"] = "NPC 发言",
 	["NPC_TALK_WHISPER_PATTERN"] = "悄悄说：",
 	["NPC_TALK_YELL_PATTERN"] = "喊:",
-	["OPTION_DISABLED_TOAST"] = "禁用选项",
-	["OPTION_ENABLED_TOAST"] = "启用选项",
 	["PATTERN_ERROR"] = "模式错误",
-	["PATTERN_ERROR_TAG"] = "格式错误:未完成的文本标记",
 	["PR_CO_BATTLE"] = "战斗宠物",
 	["PR_CO_COUNT"] = "%s 绑定到人物卡的宠物/坐骑。",
 	["PR_CO_EMPTY"] = "没有同伴卡",
@@ -611,79 +363,27 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["PR_CO_NEW_PROFILE"] = "新建同伴卡",
 	["PR_CO_PET"] = "宠物",
 	["PR_CO_PROFILE_DETAIL"] = "这张同伴卡已被绑定到",
-	["PR_CO_PROFILE_HELP"] = [=[一个同伴卡包括 |cffffff00"宠物"|r 作为 |cff00ff00一个RP角色|r的所有信息。
-
-同伴卡可以绑定到:
-- 一只战斗宠物 |cffff9900(在它已经被命名的情况下)|r
-- 一个猎人的宠物
-- 一个术士的恶魔
-- 一个法师元素
-- 一个死亡骑士食尸鬼 |cffff9900(见下文)|r
-
-就像人物卡一样 |cff00ff00同伴卡|r 可以绑定到任意 |cffffff00随从|r和 |cffffff00宠物|r 并可以像玩家一样轻松的从一个卡切换到另一个卡.
-
-|cffff9900Ghouls:|r 由于食尸鬼每次都有新的名字，每次召唤都需要重新绑定同伴卡]=],
-	["PR_CO_PROFILE_HELP2"] = [=[单击这里创建新的同伴卡。
-
-|cff00ff00要绑定同伴卡到一个随从 (猎人宠物、水元素 ...)、召唤物，只需选中他们并且绑定到现有的同伴卡 (或者创建一个新的).|r]=],
-	["PR_CO_PROFILEMANAGER_DELETE_WARNING"] = [=[您确定要删除同伴卡%s吗?
-此操作无法撤消，与此概要链接的所有TRP3信息将被销毁!]=],
-	["PR_CO_PROFILEMANAGER_DUPP_POPUP"] = [=[请输入新同伴卡的名称。
-名称不能为空。
-
-这种复制不会改变您绑定到%s的宠物/坐骑。]=],
-	["PR_CO_PROFILEMANAGER_EDIT_POPUP"] = [=[请为这个同伴卡%s输入一个新名称。
-名称不能为空。
-
-更改名称不会改变您绑定到%s的宠物/坐骑。]=],
 	["PR_CO_PROFILEMANAGER_TITLE"] = "同伴卡",
 	["PR_CO_UNUSED_PROFILE"] = "此同伴卡目前没有绑定到任何宠物或坐骑。",
-	["PR_CO_WARNING_RENAME"] = [=[|cff0000警告:|r强烈建议您在将您的宠物链接到一个同伴卡之前重命名你的宠物。
-
-现在链接吗？]=],
 	["PR_CREATE_PROFILE"] = "创建一个人物卡",
-	["PR_DEFAULT_PROFILE_NAME"] = "默认人物卡",
-	["PR_DEFAULT_PROFILE_WARNING"] = [=[建立一个新人物卡
-	或链接到一个已有的人物卡
-	以编辑你的角色信息]=],
 	["PR_DELETE_PROFILE"] = "删除人物卡",
 	["PR_DUPLICATE_PROFILE"] = "复制人物卡",
-	["PR_EXPORT_IMPORT_HELP"] = [=[您可以使用下拉菜单中的选项导出和导入配置文件.
-
-使用  |cffffff00输出资料|r 选择生成包含概要文件序列化数据的一大块文本。您可以使用Ctrl-c(或Mac上的Command-c)复制文本，并将其粘贴到其他地方作为备份。(|cffff0000请注意，一些高级的文本编辑工具，如Microsoft Word，将重新格式化特殊的字符串，例如引号并改变数据。请使用像记事本这样的简单的文本编辑工具|r)
-
-使用 |cffffff00输入资料|r 将之前导出的数据粘贴到现有的文件中. 这个文件中的现有数据将被您所粘贴的数据所替代。您不能直接将数据导入您当前选择的文件。]=],
 	["PR_EXPORT_IMPORT_TITLE"] = "导出/导入数据",
-	["PR_EXPORT_NAME"] = "资料 %s (大小 %0.2f kB)",
 	["PR_EXPORT_PROFILE"] = "导出数据",
 	["PR_EXPORT_TOO_LARGE"] = [=[这个配置文件太大，不能导出.
 
 配置文件的大小: %0.2f kB
 最大: 20 kB]=],
-	["PR_EXPORT_WARNING_MAC"] = [=[请注意，一些例如Text Edit or Discord这样的高级文本编辑工具，将重新格式化的特殊字符，如引号，并改变数据内容。
-
-如果您打算在文档中复制下面的文本，请使用更简单的文本编辑工具，这些工具不会自动更改字符(在文本编辑中，请在粘贴前将格式化为纯文本)]=],
-	["PR_EXPORT_WARNING_TITLE"] = "警告：",
-	["PR_EXPORT_WARNING_WINDOWS"] = [=[请注意，一些高级的文本编辑工具，如Microsoft Word或将重新格式化特殊字符，如引号，并改变数据的内容。
-
-如果您打算在文档中复制下面的文本，请使用更简单的文本编辑工具，这些工具不会自动修改字符，比如记事本。]=],
 	["PR_IMPORT"] = "导入",
 	["PR_IMPORT_CHAR_TAB"] = "导入人物",
 	["PR_IMPORT_EMPTY"] = "没有可导入的资料",
 	["PR_IMPORT_IMPORT_ALL"] = "导入所有",
 	["PR_IMPORT_PETS_TAB"] = "导入同伴",
 	["PR_IMPORT_PROFILE"] = "导入数据",
-	["PR_IMPORT_PROFILE_TT"] = "在这里粘贴要导入的数据",
-	["PR_IMPORT_WILL_BE_IMPORTED"] = "将导入",
 	["PR_PROFILE"] = "个人档案",
 	["PR_PROFILE_CREATED"] = "档案 %s 已建立.",
 	["PR_PROFILE_DELETED"] = "档案 %s 已删除.",
 	["PR_PROFILE_DETAIL"] = "这张人物卡已绑定到以下角色：",
-	["PR_PROFILE_HELP"] = [=[人物卡包含一个 |cffffff00\"角色\"|r 作为 |cff00ff00角色扮演玩家|r的所有人物信息。
-
-一个 |cffffff00\"魔兽世界角色\"|r 一次只能绑定一个人物卡，但也可以在需要的时候在切换多个人物卡之间切换。
-
-你也可以将多个 |cffffff00\"魔兽世界角色\"|r 绑定到同一张 |cff00ff00人物卡|r]=],
 	["PR_PROFILE_LOADED"] = "人物卡 %s 已载入",
 	["PR_PROFILE_MANAGEMENT_TITLE"] = "人物卡管理",
 	["PR_PROFILEMANAGER_ACTIONS"] = "动作",
@@ -702,36 +402,16 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 名称不能为空。
 
 更改名称不会更改此人物卡与您的角色之间的任何绑定关系。]=],
-	["PR_PROFILEMANAGER_EMPTY"] = "没有找到人物卡",
 	["PR_PROFILEMANAGER_IMPORT_WARNING"] = "用导入的数据替换人物卡 %s的所有内容?",
 	["PR_PROFILEMANAGER_IMPORT_WARNING_2"] = [=[警告:本人物卡是从TRP3的旧版本中制作的。
 这可能会导致不兼容。
 
 用导入的数据替换人物卡%s的所有内容?]=],
 	["PR_PROFILEMANAGER_RENAME"] = "重命名人物卡",
-	["PR_PROFILEMANAGER_SEARCH_PROFILE"] = "搜索人物卡",
 	["PR_PROFILEMANAGER_SWITCH"] = "选择人物卡",
 	["PR_PROFILEMANAGER_TITLE"] = "所有人物卡",
 	["PR_PROFILES"] = "人物卡",
-	["PR_SLASH_EXAMPLE"] = "|cffffff00使用命令:|r |cffcccccc/trp3 profile Millidan Foamrage|r |cffffff00来切换到 Millidan Foamrage的人物卡.|r",
-	["PR_SLASH_NOT_FOUND"] = "|cffff0000找不到名为|r |cffffff00%s|r|cffff0000.|r的人物卡。",
-	["PR_SLASH_OPEN_ABORTING"] = "|cffffff00中止人物卡导入。|r",
-	["PR_SLASH_OPEN_EXAMPLE"] = "|cffffff00使用命令:|r |cffcccccc/trp3 open|r |cffffff00打开你目标的人物卡，或者 |cffcccccc/trp3 open 角色名-服务器名|r |cffffff00打开某角色的人物卡。|r",
-	["PR_SLASH_OPEN_HELP"] = "使用游戏内的名称打开一个人物的人物卡，如果没有提供名字，则打开目标的人物卡。",
-	["PR_SLASH_OPEN_WAITING"] = "|cffffff00请求人物卡,请等待…|r",
-	["PR_SLASH_SWITCH_HELP"] = "使用它的名称切换到另一个人物卡。",
 	["PR_UNUSED_PROFILE"] = "这个人物卡目前没有绑定到任何WoW角色。",
-	["REG_CODE_INSERTION_WARNING"] = [=[|TInterface\AddOns\totalRP3\resources\policegar.tga:50:50|t
-请等一下。
-
-
-我们发现您已经在trp3人物卡中手动插入了无效代码。
-这种行为根本不被支持，我们强烈反对任何人这样做。
-它可能导致附加组件内的不稳定和错误，数据损坏/配置文件丢失，还会导致与其他附加组件(如MRP)的不兼容性问题。
-
-您在人物卡中插入的代码已被删除，以防止您破坏插件。]=],
-	["REG_COMPANION"] = "同伴",
-	["REG_COMPANION_BIND_TO_PET"] = "宠物",
 	["REG_COMPANION_BOUND_TO"] = "绑定到 ...",
 	["REG_COMPANION_BOUND_TO_TARGET"] = "目标",
 	["REG_COMPANION_BOUNDS"] = "绑定",
@@ -742,121 +422,36 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_COMPANION_LINKED_NO"] = "同伴 %s 现在不再与任何同伴卡相关联.",
 	["REG_COMPANION_NAME"] = "名字",
 	["REG_COMPANION_NAME_COLOR"] = "名字颜色",
-	["REG_COMPANION_PAGE_TUTO_C_1"] = "查阅",
-	["REG_COMPANION_PAGE_TUTO_E_1"] = "这是 |cff00ff00你同伴的主要信息|r.\\n\\n所有这些信息将会出现在 |cffff9900同伴工具栏上|r.",
-	["REG_COMPANION_PAGE_TUTO_E_2"] = [=[这是 |cff00ff00你同伴的描述|r.
-
-这不限于 |cffff9900外貌描述|r.可以随意描述它的 |cffff9900背景|r 或者相关 |cffff9900信息|r.
-
-有很多自定义描述的方法。
-你可以讲述一个关于它的 |cffffff00故事|r . 你也可以介绍它的信息，如 |cffffff00大小, 颜色和性格|r.
-你可以在描述中加入 |cffffff00图片，图标或者外部网页链接|r.]=],
-	["REG_COMPANION_PROFILES"] = "同伴卡",
-	["REG_COMPANION_TARGET_NO"] = "你的目标不是一个有效的宠物，小宠物，食尸鬼，法师元素或者一个重命名的战斗宠物.",
-	["REG_COMPANION_TF_BOUND_TO"] = "选择一个同伴卡",
 	["REG_COMPANION_TF_CREATE"] = "创建一个同伴卡",
-	["REG_COMPANION_TF_NO"] = "没有同伴卡",
-	["REG_COMPANION_TF_OPEN"] = "打开页面",
 	["REG_COMPANION_TF_OWNER"] = "所有者: %s",
-	["REG_COMPANION_TF_PROFILE"] = "同伴资料",
-	["REG_COMPANION_TF_PROFILE_MOUNT"] = "坐骑资料",
-	["REG_COMPANION_TF_UNBOUND"] = "从同伴卡分离",
 	["REG_COMPANION_TITLE"] = "头衔",
-	["REG_COMPANION_UNBOUND"] = "从……解除绑定",
 	["REG_COMPANIONS"] = "同伴",
 	["REG_DELETE_WARNING"] = [=[你确定你要删除这个 %s'的同伴卡?
 ]=],
 	["REG_IGNORE_TOAST"] = "忽略的角色",
-	["REG_LIST_ACTIONS_MASS"] = "对 %s 选定配置文件的操作",
-	["REG_LIST_ACTIONS_MASS_IGNORE"] = "忽略同伴卡",
-	["REG_LIST_ACTIONS_MASS_IGNORE_C"] = [=[该操作将把 |cff00ff00%s 角色（们）|r 添加到忽略列表中。
-
-您可以选择输入下面的原因。这是一个个人标记，它将作为一个提醒。]=],
-	["REG_LIST_ACTIONS_MASS_REMOVE"] = "删除同伴卡",
-	["REG_LIST_ACTIONS_MASS_REMOVE_C"] = "该操作将删除 |cff00ff00%s 选定的同伴卡|r.",
-	["REG_LIST_ACTIONS_PURGE"] = "清除档案",
-	["REG_LIST_ACTIONS_PURGE_ALL"] = "删除所有同伴卡",
-	["REG_LIST_ACTIONS_PURGE_ALL_C"] = [=[这将从目录中删除所有同伴卡和角色链接.
-
-|cff00ff00%s .]=],
-	["REG_LIST_ACTIONS_PURGE_ALL_COMP_C"] = [=[这将删除目录中所有同伴.
-
-|cff00ff00%s 同伴.]=],
-	["REG_LIST_ACTIONS_PURGE_COUNT"] = "%s 同伴卡将被删除.",
-	["REG_LIST_ACTIONS_PURGE_EMPTY"] = "没有同伴卡被清除.",
-	["REG_LIST_ACTIONS_PURGE_IGNORE"] = "已忽略的角色的同伴卡",
-	["REG_LIST_ACTIONS_PURGE_IGNORE_C"] = [=[这将清除所有链接魔兽世界的同伴卡。
-
-|cff00ff00%s]=],
-	["REG_LIST_ACTIONS_PURGE_TIME"] = "超过一个月没见到的同伴卡",
-	["REG_LIST_ACTIONS_PURGE_TIME_C"] = [=[这将移除所有一个月未见的同伴卡。
-
-|cff00ff00%s]=],
-	["REG_LIST_ACTIONS_PURGE_UNLINKED"] = "没有和角色绑定的同伴卡",
-	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[这个清除将删除所有没有绑定到魔兽世界角色的同伴卡。
-
-|cff00ff00%s]=],
-	["REG_LIST_ADDON"] = "档案种类",
 	["REG_LIST_CHAR_EMPTY"] = "没有角色",
 	["REG_LIST_CHAR_EMPTY2"] = "没有匹配的角色",
-	["REG_LIST_CHAR_FILTER"] = "角色: %s / %s",
 	["REG_LIST_CHAR_IGNORED"] = "已忽略",
-	["REG_LIST_CHAR_NAME_COPY"] = "复制角色名字",
 	["REG_LIST_CHAR_SEL"] = "选择一个角色",
 	["REG_LIST_CHAR_TITLE"] = "角色列表",
-	["REG_LIST_CHAR_TT"] = "点击显示页面",
-	["REG_LIST_CHAR_TT_CHAR"] = "绑定wow里的角色(s):",
-	["REG_LIST_CHAR_TT_CHAR_NO"] = "没有绑定任何角色",
-	["REG_LIST_CHAR_TT_DATE"] = [=[上一次看到的日期: |cff00ff00%s|r
-上一次看到的位置: |cff00ff00%s|r]=],
 	["REG_LIST_CHAR_TT_GLANCE"] = "第一印象",
 	["REG_LIST_CHAR_TT_IGNORE"] = "忽略的角色(s)",
 	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "未读的描述",
-	["REG_LIST_CHAR_TT_RELATION"] = [=[关系:
-|cff00ff00%s]=],
-	["REG_LIST_FILTERS"] = "过滤",
-	["REG_LIST_FILTERS_TT"] = [=[|cffffff00左击:|r 应用过滤器
-|cffffff00右击:|r 清除过滤器]=],
-	["REG_LIST_FLAGS"] = "标记",
 	["REG_LIST_GUILD"] = "角色公会",
 	["REG_LIST_IGNORE_EMPTY"] = "没有忽略的角色",
 	["REG_LIST_IGNORE_TITLE"] = "忽略列表",
-	["REG_LIST_IGNORE_TT"] = [=[理由:
-|cff00ff00%s
-
-|cffffff00单击从忽略列表中删除]=],
 	["REG_LIST_NAME"] = "角色名",
-	["REG_LIST_NOTESONLY"] = "只有笔记",
-	["REG_LIST_NOTIF_ADD"] = "发现了|cff00ff00%s的新人物卡",
-	["REG_LIST_NOTIF_ADD_CONFIG"] = "新人物卡被发现",
-	["REG_LIST_NOTIF_ADD_NOT"] = "这个人物卡已经不存在了.",
 	["REG_LIST_PET_MASTER"] = "主人名字",
 	["REG_LIST_PET_NAME"] = "同伴的名字",
 	["REG_LIST_PET_TYPE"] = "同伴的种类",
 	["REG_LIST_PETS_EMPTY"] = "没有同伴",
 	["REG_LIST_PETS_EMPTY2"] = "没有匹配的同伴",
-	["REG_LIST_PETS_FILTER"] = "同伴: %s / %s",
 	["REG_LIST_PETS_TITLE"] = "同伴列表",
-	["REG_LIST_PETS_TOOLTIP"] = "已经被发现在……",
-	["REG_LIST_PETS_TOOLTIP2"] = "已经被发现和……在一起",
 	["REG_LIST_REALMONLY"] = "仅限本服务器",
-	["REG_LOCATION_DIFFERENT_WAR_MODE"] = "不同的战争模式",
-	["REG_MSP_ALERT"] = [=[|cffff0000警告
-
-在玛丽苏协议（MSP）下，你不能同时拥有多于一个插件，因为他们会互相冲突。|r
-
-当前已载入：|cff00ff00%s
-
-|cffff9900因此，TRP3的MSP支持将被禁用。|r
-
-如果你不想让TRP3作为你的MSP插件并不想再次看到这类警告，你可以禁用TRP3设置当中的玛丽苏协议。]=],
-	["REG_NOTES_PROFILE"] = "笔记",
-	["REG_NOTES_PROFILE_TT"] = "打开对目标角色的笔记窗口。",
 	["REG_PLAYER"] = "角色",
 	["REG_PLAYER_ABOUT"] = "关于",
 	["REG_PLAYER_ABOUT_ADD_FRAME"] = "添加一个框架",
 	["REG_PLAYER_ABOUT_EMPTY"] = "没有说明",
-	["REG_PLAYER_ABOUT_HEADER"] = "页面标签",
 	["REG_PLAYER_ABOUT_MUSIC_LISTEN"] = "播放角色主题音乐",
 	["REG_PLAYER_ABOUT_MUSIC_REMOVE"] = "移除角色主题音乐",
 	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "选择角色主题音乐",
@@ -866,7 +461,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900没有角色主题音乐",
 	["REG_PLAYER_ABOUT_P"] = "段落标记",
 	["REG_PLAYER_ABOUT_REMOVE_FRAME"] = "删除这个框架",
-	["REG_PLAYER_ABOUT_SOME"] = "一些文字 ...",
 	["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "您在此处输入的文字",
 	["REG_PLAYER_ABOUT_TAGS"] = "格式化工具",
 	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900未知主题",
@@ -878,14 +472,11 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 有几种方法可以做到这一点:|c0000ff00
 - 要么使用年份,
 - 或形容词(年轻、成熟、成熟、可敬等)。]=],
-	["REG_PLAYER_ALERT_HEAVY_SMALL"] = [=[|cffff0000T你的个人资料的总规模相当大.
-|cffff9900你应该减少它.]=],
 	["REG_PLAYER_BIRTHPLACE"] = "出生地",
 	["REG_PLAYER_BIRTHPLACE_TT"] = [=[在这里你可以指出你角色的出生地. 这可以是一个地点，一个区域，甚至是一个大陆。 你可以决定你想要多精确。
 
 |c00ffff00你可以使用这个按钮来方便地设置你当前的位置为出生地.]=],
 	["REG_PLAYER_BKG"] = "布置背景",
-	["REG_PLAYER_BKG_TT"] = "这会改变你角色的图像背景.",
 	["REG_PLAYER_CARACT"] = "特征",
 	["REG_PLAYER_CHANGE_CONFIRM"] = [=[您可能有未保存的数据更改.
 你想改变页面吗?
@@ -904,9 +495,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 ]=],
 	["REG_PLAYER_COLOR_TT"] = [=[|cffffff00Click:|r 选择一种颜色
 |cffffff00Right-click:|r 放弃颜色]=],
-	["REG_PLAYER_CURRENT"] = "目前",
-	["REG_PLAYER_CURRENT_OOC"] = "这是一个 OOC 信息",
-	["REG_PLAYER_CURRENTOOC"] = "目前 (OOC)",
 	["REG_PLAYER_EDIT_MUSIC_THEME"] = "主题音乐",
 	["REG_PLAYER_EYE"] = "眼睛颜色",
 	["REG_PLAYER_EYE_TT"] = [=[在这里，你可以看到你的眼睛的颜色。
@@ -919,15 +507,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_FULLTITLE"] = "全称",
 	["REG_PLAYER_FULLTITLE_TT"] = "你可以在这里写下你的角色全称。它可以是一个更长的头衔，也可以完全是另一个头衔。为了避免重复，请尽量不要输入相同的信息。",
 	["REG_PLAYER_GLANCE"] = "第一印象",
-	["REG_PLAYER_GLANCE_BAR_DELETED"] = "组预设 |cffff9900%s|r 被删除.",
-	["REG_PLAYER_GLANCE_BAR_EMPTY"] = "预设名不能是空的.",
-	["REG_PLAYER_GLANCE_BAR_LOAD"] = "组预设",
-	["REG_PLAYER_GLANCE_BAR_LOAD_SAVE"] = "组预设",
-	["REG_PLAYER_GLANCE_BAR_NAME"] = [=[请输入预设名.
-
-|cff00ff00注意:如果该名称已经被另一个组预先设置，那么另一个组将被替换.]=],
-	["REG_PLAYER_GLANCE_BAR_SAVE"] = "保存组预设",
-	["REG_PLAYER_GLANCE_BAR_SAVED"] = "组预设 |cff00ff00%s|r 被创建.",
 	["REG_PLAYER_GLANCE_BAR_TARGET"] = "\"第一印象\" 预设",
 	["REG_PLAYER_GLANCE_CONFIG"] = [=[|cff00ff00\"第一印象\"|r 是一组可以用来定义关于这个角色的重要信息的栏位。
 
@@ -949,53 +528,38 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 请输入这个预设的类别名称.]=],
 	["REG_PLAYER_GLANCE_PRESET_NAME"] = "预设名称",
 	["REG_PLAYER_GLANCE_PRESET_REMOVE"] = "删除预设 |cff00ff00%s|r.",
-	["REG_PLAYER_GLANCE_PRESET_SAVE"] = "将信息保存为预设值.",
 	["REG_PLAYER_GLANCE_PRESET_SAVE_SMALL"] = "保存为预设的",
 	["REG_PLAYER_GLANCE_PRESET_SELECT"] = "选择一个预设.",
 	["REG_PLAYER_GLANCE_TITLE"] = "特征名称",
 	["REG_PLAYER_GLANCE_UNUSED"] = "未使用的栏位",
 	["REG_PLAYER_GLANCE_USE"] = "激活这个栏位",
 	["REG_PLAYER_HEIGHT"] = "身高",
-	["REG_PLAYER_HEIGHT_TT"] = [=[这是你的角色的身高.
-有几种方法可以做到:|c0000ff00
-- 一个精确的数字: 170 cm, 6呎5吋"…
--  或者简单的高或矮…]=],
 	["REG_PLAYER_HERE"] = "设置位置",
 	["REG_PLAYER_HERE_HOME_PRE_TT"] = [=[现在的住所地图坐标:
 |cff00ff00%s|r.]=],
 	["REG_PLAYER_HERE_HOME_TT"] = [=[|cffffff00点击|r: 用你当前的坐标作为你的住所的位置。
 |cffffff00Right-click|r: 删除你的住所的位置。]=],
 	["REG_PLAYER_HERE_TT"] = "|cffffff00点击|r: 设定到你目前的位置",
-	["REG_PLAYER_HISTORY"] = "历史",
 	["REG_PLAYER_ICON"] = "角色图标",
 	["REG_PLAYER_ICON_TT"] = "为你的角色选一个图标.",
-	["REG_PLAYER_IGNORE"] = "忽略相关特征 (%s)",
-	["REG_PLAYER_IGNORE_WARNING"] = [=[你想忽略这些角色吗?
-|cffff9900%s
-可以选择输入以下原因。这是一个个人笔记，可以作为提醒。]=],
 	["REG_PLAYER_LASTNAME"] = "姓",
 	["REG_PLAYER_LASTNAME_TT"] = "这是你的角色的姓.",
 	["REG_PLAYER_LEFTTRAIT"] = "左倾",
 	["REG_PLAYER_MISC_ADD"] = "添加一个额外的字段",
-	["REG_PLAYER_MISC_PRESET_PRONOUNS"] = "人称代词",
 	["REG_PLAYER_MORE_INFO"] = "附加说明",
 	["REG_PLAYER_MSP_HOUSE"] = "住所的名字",
 	["REG_PLAYER_MSP_MOTTO"] = "座右铭",
 	["REG_PLAYER_MSP_NICK"] = "昵称",
 	["REG_PLAYER_NAMESTITLES"] = "名字与称呼",
-	["REG_PLAYER_NO_CHAR"] = "没有特征",
 	["REG_PLAYER_NOTES"] = "笔记",
-	["REG_PLAYER_NOTES_ACCOUNT"] = "通用笔记",
 	["REG_PLAYER_NOTES_ACCOUNT_HELP"] = "这些笔记和你的子账号绑定，会在你使用的所有人物卡之间共享。",
 	["REG_PLAYER_NOTES_PROFILE"] = "%s的笔记",
 	["REG_PLAYER_NOTES_PROFILE_HELP"] = "这些笔记和你当前使用的人物卡绑定，并会随着你切换人物卡而改变。",
-	["REG_PLAYER_NOTES_PROFILE_NONAME"] = "人物笔记",
 	["REG_PLAYER_PEEK"] = "杂项",
 	["REG_PLAYER_PHYSICAL"] = "物理描述",
 	["REG_PLAYER_PSYCHO"] = "个性",
 	["REG_PLAYER_PSYCHO_Acete"] = "禁欲主义",
 	["REG_PLAYER_PSYCHO_ADD"] = "添加一种性格",
-	["REG_PLAYER_PSYCHO_ATTIBUTENAME_TT"] = "属性名称",
 	["REG_PLAYER_PSYCHO_Bonvivant"] = "享乐主义",
 	["REG_PLAYER_PSYCHO_CHAOTIC"] = "混乱",
 	["REG_PLAYER_PSYCHO_Chaste"] = "高尚",
@@ -1004,7 +568,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_PSYCHO_CREATENEW"] = "自建特征",
 	["REG_PLAYER_PSYCHO_Cruel"] = "野蛮",
 	["REG_PLAYER_PSYCHO_CUSTOM"] = "定制性格",
-	["REG_PLAYER_PSYCHO_CUSTOMCOLOR"] = "选择属性颜色",
 	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT"] = [=[选择使用一个颜色来表示左倾属性。
 
 |cffffff00左健:|r选择一个颜色
@@ -1023,10 +586,8 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_PSYCHO_Loyal"] = "正义",
 	["REG_PLAYER_PSYCHO_Luxurieux"] = "下流",
 	["REG_PLAYER_PSYCHO_Misericordieux"] = "文雅",
-	["REG_PLAYER_PSYCHO_MORE"] = "增加 \"%s\"",
 	["REG_PLAYER_PSYCHO_PERSONAL"] = "人格特质",
 	["REG_PLAYER_PSYCHO_Pieux"] = "感性",
-	["REG_PLAYER_PSYCHO_POINT"] = "增加",
 	["REG_PLAYER_PSYCHO_Pragmatique"] = "叛逆",
 	["REG_PLAYER_PSYCHO_Rationnel"] = "理性",
 	["REG_PLAYER_PSYCHO_Reflechi"] = "谨慎",
@@ -1052,15 +613,8 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_RESIDENCE_SHOW_TT"] = [=[|cff00ff00%s
 
 |r点击在地图上显示]=],
-	["REG_PLAYER_RESIDENCE_TT"] = [=[在这里你可以指出你的角色通常生活在哪里. 这可能是他们的个人地址(他们的家)或者是可以遇见他们的地方。
-注意，如果你的角色是一个流浪者，甚至是无家可归者，你需要相应地改变信息。
-
-|c00ffff00你可以使用这个按钮来方便地设置你当前的位置。]=],
 	["REG_PLAYER_RIGHTTRAIT"] = "右倾",
 	["REG_PLAYER_SHOWMISC"] = "显示杂项框架",
-	["REG_PLAYER_SHOWMISC_TT"] = [=[检查您是否希望为您的角色显示自定义信息。
-
-如果您不想显示自定义信息，请不要勾选该项，如此这些信息将保持完全隐藏。]=],
 	["REG_PLAYER_SHOWPSYCHO"] = "显示人物性格",
 	["REG_PLAYER_SHOWPSYCHO_TT"] = [=[检查你是否想要使用人物性格描述.
 
@@ -1068,11 +622,9 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_STYLE_ASSIST"] = "RP扮演帮助",
 	["REG_PLAYER_STYLE_BATTLE"] = "RP战斗",
 	["REG_PLAYER_STYLE_BATTLE_1"] = "魔兽世界PVP",
-	["REG_PLAYER_STYLE_BATTLE_2"] = "TRPRoll点战斗",
 	["REG_PLAYER_STYLE_BATTLE_3"] = "roll点战斗",
 	["REG_PLAYER_STYLE_BATTLE_4"] = "表情动作战斗",
 	["REG_PLAYER_STYLE_DEATH"] = "接受角色死亡",
-	["REG_PLAYER_STYLE_EMPTY"] = "没有扮演游戏属性共享",
 	["REG_PLAYER_STYLE_FREQ"] = "RP频率",
 	["REG_PLAYER_STYLE_FREQ_1"] = "全部时间, 不会OOC",
 	["REG_PLAYER_STYLE_FREQ_2"] = "大多数时间",
@@ -1088,7 +640,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_STYLE_ROMANCE"] = "接受角色浪漫史",
 	["REG_PLAYER_STYLE_RPSTYLE"] = "角色扮演风格",
 	["REG_PLAYER_STYLE_RPSTYLE_SHORT"] = "RP 风格",
-	["REG_PLAYER_STYLE_WOWXP"] = "魔兽世界经验",
 	["REG_PLAYER_TITLE"] = "头衔",
 	["REG_PLAYER_TITLE_TT"] = [=[你的角色的头衔是你的角色通常的称呼。请避免长头衔，你可以在下方输入完整的头衔。
 
@@ -1106,23 +657,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_TRP2_PIERCING"] = "刺环",
 	["REG_PLAYER_TRP2_TATTOO"] = "刺青",
 	["REG_PLAYER_TRP2_TRAITS"] = "面相",
-	["REG_PLAYER_TUTO_ABOUT_COMMON"] = [=[|cff00ff00角色主题音乐:|r
-你可以为你的角色选择一个 |cffffff00主题音乐|r . 可以把它作为其他人|cffffff00阅读你角色信息时的背景音乐|r。
-
-|cff00ff00Background:|r
-这是一个人物卡的 |cffffff00背景贴图|r .
-
-|cff00ff00模板:|r
-模板决定了你的人物信息的|cffffff00总体格式和叙述方法|r。
-|cffff9900只有选定的模板可以被其他玩家看到，因此不必完全填写。|r
-选择模板之后，你可以再次打开模板教学并获取关于各种模板的帮助。]=],
-	["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[这个部分提供了 |cffffff00 5个栏位|r 来描述 |cff00ff00关于您的角色的最重要的信息|r。
-
-这些槽会在其他人点击你的头像时显示在 |cffffff00"第一印象"|r 当中。
-
-|cff00ff00提示:您可以拖动栏位来重新排序.|r
-这也会显示在 |cffffff00"第一印象"|r!]=],
-	["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "这部分包含用来回答 |cffffff00许多人们可能问你的常见问题，关于你、你的角色、以及你希望和他/她的互动方式|r 的|cffffff00一些信息|r 。",
 	["REG_PLAYER_TUTO_ABOUT_T1"] = [=[这个模板允许您 |cff00ff00自由地组织您的描述|r。
 
 描述不必局限于您的角色 |cffff9900外貌|r. 可以自由描述他的 |cffff9900背景|r 或有关他的 |cffff9900人品/性格|r。
@@ -1165,20 +699,8 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_RELATION_TARGET"] = "|cffffff00Click:|r 改变关系",
 	["REG_RELATION_UNFRIENDLY"] = "不友善",
 	["REG_RELATION_UNFRIENDLY_TT"] = "%s 明显不喜欢 %s。",
-	["REG_REPORT_PLAYER_OPEN_URL"] = [=[你只能在能将其选定为目标的情况下直接举报一个玩家（使用TRP3框架的举报按钮）。
-
-	如果你希望举报 %s 但无法选定他，你必须用下方的链接向暴雪提交表单。]=],
-	["REG_REPORT_PLAYER_OPEN_URL_160"] = "如果你想举报%s的人物卡，你需要你通过下面的链接向暴雪提交表单。",
-	["REG_REPORT_PLAYER_PROFILE"] = "向 |cff449fe0暴雪|r举报玩家",
-	["REG_REPORT_PLAYER_PROFILE_TT"] = [=[你可以举报违反暴雪游戏条款的行为，包括但不限于骚扰，不当言论, 淫秽内容等。
-
-	|cffff0000请注意，本功能并非是用来举报不严谨的RP设定，滥用此功能将遭到惩罚！]=],
-	["REG_REPORT_PLAYER_TEMPLATE"] = "此玩家通过分享 %s 的RP插件信息违反了暴雪的游戏条款。",
-	["REG_REPORT_PLAYER_TEMPLATE_DATE"] = "插件数据是通过 %s 的信息传输的。",
 	["REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT"] = "这个玩家使用试玩账号。",
-	["REG_TIME"] = "最后一次露面的时间",
 	["REG_TRIAL_ACCOUNT"] = "试玩帐号",
-	["REG_TT_GUILD"] = "%s 属于 %s",
 	["REG_TT_GUILD_IC"] = "RP 成员",
 	["REG_TT_GUILD_OOC"] = "OOC 成员",
 	["REG_TT_IGNORED"] = "< 角色被忽略 >",
@@ -1188,34 +710,8 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_TT_NOTIF"] = "未读的描述",
 	["REG_TT_REALM"] = "服务器: |cffff9900%s",
 	["REG_TT_TARGET"] = "目标: |cffff9900%s",
-	["REG_TT_ZONE"] = "区域",
 	["SCRIPT_ERROR"] = "脚本错误。",
 	["SCRIPT_UNKNOWN_EFFECT"] = "脚本错误,未知的效果",
-	["SLASH_CMD_HELP_COMMANDS"] = "命令：%1$s",
-	["SLASH_CMD_HELP_EXAMPLES"] = "示例：%1$s",
-	["SLASH_CMD_HELP_FIELDS"] = "项目：%1$s",
-	["SLASH_CMD_HELP_USAGE"] = "用量：%1$s",
-	["SLASH_CMD_LOCATION_DISABLED"] = "角色位置广播已禁用。",
-	["SLASH_CMD_LOCATION_ENABLED"] = "角色位置广播已启用。",
-	["SLASH_CMD_LOCATION_FAILED"] = "未知位置指令：%s",
-	["SLASH_CMD_LOCATION_HELP"] = "控制你的角色是否出现在角色扮演地图搜索上。",
-	["SLASH_CMD_LOCATION_HELP_OFF"] = "%1$s将停止播报你角色的位置。",
-	["SLASH_CMD_LOCATION_HELP_ON"] = "%1$s将开始播报你角色的位置。",
-	["SLASH_CMD_LOCATION_HELP_STATUS"] = "%1$s将显示角色位置广播是否已启用。",
-	["SLASH_CMD_LOCATION_HELP_TOGGLE"] = "%1$s将切换角色位置广播的当前状态。",
-	["SLASH_CMD_SET_FAILED_DEFAULT_PROFILE"] = "你当前的角色卡无法更新，因其是默认角色卡。",
-	["SLASH_CMD_SET_FAILED_INVALID_COLOR"] = "无法更新%1$q项目：%2$q不是一个有效的颜色字符串。",
-	["SLASH_CMD_SET_FAILED_INVALID_FIELD"] = "找不到名为%1$q的角色卡项目。",
-	["SLASH_CMD_SET_FAILED_INVALID_ICON"] = "无法更新%1$q项目：%2$q不是一个有效的图标名称。",
-	["SLASH_CMD_SET_HELP"] = "改变你当前角色卡的某一项目的键值。",
-	["SLASH_CMD_SET_HELP_ARG1"] = "<field>",
-	["SLASH_CMD_SET_HELP_ARG2"] = "[macro conditionals]",
-	["SLASH_CMD_SET_HELP_ARG3"] = "<data...>",
-	["SLASH_CMD_SET_HELP_EXAMPLE1"] = "正在做和蝴蝶有关的白日梦",
-	["SLASH_CMD_SET_HELP_EXAMPLE2"] = "快乐的熊、愤怒的精灵",
-	["SLASH_CMD_SET_SUCCESS"] = "成功更新了你当前角色卡的%1$q项目。",
-	["SLASH_CMD_STATUS_HELP"] = "使用： |cff00ff00/trp3 status ic || ooc || toggle|r 将你的角色状态改变为以下几种： |cffff9900/trp3 status ic|r将改变你的角色状态为|cff00ff00扮演中|r。 |cffff9900/trp3 status ooc|r将改变你的角色状态为|cffff0000OOC|r。 |cffff9900/trp3 status toggle|r将直接将你的状态改为另一种。",
-	["SLASH_CMD_STATUS_USAGE"] = "IC || OOC || 转换",
 	["TB_AFK_MODE"] = "离开",
 	["TB_DND_MODE"] = "请勿打扰",
 	["TB_GO_TO_MODE"] = "切换到 %s 模式",
@@ -1249,13 +745,8 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["TF_PLAY_THEME_TT"] = [=[|cffffff00点击：|r 播放音乐 |cff00ff00%s
 	|cffffff00右击：|r 停止音乐]=],
 	["THANK_YOU_ROLE_AUTHOR"] = "作者",
-	["THANK_YOU_ROLE_COMMUNITY_MANAGER"] = "社区经理",
-	["THANK_YOU_ROLE_CONTRIBUTOR"] = "贡献者",
 	["THANK_YOU_ROLE_GUILD_MEMBER"] = "公会成员",
 	["THANK_YOU_ROLE_TESTER"] = "QA团队",
-	["TT_ELVUI_SKIN"] = "ElvUI（EUI） 皮肤",
-	["TT_ELVUI_SKIN_ENABLE_TARGET_FRAME"] = "目标框架皮肤",
-	["TT_ELVUI_SKIN_ENABLE_TOOLTIPS"] = "工具提示皮肤",
 	["UI_BKG"] = "背景 %s",
 	["UI_CLOSE_ALL"] = "关闭所有",
 	["UI_COLOR_BROWSER"] = "颜色浏览器",
@@ -1263,13 +754,8 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["UI_COLOR_BROWSER_PRESETS_BASIC"] = "基本",
 	["UI_COLOR_BROWSER_PRESETS_CLASSES"] = "职业",
 	["UI_COLOR_BROWSER_PRESETS_CUSTOM"] = "自定义",
-	["UI_COLOR_BROWSER_PRESETS_ITEMS"] = "物品品质",
-	["UI_COLOR_BROWSER_PRESETS_RESOURCES"] = "资源",
 	["UI_COLOR_BROWSER_SELECT"] = "选择颜色",
 	["UI_COMPANION_BROWSER_HELP"] = "选择一个战斗的宠物",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00警告:|r 只有重命名过的战斗宠物可以绑定到同伴卡。
-
-|cff00ff00此处仅列出符合条件的战斗宠物。]=],
 	["UI_FILTER"] = "筛选",
 	["UI_ICON_BROWSER"] = "图标浏览器",
 	["UI_ICON_BROWSER_HELP"] = "复制图标",
@@ -1290,48 +776,10 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 
 |cffff0000 ! !免责声明! !|r
 Total RP不对导致有害内容的链接负责。]=],
-	["UI_MUSIC_ALTTITLE"] = "其他标题",
 	["UI_MUSIC_BROWSER"] = "浏览音乐",
-	["UI_MUSIC_DURATION"] = "时长",
 	["UI_MUSIC_SELECT"] = "选择音乐",
-	["UI_PET_BROWSER_ACCEPT"] = "绑定",
-	["UI_PET_BROWSER_BOUND_WARNING"] = "|cffff0000警告：|r该宠物已经绑定了宠物卡|cff00ff00%1$s|r。绑定一张新的宠物卡将覆盖当前宠物卡。",
-	["UI_PET_BROWSER_EMPTY_TEXT"] = "你没有可以绑定宠物卡的宠物",
-	["UI_PET_BROWSER_INTRO_TEXT"] = "用下方按钮选择一个宠物并点击|cffffff00绑定|r来将其绑定到宠物卡",
-	["UI_PET_BROWSER_NAME_WARNING"] = "|cffff0000警告：|r该宠物没有命名，我们推荐对其命名以防它与你的其他同名宠物重复。",
 	["UI_TUTO_BUTTON"] = "教学模式",
-	["UI_TUTO_BUTTON_TT"] = "点击打开/关闭教程模式",
-	["UNIT_POPUPS_CHARACTER_STATUS"] = "角色状态",
-	["UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT"] = "战斗中隐藏菜单",
-	["UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT_HELP"] = "勾选后，将在战斗中隐藏额外的菜单选项。",
-	["UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES"] = "在副本中隐藏菜单。",
-	["UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES_HELP"] = "勾选后，将在副本中隐藏菜单选项。",
-	["UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES"] = "隐藏单位框体上的菜单",
-	["UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES_HELP"] = "勾选后，将隐藏右击单位框体时显示的额外菜单选项。",
-	["UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER"] = "OOC状态时隐藏菜单。",
-	["UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP"] = "勾选后，将在OOC状态下隐藏额外的菜单选项。",
-	["UNIT_POPUPS_CONFIG_ENABLE_MODULE"] = "模块|cff00ff00已启用|r",
-	["UNIT_POPUPS_CONFIG_ENTRIES_HEADER"] = "菜单项",
-	["UNIT_POPUPS_CONFIG_MENU_TITLE"] = "菜单设置",
-	["UNIT_POPUPS_CONFIG_PAGE_HELP"] = "单位框体模块会对团队框体和聊天框内右击玩家的动作产生一个右键菜单。",
-	["UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE"] = "|cffffcc00Note:|r 由于10.0版本编辑模式的问题，单位弹窗已暂时|cffff0000禁用|r。我们对带来的不便深表歉意！",
-	["UNIT_POPUPS_CONFIG_PAGE_TEXT"] = "菜单设置",
-	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS"] = "显示角色状态按钮",
-	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP"] = "如果勾选，将为你自己的角色头像添加一个可以修改IC/OOC状态的右键菜单。",
-	["UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT"] = "菜单项置顶",
-	["UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT_HELP"] = "如果勾选，将“角色扮演选项”菜单项置于任何菜单项之上。",
-	["UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE"] = "显示打开资料按钮",
-	["UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE_HELP"] = "如果勾选，添加一个能打开选定单位的RP资料的按钮。|n|n该按钮在团队框体和聊天框可用。",
-	["UNIT_POPUPS_CONFIG_SHOW_SEPARATOR"] = "显示分割线",
-	["UNIT_POPUPS_CONFIG_SHOW_SEPARATOR_HELP"] = "如果勾选，在其他菜单项之上显示一条分割线。",
-	["UNIT_POPUPS_CONFIG_VISIBILITY_HEADER"] = "可视程度设置",
-	["UNIT_POPUPS_CURRENT_PROFILE"] = "当前人物卡",
-	["UNIT_POPUPS_CURRENT_PROFILE_NAME"] = "当前人物卡：%1$s",
-	["UNIT_POPUPS_MODULE_DESCRIPTION"] = "添加团队框架和聊天框中的右键点击菜单。",
-	["UNIT_POPUPS_MODULE_DISABLE_WARNING"] = "关闭框体模块需要重载界面。.|n|n|cffff0000警告：|r 一旦关闭，该模块只能从|cffffcc00模块状态|r 页面重新启动。|n|n你确定要关闭该模块吗？",
-	["UNIT_POPUPS_MODULE_NAME"] = "单位弹窗",
-	["UNIT_POPUPS_OPEN_PROFILE"] = "打开人物卡",
-	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "角色扮演状态"
+	["UI_TUTO_BUTTON_TT"] = "点击打开/关闭教程模式"
 };
 
 TRP3_API.loc:RegisterNewLocale("zhCN", "简体中文", L);
