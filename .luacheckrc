@@ -455,12 +455,14 @@ stds.wow = {
 		"CreateFramePool",
 		"CreateFromMixins",
 		"CreateIndexRangeDataProvider",
+		"CreateMinimalSliderFormatter",
 		"CreateScrollBoxListGridView",
 		"CreateTextureMarkup",
 		"CreateVector2D",
 		"DisableAddOn",
 		"DoesTemplateExist",
 		"EventRegistry",
+		"ExecuteFrameScript",
 		"fastrandom",
 		"FCF_GetCurrentChatFrame",
 		"FindInTableIf",
@@ -508,6 +510,7 @@ stds.wow = {
 		"GetTime",
 		"GetTimePreciseSec",
 		"GetUnitName",
+		"GetValueOrCallFunction",
 		"GetZoneText",
 		"hooksecurefunc",
 		"InCombatLockdown",
@@ -623,11 +626,27 @@ stds.wow = {
 
 		-- Global Mixins and UI Objects
 
+		BackdropTemplateMixin = {
+			fields = {
+				"SetBackdropBorderColor",
+			},
+		},
+
 		ColorPickerFrame = {
 			fields = {
 				"GetColorRGB",
 				"SetColorRGB",
 				"SetupColorPickerAndShow",
+			},
+		},
+
+		MinimalSliderWithSteppersMixin = {
+			fields = {
+				Label = {
+					fields = {
+						"Left",
+					},
+				},
 			},
 		},
 
@@ -638,6 +657,7 @@ stds.wow = {
 		"ChatTypeInfo",
 		"FontableFrameMixin",
 		"GameFontDisableSmall",
+		"GameFontHighlight",
 		"GameFontHighlightSmall",
 		"GameFontNormal",
 		"GameFontNormalHuge",

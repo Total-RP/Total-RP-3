@@ -31,10 +31,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Button>
 
-	<Frame name="TRP3_GlanceBarTemplate" hidden="true" frameStrata="MEDIUM" enableMouse="true" virtual="true" inherits="BackdropTemplate">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_16_3353" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_GlanceBarTemplate" hidden="true" frameStrata="MEDIUM" enableMouse="true" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
 		<Size x="140" y="32" />
 		<Anchors>
 			<Anchor point="CENTER" relativePoint="CENTER" x="0" y="0" />

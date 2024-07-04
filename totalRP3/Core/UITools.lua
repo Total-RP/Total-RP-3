@@ -92,7 +92,9 @@ function TRP3_API.ui.frame.setBackdropToBackground(frame, index)
 	backdropInfo.tile = backgroundInfo.tile;
 	backdropInfo.tileSize = backgroundInfo.tileSize;
 
+	local borderColor = TRP3_API.CreateColor(frame:GetBackdropBorderColor());
 	frame:SetBackdrop(backdropInfo);
+	frame:SetBackdropBorderColor(borderColor:GetRGBA());
 end
 
 function TRP3_API.ui.frame.getTiledBackgroundList()
@@ -385,6 +387,7 @@ local function refreshTooltip(Frame)
 end
 TRP3_API.ui.tooltip.refresh = refreshTooltip;
 TRP3_RefreshTooltipForFrame = refreshTooltip; -- For XML integration without too much perf' issue
+TRP3_HideTooltipForFrame = TRP3_TooltipUtil.HideTooltip;
 
 local function tooltipSimpleOnEnter(self)
 	refreshTooltip(self);
@@ -669,21 +672,6 @@ function TRP3_API.ui.frame.setupIconButton(self, icon)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Fieldsets
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local FIELDSET_DEFAULT_CAPTION_WIDTH = 100;
-
-function TRP3_API.ui.frame.setupFieldPanel(fieldset, text, size)
-	if fieldset and _G[fieldset:GetName().."CaptionPanelCaption"] then
-		_G[fieldset:GetName().."CaptionPanelCaption"]:SetText(text);
-		if _G[fieldset:GetName().."CaptionPanel"] then
-			_G[fieldset:GetName().."CaptionPanel"]:SetWidth(size or FIELDSET_DEFAULT_CAPTION_WIDTH);
-		end
-	end
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Editboxes
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -716,32 +704,16 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local tabBar_index = 0;
-local tabBar_HEIGHT_SELECTED = 34;
-local tabBar_HEIGHT_NORMAL = 32;
 
 local function tabBar_onSelect(tabGroup, index)
 	assert(#tabGroup.tabs >= index, "Index out of bound.");
 	for i=1, #tabGroup.tabs do
 		local widget = tabGroup.tabs[i];
 		if i == index then
-			widget:SetAlpha(1);
-			widget:Disable();
-			widget:LockHighlight();
-			_G[widget:GetName().."Left"]:SetHeight(tabBar_HEIGHT_SELECTED);
-			_G[widget:GetName().."Middle"]:SetHeight(tabBar_HEIGHT_SELECTED);
-			_G[widget:GetName().."Right"]:SetHeight(tabBar_HEIGHT_SELECTED);
-			widget:GetHighlightTexture():SetAlpha(0.7);
-			widget:GetHighlightTexture():SetDesaturated(1);
+			widget:SetTabSelected(true);
 			tabGroup.current = index;
 		else
-			widget:SetAlpha(0.85);
-			widget:Enable();
-			widget:UnlockHighlight();
-			_G[widget:GetName().."Left"]:SetHeight(tabBar_HEIGHT_NORMAL);
-			_G[widget:GetName().."Middle"]:SetHeight(tabBar_HEIGHT_NORMAL);
-			_G[widget:GetName().."Right"]:SetHeight(tabBar_HEIGHT_NORMAL);
-			widget:GetHighlightTexture():SetAlpha(0.5);
-			widget:GetHighlightTexture():SetDesaturated(0);
+			widget:SetTabSelected(false);
 		end
 	end
 end
@@ -789,7 +761,7 @@ end
 local function tabBar_selectTab(tabGroup, index)
 	assert(tabGroup.tabs[index], "Tab index out of bound.");
 	assert(tabGroup.tabs[index]:IsShown(), "Try to select a hidden tab.");
-	tabGroup.tabs[index]:GetScript("OnClick")(tabGroup.tabs[index]);
+	ExecuteFrameScript(tabGroup.tabs[index], "OnClick");
 end
 
 function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback, confirmCallback)
@@ -801,14 +773,14 @@ function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback, confirmCallbac
 		local text = tabData[1];
 		local value = tabData[2];
 		local width = tabData[3];
-		local tabWidget = CreateFrame("Button", "TRP3_TabBar_Tab_" .. tabBar_index, tabBar, "TRP3_TabBar_Tab");
+		local tabWidget = CreateFrame("Button", "TRP3_TabBar_Tab_" .. tabBar_index, tabBar, "TRP3_TabButtonTemplate");
 		tabWidget:SetText(text);
 		tabWidget:SetWidth(width or (text:len() * 11));
 		local clickFunction = function()
 			tabBar_onSelect(tabGroup, index);
-				if callback then
-					callback(tabWidget, value);
-				end
+			if callback then
+				callback(tabWidget, value);
+			end
 		end
 		tabWidget:SetScript("OnClick", function()
 			if not confirmCallback then
@@ -816,6 +788,7 @@ function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback, confirmCallbac
 			else
 				confirmCallback(function() clickFunction() end);
 			end
+			TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
 		end);
 		tinsert(tabGroup.tabs, tabWidget);
 		tabBar_index = tabBar_index + 1;

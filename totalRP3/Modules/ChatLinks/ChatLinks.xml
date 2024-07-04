@@ -9,7 +9,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="ChatLinkTooltip.lua"/>
 
 	<Button name="TRP3_ChatLinkActionButton" inherits="UIPanelButtonTemplate" virtual="true" hidden="true" mixin="TRP3_ChatLinkActionButtonMixin">
-		<Size x="100" y="20"/>
+		<Size x="100" y="22"/>
 		<Scripts>
 			<OnLoad method="OnLoad"/>
 			<OnClick method="OnClick"/>

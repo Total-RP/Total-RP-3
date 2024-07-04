@@ -26,22 +26,10 @@ local selectMenu, unregisterMenu;
 local menuStructures = {};
 -- The currently selected menuId
 local selectedMenuId;
--- Placeholder for menu ui button
-local uiMenuWidgets = {};
 -- Determine the original top margin from where the first button is placed
 local marginTop = -5;
 -- Menu button height, determine the vertical gap between each button
 local buttonHeight = 25;
-
-local function onMenuClick(menu)
-	assert(menu.id, "Menu button does not have a attached menu id.");
-	selectMenu(menu.id);
-end
-
-local function onMenuClosed(menu)
-	assert(menu:GetParent().id, "Menu button does not have a attached menu id.");
-	unregisterMenu(menu:GetParent().id);
-end
 
 local function isCloseable(menuID)
 	return menuStructures[menuID] and menuStructures[menuID].closeable;
@@ -58,13 +46,13 @@ end
 
 local closeAllButton = CreateFrame("Button", "TRP3_MainFrameMenuButtonCloseAll", TRP3_MainFrameMenuContainer, "TRP3_CommonButton");
 
+local MainMenuButtonPool = CreateFramePool("Button", TRP3_MainFrameMenuContainer, "TRP3_CategoryButton");
+
 -- The menu is built by SORTED menu item key.
 local function rebuildMenu()
 	-- Hide all
 	closeAllButton:Hide();
-	for _, widget in pairs(uiMenuWidgets) do
-		widget:Hide();
-	end
+	MainMenuButtonPool:ReleaseAll();
 
 	-- Sort menu by name
 	-- Only take visible menu
@@ -77,58 +65,38 @@ local function rebuildMenu()
 	table.sort(ids);
 
 	local closeableChildCount = 0;
-	local index = 0;
 	local y = marginTop;
 	for i, id in pairs(ids) do
 		local menuStructure = menuStructures[id];
 		-- if Top button || Selected parent || Selected sibling
 		if not menuStructure.isChildOf or menuStructure.isChildOf == selectedMenuId or (selectedMenuId and menuStructures[selectedMenuId].isChildOf == menuStructure.isChildOf) then
-			local uiButton = uiMenuWidgets[index+1];
-			if uiButton == nil then -- Create the button
-				uiButton = CreateFrame("Button", "TRP3_MainFrameMenuButton"..index, TRP3_MainFrameMenuContainer, "TRP3_CategoryButton");
-				uiButton:SetScript("OnClick", onMenuClick);
-				_G[uiButton:GetName().."Close"]:SetScript("OnClick", onMenuClosed);
-				tinsert(uiMenuWidgets, uiButton);
-			end
-			uiButton:Enable();
-			uiButton:UnlockHighlight();
+			local button = MainMenuButtonPool:Acquire();
+			button:SetCloseCallback(nil);
+			button:SetScript("OnClick", function() selectMenu(id); end);
+			button:SetSelected((id == selectedMenuId));
+			button:SetIcon(menuStructure.icon);
+			button:SetText(menuStructure.text);
 
-			if id == selectedMenuId then
-				uiButton:Disable();
-				uiButton:LockHighlight();
-			end
-			uiButton:ClearAllPoints();
-
-			local label = _G[uiButton:GetName().."Label"];
-			local close = _G[uiButton:GetName().."Close"];
-			close:Hide();
 			if menuStructure.isChildOf then
-				uiButton:SetPoint("LEFT", 30, y);
-				uiButton:SetPoint("RIGHT", -15, y);
-				label:SetTextColor(HIGHLIGHT_FONT_COLOR:GetRGB());
-				label:SetJustifyH(menuStructure.align or "RIGHT");
+				button:SetJustifyH(menuStructure.align or "RIGHT");
+				button:SetDisabledFontObject(GameFontHighlightSmall);
+				button:SetNormalFontObject(GameFontHighlightSmall);
+				button:SetPoint("LEFT", 30, y);
+				button:SetPoint("RIGHT", -15, y);
+
 				if isCloseable(id) then
 					closeableChildCount = closeableChildCount + 1;
-					close:Show();
+					button:SetCloseCallback(function() unregisterMenu(id); end);
 				end
 			else
-				uiButton:SetPoint("LEFT", 0, y);
-				uiButton:SetPoint("RIGHT", -15, y);
-				label:SetTextColor(NORMAL_FONT_COLOR:GetRGB());
-				label:SetJustifyH(menuStructure.align or "LEFT");
-			end
-			label:SetText(menuStructure.text);
-
-			local icon = _G[uiButton:GetName().."Icon"];
-			icon:Hide();
-			if menuStructure.icon then
-				icon:Show();
-				icon:SetTexture(menuStructure.icon);
+				button:SetJustifyH(menuStructure.align or "LEFT");
+				button:SetDisabledFontObject(GameFontNormal);
+				button:SetNormalFontObject(GameFontNormal);
+				button:SetPoint("LEFT", 0, y);
+				button:SetPoint("RIGHT", -15, y);
 			end
 
-			uiButton:Show();
-			uiButton.id = id;
-			index = index + 1;
+			button:Show();
 			y = y - buttonHeight;
 
 			if closeableChildCount > 0 and menuStructure.isChildOf and menuStructures[menuStructure.isChildOf].closeable and (not ids[i + 1] or not menuStructures[ids[i + 1]].isChildOf) then

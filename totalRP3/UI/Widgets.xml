@@ -5,15 +5,19 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
+	<Include file="Backdrop.xml"/>
 	<Include file="LocalizedText.xml"/>
 	<Include file="ScrollingEditBox.xml"/>
 	<Include file="FocusRegion.xml"/>
 	<Include file="StyledButton.xml"/>
+	<Include file="GroupBox.xml"/>
+	<Include file="TabSystem.xml"/>
 	<Include file="RegionResizeTemplate.xml"/>
 	<Include file="FontUtil.lua"/>
 	<Include file="TooltipUtil.lua"/>
 	<Include file="Widgets.lua"/>
 	<Include file="Menu\Menu.xml"/>
+	<Include file="IconTemplates.xml"/>
 
 	<GameTooltip name="TRP3_TooltipTemplate" mixin="TRP3_TooltipMixin" inherits="GameTooltipTemplate" virtual="true"/>
 
@@ -55,7 +59,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Common red Wow button template  -->
 	<Button name="TRP3_CommonButton" inherits="UIPanelButtonTemplate" virtual="true">
-		<Size x="90" y="20"/>
+		<Size x="90" y="22"/>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
@@ -156,104 +160,60 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Button>
 
 	<!-- Category button -->
-	<Button name="TRP3_CategoryButton" virtual="true">
+	<Button name="TRP3_CategoryButton" mixin="TRP3_CategoryButtonMixin" motionScriptsWhileDisabled="true" virtual="true">
 		<Size x="158" y="24"/>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="$parentBackground" file="Interface\AchievementFrame\UI-Achievement-Category-Background">
+				<Texture parentKey="Background" file="Interface\AchievementFrame\UI-Achievement-Category-Background">
 					<Size x="170" y="32"/>
 					<Anchors>
 						<Anchor point="TOPLEFT"/>
 						<Anchor point="TOPRIGHT"/>
 					</Anchors>
 					<TexCoords left="0" right="0.6640625" top="0" bottom="1"/>
+					<TextureSliceMargins left="16" top="16" bottom="16" right="16"/>
+					<TextureSliceMode mode="Stretched"/>
 				</Texture>
 			</Layer>
 			<Layer level="BORDER">
-				<Texture name="$parentIcon" file="Interface\ICONS\INV_Misc_QuestionMark" hidden="true">
+				<Texture parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark" hidden="true">
 					<Size x="16" y="16"/>
 					<Anchors>
-						<Anchor point="LEFT" x="9" y="-2"/>
+						<Anchor point="LEFT" x="10" y="-2"/>
 					</Anchors>
 				</Texture>
 			</Layer>
-			<Layer level="ARTWORK">
-				<FontString name="$parentLabel" inherits="GameFontNormal" wordwrap="false" justifyH="CENTER">
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="24" y="2"/>
-						<Anchor point="TOPRIGHT" x="-16" y="-6"/>
-					</Anchors>
-				</FontString>
-			</Layer>
 		</Layers>
-		<HighlightTexture file="Interface\AchievementFrame\UI-Achievement-Category-Highlight" alphaMode="ADD">
-			<Anchors>
-				<Anchor point="TOPLEFT" x="0" y="0"/>
-				<Anchor point="BOTTOMRIGHT" x="-1" y="-7"/>
-			</Anchors>
-			<TexCoords left="0" right="0.6640625" top="0" bottom="1"/>
-		</HighlightTexture>
 		<Frames>
-			<Button name="$parentClose" inherits="TRP3_CloseButton">
+			<Button parentKey="CloseButton" inherits="TRP3_CloseButton">
 				<Anchors>
 					<Anchor point="RIGHT" relativePoint="LEFT" x="5" y="-2"/>
 				</Anchors>
 			</Button>
 		</Frames>
-	</Button>
-
-	<Slider name="TRP3_Slider" inherits="OptionsSliderTemplate" virtual="true">
-		<Size x="140" y="15"/>
-		<Layers>
-			<Layer level="OVERLAY">
-				<FontString name="$parentValText" inherits="GameFontNormal" justifyH="CENTER" text="[value]">
-					<Size x="0" y="10"/>
-					<Anchors>
-						<Anchor point="LEFT"/>
-						<Anchor point="RIGHT"/>
-					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
-				</FontString>
-			</Layer>
-		</Layers>
+		<ButtonText parentKey="Text" wordwrap="false" justifyH="CENTER">
+			<Anchors>
+				<Anchor point="TOPLEFT" x="24" y="-6"/>
+				<Anchor point="BOTTOMRIGHT" x="-16" y="2"/>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="GameFontNormal"/>
+		<DisabledFont style="GameFontNormal"/>
+		<HighlightTexture file="Interface\AchievementFrame\UI-Achievement-Category-Highlight" alphaMode="ADD">
+			<Anchors>
+				<Anchor point="TOPLEFT"/>
+				<Anchor point="TOPRIGHT"/>
+			</Anchors>
+			<TexCoords left="0" right="0.6640625" top="0" bottom="1"/>
+			<TextureSliceMargins left="16" top="16" bottom="16" right="16"/>
+			<TextureSliceMode mode="Stretched"/>
+		</HighlightTexture>
 		<Scripts>
-			<OnEnter>
-				TRP3_RefreshTooltipForFrame(self);
-			</OnEnter>
-			<OnLeave>
-				TRP3_MainTooltip:Hide();
-			</OnLeave>
+			<OnLoad method="OnLoad"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
 		</Scripts>
-	</Slider>
-
-	<!-- A bordered frame with a title -->
-	<Frame name="TRP3_FieldSetFrame" virtual="true" inherits="BackdropTemplate">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_380_16_3333" type="global"/>
-		</KeyValues>
-		<Frames>
-			<Frame name="$parentCaptionPanel" parentKey="caption" inherits="BackdropTemplate">
-				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_BANK_TOOLTIP_100_16_4222" type="global"/>
-				</KeyValues>
-				<Size x="150" y="23"/>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString name="$parentCaption" text="[Caption text]" inherits="GameFontNormal" wordwrap="false">
-							<Anchors>
-								<Anchor point="LEFT" x="10" y="0"/>
-								<Anchor point="RIGHT" x="-10" y="0"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95"/>
-						</FontString>
-					</Layer>
-				</Layers>
-				<Anchors>
-					<Anchor point="TOPLEFT" x="16" y="10"/>
-				</Anchors>
-			</Frame>
-		</Frames>
-	</Frame>
+	</Button>
 
 	<!-- A bordered icon -->
 	<Frame name="TRP3_SimpleIcon" virtual="true">
@@ -272,30 +232,27 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Titled edit box, TRP2 style -->
 	<EditBox name="TRP3_TitledEditBox" letters="0" historyLines="10" autoFocus="false" virtual="true">
-		<Size x="100" y="18"/>
+		<Size x="100" y="20"/>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture parentKey="Left" file="Interface\Common\Common-Input-Border">
-					<Size x="12" y="28"/>
+				<Texture parentKey="Left" atlas="common-search-border-left" useAtlasSize="false">
+					<Size x="8" y="20"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" x="-5" y="0"/>
+						<Anchor point="LEFT" x="-5" y="0"/>
 					</Anchors>
-					<TexCoords left="0" right="0.09375" top="0" bottom="1.0"/>
 				</Texture>
-				<Texture parentKey="Right" file="Interface\Common\Common-Input-Border">
-					<Size x="12" y="28"/>
+				<Texture parentKey="Right" atlas="common-search-border-right">
+					<Size x="8" y="20"/>
 					<Anchors>
-						<Anchor point="TOPRIGHT" x="5" y="0"/>
+						<Anchor point="RIGHT" x="0" y="0"/>
 					</Anchors>
-					<TexCoords left="0.90625" right="1.0" top="0" bottom="1.0"/>
 				</Texture>
-				<Texture parentKey="Center" file="Interface\Common\Common-Input-Border">
-					<Size x="0" y="28"/>
+				<Texture parentKey="Middle" atlas="common-search-border-middle">
+					<Size x="10" y="20"/>
 					<Anchors>
 						<Anchor point="LEFT" relativeKey="$parent.Left" relativePoint="RIGHT"/>
 						<Anchor point="RIGHT" relativeKey="$parent.Right" relativePoint="LEFT"/>
 					</Anchors>
-					<TexCoords left="0.09375" right="0.90625" top="0" bottom="1.0"/>
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
@@ -360,90 +317,41 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</EditBox>
 
-	<!-- Checkbox with small label and TT compatible -->
-	<CheckButton name="TRP3_CheckBox" inherits="InterfaceOptionsCheckButtonTemplate" virtual="true" checked="false">
+	<CheckButton name="TRP3_CheckBox" checked="false" virtual="true">
+		<Size x="27" y="26"/>
+		<NormalTexture atlas="checkbox-minimal" useAtlasSize="true"/>
+		<PushedTexture atlas="checkbox-minimal" useAtlasSize="true"/>
+		<CheckedTexture atlas="checkmark-minimal" useAtlasSize="true"/>
+		<DisabledCheckedTexture atlas="checkmark-minimal-disabled" useAtlasSize="true"/>
+		<ButtonText parentKey="Text">
+			<Anchors>
+				<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0"/>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="GameFontNormalSmall"/>
+		<DisabledFont style="GameFontDisableSmall"/>
 		<Scripts>
-			<OnLoad>
-				self.Text = _G[self:GetName() .. "Text"];
-				self.Text:SetFontObject(GameFontNormalSmall);
-			</OnLoad>
-			<OnEnter>
-				TRP3_RefreshTooltipForFrame(self);
-			</OnEnter>
-			<OnLeave>
-				TRP3_MainTooltip:Hide();
-			</OnLeave>
-			<OnClick/>
+			<OnEnter function="TRP3_RefreshTooltipForFrame"/>
+			<OnLeave function="TRP3_HideTooltipForFrame"/>
 			<PostClick>
 				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			</PostClick>
 		</Scripts>
 	</CheckButton>
 
-	<!-- Tab bar tab button -->
-	<Button name="TRP3_TabBar_Tab" virtual="true">
-		<Size x="10" y="32"/>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture name="$parentLeft" file="Interface\CHATFRAME\ChatFrameTabUnsel-BGLeft">
-					<Size x="25" y="32"/>
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="0" y="0"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="0.3" bottom="1"/>
-				</Texture>
-				<Texture name="$parentRight" file="Interface\CHATFRAME\ChatFrameTabUnsel-BGRight">
-					<Size x="25" y="32"/>
-					<Anchors>
-						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="0.3" bottom="1"/>
-				</Texture>
-				<Texture name="$parentMiddle" file="Interface\CHATFRAME\ChatFrameTabUnsel-BGMid">
-					<Anchors>
-						<Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="TOPRIGHT"/>
-						<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight" relativePoint="BOTTOMLEFT"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="0.3" bottom="1"/>
-				</Texture>
-			</Layer>
-		</Layers>
-		<ButtonText name="$parentText">
-			<Size x="0" y="32"/>
-			<Anchors>
-				<Anchor point="CENTER">
-					<Offset x="0" y="-2"/>
-				</Anchor>
-			</Anchors>
-		</ButtonText>
-		<NormalFont style="GameFontHighlightSmall"/>
-		<HighlightFont style="GameFontHighlightSmall"/>
-		<DisabledFont style="GameFontHighlight"/>
-		<HighlightTexture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight-yellow" alphaMode="ADD">
-			<Anchors>
-				<Anchor point="TOPLEFT">
-					<Offset x="5" y="-2"/>
-				</Anchor>
-				<Anchor point="BOTTOMRIGHT">
-					<Offset x="-5" y="-2"/>
-				</Anchor>
-			</Anchors>
-		</HighlightTexture>
-		<Scripts>
-			<PostClick>
-				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
-			</PostClick>
-		</Scripts>
-	</Button>
-
 	<Frame name="TRP3_TextAreaBase" mixin="TRP3_TextAreaBaseMixin" virtual="true" enableMouse="true">
 		<Frames>
-			<ScrollFrame parentKey="scroll" name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
+			<ScrollFrame parentKey="scroll" name="$parentScroll" inherits="ScrollFrameTemplate">
+				<KeyValues>
+					<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
+					<KeyValue key="scrollBarX" value="-12" type="number"/>
+					<KeyValue key="scrollBarTopY" value="-4" type="number"/>
+					<KeyValue key="scrollBarBottomY" value="4" type="number"/>
+					<KeyValue key="scrollBarHideIfUnscrollable" value="false" type="boolean"/>
+				</KeyValues>
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-10"/>
-					<Anchor point="BOTTOM" x="0" y="10"/>
-					<Anchor point="LEFT" x="15" y="0"/>
-					<Anchor point="RIGHT" x="-18" y="0"/>
+					<Anchor point="TOPLEFT" x="8" y="-6"/>
+					<Anchor point="BOTTOMRIGHT" x="-8" y="4"/>
 				</Anchors>
 				<ScrollChild>
 					<EditBox name="$parentText" mixin="TRP3_TextAreaBaseEditBoxMixin" parentKey="text" multiLine="true" enableMouse="false" autoFocus="false">
@@ -482,65 +390,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Text area -->
 	<Frame name="TRP3_TextArea" inherits="TRP3_TextAreaBase" virtual="true" enableMouse="true">
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture file="Interface\DialogFrame\UI-DialogBox-Background" horizTile="true" vertTile="true">
-					<Anchors>
-						<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="3" y="-4"/>
-						<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-5" y="2"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer level="BORDER" textureSubLevel="1">
-				<Texture name="$parentInsetBotLeftCorner" inherits="UI-Frame-InnerBotLeftCorner" parentKey="InsetBorderBottomLeft">
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="2" y="0"/>
-					</Anchors>
-				</Texture>
-				<Texture name="$parentInsetBotRightCorner" inherits="UI-Frame-InnerBotRight" parentKey="InsetBorderBottomRight">
-					<Anchors>
-						<Anchor point="BOTTOMRIGHT" x="-3" y="0"/>
-					</Anchors>
-				</Texture>
-				<Texture name="$parentInsetTopLeftCorner" inherits="UI-Frame-InnerTopLeft" parentKey="InsetBorderTopLeft">
-					<Anchors>
-						<Anchor point="TOPLEFT" x="2" y="-3"/>
-					</Anchors>
-				</Texture>
-				<Texture name="$parentInsetTopRightCorner" inherits="UI-Frame-InnerTopRight" parentKey="InsetBorderTopmRight">
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-3" y="-3"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer level="BORDER">
-				<Texture name="$parentInsetBottomBorder" inherits="_UI-Frame-InnerBotTile" parentKey="InsetBorderBottom">
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" relativeKey="$parent.InsetBorderBottomLeft" relativePoint="BOTTOMRIGHT"/>
-						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.InsetBorderBottomRight" relativePoint="BOTTOMLEFT"/>
-					</Anchors>
-				</Texture>
-
-				<Texture name="$parentInsetLeftBorder" inherits="!UI-Frame-InnerLeftTile" parentKey="InsetBorderLeft">
-					<Anchors>
-						<Anchor point="TOPLEFT" x="2" y="-3"/>
-						<Anchor point="BOTTOMLEFT" relativeKey="$parent.InsetBorderBottomLeft" relativePoint="TOPLEFT"/>
-					</Anchors>
-				</Texture>
-				<Texture name="$parentInsetRightBorder" inherits="!UI-Frame-InnerRightTile" parentKey="InsetBorderRight">
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-3" y="-3"/>
-						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.InsetBorderBottomRight" relativePoint="TOPRIGHT"/>
-					</Anchors>
-				</Texture>
-				<Texture name="$parentInsetTopBorder" inherits="_UI-Frame-InnerTopTile" parentKey="InsetBorderBottom">
-					<Anchors>
-						<Anchor point="TOPLEFT" relativeKey="$parent.InsetBorderLeft" relativePoint="TOPLEFT"/>
-						<Anchor point="TOPRIGHT" relativeKey="$parent.InsetBorderRight" relativePoint="TOPRIGHT"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
+		<Frames>
+			<Frame parentKey="InsetFrame" inherits="InsetFrameTemplate3" setAllPoints="true" useParentLevel="true"/>
+		</Frames>
 	</Frame>
 
 	<!-- Color picker button -->
@@ -662,9 +514,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<!-- More classic style hovered frame -->
-	<Frame name="TRP3_AltHoveredFrame" virtual="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_AltHoveredFrame" virtual="true" inherits="TRP3_DialogBackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_GOLD_DIALOG_0_26" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Size x="220" y="100"/>
 		<Layers>

@@ -6,7 +6,7 @@ local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Even
 local loc = TRP3_API.loc;
 local registerPage = TRP3_API.navigation.page.registerPage;
 local companionIDToInfo = TRP3_API.utils.str.companionIDToInfo;
-local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
+
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
@@ -191,7 +191,7 @@ function displayConsult(context)
 
 	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetText("|cff" .. (dataTab.NH or "ffffff") .. (dataTab.NA or UNKNOWN));
 	TRP3_CompanionsPageInformationConsult_NamePanel_Title:SetText(dataTab.TI or "");
-	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_Icon, dataTab.IC or TRP3_InterfaceIcons.ProfileDefault);
+	TRP3_CompanionsPageInformationConsult_NamePanel.Icon:SetIconTexture(dataTab.IC or TRP3_InterfaceIcons.ProfileDefault);
 
 	for i=1,5 do
 		local glanceData = (context.profile.PE or {})[tostring(i)] or {};
@@ -419,9 +419,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_CompanionsPageInformationEdit_NamePanel_Icon:SetScript("OnClick", function() showIconBrowser(onPlayerIconSelected, draftData.IC) end );
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameColor.onSelection = onNameColorSelected;
 
-	setupFieldSet(TRP3_CompanionsPageInformationConsult_NamePanel, loc.REG_PLAYER_NAMESTITLES, 150);
-	setupFieldSet(TRP3_CompanionsPageInformationConsult_Glance, loc.REG_PLAYER_GLANCE, 150);
-	setupFieldSet(TRP3_CompanionsPageInformationConsult_About, loc.REG_PLAYER_ABOUT, 150);
+	TRP3_CompanionsPageInformationConsult_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
+	TRP3_CompanionsPageInformationConsult_Glance:SetTitleText(loc.REG_PLAYER_GLANCE);
+	TRP3_CompanionsPageInformationConsult_About:SetTitleText(loc.REG_PLAYER_ABOUT);
 	TRP3_CompanionsPageInformationConsult_About_Empty:SetText(loc.REG_PLAYER_ABOUT_EMPTY);
 	TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:SetText(loc.CM_EDIT);
 	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, TRP3_InterfaceIcons.Gears);
@@ -429,8 +429,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton:SetScript("OnClick", onActionClick);
 
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationEdit_NamePanel_NameColor, "RIGHT", 0, 5, loc.REG_COMPANION_NAME_COLOR, loc.REG_PLAYER_COLOR_TT);
-	setupFieldSet(TRP3_CompanionsPageInformationEdit_NamePanel, loc.REG_PLAYER_NAMESTITLES, 150);
-	setupFieldSet(TRP3_CompanionsPageInformationEdit_About, loc.REG_PLAYER_ABOUT, 150);
+	TRP3_CompanionsPageInformationEdit_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
+	TRP3_CompanionsPageInformationEdit_About:SetTitleText(loc.REG_PLAYER_ABOUT);
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameFieldText:SetText(loc.REG_COMPANION_NAME);
 	TRP3_CompanionsPageInformationEdit_NamePanel_TitleFieldText:SetText(loc.REG_COMPANION_TITLE);
 	TRP3_CompanionsPageInformationEdit_NamePanel_CancelButton:SetText(loc.CM_CANCEL);
@@ -452,8 +452,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	for index=1,5,1 do
 		-- DISPLAY
 		local button = _G["TRP3_CompanionsPageInformationConsult_GlanceSlot" .. index];
-		button:SetDisabledTexture("Interface\\ICONS\\" .. TRP3_InterfaceIcons.Default);
-		button:GetDisabledTexture():SetDesaturated(1);
 		button:SetScript("OnClick", TRP3_API.register.glance.onGlanceSlotClick);
 		button:SetScript("OnDoubleClick", TRP3_API.register.glance.onGlanceDoubleClick);
 		button:RegisterForClicks("LeftButtonUp", "RightButtonUp");

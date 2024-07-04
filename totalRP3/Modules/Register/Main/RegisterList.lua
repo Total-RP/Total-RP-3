@@ -16,7 +16,6 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local isMenuRegistered = TRP3_API.navigation.menu.isMenuRegistered;
 local registerMenu, selectMenu, openMainFrame = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu, TRP3_API.navigation.openMainFrame;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
-local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local getUnitIDCharacter = TRP3_API.register.getUnitIDCharacter;
 local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 local hasProfile = TRP3_API.register.hasProfile;
@@ -399,7 +398,8 @@ local function getCharacterLines()
 			TRP3_RegisterListEmpty:SetText(loc.REG_LIST_CHAR_EMPTY2);
 		end
 	end
-	setupFieldSet(TRP3_RegisterListCharactFilter, loc.REG_LIST_CHAR_FILTER:format(lineSize, fullSize), 200);
+	TRP3_RegisterListCharactFilter:SetTitleText(loc.REG_LIST_CHAR_FILTER:format(lineSize, fullSize));
+	TRP3_RegisterListCharactFilter:SetTitleWidth(200);
 
 	local nameArrow, relationArrow, timeArrow = getComparatorArrows();
 	TRP3_RegisterListHeaderName:SetText(loc.REG_PLAYER .. nameArrow);
@@ -661,7 +661,8 @@ local function getCompanionLines()
 			TRP3_RegisterListEmpty:SetText(loc.REG_LIST_PETS_EMPTY2);
 		end
 	end
-	setupFieldSet(TRP3_RegisterListPetFilter, loc.REG_LIST_PETS_FILTER:format(lineSize, fullSize), 200);
+	TRP3_RegisterListPetFilter:SetTitleText(loc.REG_LIST_PETS_FILTER:format(lineSize, fullSize))
+	TRP3_RegisterListPetFilter:SetTitleWidth(200);
 
 	local nameArrow = getComparatorArrows();
 	TRP3_RegisterListHeaderName:SetText(loc.REG_COMPANION .. nameArrow);
@@ -966,8 +967,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	setTooltipForSameFrame(TRP3_RegisterListCharactFilterButton, "LEFT", 0, 5, loc.REG_LIST_FILTERS, loc.REG_LIST_FILTERS_TT);
 	TRP3_RegisterListFilterCharactNameText:SetText(loc.REG_LIST_NAME);
 	TRP3_RegisterListFilterCharactGuildText:SetText(loc.REG_LIST_GUILD);
-	TRP3_RegisterListFilterCharactRealmText:SetText(loc.REG_LIST_REALMONLY);
-	TRP3_RegisterListFilterCharactNotesText:SetText(loc.REG_LIST_NOTESONLY);
+	TRP3_RegisterListFilterCharactRealm:SetText(loc.REG_LIST_REALMONLY);
+	TRP3_RegisterListFilterCharactNotes:SetText(loc.REG_LIST_NOTESONLY);
 	TRP3_RegisterListHeaderAddon:SetText(loc.REG_LIST_ADDON);
 	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListFilterCharactName, TRP3_RegisterListFilterCharactGuild});
 

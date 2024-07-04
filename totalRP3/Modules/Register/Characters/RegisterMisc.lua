@@ -10,7 +10,6 @@ local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
-local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -187,12 +186,17 @@ local GLANCE_NOT_USED_ICON = TRP3_InterfaceIcons.Default;
 local function setupGlanceButton(button, active, icon, title, text, isMine)
 	button:Enable();
 	button.isCurrentMine = isMine;
-	button:SetNormalTexture("Interface\\ICONS\\" .. (icon or GLANCE_NOT_USED_ICON));
 	if active then
 		button:SetAlpha(1);
+		button:SetIconTexture(icon or GLANCE_NOT_USED_ICON);
+		button.Icon:SetAlpha(1);
+		button.Icon:SetDesaturated(false);
 		setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", text or "");
 	else
-		button:SetAlpha(0.1);
+		button:SetAlpha(isMine and 1 or 0.1);
+		button:SetIconTexture(GLANCE_NOT_USED_ICON);
+		button.Icon:SetAlpha(isMine and 0.75 or 1);
+		button.Icon:SetDesaturated(true);
 		if not isMine then
 			button:Disable();
 		else
@@ -448,8 +452,8 @@ function TRP3_API.register.inits.miscInit()
 	buildStyleStructure();
 	createTutorialStructure();
 
-	setupFieldSet(TRP3_RegisterMiscViewGlance, loc.REG_PLAYER_GLANCE, 150);
-	setupFieldSet(TRP3_RegisterMiscViewCurrently, loc.REG_PLAYER_STATUS, 150);
+	TRP3_RegisterMiscViewGlance:SetTitleText(loc.REG_PLAYER_GLANCE);
+	TRP3_RegisterMiscViewCurrently:SetTitleText(loc.REG_PLAYER_STATUS);
 	TRP3_AtFirstGlanceEditorApply:SetText(loc.CM_APPLY);
 	TRP3_AtFirstGlanceEditorNameText:SetText(loc.REG_PLAYER_GLANCE_TITLE);
 	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc.REG_PLAYER_STYLE_EMPTY);
@@ -469,8 +473,6 @@ function TRP3_API.register.inits.miscInit()
 	for index=1,5,1 do
 		-- DISPLAY
 		local button = _G["TRP3_RegisterMiscViewGlanceSlot" .. index];
-		button:SetDisabledTexture("Interface\\ICONS\\" .. GLANCE_NOT_USED_ICON);
-		button:GetDisabledTexture():SetDesaturated(1);
 		button:SetScript("OnClick", TRP3_API.register.glance.onGlanceSlotClick);
 		button:SetScript("OnDoubleClick", TRP3_API.register.glance.onGlanceDoubleClick);
 		button:RegisterForClicks("LeftButtonUp", "RightButtonUp");
@@ -482,7 +484,7 @@ function TRP3_API.register.inits.miscInit()
 	end
 
 	-- RP style
-	setupFieldSet(TRP3_RegisterMiscViewRPStyle, loc.REG_PLAYER_STYLE_RPSTYLE, 150);
+	TRP3_RegisterMiscViewRPStyle:SetTitleText(loc.REG_PLAYER_STYLE_RPSTYLE);
 
 	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 		if getCurrentPageID() == "player_main" and unitID == Globals.player_id and (not dataType or dataType == "misc") then

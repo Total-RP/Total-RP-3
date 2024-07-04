@@ -7,7 +7,7 @@ local L = TRP3_API.loc;
 TRP3_AutomationSettingsMixin = {};
 
 function TRP3_AutomationSettingsMixin:OnLoad()
-	self:TooltipBackdropOnLoad();
+	self:OnBackdropLoaded();
 
 	self.TitleText:SetText(L.AUTOMATION_MODULE_SETTINGS_TITLE);
 	self.DescriptionText:SetText(L.AUTOMATION_MODULE_DESCRIPTION);
@@ -31,13 +31,15 @@ function TRP3_AutomationSettingsMixin:OnLoad()
 	self.EditorScrollBar = self.Editor.ScrollBar;
 
 	local scrollBoxAnchorsWithBar = {
-		AnchorUtil.CreateAnchor("TOPLEFT", self.Editor, "TOPLEFT", 8, -8),
-		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self.EditorScrollBar, "BOTTOMLEFT", -4, 4),
+		AnchorUtil.CreateAnchor("TOPLEFT", self.Editor, "TOPLEFT", 8, -6),
+		AnchorUtil.CreateAnchor("BOTTOM", self.Editor, "BOTTOM", -8, 4),
+		AnchorUtil.CreateAnchor("RIGHT", self.EditorScrollBar, "LEFT", -8, 0),
 	};
 
 	local scrollBoxAnchorsWithoutBar = {
 		scrollBoxAnchorsWithBar[1],
-		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self.Editor, "BOTTOMRIGHT", -8, 8),
+		scrollBoxAnchorsWithBar[2],
+		AnchorUtil.CreateAnchor("RIGHT", self.Editor, "RIGHT", -8, 0),
 	};
 
 	ScrollUtil.RegisterScrollBoxWithScrollBar(self.EditorScrollBox, self.EditorScrollBar);

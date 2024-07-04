@@ -114,16 +114,16 @@ local function buildConfigurationPage(structure)
 
 		-- Titles
 		if element.title then
-			if _G[widget:GetName().."Title"] then
-				_G[widget:GetName().."Title"]:SetText(element.title);
-			elseif element.title and _G[widget:GetName().."Text"] then
-				_G[widget:GetName().."Text"]:SetText(element.title);
+			if widget.Title then
+				widget.Title:SetText(element.title);
+			elseif element.title and widget.Text then
+				widget.Text:SetText(element.title);
 			end
 		end
 
 		-- Help
-		if _G[widget:GetName().."Help"] then
-			local help = _G[widget:GetName().."Help"];
+		if widget.Help then
+			local help = widget.Help;
 			if element.help then
 				help:Show();
 				setTooltipForFrame(help, "RIGHT", 0, 5, element.title, element.help);
@@ -133,9 +133,9 @@ local function buildConfigurationPage(structure)
 		end
 
 		-- Specific for Dropdown
-		if _G[widget:GetName().."DropDown"] then
-			local dropDown = _G[widget:GetName().."DropDown"];
-			element.controller = dropDown;
+		if widget.Dropdown then
+			local dropdown = widget.Dropdown;
+			element.controller = dropdown;
 			if element.configKey then
 				if not element.listCallback then
 					element.listCallback = function(value)
@@ -144,7 +144,7 @@ local function buildConfigurationPage(structure)
 				end
 			end
 			setupListBox(
-				dropDown,
+				dropdown,
 				element.listContent or {},
 				element.listCallback,
 				element.listDefault or "",
@@ -152,14 +152,14 @@ local function buildConfigurationPage(structure)
 				element.listCancel
 			);
 			if element.configKey and not element.listDefault then
-				dropDown:SetSelectedValue(getValue(element.configKey));
+				dropdown:SetSelectedValue(getValue(element.configKey));
 			end
 		end
 
 		-- Specific for Color picker
-		if _G[widget:GetName().."Picker"] then
+		if widget.ColorSwatch then
 			if element.configKey then
-				local button = _G[widget:GetName().."Picker"];
+				local button = widget.ColorSwatch;
 				element.controller = button;
 				button.setColor(TRP3_API.CreateColorFromHexString(getValue(element.configKey)):GetRGBAsBytes());
 				button.onSelection = function(red, green, blue)
@@ -174,8 +174,8 @@ local function buildConfigurationPage(structure)
 		end
 
 		-- Specific for Button
-		if _G[widget:GetName().."Button"] then
-			local button = _G[widget:GetName().."Button"];
+		if widget.Button then
+			local button = widget.Button;
 			element.controller = button;
 			button:SetScript("OnClick", element.OnClick or element.callback);
 			button:SetScript("OnShow", element.OnShow);
@@ -184,8 +184,8 @@ local function buildConfigurationPage(structure)
 		end
 
 		-- Specific for EditBox
-		if _G[widget:GetName().."Box"] then
-			local box = _G[widget:GetName().."Box"];
+		if widget.EditBox then
+			local box = widget.EditBox;
 			element.controller = box;
 			if element.configKey then
 				box:SetScript("OnTextChanged", function(self)
@@ -198,15 +198,15 @@ local function buildConfigurationPage(structure)
 			box:SetNumeric(element.numeric);
 			box:SetMaxLetters(element.maxLetters or 0);
 			box.Instructions:SetText(element.instructions or "");
-			local boxTitle = _G[widget:GetName().."BoxText"];
+			local boxTitle = box.Text;
 			if boxTitle then
 				boxTitle:SetText(element.boxTitle);
 			end
 		end
 
 		-- Specific for Check
-		if _G[widget:GetName().."Check"] then
-			local box = _G[widget:GetName().."Check"];
+		if widget.Checkbox then
+			local box = widget.Checkbox;
 			element.controller = box;
 			if element.configKey then
 				box:SetScript("OnClick", function(self)
@@ -235,36 +235,40 @@ local function buildConfigurationPage(structure)
 		end
 
 		-- Specific for Sliders
-		if _G[widget:GetName().."Slider"] then
-			local slider = _G[widget:GetName().."Slider"];
-			local text = _G[widget:GetName().."SliderValText"];
-			local min = element.min or 0;
-			local max = element.max or 100;
+		if widget.Slider then
+			local Label = MinimalSliderWithSteppersMixin.Label;
 
-			slider:SetMinMaxValues(min, max);
-			_G[widget:GetName().."SliderLow"]:SetText(min);
-			_G[widget:GetName().."SliderHigh"]:SetText(max);
-			slider:SetValueStep(element.step);
-			slider:SetObeyStepOnDrag(element.integer);
+			local control = widget.Slider;
+			element.controller = widget;
+			local minValue = element.min or 0;
+			local maxValue = element.max or 100;
+			local value = tonumber(getValue(element.configKey)) or minValue;
+			local steps = math.floor((maxValue - minValue) / element.step);
+			local formatters = { [Label.Left] = CreateMinimalSliderFormatter(Label.Left) };
 
-			local onChange = function(_, value)
+			control:Init(value, minValue, maxValue, steps, formatters);
+			control.Slider:SetObeyStepOnDrag(element.integer);
+
+			local function OnValueChanged(_, value)  -- luacheck: no redefined
 				if element.integer then
 					value = math.floor(value);
 				end
-				text:SetText(value);
+
 				if element.configKey then
 					setValue(element.configKey, value);
 				end
 			end
-			slider:SetScript("OnValueChanged", onChange);
 
-			if element.configKey then
-				slider:SetValue(tonumber(getValue(element.configKey)) or min);
-			else
-				slider:SetValue(0);
+			function widget:SetEnabled(enabled)
+				if control.SetEnabled_ then
+					-- Pre-11.0 compat.
+					control:SetEnabled_(enabled);
+				else
+					control:SetEnabled(enabled);
+				end
 			end
 
-			onChange(slider, slider:GetValue());
+			control:RegisterCallback("OnValueChanged", OnValueChanged);
 		end
 
 		if element.dependentOnOptions then
@@ -321,8 +325,8 @@ local function registerConfigurationPage(pageStructure)
 	configurationPageCount = configurationPageCount + 1;
 	pageStructure.frame = CreateFrame("Frame", "TRP3_ConfigurationPage" .. configurationPageCount, TRP3_MainFramePageContainer, "TRP3_ConfigurationPage");
 	pageStructure.frame:Hide();
-	pageStructure.parent = _G["TRP3_ConfigurationPage" .. configurationPageCount .. "InnerScrollContainer"];
-	_G["TRP3_ConfigurationPage" .. configurationPageCount .. "Title"]:SetText(pageStructure.pageText);
+	pageStructure.parent = _G["TRP3_ConfigurationPage" .. configurationPageCount].ScrollFrame.Content;
+	_G["TRP3_ConfigurationPage" .. configurationPageCount].Title:SetText(pageStructure.pageText);
 
 	registerPage({
 		id = pageStructure.id,
@@ -353,7 +357,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	-- Resizing
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
 		for _, structure in pairs(registeredConfiPage) do
-			structure.parent:SetSize(containerWidth - 70, 50);
+			structure.parent:SetSize(containerWidth - 45, 50);
 		end
 	end);
 

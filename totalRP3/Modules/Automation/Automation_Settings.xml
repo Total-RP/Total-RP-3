@@ -6,30 +6,36 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Automation_Settings.lua"/>
 
-	<Frame name="TRP3_AutomationSettingsTemplate" inherits="TooltipBackdropTemplate" mixin="TRP3_AutomationSettingsMixin" virtual="true">
+	<Frame name="TRP3_AutomationSettingsTemplate" inherits="TRP3_TooltipBackdropEdgeTemplate" mixin="TRP3_AutomationSettingsMixin" virtual="true">
 		<KeyValues>
-			<KeyValue key="backdropColor" value="BLACK_FONT_COLOR" type="global"/>
-			<KeyValue key="backdropColorAlpha" value="0.8" type="number"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="TitleText" inherits="GameFontHighlightHuge" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="20" y="-20"/>
-						<Anchor point="RIGHT" x="-20"/>
+						<Anchor point="TOPLEFT" x="16" y="-20"/>
+						<Anchor point="RIGHT" x="-16"/>
 					</Anchors>
 				</FontString>
+				<Texture parentKey="Divider" atlas="Options_HorizontalDivider" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.TitleText" relativePoint="BOTTOMLEFT" y="-16"/>
+						<Anchor point="RIGHT" relativeKey="$parent.TitleText" relativePoint="RIGHT"/>
+					</Anchors>
+					<Color r="1" g="0.675" b="0.125"/>
+				</Texture>
 				<FontString parentKey="DescriptionText" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP" wordwrap="true">
 					<Size x="475"/>
 					<Anchors>
-						<Anchor point="LEFT" x="20"/>
-						<Anchor point="TOP" relativeKey="$parent.TitleText" relativePoint="BOTTOM" y="-10"/>
+						<Anchor point="LEFT" x="16"/>
+						<Anchor point="TOP" relativeKey="$parent.Divider" relativePoint="BOTTOM" y="-10"/>
 					</Anchors>
 				</FontString>
 				<FontString parentKey="HelpText" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP" wordwrap="true">
 					<Size x="475"/>
 					<Anchors>
-						<Anchor point="LEFT" x="20"/>
+						<Anchor point="LEFT" x="16"/>
 						<Anchor point="TOP" relativeKey="$parent.DescriptionText" relativePoint="BOTTOM" y="-10"/>
 					</Anchors>
 				</FontString>
@@ -53,7 +59,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<EventButton parentKey="SaveButton" parentArray="editorFrames" text="SAVE" inherits="UIPanelButtonTemplate">
 				<Size x="130" y="22"/>
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
+					<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
 				</Anchors>
 			</EventButton>
 			<EventButton parentKey="TestButton" parentArray="editorFrames" inherits="UIPanelButtonNoTooltipTemplate" mixin="UIButtonMixin">
@@ -62,31 +68,33 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</KeyValues>
 				<Size x="130" y="22"/>
 				<Anchors>
-					<Anchor point="BOTTOMLEFT" x="20" y="20"/>
+					<Anchor point="BOTTOMLEFT" x="16" y="16"/>
 				</Anchors>
 				<Scripts>
 					<OnEnter method="OnEnter"/>
 					<OnLeave method="OnLeave"/>
 				</Scripts>
 			</EventButton>
-			<Frame parentKey="Editor" parentArray="editorFrames" inherits="TooltipBackdropTemplate">
+			<Frame parentKey="Editor" parentArray="editorFrames">
 				<Size y="200"/>
 				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 					<KeyValue key="backdropColor" value="BLACK_FONT_COLOR" type="global"/>
 					<KeyValue key="backdropColorAlpha" value="0.8" type="number"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="LEFT" x="20"/>
-					<Anchor point="RIGHT" x="-20"/>
+					<Anchor point="LEFT" x="16"/>
+					<Anchor point="RIGHT" x="-16"/>
 					<Anchor point="TOP" relativeKey="$parent.Actions" relativePoint="BOTTOM" y="-10"/>
 					<Anchor point="BOTTOM" relativeKey="$parent.SaveButton" relativePoint="TOP" y="10"/>
 				</Anchors>
 				<Frames>
+					<Frame parentKey="InsetFrame" inherits="InsetFrameTemplate3" setAllPoints="true" useParentLevel="true"/>
 					<Frame parentKey="ScrollFrame" inherits="ScrollingEditBoxTemplate"/>
-					<EventFrame parentKey="ScrollBar" inherits="WowTrimScrollBar">
+					<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
 						<Anchors>
-							<Anchor point="TOPRIGHT" x="-4" y="-4"/>
-							<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+							<Anchor point="TOPRIGHT" x="-12" y="-8"/>
+							<Anchor point="BOTTOMRIGHT" x="-12" y="8"/>
 						</Anchors>
 					</EventFrame>
 					<Frame parentKey="FocusRegion" inherits="TRP3_FocusRegionTemplate" setAllPoints="true">

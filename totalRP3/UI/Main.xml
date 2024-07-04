@@ -101,7 +101,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_MainFrameTemplate" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_ACHIEVEMENTS_32_64_5555" type="global"/>
+			<KeyValue key="backdropInfo" value="BACKDROP_ACHIEVEMENTS_0_64" type="global"/>
 		</KeyValues>
 		<Size x="768" y="500"/>
 		<Layers>
@@ -255,12 +255,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<!--Interface\BlackMarket\BlackMarketBackground-Tile-->
-				<!--Interface\BankFrame\Bank-Background-->
-				<!--Interface\Collections\CollectionsBackgroundTile-->
-				<!--Interface\GuildBankFrame\GuildVaultBG-->
-
-				<Texture file="Interface\GuildBankFrame\GuildVaultBG" horizTile="true" vertTile="true">
+				<Texture parentKey="ContentBackground" horizTile="true" vertTile="true">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="16" y="-16"/>
 						<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
@@ -271,16 +266,32 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Texture file="Interface\AchievementFrame\UI-Achievement-Parchment">
 					<Size x="195" y="0"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" x="22" y="-20"/>
-						<Anchor point="BOTTOMLEFT" x="20" y="23"/>
+						<Anchor point="TOPLEFT" x="20" y="-20"/>
+						<Anchor point="BOTTOMLEFT" x="20" y="20"/>
 					</Anchors>
 					<TexCoords left="0" right="0.5" top="0" bottom="1"/>
 				</Texture>
 			</Layer>
 		</Layers>
 		<Frames>
+			<!-- RIGHT PART : Place for content. Needs to be defined first as the menu scroll invokes OnSizeChanged. -->
+			<Frame name="TRP3_MainFramePageContainer">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
+					<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
+					<Anchor point="LEFT" x="215" y="0"/>
+				</Anchors>
+			</Frame>
+
 			<!-- LEFT PART : Menu -->
-			<ScrollFrame name="TRP3_MainFrameMenuScroll" inherits="UIPanelScrollFrameTemplate">
+			<ScrollFrame name="TRP3_MainFrameMenuScroll" inherits="ScrollFrameTemplate">
+				<KeyValues>
+					<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
+					<KeyValue key="scrollBarX" value="6" type="number"/>
+					<KeyValue key="scrollBarTopY" value="0" type="number"/>
+					<KeyValue key="scrollBarBottomY" value="4" type="number"/>
+					<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
+				</KeyValues>
 				<Size x="175" y="0"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" x="20" y="-23"/>
@@ -294,21 +305,32 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Frames>
 					<Button name="TRP3_MainTutorialButton">
 						<Size x="46" y="46"/>
-						<Anchors><Anchor point="BOTTOMLEFT" x="75" y="-15"/></Anchors>
+						<Anchors>
+							<Anchor point="BOTTOMLEFT" x="75" y="-15"/>
+						</Anchors>
 						<Layers>
 							<Layer level="BACKGROUND">
 								<Texture parentKey="I" file="Interface\common\help-i">
-									<Size x="46" y="46"/><Anchors><Anchor point="CENTER"/></Anchors>
+									<Size x="46" y="46"/>
+									<Anchors>
+										<Anchor point="CENTER"/>
+									</Anchors>
 								</Texture>
 							</Layer>
 							<Layer level="BORDER">
 								<Texture parentKey="Ring" file="Interface\Minimap\MiniMap-TrackingBorder">
-									<Size x="64" y="64"/><Anchors><Anchor point="CENTER" x="12" y="-13"/></Anchors>
+									<Size x="64" y="64"/>
+									<Anchors>
+										<Anchor point="CENTER" x="12" y="-13"/>
+									</Anchors>
 								</Texture>
 							</Layer>
 						</Layers>
 						<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight">
-							<Size x="46" y="46"/><Anchors><Anchor point="CENTER" x="-1" y="1"/></Anchors>
+							<Size x="46" y="46"/>
+							<Anchors>
+								<Anchor point="CENTER" x="-1" y="1"/>
+							</Anchors>
 						</HighlightTexture>
 						<Scripts>
 							<PostClick>
@@ -319,19 +341,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Frames>
 			</ScrollFrame>
 
-			<!-- RIGHT PART : Place for content -->
-			<Frame name="TRP3_MainFramePageContainer">
-				<Anchors>
-					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
-					<Anchor point="BOTTOMRIGHT" x="-20" y="17"/>
-					<Anchor point="LEFT" x="215" y="0"/>
-				</Anchors>
-			</Frame>
-
 			<!-- RIGHT PART : STATIC POPUP : blocking access to content behind it -->
-			<Frame name="TRP3_PopupsFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="BackdropTemplate">
+			<Frame name="TRP3_PopupsFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="TRP3_TooltipBackdropTemplate">
 				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_5555" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
@@ -341,9 +354,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Frame>
 
 			<!-- Update alert popup -->
-			<Frame name="TRP3_UpdateFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="BackdropTemplate">
+			<Frame name="TRP3_UpdateFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="TRP3_TooltipBackdropTemplate">
 				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_5555" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 				</KeyValues>
 
 				<Anchors>
