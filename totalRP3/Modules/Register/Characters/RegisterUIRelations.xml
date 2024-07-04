@@ -13,11 +13,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size x="0" y="60"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Title" text="[title]" inherits="GameFontNormal" justifyH="LEFT">
+				<FontString parentKey="Title" text="[title]" inherits="GameFontHighlight" justifyH="LEFT">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="65" y="-16"/>
 					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
 				<FontString parentKey="Text" text="[text]" inherits="GameFontNormalSmall" justifyH="LEFT">
 					<Size x="300" y="10"/>
@@ -53,11 +52,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</KeyValues>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Title" inherits="GameFontNormalHuge" justifyH="CENTER" text="[settings_title]">
+				<FontString parentKey="Title" inherits="GameFontHighlightHuge" justifyH="CENTER" text="[settings_title]">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="50" y="-25"/>
 					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
 			</Layer>
 		</Layers>
@@ -116,13 +114,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 						<Layers>
 							<Layer level="OVERLAY">
-								<FontString parentKey="Title" text="[placeholder]" inherits="GameFontNormalLarge">
+								<FontString parentKey="Title" text="[placeholder]" inherits="GameFontHighlightLarge">
 									<Size x="0" y="10"/>
 									<Anchors>
 										<Anchor point="TOPLEFT" x="0" y="-17"/>
 										<Anchor point="TOPRIGHT" x="0" y="-17"/>
 									</Anchors>
-									<Color b="0.95" r="0.95" g="0.95"/>
 								</FontString>
 							</Layer>
 						</Layers>

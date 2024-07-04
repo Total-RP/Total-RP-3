@@ -1,29 +1,10 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Globals = TRP3_API.globals;
 local loc = TRP3_API.loc;
-local EMPTY = Globals.empty;
-local tcopy = TRP3_API.utils.table.copy;
-local get = TRP3_API.profile.getData;
-local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-local getProfiles = TRP3_API.profile.getProfiles;
-
--- These functions get replaced by the proper TRP3 ones once the addon has finished loading
-local function getPlayerCompleteName()
-	return TRP3_API.globals.player
-end
-local function getCompleteName()
-	return UNKNOWN
-end
+local EMPTY = TRP3_API.globals.empty;
 
 TRP3_API.register.relation = {};
-
-
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
-	getCompleteName, getPlayerCompleteName = TRP3_API.register.getCompleteName, TRP3_API.register.getPlayerCompleteName;
-end);
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Relation
@@ -39,8 +20,8 @@ local DEFAULT_RELATIONS = {
 	FAMILY = { id = "FAMILY", order = 6, texture = TRP3_InterfaceIcons.RelationFamily, color = TRP3_API.CreateColor(1, 0.75, 0):GenerateHexColorOpaque() },
 };
 local ACTIONS = {
-	DELETE= 'DEL',
-	EDIT= 'EDT',
+	DELETE= "DEL",
+	EDIT= "EDT",
 }
 
 --getRelationList function should get relations stored in config, or default relations if none are stored
@@ -48,7 +29,7 @@ local function getRelationList(sorted)
 	local relationList = TRP3_API.configuration.getValue("register_relation_list");
 	if not relationList then
 		relationList = {}
-		tcopy(relationList, DEFAULT_RELATIONS);
+		CopyTable(relationList, DEFAULT_RELATIONS);
 		TRP3_API.configuration.setValue("register_relation_list", relationList);
 	end
 
@@ -72,7 +53,7 @@ local function getRelationInfo(relation)
 	if not relation then
 		return DEFAULT_RELATIONS.NONE;
 	end
-	if (relation.id) then
+	if relation.id then
 		relation = relation.id;
 	end
 	local relationList = getRelationList();
@@ -85,7 +66,7 @@ end
 TRP3_API.register.relation.getRelationInfo = getRelationInfo;
 
 local function setRelation(profileID, relation)
-	local profile = getPlayerCurrentProfile();
+	local profile = TRP3_API.profile.getPlayerCurrentProfile();
 	if not profile.relation then
 		profile.relation = {};
 	end
@@ -94,7 +75,7 @@ end
 TRP3_API.register.relation.setRelation = setRelation;
 
 local function getRelation(profileID)
-	local relationTab = get("relation") or EMPTY;
+	local relationTab = TRP3_API.profile.getData("relation") or EMPTY;
 	return getRelationInfo(relationTab[profileID])
 end
 TRP3_API.register.relation.getRelation = getRelation;
@@ -111,8 +92,8 @@ TRP3_API.register.relation.getRelationText = getRelationText;
 
 local function getRelationTooltipText(profileID, profile)
 	local description = getRelation(profileID).description or loc:GetText("REG_RELATION_" .. getRelation(profileID).id .. "_TT");
-	local player = getPlayerCompleteName(true);
-	local target = getCompleteName(profile.characteristics or EMPTY, UNKNOWN, true);
+	local player = TRP3_API.register.getPlayerCompleteName(true);
+	local target = TRP3_API.register.getCompleteName(profile.characteristics or EMPTY, UNKNOWN, true);
 	return description:format(player, target)
 end
 TRP3_API.register.relation.getRelationTooltipText = getRelationTooltipText;
@@ -142,9 +123,9 @@ local function checkRelationUse()
 	for _, relation in pairs(relationList) do
 		relation.inUse = false
 	end
-	local profiles = getProfiles()
+	local profiles = TRP3_API.profile.getProfiles()
 	for _, profile in pairs(profiles) do
-		local relations = get("relation", profile)
+		local relations = TRP3_API.profile.getData("relation", profile)
 		if not relations then
 			relations = {}
 		end
@@ -182,9 +163,7 @@ local function initRelationEditor(relationID)
 	if not descriptionText then
 		descriptionText = loc:GetText("REG_RELATION_" .. relation.id .. "_TT");
 	end
-	local playerIdentifier = "%%p";
-	local targetIdentifier = "%%t";
-	TRP3_RelationsList.Editor.Content.Description:SetText(descriptionText:gsub('%%1$s', playerIdentifier):gsub('%%2$s', targetIdentifier));
+	TRP3_RelationsList.Editor.Content.Description:SetText(descriptionText:gsub("%%.$s", { ["%1$s"] = "%p", ["%2$s"] = "%t" }));
 
 	TRP3_RelationsList.Editor.Content.Color.setColor(TRP3_API.CreateColorFromHexString(relation.color):GetRGBAsBytes());
 end
@@ -223,7 +202,7 @@ local function updateRelationsList()
 	for _, relation in ipairs(relations) do
 		local widget = widgetsList[widgetCount];
 		if not widget then
-			widget = CreateFrame("Frame", "TRP3_ConfigurationRelationsFrame" .. widgetCount, TRP3_RelationsList.Inner.Scroll.Container, "TRP3_ConfigurationRelationsFrame");
+			widget = CreateFrame("Frame", nil, TRP3_RelationsList.Inner.Scroll.Container, "TRP3_ConfigurationRelationsFrame");
 			widget:ClearAllPoints();
 			widget:SetPoint("LEFT", TRP3_RelationsList.Inner.Scroll.Container, "LEFT", 10, 0);
 			widget:SetPoint("RIGHT", TRP3_RelationsList.Inner.Scroll.Container, "RIGHT", -5, 0);
@@ -244,7 +223,7 @@ local function updateRelationsList()
 			if not relation.inUse then
 				table.insert(values, {loc.CO_RELATIONS_MENU_DELETE, ACTIONS.DELETE..relation.id});
 			end
-			displayDropDown(button, values, onActionSelected, 0, true);
+			TRP3_API.ui.listbox.displayDropDown(button, values, onActionSelected, 0, true);
 		end);
 		widget:Show();
 
@@ -263,7 +242,7 @@ local RELATIONS_MENU_ID = "main_41_customization_relations";
 
 TRP3_API.register.inits.relationsInit = function()
 	local configDefault = {}
-	tcopy(configDefault,DEFAULT_RELATIONS)
+	CopyTable(configDefault,DEFAULT_RELATIONS)
 	TRP3_API.configuration.registerConfigKey("register_relation_list", configDefault);
 
 	-- Register menu
