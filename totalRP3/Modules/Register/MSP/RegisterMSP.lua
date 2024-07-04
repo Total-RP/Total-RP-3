@@ -150,6 +150,15 @@ local function onStart()
 		msp.my['PS'] = AddOn_TotalRP3.MSP.SerializeField("PS", dataTab.PS);
 	end
 
+	local RP_STYLE_FIELDS = {
+		RF = "1",  -- In-character frequency
+		RI = "2",  -- Accept injuries
+		RD = "3",  -- Accept death
+		RR = "4",  -- Accept romance
+		RB = "5",  -- Battle resolution
+		RG = "6",  -- Guild membership
+	};
+
 	local function updateMiscData()
 		local dataTab = get("player/misc");
 		local peeks = {};
@@ -173,6 +182,14 @@ local function onStart()
 			end
 		end
 		msp.my['PE'] = table.concat(peeks);
+
+		local styleData = get("player/misc/ST");
+		msp.my['RF'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RF] or 0);
+		msp.my['RI'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RI] or 0);
+		msp.my['RD'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RD] or 0);
+		msp.my['RR'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RR] or 0);
+		msp.my['RB'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RB] or 0);
+		msp.my['RG'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RG] or 0);
 	end
 
 	local function onProfileChanged()
@@ -304,6 +321,17 @@ local function onStart()
 		elseif miscIndex then
 			table.remove(miscInfo, miscIndex);
 		end
+	end
+
+	local function UpdateRPStyleField(profile, field, value)
+		local styleKey = RP_STYLE_FIELDS[field];
+
+		if not styleKey then
+			return;
+		end
+
+		local styleData = GetOrCreateTable(profile.misc, "ST");
+		styleData[styleKey] = tonumber(value) or 0;
 	end
 
 	tinsert(msp.callback.received, function(senderID)
@@ -473,6 +501,8 @@ local function onStart()
 						end
 					elseif MISC_INFO_FIELDS[field] then
 						updateMiscInfoField(profile, field, value);
+					elseif RP_STYLE_FIELDS[field] then
+						UpdateRPStyleField(profile, field, value);
 					end
 				end
 			end
