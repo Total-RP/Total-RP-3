@@ -19,7 +19,6 @@ local getYourCharacter = TRP3_API.profile.getPlayerCharacter;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local Events = TRP3_Addon.Events;
 local hasProfile, getRelationColors = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColors;
-local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
 local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
 local EMPTY = Globals.empty;
 local unitIDToInfo = Utils.str.unitIDToInfo;
@@ -32,7 +31,6 @@ local TRP3_Enums = AddOn_TotalRP3.Enums;
 local OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15:15|t";
 local ALLIANCE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Alliance:20:20|t";
 local HORDE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Horde:20:20|t";
-local GLANCE_ICON = "|TInterface\\MINIMAP\\TRACKING\\None:18:18|t";
 local NEW_ABOUT_ICON = "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:18:18|t";
 local TRANSPARENT_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\transparent:18:18|t";
 
@@ -871,10 +869,6 @@ local function writeTooltipForCharacter(targetID, targetType)
 	if showNotifications() then
 		local notifPieces = {};
 
-		if info.misc and info.misc.PE and checkGlanceActivation(info.misc.PE) then
-			table.insert(notifPieces, GLANCE_ICON);
-		end
-
 		if targetID ~= Globals.player_id and info.about and not info.about.read then
 			table.insert(notifPieces, NEW_ABOUT_ICON);
 		end
@@ -972,7 +966,6 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 	local ownerID, companionID = companionIDToInfo(companionFullID);
 	local data = getCompanionInfo(ownerID, companionID);
 	local info = data.data or EMPTY;
-	local PE = data.PE or EMPTY;
 	local targetName = UnitName(targetType);
 	local colors = getTooltipTextColors();
 
@@ -1112,9 +1105,6 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 
 	if showCompanionNotifications() then
 		local notifText = "";
-		if PE and checkGlanceActivation(PE) then
-			notifText = GLANCE_ICON;
-		end
 		if ownerID ~= Globals.player_id and info.read == false then
 			notifText = notifText .. " " .. NEW_ABOUT_ICON;
 		end
@@ -1157,7 +1147,6 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 
 	local profile = getMountProfile(ownerID, companionFullID);
 	local info = profile.data or EMPTY;
-	local PE = profile.PE or EMPTY;
 	local colors = getTooltipTextColors();
 
 
@@ -1220,9 +1209,6 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 
 	if showCompanionNotifications() then
 		local notifText = "";
-		if PE and checkGlanceActivation(PE) then
-			notifText = GLANCE_ICON;
-		end
 		if ownerID ~= Globals.player_id and info.read == false then
 			notifText = notifText .. " " .. NEW_ABOUT_ICON;
 		end
