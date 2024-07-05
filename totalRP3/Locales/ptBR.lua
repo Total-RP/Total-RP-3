@@ -418,10 +418,8 @@ Seus perfis, perfis de companheiro e configurações serão temporariamente depo
 	["DB_NEW"] = "O que há de novo?",
 	["DB_STATUS"] = "Estados",
 	["DB_STATUS_CURRENTLY"] = "Atualmente",
-	["DB_STATUS_CURRENTLY_COMMON"] = "Esses estados vão ser mostrados na tela de informações do seu personagem. Mantenha-os claros e breves uma vez que |cffff9900 por padrão usuários do TRP3 só verão os primeiros 140 caracteres!",
+	["DB_STATUS_CURRENTLY_COMMON"] = "Esses estados vão ser mostrados na tela de informações do seu personagem. Mantenha-os claros e breves uma vez que |cnGREEN_FONT_COLOR:por padrão usuários do TRP3 só verão os primeiros 140 caracteres!|r",
 	["DB_STATUS_CURRENTLY_OOC"] = "Outras informações (OOC)",
-	["DB_STATUS_CURRENTLY_OOC_TT"] = "Aqui você pode indicar algo importante sobre você, como um jogador, ou qualquer coisa fora do seu personagem.",
-	["DB_STATUS_CURRENTLY_TT"] = "Aqui você pode indicar algo importante sobre seu personagem.",
 	["DB_STATUS_ICON_ITEM"] = "%1$s %2$s",
 	["DB_STATUS_LC"] = "Idioma do Roleplay ",
 	["DB_STATUS_LC_DEFAULT"] = "Padrão (%1$s)",
@@ -1027,20 +1025,8 @@ Se não quiser mostrar campos personalizados, mantenha essa caixa desmarcada e a
 	["REG_PLAYER_SHOWPSYCHO_TT"] = [=[Marque se quiser usar a descrição de personalidade.
 
 Se não quiser indicar a personalidade do seu personagem desta forma, mantenha esta caixa desmarcada e a janela de personalidade ficará completamente escondida.]=],
-	["REG_PLAYER_STYLE_ASSIST"] = "Assistência de roleplay",
-	["REG_PLAYER_STYLE_BATTLE"] = "Resolução de batalha roleplay",
-	["REG_PLAYER_STYLE_BATTLE_1"] = "PVP do World of Warcraft",
-	["REG_PLAYER_STYLE_BATTLE_2"] = "Batalha de dados do TRP",
-	["REG_PLAYER_STYLE_BATTLE_3"] = "Batalha por /roll",
-	["REG_PLAYER_STYLE_BATTLE_4"] = "Batalha por emotes",
 	["REG_PLAYER_STYLE_DEATH"] = "Aceitar morte do personagem",
 	["REG_PLAYER_STYLE_EMPTY"] = "Nenhum atributo de roleplay compartilhado",
-	["REG_PLAYER_STYLE_FREQ"] = "Frequência de RolePlay",
-	["REG_PLAYER_STYLE_FREQ_1"] = "O tempo todo, sem OOC",
-	["REG_PLAYER_STYLE_FREQ_2"] = "A maior parte do tempo",
-	["REG_PLAYER_STYLE_FREQ_3"] = "Média",
-	["REG_PLAYER_STYLE_FREQ_4"] = "Casual",
-	["REG_PLAYER_STYLE_FREQ_5"] = "OOC o tempo todo, não é um personagem de RP",
 	["REG_PLAYER_STYLE_GUILD"] = "Filiação à guilda",
 	["REG_PLAYER_STYLE_GUILD_IC"] = "Filiação IC",
 	["REG_PLAYER_STYLE_GUILD_OOC"] = "Filiação OOC",
@@ -1049,8 +1035,6 @@ Se não quiser indicar a personalidade do seu personagem desta forma, mantenha e
 	["REG_PLAYER_STYLE_PERMI"] = "Com permissão do jogador",
 	["REG_PLAYER_STYLE_ROMANCE"] = "Aceitar romance com personagem",
 	["REG_PLAYER_STYLE_RPSTYLE"] = "Estilo de roleplay",
-	["REG_PLAYER_STYLE_RPSTYLE_SHORT"] = "Estilo de RP",
-	["REG_PLAYER_STYLE_WOWXP"] = "Experiência de World of Warcraft",
 	["REG_PLAYER_TITLE"] = "Título",
 	["REG_PLAYER_TITLE_TT"] = [=[O título do seu personagem é o título pelo qual seu personagem normalmente é chamado. Evite títulos longos, os quais você deve colocar em "título completo" logo abaixo.
 
@@ -1078,13 +1062,13 @@ Isto é uma |cffffff00textura de fundo|r para a descrição do seu personagem.
 O modelo escolhido define o |cffffff00layout geral e possibilidades de escrita|r para sua descrição.
 |cffff9900Apenas o modelo escolhido é visível aos outros, então você não precisa preencher todos.|r
 Uma vez que um modelo for escolhido, você pode abrir este tutorial novamente para mais ajuda sobre cada modelo.]=],
-	["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[Esta seção possui |cffffff005 slots|r onde você pode descrever |cff00ff00as mais importantes informações sobre seu personagem|r.
+	["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[Esta seção possui |cnGREEN_FONT_COLOR:5 slots|r onde você pode descrever |cnGREEN_FONT_COLOR:as mais importantes informações sobre seu personagem|r.
 
-Esses slots estarão visíveis na sua |cffffff00"barra de À primeira vista"|r quando alguém selecionar seu personagem.
+Esses slots estarão visíveis na sua |cnGREEN_FONT_COLOR:barra de "À primeira vista"|r quando alguém selecionar seu personagem.
 
 |cff00ff00Dica: Você pode arrastar e soltar os slots para reordená-los.|r
-Também funciona na |cffffff00"barra À primeira vista"|r!]=],
-	["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "Esta seção contém |cffffff00uma lista de marcadores|r para responder muitas |cffffff00perguntas comuns que as pessoas poderiam fazer a respeito de você, seu personagem e a maneira como você o interpreta|r.",
+Também funciona na |cnGREEN_FONT_COLOR:barra "À primeira vista"|r!]=],
+	["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "Esta seção contém |cnGREEN_FONT_COLOR:uma lista de marcadores|r para responder muitas |cnGREEN_FONT_COLOR:perguntas comuns que as pessoas poderiam fazer|r a respeito de você, seu personagem e a maneira como você o interpreta.",
 	["REG_PLAYER_TUTO_ABOUT_T1"] = [=[Este molde permite que você |cff00ff00estruture livremente sua descrição|r.
 
 A descrição não precisa se limitar à |cffff9900descrição física|r do seu personagem. Sinta-se livre para indicar partes da sua |cffff9900história|r ou detalhes sobre sua |cffff9900personalidade|r.

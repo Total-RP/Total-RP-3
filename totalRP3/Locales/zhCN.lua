@@ -421,10 +421,8 @@ L = {
 	["DB_NEW"] = "更新了什么?",
 	["DB_STATUS"] = "状态",
 	["DB_STATUS_CURRENTLY"] = "当前",
-	["DB_STATUS_CURRENTLY_COMMON"] = "这些状态将显示在您的角色的工具提示上。请尽量保持简洁因为|cffff9900 默认状态下TRP3使用者只能看到前140个字符。",
+	["DB_STATUS_CURRENTLY_COMMON"] = "这些状态将显示在您的角色的工具提示上。请尽量保持简洁因为|cnGREEN_FONT_COLOR: 默认状态下TRP3使用者只能看到前140个字符。|r",
 	["DB_STATUS_CURRENTLY_OOC"] = "其它信息 (OOC)",
-	["DB_STATUS_CURRENTLY_OOC_TT"] = "在这里你可以列出你的一些重要的东西，无论是IC的还是OOC的。",
-	["DB_STATUS_CURRENTLY_TT"] = "在这里你可以列出你的一些重要的东西。",
 	["DB_STATUS_ICON_ITEM"] = "%1$s %2$s",
 	["DB_STATUS_LC"] = "角色扮演语言",
 	["DB_STATUS_LC_DEFAULT"] = "默认(%1$s)",
@@ -1044,20 +1042,8 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_SHOWPSYCHO_TT"] = [=[检查你是否想要使用人物性格描述.
 
 如果你不想用这种方式来表示你的角色的性格, 请不要勾选该项，这些信息将保持隐藏.]=],
-	["REG_PLAYER_STYLE_ASSIST"] = "RP扮演帮助",
-	["REG_PLAYER_STYLE_BATTLE"] = "RP战斗",
-	["REG_PLAYER_STYLE_BATTLE_1"] = "魔兽世界PVP",
-	["REG_PLAYER_STYLE_BATTLE_2"] = "TRPRoll点战斗",
-	["REG_PLAYER_STYLE_BATTLE_3"] = "roll点战斗",
-	["REG_PLAYER_STYLE_BATTLE_4"] = "表情动作战斗",
 	["REG_PLAYER_STYLE_DEATH"] = "接受角色死亡",
 	["REG_PLAYER_STYLE_EMPTY"] = "没有扮演游戏属性共享",
-	["REG_PLAYER_STYLE_FREQ"] = "RP频率",
-	["REG_PLAYER_STYLE_FREQ_1"] = "全部时间, 不会OOC",
-	["REG_PLAYER_STYLE_FREQ_2"] = "大多数时间",
-	["REG_PLAYER_STYLE_FREQ_3"] = "一部分时间",
-	["REG_PLAYER_STYLE_FREQ_4"] = "我是临时工",
-	["REG_PLAYER_STYLE_FREQ_5"] = "大部分时间都在OOC,我不是RP玩家",
 	["REG_PLAYER_STYLE_GUILD"] = " 公会成员",
 	["REG_PLAYER_STYLE_GUILD_IC"] = "RP 成员",
 	["REG_PLAYER_STYLE_GUILD_OOC"] = "OOC 成员",
@@ -1066,8 +1052,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_STYLE_PERMI"] = "角色许可",
 	["REG_PLAYER_STYLE_ROMANCE"] = "接受角色浪漫史",
 	["REG_PLAYER_STYLE_RPSTYLE"] = "角色扮演风格",
-	["REG_PLAYER_STYLE_RPSTYLE_SHORT"] = "RP 风格",
-	["REG_PLAYER_STYLE_WOWXP"] = "魔兽世界经验",
 	["REG_PLAYER_TITLE"] = "头衔",
 	["REG_PLAYER_TITLE_TT"] = [=[你的角色的头衔是你的角色通常的称呼。请避免长头衔，你可以在下方输入完整的头衔。
 
@@ -1095,13 +1079,13 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 模板决定了你的人物信息的|cffffff00总体格式和叙述方法|r。
 |cffff9900只有选定的模板可以被其他玩家看到，因此不必完全填写。|r
 选择模板之后，你可以再次打开模板教学并获取关于各种模板的帮助。]=],
-	["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[这个部分提供了 |cffffff00 5个栏位|r 来描述 |cff00ff00关于您的角色的最重要的信息|r。
+	["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[这个部分提供了 |cnGREEN_FONT_COLOR:5个栏位|r 来描述 |cnGREEN_FONT_COLOR:关于您的角色的最重要的信息|r。
 
-这些槽会在其他人点击你的头像时显示在 |cffffff00"第一印象"|r 当中。
+这些槽会在其他人点击你的头像时显示在 |cnGREEN_FONT_COLOR:"第一印象"|r 当中。
 
 |cff00ff00提示:您可以拖动栏位来重新排序.|r
-这也会显示在 |cffffff00"第一印象"|r!]=],
-	["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "这部分包含用来回答 |cffffff00许多人们可能问你的常见问题，关于你、你的角色、以及你希望和他/她的互动方式|r 的|cffffff00一些信息|r 。",
+这也会显示在 |cnGREEN_FONT_COLOR:"第一印象"|r!]=],
+	["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "这部分包含用来回答 |cnGREEN_FONT_COLOR:许多人们可能问你的常见问题，关于你、你的角色、以及你希望和他/她的互动方式|r 的|cnGREEN_FONT_COLOR:一些信息|r 。",
 	["REG_PLAYER_TUTO_ABOUT_T1"] = [=[这个模板允许您 |cff00ff00自由地组织您的描述|r。
 
 描述不必局限于您的角色 |cffff9900外貌|r. 可以自由描述他的 |cffff9900背景|r 或有关他的 |cffff9900人品/性格|r。

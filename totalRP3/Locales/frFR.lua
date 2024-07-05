@@ -560,10 +560,8 @@ Cette fenêtre sera fermée à la copie.]=],
 	["DB_NEW"] = "Quoi de neuf ?",
 	["DB_STATUS"] = "Statut",
 	["DB_STATUS_CURRENTLY"] = "Actuellement",
-	["DB_STATUS_CURRENTLY_COMMON"] = "Ces statuts seront affichés dans l'infobulle de votre personnage. Restez clair et bref, |cffff9900par défaut les utilisateurs de Total RP 3 verront uniquement les 140 premiers caractères !",
+	["DB_STATUS_CURRENTLY_COMMON"] = "Ces statuts seront affichés dans l'infobulle de votre personnage. Restez clair et bref, |cnGREEN_FONT_COLOR:par défaut les utilisateurs de Total RP 3 verront uniquement les 140 premiers caractères !|r",
 	["DB_STATUS_CURRENTLY_OOC"] = "Autres informations (HRP)",
-	["DB_STATUS_CURRENTLY_OOC_TT"] = "Vous pouvez indiquer ici quelque chose d'important sur vous, le joueur, ou autre chose hors de votre personnage.",
-	["DB_STATUS_CURRENTLY_TT"] = "Vous pouvez indiquer ici quelque chose d'important sur votre personnage.",
 	["DB_STATUS_ICON_ITEM"] = "%1$s %2$s",
 	["DB_STATUS_LC"] = "Langage de jeu de rôle",
 	["DB_STATUS_LC_DEFAULT"] = "Par défaut (%1$s)",
@@ -576,7 +574,7 @@ Cette fenêtre sera fermée à la copie.]=],
 Toutes vos actions seront interprétées comme si votre personnage les effectuait.]=],
 	["DB_STATUS_RP_OOC"] = "Hors du personnage",
 	["DB_STATUS_RP_OOC_TT"] = [=[Vous n'êtes pas dans votre personnage.
-Vos actions ne lui seront pas associées.]=],
+Vos actions ne leur seront pas associées.]=],
 	["DB_TUTO_1"] = [=[|cffffff00Le statut du personnage|r indique si vous jouez actuellement le rôle de votre personnage ou non.
 
 |cffffff00Le statut roleplay|r vous permet d'indiquer que vous êtes un débutant ou un vétéran désireux d'aider les novices !
@@ -1249,20 +1247,8 @@ Si vous ne désirez pas afficher de champs personnalisés, laissez ce bouton dé
 	["REG_PLAYER_SHOWPSYCHO_TT"] = [=[Cochez si vous désirez utiliser la description de personnalité.
 
 Si vous ne voulez pas indiquer la personnalité de votre personnage ainsi, laissez ce bouton décoché et le panneau de personnalité restera complètement caché.]=],
-	["REG_PLAYER_STYLE_ASSIST"] = "Aide au jeu de rôle",
-	["REG_PLAYER_STYLE_BATTLE"] = "Résolution de combats RP",
-	["REG_PLAYER_STYLE_BATTLE_1"] = "JcJ World of Warcraft",
-	["REG_PLAYER_STYLE_BATTLE_2"] = "Bataille de jets de dés TRP",
-	["REG_PLAYER_STYLE_BATTLE_3"] = "Bataille de /rand",
-	["REG_PLAYER_STYLE_BATTLE_4"] = "Bataille d'émotes",
 	["REG_PLAYER_STYLE_DEATH"] = "Accepte la mort",
 	["REG_PLAYER_STYLE_EMPTY"] = "Pas d'attribut de jeu de rôle partagé",
-	["REG_PLAYER_STYLE_FREQ"] = "Fréquence de jeu en RP",
-	["REG_PLAYER_STYLE_FREQ_1"] = "Plein temps",
-	["REG_PLAYER_STYLE_FREQ_2"] = "La plupart du temps",
-	["REG_PLAYER_STYLE_FREQ_3"] = "La moitié du temps",
-	["REG_PLAYER_STYLE_FREQ_4"] = "De temps en temps",
-	["REG_PLAYER_STYLE_FREQ_5"] = "Pas un personnage RP",
 	["REG_PLAYER_STYLE_GUILD"] = "Appartenance à la guilde",
 	["REG_PLAYER_STYLE_GUILD_IC"] = "Membre RP",
 	["REG_PLAYER_STYLE_GUILD_OOC"] = "Membre HRP",
@@ -1271,8 +1257,6 @@ Si vous ne voulez pas indiquer la personnalité de votre personnage ainsi, laiss
 	["REG_PLAYER_STYLE_PERMI"] = "Avec permission du joueur",
 	["REG_PLAYER_STYLE_ROMANCE"] = "Accepte la romance",
 	["REG_PLAYER_STYLE_RPSTYLE"] = "Style de roleplay",
-	["REG_PLAYER_STYLE_RPSTYLE_SHORT"] = "Style de RP",
-	["REG_PLAYER_STYLE_WOWXP"] = "Expérience de World of Warcraft",
 	["REG_PLAYER_TITLE"] = "Titre",
 	["REG_PLAYER_TITLE_TT"] = [=[Le titre de votre personnage est le titre par lequel votre personnage est habituellement appelé. Evitez les titres longs, l'attribut de Titre complet y est consacré.
 
@@ -1300,13 +1284,13 @@ Ceci est une |cffffff00texture d'arrière-plan|r pour la description de votre pe
 Le modèle choisi définit |cffffff00le format général et les possibilités d'écriture|r de votre description.
 |cffff9900Seul le modèle sélectionné est visible par les autres, vous n'avez donc pas à tous les remplir.|r
 Une fois qu'un modèle est choisi, vous pouvez rouvrir ce tutoriel pour avoir plus d'aide à propos de chaque modèle.]=],
-	["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[Cette section vous fournit des |cffffff005 emplacements|r dans lesquels vous pouvez décrire |cff00ff00les informations les plus importantes à propos de votre personnage|r.
+	["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[Cette section vous fournit des |cnGREEN_FONT_COLOR:5 emplacements|r dans lesquels vous pouvez décrire |cnGREEN_FONT_COLOR:les informations les plus importantes à propos de votre personnage|r.
 
-Ces informations seront visibles sur la |cffffff00barre "Coup d'œil"|r lorsque quelqu'un sélectionne votre personnage.
+Ces informations seront visibles sur la |cnGREEN_FONT_COLOR:barre "Coup d'œil"|r lorsque quelqu'un sélectionne votre personnage.
 
 |cff00ff00Astuce: Vous pouvez glisser et déposer les emplacements pour les réorganiser.|r
-Cela marche aussi sur la |cffffff00barre "Coup d'œil"|r!]=],
-	["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "Cette section fournit |cffffff00une liste d'indicateurs|r pour répondre à beaucoup de |cffffff00questions usuelles que les joueurs peuvent vous demander à propos de vous, votre personnage, et la manière dont vous souhaitez le jouer|r.",
+Cela marche aussi sur la |cnGREEN_FONT_COLOR:barre "Coup d'œil"|r!]=],
+	["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "Cette section fournit |cnGREEN_FONT_COLOR:une liste d'indicateurs|r pour répondre à beaucoup de |cnGREEN_FONT_COLOR:questions usuelles que les joueurs peuvent vous demander|r à propos de vous, votre personnage, et la manière dont vous souhaitez les jouer.",
 	["REG_PLAYER_TUTO_ABOUT_T1"] = [=[Ce modèle vous permet de |cff00ff00structurer librement votre description|r.
 
 La description n'a pas besoin d'être limitée uniquement à la |cffff9900description physique|r de votre personnage. N'hésitez pas à indiquer des parties de son |cffff9900histoire|r ou des détails sur sa |cffff9900personnalité|r.
