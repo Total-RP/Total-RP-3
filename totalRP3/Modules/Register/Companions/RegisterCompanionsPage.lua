@@ -340,6 +340,7 @@ local function onPageShow(context)
 	assert(context.profileID, "Missing profileID in context.");
 	assert(context.profile, "Missing profile in context.");
 	tabGroup:SelectTab(1);
+	TRP3_CompanionsPageInformationConsult_About_Scroll.ScrollBar:ScrollToBegin();
 end
 
 local function onInformationUpdated(profileID)

@@ -788,6 +788,7 @@ function TRP3_API.register.init()
 		frame = TRP3_RegisterMain,
 		onPagePostShow = function(context)
 			showTabs(context);
+			TRP3_Addon:TriggerEvent("REGISTER_PROFILE_OPENED");
 		end,
 		tutorialProvider = tutorialProvider
 	});

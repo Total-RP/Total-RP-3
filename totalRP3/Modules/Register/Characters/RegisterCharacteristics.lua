@@ -1654,4 +1654,9 @@ function TRP3_API.register.inits.characteristicsInit()
 		end
 		TRP3_RegisterCharact_Edit_FirstField:SetSize((finalContainerWidth - 100) * 0.3, 18);
 	end);
+
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.REGISTER_PROFILE_OPENED, function()
+		TRP3_RegisterCharact_CharactPanel_Scroll.ScrollBar:ScrollToBegin();
+		TRP3_RegisterCharact_Edit_CharactPanel_Scroll.ScrollBar:ScrollToBegin();
+	end);
 end

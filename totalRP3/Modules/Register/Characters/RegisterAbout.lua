@@ -1038,4 +1038,9 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function()
 		ResizeTemplateViews();
 	end);
+
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.REGISTER_PROFILE_OPENED, function()
+		TRP3_RegisterAbout_AboutPanel_Scroll.ScrollBar:ScrollToBegin();
+		TRP3_RegisterAbout_Edit_Template2_Scroll.ScrollBar:ScrollToBegin();
+	end);
 end
