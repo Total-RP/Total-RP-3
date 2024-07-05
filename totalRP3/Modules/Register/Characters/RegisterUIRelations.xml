@@ -6,9 +6,9 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 
-	<Frame name="TRP3_ConfigurationRelationsFrame" virtual="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_ConfigurationRelationsFrame" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_200_24_5555" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Size x="0" y="60"/>
 		<Layers>
