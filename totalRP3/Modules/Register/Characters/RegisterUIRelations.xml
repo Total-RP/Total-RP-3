@@ -76,7 +76,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							</OnClick>
 						</Scripts>
 					</Button>
-					<ScrollFrame parentKey="Scroll" inherits="UIPanelScrollFrameTemplate">
+					<ScrollFrame parentKey="Scroll" inherits="ScrollFrameTemplate">
+						<KeyValues>
+							<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
+							<KeyValue key="scrollBarX" value="0" type="number"/>
+							<KeyValue key="scrollBarTopY" value="-4" type="number"/>
+							<KeyValue key="scrollBarBottomY" value="4" type="number"/>
+							<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
+						</KeyValues>
 						<Anchors>
 							<Anchor point="TOP" relativeKey="$parent.CreateNew" relativePoint="BOTTOM" x="0" y="-5"/>
 							<Anchor point="BOTTOM" x="0" y="3"/>

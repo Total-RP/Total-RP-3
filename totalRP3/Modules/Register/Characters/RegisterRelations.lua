@@ -229,8 +229,8 @@ function updateRelationsList()
 		if not widget then
 			widget = CreateFrame("Frame", nil, TRP3_RelationsList.Inner.Scroll.Container, "TRP3_ConfigurationRelationsFrame");
 			widget:ClearAllPoints();
-			widget:SetPoint("LEFT", TRP3_RelationsList.Inner.Scroll.Container, "LEFT", 10, 0);
-			widget:SetPoint("RIGHT", TRP3_RelationsList.Inner.Scroll.Container, "RIGHT", -5, 0);
+			widget:SetPoint("LEFT", TRP3_RelationsList.Inner.Scroll.Container, "LEFT", 0, 0);
+			widget:SetPoint("RIGHT", TRP3_RelationsList.Inner.Scroll.Container, "RIGHT", -10, 0);
 			if widgetCount > 1 then
 				widget:SetPoint("TOP", widgetsList[widgetCount - 1], "BOTTOM", 0, 0);
 			else
