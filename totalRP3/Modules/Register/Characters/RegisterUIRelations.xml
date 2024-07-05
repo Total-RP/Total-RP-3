@@ -46,15 +46,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_RelationsList" hidden="true" inherits="BackdropTemplate">
+	<Frame name="TRP3_RelationsList" hidden="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Title" inherits="GameFontHighlightHuge" justifyH="CENTER" text="[settings_title]">
+				<FontString parentKey="Title" inherits="GameFontHighlightHuge" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="50" y="-25"/>
+						<Anchor point="TOPLEFT" x="16" y="-20"/>
+						<Anchor point="RIGHT" x="-16"/>
 					</Anchors>
 				</FontString>
 			</Layer>
