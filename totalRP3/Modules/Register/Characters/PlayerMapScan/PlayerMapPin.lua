@@ -65,7 +65,7 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 			local relationshipColor = TRP3_API.register.relation.getColor(relation);
 			displayData.iconAtlas = "PlayerPartyBlip";
 			displayData.iconColor = relationshipColor;
-			displayData.categoryName = loc.REG_RELATION .. ": " .. relationshipColor(relation.name or loc:GetText("REG_RELATION_".. relation.id));
+			displayData.categoryName = loc.REG_RELATION .. ": " .. (relationshipColor or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_".. relation.id));
 			displayData.categoryPriority = -relation.order or math.huge;
 		end
 	end

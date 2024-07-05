@@ -11,7 +11,7 @@ TRP3_API.register.relation = {};
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local DEFAULT_RELATIONS = {
-	NONE = { id = "NONE", order = 0, texture = TRP3_InterfaceIcons.RelationNone, color = TRP3_API.Colors.White:GenerateHexColorOpaque() },
+	NONE = { id = "NONE", order = 0, texture = TRP3_InterfaceIcons.RelationNone },
 	UNFRIENDLY = { id = "UNFRIENDLY", order = 1, texture = TRP3_InterfaceIcons.RelationUnfriendly, color = TRP3_API.Colors.Red:GenerateHexColorOpaque() },
 	NEUTRAL = { id = "NEUTRAL", order = 2, texture = TRP3_InterfaceIcons.RelationNeutral, color = TRP3_API.CreateColor(0.5, 0.5, 1):GenerateHexColorOpaque() },
 	BUSINESS = { id = "BUSINESS", order = 3, texture = TRP3_InterfaceIcons.RelationBusiness, color = TRP3_API.CreateColor(1, 1, 0):GenerateHexColorOpaque() },
@@ -105,12 +105,17 @@ TRP3_API.register.relation.getRelationTexture = getRelationTexture;
 
 local function getRelationColors(profileID)
 	local relation = getRelation(profileID);
-	return TRP3_API.CreateColorFromHexString(relation.color);
+	if relation.color then
+		return TRP3_API.CreateColorFromHexString(relation.color);
+	end
 end
 TRP3_API.register.relation.getRelationColors = getRelationColors;
 
 local function getColor(relation)
-	return TRP3_API.CreateColorFromHexString(getRelationInfo(relation).color);
+	local relationColor = getRelationInfo(relation).color;
+	if relationColor then
+		return TRP3_API.CreateColorFromHexString(relationColor);
+	end
 end
 TRP3_API.register.relation.getColor = getColor;
 
@@ -195,7 +200,7 @@ local function onActionSelected(selectedAction)
 	local action = selectedAction:sub(1, 3);
 	local relationID = selectedAction:sub(4);
 	local relation = getRelationInfo(relationID);
-	local originalRelation = getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id));
+	local originalRelation = (getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_"..relation.id));
 	if action == ACTIONS.EDIT then
 		TRP3_API.register.relation.showEditor(relation.id);
 	elseif not relation.inUse and action == ACTIONS.DELETE then
@@ -235,7 +240,7 @@ function updateRelationsList()
 			end
 			widgetsList[widgetCount] = widget;
 		end
-		widget.Title:SetText(getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id)));
+		widget.Title:SetText((getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_"..relation.id)));
 		widget.Text:SetText(loc:GetText(relation.description or "REG_RELATION_" .. relation.id .. "_TT"):format("%p", "%t"));
 		TRP3_API.ui.frame.setupIconButton(widget.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
 		widget.Button:SetScript("OnClick", function(button)
@@ -313,7 +318,7 @@ TRP3_API.register.inits.relationsInit = function()
 			if TRP3_RelationsList.Editor.Content.Color.red and TRP3_RelationsList.Editor.Content.Color.green and TRP3_RelationsList.Editor.Content.Color.blue then
 				relationToUpdate.color = TRP3_API.CreateColorFromBytes(TRP3_RelationsList.Editor.Content.Color.red, TRP3_RelationsList.Editor.Content.Color.green, TRP3_RelationsList.Editor.Content.Color.blue):GenerateHexColorOpaque();
 			else
-				relationToUpdate.color = TRP3_API.Colors.White:GenerateHexColorOpaque();
+				relationToUpdate.color = nil;
 			end
 
 			updateRelationsList();
