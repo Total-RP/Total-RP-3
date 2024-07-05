@@ -212,6 +212,8 @@ local function getTooltipTextColors()
 end
 TRP3_API.ui.tooltip.getTooltipTextColors = getTooltipTextColors;
 
+TRP3_API.ui.tooltip.tooltipBorderColor = TRP3_API.Colors.White;
+
 local TooltipGuildDisplayOption = {
 	-- Old setting was a boolean; use false/true for sensible defaults here.
 	Hidden = false,
@@ -1291,7 +1293,7 @@ local function show(targetType, targetID, targetMode)
 					TRP3_CharacterTooltip:SetOwner(getAnchoredFrame(), getAnchoredPosition());
 				end
 
-				TRP3_CharacterTooltip:SetBorderColor(1, 1, 1);
+				TRP3_CharacterTooltip:SetBorderColor(TRP3_API.ui.tooltip.tooltipBorderColor:GetRGB());
 				if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER then
 					writeTooltipForCharacter(targetID, targetType);
 					if showRelationColor() and targetID ~= Globals.player_id and not isIDIgnored(targetID) and IsUnitIDKnown(targetID) and hasProfile(targetID) then

@@ -150,6 +150,9 @@ TRP3_API.module.registerModule({
 			if TRP3_API.configuration.getValue(CONFIG.SKIN_TARGET_FRAME) then
 				skinTargetFrame();
 			end
+
+			-- Adjusting the default border color to be black for ElvUI tooltips
+			TRP3_API.ui.tooltip.tooltipBorderColor = TRP3_API.Colors.Black;
 		end);
 	end,
 });
