@@ -217,7 +217,7 @@ These slots will be visible on the |cnGREEN_FONT_COLOR:"At first glance" bar|r w
 
 |cff00ff00Hint: You can drag & drop slots to reorder them.|r
 It also works on the |cnGREEN_FONT_COLOR:"At first glance" bar|r!]],
-	REG_PLAYER_TUTO_ABOUT_MISC_3 = [[This section contains |cnGREEN_FONT_COLOR:"a list of flags|r to answer a lot of |cnGREEN_FONT_COLOR:"common questions people could ask|r about you, your character and the way you want to play them.]],
+	REG_PLAYER_TUTO_ABOUT_MISC_3 = [[This section contains |cnGREEN_FONT_COLOR:a list of flags|r to answer a lot of |cnGREEN_FONT_COLOR:common questions people could ask|r about you, your character and the way you want to play them.]],
 	REG_RELATION = "Relationship",
 	REG_RELATION_BUTTON_TT = "Relation: %s\n|cff00ff00%s\n\n|cffffff00Click to display possible actions",
 	REG_RELATION_UNFRIENDLY = "Unfriendly",

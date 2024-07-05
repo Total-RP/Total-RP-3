@@ -181,7 +181,7 @@ local function displayRPStyle(context)
 				frame:SetHeight(24);
 				dropDown:Hide();
 				readOnlyValue:Show();
-				tooltipFrame = frame;
+				tooltipFrame = readOnlyValue;
 				local valueText;
 				for _, data in pairs(fieldData.values) do
 					if data[2] == selectedValue then
