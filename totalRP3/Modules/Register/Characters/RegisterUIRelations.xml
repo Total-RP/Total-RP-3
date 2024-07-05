@@ -95,20 +95,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</ScrollFrame>
 				</Frames>
 			</Frame>
-			<Frame parentKey="Editor" frameStrata="HIGH" enableMouse="true" hidden="true" inherits="BackdropTemplate">
-				<KeyValues>
-					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_5555" type="global"/>
-				</KeyValues>
+			<Frame parentKey="Editor" frameStrata="HIGH" enableMouse="true" hidden="true" inherits="TRP3_TooltipBackdropTemplate">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
 					<Anchor point="BOTTOMRIGHT" x="-20" y="17"/>
 					<Anchor point="LEFT" x="215" y="0"/>
 				</Anchors>
 				<Frames>
-					<Frame parentKey="Content" inherits="BackdropTemplate">
-						<KeyValues>
-							<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_24_5555" type="global"/>
-						</KeyValues>
+					<Frame parentKey="Content" inherits="TRP3_BrowserDialogBackdropTemplate">
 						<Size x="400" y="150"/>
 						<Anchors>
 							<Anchor point="CENTER" x="0" y="0"/>
