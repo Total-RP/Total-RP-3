@@ -15,7 +15,7 @@ local strhtml = TRP3_API.utils.str.toHTML;
 
 --- Returns the fully formatted localized text for this view.
 local function getLocalizedText()
-	return strhtml(loc.MORE_MODULES_2);
+	return strhtml(loc.MORE_MODULES_2 .. "|n|n");
 end
 
 --- Displays a list of additional cool modules that the user can download.

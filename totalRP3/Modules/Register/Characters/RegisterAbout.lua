@@ -169,7 +169,7 @@ end
 
 local function resizeTemplate2()
 	for _, frame in pairs(template2Frames) do
-		local text = _G[frame:GetName().."Text"];
+		local text = frame.Text;
 		local height = 0;
 
 		local numRegions = select("#", text:GetRegions());
@@ -188,7 +188,7 @@ local function showTemplate2(dataTab)
 
 	-- Hide all
 	for _, frame in pairs(template2Frames) do
-		local text = _G[frame:GetName().."Text"];
+		local text = frame.Text;
 		text:SetText("");
 		frame:Hide();
 	end
@@ -206,10 +206,10 @@ local function showTemplate2(dataTab)
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, -10);
 		frame:SetPoint("RIGHT", 0, 0);
 
-		local icon = _G[frame:GetName().."Icon"];
-		local text = _G[frame:GetName().."Text"];
+		local icon = frame.Icon;
+		local text = frame.Text;
 		TRP3_API.ui.frame.setBackdropToBackground(frame, frameTab.BK);
-		setupIconButton(icon, frameTab.IC or TRP3_InterfaceIcons.Default);
+		frame.Icon:SetIconTexture(frameTab.IC);
 
 		setupHTMLFonts(text);
 
@@ -543,8 +543,8 @@ local function ResizeTemplateViews()
 	resizeTemplate3();
 	resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template1);
 	for _, frame in pairs(template2Frames) do
-		_G[frame:GetName().."Text"]:SetWidth(containerWidth - 150);
-		resetHTMLText(_G[frame:GetName().."Text"]);
+		frame.Text:SetWidth(containerWidth - 150);
+		resetHTMLText(frame.Text);
 	end
 	for _, frame in pairs(template2EditFrames) do
 		frame:SetHeight(containerHeight * 0.45);
@@ -1037,5 +1037,10 @@ function TRP3_API.register.inits.aboutInit()
 	-- Resizing
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function()
 		ResizeTemplateViews();
+	end);
+
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.REGISTER_PROFILE_OPENED, function()
+		TRP3_RegisterAbout_AboutPanel_Scroll.ScrollBar:ScrollToBegin();
+		TRP3_RegisterAbout_Edit_Template2_Scroll.ScrollBar:ScrollToBegin();
 	end);
 end

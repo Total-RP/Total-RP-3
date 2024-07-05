@@ -534,16 +534,16 @@ function TRP3_IconBrowserMixin:OnLoad()
 	self.selectionModel = CreateIconBrowserSelectionModel(self.baseModel);
 	self.filterModel = CreateIconBrowserFilterModel(self.selectionModel);
 
-	local GRID_STRIDE = 8;
+	local GRID_STRIDE = 7;
 	local GRID_PADDING = 4;
 
 	local scrollBoxAnchorsWithBar = {
-		AnchorUtil.CreateAnchor("TOPLEFT", self.Content, "TOPLEFT", 12, -4),
+		AnchorUtil.CreateAnchor("TOPLEFT", self.Content, "TOPLEFT", 6, -4),
 		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self.Content, "BOTTOMRIGHT", -10, 4),
 	};
 
 	local scrollBoxAnchorsWithoutBar = {
-		AnchorUtil.CreateAnchor("TOPLEFT", self.Content, "TOPLEFT", 20, -4),
+		AnchorUtil.CreateAnchor("TOPLEFT", self.Content, "TOPLEFT", 14, -4),
 		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self.Content, "BOTTOMRIGHT", -17, -4),
 	};
 
@@ -612,7 +612,7 @@ function TRP3_IconBrowserButtonMixin:OnEnter()
 	end
 
 	local iconSizeSource = 64;
-	local iconSizeScaled = 32;
+	local iconSizeScaled = 64;
 	local titleLineIcon = CreateTextureMarkup(iconInfo.file, iconSizeSource, iconSizeSource, iconSizeScaled, iconSizeScaled, 0, 1, 0, 1);
 	local titleLineText = string.join(" ", titleLineIcon, iconInfo.name);
 

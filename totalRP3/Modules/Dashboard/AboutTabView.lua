@@ -272,7 +272,7 @@ local function GenerateCreditsString(credits)
 	table.insert(output, L.CREDITS_THANK_YOU_SECTION_9);
 
 	output = table.concat(output, "|n|n");
-	output = TRP3_API.utils.str.toHTML(output);
+	output = TRP3_API.utils.str.toHTML(output .. "|n|n");
 
 	return output;
 end

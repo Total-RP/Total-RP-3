@@ -39,6 +39,9 @@ TRP3_Addon.Events =
 	-- Called when as "About" page is shown.
 	REGISTER_ABOUT_READ = "REGISTER_ABOUT_READ",
 
+	-- Called when a profile page is opened.
+	REGISTER_PROFILE_OPENED = "REGISTER_PROFILE_OPENED",
+
 	-- Called when Wow Event UPDATE_MOUSEOVER_UNIT is fired.
 	MOUSE_OVER_CHANGED = "MOUSE_OVER_CHANGED",
 

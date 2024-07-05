@@ -126,10 +126,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Frames>
-			<Frame name="$parentIcon" inherits="TRP3_SimpleIcon">
+			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
 				<Size x="50" y="50"/>
 			</Frame>
-			<SimpleHTML name="$parentText" inherits="TRP3_HyperLinkedScripts">
+			<SimpleHTML parentKey="Text" inherits="TRP3_HyperLinkedScripts">
 				<Size x="380" y="0"/>
 				<FontString inherits="GameFontNormalSmall"/>
 			</SimpleHTML>
