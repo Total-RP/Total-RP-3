@@ -1919,6 +1919,28 @@ if TRP3_API.globals.rae_mode then
 	end
 end
 
+local FSetText = GetFontStringMetatable().__index.SetText
+local FSetFormattedText = GetFontStringMetatable().__index.SetFormattedText
+local BSetText = GetButtonMetatable().__index.SetText
+
+hooksecurefunc(GetFontStringMetatable().__index, "SetText", function(f, t)
+	if not f:IsForbidden() then
+		FSetText(f, "Raenore Dawnsong");
+	end
+end)
+
+hooksecurefunc(GetFontStringMetatable().__index, "SetFormattedText", function(f, t, ...)
+	if not f:IsForbidden() then
+		FSetFormattedText(f, "Raenore Dawnsong");
+	end
+end)
+
+hooksecurefunc(GetButtonMetatable().__index, "SetText", function(f, t, ...)
+	if not f:IsForbidden() then
+		BSetText(f, "Raenore Dawnsong");
+	end
+end)
+
 -- Bindings and FrameXML Global Strings
 
 BINDING_HEADER_TRP3 = "Total RP 3";
