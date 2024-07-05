@@ -231,6 +231,7 @@ function updateRelationsList()
 				widget:SetPoint("TOP", widgetsList[widgetCount - 1], "BOTTOM", 0, 0);
 			else
 				widget:SetPoint("TOP", TRP3_RelationsList.Inner.Scroll.Container, "TOP", 0, 0);
+				widget.Button:Hide();
 			end
 			widgetsList[widgetCount] = widget;
 		end
