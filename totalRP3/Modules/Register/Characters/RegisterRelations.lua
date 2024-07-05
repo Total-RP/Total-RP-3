@@ -264,6 +264,11 @@ function updateRelationsList()
 end
 
 local function saveCurrentRelation()
+	if not TRP3_API.utils.str.emptyToNil(TRP3_RelationsList.Editor.Content.Name:GetText()) then
+		TRP3_API.utils.message.displayMessage(loc.CO_RELATIONS_NEW_ERROR, TRP3_API.utils.message.type.ALERT_MESSAGE);
+		return
+	end
+
 	local relationToUpdate;
 	if TRP3_RelationsList.Editor.Content.ID then
 		relationToUpdate = getRelationInfo(TRP3_RelationsList.Editor.Content.ID);
