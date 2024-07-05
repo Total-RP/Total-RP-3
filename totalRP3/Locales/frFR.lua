@@ -58,7 +58,6 @@ L = {
 	["AUTOMATION_ERROR_INVALID_OPTION"] = "Option invalide '%1$s' (doit être l'une des options suivantes : %s)",
 	["AUTOMATION_ERROR_INVALID_PROFILE"] = "impossible de trouver un profil nommé '%s'",
 	["AUTOMATION_MODULE_DESCRIPTION"] = "Permet de configurer des actions telles que des changement de profil ou de statut de personnage automatiquement.",
-	["AUTOMATION_MODULE_MESSAGE_PREFIX"] = "TRP3 Automatisation",
 	["AUTOMATION_MODULE_NAME"] = "Automatisation",
 	["AUTOMATION_MODULE_SETTINGS_HELP"] = "Sélectionnez une action dans le menu déroulant ci-dessous et entrez une condition de macro dans le champ de texte affiché.",
 	["AUTOMATION_MODULE_SETTINGS_TITLE"] = "Paramètres d'automatisation",
@@ -700,8 +699,6 @@ Ajoute un bouton à votre barre d'outils pour activer ou désactiver votre affic
 	["NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP"] = "Si coché, récupère automatiquement les profils RP des unités avec des barres d'infos visibles.",
 	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY"] = "Cacher les barres de vie |cff449fe0Blizzard|r",
 	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP"] = "Si coché, ceci active le mode \"nom uniquement\" des barres d'info |cff449fe0Blizzard|r.|n|nDans ce mode, toutes les barres d'info ont les barres de vie cachées, y compris celles des unités ennemies et des autres joueurs avec ou sans profil RP.|n|nCette option requiert de recharger l'interface pour prendre effet.",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES"] = "Afficher seulement prénoms",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES_HELP"] = "Si activé, seuls les prénoms seront affichés au lieu des noms complets.|n|nCeci ne peut être appliqué qu'aux personnages joueurs, et ne fonctionnera pas avec les profils reçus d'autres addons RP.",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES"] = "Afficher les titres complets",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES_HELP"] = "Si coché, affiche le titre complet d'une unité sur sa barre d'info.|n|nPour les barres d'info |cff449fe0Blizzard|r et |cff9966ffKui|r, les titres complets ne sont affichés qu'en mode \"nom uniquement\".",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_GUILD"] = "Afficher les noms de guilde personnalisés",
@@ -728,19 +725,11 @@ Ajoute un bouton à votre barre d'outils pour activer ou désactiver votre affic
 	["NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP"] = "Si coché, désactive la personnalisation des barres d'info en combat.",
 	["NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES"] = "Désactiver personnalisation en instances",
 	["NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES_HELP"] = "Si activé, désactive la personnalisation des barres d'info en instances.|n|nEn instances, les barres d'infos amicales ne peuvent pas être personnalisées.",
-	["NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS"] = "Désactiver personnalisation des unités PNJ",
-	["NAMEPLATES_CONFIG_DISABLE_NON_PLAYABLE_UNITS_HELP"] = "Si activé, désactive la personnalisation des barres d'info des unités non-joueurs.",
 	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER"] = "Désactiver personnalisation en HRP",
 	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP"] = "Si coché, désactive la personnalisation des barres d'info quand vous êtes HRP.",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS"] = "Désactiver personnalisation des unités HRP",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP"] = "Si coché, désactive la personnalisation des barres d'info des unités HRP.",
 	["NAMEPLATES_CONFIG_ELEMENT_HEADER"] = "Paramètres de personnalisation",
 	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK"] = "Utiliser la couleur de classe par défaut",
 	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP"] = "Si coché, la couleur de classe de base sera utilisée par défaut pour les noms et barres de vie (si applicable) des unités dans couleur personnalisée dans leur profil.|n|nLes unités sans profil ne sont pas affectées par ce paramètres et ne seront pas colorées.",
-	["NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS"] = "Cacher les unités non-RP",
-	["NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP"] = "Si coché, cache les barres d'infos des joueurs et compagnons sans profil.",
-	["NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS"] = "Cacher les unités HRP",
-	["NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP"] = "Si coché, cache les barres d'infos des unités HRP.",
 	["NAMEPLATES_CONFIG_ICON_SIZE"] = "Taille d'icone",
 	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "Configure la taille des icones affichées sur les barres d'infos si l'option |cffffff00Afficher icones|r est activée.",
 	["NAMEPLATES_CONFIG_MAX_GUILD_NAME_CHARS"] = "Longueur de nom de guilde max",
@@ -768,12 +757,9 @@ Ajoute un bouton à votre barre d'outils pour activer ou désactiver votre affic
 	["NAMEPLATES_CONFIG_UNIT_STATE_SHOW"] = "Afficher",
 	["NAMEPLATES_CONFIG_UNIT_STATE_SHOW_HELP"] = "Affiche les barres d'info pour ces unités avec toutes les personnalisations appliquées.|n|nLa visibilité de ces barres d'info peut être écrasée par d'autres paramètres.",
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Paramètres de visibilité",
-	["NAMEPLATES_MODULE_ACTIVE_STATUS"] = "Module |cff00ff00actif|r (%1$s|r)",
 	["NAMEPLATES_MODULE_DESCRIPTION"] = "Active la personnalisation des barres d'info avec les informations contenues dans les profils RP.",
-	["NAMEPLATES_MODULE_DISABLE_WARNING"] = "Désactiver le module de barres d'info bloquera toute personnalisation des barres d'info. L'interface devra être rechargée pour que ce changement prenne effet.|n|n|cffff0000Attention:|r Une fois désactivé, ce module ne peut être réactivé que via l'onglet de |cffffcc00Statut des modules|r.|n|nVoulez-vous vraiment désactiver ce module ?",
 	["NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY"] = "Ce module a été automatiquement désactivé dû à une dépendance manquante.",
 	["NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL"] = "Ce module a été automatiquement désactivé dû à un conflit avec un autre module ou addon.",
-	["NAMEPLATES_MODULE_INACTIVE_STATUS"] = "Module |cffff9900inactif|r (pas d'addon détecté)",
 	["NAMEPLATES_MODULE_NAME"] = "Barres d'info",
 	["NEW_VERSION"] = [=[|cff00ff00Une nouvelle version de Total RP 3 (v %s) est disponible.
 
@@ -922,13 +908,6 @@ Remplacer le contenu du profil %s avec les données importées ?]=],
 	["PR_SLASH_OPEN_WAITING"] = "|cffffff00Demande de profil envoyé, veuillez patienter...|r",
 	["PR_SLASH_SWITCH_HELP"] = "Passer à un autre profil via son nom.",
 	["PR_UNUSED_PROFILE"] = "Ce profil n'est actuellement lié à aucun personnage WoW.",
-	["REG_CODE_INSERTION_WARNING"] = [=[Hola, doucement!
-
-Il semblerait que vous ayez essayé d'insérer manuellement des codes non supportés dans votre profil Total RP 3.
-Ce genre de modification n'est pas du tout supporté et nous vous décourageons fortement de le faire.
-Cela peut créer des soucis de stabilité au sein de l'add-on, la corruption de vos données et la perte de vos profils, ou encore des soucis de compatibilité avec les autres add-ons RP (comme MRP).
-
-Les codes que vous aviez insérés dans votre profil ont été retirés pour éviter que vous ne cassiez l'add-on.]=],
 	["REG_COMPANION"] = "Compagnon",
 	["REG_COMPANION_BIND_TO_PET"] = "Familier",
 	["REG_COMPANION_BOUND_TO"] = "Lier à ...",
@@ -1105,9 +1084,6 @@ Chevalier, Pyrotechnicien, Nécromant, Tireur d'élite, Arcaniste ...]=],
 ]=],
 	["REG_PLAYER_COLOR_TT"] = [=[|cffffff00Clic gauche:|r Sélectionner une couleur
 |cffffff00Clic droit:|r Effacer la couleur]=],
-	["REG_PLAYER_CURRENT"] = "Actuellement",
-	["REG_PLAYER_CURRENT_OOC"] = "Ceci est une information hors du personnage",
-	["REG_PLAYER_CURRENTOOC"] = "Actuellement (HRP)",
 	["REG_PLAYER_EDIT_MUSIC_THEME"] = "Thème musical",
 	["REG_PLAYER_EYE"] = "Couleur des yeux",
 	["REG_PLAYER_EYE_TT"] = [=[Vous pouvez indiquer ici la couleur des yeux de votre personnage.
@@ -1518,9 +1494,6 @@ Change le statut de votre personnage en fonction de l'option spécifiée:
 	["UI_COLOR_BROWSER_PRESETS_RESOURCES"] = "Ressources",
 	["UI_COLOR_BROWSER_SELECT"] = "Choisir une couleur",
 	["UI_COMPANION_BROWSER_HELP"] = "Sélectionner une mascotte",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Attention:|r Seules les mascottes renommées peuvent être associées à un profil.
-
-|cff00ff00Cette section ne liste que ces mascottes.]=],
 	["UI_FILTER"] = "Filtre",
 	["UI_FILTER_NO_RESULTS_FOUND_TEXT"] = "Ajustez votre critère de recherche.",
 	["UI_FILTER_NO_RESULTS_FOUND_TITLE"] = "Aucun résultat.",
@@ -1567,7 +1540,6 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 	["UNIT_POPUPS_CONFIG_ENTRIES_HEADER"] = "Eléments de menu",
 	["UNIT_POPUPS_CONFIG_MENU_TITLE"] = "Paramètres de menu",
 	["UNIT_POPUPS_CONFIG_PAGE_HELP"] = "Le module de menus d'unités ajoute des éléments additionnels aux menus de clic-droit sur les portraits d'unités et les noms dans la fenêtre de discussion.",
-	["UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE"] = "|cffffcc00Note:|r A cause de problèmes avec le Mode Edition du patch 10.0.0, le module de menus d'unités a été |cffff0000désactivé|r. Désolé pour le dérangement !",
 	["UNIT_POPUPS_CONFIG_PAGE_TEXT"] = "Paramètres de menu",
 	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS"] = "Afficher le bouton de statut de personnage",
 	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP"] = "Si coché, ajoute une case à cocher au menu de votre propre portrait d'unité vous permettant de changer votre statut RP/HRP.",
@@ -1584,30 +1556,7 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 	["UNIT_POPUPS_MODULE_DISABLE_WARNING"] = "L'interface devra être rechargée pour désactiver le module de menus d'unités.|n|n|cffff0000Attention:|r Une fois désactivé, ce module ne peut être réactivé que via l'onglet de |cffffcc00Statut des modules|r.|n|nVoulez-vous vraiment désactiver ce module ?",
 	["UNIT_POPUPS_MODULE_NAME"] = "Menus d'unités",
 	["UNIT_POPUPS_OPEN_PROFILE"] = "Ouvrir profil",
-	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "Options roleplay",
-	["WHATS_NEW_25_1"] = [=[# Liste des changements de la version 2.4
-
-## Ajouté
-
-- Support de la version Retail 10.0.0.
-- Ajout de 2 commandes pour macros:
-  - /trp3 set: Change la valeur d'un champ du profil.
-  - /trp3 location: Contrôle si vous apparaissez ou non sur les scans de personnage de la carte.
-- Ajout de conditions de macro pour les 2 commandes ci-dessus:
-  - [ic], [ooc], [rpstatus:{status}] - Statut RP (IC) / HRP (OOC)
-  - [loc:{location name}], [location:{location name}] - Zone actuelle
-  - [profile:{profile name}] - Nom du profil actuel
-  - Les conditions de macro basiques sont aussi supportées.
-
-## Corrigé
-
-- Correction d'un problème avec le sélecteur de couleur ne fonctionnant pas pour WotLK Classic.
-- Correction d'un problème empêchant de lier un profil de compagnon aux élémentaires d'eau pour WotLK Classic.
-
-## Supprimé
-
-- Suppression temporaire des options dans les menus au clic droit pour Retail dû à un conflit avec le Mode Edition pouvant bloquer l'utilisation de compétences en combat. Elles seront rajoutées lorsque le conflit sera résolu.
-]=]
+	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "Options roleplay"
 };
 
 TRP3_API.loc:RegisterNewLocale("frFR", "Français", L);

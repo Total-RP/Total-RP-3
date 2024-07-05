@@ -555,27 +555,18 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP"] = "如果勾选，将在战斗中还原姓名版设置。",
 	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER"] = "OOC时关闭姓名版配置",
 	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP"] = "如果勾选，将在OOC状态时还原姓名版设置。",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS"] = "关闭OOC目标的姓名版配置",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP"] = "如果勾选，将还原OOC目标的姓名版配置",
 	["NAMEPLATES_CONFIG_ELEMENT_HEADER"] = "姓名版配置",
 	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK"] = "使用默认职业颜色",
 	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP"] = "如果勾选，将在姓名版上用职业颜色代替没有设置职业颜色的角色颜色。|n|n没有RP人物卡的目标不会被此效果影响，会使用默认颜色。",
-	["NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS"] = "隐藏非RP目标姓名版",
-	["NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP"] = "如果勾选，将隐藏没有人物卡的目标（包括玩家和宠物）的姓名版。",
-	["NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS"] = "隐藏OOC目标姓名版",
-	["NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP"] = "如果勾选，将隐藏OOC状态目标的姓名版。",
 	["NAMEPLATES_CONFIG_ICON_SIZE"] = "图标大小",
 	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "如果|cffffff00显示图标|r功能启动，调整姓名版上图标的大小。",
 	["NAMEPLATES_CONFIG_MENU_TITLE"] = "姓名版",
 	["NAMEPLATES_CONFIG_PAGE_HELP"] = "请注意目前只支持|cff449fe0暴雪|r，|cff9966ffKui|r和|cffa8deffPlater|r姓名版。请阅读设置选项下方的说明来了解如何设置。",
 	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "姓名版设置",
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "可见度设置",
-	["NAMEPLATES_MODULE_ACTIVE_STATUS"] = "模块|cff00ff00启动|r (%1$s|r)",
 	["NAMEPLATES_MODULE_DESCRIPTION"] = "启动基于人物卡信息的姓名版功能。",
-	["NAMEPLATES_MODULE_DISABLE_WARNING"] = "关闭姓名版模块将关闭所有的自定义姓名版功能，本选项需要重载界面生效。|n|n|cffff0000警告|r一旦关闭，本模组只能从|cffffcc00模组状态|r窗口重新启动。|n|n你确定要关闭这个模组吗？",
 	["NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY"] = "由于缺少关联文件，本模组已自动关闭。",
 	["NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL"] = "由于与其他模组或插件冲突，本模组已自动关闭。",
-	["NAMEPLATES_MODULE_INACTIVE_STATUS"] = "模组|cffff9900未生效|r（未找到插件）",
 	["NAMEPLATES_MODULE_NAME"] = "姓名版",
 	["NEW_VERSION"] = [=[|cff00ff00TRP3的一个新版本(v %s)已可用。
 
@@ -721,15 +712,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["PR_SLASH_OPEN_WAITING"] = "|cffffff00请求人物卡,请等待…|r",
 	["PR_SLASH_SWITCH_HELP"] = "使用它的名称切换到另一个人物卡。",
 	["PR_UNUSED_PROFILE"] = "这个人物卡目前没有绑定到任何WoW角色。",
-	["REG_CODE_INSERTION_WARNING"] = [=[|TInterface\AddOns\totalRP3\resources\policegar.tga:50:50|t
-请等一下。
-
-
-我们发现您已经在trp3人物卡中手动插入了无效代码。
-这种行为根本不被支持，我们强烈反对任何人这样做。
-它可能导致附加组件内的不稳定和错误，数据损坏/配置文件丢失，还会导致与其他附加组件(如MRP)的不兼容性问题。
-
-您在人物卡中插入的代码已被删除，以防止您破坏插件。]=],
 	["REG_COMPANION"] = "同伴",
 	["REG_COMPANION_BIND_TO_PET"] = "宠物",
 	["REG_COMPANION_BOUND_TO"] = "绑定到 ...",
@@ -904,9 +886,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 ]=],
 	["REG_PLAYER_COLOR_TT"] = [=[|cffffff00Click:|r 选择一种颜色
 |cffffff00Right-click:|r 放弃颜色]=],
-	["REG_PLAYER_CURRENT"] = "目前",
-	["REG_PLAYER_CURRENT_OOC"] = "这是一个 OOC 信息",
-	["REG_PLAYER_CURRENTOOC"] = "目前 (OOC)",
 	["REG_PLAYER_EDIT_MUSIC_THEME"] = "主题音乐",
 	["REG_PLAYER_EYE"] = "眼睛颜色",
 	["REG_PLAYER_EYE_TT"] = [=[在这里，你可以看到你的眼睛的颜色。
@@ -1267,9 +1246,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["UI_COLOR_BROWSER_PRESETS_RESOURCES"] = "资源",
 	["UI_COLOR_BROWSER_SELECT"] = "选择颜色",
 	["UI_COMPANION_BROWSER_HELP"] = "选择一个战斗的宠物",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00警告:|r 只有重命名过的战斗宠物可以绑定到同伴卡。
-
-|cff00ff00此处仅列出符合条件的战斗宠物。]=],
 	["UI_FILTER"] = "筛选",
 	["UI_ICON_BROWSER"] = "图标浏览器",
 	["UI_ICON_BROWSER_HELP"] = "复制图标",
@@ -1314,7 +1290,6 @@ Total RP不对导致有害内容的链接负责。]=],
 	["UNIT_POPUPS_CONFIG_ENTRIES_HEADER"] = "菜单项",
 	["UNIT_POPUPS_CONFIG_MENU_TITLE"] = "菜单设置",
 	["UNIT_POPUPS_CONFIG_PAGE_HELP"] = "单位框体模块会对团队框体和聊天框内右击玩家的动作产生一个右键菜单。",
-	["UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE"] = "|cffffcc00Note:|r 由于10.0版本编辑模式的问题，单位弹窗已暂时|cffff0000禁用|r。我们对带来的不便深表歉意！",
 	["UNIT_POPUPS_CONFIG_PAGE_TEXT"] = "菜单设置",
 	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS"] = "显示角色状态按钮",
 	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP"] = "如果勾选，将为你自己的角色头像添加一个可以修改IC/OOC状态的右键菜单。",

@@ -346,9 +346,6 @@ Max: 20 kB]=],
 	["REG_PLAYER_CHARACTERISTICS"] = "Caratteristiche",
 	["REG_PLAYER_CLASS"] = "Classe",
 	["REG_PLAYER_COLOR_CLASS"] = "Colore classe",
-	["REG_PLAYER_CURRENT"] = "Attualmente",
-	["REG_PLAYER_CURRENT_OOC"] = "Questa informazione è OOC",
-	["REG_PLAYER_CURRENTOOC"] = "Attualmente (OOC)",
 	["REG_PLAYER_EYE"] = "Colore degli occhi",
 	["REG_PLAYER_EYE_TT"] = [=[Qui è possibile indicare il colore degli occhi del tuo personaggio.
 

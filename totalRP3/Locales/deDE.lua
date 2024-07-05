@@ -603,14 +603,6 @@ Den gesamten Inhalt des Profils %s mit den importierten Daten überschreiben?]=]
 	["PR_SLASH_SWITCH_HELP"] = [=[
 Wechsel zu einem anderen Profil mit diesem Namen.]=],
 	["PR_UNUSED_PROFILE"] = "Dieses Profil ist aktuell an keinen WoW Charakter gebunden.",
-	["REG_CODE_INSERTION_WARNING"] = [=[|TInterface\AddOns\totalRP3\resources\policegar.tga:50:50|t
-Moment mal!
-
-Wir haben bemerkt, das Ihr manuell ungültige Codes in Euer Total RP 3 Profil eingegeben habt.
-Dies wird nicht unterstützt und wir raten jedem dringend davon ab dieses zu tun.
-Es kann zu Instabilität und Bugs im Add-on, beschädigten Daten und/oder Verlust von Profilen führen. Des weiteren können Kompatibilitätsprobleme mit anderen Add-ons (wie MRP) entstehen.
-
-Die Codes, die Ihr in Euer Profil eingefügt habt, wurden entfernt um zu verhindern, dass Ihr das Add-on beschädigt.]=],
 	["REG_COMPANION"] = "Begleiter",
 	["REG_COMPANION_BOUND_TO"] = "Gebunden an ...",
 	["REG_COMPANION_BOUND_TO_TARGET"] = "Ziel",
@@ -784,9 +776,6 @@ Ritter, Pyromane, Nekromant, Eliteschütze, Arkanwirker, Magd ...]=],
 ]=],
 	["REG_PLAYER_COLOR_TT"] = [=[|cffffff00Linksklick:|r Wähle eine Farbe
 |cffffff00Rechtsklick:|r Farbe abwählen]=],
-	["REG_PLAYER_CURRENT"] = "Aktuelles",
-	["REG_PLAYER_CURRENT_OOC"] = "Dies ist eine OOC Information.",
-	["REG_PLAYER_CURRENTOOC"] = "Aktuelles (OOC)",
 	["REG_PLAYER_EDIT_MUSIC_THEME"] = "Musikthema",
 	["REG_PLAYER_EYE"] = "Augenfarbe",
 	["REG_PLAYER_EYE_TT"] = [=[Hier kannst du die Augenfarbe eintragen.
@@ -1145,9 +1134,6 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 	["UI_COLOR_BROWSER_PRESETS_RESOURCES"] = "Ressource",
 	["UI_COLOR_BROWSER_SELECT"] = "Farbe auswählen",
 	["UI_COMPANION_BROWSER_HELP"] = "Wähle ein Wildtier",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Warnung:|r Nur umbenannte Wildtiere dürfen mit einem Profil verbunden werden.
-
-|cff00ff00Dieser Bereich enthält nur diese Wildtiere.]=],
 	["UI_FILTER"] = "Filter",
 	["UI_ICON_BROWSER"] = "Iconbrowser",
 	["UI_ICON_BROWSER_HELP"] = "Icon kopieren",
