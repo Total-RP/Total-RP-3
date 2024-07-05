@@ -263,6 +263,46 @@ function updateRelationsList()
 	end
 end
 
+local function saveCurrentRelation()
+	local relationToUpdate;
+	if TRP3_RelationsList.Editor.Content.ID then
+		relationToUpdate = getRelationInfo(TRP3_RelationsList.Editor.Content.ID);
+	else
+		-- Create new
+		local relationList = getRelationList()
+		local i = 1;
+		local newID = "CUSTOM" .. i;
+		while relationList[newID] do
+			i = i + 1;
+			newID = "CUSTOM" .. i;
+		end
+		local maxOrder = 0;
+		for _, relation in pairs(relationList) do
+			if relation.order > maxOrder then
+				maxOrder = relation.order;
+			end
+		end
+		relationToUpdate = {
+			id = newID,
+			order = maxOrder + 1,
+			inUse = false,
+		};
+		relationList[newID] = relationToUpdate;
+	end
+	relationToUpdate.texture = draftRelationTexture;
+	relationToUpdate.name = TRP3_RelationsList.Editor.Content.Name:GetText();
+	relationToUpdate.description = TRP3_RelationsList.Editor.Content.Description:GetText():gsub("%%p", '%%1$s'):gsub("%%t", '%%2$s');
+	if TRP3_RelationsList.Editor.Content.Color.red and TRP3_RelationsList.Editor.Content.Color.green and TRP3_RelationsList.Editor.Content.Color.blue then
+		relationToUpdate.color = TRP3_API.CreateColorFromBytes(TRP3_RelationsList.Editor.Content.Color.red, TRP3_RelationsList.Editor.Content.Color.green, TRP3_RelationsList.Editor.Content.Color.blue):GenerateHexColorOpaque();
+	else
+		relationToUpdate.color = nil;
+	end
+
+	updateRelationsList();
+	TRP3_RelationsList.Editor:Hide();
+	TRP3_API.popup.hidePopups();
+end
+
 local RELATIONS_PAGE_ID = "main_config_relations";
 local RELATIONS_MENU_ID = "main_41_customization_relations";
 
@@ -284,44 +324,7 @@ TRP3_API.register.inits.relationsInit = function()
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(TRP3_RelationsList.Editor.Content.Description.help, "RIGHT", 0, 5, loc.CO_RELATIONS_DESCRIPTION, loc.CO_RELATIONS_DESCRIPTION_TT);
 		TRP3_RelationsList.Editor.Content.Save:SetText(loc.CM_SAVE);
 		TRP3_RelationsList.Editor.Content.Save:SetScript("OnClick", function()
-
-			local relationToUpdate;
-			if TRP3_RelationsList.Editor.Content.ID then
-				relationToUpdate = getRelationInfo(TRP3_RelationsList.Editor.Content.ID);
-			else
-				-- Create new
-				local relationList = getRelationList()
-				local i = 1;
-				local newID = "CUSTOM" .. i;
-				while relationList[newID] do
-					i = i + 1;
-					newID = "CUSTOM" .. i;
-				end
-				local maxOrder = 0;
-				for _, relation in pairs(relationList) do
-					if relation.order > maxOrder then
-						maxOrder = relation.order;
-					end
-				end
-				relationToUpdate = {
-					id = newID,
-					order = maxOrder + 1,
-					inUse = false,
-				};
-				relationList[newID] = relationToUpdate;
-			end
-			relationToUpdate.texture = draftRelationTexture;
-			relationToUpdate.name = TRP3_RelationsList.Editor.Content.Name:GetText();
-			relationToUpdate.description = TRP3_RelationsList.Editor.Content.Description:GetText():gsub("%%p", '%%1$s'):gsub("%%t", '%%2$s');
-			if TRP3_RelationsList.Editor.Content.Color.red and TRP3_RelationsList.Editor.Content.Color.green and TRP3_RelationsList.Editor.Content.Color.blue then
-				relationToUpdate.color = TRP3_API.CreateColorFromBytes(TRP3_RelationsList.Editor.Content.Color.red, TRP3_RelationsList.Editor.Content.Color.green, TRP3_RelationsList.Editor.Content.Color.blue):GenerateHexColorOpaque();
-			else
-				relationToUpdate.color = nil;
-			end
-
-			updateRelationsList();
-			TRP3_RelationsList.Editor:Hide();
-			TRP3_API.popup.hidePopups();
+			saveCurrentRelation();
 		end);
 
 		updateRelationsList();
