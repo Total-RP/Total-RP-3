@@ -110,7 +110,7 @@ end
 TRP3_API.register.relation.getRelationColors = getRelationColors;
 
 local function getColor(relation)
-	return TRP3_API.CreateColorFromHexString('#'..getRelationInfo(relation).color);
+	return TRP3_API.CreateColorFromHexString("#"..getRelationInfo(relation).color);
 end
 TRP3_API.register.relation.getColor = getColor;
 
