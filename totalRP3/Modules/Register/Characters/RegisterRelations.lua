@@ -146,8 +146,13 @@ local function initRelationEditor(relationID)
 	end
 	TRP3_RelationsList.Editor.Content.ID = relationID;
 
-	local relation = getRelationInfo(relationID)
-	draftRelationTexture = relation.texture;
+	local relation;
+	if relationID then
+		relation = getRelationInfo(relationID);
+	else
+		relation = { name = "", description = "" };
+	end
+	draftRelationTexture = relation.texture or TRP3_InterfaceIcons.ProfileDefault;
 	-- set icon, name, description, color
 	TRP3_API.ui.frame.setupIconButton(TRP3_RelationsList.Editor.Content.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
 	TRP3_RelationsList.Editor.Content.Icon:SetScript("OnClick", function()
@@ -169,7 +174,11 @@ local function initRelationEditor(relationID)
 	end
 	TRP3_RelationsList.Editor.Content.Description:SetText(descriptionText:gsub("%%.$s", { ["%1$s"] = "%p", ["%2$s"] = "%t" }));
 
-	TRP3_RelationsList.Editor.Content.Color.setColor(TRP3_API.CreateColorFromHexString(relation.color):GetRGBAsBytes());
+	if relation.color then
+		TRP3_RelationsList.Editor.Content.Color.setColor(TRP3_API.CreateColorFromHexString(relation.color):GetRGBAsBytes());
+	else
+		TRP3_RelationsList.Editor.Content.Color.setColor(nil);
+	end
 end
 
 function TRP3_API.register.relation.showEditor(relationID)
