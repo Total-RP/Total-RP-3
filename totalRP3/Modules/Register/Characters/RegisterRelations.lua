@@ -139,7 +139,11 @@ local draftRelationTexture;
 
 -- Init the relation popup
 local function initRelationEditor(relationID)
-	TRP3_RelationsList.Editor.Content.Title:SetText(loc.CO_RELATIONS_MENU_EDIT);
+	if relationID then
+		TRP3_RelationsList.Editor.Content.Title:SetText(loc.CO_RELATIONS_MENU_EDIT);
+	else
+		TRP3_RelationsList.Editor.Content.Title:SetText(loc.CO_RELATIONS_NEW);
+	end
 	TRP3_RelationsList.Editor.Content.ID = relationID;
 
 	local relation = getRelationInfo(relationID)
