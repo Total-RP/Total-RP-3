@@ -1077,10 +1077,10 @@ O modelo escolhido define o |cffffff00layout geral e possibilidades de escrita|r
 Uma vez que um modelo for escolhido, você pode abrir este tutorial novamente para mais ajuda sobre cada modelo.]=],
 	["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[Esta seção possui |cnGREEN_FONT_COLOR:5 slots|r onde você pode descrever |cnGREEN_FONT_COLOR:as mais importantes informações sobre seu personagem|r.
 
-Esses slots estarão visíveis na sua |cnGREEN_FONT_COLOR:"barra de À primeira vista"|r quando alguém selecionar seu personagem.
+Esses slots estarão visíveis na sua |cnGREEN_FONT_COLOR:barra de "À primeira vista"|r quando alguém selecionar seu personagem.
 
 |cff00ff00Dica: Você pode arrastar e soltar os slots para reordená-los.|r
-Também funciona na |cnGREEN_FONT_COLOR:"barra À primeira vista"|r!]=],
+Também funciona na |cnGREEN_FONT_COLOR:barra "À primeira vista"|r!]=],
 	["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "Esta seção contém |cnGREEN_FONT_COLOR:uma lista de marcadores|r para responder muitas |cnGREEN_FONT_COLOR:perguntas comuns que as pessoas poderiam fazer|r a respeito de você, seu personagem e a maneira como você o interpreta.",
 	["REG_PLAYER_TUTO_ABOUT_T1"] = [=[Este molde permite que você |cff00ff00estruture livremente sua descrição|r.
 
