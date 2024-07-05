@@ -619,18 +619,11 @@ L = {
 	["REG_PLAYER_SHOWPSYCHO_TT"] = [=[如果你想使用角色個性描述，請勾選。
 
 如果你不想以這種方式來向其他玩家展示您的角色，請不要勾選此欄，描述框將會完全隱藏。]=],
-	["REG_PLAYER_STYLE_ASSIST"] = "角色扮演協助",
 	["REG_PLAYER_STYLE_BATTLE"] = "角色扮演戰鬥解決方式",
 	["REG_PLAYER_STYLE_BATTLE_1"] = "使用遊戲ＰＶＰ戰鬥",
 	["REG_PLAYER_STYLE_BATTLE_3"] = "使用擲骰戰鬥",
 	["REG_PLAYER_STYLE_BATTLE_4"] = "使用表情戰鬥",
 	["REG_PLAYER_STYLE_DEATH"] = "允許角色死亡",
-	["REG_PLAYER_STYLE_FREQ"] = "ＩＣ頻率",
-	["REG_PLAYER_STYLE_FREQ_1"] = "全時間角色扮演狀態",
-	["REG_PLAYER_STYLE_FREQ_2"] = "大部分時間",
-	["REG_PLAYER_STYLE_FREQ_3"] = "半數時間",
-	["REG_PLAYER_STYLE_FREQ_4"] = "不規律",
-	["REG_PLAYER_STYLE_FREQ_5"] = "全時間狀況外，非角色扮演玩家。",
 	["REG_PLAYER_STYLE_GUILD"] = "公會成員",
 	["REG_PLAYER_STYLE_GUILD_IC"] = "成員皆為角色扮演玩家",
 	["REG_PLAYER_STYLE_GUILD_OOC"] = "成員皆為非角色扮演玩家",
@@ -639,7 +632,6 @@ L = {
 	["REG_PLAYER_STYLE_PERMI"] = "需要經過玩家許可",
 	["REG_PLAYER_STYLE_ROMANCE"] = "允許角色之間發展戀愛關係",
 	["REG_PLAYER_STYLE_RPSTYLE"] = "喜好遊戲方式",
-	["REG_PLAYER_STYLE_RPSTYLE_SHORT"] = "RP style",
 	["REG_PLAYER_TITLE"] = "稱號",
 	["REG_PLAYER_TITLE_TT"] = [=[你的角色稱號代表他經常被稱呼的頭銜，避免使用過長的稱號，過長的稱號應該輸入在長稱號區而非此處。
 

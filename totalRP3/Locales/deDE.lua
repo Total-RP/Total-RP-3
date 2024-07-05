@@ -374,10 +374,8 @@ Deine Profile, Begleiterprofile und Einstellungen werden temporär ausgelagert u
 	["DB_NEW"] = "Was ist neu?",
 	["DB_STATUS"] = "Status",
 	["DB_STATUS_CURRENTLY"] = "Aktuelles",
-	["DB_STATUS_CURRENTLY_COMMON"] = "Der Status wird im Tooltip deines Charakters angezeigt. Halte dich hier kurz, knapp und eindeutig, da |cffff9900standartmäßig alle TRP3 Nutzer nur die ersten 140 Zeichen sehen können!",
+	["DB_STATUS_CURRENTLY_COMMON"] = "Der Status wird im Tooltip deines Charakters angezeigt. Halte dich hier kurz, knapp und eindeutig, da |cnGREEN_FONT_COLOR:standartmäßig alle TRP3 Nutzer nur die ersten 140 Zeichen sehen können!|r",
 	["DB_STATUS_CURRENTLY_OOC"] = "Andere Informationen (OOC)",
-	["DB_STATUS_CURRENTLY_OOC_TT"] = "Hier kannst du Wichtiges über dich als Spieler oder andere OOC Informationen eintragen.",
-	["DB_STATUS_CURRENTLY_TT"] = "Hier kannst du Wichtiges über deinen Charakter angeben.",
 	["DB_STATUS_LC"] = "Rollenspiel Sprache",
 	["DB_STATUS_LC_TT"] = "Speichert deine bevorzugte Rollenspiel Sprache. Diese Einstellung wird mit anderen Benutzern mit kompatiblem RP Addon geteilt. |cffff9900Achtung:|r Diese Option ändert |cffff0000nicht|r die Menüsprache von Total RP 3. Diese Möglichkeit findest du unter |cfffff569Erweiterte Einstellungen|r.",
 	["DB_STATUS_RP"] = "Charakterstatus",
@@ -937,20 +935,8 @@ Wenn du die benutzerdefinierten Felder nicht angezeigt haben willst lasse das H�
 	["REG_PLAYER_SHOWPSYCHO_TT"] = [=[Anwählen, wenn du die Persönlichkeitsbeschreibung nutzen möchtest.
 
 Wenn du die Persönlichkeit deines Charakter auf diese Art nicht angeben möchtest, dann wähle die Option nicht aus und das Persönlichkeitsfenster wird nicht angezeigt werden.]=],
-	["REG_PLAYER_STYLE_ASSIST"] = "Rollenspielassistenz",
-	["REG_PLAYER_STYLE_BATTLE"] = "RP-Kampfstil",
-	["REG_PLAYER_STYLE_BATTLE_1"] = "World of Warcraft PVP",
-	["REG_PLAYER_STYLE_BATTLE_2"] = "TRP Würfelkampf",
-	["REG_PLAYER_STYLE_BATTLE_3"] = "/würfeln Kampf",
-	["REG_PLAYER_STYLE_BATTLE_4"] = "Emotekampf",
 	["REG_PLAYER_STYLE_DEATH"] = "Akzeptiere Charaktertod",
 	["REG_PLAYER_STYLE_EMPTY"] = "Kein Rollenspielattribut geteilt",
-	["REG_PLAYER_STYLE_FREQ"] = "In-Charakter Häufigkeit",
-	["REG_PLAYER_STYLE_FREQ_1"] = "Vollzeit, kein OOC",
-	["REG_PLAYER_STYLE_FREQ_2"] = "Die meiste Zeit",
-	["REG_PLAYER_STYLE_FREQ_3"] = "Gelegentlich",
-	["REG_PLAYER_STYLE_FREQ_4"] = "Gewöhnlich",
-	["REG_PLAYER_STYLE_FREQ_5"] = "Vollzeit OOC, kein RP Charakter",
 	["REG_PLAYER_STYLE_GUILD"] = "Gildenmitgliedschaft",
 	["REG_PLAYER_STYLE_GUILD_IC"] = "IC Mitglied",
 	["REG_PLAYER_STYLE_GUILD_OOC"] = "OOC Mitglied",
@@ -959,8 +945,6 @@ Wenn du die Persönlichkeit deines Charakter auf diese Art nicht angeben möchte
 	["REG_PLAYER_STYLE_PERMI"] = "Mit Spielererlaubnis",
 	["REG_PLAYER_STYLE_ROMANCE"] = "Akzeptiere Charakterromanze",
 	["REG_PLAYER_STYLE_RPSTYLE"] = "Rollenspielstil",
-	["REG_PLAYER_STYLE_RPSTYLE_SHORT"] = "RP Stil",
-	["REG_PLAYER_STYLE_WOWXP"] = "World of Warcraft Erfahrung",
 	["REG_PLAYER_TITLE"] = "Titel",
 	["REG_PLAYER_TITLE_TT"] = [=[Der Titel deines Charakters ist der Titel, mit dem er angesprochen wird. Vermeide bitte lange Titel, für diesen Zweck kannst du das Feld "Kompletter Titel" verwenden.
 
@@ -988,13 +972,13 @@ Dies ist eine |cffffff00Hintergrundtextur|r für deine Charakterbeschreibung.
 Das gewählte Template gibt Auskunft über |cffffff00das generelle Aussehen und die Schriftmöglichkeiten|r deiner Beschreibung.
 |cffff9900Nur das ausgewählte Template ist für andere sichtbar. Du musst also nicht alle ausfüllen.|r
 Sobald ein Template ausgewählt ist, kannst du das Tutorial nochmals öffnen, um dir Hilfe zu jedem Template anzeigen zu lassen.]=],
-	["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[Dieser Teil stellt dir|cffffff005 Slots|r zur Verfügung, in denen du die |cff00ff00wichtigsten Informationen zu deinem Charakter|r beschreiben kannst.
+	["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[Dieser Teil stellt dir |cnGREEN_FONT_COLOR:5 Slots|r zur Verfügung, in denen du die |cnGREEN_FONT_COLOR:wichtigsten Informationen zu deinem Charakter|r beschreiben kannst.
 
-Die Slots sind in |cffffff00"Auf den ersten Blick"|r ersichtlich wenn jemand deinen Charakter anwählt.
+Die Slots sind in |cnGREEN_FONT_COLOR:"Auf den ersten Blick"|r ersichtlich wenn jemand deinen Charakter anwählt.
 
 |cff00ff00Hinweis: Du kannst die Slots per Drag&Drop neu anordnen.|r
-Das funktioniert auch in der Sektion |cffffff00"Auf den ersten Blick"|r!]=],
-	["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "Dieser Teil enthält |cffffff00eine Liste von Informationen|r, die eine Menge |cffffff00einfache Fragen zu der Art, wie du deinen Charakter spielst, beantwortet|r.",
+Das funktioniert auch in der Sektion |cnGREEN_FONT_COLOR:"Auf den ersten Blick"|r!]=],
+	["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "Dieser Teil enthält |cnGREEN_FONT_COLOR:eine Liste von Informationen|r, die eine Menge |cnGREEN_FONT_COLOR:einfache Fragen|r zu der Art, wie du deinen Charakter spielst, beantwortet.",
 	["REG_PLAYER_TUTO_ABOUT_T1"] = [=[Dieses Template erlaubt dir deine |cff00ff00Beschreibung frei zu gestalten|r.
 
 Die Beschreibung muss nicht auf die |cffff9900physische Beschreibung|r deines Charakters beschränkt sein. Gibt ruhig Teile seines |cffff9900Hintergrundes|r oder Details zu seiner |cffff9900Persönlichkeit|r an.

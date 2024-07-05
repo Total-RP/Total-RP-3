@@ -2,7 +2,7 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 -- imports
-local Utils, Events, Globals = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.globals;
+local Utils, Events, Globals, Ellyb = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.globals, TRP3_API.Ellyb;
 local loc = TRP3_API.loc;
 local get = TRP3_API.profile.getData;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
@@ -29,20 +29,9 @@ local STYLE_FIELDS;
 local function buildStyleStructure()
 	STYLE_FIELDS = {
 		{
-			id = "1",
-			name = loc.REG_PLAYER_STYLE_FREQ,
-			values = {
-				{loc.REG_PLAYER_STYLE_FREQ_1, 1},
-				{loc.REG_PLAYER_STYLE_FREQ_2, 2},
-				{loc.REG_PLAYER_STYLE_FREQ_3, 3},
-				{loc.REG_PLAYER_STYLE_FREQ_4, 4},
-				{loc.REG_PLAYER_STYLE_FREQ_5, 5},
-				{loc.REG_PLAYER_STYLE_HIDE, 0},
-			}
-		},
-		{
 			id = "2",
 			name = loc.REG_PLAYER_STYLE_INJURY,
+			tooltipText = loc.REG_PLAYER_STYLE_INJURY_TT,
 			values = {
 				{YES, 1},
 				{NO, 2},
@@ -53,6 +42,7 @@ local function buildStyleStructure()
 		{
 			id = "3",
 			name = loc.REG_PLAYER_STYLE_DEATH,
+			tooltipText = loc.REG_PLAYER_STYLE_DEATH_TT,
 			values = {
 				{YES, 1},
 				{NO, 2},
@@ -63,6 +53,7 @@ local function buildStyleStructure()
 		{
 			id = "4",
 			name = loc.REG_PLAYER_STYLE_ROMANCE,
+			tooltipText = loc.REG_PLAYER_STYLE_ROMANCE_TT,
 			values = {
 				{YES, 1},
 				{NO, 2},
@@ -71,19 +62,31 @@ local function buildStyleStructure()
 			}
 		},
 		{
-			id = "5",
-			name = loc.REG_PLAYER_STYLE_BATTLE,
+			id = "7",
+			name = loc.REG_PLAYER_STYLE_CRIME,
+			tooltipText = loc.REG_PLAYER_STYLE_CRIME_TT,
 			values = {
-				{loc.REG_PLAYER_STYLE_BATTLE_1, 1},
-				{loc.REG_PLAYER_STYLE_BATTLE_2, 2},
-				{loc.REG_PLAYER_STYLE_BATTLE_3, 3},
-				{loc.REG_PLAYER_STYLE_BATTLE_4, 4},
+				{YES, 1},
+				{NO, 2},
+				{loc.REG_PLAYER_STYLE_PERMI, 3},
+				{loc.REG_PLAYER_STYLE_HIDE, 0},
+			}
+		},
+		{
+			id = "8",
+			name = loc.REG_PLAYER_STYLE_LOSSOFCONTROL,
+			tooltipText = loc.REG_PLAYER_STYLE_LOSSOFCONTROL_TT,
+			values = {
+				{YES, 1},
+				{NO, 2},
+				{loc.REG_PLAYER_STYLE_PERMI, 3},
 				{loc.REG_PLAYER_STYLE_HIDE, 0},
 			}
 		},
 		{
 			id = "6",
 			name = loc.REG_PLAYER_STYLE_GUILD,
+			tooltipText = loc.REG_PLAYER_STYLE_GUILD_TT,
 			values = {
 				{loc.REG_PLAYER_STYLE_GUILD_IC, 1},
 				{loc.REG_PLAYER_STYLE_GUILD_OOC, 2},
@@ -167,15 +170,18 @@ local function displayRPStyle(context)
 			frame.FieldName:SetText(fieldData.name);
 			local dropDown = frame.Values;
 			local readOnlyValue = frame.FieldValue;
+			local tooltipFrame;
 			if context.isPlayer then
 				frame:SetHeight(30);
 				dropDown:SetSelectedValue(selectedValue);
 				dropDown:Show();
 				readOnlyValue:Hide();
+				tooltipFrame = dropDown;
 			else
 				frame:SetHeight(24);
 				dropDown:Hide();
 				readOnlyValue:Show();
+				tooltipFrame = frame;
 				local valueText;
 				for _, data in pairs(fieldData.values) do
 					if data[2] == selectedValue then
@@ -184,6 +190,14 @@ local function displayRPStyle(context)
 					end
 				end
 				readOnlyValue:SetText(valueText);
+			end
+
+			-- Set tooltip
+			if fieldData.tooltipText and fieldData.tooltipText ~= "" then
+				Ellyb.Tooltips.getTooltip(tooltipFrame)
+				:ClearLines()
+				:SetTitle(fieldData.name)
+				:AddLine(fieldData.tooltipText);
 			end
 
 			frame:Show();
@@ -438,7 +452,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
-				text = loc.DB_STATUS_CURRENTLY_COMMON .. "\n\n" .. "|cff00ff00" .. loc.DB_STATUS_CURRENTLY .. ":|r\n" .. loc.DB_STATUS_CURRENTLY_TT .. "\n\n|cff00ff00" .. loc.DB_STATUS_CURRENTLY_OOC .. ":|r\n" .. loc.DB_STATUS_CURRENTLY_OOC_TT,
+				text = loc.DB_STATUS_CURRENTLY_COMMON .. "|r\n\n" .. "|cnGREEN_FONT_COLOR:" .. loc.DB_STATUS_CURRENTLY .. "|r\n" .. loc.DB_STATUS_CURRENTLY_TT .. "\n\n|cnGREEN_FONT_COLOR:" .. loc.DB_STATUS_CURRENTLY_OOC .. "|r\n" .. loc.DB_STATUS_CURRENTLY_OOC_TT,
 				textWidth = 400,
 				arrow = "RIGHT"
 			}
