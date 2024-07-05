@@ -537,8 +537,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP"] = "Si está activo, se desactivarán los nombres y colores personalizados cuando estás en combate.",
 	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER"] = "Deshabilitar las personalizaciones en modo FdP",
 	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP"] = "Si está activo, deshabilita todas las personalizaciones de la placa de nombres cuando estás en modo Fuera de Personaje.",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS"] = "Deshabilitar las personalizaciones en unidades que estén FdP",
-	["NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP"] = "Si está activo, deshabilita las personalizaciones en la placa de nombres de las unidades que estén en modo Fuera de Personaje.",
 	["NAMEPLATES_CONFIG_ELEMENT_HEADER"] = "Configuraciones de personalización",
 	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK"] = "Usar el color de clase por defecto",
 	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP"] = "Si está activo, habilita el uso de los colores de clase para los nombres y las barras de vida de aquellas unidades que no tengan un color personalizado en sus perfiles.|n|nLas unidades que no tengan un perfil de rol no serán afectadas por esta opción.",
@@ -689,13 +687,6 @@ Puede causar incompatibilidades.
 	["PR_SLASH_OPEN_WAITING"] = "|cffffff00Solicitando perfil, por favor espera...|r",
 	["PR_SLASH_SWITCH_HELP"] = "Cambiar a otro perfil usando su nombre.",
 	["PR_UNUSED_PROFILE"] = "Este perfil actualmente no está vinculado a ningún personaje de WoW.",
-	["REG_CODE_INSERTION_WARNING"] = [=[|TInterface\AddOns\totalRP3\resources\policegar.tga:50:50|t ¡Espera un momento!
-
-Hemos descubierto que has insertado códigos inválidos en tu perfil de Total RP 3.
-No compartimos este comportamiento y desaconsejamos hacerlo.
-Puede conducir a inestabilidades y bugs en el add-on, corrupción de datos/pérdia de perfiles y también crea problemas de compatibilidad con otros add-ons (como MRP).
-
-Los códigos que has introducido en tu perfil han sido eliminados para prevenir mal funcionamiento del add-on.]=],
 	["REG_COMPANION"] = "Compañero",
 	["REG_COMPANION_BIND_TO_PET"] = "Mascota",
 	["REG_COMPANION_BOUND_TO"] = "Vinculado a ...",
@@ -870,9 +861,6 @@ Caballero, pirotécnico, nigromante, arcanista...]=],
 ]=],
 	["REG_PLAYER_COLOR_TT"] = [=[|cffffff00Clic:|r Seleccionar color
 |cffffff00Clic derecho:|r Descartar color]=],
-	["REG_PLAYER_CURRENT"] = "Actualmente",
-	["REG_PLAYER_CURRENT_OOC"] = "Esta es información Fuera de Rol",
-	["REG_PLAYER_CURRENTOOC"] = "Actualmente (FdR)",
 	["REG_PLAYER_EDIT_MUSIC_THEME"] = "Tema musical",
 	["REG_PLAYER_EYE"] = "Color de ojos",
 	["REG_PLAYER_EYE_TT"] = [=[Aquí puedes indicar el color de ojos de tu personaje.
@@ -1245,9 +1233,6 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 	["UI_COLOR_BROWSER_PRESETS_RESOURCES"] = "Recursos",
 	["UI_COLOR_BROWSER_SELECT"] = "Seleccionar color",
 	["UI_COMPANION_BROWSER_HELP"] = "Seleccionar compañero",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Advertencia:|r Sólo los compañeros renombrados pueden vincularse a un perfil..
-
-|cff00ff00Esta sección sólo muestra a estos compañeros.]=],
 	["UI_FILTER"] = "Filtro",
 	["UI_ICON_BROWSER"] = "Buscador de icono",
 	["UI_ICON_BROWSER_HELP"] = "Copiar icono",

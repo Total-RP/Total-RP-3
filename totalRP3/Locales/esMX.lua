@@ -461,9 +461,6 @@ Caballero, pirotécnico, nigromante, arcanista...]=],
 ]=],
 	["REG_PLAYER_COLOR_TT"] = [=[|cffffff00Clic:|r Seleccionar color
 |cffffff00Clic derecho:|r Descartar color]=],
-	["REG_PLAYER_CURRENT"] = "Actualmente",
-	["REG_PLAYER_CURRENT_OOC"] = "Esta es información Fuera de Rol",
-	["REG_PLAYER_CURRENTOOC"] = "Actualmente (FdR)",
 	["REG_PLAYER_EYE"] = "Color de ojos",
 	["REG_PLAYER_EYE_TT"] = [=[Aquí puedes indicar el color de ojos de tu personaje.
 

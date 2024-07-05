@@ -25,7 +25,6 @@ L = {
 	["AUTOMATION_CATEGORY_MAP_SCANS"] = "Сканирования карты",
 	["AUTOMATION_CATEGORY_PROFILE"] = "Профиль",
 	["AUTOMATION_ERROR_INVALID_PROFILE"] = "не удалось найти профиль под названием '%s'",
-	["AUTOMATION_MODULE_MESSAGE_PREFIX"] = "Автоматизация TRP3",
 	["AUTOMATION_MODULE_NAME"] = "Автоматизация",
 	["AUTOMATION_MODULE_SETTINGS_TITLE"] = "Настройки Автоматизации",
 	["AUTOMATION_PROFILE_COPY"] = "Скопировать профиль",
@@ -581,7 +580,6 @@ L = {
 	["MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION"] = "Добавить пользовательскую совместимость с аддоном %s, таким образом чтобы предпочтения всплывающих подсказок применялись к всплывающим подсказкам Total RP 3.",
 	["NAMEPLATES_CONFIG_ACTIVE_QUERY"] = "Автоматически загружать профили",
 	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY"] = "Скрыть полосы в именах |cff449fe0Blizzard|r.",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_FIRST_NAMES"] = "Отображать только личные имена",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES"] = "Показывать полный титул",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS"] = "Показывать пользоватеьские цвета здоровья",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_ICONS"] = "Показывать значки",
@@ -592,7 +590,6 @@ L = {
 	["NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES"] = "Отключить кастомизации в подземельях",
 	["NAMEPLATES_CONFIG_ELEMENT_HEADER"] = "Настройки кастомизации",
 	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK"] = "Использовать цвет класса по умолчанию",
-	["NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS"] = "Скрывать неролевые единицы",
 	["NAMEPLATES_CONFIG_ICON_SIZE"] = "Размер иконки",
 	["NAMEPLATES_CONFIG_MAX_GUILD_NAME_CHARS"] = "Максимальная длина названия гильдии",
 	["NAMEPLATES_CONFIG_MAX_NAME_CHARS"] = "Максимальная длина имени",
@@ -910,9 +907,6 @@ Link it anyway ?]=],
 |cffffff00ПКМ:|r Сбросить цвет
 |cffffff00Shift+ПКМ:|r Использовать стандартный выбор цвета
 ]=],
-	["REG_PLAYER_CURRENT"] = "На данный момент",
-	["REG_PLAYER_CURRENT_OOC"] = "Это информация вне отыгрыша",
-	["REG_PLAYER_CURRENTOOC"] = "На данный момент (Вне отыгрыша)",
 	["REG_PLAYER_EDIT_MUSIC_THEME"] = "Музыкальная тема",
 	["REG_PLAYER_EYE"] = "Цвет глаз",
 	["REG_PLAYER_EYE_TT"] = [=[Здесь Вы можете указать цвет глаз персонажа.
@@ -1237,9 +1231,6 @@ Link it anyway ?]=],
 	["UI_COLOR_BROWSER_PRESETS_RESOURCES"] = "Ресурс",
 	["UI_COLOR_BROWSER_SELECT"] = "Выбрать цвет",
 	["UI_COMPANION_BROWSER_HELP"] = "Выберите боевого питомца",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Внимание:|r Только переименованые боевые питомцы могут быть привязаны к профилю.
-
-|cff00ff00В этом разделе перечислены только боевые питомцы.]=],
 	["UI_FILTER"] = "Фильтер",
 	["UI_FILTER_NO_RESULTS_FOUND_TEXT"] = "Попробуйте исправить ваши критерии поиска.",
 	["UI_FILTER_NO_RESULTS_FOUND_TITLE"] = "Результаты не найдены.",
