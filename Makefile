@@ -10,53 +10,43 @@ CF_PROJECT_ID := 75973
 
 LOCALES := enUS deDE esES esMX frFR itIT koKR ptBR ruRU zhCN zhTW
 LOCALES_DIR := totalRP3/Locales
-LOCALE_PUSH_TARGETS := $(addprefix push-locales-,$(LOCALES))
-LOCALE_PULL_TARGETS := $(addprefix pull-locales-,$(LOCALES))
-PUSH_LOCALES := enUS
-PULL_LOCALES := $(filter-out enUS,$(LOCALES))
+LOCALES_SCRIPT := $(PYTHON) .github/scripts/localization.py
+EXPORT_LOCALES := enUS
+IMPORT_LOCALES := $(filter-out $(EXPORT_LOCALES),$(LOCALES))
 
 .DEFAULT: all
 .DELETE_ON_ERROR:
 .FORCE:
+.PHONY: all check dist libs schema
 
-.PHONY: all
 all: dist
 
-.PHONY: check
-check: .github/scripts/ui.xsd
+check: schema
 	pre-commit run --all-files
 
-.PHONY: dist
 dist:
 	curl -s $(PACKAGER_URL) | bash -s -- -dS
 
-.PHONY: libs
 libs:
 	curl -s $(PACKAGER_URL) | bash -s -- -cdlz
 	cp -aTv .release/$(LIBDIR) $(LIBDIR)
 
-.PHONY: locales
-locales: push-locales pull-locales
+schema:
+	curl -s $(SCHEMA_URL) -o .github/scripts/ui.xsd
 
-.PHONY: push-all-locales
-push-all-locales: $(addprefix push-locales-,$(LOCALES))
+.PHONY: translations translations-export translations-export-all translations-import translations-import-all
+translations: translations-export translations-import
+translations-export: $(addprefix translations-export-,$(EXPORT_LOCALES))
+translations-export-all: $(addprefix translations-export-,$(LOCALES))
+translations-import: $(addprefix translations-import-,$(IMPORT_LOCALES))
+translations-import-all: $(addprefix translations-import-,$(LOCALES))
 
-.PHONY: push-locales
-push-locales: $(addprefix push-locales-,$(PUSH_LOCALES))
+translations-export-enUS: EXPORT_OPTIONS := --delete-missing-phrases
 
-.PHONY: $(LOCALE_PUSH_TARGETS)
-$(LOCALE_PUSH_TARGETS): push-locales-%:
-	$(PYTHON) .github/scripts/localization.py upload --locale $* --project-id $(CF_PROJECT_ID) <$(LOCALES_DIR)/$*.lua
+.PHONY: $(addprefix translations-export-,$(LOCALES))
+$(addprefix translations-export-,$(LOCALES)): translations-export-%:
+	$(LOCALES_SCRIPT) upload --locale $* --project-id $(CF_PROJECT_ID) $(EXPORT_OPTIONS) <$(LOCALES_DIR)/$*.lua
 
-.PHONY: pull-all-locales
-pull-all-locales: $(addprefix pull-locales-,$(LOCALES))
-
-.PHONY: pull-locales
-pull-locales: $(addprefix pull-locales-,$(PULL_LOCALES))
-
-.PHONY: $(LOCALE_PULL_TARGETS)
-$(LOCALE_PULL_TARGETS): pull-locales-%:
-	$(PYTHON) .github/scripts/localization.py download --locale $* --project-id $(CF_PROJECT_ID) >$(LOCALES_DIR)/$*.lua
-
-.github/scripts/ui.xsd: .FORCE
-	curl -s $(SCHEMA_URL) -o $@
+.PHONY: $(addprefix translations-import-,$(LOCALES))
+$(addprefix translations-import-,$(LOCALES)): translations-import-%:
+	$(LOCALES_SCRIPT) download --locale $* --project-id $(CF_PROJECT_ID) $(IMPORT_OPTIONS) >$(LOCALES_DIR)/$*.lua
