@@ -22,7 +22,7 @@ local DEFAULT_RELATIONS = {
 local ACTIONS = {
 	DELETE= "DEL",
 	EDIT= "EDT",
-}
+};
 
 --getRelationList function should get relations stored in config, or default relations if none are stored
 local function getRelationList(sorted)
@@ -75,7 +75,7 @@ TRP3_API.register.relation.setRelation = setRelation;
 
 local function getRelation(profileID)
 	local relationTab = TRP3_API.profile.getData("relation") or EMPTY;
-	return getRelationInfo(relationTab[profileID])
+	return getRelationInfo(relationTab[profileID]);
 end
 TRP3_API.register.relation.getRelation = getRelation;
 
@@ -84,7 +84,7 @@ local function getRelationText(profileID)
 	if relation.id == getRelation().id then
 		return "";
 	end
-	return relation.name or loc:GetText("REG_RELATION_"..relation.id);
+	return relation.name or loc:GetText("REG_RELATION_" .. relation.id);
 end
 TRP3_API.register.relation.getRelationText = getRelationText;
 
@@ -93,7 +93,7 @@ local function getRelationTooltipText(profileID, profile)
 	local description = getRelation(profileID).description or loc:GetText("REG_RELATION_" .. getRelation(profileID).id .. "_TT");
 	local player = TRP3_API.register.getPlayerCompleteName(true);
 	local target = TRP3_API.register.getCompleteName(profile.characteristics or EMPTY, UNKNOWN, true);
-	return description:format(player, target)
+	return description:format(player, target);
 end
 TRP3_API.register.relation.getRelationTooltipText = getRelationTooltipText;
 
@@ -123,18 +123,18 @@ TRP3_API.register.relation.getColor = getColor;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function checkRelationUse()
-	local relationList = getRelationList()
+	local relationList = getRelationList();
 	for _, relation in pairs(relationList) do
-		relation.inUse = false
+		relation.inUse = false;
 	end
-	local profiles = TRP3_API.profile.getProfiles()
+	local profiles = TRP3_API.profile.getProfiles();
 	for _, profile in pairs(profiles) do
-		local relations = TRP3_API.profile.getData("relation", profile)
+		local relations = TRP3_API.profile.getData("relation", profile);
 		if not relations then
-			relations = {}
+			relations = {};
 		end
 		for _, relation in pairs(relations) do
-			getRelationInfo(relation).inUse = true
+			getRelationInfo(relation).inUse = true;
 		end
 	end
 end
@@ -168,7 +168,7 @@ local function initRelationEditor(relationID)
 
 	local nameText = relation.name;
 	if not nameText then
-		nameText = loc:GetText("REG_RELATION_"..relation.id);
+		nameText = loc:GetText("REG_RELATION_" .. relation.id);
 	end
 	TRP3_RelationsList.Editor.Content.Name:SetText(nameText);
 
@@ -199,7 +199,7 @@ local function onActionSelected(selectedAction)
 	local action = selectedAction:sub(1, 3);
 	local relationID = selectedAction:sub(4);
 	local relation = getRelationInfo(relationID);
-	local originalRelation = (getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_"..relation.id));
+	local originalRelation = (getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_" .. relation.id));
 	if action == ACTIONS.EDIT then
 		TRP3_API.register.relation.showEditor(relation.id);
 	elseif not relation.inUse and action == ACTIONS.DELETE then
@@ -274,7 +274,7 @@ local function saveCurrentRelation()
 		relationToUpdate = getRelationInfo(TRP3_RelationsList.Editor.Content.ID);
 	else
 		-- Create new
-		local relationList = getRelationList()
+		local relationList = getRelationList();
 		local i = 1;
 		local newID = "CUSTOM" .. i;
 		while relationList[newID] do
