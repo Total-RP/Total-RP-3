@@ -376,6 +376,8 @@ Deine Profile, Begleiterprofile und Einstellungen werden temporär ausgelagert u
 	["DB_STATUS_CURRENTLY"] = "Aktuelles",
 	["DB_STATUS_CURRENTLY_COMMON"] = "Der Status wird im Tooltip deines Charakters angezeigt. Halte dich hier kurz, knapp und eindeutig, da |cnGREEN_FONT_COLOR:standartmäßig alle TRP3 Nutzer nur die ersten 140 Zeichen sehen können!|r",
 	["DB_STATUS_CURRENTLY_OOC"] = "Andere Informationen (OOC)",
+	["DB_STATUS_CURRENTLY_OOC_TT"] = "Hier kannst du Wichtiges über dich als Spieler oder andere OOC Informationen eintragen.",
+	["DB_STATUS_CURRENTLY_TT"] = "Hier kannst du Wichtiges über deinen Charakter angeben.",
 	["DB_STATUS_LC"] = "Rollenspiel Sprache",
 	["DB_STATUS_LC_TT"] = "Speichert deine bevorzugte Rollenspiel Sprache. Diese Einstellung wird mit anderen Benutzern mit kompatiblem RP Addon geteilt. |cffff9900Achtung:|r Diese Option ändert |cffff0000nicht|r die Menüsprache von Total RP 3. Diese Möglichkeit findest du unter |cfffff569Erweiterte Einstellungen|r.",
 	["DB_STATUS_RP"] = "Charakterstatus",

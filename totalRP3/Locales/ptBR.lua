@@ -420,6 +420,8 @@ Seus perfis, perfis de companheiro e configurações serão temporariamente depo
 	["DB_STATUS_CURRENTLY"] = "Atualmente",
 	["DB_STATUS_CURRENTLY_COMMON"] = "Esses estados vão ser mostrados na tela de informações do seu personagem. Mantenha-os claros e breves uma vez que |cnGREEN_FONT_COLOR:por padrão usuários do TRP3 só verão os primeiros 140 caracteres!|r",
 	["DB_STATUS_CURRENTLY_OOC"] = "Outras informações (OOC)",
+	["DB_STATUS_CURRENTLY_OOC_TT"] = "Aqui você pode indicar algo importante sobre você, como um jogador, ou qualquer coisa fora do seu personagem.",
+	["DB_STATUS_CURRENTLY_TT"] = "Aqui você pode indicar algo importante sobre seu personagem.",
 	["DB_STATUS_ICON_ITEM"] = "%1$s %2$s",
 	["DB_STATUS_LC"] = "Idioma do Roleplay ",
 	["DB_STATUS_LC_DEFAULT"] = "Padrão (%1$s)",

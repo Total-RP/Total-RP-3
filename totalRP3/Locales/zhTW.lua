@@ -307,6 +307,7 @@ L = {
 	["DB_STATUS_CURRENTLY_COMMON"] = "這些狀態也會顯示在你的角色卡欄位，Keep it clear and brief as |cffff9900by default TRP3 players will only see the first 140 characters of them!",
 	["DB_STATUS_CURRENTLY_OOC"] = "其他資訊（OOC）",
 	["DB_STATUS_CURRENTLY_OOC_TT"] = "這裡可以輸入任何對角色還是玩家來說重要的資訊。",
+	["DB_STATUS_CURRENTLY_TT"] = "此欄位搭配「TRP3 Currently frame」使用可以達到不必開啟視窗，即時於畫面上變更的效果。",
 	["DB_STATUS_RP"] = "角色狀態",
 	["DB_STATUS_RP_IC"] = "進入角色（IC）",
 	["DB_STATUS_RP_IC_TT"] = "這表示你正在扮演你的角色，所有你的行動都不再依據你本人的好惡抉擇，而是衷於你所設定的角色性格來起心動念。",

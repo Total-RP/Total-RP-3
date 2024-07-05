@@ -429,6 +429,8 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["DB_STATUS_CURRENTLY"] = "Actualmente",
 	["DB_STATUS_CURRENTLY_COMMON"] = "Estos estados serán mostrados en la descripción de tu personaje. Mantenlo claro y corto ya que |cnGREEN_FONT_COLOR:por defecto los jugadores con TRP3 solo verán los primeros 140 caracteres.|r",
 	["DB_STATUS_CURRENTLY_OOC"] = "Otra información (FdR)",
+	["DB_STATUS_CURRENTLY_OOC_TT"] = "Aquí puedes indicar algo importante sobre ti como jugador o cualquier cosa fuera de personaje.",
+	["DB_STATUS_CURRENTLY_TT"] = "Aquí puedes indicar algo importante sobre tu personaje.",
 	["DB_STATUS_ICON_ITEM"] = "%1$s %2$s",
 	["DB_STATUS_LC"] = "Idioma de roleo",
 	["DB_STATUS_LC_DEFAULT"] = "Por defecto (%1$s)",
