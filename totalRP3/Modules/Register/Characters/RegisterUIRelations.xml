@@ -28,8 +28,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame parentKey="Icon" inherits="TRP3_SimpleIcon">
-				<Size x="40" y="40"/>
+			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
+				<Size x="48" y="48"/>
 				<Anchors>
 					<Anchor point="LEFT" x="10" y="0"/>
 				</Anchors>
@@ -128,15 +128,18 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 								</Anchors>
 							</Button>
-							<Button parentKey="Icon" inherits="TRP3_IconButton">
-								<Size x="45" y="45"/>
+							<Button parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
+								<Size x="55" y="55"/>
+								<HighlightTexture parentKey="HighlightBorder" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-glow" alphaMode="ADD">
+									<Color r="1" g="0.675" b="0.125"/>
+								</HighlightTexture>
 								<Anchors>
 									<Anchor point="LEFT" x="20" y="-10"/>
 								</Anchors>
 							</Button>
 							<Button name="TRP3_RelationEditor_Color" parentKey="Color" inherits="TRP3_ColorPickerButton">
 								<Anchors>
-									<Anchor point="TOPLEFT" x="15" y="0" relativePoint="TOPRIGHT" relativeKey="$parent.Icon"/>
+									<Anchor point="TOPLEFT" x="15" y="-4" relativePoint="TOPRIGHT" relativeKey="$parent.Icon"/>
 								</Anchors>
 							</Button>
 							<EditBox parentKey="Name" inherits="TRP3_TitledHelpEditBox">
@@ -148,7 +151,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<EditBox parentKey="Description" inherits="TRP3_TitledHelpEditBox">
 								<Size x="0" y="18"/>
 								<Anchors>
-									<Anchor point="BOTTOMLEFT" x="15" y="0" relativePoint="BOTTOMRIGHT" relativeKey="$parent.Icon"/>
+									<Anchor point="BOTTOMLEFT" x="15" y="4" relativePoint="BOTTOMRIGHT" relativeKey="$parent.Icon"/>
 									<Anchor point="RIGHT" x="-30" y="0"/>
 								</Anchors>
 							</EditBox>
