@@ -63,6 +63,7 @@ local ConfigKeys = {
 	CHARACT_ZONE = "tooltip_char_zone";
 	CHARACT_HEALTH = "tooltip_char_health";
 	CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
+	CHARACT_RELATION_LINE = "tooltip_char_relation_line";
 	CHARACT_RELATION = "tooltip_char_relation";
 	CHARACT_SPACING = "tooltip_char_spacing";
 	NO_FADE_OUT = "tooltip_no_fade_out";
@@ -147,6 +148,10 @@ end
 
 local function showRealm()
 	return getConfigValue(ConfigKeys.CHARACT_REALM);
+end
+
+local function showRelationLine()
+	return getConfigValue(ConfigKeys.CHARACT_RELATION_LINE);
 end
 
 local function showTarget()
@@ -694,6 +699,19 @@ local function writeTooltipForCharacter(targetID, targetType)
 			local displayMembership = " |cff82c5ff(" .. loc.REG_TT_GUILD_CUSTOM .. ")";
 
 			tooltipBuilder:AddDoubleLine(displayText, displayMembership, colors.MAIN, colors.MAIN, getSubLineFontSize());
+		end
+	end
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Relationship
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	if showRelationLine() and player:GetProfileID() then
+		local relation = TRP3_API.register.relation.getRelation(player:GetProfileID());
+		if relation and relation.id ~= "NONE" then
+			local relationColor = TRP3_API.register.relation.getColor(relation) or colors.SECONDARY;
+			local relationName = TRP3_API.register.relation.getRelationText(player:GetProfileID());
+			tooltipBuilder:AddLine(loc.REG_RELATION .. ": " .. relationColor:WrapTextInColorCode(relationName), colors.MAIN, getSubLineFontSize());
 		end
 	end
 
@@ -1519,6 +1537,7 @@ local function onModuleInit()
 	registerConfigKey(ConfigKeys.CHARACT_ZONE, true);
 	registerConfigKey(ConfigKeys.CHARACT_HEALTH, 0);
 	registerConfigKey(ConfigKeys.CHARACT_CURRENT_SIZE, 140);
+	registerConfigKey(ConfigKeys.CHARACT_RELATION_LINE, true);
 	registerConfigKey(ConfigKeys.CHARACT_RELATION, true);
 	registerConfigKey(ConfigKeys.CHARACT_SPACING, true);
 	registerConfigKey(ConfigKeys.SHOW_WORLD_CURSOR, true);
@@ -1800,6 +1819,11 @@ local function onModuleInit()
 				title = loc.CO_TOOLTIP_NOTIF,
 				configKey = ConfigKeys.CHARACT_NOTIF,
 				help = loc.CO_TOOLTIP_NOTIF_TT,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_RELATION_LINE,
+				configKey = ConfigKeys.CHARACT_RELATION_LINE,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
