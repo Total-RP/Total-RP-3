@@ -1,0 +1,46 @@
+---
+name: Import External Translations
+on:
+  schedule:
+    - cron: '0 18 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: pip install -r .github/scripts/requirements.txt
+
+      - name: Import External Translations
+        run: make translations-import
+        env:
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: Import External Translations
+          branch: actions/import-external-translations
+          delete-branch: true
+          title: Import External Translations
+          body: Automated import of external translation strings.
+          author: GitHub <noreply@github.com>
+          reviewers: Meorawr, Solanya
+
+      - name: Send Webhook Notification
+        if: failure()
+        run: |
+          git clone https://github.com/DiscordHooks/github-actions-discord-webhook.git webhook
+          bash webhook/send.sh $JOB_STATUS $WEBHOOK_URL
+        env:
+          JOB_STATUS: ${{ job.status }}
+          HOOK_OS_NAME: ${{ runner.os }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          WORKFLOW_NAME: ${{ github.workflow }}

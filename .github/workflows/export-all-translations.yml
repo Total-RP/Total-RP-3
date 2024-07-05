@@ -1,5 +1,5 @@
 ---
-name: Upload All Translations
+name: Export All Translations
 on:
   workflow_dispatch: {}
 
@@ -16,8 +16,8 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r .github/scripts/requirements.txt
 
-      - name: Upload CurseForge Translations
-        run: make push-all-locales
+      - name: Export All Translations
+        run: make translations-export-all
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
 

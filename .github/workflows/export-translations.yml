@@ -1,11 +1,9 @@
 ---
-name: Process CurseForge Translations
+name: Export Translations
 on:
   push:
     branches:
       - main
-  schedule:
-    - cron: '0 18 * * *'
   workflow_dispatch: {}
 
 jobs:
@@ -21,26 +19,10 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r .github/scripts/requirements.txt
 
-      - name: Upload CurseForge Translations
-        run: make push-locales
+      - name: Export Translations
+        run: make translations-export
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
-
-      - name: Download CurseForge Translations
-        run: make pull-locales
-        env:
-          CF_API_KEY: ${{ secrets.CF_API_KEY }}
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          commit-message: Import CurseForge Localization
-          branch: actions/import-cf-localization
-          delete-branch: true
-          title: Import CurseForge Localization
-          body: Automated import of CurseForge localization.
-          author: GitHub <noreply@github.com>
-          reviewers: Meorawr, Solanya
 
       - name: Send Webhook Notification
         if: failure()
