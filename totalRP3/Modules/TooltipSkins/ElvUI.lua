@@ -41,7 +41,7 @@ TRP3_API.module.registerModule({
 
 		local SKINNABLE_FRAMES = {
 			"TRP3_TargetFrame",
-			"TRP3_TargetFrameCaptionPanel",
+			"TRP3_TargetFrame.Header",
 			"TRP3_GlanceBar",
 			"TRP3_GlanceBarSlot1",
 			"TRP3_GlanceBarSlot2",
@@ -84,14 +84,14 @@ TRP3_API.module.registerModule({
 			-- Register configuration handlers to apply the changes
 			TRP3_API.configuration.registerHandler(CONFIG.SKIN_TOOLTIPS, function()
 				if TRP3_API.configuration.getValue(CONFIG.SKIN_TOOLTIPS) then
-					skinTooltips()
+					skinTooltips();
 				else
 					TRP3_API.popup.showConfirmPopup(loc.CO_UI_RELOAD_WARNING, ReloadUI);
 				end
 			end);
 			TRP3_API.configuration.registerHandler(CONFIG.SKIN_TARGET_FRAME, function()
 				if TRP3_API.configuration.getValue(CONFIG.SKIN_TARGET_FRAME) then
-					skinTargetFrame()
+					skinTargetFrame();
 				else
 					TRP3_API.popup.showConfirmPopup(loc.CO_UI_RELOAD_WARNING, ReloadUI);
 				end
@@ -108,24 +108,35 @@ TRP3_API.module.registerModule({
 				for _, tooltip in pairs(TOOLTIPS) do
 					if _G[tooltip] then
 						-- We check that the tooltip exists and then add it to ElvUI
-						TT:SecureHookScript(_G[tooltip], 'OnShow', 'SetStyle')
+						TT:SecureHookScript(_G[tooltip], 'OnShow', 'SetStyle');
 					end
 				end
 			end
 
 			-- 9.2 changed Tooltips to use NineSlice but TargetFrame doesn't use it, therefore we need to use the old styling function
 			local function SetStyleForTargetFrame(tt)
-				if not tt or (tt == _G["ElvUI"][1].ScanTooltip or tt.IsEmbedded or not tt.SetTemplate or not tt.SetBackdrop) or tt:IsForbidden() then return end
-				tt.customBackdropAlpha = TT.db.colorAlpha
-				tt:SetTemplate('Transparent')
+				if not tt or (tt == _G["ElvUI"][1].ScanTooltip or tt.IsEmbedded or not tt.SetTemplate or not tt.SetBackdrop) or tt:IsForbidden() then return; end
+				tt.customBackdropAlpha = TT.db.colorAlpha;
+				tt:SetTemplate('Transparent');
 			end
 
 			function skinTargetFrame()
 				-- Go through each skinnable frames from our table
 				for _, frame in pairs(SKINNABLE_FRAMES) do
+					local parentKey;
+
+					-- Check if a skinnable frame includes a parentKey
+					if frame:find("%.") then
+						frame, parentKey = frame:match("(.+)%.(.+)");
+					end
+
 					if _G[frame] then
-						-- We check that the frame exists and then add it to ElvUI
-						TT:SecureHookScript(_G[frame], 'OnShow', SetStyleForTargetFrame)
+						-- If parentKey is not nil, check if a frame exists with said parentKey within this frame
+						if parentKey ~= nil and _G[frame][parentKey] then
+							TT:SecureHookScript(_G[frame][parentKey], 'OnShow', SetStyleForTargetFrame);
+						else
+							TT:SecureHookScript(_G[frame], 'OnShow', SetStyleForTargetFrame);
+						end
 					end
 				end
 			end
