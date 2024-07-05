@@ -295,7 +295,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Button name="$parentHelp" parentKey="help" inherits="TRP3_HelpButton" hidden="true">
 				<Size x="14" y="14"/>
 				<Anchors>
-					<Anchor point="RIGHT" x="2" y="0"/>
+					<Anchor point="RIGHT" x="-2"/>
 				</Anchors>
 			</Button>
 		</Frames>
