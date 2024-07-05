@@ -276,6 +276,18 @@ function Player:IsOnATrialAccount()
 	end
 end
 
+function Player:GetCharacterSpecificNotes()
+	local profile = TRP3_API.profile.getPlayerCurrentProfile();
+	local profileID = self:GetProfileID();
+
+	return profile and profile.notes and profile.notes[profileID] or nil;
+end
+
+function Player:GetAccountWideNotes()
+	local profileID = self:GetProfileID();
+	return TRP3_Notes and TRP3_Notes[profileID] or nil;
+end
+
 -- TODO Deprecate GetInfo(path) in favor of proper type safe methods to access profile data
 function Player:GetInfo(path)
 	return TRP3_API.profile.getData(path, self:GetProfile())
