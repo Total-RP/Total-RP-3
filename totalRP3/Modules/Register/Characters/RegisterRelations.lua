@@ -254,6 +254,9 @@ TRP3_API.register.inits.relationsInit = function()
 			TRP3_RelationsList.Editor:Hide();
 			TRP3_API.popup.hidePopups();
 		end);
+		TRP3_RelationsList.Editor.Content.Name.title:SetText(loc.CM_NAME);
+		TRP3_RelationsList.Editor.Content.Description.title:SetText(loc.CO_RELATIONS_DESCRIPTION);
+		TRP3_API.ui.tooltip.setTooltipForSameFrame(TRP3_RelationsList.Editor.Content.Description.help, "RIGHT", 0, 5, loc.CO_RELATIONS_DESCRIPTION, loc.CO_RELATIONS_DESCRIPTION_TT);
 		TRP3_RelationsList.Editor.Content.Save:SetText(loc.CM_SAVE);
 		TRP3_RelationsList.Editor.Content.Save:SetScript("OnClick", function()
 
