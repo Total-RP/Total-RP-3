@@ -28,8 +28,7 @@ local ACTIONS = {
 local function getRelationList(sorted)
 	local relationList = TRP3_API.configuration.getValue("register_relation_list");
 	if not relationList then
-		relationList = {}
-		CopyTable(relationList, DEFAULT_RELATIONS);
+		relationList = CopyTable(DEFAULT_RELATIONS);
 		TRP3_API.configuration.setValue("register_relation_list", relationList);
 	end
 
@@ -268,8 +267,7 @@ local RELATIONS_PAGE_ID = "main_config_relations";
 local RELATIONS_MENU_ID = "main_41_customization_relations";
 
 TRP3_API.register.inits.relationsInit = function()
-	local configDefault = {}
-	CopyTable(configDefault,DEFAULT_RELATIONS)
+	local configDefault = CopyTable(DEFAULT_RELATIONS);
 	TRP3_API.configuration.registerConfigKey("register_relation_list", configDefault);
 
 	-- Register menu
