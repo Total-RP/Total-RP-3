@@ -204,7 +204,12 @@ end
 
 function Player:GetRoleplayExperience()
 	-- Note that this will return nil for profiles belonging to this player.
-	local characterInfo = TRP3_API.register.getUnitIDCharacter(self:GetCharacterID());
+	local characterInfo;
+
+	if TRP3_API.register.isUnitIDKnown(self:GetCharacterID()) then
+		characterInfo = TRP3_API.register.getUnitIDCharacter(self:GetCharacterID());
+	end
+
 	return characterInfo and characterInfo.roleplayExperience;
 end
 
