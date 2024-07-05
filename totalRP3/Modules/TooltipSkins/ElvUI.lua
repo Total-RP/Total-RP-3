@@ -124,17 +124,13 @@ TRP3_API.module.registerModule({
 				-- Go through each skinnable frames from our table
 				for _, frame in pairs(SKINNABLE_FRAMES) do
 					local parentKey;
-
-					-- Check if a skinnable frame includes a parentKey
-					if frame:find("%.") then
-						frame, parentKey = frame:match("(.+)%.(.+)");
-					end
+					frame, parentKey = string.split(".", frame, 2);
 
 					if _G[frame] then
 						-- If parentKey is not nil, check if a frame exists with said parentKey within this frame
 						if parentKey ~= nil and _G[frame][parentKey] then
 							TT:SecureHookScript(_G[frame][parentKey], 'OnShow', SetStyleForTargetFrame);
-						else
+						elseif parentKey == nil then
 							TT:SecureHookScript(_G[frame], 'OnShow', SetStyleForTargetFrame);
 						end
 					end
