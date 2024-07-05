@@ -1913,6 +1913,13 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 };
 
+print(TRP3_API.globals.rae_mode)
+if TRP3_API.globals.rae_mode then
+	for k, v in pairs(L) do
+		L[k] = string.gsub(v, "[Rr].", { Ro = "Rae", ro = "rae" });
+	end
+end
+
 -- Bindings and FrameXML Global Strings
 
 BINDING_HEADER_TRP3 = "Total RP 3";

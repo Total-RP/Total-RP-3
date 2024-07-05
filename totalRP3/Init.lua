@@ -40,6 +40,7 @@ TRP3_API.globals = {
 	DEBUG_MODE = false,
 
 	--@end-non-debug@]===]
+	rae_mode = true,
 };
 
 TRP3_API.r = {};
