@@ -235,14 +235,14 @@ function updateRelationsList()
 				widget:SetPoint("TOP", widgetsList[widgetCount - 1], "BOTTOM", 0, 0);
 			else
 				widget:SetPoint("TOP", TRP3_RelationsList.Inner.Scroll.Container, "TOP", 0, 0);
-				widget.Button:Hide();
+				widget.Actions:Hide();
 			end
 			widgetsList[widgetCount] = widget;
 		end
 		widget.Title:SetText((getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_"..relation.id)));
 		widget.Text:SetText(loc:GetText(relation.description or "REG_RELATION_" .. relation.id .. "_TT"):format("%p", "%t"));
 		TRP3_API.ui.frame.setupIconButton(widget.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
-		widget.Button:SetScript("OnClick", function(button)
+		widget.Actions:SetScript("OnClick", function(button)
 			local values = {};
 			table.insert(values, {loc.CO_RELATIONS_MENU_EDIT, ACTIONS.EDIT..relation.id});
 			checkRelationUse();

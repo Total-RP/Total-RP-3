@@ -11,11 +11,24 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
 		<Size x="0" y="60"/>
+		<Frames>
+			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
+				<Size x="48" y="48"/>
+				<Anchors>
+					<Anchor point="LEFT" x="10" y="0"/>
+				</Anchors>
+			</Frame>
+			<Button parentKey="Actions" inherits="TRP3_ActionButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-4" y="-4"/>
+				</Anchors>
+			</Button>
+		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="Title" text="[title]" inherits="GameFontHighlight" justifyH="LEFT">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="65" y="-16"/>
+						<Anchor point="BOTTOMLEFT" relativePoint="RIGHT" relativeKey="$parent.Icon" x="5" y="3"/>
 					</Anchors>
 				</FontString>
 				<FontString parentKey="Text" text="[text]" inherits="GameFontNormalSmall" justifyH="LEFT">
@@ -27,23 +40,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</FontString>
 			</Layer>
 		</Layers>
-		<Frames>
-			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
-				<Size x="48" y="48"/>
-				<Anchors>
-					<Anchor point="LEFT" x="10" y="0"/>
-				</Anchors>
-			</Frame>
-			<Button parentKey="Button">
-				<Size x="32" y="32"/>
-				<Anchors>
-					<Anchor point="TOPRIGHT" x="-4" y="-4"/>
-				</Anchors>
-				<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
-				<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
-				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
-			</Button>
-		</Frames>
 	</Frame>
 
 	<Frame name="TRP3_RelationsList" hidden="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
