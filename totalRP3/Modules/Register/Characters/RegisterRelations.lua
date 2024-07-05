@@ -189,26 +189,34 @@ function TRP3_API.register.relation.showEditor(relationID)
 	initRelationEditor(relationID);
 end
 
+local updateRelationsList;
+
 local function onActionSelected(selectedAction)
-	local action = selectedAction:sub(1, 3)
-	local relationID = selectedAction:sub(4)
-	local relation = getRelationInfo(relationID)
-	local originalRelation = getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id))
-	if action==ACTIONS.EDIT then
+	local action = selectedAction:sub(1, 3);
+	local relationID = selectedAction:sub(4);
+	local relation = getRelationInfo(relationID);
+	local originalRelation = getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id));
+	if action == ACTIONS.EDIT then
 		TRP3_API.register.relation.showEditor(relation.id);
-	elseif not relation.inUse and action==ACTIONS.DELETE then
-		TRP3_API.popup.showConfirmPopup(loc.CO_RELATIONS_DELETE_WARNING:format(getColor(relation)(relation.name or loc:GetText("REG_RELATION_"..relation.id))), function()
-			local relationList = getRelationList()
-			TRP3_API.configuration.setValue("register_relation_list", relationList)
-			TRP3_API.configuration.removeElementFromPageByTitle("main_config_relations", originalRelation)
-			relationList[relationID] = nil
+	elseif not relation.inUse and action == ACTIONS.DELETE then
+		TRP3_API.popup.showConfirmPopup(loc.CO_RELATIONS_DELETE_WARNING:format(originalRelation), function()
+			local relationList = getRelationList();
+			local deletedOrder = relationList[relationID].order;
+			relationList[relationID] = nil;
+			-- Shift relation order to stay consecutive
+			for _, relationToUpdate in pairs(relationList) do
+				if relationToUpdate.order > deletedOrder then
+					relationToUpdate.order = relationToUpdate.order - 1;
+				end
+			end
+			updateRelationsList();
 		end)
 	end
 end
 
 local widgetsList = {};
 
-local function updateRelationsList()
+function updateRelationsList()
 	local relations = getRelationList(true);
 
 	local widgetCount = 1;
@@ -243,7 +251,7 @@ local function updateRelationsList()
 		widgetCount = widgetCount + 1;
 	end
 
-	if widgetCount < #widgetsList then
+	if widgetCount <= #widgetsList then
 		for i = widgetCount, #widgetsList do
 			widgetsList[i]:Hide();
 		end
