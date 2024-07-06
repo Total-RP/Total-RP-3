@@ -731,7 +731,7 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 	PR_CO_PROFILE_HELP2 = [[Click here to create a new companion profile.
 
 |cff00ff00To link a profile to a pet (hunter pet, warlock minion...), just summon the pet, select it and use the target frame to link it to a existing profile (or create a new one).|r]],
-	PR_CO_MASTERS = "Masters",
+	PR_CO_MASTERS = "Owners",
 	PR_CO_EMPTY = "No companion profile",
 	PR_CO_NEW_PROFILE = "New companion profile",
 	PR_CO_COUNT = "%s pets/mounts linked to this profile.",
