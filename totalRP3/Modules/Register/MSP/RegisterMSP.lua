@@ -154,6 +154,8 @@ local function onStart()
 		RI = "2",  -- Accept injuries
 		RD = "3",  -- Accept death
 		RR = "4",  -- Accept romance
+		RM = "7",  -- Accept criminal activity
+		RO = "8",  -- Accept loss of control
 	};
 
 	local function updateMiscData()
