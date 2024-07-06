@@ -240,7 +240,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 				<Layers>
 					<Layer level="BACKGROUND">
-						<Texture parentKey="Background" atlas="UI-Frame-Neutral-BackgroundTile" horizTile="true" vertTile="true"/>
+						<Texture parentKey="Background" atlas="UI-Frame-Neutral-BackgroundTile" horizTile="true" vertTile="true">
+							<Color r="0.6" g="0.6" b="0.6"/>
+						</Texture>
 					</Layer>
 				</Layers>
 				<ScrollChild>
