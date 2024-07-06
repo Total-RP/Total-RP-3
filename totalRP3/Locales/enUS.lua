@@ -346,6 +346,8 @@ The |cnGREEN_FONT_COLOR:note only filter|r will filter the character profile lis
 	REG_COMPANION_TF_BOUND_TO = "Select a profile",
 	REG_COMPANION_TF_OPEN = "Open page",
 	REG_COMPANION_TF_OWNER = "Owner: %s",
+	REG_COMPANION_ICON = "Companion's icon",
+	REG_COMPANION_ICON_TT = "Select a graphic representation for your companion.",
 	REG_COMPANION_INFO = "Information",
 	REG_COMPANION_NAME = "Name",
 	REG_COMPANION_TITLE = "Title",
