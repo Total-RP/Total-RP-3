@@ -319,7 +319,7 @@ local function onRelationSelected(value)
 	local unitID = getUnitID("target");
 	if hasProfile(unitID) then
 		TRP3_API.register.relation.setRelation(hasProfile(unitID), value);
-		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), "characteristics");
+		TRP3_Addon:TriggerEvent(TRP3_Addon.Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), "characteristics");
 	end
 end
 
