@@ -1330,7 +1330,7 @@ Il pourrait par exemple être |c0000ff00mince, gros ou musclé...|r Ou tout simp
 	["REG_RELATION_NEUTRAL_TT"] = "%s n'a pas d'affection particulière pour %s.",
 	["REG_RELATION_NONE"] = "Aucune",
 	["REG_RELATION_NONE_TT"] = "%s ne connaît pas %s.",
-	["REG_RELATION_TARGET"] = "|cffffff00Clic gauche:|r Changer la relation",
+	["REG_RELATION_TARGET"] = "Changer la relation",
 	["REG_RELATION_UNFRIENDLY"] = "Hostile",
 	["REG_RELATION_UNFRIENDLY_TT"] = "%s n'aime vraiment pas %s.",
 	["REG_REPORT_PLAYER_OPEN_URL"] = [=[Vous pouvez uniquement signaler les joueurs en jeu depuis la barre de ciblage de Total RP 3, via le bouton de signalement.
