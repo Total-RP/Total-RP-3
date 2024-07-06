@@ -381,11 +381,33 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<!-- Register characteristics panel -->
-	<Frame name="TRP3_RegisterCharactTemplate" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
-		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_RegisterCharactTemplate" virtual="true">
 		<Frames>
+			<Frame parentKey="Background" inherits="TRP3_RegionResizeTemplate" clipChildren="true" useParentLevel="true">
+				<KeyValues>
+					<KeyValue key="resizeMode" value="TRP3_RegionResizeMode.Fill" type="global"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="BOTTOMRIGHT"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture file="interface/addons/totalrp3/resources/ui/ui-frame-parchment-background-right">
+							<KeyValues>
+								<KeyValue key="sourceWidth" value="808" type="number"/>
+								<KeyValue key="sourceHeight" value="807" type="number"/>
+								<KeyValue key="extraWidth" value="10" type="number"/>
+								<KeyValue key="extraHeight" value="10" type="number"/>
+							</KeyValues>
+							<Anchors>
+								<Anchor point="TOPRIGHT" x="10" y="10"/>
+							</Anchors>
+							<TexCoords left="0" right="0.7890625000" top="0" bottom="0.7880859375"/>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
 			<!-- CONSULT MODE -->
 			<Frame name="TRP3_RegisterCharact_NamePanel" inherits="TRP3_GroupBoxTemplate">
 				<Size x="0" y="70"/>

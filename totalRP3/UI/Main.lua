@@ -89,11 +89,11 @@ function TRP3_MainFrameLayoutMixin:OnLoad()
 	TRP3_MainFrameMixin.OnLoad(self);
 
 	if C_Texture.GetAtlasInfo("UI-Frame-Neutral-BackgroundTile") then
-		self.ContentBackground:SetAtlas("UI-Frame-Neutral-BackgroundTile");
-		self.ContentBackground:SetVertexColor(0.6, 0.6, 0.6, 1);
+		self.Background:SetAtlas("UI-Frame-Neutral-BackgroundTile");
+		self.Background:SetVertexColor(0.6, 0.6, 0.6, 1);
 	else
-		self.ContentBackground:SetAtlas("Garr_InfoBox-BackgroundTile");
-		self.ContentBackground:SetVertexColor(0.4, 0.4, 0.4, 1);
+		self.Background:SetAtlas("Garr_InfoBox-BackgroundTile");
+		self.Background:SetVertexColor(0.4, 0.4, 0.4, 1);
 	end
 
 	self.windowLayout = nil;  -- Aliases configuration table; set during addon load.

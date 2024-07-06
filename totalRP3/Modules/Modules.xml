@@ -56,10 +56,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
-		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true">
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="Title" inherits="GameFontHighlightHuge" justifyH="LEFT">

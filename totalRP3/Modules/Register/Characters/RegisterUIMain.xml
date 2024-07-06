@@ -51,31 +51,31 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Register characteristics panel -->
 	<Frame name="TRP3_RegisterMain" hidden="true">
 		<Frames>
-			<Frame name="TRP3_RegisterCharact" inherits="TRP3_RegisterCharactTemplate" frameLevel="2">
+			<Frame name="TRP3_RegisterCharact" inherits="TRP3_RegisterCharactTemplate" useParentLevel="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 			</Frame>
-			<Frame name="TRP3_RegisterAbout" inherits="TRP3_RegisterAboutTemplate" frameLevel="2">
+			<Frame name="TRP3_RegisterAbout" inherits="TRP3_RegisterAboutTemplate" useParentLevel="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 			</Frame>
-			<Frame name="TRP3_RegisterMisc" inherits="TRP3_RegisterMiscTemplate" frameLevel="2">
+			<Frame name="TRP3_RegisterMisc" inherits="TRP3_RegisterMiscTemplate" useParentLevel="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 			</Frame>
-			<Frame name="TRP3_RegisterNotes" inherits="TRP3_RegisterNotesTemplate" frameLevel="2">
+			<Frame name="TRP3_RegisterNotes" inherits="TRP3_RegisterNotesTemplate" useParentLevel="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 			</Frame>
-			<Frame name="TRP3_RegisterDefault" inherits="TRP3_TooltipBackdropEdgeTemplate" frameLevel="2">
+			<Frame name="TRP3_RegisterDefault" inherits="TRP3_TooltipBackdropEdgeTemplate" useParentLevel="true">
 				<KeyValues>
 					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 				</KeyValues>

@@ -6,10 +6,7 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Automation_Settings.lua"/>
 
-	<Frame name="TRP3_AutomationSettingsTemplate" inherits="TRP3_TooltipBackdropEdgeTemplate" mixin="TRP3_AutomationSettingsMixin" virtual="true">
-		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_AutomationSettingsTemplate" mixin="TRP3_AutomationSettingsMixin" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="TitleText" inherits="GameFontHighlightHuge" justifyH="LEFT" justifyV="TOP">
@@ -77,11 +74,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</EventButton>
 			<Frame parentKey="Editor" parentArray="editorFrames">
 				<Size y="200"/>
-				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-					<KeyValue key="backdropColor" value="BLACK_FONT_COLOR" type="global"/>
-					<KeyValue key="backdropColorAlpha" value="0.8" type="number"/>
-				</KeyValues>
 				<Anchors>
 					<Anchor point="LEFT" x="16"/>
 					<Anchor point="RIGHT" x="-16"/>
