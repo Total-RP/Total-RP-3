@@ -23,6 +23,8 @@ Thanks to Raenore for the help on some of these features.
 - Tooltip bottom icons have been changed.
   - **TODO: INSERT IMAGE**
 - Other players default profiles will no longer appear in your directory or be used for chat/nameplate customization.
+- Character names are now customized in the TRP dice roll output.
+- Glances with empty names will now show as such instead of replacing it with "...".
 - Toolbar button and slash command for the NPC speech window now closes it if already shown.
 
 ## Fixed
@@ -31,9 +33,7 @@ Thanks to Raenore for the help on some of these features.
 - Fixed an issue where disabling the KuiNameplates module would break KuiNameplates itself.
 - Fixed an issue when disabling Extended while a launcher action was set to an Extended action.
 - Fixed target companion names not getting customized on tooltips.
-- Character names are now customized in the TRP dice roll output.
 - Fixed mount titles not wrapping properly on their tooltip.
-- Glances with empty names will now show as such instead of replacing it with "...".
 - Fixed the directory tutorial not properly scaling with the window and reworked its content.
 - Fixed an issue where the glance editor would sometimes overlap with other elements in the UI (like the target frame).
 - Fixed an issue with non-Latin alphabets displaying incorrectly or causing a different font to linger in some cases.
