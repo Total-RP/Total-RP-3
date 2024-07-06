@@ -18,6 +18,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Widgets.lua"/>
 	<Include file="Menu\Menu.xml"/>
 	<Include file="IconTemplates.xml"/>
+	<Include file="Sidebar\Sidebar.xml"/>
 
 	<GameTooltip name="TRP3_TooltipTemplate" mixin="TRP3_TooltipMixin" inherits="GameTooltipTemplate" virtual="true"/>
 
@@ -160,14 +161,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Button>
 
 	<!-- Category button -->
-	<Button name="TRP3_CategoryButton" mixin="TRP3_CategoryButtonMixin" motionScriptsWhileDisabled="true" virtual="true">
+	<Button name="TRP3_CategoryButton" mixin="TRP3_CategoryButtonMixin" inherits="TRP3_CategoryButtonArtTemplate" motionScriptsWhileDisabled="true" virtual="true">
 		<Size x="158" y="32"/>
 		<Layers>
 			<Layer level="BORDER">
 				<Texture parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark" hidden="true">
 					<Size x="16" y="16"/>
 					<Anchors>
-						<Anchor point="LEFT" x="10"/>
+						<Anchor point="LEFT" x="8"/>
 					</Anchors>
 				</Texture>
 			</Layer>
@@ -179,44 +180,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</Button>
 		</Frames>
+		<NormalFont style="GameFontNormal"/>
+		<DisabledFont style="GameFontNormal"/>
 		<ButtonText parentKey="Text" wordwrap="false" justifyH="CENTER">
 			<Anchors>
-				<Anchor point="LEFT" x="24"/>
+				<Anchor point="LEFT" x="16"/>
 				<Anchor point="RIGHT" x="-16"/>
 			</Anchors>
 		</ButtonText>
-		<NormalFont style="GameFontNormal"/>
-		<DisabledFont style="GameFontNormal"/>
-
-		<NormalTexture parentKey="NormalTexture" file="interface/addons/totalrp3/resources/ui/ui-sidebar-button">
-			<TextureSliceMargins left="8" right="8" top="8" bottom="8"/>
-			<TextureSliceMode mode="Stretched"/>
-		</NormalTexture>
-
-		<DisabledTexture parentKey="SelectedBackground" file="interface/addons/totalrp3/resources/ui/ui-sidebar-button-selected">
-			<TextureSliceMargins left="8" right="8" top="8" bottom="8"/>
-			<TextureSliceMode mode="Stretched"/>
-		</DisabledTexture>
-
-		<HighlightTexture parentKey="HighlightTexture" alphaMode="ADD" file="interface/addons/totalrp3/resources/ui/ui-sidebar-button-highlight">
-			<TextureSliceMargins left="8" right="8" top="8" bottom="8"/>
-			<TextureSliceMode mode="Stretched"/>
-		</HighlightTexture>
-
-		<PushedTexture parentKey="PushedTexture" file="interface/addons/totalrp3/resources/ui/ui-sidebar-button-pressed">
-			<TextureSliceMargins left="8" right="8" top="8" bottom="8"/>
-			<TextureSliceMode mode="Stretched"/>
-		</PushedTexture>
-
-		<!-- <HighlightTexture file="Interface\AchievementFrame\UI-Achievement-Category-Highlight" alphaMode="ADD">
-			<Anchors>
-				<Anchor point="TOPLEFT"/>
-				<Anchor point="TOPRIGHT"/>
-			</Anchors>
-			<TexCoords left="0" right="0.6640625" top="0" bottom="1"/>
-			<TextureSliceMargins left="16" top="16" bottom="16" right="16"/>
-			<TextureSliceMode mode="Stretched"/>
-		</HighlightTexture> -->
 		<Scripts>
 			<OnLoad method="OnLoad"/>
 			<OnEnter method="OnEnter"/>
