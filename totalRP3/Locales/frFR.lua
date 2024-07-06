@@ -1482,14 +1482,9 @@ Change le statut de votre personnage en fonction de l'option spécifiée:
 	["UI_FILTER_NO_RESULTS_FOUND_TEXT"] = "Ajustez votre critère de recherche.",
 	["UI_FILTER_NO_RESULTS_FOUND_TITLE"] = "Aucun résultat.",
 	["UI_ICON_BROWSER"] = "Navigateur d'icônes",
-	["UI_ICON_BROWSER_HELP"] = "Copier l'icône",
-	["UI_ICON_BROWSER_HELP_TT"] = [=[Tant que cette fenêtre est ouverte, vous pouvez |cffffff00CTRL + cliquer|r sur une icône pour copier son nom.
-
-Disponible pour:|cff00ff00
-- Un objet de votre sac
-- Un sort du grimoire|r]=],
 	["UI_ICON_BROWSER_SEARCHING"] = "Recherche en cours...",
 	["UI_ICON_SELECT"] = "Choisir une icône",
+	["UI_ICON_COPY"] = "Copier l'icône",
 	["UI_IMAGE_BROWSER"] = "Navigateur d'images",
 	["UI_IMAGE_SELECT"] = "Choisir une image",
 	["UI_LINK_SAFE"] = "Voici l'URL du lien.",

@@ -824,16 +824,14 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 
 	UI_BKG = "Background %s",
 	UI_ICON_BROWSER = "Icon browser",
-	UI_ICON_BROWSER_HELP = "Copy icon",
-	UI_ICON_BROWSER_HELP_TT = [[While this frame is open you can |cffffff00ctrl + click|r on a icon to copy its name.
-
-This will works:|cff00ff00
-- On any item in your bags
-- On any icon in the spellbook|r]],
 	UI_ICON_BROWSER_SEARCHING = "Searching...",
 	UI_COMPANION_BROWSER_HELP = "Select a battle pet",
 	UI_COMPANION_BROWSER_RENAME_WARNING = "|cffff0000Warning:|r It is strongly recommended to only link companion profiles to renamed pets.",
 	UI_ICON_SELECT = "Select icon",
+	UI_ICON_OPTIONS = "Right-click for icon options.",
+	UI_ICON_COPY = "Copy icon",
+	UI_ICON_COPYNAME = "Copy icon name",
+	UI_ICON_PASTE = "Paste icon",
 	UI_MUSIC_BROWSER = "Music browser",
 	UI_MUSIC_SELECT = "Select music",
 	UI_MUSIC_DURATION = "Duration",

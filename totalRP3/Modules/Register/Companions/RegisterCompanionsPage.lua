@@ -417,7 +417,17 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:SetScript("OnClick", toEditMode);
 	TRP3_CompanionsPageInformationEdit_NamePanel_CancelButton:SetScript("OnClick", showInformationTab);
 	TRP3_CompanionsPageInformationEdit_NamePanel_SaveButton:SetScript("OnClick", onSave);
-	TRP3_CompanionsPageInformationEdit_NamePanel_Icon:SetScript("OnClick", function() showIconBrowser(onPlayerIconSelected, draftData.IC) end );
+	TRP3_CompanionsPageInformationEdit_NamePanel_Icon:SetScript("onMouseDown", function(self, button)
+		if button == "LeftButton" then
+			showIconBrowser(onPlayerIconSelected, draftData.IC);
+		elseif button == "RightButton" then
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(draftData.IC); end);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftData.IC}); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(TRP3_API.GetLastCopiedIcon()); end);
+			end);
+		end
+	end);
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameColor.onSelection = onNameColorSelected;
 
 	TRP3_CompanionsPageInformationConsult_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);

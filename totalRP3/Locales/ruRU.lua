@@ -1219,14 +1219,9 @@ Link it anyway ?]=],
 	["UI_FILTER_NO_RESULTS_FOUND_TEXT"] = "Попробуйте исправить ваши критерии поиска.",
 	["UI_FILTER_NO_RESULTS_FOUND_TITLE"] = "Результаты не найдены.",
 	["UI_ICON_BROWSER"] = "Просмотр значков",
-	["UI_ICON_BROWSER_HELP"] = "Скопировать значок",
-	["UI_ICON_BROWSER_HELP_TT"] = [=[Пока это окно открыто вы можете нажать |cffffff00ctrl+ПКМ|r на значке, чтобы скопировать его название.
-
-Работает:|cff00ff00
-- С любой вещью в ваших сумках
-- С любым элементом в книге заклинаний|r]=],
 	["UI_ICON_BROWSER_SEARCHING"] = "Поиск... (%d%%)",
 	["UI_ICON_SELECT"] = "Выбрать значок",
+	["UI_ICON_COPY"] = "Скопировать значок",
 	["UI_IMAGE_BROWSER"] = "Просмотр изображений",
 	["UI_IMAGE_SELECT"] = "Выбрать изображение",
 	["UI_LINK_SAFE"] = "Вот URL ссылки.",

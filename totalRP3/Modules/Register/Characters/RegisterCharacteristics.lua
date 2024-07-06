@@ -579,6 +579,22 @@ local function onPlayerIconSelected(icon)
 	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
 end
 
+--- pasteCopiedIcon handles receiving an icon from the right-click menu.
+---@param frame Frame The frame the icon belongs to.
+---@param fields string To identify the required fields to modify.
+---@param structure Frame The draftData frame that holds all the info.
+local function pasteCopiedIcon(frame, fields, structure)
+	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIcons.Default;
+	if fields == "misc" then
+		structure.IC = icon;
+	elseif fields == "psychoLeft" then
+		structure.LI = icon;
+	elseif fields == "psychoRight" then
+		structure.RI = icon;
+	end
+	setupIconButton(frame, icon);
+end
+
 local function onEyeColorSelected(red, green, blue)
 	if red and green and blue then
 		local hexa = TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
@@ -1110,14 +1126,23 @@ function setEditDisplay()
 			-- icon as our handle, and make it control this frame.
 			setTooltipForSameFrame(frame.DragButton, "LEFT", 0, 10, loc.REG_PLAYER_REORDER, loc.REG_PLAYER_REORDER_TT);
 			setInfoReorderable(frame.DragButton, frame, "misc", TRP3_RegisterCharact_Edit_CharactPanel_Container.MiscTitle, TRP3_RegisterCharact_Edit_MiscAdd);
+			setTooltipForSameFrame(frame.Icon, "LEFT", 0, 10, "Icon Options", loc.UI_ICON_OPTIONS);
 
 			tinsert(miscEditCharFrame, frame);
 		end
-		_G[frame:GetName() .. "Icon"]:SetScript("OnClick", function()
-			showIconBrowser(function(icon)
-				miscStructure.IC = icon;
-				setupIconButton(_G[frame:GetName() .. "Icon"], icon or TRP3_InterfaceIcons.Default);
-			end, miscStructure.IC);
+		_G[frame:GetName() .. "Icon"]:SetScript("onMouseDown", function(self, button)
+			if button == "LeftButton" then
+				showIconBrowser(function(icon)
+					miscStructure.IC = icon;
+					setupIconButton(_G[frame:GetName() .. "Icon"], icon or TRP3_InterfaceIcons.Default);
+				end, miscStructure.IC);
+			elseif button == "RightButton" then
+				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(miscStructure.IC); end);
+					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({miscStructure.IC or TRP3_InterfaceIcons.Default}); end);
+					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(_G[frame:GetName() .. "Icon"], "misc", miscStructure); end);
+				end);
+			end
 		end);
 
 		frame.frameIndex = frameIndex;
@@ -1171,8 +1196,8 @@ function setEditDisplay()
 			frame.Slider:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 			frame.Slider:SetScript("OnValueChanged", onPsychoValueChanged);
 
-			setTooltipForSameFrame(frame.CustomLeftIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_LEFTICON_TT);
-			setTooltipForSameFrame(frame.CustomRightIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_RIGHTICON_TT);
+			setTooltipForSameFrame(frame.CustomLeftIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_LEFTICON_TT .. "\n\n" .. loc.UI_ICON_OPTIONS);
+			setTooltipForSameFrame(frame.CustomRightIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_RIGHTICON_TT.. "\n\n" .. loc.UI_ICON_OPTIONS);
 			setTooltipForSameFrame(frame.DeleteButton, "TOP", 0, 5, loc.CM_REMOVE);
 			setTooltipForSameFrame(frame.CustomLeftColor, "TOP", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT);
 			setTooltipForSameFrame(frame.CustomRightColor, "TOP", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT);
@@ -1200,18 +1225,34 @@ function setEditDisplay()
 			tinsert(psychoEditCharFrame, frame);
 		end
 
-		frame.CustomLeftIcon:SetScript("OnClick", function(self)
-			showIconBrowser(function(icon)
-				psychoStructure.LI = icon;
-				setupIconButton(self, icon or TRP3_InterfaceIcons.Default);
-			end, psychoStructure.LI);
+		frame.CustomLeftIcon:SetScript("onMouseDown", function(self, button)
+			if button == "LeftButton" then
+				showIconBrowser(function(icon)
+					psychoStructure.LI = icon;
+					setupIconButton(self, icon or TRP3_InterfaceIcons.Default);
+				end, psychoStructure.LI);
+			elseif button == "RightButton" then
+				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(psychoStructure.LI); end);
+					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({psychoStructure.LI or TRP3_InterfaceIcons.Default}); end);
+					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.CustomLeftIcon, "psychoLeft", psychoStructure); end);
+				end);
+			end
 		end);
 
-		frame.CustomRightIcon:SetScript("OnClick", function(self)
-			showIconBrowser(function(icon)
-				psychoStructure.RI = icon;
-				setupIconButton(self, icon or TRP3_InterfaceIcons.Default);
-			end, psychoStructure.RI);
+		frame.CustomRightIcon:SetScript("onMouseDown", function(self, button)
+			if button == "LeftButton" then
+				showIconBrowser(function(icon)
+					psychoStructure.RI = icon;
+					setupIconButton(self, icon or TRP3_InterfaceIcons.Default);
+				end, psychoStructure.RI);
+			elseif button == "RightButton" then
+				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(psychoStructure.RI); end);
+					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({psychoStructure.RI or TRP3_InterfaceIcons.Default}); end);
+					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.CustomRightIcon, "psychoRight", psychoStructure); end);
+				end);
+			end
 		end);
 
 		-- Run through all the child elements. If they've got a hide set flag
@@ -1525,7 +1566,17 @@ function TRP3_API.register.inits.characteristicsInit()
 
 	-- UI
 	TRP3_RegisterCharact_Edit_MiscAdd:SetScript("OnClick", miscAddDropDown);
-	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("OnClick", function() showIconBrowser(onPlayerIconSelected, draftData.IC) end);
+	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("onMouseDown", function(self, button)
+		if button == "LeftButton" then
+			showIconBrowser(onPlayerIconSelected, draftData.IC);
+		elseif button == "RightButton" then
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(draftData.IC); end);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftData.IC or TRP3_InterfaceIcons.ProfileDefault}); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(TRP3_API.GetLastCopiedIcon()); end);
+			end);
+		end
+	end);
 	TRP3_RegisterCharact_NamePanel_Edit_CancelButton:SetScript("OnClick", showCharacteristicsTab);
 	TRP3_RegisterCharact_NamePanel_Edit_SaveButton:SetScript("OnClick", onSave);
 	TRP3_RegisterCharact_NamePanel_EditButton:SetScript("OnClick", onEdit);
@@ -1558,7 +1609,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	setupDropDownMenu(TRP3_RegisterCharact_Edit_PsychoAdd, PSYCHO_PRESETS_DROPDOWN, psychoAdd, 0, true, false);
 
 	-- Localz
-	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "RIGHT", 0, 5, loc.REG_PLAYER_ICON, loc.REG_PLAYER_ICON_TT);
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "RIGHT", 0, 5, loc.REG_PLAYER_ICON, loc.REG_PLAYER_ICON_TT .. "\n\n" .. loc.UI_ICON_OPTIONS);
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_TitleFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_TITLE, loc.REG_PLAYER_TITLE_TT);
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_FirstFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_FIRSTNAME, loc.REG_PLAYER_FIRSTNAME_TT:format(Globals.player));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_LastFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_LASTNAME, loc.REG_PLAYER_LASTNAME_TT);

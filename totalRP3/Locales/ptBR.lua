@@ -1224,13 +1224,8 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["UI_COMPANION_BROWSER_HELP"] = "Selecionar uma mascote de batalha",
 	["UI_FILTER"] = "Filtrar",
 	["UI_ICON_BROWSER"] = "Navegador de ícones",
-	["UI_ICON_BROWSER_HELP"] = "Copiar ícone",
-	["UI_ICON_BROWSER_HELP_TT"] = [=[Enquanto esta janela estiver aberta você pode usar |cffffff00ctrl + clique|r em um ícone para copiar seu nome.
-
-Isso funciona:|cff00ff00
-- Em qualquer item nas suas bolsas
-- Em qualquer ícone no livro de habilidades]=],
 	["UI_ICON_SELECT"] = "Selecionar ícone",
+	["UI_ICON_COPY"] = "Copiar ícone",
 	["UI_IMAGE_BROWSER"] = "Navegador de imagens",
 	["UI_IMAGE_SELECT"] = "Selecionar imagem",
 	["UI_LINK_SAFE"] = "Aqui está o link URL,",

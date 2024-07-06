@@ -1120,13 +1120,8 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 	["UI_COMPANION_BROWSER_HELP"] = "Wähle ein Wildtier",
 	["UI_FILTER"] = "Filter",
 	["UI_ICON_BROWSER"] = "Iconbrowser",
-	["UI_ICON_BROWSER_HELP"] = "Icon kopieren",
-	["UI_ICON_BROWSER_HELP_TT"] = [=[Während dieses Fenter geöffnet ist, kannst du mit |cffffff00ctrl + Klick|r auf ein Icon anwenden, um dessen Namen zu kopieren.
-
-Das funktioniert:|cff00ff00
-- Mit jedem Item in deinem Inventar
-- Mit jeder Fähigkeit in deinem Zauberbuch|r]=],
 	["UI_ICON_SELECT"] = "Icon auswählen",
+	["UI_ICON_COPY"] = "Icon kopieren",
 	["UI_IMAGE_BROWSER"] = "Bildbrowser",
 	["UI_IMAGE_SELECT"] = "Bild auswählen",
 	["UI_LINK_SAFE"] = "Das ist die Link-URL.",

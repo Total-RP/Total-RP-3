@@ -126,6 +126,15 @@ local function selectMusic(music)
 	end
 end
 
+--- pasteCopiedIcon handles receiving an icon from the right-click menu.
+---@param frame Frame The frame the icon belongs to.
+---@param frameData Frame The draftData frame that holds all the info.
+local function pasteCopiedIcon(frame, frameData)
+	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIcons.Default;
+	frameData.IC = icon;
+	setupIconButton(frame, icon);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- TEMPLATE 1
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -298,7 +307,7 @@ local function createTemplate2Frame(frameIndex)
 	setTooltipAll(_G[frame:GetName().."Up"], "TOP", 0, 0, loc.CM_MOVE_UP);
 	setTooltipAll(_G[frame:GetName().."Down"], "TOP", 0, 0, loc.CM_MOVE_DOWN);
 	setTooltipAll(_G[frame:GetName().."Delete"], "TOP", 0, 5, loc.REG_PLAYER_ABOUT_REMOVE_FRAME);
-	setTooltipAll(_G[frame:GetName().."Icon"], "TOP", 0, 5, loc.UI_ICON_SELECT);
+	setTooltipAll(_G[frame:GetName().."Icon"], "TOP", 0, 5, loc.UI_ICON_SELECT, loc.UI_ICON_OPTIONS);
 	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, _G["TRP3_RegisterAbout_Template2_Edit"..frameIndex.."TextScrollText"]);
 	tinsert(template2EditFrames, frame);
 	return frame;
@@ -335,11 +344,19 @@ function refreshTemplate2EditDisplay()
 		_G[frame:GetName().."Bkg"]:SetSelectedIndex(frameData.BK or 1);
 		_G[frame:GetName().."TextScrollText"]:SetText(frameData.TX or "");
 		setupIconButton(_G[frame:GetName().."Icon"], frameData.IC or TRP3_InterfaceIcons.Default);
-		_G[frame:GetName().."Icon"]:SetScript("OnClick", function()
-			showIconBrowser(function(icon)
-				frame.frameData.IC = icon;
-				setupIconButton(_G[frame:GetName().."Icon"], icon);
-			end, frameData.IC);
+		_G[frame:GetName().."Icon"]:SetScript("onMouseDown", function(self, button)
+			if button == "LeftButton" then
+				showIconBrowser(function(icon)
+					frame.frameData.IC = icon;
+					setupIconButton(_G[frame:GetName().."Icon"], icon);
+				end, frameData.IC);
+			elseif button == "RightButton" then
+				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(frameData.IC); end);
+					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({frameData.IC or TRP3_InterfaceIcons.Default}); end);
+					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(_G[frame:GetName().."Icon"], frameData); end);
+				end);
+			end
 		end);
 		-- Buttons
 		if frameIndex == 1 then
@@ -929,9 +946,41 @@ function TRP3_API.register.inits.aboutInit()
 	setupListBox(TRP3_RegisterAbout_Edit_Template3_PhysBkg, bkgTab, setTemplate3PhysBkg, nil, 150, true);
 	setupListBox(TRP3_RegisterAbout_Edit_Template3_PsyBkg, bkgTab, setTemplate3PsyBkg, nil, 150, true);
 	setupListBox(TRP3_RegisterAbout_Edit_Template3_HistBkg, bkgTab, setTemplate3HistBkg, nil, 150, true);
-	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("OnClick", function() showIconBrowser(onPhisIconSelected, draftData.T3.PH.IC) end );
-	TRP3_RegisterAbout_Edit_Template3_PsyIcon:SetScript("OnClick", function() showIconBrowser(onPsychoIconSelected, draftData.T3.PS.IC) end );
-	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("OnClick", function() showIconBrowser(onHistoIconSelected, draftData.T3.HI.IC) end );
+	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("onMouseDown", function(self, button)
+		if button == "LeftButton" then
+			showIconBrowser(onPhisIconSelected, draftData.T3.PH.IC);
+		elseif button == "RightButton" then
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(draftData.T3.PH.IC or TEMPLATE3_ICON_PHYSICAL); end);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftData.T3.PH.IC or TEMPLATE3_ICON_PHYSICAL}); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() onPhisIconSelected(TRP3_API.GetLastCopiedIcon()); end);
+			end);
+		end
+	end);
+
+	TRP3_RegisterAbout_Edit_Template3_PsyIcon:SetScript("onMouseDown", function(self, button)
+		if button == "LeftButton" then
+			showIconBrowser(onPsychoIconSelected, draftData.T3.PS.IC);
+		elseif button == "RightButton" then
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(draftData.T3.PS.IC or TEMPLATE3_ICON_PSYCHO); end);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftData.T3.PS.IC or TEMPLATE3_ICON_PSYCHO}); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() onPsychoIconSelected(TRP3_API.GetLastCopiedIcon()); end);
+			end);
+		end
+	end);
+
+	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("onMouseDown", function(self, button)
+		if button == "LeftButton" then
+			showIconBrowser(onHistoIconSelected, draftData.T3.HI.IC);
+		elseif button == "RightButton" then
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(draftData.T3.HI.IC or TEMPLATE3_ICON_HISTORY); end);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftData.T3.HI.IC or TEMPLATE3_ICON_HISTORY}); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() onHistoIconSelected(TRP3_API.GetLastCopiedIcon()); end);
+			end);
+		end
+	end);
 	TRP3_RegisterAbout_Edit_Music_Action:SetScript("OnClick", onMusicEditClicked);
 	TRP3_RegisterAbout_Edit_Template2_Add:SetScript("OnClick", template2AddFrame);
 	TRP3_RegisterAbout_AboutPanel_EditButton:SetScript("OnClick", onEdit);
