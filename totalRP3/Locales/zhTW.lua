@@ -306,7 +306,6 @@ L = {
 	["DB_STATUS_CURRENTLY"] = "當前活動",
 	["DB_STATUS_CURRENTLY_COMMON"] = "這些狀態也會顯示在你的角色卡欄位，Keep it clear and brief as |cffff9900by default TRP3 players will only see the first 140 characters of them!",
 	["DB_STATUS_CURRENTLY_OOC"] = "其他資訊（OOC）",
-	["DB_STATUS_CURRENTLY_OOC_TT"] = "這裡可以輸入任何對角色還是玩家來說重要的資訊。",
 	["DB_STATUS_RP"] = "角色狀態",
 	["DB_STATUS_RP_IC"] = "進入角色（IC）",
 	["DB_STATUS_RP_IC_TT"] = "這表示你正在扮演你的角色，所有你的行動都不再依據你本人的好惡抉擇，而是衷於你所設定的角色性格來起心動念。",
@@ -615,10 +614,6 @@ L = {
 	["REG_PLAYER_SHOWPSYCHO_TT"] = [=[如果你想使用角色個性描述，請勾選。
 
 如果你不想以這種方式來向其他玩家展示您的角色，請不要勾選此欄，描述框將會完全隱藏。]=],
-	["REG_PLAYER_STYLE_BATTLE"] = "角色扮演戰鬥解決方式",
-	["REG_PLAYER_STYLE_BATTLE_1"] = "使用遊戲ＰＶＰ戰鬥",
-	["REG_PLAYER_STYLE_BATTLE_3"] = "使用擲骰戰鬥",
-	["REG_PLAYER_STYLE_BATTLE_4"] = "使用表情戰鬥",
 	["REG_PLAYER_STYLE_DEATH"] = "允許角色死亡",
 	["REG_PLAYER_STYLE_GUILD"] = "公會成員",
 	["REG_PLAYER_STYLE_GUILD_IC"] = "成員皆為角色扮演玩家",
