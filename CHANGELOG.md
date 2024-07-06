@@ -2,9 +2,12 @@
 
 This version adds support for patch 11.0.
 
-Thanks to Raenore for the help on some of these features.
+Thanks to Raenore for the help on some of these features, and keyboardturner for the new silhouette logo.
 
 ## Added
+- Added a new Relations menu located in the Customization section, alongside the moved Automation settings.
+  - This menu lets you edit the preset relationships you can have with other players, as well as create new ones.
+  - Those relationships are still only personal, and not shared with other players.
 - Added a "Currently" toolbar button letting you open a frame to quickly modify your Currently info.
 - Added the ability to drag and drop personality traits to reorder them
   - Additional info now uses the same button style rather than drag and dropping the icon itself.
