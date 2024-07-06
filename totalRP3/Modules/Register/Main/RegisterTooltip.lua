@@ -63,6 +63,7 @@ local ConfigKeys = {
 	CHARACT_ZONE = "tooltip_char_zone";
 	CHARACT_HEALTH = "tooltip_char_health";
 	CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
+	CHARACT_RELATION_LINE = "tooltip_char_relation_line";
 	CHARACT_RELATION = "tooltip_char_relation";
 	CHARACT_SPACING = "tooltip_char_spacing";
 	NO_FADE_OUT = "tooltip_no_fade_out";
@@ -149,6 +150,10 @@ local function showRealm()
 	return getConfigValue(ConfigKeys.CHARACT_REALM);
 end
 
+local function showRelationLine()
+	return getConfigValue(ConfigKeys.CHARACT_RELATION_LINE);
+end
+
 local function showTarget()
 	return getConfigValue(ConfigKeys.CHARACT_TARGET);
 end
@@ -211,6 +216,8 @@ local function getTooltipTextColors()
 	return colors;
 end
 TRP3_API.ui.tooltip.getTooltipTextColors = getTooltipTextColors;
+
+TRP3_API.ui.tooltip.tooltipBorderColor = TRP3_API.Colors.White;
 
 local TooltipGuildDisplayOption = {
 	-- Old setting was a boolean; use false/true for sensible defaults here.
@@ -692,6 +699,19 @@ local function writeTooltipForCharacter(targetID, targetType)
 			local displayMembership = " |cff82c5ff(" .. loc.REG_TT_GUILD_CUSTOM .. ")";
 
 			tooltipBuilder:AddDoubleLine(displayText, displayMembership, colors.MAIN, colors.MAIN, getSubLineFontSize());
+		end
+	end
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Relationship
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	if showRelationLine() and player:GetProfileID() then
+		local relation = TRP3_API.register.relation.getRelation(player:GetProfileID());
+		if relation and relation.id ~= "NONE" then
+			local relationColor = TRP3_API.register.relation.getColor(relation) or colors.SECONDARY;
+			local relationName = TRP3_API.register.relation.getRelationText(player:GetProfileID());
+			tooltipBuilder:AddLine(loc.REG_RELATION .. ": " .. relationColor:WrapTextInColorCode(relationName), colors.MAIN, getSubLineFontSize());
 		end
 	end
 
@@ -1291,11 +1311,14 @@ local function show(targetType, targetID, targetMode)
 					TRP3_CharacterTooltip:SetOwner(getAnchoredFrame(), getAnchoredPosition());
 				end
 
-				TRP3_CharacterTooltip:SetBorderColor(1, 1, 1);
+				TRP3_CharacterTooltip:SetBorderColor(TRP3_API.ui.tooltip.tooltipBorderColor:GetRGB());
 				if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER then
 					writeTooltipForCharacter(targetID, targetType);
 					if showRelationColor() and targetID ~= Globals.player_id and not isIDIgnored(targetID) and IsUnitIDKnown(targetID) and hasProfile(targetID) then
-						TRP3_CharacterTooltip:SetBorderColor(getRelationColors(hasProfile(targetID)));
+						local borderColor = getRelationColors(hasProfile(targetID));
+						if borderColor then
+							TRP3_CharacterTooltip:SetBorderColor(borderColor:GetRGB());
+						end
 					end
 					if shouldHideGameTooltip() and not (isIDIgnored(targetID) or unitIDIsFilteredForMatureContent(targetID)) then
 						GameTooltip:Hide();
@@ -1514,6 +1537,7 @@ local function onModuleInit()
 	registerConfigKey(ConfigKeys.CHARACT_ZONE, true);
 	registerConfigKey(ConfigKeys.CHARACT_HEALTH, 0);
 	registerConfigKey(ConfigKeys.CHARACT_CURRENT_SIZE, 140);
+	registerConfigKey(ConfigKeys.CHARACT_RELATION_LINE, true);
 	registerConfigKey(ConfigKeys.CHARACT_RELATION, true);
 	registerConfigKey(ConfigKeys.CHARACT_SPACING, true);
 	registerConfigKey(ConfigKeys.SHOW_WORLD_CURSOR, true);
@@ -1795,6 +1819,11 @@ local function onModuleInit()
 				title = loc.CO_TOOLTIP_NOTIF,
 				configKey = ConfigKeys.CHARACT_NOTIF,
 				help = loc.CO_TOOLTIP_NOTIF_TT,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_RELATION_LINE,
+				configKey = ConfigKeys.CHARACT_RELATION_LINE,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

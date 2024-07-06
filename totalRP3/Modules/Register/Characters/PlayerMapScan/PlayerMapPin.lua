@@ -58,15 +58,15 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 		displayData.iconColor = TRP3_API.Colors.Grey;
 		displayData.opacity = math.min(0.5, displayData.opacity);
 		displayData.categoryName = TRP3_API.Colors.Red(loc.REG_LOCATION_DIFFERENT_WAR_MODE);
-		displayData.categoryPriority = -1;
+		displayData.categoryPriority = 1;
 	else
 		local relation = player:GetRelationshipWithPlayer()
-		if relation ~= TRP3_API.register.relation.NONE then
+		if relation.id ~= TRP3_API.register.relation.getRelationInfo().id then
 			local relationshipColor = TRP3_API.register.relation.getColor(relation);
 			displayData.iconAtlas = "PlayerPartyBlip";
 			displayData.iconColor = relationshipColor;
-			displayData.categoryName = loc.REG_RELATION .. ": " .. relationshipColor(loc:GetText("REG_RELATION_".. relation));
-			displayData.categoryPriority = TRP3_API.globals.RELATIONS_ORDER[relation] or math.huge;
+			displayData.categoryName = loc.REG_RELATION .. ": " .. (relationshipColor or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_".. relation.id));
+			displayData.categoryPriority = -relation.order or math.huge;
 		end
 	end
 

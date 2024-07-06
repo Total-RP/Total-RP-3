@@ -10,10 +10,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Characters\RegisterUIAbout.xml"/>
 	<Include file="Characters\RegisterUIMisc.xml"/>
 	<Include file="Characters\RegisterUINotes.xml"/>
+	<Include file="Characters\RegisterUIRelations.xml"/>
 	<Include file="Main\RegisterUIGlance.xml"/>
 	<Include file="Main\RegisterUIList.xml"/>
 	<Include file="Characters\RegisterUIMain.xml"/>
 	<Include file="Characters\RegisterMain.lua"/>
+	<Include file="Characters\RegisterRelations.lua"/>
 	<Include file="Characters\RegisterIgnore.lua"/>
 	<Include file="Characters\RegisterCharacteristics.lua"/>
 	<Include file="Characters\RegisterAbout.lua"/>

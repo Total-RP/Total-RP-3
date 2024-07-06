@@ -277,8 +277,8 @@ local function decorateCharacterLine(line, characterIndex)
 		leftTooltipText = leftTooltipText .. "\n|r" .. loc.REG_LIST_CHAR_TT_DATE:format(formatDate, profile.zone);
 	end
 	-- Middle column : relation
-	local relation, relationRed, relationGreen, relationBlue = getRelationText(profileID), getRelationColors(profileID);
-	local color = TRP3_API.CreateColor(relationRed, relationGreen, relationBlue):GenerateHexColorMarkup();
+	local relation, relationColor = getRelationText(profileID), getRelationColors(profileID);
+	local color = (relationColor or TRP3_API.Colors.White):GenerateHexColorMarkup();
 	if relation:len() > 0 then
 		local middleTooltipTitle, middleTooltipText = relation, getRelationTooltipText(profileID, profile);
 		setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"], "TOPLEFT", 0, 5, middleTooltipTitle, color .. middleTooltipText);

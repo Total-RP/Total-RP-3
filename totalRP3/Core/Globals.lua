@@ -86,30 +86,6 @@ TRP3_OOCIndicatorStyle = {
 	Text = "TEXT",
 };
 
---- RELATIONS is a list of (backwards-compatible) relationship IDs.
-local RELATIONS = {
-	UNFRIENDLY = "UNFRIENDLY",
-	NONE = "NONE",
-	NEUTRAL = "NEUTRAL",
-	BUSINESS = "BUSINESS",
-	FRIEND = "FRIEND",
-	LOVE = "LOVE",
-	FAMILY = "FAMILY",
-};
-TRP3_API.globals.RELATIONS = RELATIONS;
-
---- RELATIONS_ORDER defines a logical ordering for relations.
-local RELATIONS_ORDER = {
-	[RELATIONS.NONE] = 6,
-	[RELATIONS.UNFRIENDLY] = 5,
-	[RELATIONS.NEUTRAL] = 4,
-	[RELATIONS.BUSINESS] = 3,
-	[RELATIONS.FRIEND] = 2,
-	[RELATIONS.LOVE] = 1,
-	[RELATIONS.FAMILY] = 0,
-};
-TRP3_API.globals.RELATIONS_ORDER = RELATIONS_ORDER;
-
 local emptyMeta = {
 	__newindex = function(_, _, _) end
 };
