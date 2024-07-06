@@ -350,7 +350,7 @@ TRP3_API.register.inits.relationsInit = function()
 			adapter = function(buttonStructure, unitID)
 				local profileID = hasProfile(unitID);
 				buttonStructure.tooltip = loc.REG_RELATION .. ": " .. TRP3_API.register.relation.getRelationText(profileID);
-				buttonStructure.tooltipSub = TRP3_API.register.relation.getRelationTooltipText(profileID, getProfile(profileID)) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_RELATION_TARGET);
+				buttonStructure.tooltipSub = TRP3_API.register.relation.getRelationTooltipText(profileID, getProfile(profileID)) .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_RELATION_TARGET);
 				buttonStructure.icon = TRP3_API.register.relation.getRelationTexture(profileID);
 			end,
 		});
