@@ -174,5 +174,4 @@ end
 
 function TRP3_CategoryButtonMixin:SetSelected(selected)
 	self:SetEnabled(not selected);
-	self:SetHighlightLocked(selected);
 end

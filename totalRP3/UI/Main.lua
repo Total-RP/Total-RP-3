@@ -3,8 +3,8 @@
 
 local LibWindow = LibStub:GetLibrary("LibWindow-1.1");
 
-local DEFAULT_WINDOW_WIDTH = 768;
-local DEFAULT_WINDOW_HEIGHT = 500;
+local DEFAULT_WINDOW_WIDTH = 840;
+local DEFAULT_WINDOW_HEIGHT = 600;
 
 local WindowState = {
 	Normal = 1,

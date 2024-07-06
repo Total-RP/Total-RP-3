@@ -68,21 +68,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<!-- Dashboard -->
-	<Frame name="TRP3_Dashboard" hidden="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
-		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_Dashboard" hidden="true">
 		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture file="Interface\ARCHEOLOGY\Arch-BookCompletedLeft">
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-5" y="-5"/>
-						<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
-						<Anchor point="LEFT" x="5" y="0"/>
-					</Anchors>
-					<TexCoords left="0.07" right="1" top="0" bottom="0.95"/>
-				</Texture>
-			</Layer>
 			<Layer level="ARTWORK">
 				<Texture name="TRP3_DashboardLogo" file="Interface\AddOns\totalRP3\resources\trp3logo">
 					<Size x="256" y="128"/>

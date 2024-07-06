@@ -27,9 +27,9 @@ local menuStructures = {};
 -- The currently selected menuId
 local selectedMenuId;
 -- Determine the original top margin from where the first button is placed
-local marginTop = -5;
+local marginTop = -4;
 -- Menu button height, determine the vertical gap between each button
-local buttonHeight = 25;
+local buttonHeight = 32;
 
 local function isCloseable(menuID)
 	return menuStructures[menuID] and menuStructures[menuID].closeable;
@@ -79,10 +79,10 @@ local function rebuildMenu()
 
 			if menuStructure.isChildOf then
 				button:SetJustifyH(menuStructure.align or "RIGHT");
-				button:SetDisabledFontObject(GameFontHighlightSmall);
-				button:SetNormalFontObject(GameFontHighlightSmall);
-				button:SetPoint("LEFT", 30, y);
-				button:SetPoint("RIGHT", -15, y);
+				button:SetDisabledFontObject(GameFontHighlight);
+				button:SetNormalFontObject(GameFontHighlight);
+				button:SetPoint("TOPLEFT", 15, y);
+				button:SetPoint("TOPRIGHT", -20, y);
 
 				if isCloseable(id) then
 					closeableChildCount = closeableChildCount + 1;
@@ -92,8 +92,8 @@ local function rebuildMenu()
 				button:SetJustifyH(menuStructure.align or "LEFT");
 				button:SetDisabledFontObject(GameFontNormal);
 				button:SetNormalFontObject(GameFontNormal);
-				button:SetPoint("LEFT", 0, y);
-				button:SetPoint("RIGHT", -15, y);
+				button:SetPoint("TOPLEFT", 5, y);
+				button:SetPoint("TOPRIGHT", -20, y);
 			end
 
 			button:Show();

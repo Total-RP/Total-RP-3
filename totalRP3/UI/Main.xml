@@ -99,108 +99,49 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_MainFrameTemplate" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" virtual="true" inherits="BackdropTemplate">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="BACKDROP_ACHIEVEMENTS_0_64" type="global"/>
-		</KeyValues>
-		<Size x="768" y="500"/>
-		<Layers>
-			<Layer level="ARTWORK">
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Left">
-					<Size x="16" y="0"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="14" y="0"/>
-						<Anchor point="BOTTOMLEFT" x="14" y="10"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="0" bottom=".87"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Left">
-					<Size x="16" y="0"/>
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-13" y="-10"/>
-						<Anchor point="BOTTOMRIGHT" x="-13" y="10"/>
-					</Anchors>
-					<TexCoords left="1" right="0" top=".87" bottom="0"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Top">
-					<Size x="450" y="16"/>
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="28" y="13"/>
-						<Anchor point="BOTTOMRIGHT" x="-28" y="13"/>
-					</Anchors>
-					<TexCoords left="0" right=".87" top="1.0" bottom="0"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Top">
-					<Size x="450" y="16"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="28" y="-12"/>
-						<Anchor point="TOPRIGHT" x="-28" y="-12"/>
-					</Anchors>
-					<TexCoords left=".87" right="0" top="0" bottom="1"/>
-				</Texture>
-			</Layer>
-			<Layer level="OVERLAY" textureSubLevel="2">
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
-					<Size x="32" y="32"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="9" y="-7"/>
-					</Anchors>
-					<TexCoords left="1" right="0" top="1" bottom="0"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
-					<Size x="32" y="32"/>
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-8" y="-7"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="1" bottom="0"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
-					<Size x="32" y="32"/>
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="9" y="8"/>
-					</Anchors>
-					<TexCoords left="1" right="0" top="0" bottom="1"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
-					<Size x="32" y="32"/>
-					<Anchors>
-						<Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="0" bottom="1"/>
-				</Texture>
-			</Layer>
-			<Layer level="OVERLAY" textureSubLevel="1">
-				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
-					<Size x="64" y="64"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="4" y="-2"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="0" bottom="1"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
-					<Size x="64" y="64"/>
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-4" y="-2"/>
-					</Anchors>
-					<TexCoords left="1" right="0" top="0" bottom="1"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
-					<Size x="64" y="64"/>
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="4" y="3"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="1" bottom="0"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
-					<Size x="64" y="64"/>
-					<Anchors>
-						<Anchor point="BOTTOMRIGHT" x="-4" y="3"/>
-					</Anchors>
-					<TexCoords left="1" right="0" top="1" bottom="0"/>
-				</Texture>
-			</Layer>
-		</Layers>
+	<Frame name="TRP3_MainFrameTemplate" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" virtual="true">
+		<Size x="840" y="600"/>
 		<Frames>
+			<Frame parentKey="Backdrop" inherits="TooltipBorderBackdropTemplate" setAllPoints="true">
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="LIGHTGRAY_FONT_COLOR" type="global"/>
+				</KeyValues>
+				<Layers>
+					<Layer level="BORDER" textureSubLevel="-3">
+						<Texture parentKey="LeftWoodBorder" atlas="!DarkWoodFrameTile-Left" vertTile="true">
+							<Size x="22"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="4" y="-4"/>
+								<Anchor point="BOTTOMLEFT" x="4" y="4"/>
+							</Anchors>
+						</Texture>
+						<Texture parentKey="RightWoodBorder" atlas="!DarkWoodFrameTile-Left" vertTile="true">
+							<Size x="22"/>
+							<Anchors>
+								<Anchor point="TOPRIGHT" x="-4" y="-4"/>
+								<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+							</Anchors>
+							<TexCoords left="1.0" right="0.0" top="0.0" bottom="1.0"/>
+						</Texture>
+					</Layer>
+					<Layer level="BORDER" textureSubLevel="-2">
+						<Texture parentKey="TopWoodBorder" atlas="_DarkWoodFrameTile-Top" horizTile="true">
+							<Size y="22"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="4" y="-4"/>
+								<Anchor point="TOPRIGHT" x="-4" y="-4"/>
+							</Anchors>
+						</Texture>
+						<Texture parentKey="BottomWoodBorder" atlas="_DarkWoodFrameTile-Bottom" horizTile="true">
+							<Size y="22"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" x="4" y="4"/>
+								<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
 			<!-- CLOSE MAIN FRAME -->
 			<Button parentKey="Close" inherits="TRP3_StyledButtonTemplate">
 				<Size x="24" y="24"/>
@@ -208,7 +149,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<KeyValue key="styleName" value="CloseButton" type="string"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="TOPRIGHT"/>
+					<Anchor point="TOPRIGHT" x="-1" y="-1"/>
 				</Anchors>
 			</Button>
 
@@ -238,12 +179,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Button parentKey="Resize" inherits="TRP3_StyledButtonTemplate">
 				<Size x="24" y="24"/>
 				<KeyValues>
-					<KeyValue key="minWidth" value="768" type="number"/>
-					<KeyValue key="minHeight" value="500" type="number"/>
+					<KeyValue key="minWidth" value="840" type="number"/>
+					<KeyValue key="minHeight" value="600" type="number"/>
 					<KeyValue key="styleName" value="ResizeButton" type="string"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT"/>
+					<Anchor point="BOTTOMRIGHT" x="-1" y="1"/>
 				</Anchors>
 			</Button>
 		</Frames>
@@ -257,23 +198,58 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Layer level="BACKGROUND">
 				<Texture parentKey="ContentBackground" horizTile="true" vertTile="true">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="16" y="-16"/>
-						<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
+						<Anchor point="TOPLEFT" x="4" y="-4"/>
+						<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
 					</Anchors>
 				</Texture>
 			</Layer>
-			<Layer level="ARTWORK">
-				<Texture file="Interface\AchievementFrame\UI-Achievement-Parchment">
+			<Layer level="BACKGROUND">
+				<Texture parentKey="SidebarBackground" atlas="UI-Frame-Neutral-BackgroundTile" horizTile="true" vertTile="true">
 					<Size x="195" y="0"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" x="20" y="-20"/>
-						<Anchor point="BOTTOMLEFT" x="20" y="20"/>
+						<Anchor point="TOPLEFT" x="20" y="-24"/>
+						<Anchor point="BOTTOMLEFT" x="20" y="24"/>
 					</Anchors>
-					<TexCoords left="0" right="0.5" top="0" bottom="1"/>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture atlas="!DarkWoodFrameTile-Left" vertTile="true">
+					<Size x="24"/>
+					<Anchors>
+						<Anchor point="TOP" y="-4"/>
+						<Anchor point="RIGHT" relativeKey="$parent.SidebarBackground" x="6"/>
+						<Anchor point="BOTTOM" y="4"/>
+					</Anchors>
 				</Texture>
 			</Layer>
 		</Layers>
 		<Frames>
+			<Frame parentKey="Test" inherits="TRP3_RegionResizeTemplate" clipChildren="true" useParentLevel="false">
+				<KeyValues>
+					<KeyValue key="resizeMode" value="TRP3_RegionResizeMode.Fill" type="global"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="215" y="-4"/>
+					<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture file="interface/addons/totalrp3/resources/ui/ui-frame-parchment-background-right">
+							<KeyValues>
+								<KeyValue key="sourceWidth" value="808" type="number"/>
+								<KeyValue key="sourceHeight" value="807" type="number"/>
+								<KeyValue key="extraWidth" value="10" type="number"/>
+								<KeyValue key="extraHeight" value="10" type="number"/>
+							</KeyValues>
+							<Anchors>
+								<Anchor point="TOPRIGHT" x="10" y="10"/>
+							</Anchors>
+							<TexCoords left="0" right="0.7890625000" top="0" bottom="0.7880859375"/>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
+
 			<!-- RIGHT PART : Place for content. Needs to be defined first as the menu scroll invokes OnSizeChanged. -->
 			<Frame name="TRP3_MainFramePageContainer">
 				<Anchors>

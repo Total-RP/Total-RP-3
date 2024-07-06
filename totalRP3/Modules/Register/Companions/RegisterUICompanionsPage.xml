@@ -9,18 +9,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<KeyValues>
 			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
 		</KeyValues>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-5" y="-2"/>
-						<Anchor point="BOTTOMRIGHT" x="-5" y="-2"/>
-						<Anchor point="LEFT" x="5"/>
-					</Anchors>
-					<TexCoords left="0.07" right="1" top="0" bottom="0.975"/>
-				</Texture>
-			</Layer>
-		</Layers>
 		<Frames>
 			<Frame name="$parentConsult" setAllPoints="true">
 				<Frames>
