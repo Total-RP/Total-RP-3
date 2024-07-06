@@ -186,6 +186,8 @@ local function onStart()
 		msp.my['RI'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RI] or 0);
 		msp.my['RD'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RD] or 0);
 		msp.my['RR'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RR] or 0);
+		msp.my['RM'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RM] or 0);
+		msp.my['RO'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RO] or 0);
 	end
 
 	local function onProfileChanged()
