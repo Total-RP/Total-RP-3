@@ -447,7 +447,7 @@ local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 	TRP3_AtFirstGlanceEditorName:HighlightText();
 
 	TRP3_AtFirstGlanceEditorIcon.isExternal = external;
-	setTooltipForSameFrame(TRP3_AtFirstGlanceEditorIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.UI_ICON_OPTIONS);
+	setTooltipForSameFrame(TRP3_AtFirstGlanceEditorIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	TRP3_AtFirstGlanceEditorIcon:SetScript("onMouseDown", function(self, button)
 		if button == "LeftButton" then
 			TRP3_API.popup.hideIconBrowser();

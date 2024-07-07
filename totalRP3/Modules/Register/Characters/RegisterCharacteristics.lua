@@ -1126,7 +1126,7 @@ function setEditDisplay()
 			-- icon as our handle, and make it control this frame.
 			setTooltipForSameFrame(frame.DragButton, "LEFT", 0, 10, loc.REG_PLAYER_REORDER, loc.REG_PLAYER_REORDER_TT);
 			setInfoReorderable(frame.DragButton, frame, "misc", TRP3_RegisterCharact_Edit_CharactPanel_Container.MiscTitle, TRP3_RegisterCharact_Edit_MiscAdd);
-			setTooltipForSameFrame(frame.Icon, "LEFT", 0, 10, "Icon Options", loc.UI_ICON_OPTIONS);
+			setTooltipForSameFrame(frame.Icon, "LEFT", 0, 10, "Icon Options", "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 
 			tinsert(miscEditCharFrame, frame);
 		end
@@ -1196,8 +1196,8 @@ function setEditDisplay()
 			frame.Slider:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 			frame.Slider:SetScript("OnValueChanged", onPsychoValueChanged);
 
-			setTooltipForSameFrame(frame.CustomLeftIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_LEFTICON_TT .. "\n\n" .. loc.UI_ICON_OPTIONS);
-			setTooltipForSameFrame(frame.CustomRightIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_RIGHTICON_TT.. "\n\n" .. loc.UI_ICON_OPTIONS);
+			setTooltipForSameFrame(frame.CustomLeftIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_LEFTICON_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+			setTooltipForSameFrame(frame.CustomRightIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_RIGHTICON_TT.. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 			setTooltipForSameFrame(frame.DeleteButton, "TOP", 0, 5, loc.CM_REMOVE);
 			setTooltipForSameFrame(frame.CustomLeftColor, "TOP", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT);
 			setTooltipForSameFrame(frame.CustomRightColor, "TOP", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT);
@@ -1609,7 +1609,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	setupDropDownMenu(TRP3_RegisterCharact_Edit_PsychoAdd, PSYCHO_PRESETS_DROPDOWN, psychoAdd, 0, true, false);
 
 	-- Localz
-	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "RIGHT", 0, 5, loc.REG_PLAYER_ICON, loc.REG_PLAYER_ICON_TT .. "\n\n" .. loc.UI_ICON_OPTIONS);
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "RIGHT", 0, 5, loc.REG_PLAYER_ICON, loc.REG_PLAYER_ICON_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_TitleFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_TITLE, loc.REG_PLAYER_TITLE_TT);
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_FirstFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_FIRSTNAME, loc.REG_PLAYER_FIRSTNAME_TT:format(Globals.player));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_LastFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_LASTNAME, loc.REG_PLAYER_LASTNAME_TT);
