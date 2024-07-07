@@ -114,6 +114,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								<Anchor point="TOPLEFT" x="4" y="-4"/>
 								<Anchor point="BOTTOMLEFT" x="4" y="4"/>
 							</Anchors>
+							<Color r="1" g="0.8" b="0.8"/>
 						</Texture>
 						<Texture parentKey="RightWoodBorder" atlas="!DarkWoodFrameTile-Left" vertTile="true">
 							<Size x="22"/>
@@ -122,6 +123,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
 							</Anchors>
 							<TexCoords left="1.0" right="0.0" top="0.0" bottom="1.0"/>
+							<Color r="1" g="0.8" b="0.8"/>
+						</Texture>
+						<Texture parentKey="SidebarWoodBorder" atlas="!DarkWoodFrameTile-Left" vertTile="true">
+							<Size x="24"/>
+							<Anchors>
+								<Anchor point="TOP" y="-4"/>
+								<Anchor point="RIGHT" relativePoint="LEFT" x="222"/>
+								<Anchor point="BOTTOM" y="4"/>
+							</Anchors>
+							<Color r="1" g="0.8" b="0.8"/>
 						</Texture>
 					</Layer>
 					<Layer level="BORDER" textureSubLevel="-2">
@@ -131,6 +142,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								<Anchor point="TOPLEFT" x="4" y="-4"/>
 								<Anchor point="TOPRIGHT" x="-4" y="-4"/>
 							</Anchors>
+							<Color r="1" g="0.8" b="0.8"/>
 						</Texture>
 						<Texture parentKey="BottomWoodBorder" atlas="_DarkWoodFrameTile-Bottom" horizTile="true">
 							<Size y="22"/>
@@ -138,6 +150,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								<Anchor point="BOTTOMLEFT" x="4" y="4"/>
 								<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
 							</Anchors>
+							<Color r="1" g="0.8" b="0.8"/>
 						</Texture>
 					</Layer>
 				</Layers>
@@ -200,16 +213,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="4" y="-4"/>
 						<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer level="OVERLAY">
-				<Texture atlas="!DarkWoodFrameTile-Left" vertTile="true">
-					<Size x="24"/>
-					<Anchors>
-						<Anchor point="TOP" y="-4"/>
-						<Anchor point="RIGHT" relativePoint="LEFT" x="220"/>
-						<Anchor point="BOTTOM" y="4"/>
 					</Anchors>
 				</Texture>
 			</Layer>
