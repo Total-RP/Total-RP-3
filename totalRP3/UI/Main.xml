@@ -247,6 +247,15 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Color r="0.6" g="0.6" b="0.6"/>
 						</Texture>
 					</Layer>
+					<Layer level="ARTWORK">
+						<Texture parentKey="SidebarLogo" file="Interface\AddOns\totalRP3\Resources\UI\ui-sidebar-logo" alpha="0.5">
+							<Size x="112" y="112"/>
+							<Anchors>
+								<Anchor point="BOTTOM" y="30"/>
+							</Anchors>
+							<Color r="0.5" g="0.4" b="0.3"/>
+						</Texture>
+					</Layer>
 				</Layers>
 				<ScrollChild>
 					<Frame name="TRP3_MainFrameMenuContainer">
