@@ -603,7 +603,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 						-- If pet data is unread, add alert.
 						if profile.data and not profile.data.read then
-							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.utils.str.texture("Interface\\GossipFrame\\AvailableQuestIcon", 15) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "|r";
+							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateAtlasMarkup("QuestNormal", { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "|r";
 							buttonStructure.alert = true;
 						end
 					end
@@ -655,11 +655,11 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					if unitID == Globals.player_id then
 						buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TF_OPEN_MOUNT) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TF_MORE_OPTIONS);
 					else
-						buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT);
+						buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_ API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT);
 
 						-- If mount data is unread, add alert.
 						if profile.data and not profile.data.read then
-							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.utils.str.texture("Interface\\GossipFrame\\AvailableQuestIcon", 15) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT) .. "|r";
+							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateAtlasMarkup("QuestNormal", { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT) .. "|r";
 							buttonStructure.alert = true;
 						end
 					end
