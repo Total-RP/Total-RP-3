@@ -27,6 +27,9 @@ getDefaultProfile().player.misc = {
 
 local STYLE_FIELDS;
 local function buildStyleStructure()
+	-- Note: If changing anything here, make corresponding changes to
+	-- the RP_STYLE_FIELDS table in RegisterMSP. Additionally, any values
+	-- assigned to options are fed through MSP as-is - so don't change them.
 	STYLE_FIELDS = {
 		{
 			id = "2",
