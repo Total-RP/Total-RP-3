@@ -112,7 +112,6 @@ local function openCompanionPage(profileID)
 			onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PAGE, {profile = profile, profileID = profileID, isPlayer = false}) end,
 			isChildOf = REGISTER_PAGE,
 			closeable = true,
-			icon = [[interface\icons\]] .. TRP3_InterfaceIcons.CompanionMenuItem,
 		});
 		selectMenu(currentlyOpenedProfilePrefix .. profileID);
 	end
@@ -306,7 +305,7 @@ local function decorateCharacterLine(line, characterIndex)
 	end
 	if hasNewAbout then
 		table.insert(flags, NEW_ABOUT_ICON);
-		table.insert(rightTooltipTexts, NEW_ABOUT_ICON .. " " .. loc.REG_LIST_CHAR_TT_NEW_ABOUT);
+		table.insert(rightTooltipTexts, NEW_ABOUT_ICON .. " " .. loc.REG_TT_NOTIF);
 	end
 	if profile.hasMatureContent then
 		table.insert(flags, MATURE_CONTENT_ICON);
@@ -594,7 +593,7 @@ local function decorateCompanionLine(line, index)
 	end
 	if hasNewAbout then
 		table.insert(flags, NEW_ABOUT_ICON);
-		table.insert(rightTooltipText, NEW_ABOUT_ICON .. " " .. loc.REG_LIST_CHAR_TT_NEW_ABOUT);
+		table.insert(rightTooltipText, NEW_ABOUT_ICON .. " " .. loc.REG_TT_NOTIF);
 	end
 	if #rightTooltipText > 0 then
 		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, table.concat(rightTooltipText, "\n"));
@@ -1050,19 +1049,29 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				openPageByUnitID(unitID);
 			end,
 			adapter = function(buttonStructure, unitID)
+				-- Initialize the buttonStructure parts.
+				buttonStructure.alert = false;
+				buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenCharacter;
 				buttonStructure.tooltip = loc.REG_PLAYER;
-				buttonStructure.tooltipSub =  "|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.TF_OPEN_CHARACTER;
-				buttonStructure.alert = nil;
-				if unitID ~= Globals.player_id and hasProfile(unitID) then
-					local profile = getUnitIDProfile(unitID);
-					if profile.about and not profile.about.read then
-						buttonStructure.tooltipSub =  "|cff00ff00" .. loc.REG_TT_NOTIF .. "\n" .. buttonStructure.tooltipSub;
-						buttonStructure.alert = true;
-					end
+				buttonStructure.tooltipSub = nil;
+
+				-- Retrieve the character's profile.
+				local profile;
+				if unitID == Globals.player_id then
+					profile = TRP3_API.profile.getData("player");
+				else
+					profile = getUnitIDProfile(unitID);
+				end
+
+				local name = getCompleteName(profile.characteristics or {}, nil, true);
+				buttonStructure.tooltipSub = name .. "\n\n" ..  TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER);
+
+				if unitID ~= Globals.player_id and profile.about and not profile.about.read then
+					buttonStructure.tooltipSub = buttonStructure.tooltipSub .. "\n\n" ..  TRP3_API.utils.str.texture("Interface\\GossipFrame\\AvailableQuestIcon", 15) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r";
+					buttonStructure.alert = true;
 				end
 			end,
 			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
-			icon = TRP3_InterfaceIcons.TargetOpenCharacter,
 		});
 	end
 end);

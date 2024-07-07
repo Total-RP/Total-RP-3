@@ -779,7 +779,6 @@ Você pode opcionalmente inserir o motivo abaixo. Essa é uma nota pessoal, que 
 Local visto pela última vez: |cff00ff00%s|r]=],
 	["REG_LIST_CHAR_TT_GLANCE"] = "À primeira vista",
 	["REG_LIST_CHAR_TT_IGNORE"] = "Personagens ignorados",
-	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "Descrição não lida",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Relação:
 |cff00ff00%s]=],
 	["REG_LIST_FILTERS"] = "Filtros",
@@ -1164,7 +1163,6 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 
 |cffff7700Você pode inserir abaixo o motivo. Isso é uma nota pessoal, não será visível aos outros e servirá como lembrete.]=],
 	["TF_IGNORE_NO_REASON"] = "Sem motivo",
-	["TF_IGNORE_TT"] = "|cffffff00Clique:|r Ignorar jogador",
 	["TF_OPEN_CHARACTER"] = "Mostrar página do personagem",
 	["TF_OPEN_COMPANION"] = "Mostrar página do companheiro",
 	["TF_OPEN_MOUNT"] = "Exibir página de montarias",

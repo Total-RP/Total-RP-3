@@ -310,7 +310,6 @@ Max: 20 kB]=],
 	["REG_LIST_CHAR_TITLE"] = "Lista personaggio",
 	["REG_LIST_CHAR_TT"] = "Clicca per vedere la pagina",
 	["REG_LIST_CHAR_TT_IGNORE"] = "Personaggi ignorati",
-	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "Descrizione non letta",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Relazione:
 |cff00ff00%s]=],
 	["REG_LIST_FILTERS"] = "Filtri",

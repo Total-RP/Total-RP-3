@@ -682,7 +682,6 @@ Optional kann hier ein Grund angegeben werden. Es handelt sich um eine persönli
 Wo zuletzt gesehen: |cff00ff00%s|r]=],
 	["REG_LIST_CHAR_TT_GLANCE"] = "Auf den ersten Blick",
 	["REG_LIST_CHAR_TT_IGNORE"] = "Ignorierte Charakter/e",
-	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "Ungelesene Beschreibung",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Beziehung:
 |cff00ff00%s]=],
 	["REG_LIST_FILTERS"] = "Filter",
@@ -1061,7 +1060,6 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 
 |cffff7700Du kannst optional angeben, warum die diesen Spieler ignorierst. Dies ist eine persönliche Notiz und kann nicht von anderen Spielern eingesehen werden.]=],
 	["TF_IGNORE_NO_REASON"] = "Kein Grund",
-	["TF_IGNORE_TT"] = "|cffffff00Klicken:|r Spieler ignorieren",
 	["TF_OPEN_CHARACTER"] = "Charakterseite anzeigen",
 	["TF_OPEN_COMPANION"] = "Begleiterseite anzeigen",
 	["TF_OPEN_MOUNT"] = "Reittierseite anzeigen",

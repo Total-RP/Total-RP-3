@@ -431,7 +431,6 @@ L = {
 	["REG_LIST_CHAR_TITLE"] = "角色列表",
 	["REG_LIST_CHAR_TT_GLANCE"] = "第一印象",
 	["REG_LIST_CHAR_TT_IGNORE"] = "已忽略的角色",
-	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "資訊未讀",
 	["REG_LIST_GUILD"] = "角色公會",
 	["REG_LIST_IGNORE_EMPTY"] = "無已忽略的角色",
 	["REG_LIST_IGNORE_TITLE"] = "忽略名單",
@@ -728,7 +727,6 @@ L = {
 
 |cffff7700你可以選擇輸入自己忽略對方的原因，這是私人記錄，不會被其他玩家看到。]=],
 	["TF_IGNORE_NO_REASON"] = "沒有原因",
-	["TF_IGNORE_TT"] = "|cffffff00Click:|r 忽略玩家",
 	["TF_OPEN_CHARACTER"] = "顯示角色頁面",
 	["TF_OPEN_COMPANION"] = "顯示夥伴頁面",
 	["TF_OPEN_MOUNT"] = "顯示坐騎頁面",

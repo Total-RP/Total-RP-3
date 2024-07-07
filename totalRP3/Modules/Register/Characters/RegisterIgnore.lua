@@ -210,7 +210,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			onClick = function(unitID)
 				ignoreIDConfirm(unitID);
 			end,
-			tooltipSub = loc.TF_IGNORE_TT,
+			tooltipSub = loc.TF_IGNORE_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_IGNORE),
 			tooltip = loc.TF_IGNORE,
 			icon = TRP3_InterfaceIcons.TargetIgnoreCharacter,
 		});

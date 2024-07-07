@@ -791,7 +791,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 上一次看到的位置: |cff00ff00%s|r]=],
 	["REG_LIST_CHAR_TT_GLANCE"] = "第一印象",
 	["REG_LIST_CHAR_TT_IGNORE"] = "忽略的角色(s)",
-	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "未读的描述",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[关系:
 |cff00ff00%s]=],
 	["REG_LIST_FILTERS"] = "过滤",
@@ -1204,7 +1203,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["TF_IGNORE"] = "忽略玩家",
 	["TF_IGNORE_CONFIRM"] = "你确定要忽略这个ID ?\\n\\n|cffffff00%s|r\\n\\n|cffff7700你可以进步一写下忽略原因，这是一个私人的笔记，它不会被别人看到，只是会作为一个提醒。",
 	["TF_IGNORE_NO_REASON"] = "没有理由",
-	["TF_IGNORE_TT"] = "|cffffff00Click:|r 忽略角色",
 	["TF_OPEN_CHARACTER"] = "显示角色页面",
 	["TF_OPEN_COMPANION"] = "显示同伴页面",
 	["TF_OPEN_MOUNT"] = "显示坐骑页面",
