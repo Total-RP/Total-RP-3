@@ -15,7 +15,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Texture name="$parentAlert">
 					<Size x="15" y="15" />
 					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="0" y="0" />
+						<Anchor point="BOTTOMLEFT" x="0" y="4" />
 					</Anchors>
 				</Texture>
 			</Layer>

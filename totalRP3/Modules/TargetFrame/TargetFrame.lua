@@ -60,7 +60,7 @@ local function onStart()
 	end
 
 	local function displayButtonsPanel()
-		local buttonSize = getConfigValue(CONFIG_TARGET_ICON_SIZE);
+		local buttonSize = getConfigValue(CONFIG_TARGET_ICON_SIZE) + 8; -- Adding 8 to offset the borders making the icon look smaller
 
 		--Hide all
 		for _,uiButton in pairs(uiButtons) do
@@ -125,17 +125,17 @@ local function onStart()
 			uiAlert:Hide();
 			if buttonStructure.alert and buttonStructure.alertIcon then
 				uiAlert:Show();
-				uiAlert:SetWidth(buttonSize / 1.7);
-				uiAlert:SetHeight(buttonSize / 1.7);
+				uiAlert:SetWidth(buttonSize / 2);
+				uiAlert:SetHeight(buttonSize / 2);
 				uiAlert:SetTexture(buttonStructure.alertIcon);
 			end
 
 			index = index + 1;
-			x = x + buttonSize + 2;
+			x = x + buttonSize - 2;
 		end
 
 		local oldWidth = ui_TargetFrame:GetWidth();
-		ui_TargetFrame:SetWidth(math.max(30 + index * buttonSize, 200));
+		ui_TargetFrame:SetWidth(math.max(22 + index * (buttonSize - 2), 200));
 		-- Updating anchors so the toolbar expands from the center
 		local anchor, _, _, tfX, tfY = ui_TargetFrame:GetPoint(1);
 		if anchor == "LEFT" then
