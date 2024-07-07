@@ -603,7 +603,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 						-- If pet data is unread, add alert.
 						if profile.data and not profile.data.read then
-							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "|r\n\n" ..  TRP3_API.utils.str.texture("Interface\\GossipFrame\\AvailableQuestIcon", 15) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r";
+							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.utils.str.texture("Interface\\GossipFrame\\AvailableQuestIcon", 15) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "|r";
 							buttonStructure.alert = true;
 						end
 					end
@@ -659,7 +659,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 						-- If mount data is unread, add alert.
 						if profile.data and not profile.data.read then
-							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT) .. "|r\n\n" ..  TRP3_API.utils.str.texture("Interface\\GossipFrame\\AvailableQuestIcon", 15) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r";
+							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.utils.str.texture("Interface\\GossipFrame\\AvailableQuestIcon", 15) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT) .. "|r";
 							buttonStructure.alert = true;
 						end
 					end
