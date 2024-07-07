@@ -6,6 +6,12 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Backdrop.lua"/>
 
+	<Frame name="TRP3_OverlayBackdropTemplate" inherits="BackdropTemplate" virtual="true">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_OVERLAY" type="global"/>
+		</KeyValues>
+	</Frame>
+
 	<Frame name="TRP3_TooltipBackdropTemplate" inherits="BackdropTemplate" virtual="true">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_TOOLTIP" type="global"/>

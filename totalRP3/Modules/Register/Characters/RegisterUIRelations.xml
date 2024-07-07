@@ -6,11 +6,16 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 
-	<Frame name="TRP3_ConfigurationRelationsFrame" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
-		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-		</KeyValues>
-		<Size x="0" y="60"/>
+	<Frame name="TRP3_ConfigurationRelationsFrame" virtual="true">
+		<Size y="60"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background" inherits="TRP3_UIFrameMediumFillTextureTemplate"/>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture parentKey="Border" inherits="TRP3_UIFrameMediumEdgeTextureTemplate"/>
+			</Layer>
+		</Layers>
 		<Frames>
 			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
 				<Size x="48" y="48"/>
@@ -20,90 +25,77 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Frame>
 			<Button parentKey="Actions" inherits="TRP3_ActionButton">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-4" y="-4"/>
+					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
 				</Anchors>
 			</Button>
 		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Title" text="[title]" inherits="GameFontHighlight" justifyH="LEFT">
+				<FontString parentKey="Title" inherits="GameFontHighlight" justifyH="LEFT">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" relativePoint="RIGHT" relativeKey="$parent.Icon" x="5" y="3"/>
 					</Anchors>
 				</FontString>
-				<FontString parentKey="Text" text="[text]" inherits="GameFontNormalSmall" justifyH="LEFT">
+				<FontString parentKey="Text" inherits="GameFontNormalSmall" justifyH="LEFT">
 					<Size x="300" y="10"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Title" x="5" y="-5"/>
+						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Title" y="-5"/>
 					</Anchors>
-					<Color r="0.95" g="0.75" b="0.1"/>
 				</FontString>
 			</Layer>
 		</Layers>
 	</Frame>
 
-	<Frame name="TRP3_RelationsList" hidden="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
-		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_RelationsList" hidden="true">
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Title" inherits="GameFontHighlightHuge" justifyH="LEFT" justifyV="TOP">
+				<FontString parentKey="Title" inherits="GameFontHighlightHuge" justifyH="LEFT">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="16" y="-20"/>
-						<Anchor point="RIGHT" x="-16"/>
+						<Anchor point="RIGHT" x="-216"/>
 					</Anchors>
 				</FontString>
+				<Texture parentKey="Divider" atlas="Options_HorizontalDivider" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Title" relativePoint="BOTTOMLEFT" y="-16"/>
+						<Anchor point="RIGHT" x="-16"/>
+					</Anchors>
+					<Color r="1" g="0.675" b="0.125"/>
+				</Texture>
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame parentKey="Inner" inherits="TRP3_InnerFrame">
+			<Frame parentKey="Background" inherits="TRP3_PageBackgroundSettings" setAllPoints="true"/>
+			<ScrollFrame parentKey="ScrollFrame" inherits="ScrollFrameTemplate">
+				<KeyValues>
+					<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
+					<KeyValue key="scrollBarX" value="-8" type="number"/>
+					<KeyValue key="scrollBarTopY" value="-8" type="number"/>
+					<KeyValue key="scrollBarBottomY" value="8" type="number"/>
+					<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
+				</KeyValues>
 				<Anchors>
-					<Anchor point="TOP" relativeKey="$parent.Title" relativePoint="BOTTOM" x="0" y="-20"/>
-					<Anchor point="BOTTOM" x="0" y="20"/>
-					<Anchor point="LEFT" x="20" y="0"/>
-					<Anchor point="RIGHT" x="-20" y="0"/>
+					<Anchor point="TOPLEFT" relativeKey="$parent.Divider" relativePoint="BOTTOMLEFT" y="-1"/>
+					<Anchor point="BOTTOMRIGHT" x="-16" y="4"/>
 				</Anchors>
-				<Frames>
-					<Button parentKey="CreateNew" inherits="TRP3_CommonButton">
-						<Size x="200" y="20"/>
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-10"/>
-						</Anchors>
-						<Scripts>
-							<OnClick>
-								TRP3_API.register.relation.showEditor();
-							</OnClick>
-						</Scripts>
-					</Button>
-					<ScrollFrame parentKey="Scroll" inherits="ScrollFrameTemplate">
-						<KeyValues>
-							<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
-							<KeyValue key="scrollBarX" value="0" type="number"/>
-							<KeyValue key="scrollBarTopY" value="-4" type="number"/>
-							<KeyValue key="scrollBarBottomY" value="4" type="number"/>
-							<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
-						</KeyValues>
-						<Anchors>
-							<Anchor point="TOP" relativeKey="$parent.CreateNew" relativePoint="BOTTOM" x="0" y="-5"/>
-							<Anchor point="BOTTOM" x="0" y="3"/>
-							<Anchor point="LEFT" x="17" y="0"/>
-							<Anchor point="RIGHT" x="-13" y="0"/>
-						</Anchors>
-						<ScrollChild>
-							<Frame parentKey="Container">
-								<Size x="700" y="50"/>
-							</Frame>
-						</ScrollChild>
-					</ScrollFrame>
-				</Frames>
-			</Frame>
-			<Frame parentKey="Editor" frameStrata="HIGH" enableMouse="true" hidden="true" inherits="TRP3_TooltipBackdropTemplate">
+				<ScrollChild>
+					<Frame parentKey="Content">
+						<Size x="1" y="1"/>
+					</Frame>
+				</ScrollChild>
+			</ScrollFrame>
+			<Button parentKey="CreateNew" inherits="TRP3_CommonButton">
+				<Size x="200" y="22"/>
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
-					<Anchor point="BOTTOMRIGHT" x="-20" y="17"/>
-					<Anchor point="LEFT" x="215" y="0"/>
+					<Anchor point="LEFT" relativeKey="$parent.Title" relativePoint="RIGHT"/>
 				</Anchors>
+				<Scripts>
+					<OnClick>
+						TRP3_API.register.relation.showEditor();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Frame parentKey="Editor" frameStrata="HIGH" enableMouse="true" hidden="true" inherits="TRP3_OverlayBackdropTemplate">
 				<Frames>
 					<Frame parentKey="Content" inherits="TRP3_BrowserDialogBackdropTemplate">
 						<Size x="400" y="150"/>
@@ -112,7 +104,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 						<Layers>
 							<Layer level="OVERLAY">
-								<FontString parentKey="Title" text="[placeholder]" inherits="GameFontHighlightLarge">
+								<FontString parentKey="Title" inherits="GameFontHighlightLarge">
 									<Size x="0" y="10"/>
 									<Anchors>
 										<Anchor point="TOPLEFT" x="0" y="-17"/>
