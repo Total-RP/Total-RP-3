@@ -117,28 +117,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 				<Frames>
-					<Frame parentKey="Background" inherits="TRP3_RegionResizeTemplate" clipChildren="true" useParentLevel="true">
-						<KeyValues>
-							<KeyValue key="resizeMode" value="TRP3_RegionResizeMode.Fill" type="global"/>
-						</KeyValues>
-						<Anchors>
-							<Anchor point="TOPLEFT"/>
-							<Anchor point="BOTTOMRIGHT"/>
-						</Anchors>
-						<Layers>
-							<Layer level="BACKGROUND">
-								<Texture atlas="islands-queue-background">
-									<KeyValues>
-										<KeyValue key="extraWidth" value="50" type="number"/>
-										<KeyValue key="extraHeight" value="50" type="number"/>
-									</KeyValues>
-									<Anchors>
-										<Anchor point="TOPLEFT" x="-50" y="50"/>
-									</Anchors>
-								</Texture>
-							</Layer>
-						</Layers>
-					</Frame>
+					<Frame parentKey="Background" inherits="TRP3_PageBackgroundProfiles" setAllPoints="true"/>
 					<Frame name="$parentList" inherits="TRP3_InnerFrame">
 						<Size x="0" y="350"/>
 						<Anchors>

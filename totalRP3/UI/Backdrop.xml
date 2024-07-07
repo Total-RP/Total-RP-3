@@ -41,4 +41,63 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_COLLECTIONS_TOOLTIP" type="global"/>
 		</KeyValues>
 	</Frame>
+
+	<Frame name="TRP3_PageBackgroundParchment" inherits="TRP3_RegionResizeTemplate" clipChildren="true" useParentLevel="true" virtual="true">
+		<KeyValues>
+			<KeyValue key="resizeMode" value="TRP3_RegionResizeMode.Fill" type="global"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-parchment-background">
+					<KeyValues>
+						<KeyValue key="sourceWidth" value="802" type="number"/>
+						<KeyValue key="sourceHeight" value="806" type="number"/>
+						<KeyValue key="extraWidth" value="20" type="number"/>
+						<KeyValue key="extraHeight" value="20" type="number"/>
+					</KeyValues>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+					<TexCoords right="0.7832031250" bottom="0.787109375"/>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Frame name="TRP3_PageBackgroundSettings" inherits="TRP3_RegionResizeTemplate" clipChildren="true" useParentLevel="true" virtual="true">
+		<KeyValues>
+			<KeyValue key="resizeMode" value="TRP3_RegionResizeMode.Fill" type="global"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<!-- TODO: Convert to a file asset for Classic. -->
+				<Texture atlas="Professions-Recipe-Background-Engineering">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+					<Color r="0.8" g="0.8" b="0.8"/>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Frame name="TRP3_PageBackgroundProfiles" inherits="TRP3_RegionResizeTemplate" clipChildren="true" useParentLevel="true" virtual="true">
+		<KeyValues>
+			<KeyValue key="resizeMode" value="TRP3_RegionResizeMode.Fill" type="global"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<!-- TODO: Convert to a file asset for Classic. -->
+				<Texture atlas="islands-queue-background">
+					<KeyValues>
+						<KeyValue key="extraWidth" value="50" type="number"/>
+						<KeyValue key="extraHeight" value="50" type="number"/>
+					</KeyValues>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="-50" y="50"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
 </Ui>
