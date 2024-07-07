@@ -6,7 +6,7 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_TooltipRequestSpinnerTemplate" hidden="true" virtual="true">
-		<Size x="24" y="24"/>
+		<Size x="22" y="22"/>
 		<Layers>
 			<Layer level="OVERLAY">
 				<Texture parentKey="Icon" file="Interface\AddOns\totalRP3\Resources\UI\ui-refresh" texelSnappingBias="0.0" snapToPixelGrid="false">
