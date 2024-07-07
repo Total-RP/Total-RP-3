@@ -30,15 +30,13 @@ end
 function TRP3_CategoryButtonArtMixin:OnMouseUp()
 	self:SetVisualState(GetEffectiveButtonState(self, "NORMAL"));
 end
+
 function TRP3_CategoryButtonArtMixin:SetVisualState(state)
 	if state == "NORMAL" then
-		self.EdgeLeft:SetTexCoord(0.25, 0.5, 0, 0.125);
-		self.EdgeRight:SetTexCoord(0.5, 0.75, 0, 0.125);
+		self.EdgeLeft:SetTexCoord(0.5, 0.75, 0, 0.125);
+		self.EdgeRight:SetTexCoord(0.75, 1, 0, 0.125);
 		self.Center:SetTexCoord(0, 1, 0.375, 0.5);
 	elseif state == "PUSHED" then
-		-- self.EdgeLeft:SetTexCoord(0.5, 0.75, 0.25, 0.375);
-		-- self.EdgeRight:SetTexCoord(0.75, 1, 0.25, 0.375);
-		-- self.Center:SetTexCoord(0, 1, 0.625, 0.75);
 		self.EdgeLeft:SetTexCoord(0, 0.25, 0.25, 0.375);
 		self.EdgeRight:SetTexCoord(0.25, 0.5, 0.25, 0.375);
 		self.Center:SetTexCoord(0, 1, 0.5, 0.625);
