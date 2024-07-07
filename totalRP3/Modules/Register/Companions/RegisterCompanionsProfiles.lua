@@ -429,7 +429,7 @@ local function companionProfileSelectionList(unitID, targetType, buttonClick, bu
 			if next(profileList) ~= nil then
 				tinsert(list, {loc.REG_COMPANION_TF_BOUND_TO, profileList});
 			end
-	
+
 			displayDropDown(button, list, function(value) onCompanionProfileSelection(value, companionID, targetType) end, 0, true);
 		end
 	else
@@ -655,7 +655,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					if unitID == Globals.player_id then
 						buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TF_OPEN_MOUNT) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TF_MORE_OPTIONS);
 					else
-						buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_ API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT);
+						buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT);
 
 						-- If mount data is unread, add alert.
 						if profile.data and not profile.data.read then
