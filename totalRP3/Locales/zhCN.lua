@@ -1125,7 +1125,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_RELATION_NEUTRAL_TT"] = "%s 对 %s没有什么特别的感觉。",
 	["REG_RELATION_NONE"] = "无",
 	["REG_RELATION_NONE_TT"] = "%s 不认识 %s.",
-	["REG_RELATION_TARGET"] = "改变关系",
+	["REG_RELATION_TARGET"] = "|cffffff00Click:|r 改变关系",
 	["REG_RELATION_UNFRIENDLY"] = "不友善",
 	["REG_RELATION_UNFRIENDLY_TT"] = "%s 明显不喜欢 %s。",
 	["REG_REPORT_PLAYER_OPEN_URL"] = [=[你只能在能将其选定为目标的情况下直接举报一个玩家（使用TRP3框架的举报按钮）。

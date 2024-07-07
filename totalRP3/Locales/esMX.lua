@@ -629,7 +629,7 @@ Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplement
 	["REG_RELATION_NEUTRAL_TT"] = "%s conoce a %s.",
 	["REG_RELATION_NONE"] = "Ninguna",
 	["REG_RELATION_NONE_TT"] = "%s no conoce a %s.",
-	["REG_RELATION_TARGET"] = "Cambiar relación",
+	["REG_RELATION_TARGET"] = "|cffffff00Clic:|r Cambiar relación",
 	["REG_RELATION_UNFRIENDLY"] = "Enemigo",
 	["REG_RELATION_UNFRIENDLY_TT"] = "%s está enemistado con %s.",
 	["REG_TT_GUILD"] = "%s de %s",

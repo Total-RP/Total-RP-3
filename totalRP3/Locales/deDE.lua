@@ -1007,7 +1007,7 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 	["REG_RELATION_NEUTRAL_TT"] = "%s hat keine spezielle Beziehung zu %s.",
 	["REG_RELATION_NONE"] = "Keine",
 	["REG_RELATION_NONE_TT"] = "%s kennt %s nicht.",
-	["REG_RELATION_TARGET"] = "Beziehung ändern",
+	["REG_RELATION_TARGET"] = "|cffffff00Klick:|r Beziehung ändern",
 	["REG_RELATION_UNFRIENDLY"] = "Unfreundlich",
 	["REG_RELATION_UNFRIENDLY_TT"] = "%s mag %s offensichtlich nicht.",
 	["REG_REPORT_PLAYER_OPEN_URL"] = "Du kannst Spieler nur direkt im Spiel melden, wenn du sie anvisieren kannst (benutze dafür den Button im TRP3 Ankerfenster) Wenn du %s's Profil melden möchtest, aber nicht anvisieren kannst, musst du ein normales Kundendienstticket bei Blizzard über den folgenden Link öffnen.",

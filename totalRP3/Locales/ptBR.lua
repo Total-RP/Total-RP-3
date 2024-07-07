@@ -1109,7 +1109,7 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["REG_RELATION_NEUTRAL_TT"] = "%s não sente nada em particular em relação a %s.",
 	["REG_RELATION_NONE"] = "Nenhuma",
 	["REG_RELATION_NONE_TT"] = "%s não conhece %s.",
-	["REG_RELATION_TARGET"] = "Mudar relação",
+	["REG_RELATION_TARGET"] = "|cffffff00Clique:|r Mudar relação",
 	["REG_RELATION_UNFRIENDLY"] = "Antipático",
 	["REG_RELATION_UNFRIENDLY_TT"] = "%s claramente não gosta de %s.",
 	["REG_REPORT_PLAYER_OPEN_URL"] = "Você somente pode reportar jogadores diretamente de dentro do jogo se os puder Marcar (usando o botão de frame alvo do TRP3). Se desejar reportar o perfil do %s e você não puder os marcar, terá de abrir um ticket com o apoio da Blizzard, utilizando o link abaixo.",
