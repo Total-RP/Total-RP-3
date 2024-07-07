@@ -257,7 +257,7 @@ local function SanitizeRoleplayExperience(experience)
 end
 
 --- Raises error if unknown unitName
-function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, msp, extended, trialAccount, extendedVersion, roleplayExperience)
+function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, msp, extended, trialAccount, extendedVersion, roleplayExperience, classID)
 	local character = getUnitIDCharacter(unitID);
 	character.client = Utils.str.sanitize(client);
 	character.clientVersion = Utils.str.sanitizeVersion(clientVersion);
@@ -266,6 +266,7 @@ function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, 
 	character.isTrial = trialAccount;
 	character.extendedVersion = Utils.str.sanitizeVersion(extendedVersion);
 	character.roleplayExperience = SanitizeRoleplayExperience(roleplayExperience);
+	character.classID = classID;
 end
 
 --- Raises error if unknown unitName
