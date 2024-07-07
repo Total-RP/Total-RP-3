@@ -3,6 +3,10 @@
 
 local loc = TRP3_API.loc;
 local EMPTY = TRP3_API.globals.empty;
+local getProfile = TRP3_API.register.getProfile;
+local hasProfile = TRP3_API.register.hasProfile;
+local getUnitID = TRP3_API.utils.str.getUnitID;
+local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 
 TRP3_API.register.relation = {};
 
@@ -311,9 +315,46 @@ end
 local RELATIONS_PAGE_ID = "main_config_relations";
 local RELATIONS_MENU_ID = "main_41_customization_relations";
 
+local function onRelationSelected(value)
+	local unitID = getUnitID("target");
+	if hasProfile(unitID) then
+		TRP3_API.register.relation.setRelation(hasProfile(unitID), value);
+		TRP3_Addon:TriggerEvent(TRP3_Addon.Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), "characteristics");
+	end
+end
+
+local function onTargetButtonClicked(_, _, _, button)
+	local values = {};
+	local relations = TRP3_API.register.relation.getRelationList(true);
+	for _, thisRelation in ipairs(relations) do
+		tinsert(values, {thisRelation.name or loc["REG_RELATION_" .. thisRelation.id], thisRelation.id})
+	end
+
+	displayDropDown(button, values, onRelationSelected, 0, true);
+end
+
 TRP3_API.register.inits.relationsInit = function()
 	local configDefault = CopyTable(DEFAULT_RELATIONS);
 	TRP3_API.configuration.registerConfigKey("register_relation_list", configDefault);
+
+	-- Register target frame button
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+		TRP3_API.target.registerButton({
+			id = "aa_player_d_relation",
+			configText = loc.REG_RELATION,
+			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
+			condition = function(_, unitID)
+				return UnitIsPlayer("target") and unitID ~= TRP3_API.globals.player_id and hasProfile(unitID);
+			end,
+			onClick = onTargetButtonClicked,
+			adapter = function(buttonStructure, unitID)
+				local profileID = hasProfile(unitID);
+				buttonStructure.tooltip = loc.REG_RELATION .. ": " .. TRP3_API.register.relation.getRelationText(profileID);
+				buttonStructure.tooltipSub = TRP3_API.register.relation.getRelationTooltipText(profileID, getProfile(profileID)) .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_RELATION_TARGET);
+				buttonStructure.icon = TRP3_API.register.relation.getRelationTexture(profileID);
+			end,
+		});
+	end);
 
 	-- Register menu
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()

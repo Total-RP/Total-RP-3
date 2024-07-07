@@ -499,9 +499,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</ScrollFrame>
 				</Frames>
 			</Frame>
-			<Button name="TRP3_RegisterCharact_ActionButton" inherits="TRP3_IconButton">
+			<Button name="TRP3_RegisterCharact_ActionButton" inherits="TRP3_BorderedIconTemplate">
+				<Size x="45" y="45" />
+				<HighlightTexture parentKey="HighlightBorder" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-glow" alphaMode="ADD">
+					<Color r="1" g="0.675" b="0.125"/>
+				</HighlightTexture>
 				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_NamePanel_EditButton" x="0" y="5"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_NamePanel" x="20" y="0"/>
 				</Anchors>
 			</Button>
 
