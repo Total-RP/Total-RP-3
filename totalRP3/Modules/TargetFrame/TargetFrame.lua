@@ -95,11 +95,13 @@ local function onStart()
 			end
 
 			if type(buttonStructure.icon) == "table" and buttonStructure.icon.Apply then
-				uiButton:SetNormalTexture(buttonStructure.icon:GetFileID())
-				uiButton:SetPushedTexture(buttonStructure.icon:GetFileID());
+				if buttonStructure.icon:GetFileID() == 516771 then
+					uiButton.Icon:SetTexture(buttonStructure.icon:GetFileID())
+				else
+					uiButton:SetIconTexture(buttonStructure.icon:GetFileID())
+				end
 			else
-				uiButton:SetNormalTexture("Interface\\ICONS\\"..buttonStructure.icon);
-				uiButton:SetPushedTexture("Interface\\ICONS\\"..buttonStructure.icon);
+				uiButton:SetIconTexture(buttonStructure.icon);
 			end
 
 			if uiButton:GetPushedTexture() then
