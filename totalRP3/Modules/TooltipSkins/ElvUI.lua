@@ -21,11 +21,12 @@ TRP3_API.module.registerModule({
 			return false, loc.MO_ADDON_NOT_INSTALLED:format("ElvUI");
 		end
 
-		local skinTargetFrame, skinTooltips;
+		local skinTargetFrame, skinTooltips, skinToolbarFrame;
 
 		local CONFIG = {
 			SKIN_TOOLTIPS = "elvui_skin_tooltips",
 			SKIN_TARGET_FRAME = "elvui_skin_target_frame",
+			SKIN_TOOLBAR_FRAME = "elvui_skin_toolbar_frame",
 		}
 
 		-- List of the tooltips we want to be customized by ElvUI
@@ -39,7 +40,7 @@ TRP3_API.module.registerModule({
 			"TRP3_NPCTooltip"
 		}
 
-		local SKINNABLE_FRAMES = {
+		local SKINNABLE_TARGET_FRAMES = {
 			"TRP3_TargetFrame",
 			"TRP3_TargetFrame.Header",
 			"TRP3_GlanceBar",
@@ -50,10 +51,17 @@ TRP3_API.module.registerModule({
 			"TRP3_GlanceBarSlot5",
 		}
 
+		local SKINNABLE_TOOLBAR_FRAMES = {
+			"TRP3_Toolbar",
+			"TRP3_ToolbarContainer",
+			"TRP3_ToolbarTopFrame",
+		}
+
 		TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 			-- Register configurations options
 			TRP3_API.configuration.registerConfigKey(CONFIG.SKIN_TOOLTIPS, true);
 			TRP3_API.configuration.registerConfigKey(CONFIG.SKIN_TARGET_FRAME, true);
+			TRP3_API.configuration.registerConfigKey(CONFIG.SKIN_TOOLBAR_FRAME, true);
 
 			-- Build configuration page
 			TRP3_API.configuration.registerConfigurationPage({
@@ -78,6 +86,12 @@ TRP3_API.module.registerModule({
 						title = loc.TT_ELVUI_SKIN_ENABLE_TARGET_FRAME,
 						configKey = CONFIG.SKIN_TARGET_FRAME,
 					},
+					-- Checkbox to toggle toolbar frame skinning
+					{
+						inherit = "TRP3_ConfigCheck",
+						title = loc.TT_ELVUI_SKIN_ENABLE_TOOLBAR_FRAME,
+						configKey = CONFIG.SKIN_TOOLBAR_FRAME,
+					},
 				}
 			});
 
@@ -85,16 +99,20 @@ TRP3_API.module.registerModule({
 			TRP3_API.configuration.registerHandler(CONFIG.SKIN_TOOLTIPS, function()
 				if TRP3_API.configuration.getValue(CONFIG.SKIN_TOOLTIPS) then
 					skinTooltips();
-				else
-					TRP3_API.popup.showConfirmPopup(loc.CO_UI_RELOAD_WARNING, ReloadUI);
 				end
+				TRP3_API.popup.showConfirmPopup(loc.CO_UI_RELOAD_WARNING, ReloadUI);
 			end);
 			TRP3_API.configuration.registerHandler(CONFIG.SKIN_TARGET_FRAME, function()
 				if TRP3_API.configuration.getValue(CONFIG.SKIN_TARGET_FRAME) then
 					skinTargetFrame();
-				else
-					TRP3_API.popup.showConfirmPopup(loc.CO_UI_RELOAD_WARNING, ReloadUI);
 				end
+				TRP3_API.popup.showConfirmPopup(loc.CO_UI_RELOAD_WARNING, ReloadUI);
+			end);
+			TRP3_API.configuration.registerHandler(CONFIG.SKIN_TOOLBAR_FRAME, function()
+				if TRP3_API.configuration.getValue(CONFIG.SKIN_TOOLBAR_FRAME) then
+					skinToolbarFrame();
+				end
+				TRP3_API.popup.showConfirmPopup(loc.CO_UI_RELOAD_WARNING, ReloadUI);
 			end);
 		end)
 
@@ -114,7 +132,7 @@ TRP3_API.module.registerModule({
 			end
 
 			-- 9.2 changed Tooltips to use NineSlice but TargetFrame doesn't use it, therefore we need to use the old styling function
-			local function SetStyleForTargetFrame(tt)
+			local function SetStyleForFrame(tt)
 				if not tt or (tt == _G["ElvUI"][1].ScanTooltip or tt.IsEmbedded or not tt.SetTemplate or not tt.SetBackdrop) or tt:IsForbidden() then return; end
 				tt.customBackdropAlpha = TT.db.colorAlpha;
 				tt:SetTemplate('Transparent');
@@ -122,16 +140,33 @@ TRP3_API.module.registerModule({
 
 			function skinTargetFrame()
 				-- Go through each skinnable frames from our table
-				for _, frame in pairs(SKINNABLE_FRAMES) do
+				for _, frame in pairs(SKINNABLE_TARGET_FRAMES) do
 					local parentKey;
 					frame, parentKey = string.split(".", frame, 2);
 
 					if _G[frame] then
 						-- If parentKey is not nil, check if a frame exists with said parentKey within this frame
 						if parentKey ~= nil and _G[frame][parentKey] then
-							TT:SecureHookScript(_G[frame][parentKey], 'OnShow', SetStyleForTargetFrame);
+							TT:SecureHookScript(_G[frame][parentKey], 'OnShow', SetStyleForFrame);
 						elseif parentKey == nil then
-							TT:SecureHookScript(_G[frame], 'OnShow', SetStyleForTargetFrame);
+							TT:SecureHookScript(_G[frame], 'OnShow', SetStyleForFrame);
+						end
+					end
+				end
+			end
+
+			function skinToolbarFrame()
+				-- Go through each skinnable frames from our table
+				for _, frame in pairs(SKINNABLE_TOOLBAR_FRAMES) do
+					local parentKey;
+					frame, parentKey = string.split(".", frame, 2);
+
+					if _G[frame] then
+						-- If parentKey is not nil, check if a frame exists with said parentKey within this frame
+						if parentKey ~= nil and _G[frame][parentKey] then
+							TT:SecureHookScript(_G[frame][parentKey], 'OnShow', SetStyleForFrame);
+						elseif parentKey == nil then
+							TT:SecureHookScript(_G[frame], 'OnShow', SetStyleForFrame);
 						end
 					end
 				end
@@ -149,6 +184,14 @@ TRP3_API.module.registerModule({
 			end
 			if TRP3_API.configuration.getValue(CONFIG.SKIN_TARGET_FRAME) then
 				skinTargetFrame();
+			end
+			if TRP3_API.configuration.getValue(CONFIG.SKIN_TOOLBAR_FRAME) then
+				skinToolbarFrame();
+
+				if TRP3_Toolbar:IsShown() then
+					TRP3_Toolbar:Hide();
+					TRP3_Toolbar:Show();
+				end
 			end
 
 			-- Adjusting the default border color to be black for ElvUI tooltips
