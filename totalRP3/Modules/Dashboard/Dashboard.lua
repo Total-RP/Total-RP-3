@@ -173,12 +173,12 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 		local updateToolbarButton = TRP3_API.toolbar.updateToolbarButton;
 		-- away/dnd
-		local status1Text = color("w")..loc.TB_STATUS..": "..color("r")..loc.TB_DND_MODE;
-		local status1SubText = color("y")..loc.CM_CLICK..": "..color("w")..(loc.TB_GO_TO_MODE:format(color("g")..loc.TB_NORMAL_MODE..color("w")));
-		local status2Text = color("w")..loc.TB_STATUS..": "..color("o")..loc.TB_AFK_MODE;
-		local status2SubText = color("y")..loc.CM_CLICK..": "..color("w")..(loc.TB_GO_TO_MODE:format(color("g")..loc.TB_NORMAL_MODE..color("w")));
-		local status3Text = color("w")..loc.TB_STATUS..": "..color("g")..loc.TB_NORMAL_MODE;
-		local status3SubText = color("y")..loc.CM_L_CLICK..": "..color("w")..(loc.TB_GO_TO_MODE:format(color("o")..loc.TB_AFK_MODE..color("w"))).."\n"..color("y")..loc.CM_R_CLICK..": "..color("w")..(loc.TB_GO_TO_MODE:format(color("r")..loc.TB_DND_MODE..color("w")));
+		local status1Text = loc.TB_STATUS..": "..color("r")..loc.TB_DND_MODE;
+		local status1SubText = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_GO_TO_MODE:format(loc.TB_NORMAL_MODE));
+		local status2Text = loc.TB_STATUS..": "..color("o")..loc.TB_AFK_MODE;
+		local status2SubText = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_GO_TO_MODE:format(loc.TB_NORMAL_MODE));
+		local status3Text = loc.TB_STATUS..": "..color("g")..loc.TB_NORMAL_MODE;
+		local status3SubText = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_GO_TO_MODE:format(loc.TB_AFK_MODE)) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_GO_TO_MODE:format(loc.TB_DND_MODE));
 		local Button_Status = {
 			id = "aa_trp3_c",
 			icon = TRP3_InterfaceIcons.ModeNormal,
@@ -225,10 +225,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		local RP_ICON, OOC_ICON = TRP3_InterfaceIcons.ToolbarStatusIC, TRP3_InterfaceIcons.ToolbarStatusOOC;
 		local rpTextOn = loc.TB_RPSTATUS_ON;
 		local rpTextOff = loc.TB_RPSTATUS_OFF;
-		local rpText2 = color("y")..loc.CM_L_CLICK..": "..color("w")..loc.TB_RPSTATUS_TO_ON;
-		rpText2 = rpText2.."\n"..color("y")..loc.CM_R_CLICK..": "..color("w")..loc.TB_SWITCH_PROFILE;
-		local rpText3 = color("y")..loc.CM_L_CLICK..": "..color("w")..loc.TB_RPSTATUS_TO_OFF;
-		rpText3 = rpText3.."\n"..color("y")..loc.CM_R_CLICK..": "..color("w")..loc.TB_SWITCH_PROFILE;
+		local rpText2 = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_RPSTATUS_TO_ON) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_SWITCH_PROFILE);
+		local rpText3 = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_RPSTATUS_TO_OFF) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_SWITCH_PROFILE);
 
 		local Button_RPStatus = {
 			id = "aa_trp3_rpstatus",

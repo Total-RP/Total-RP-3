@@ -162,7 +162,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			icon = TRP3_InterfaceIcons.ToolbarNPCTalk,
 			configText = loc.NPC_TALK_TITLE,
 			tooltip = loc.NPC_TALK_TITLE,
-			tooltipSub = loc.NPC_TALK_BUTTON_TT,
+			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.NPC_TALK_BUTTON_TT),
 			onClick = function()
 				toggleNPCTalkFrame();
 			end,
@@ -172,7 +172,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	-- We also register a slash command, so people who disable the toolbar button
 	-- or the toolbar module entirely can still access the feature
 	TRP3_API.slash.registerCommand({
-		id = "npc_speeches",
+		id = "npc_speech",
 		helpLine = " " .. loc.NPC_TALK_COMMAND_HELP,
 		handler = toggleNPCTalkFrame
 	});
