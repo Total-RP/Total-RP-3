@@ -618,7 +618,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				local profile = getCompanionInfo(ownerID, companionID, unitID);
 
 				-- Check if the pet has a profile first (always true here).
-				if profile then
+				if profile and profile.data then
 					-- Retrieve profile name.
 					local name = profile.data.NA;
 					TRP3_API.r.toggleNPCTalkFrame(name);
