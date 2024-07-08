@@ -171,6 +171,17 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	if TRP3_API.toolbar then
 
+		local Button_TRP3_Open = {
+			id = "aa_trp3_a",
+			icon = TRP3_InterfaceIcons.DirectorySection,
+			configText = loc.LAUNCHER_ACTION_OPEN,
+			tooltip = TRP3_API.globals.addon_name,
+			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.LAUNCHER_ACTION_OPEN),
+			onClick = function() TRP3_API.navigation.switchMainFrame(); end,
+			visible = 1
+		}
+		TRP3_API.toolbar.toolbarAddButton(Button_TRP3_Open);
+
 		local updateToolbarButton = TRP3_API.toolbar.updateToolbarButton;
 		-- away/dnd
 		local status1Text = loc.TB_STATUS..": "..color("r")..loc.TB_DND_MODE;
