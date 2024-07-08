@@ -457,9 +457,10 @@ local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 				TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {onIconSelected, nil, nil, TRP3_AtFirstGlanceEditorIcon.icon});
 			end
 		elseif button == "RightButton" then
+			local icon = TRP3_AtFirstGlanceEditorIcon.icon or TRP3_InterfaceIcons.Default;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(TRP3_AtFirstGlanceEditorIcon.icon); end);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({TRP3_AtFirstGlanceEditorIcon.icon or TRP3_InterfaceIcons.Default}); end);
+				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
 				description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(self); end);
 			end);
 		end

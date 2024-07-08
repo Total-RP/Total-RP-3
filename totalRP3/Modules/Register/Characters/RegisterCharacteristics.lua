@@ -1137,9 +1137,10 @@ function setEditDisplay()
 					setupIconButton(_G[frame:GetName() .. "Icon"], icon or TRP3_InterfaceIcons.Default);
 				end, miscStructure.IC);
 			elseif button == "RightButton" then
+				local icon = miscStructure.IC or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(miscStructure.IC); end);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({miscStructure.IC or TRP3_InterfaceIcons.Default}); end);
+					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
+					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(_G[frame:GetName() .. "Icon"], "misc", miscStructure); end);
 				end);
 			end
@@ -1232,9 +1233,10 @@ function setEditDisplay()
 					setupIconButton(self, icon or TRP3_InterfaceIcons.Default);
 				end, psychoStructure.LI);
 			elseif button == "RightButton" then
+				local icon = psychoStructure.LI or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(psychoStructure.LI); end);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({psychoStructure.LI or TRP3_InterfaceIcons.Default}); end);
+					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
+					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.CustomLeftIcon, "psychoLeft", psychoStructure); end);
 				end);
 			end
@@ -1247,9 +1249,10 @@ function setEditDisplay()
 					setupIconButton(self, icon or TRP3_InterfaceIcons.Default);
 				end, psychoStructure.RI);
 			elseif button == "RightButton" then
+				local icon = psychoStructure.RI or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(psychoStructure.RI); end);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({psychoStructure.RI or TRP3_InterfaceIcons.Default}); end);
+					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
+					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.CustomRightIcon, "psychoRight", psychoStructure); end);
 				end);
 			end
@@ -1570,9 +1573,10 @@ function TRP3_API.register.inits.characteristicsInit()
 		if button == "LeftButton" then
 			showIconBrowser(onPlayerIconSelected, draftData.IC);
 		elseif button == "RightButton" then
+			local icon = draftData.IC or TRP3_InterfaceIcons.ProfileDefault;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(draftData.IC); end);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftData.IC or TRP3_InterfaceIcons.ProfileDefault}); end);
+				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
 				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end

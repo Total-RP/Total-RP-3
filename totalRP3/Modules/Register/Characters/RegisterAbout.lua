@@ -351,9 +351,10 @@ function refreshTemplate2EditDisplay()
 					setupIconButton(_G[frame:GetName().."Icon"], icon);
 				end, frameData.IC);
 			elseif button == "RightButton" then
+				local icon = frameData.IC or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(frameData.IC); end);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({frameData.IC or TRP3_InterfaceIcons.Default}); end);
+					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
+					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(_G[frame:GetName().."Icon"], frameData); end);
 				end);
 			end
@@ -950,9 +951,10 @@ function TRP3_API.register.inits.aboutInit()
 		if button == "LeftButton" then
 			showIconBrowser(onPhisIconSelected, draftData.T3.PH.IC);
 		elseif button == "RightButton" then
+			local icon = draftData.T3.PH.IC or TEMPLATE3_ICON_PHYSICAL;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(draftData.T3.PH.IC or TEMPLATE3_ICON_PHYSICAL); end);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftData.T3.PH.IC or TEMPLATE3_ICON_PHYSICAL}); end);
+				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
 				description:CreateButton(loc.UI_ICON_PASTE, function() onPhisIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end
@@ -962,9 +964,10 @@ function TRP3_API.register.inits.aboutInit()
 		if button == "LeftButton" then
 			showIconBrowser(onPsychoIconSelected, draftData.T3.PS.IC);
 		elseif button == "RightButton" then
+			local icon = draftData.T3.PS.IC or TEMPLATE3_ICON_PSYCHO;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(draftData.T3.PS.IC or TEMPLATE3_ICON_PSYCHO); end);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftData.T3.PS.IC or TEMPLATE3_ICON_PSYCHO}); end);
+				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
 				description:CreateButton(loc.UI_ICON_PASTE, function() onPsychoIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end
@@ -974,9 +977,10 @@ function TRP3_API.register.inits.aboutInit()
 		if button == "LeftButton" then
 			showIconBrowser(onHistoIconSelected, draftData.T3.HI.IC);
 		elseif button == "RightButton" then
+			local icon = draftData.T3.HI.IC or TEMPLATE3_ICON_HISTORY;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(draftData.T3.HI.IC or TEMPLATE3_ICON_HISTORY); end);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftData.T3.HI.IC or TEMPLATE3_ICON_HISTORY}); end);
+				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
 				description:CreateButton(loc.UI_ICON_PASTE, function() onHistoIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end
