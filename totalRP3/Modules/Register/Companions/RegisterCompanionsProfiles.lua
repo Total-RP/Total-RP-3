@@ -591,7 +591,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				local profile = getCompanionInfo(ownerID, companionID, unitID);
 
 				-- Check if the pet has a profile first.
-				if profile then
+				if profile and profile.data then
 					-- Retrieve profile name.
 					local name = profile.data.NA;
 
@@ -602,7 +602,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 						buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION);
 
 						-- If pet data is unread, add alert.
-						if profile.data and not profile.data.read then
+						if not profile.data.read then
 							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateAtlasMarkup("QuestNormal", { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "|r";
 							buttonStructure.alert = true;
 						end
@@ -647,7 +647,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				end
 
 				-- Check if the mount has a profile first.
-				if profile then
+				if profile and profile.data then
 					-- Retrieve profile name.
 					local name = profile.data.NA;
 
@@ -658,7 +658,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 						buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT);
 
 						-- If mount data is unread, add alert.
-						if profile.data and not profile.data.read then
+						if not profile.data.read then
 							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateAtlasMarkup("QuestNormal", { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT) .. "|r";
 							buttonStructure.alert = true;
 						end
