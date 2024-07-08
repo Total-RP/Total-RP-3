@@ -39,7 +39,8 @@ TRP3_InterfaceIcons = {
 	TargetFlagMatureUnsafe = { "inv_inscription_parchmentvar03", "inv_scroll_07" },
 	TargetIgnoreCharacter  = { "achievement_bg_interruptx_flagcapture_attempts_1game", "spell_holy_silence" },
 	TargetOpenCharacter    = { "inv_inscription_scroll", "inv_misc_book_09" },
-	TargetOpenMount        = { "ability_mount_charger" },
+	TargetOpenCompanion    = { "inv_box_petcarrier_01" },
+	TargetOpenMount        = { "spell_nature_swiftness" },
 	TargetPlayMusic        = { "inv_misc_drum_06", "inv_misc_drum_01" },
 	TargetNotes            = { "inv_misc_scrollunrolled03b", "inv_scroll_02" },
 

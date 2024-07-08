@@ -377,7 +377,6 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 Último lugar donde fue visto: |cff00ff00%s|r]=],
 	["REG_LIST_CHAR_TT_GLANCE"] = "A primera vista",
 	["REG_LIST_CHAR_TT_IGNORE"] = "Personaje(s) ignorado(s)",
-	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "Descripción no leída",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Relación:
 |cff00ff00%s]=],
 	["REG_LIST_FILTERS"] = "Filtros",
@@ -645,7 +644,6 @@ Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplement
 	["TB_SWITCH_PROFILE"] = "Cambiar a otro perfil",
 	["TF_IGNORE"] = "Ignorar jugador",
 	["TF_IGNORE_NO_REASON"] = "Sin razón",
-	["TF_IGNORE_TT"] = "|cffffff00Click:|r Ignorar jugador",
 	["UI_TUTO_BUTTON"] = "Modo tutorial",
 	["UI_TUTO_BUTTON_TT"] = "Haz clic para activar/desactivar el modo tutorial"
 };

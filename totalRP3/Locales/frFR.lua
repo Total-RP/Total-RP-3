@@ -989,7 +989,6 @@ Vous pouvez optionnellement entrer la raison ci-dessous. C'est une note personne
 Vu pour la dernière fois à: |cff00ff00%s|r]=],
 	["REG_LIST_CHAR_TT_GLANCE"] = "Coup d'œil",
 	["REG_LIST_CHAR_TT_IGNORE"] = "Personnage(s) ignoré(s)",
-	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "Description non lue",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Relation:
 |cff00ff00%s]=],
 	["REG_LIST_FILTERS"] = "Filtres",
@@ -1419,7 +1418,6 @@ Change le statut de votre personnage en fonction de l'option spécifiée:
 
 |cffff7700Vous pouvez entrer optionnellement la raison d'ignorer le joueur ci-dessous. C'est une note personnelle, elle ne sera vue par personne d'autre et servira de rappel.]=],
 	["TF_IGNORE_NO_REASON"] = "Aucune raison",
-	["TF_IGNORE_TT"] = "|cffffff00Clic gauche:|r Ignorer le joueur",
 	["TF_OPEN_CHARACTER"] = "Afficher la fiche du personnage",
 	["TF_OPEN_COMPANION"] = "Afficher la fiche du familier",
 	["TF_OPEN_MOUNT"] = "Afficher la fiche de la monture",

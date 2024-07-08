@@ -395,7 +395,7 @@ local function getCompanionInfo(owner, companionID, companionFullID)
 	return profile;
 end
 
-local function companionProfileSelectionList(unitID, targetType, _, button)
+local function companionProfileSelectionList(unitID, targetType, buttonClick, button)
 	local ownerID, companionID, companionFullID;
 
 	if targetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
@@ -411,18 +411,27 @@ local function companionProfileSelectionList(unitID, targetType, _, button)
 	end
 
 	if ownerID == Globals.player_id then
-		local list = {};
-		if getCompanionProfile(companionID) then
-			tinsert(list, {loc.REG_COMPANION_TF_OPEN, 0});
-			tinsert(list, {loc.REG_COMPANION_TF_UNBOUND, 1});
-		end
-		tinsert(list, {loc.REG_COMPANION_TF_CREATE, 2});
-		local profileList = getPlayerCompanionProfilesAsList(companionID);
-		if next(profileList) ~= nil then
-			tinsert(list, {loc.REG_COMPANION_TF_BOUND_TO, profileList});
-		end
+		if buttonClick == "LeftButton" then
+			if getCompanionProfile(companionID) then
+				openProfile(getCompanionProfileID(companionID));
+				openMainFrame();
+			else
+				createNewAndBound(companionID, targetType);
+			end
+		elseif buttonClick == "RightButton" then
+			local list = {};
+			if getCompanionProfile(companionID) then
+				tinsert(list, {loc.REG_COMPANION_TF_OPEN, 0});
+				tinsert(list, {loc.REG_COMPANION_TF_UNBOUND, 1});
+			end
+			tinsert(list, {loc.REG_COMPANION_TF_CREATE, 2});
+			local profileList = getPlayerCompanionProfilesAsList(companionID);
+			if next(profileList) ~= nil then
+				tinsert(list, {loc.REG_COMPANION_TF_BOUND_TO, profileList});
+			end
 
-		displayDropDown(button, list, function(value) onCompanionProfileSelection(value, companionID, targetType) end, 0, true);
+			displayDropDown(button, list, function(value) onCompanionProfileSelection(value, companionID, targetType) end, 0, true);
+		end
 	else
 		if companionHasProfile(companionFullID) then
 			TRP3_API.companions.register.openPage(companionHasProfile(companionFullID));
@@ -572,30 +581,36 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			onClick = companionProfileSelectionList,
 			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
 			adapter = function(buttonStructure, unitID)
+				-- Initialize the buttonStructure parts.
+				buttonStructure.alert = false;
+				buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenCompanion;
+				buttonStructure.tooltip = loc.REG_COMPANION;
+				buttonStructure.tooltipSub = loc.REG_COMPANION_TF_NO;
+
 				local ownerID, companionID = companionIDToInfo(unitID);
 				local profile = getCompanionInfo(ownerID, companionID, unitID);
-				buttonStructure.alert = nil;
-				buttonStructure.tooltip = loc.TF_OPEN_COMPANION;
-				buttonStructure.tooltipSub = nil;
-				if ownerID == Globals.player_id then
-					if profile then
-						buttonStructure.tooltip = loc.PR_PROFILE .. ": |cff00ff00" .. profile.profileName;
-						if profile.data and profile.data.IC then
-							buttonStructure.icon = profile.data.IC;
-						end
+
+				-- Check if the pet has a profile first.
+				if profile and profile.data then
+					-- Retrieve profile name.
+					local name = profile.data.NA;
+
+					-- Handle if player is the owner of this pet.
+					if ownerID == Globals.player_id then
+						buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TF_OPEN_COMPANION) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TF_MORE_OPTIONS);
 					else
-						buttonStructure.icon = TRP3_InterfaceIcons.Gears;
-						buttonStructure.tooltip = loc.REG_COMPANION_TF_NO;
+						buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION);
+
+						-- If pet data is unread, add alert.
+						if not profile.data.read then
+							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateAtlasMarkup("QuestNormal", { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "|r";
+							buttonStructure.alert = true;
+						end
 					end
 				else
-					if profile and profile.data and profile.data.IC then
-						buttonStructure.icon = profile.data.IC;
-					else
-						buttonStructure.icon = TRP3_InterfaceIcons.Unknown;
-					end
-					if profile and profile.data and profile.data.read == false then
-						buttonStructure.tooltipSub = loc.REG_TT_NOTIF;
-						buttonStructure.alert = true;
+					-- Handle if player is the owner of this pet.
+					if ownerID == Globals.player_id then
+						buttonStructure.tooltipSub = buttonStructure.tooltipSub .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_COMPANION_TF_CREATE) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TF_MORE_OPTIONS);
 					end
 				end
 			end,
@@ -616,45 +631,42 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			onClick = companionProfileSelectionList,
 			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
 			adapter = function(buttonStructure, unitID)
-				buttonStructure.tooltip = loc.TF_OPEN_MOUNT;
-				buttonStructure.alert = nil;
-				buttonStructure.tooltipSub = nil;
+				-- Initialize the buttonStructure parts.
+				buttonStructure.alert = false;
+				buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenMount;
+				buttonStructure.tooltip = loc.PR_CO_MOUNT;
+				buttonStructure.tooltipSub = loc.REG_COMPANION_TF_NO;
+
+				-- Retrieve the mount profile first.
+				local profile;
 				if unitID == Globals.player_id then
-					local profile = getCurrentMountProfile();
-					buttonStructure.tooltipSub = "|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.PR_PROFILEMANAGER_ACTIONS;
-					if profile then
-						if profile and profile.data and profile.data.NA then
-							buttonStructure.tooltip = loc.PR_CO_MOUNT .. ": |cff00ff00" .. profile.data.NA;
-						else
-							buttonStructure.tooltip = loc.PR_CO_MOUNT .. ": |cff00ff00" .. profile.profileName;
-						end
-						if profile and profile.data and profile.data.IC then
-							buttonStructure.icon = profile.data.IC;
-						else
-							buttonStructure.icon = TRP3_InterfaceIcons.Unknown;
-						end
-					else
-						buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenMount;
-						buttonStructure.tooltipSub = "|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.REG_COMPANION_TF_BOUND_TO;
-						buttonStructure.tooltip = loc.PR_CO_MOUNT;
-					end
+					profile = getCurrentMountProfile();
 				else
 					local companionFullID = TRP3_API.companions.register.getUnitMount(unitID, "target");
-					local profile = getCompanionRegisterProfile(companionFullID);
-					buttonStructure.tooltipSub = "|cffffff00" .. loc.CM_CLICK .. ":|r " .. loc.TF_OPEN_MOUNT;
-					if profile and profile.data and profile.data.NA then
-						buttonStructure.tooltip = loc.PR_CO_MOUNT .. ": |cff00ff00" .. profile.data.NA;
+					profile = getCompanionRegisterProfile(companionFullID);
+				end
+
+				-- Check if the mount has a profile first.
+				if profile and profile.data then
+					-- Retrieve profile name.
+					local name = profile.data.NA;
+
+					-- Handle if player is the owner of this mount.
+					if unitID == Globals.player_id then
+						buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TF_OPEN_MOUNT) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TF_MORE_OPTIONS);
 					else
-						buttonStructure.tooltip = loc.PR_CO_MOUNT;
+						buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT);
+
+						-- If mount data is unread, add alert.
+						if not profile.data.read then
+							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateAtlasMarkup("QuestNormal", { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT) .. "|r";
+							buttonStructure.alert = true;
+						end
 					end
-					if profile and profile.data and profile.data.IC then
-						buttonStructure.icon = profile.data.IC;
-					else
-						buttonStructure.icon = TRP3_InterfaceIcons.Unknown;
-					end
-					if profile and profile.data and profile.data.read == false then
-						buttonStructure.tooltipSub = "|cff00ff00" .. loc.REG_TT_NOTIF .. "\n" .. buttonStructure.tooltipSub;
-						buttonStructure.alert = true;
+				else
+					-- Handle if player is the owner of this mount.
+					if unitID == Globals.player_id then
+						buttonStructure.tooltipSub = buttonStructure.tooltipSub .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_COMPANION_TF_CREATE) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TF_MORE_OPTIONS);
 					end
 				end
 			end,

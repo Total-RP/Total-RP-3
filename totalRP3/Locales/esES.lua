@@ -767,7 +767,6 @@ Opcionalmente, puede rellenar la razón de ser ignorado abajo. Esta nota es pers
 Último lugar donde fue visto: |cff00ff00%s|r]=],
 	["REG_LIST_CHAR_TT_GLANCE"] = "A primera vista",
 	["REG_LIST_CHAR_TT_IGNORE"] = "Personaje(s) ignorado(s)",
-	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "Descripción no leída",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Relación:
 |cff00ff00%s]=],
 	["REG_LIST_FILTERS"] = "Filtros",
@@ -1162,7 +1161,6 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 
 |cffff7700Opcionalmente puedes escribir debajo la razón por la que le quieres ignorar. Esta es una nota personal, no será visible por otros y servirá como recordatorio.]=],
 	["TF_IGNORE_NO_REASON"] = "Sin razón",
-	["TF_IGNORE_TT"] = "|cffffff00Click:|r Ignorar jugador",
 	["TF_OPEN_CHARACTER"] = "Mostrar página del personaje",
 	["TF_OPEN_COMPANION"] = "Mostrar página del compañero",
 	["TF_OPEN_MOUNT"] = "Mostrar página de montura",
