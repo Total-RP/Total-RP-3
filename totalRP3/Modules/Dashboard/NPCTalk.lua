@@ -122,15 +122,29 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	---
 	-- Display the frame and do everything that needs to be done at show time
-	local function toggleNPCTalkFrame()
+	---@param name string Given NPC name that will be used for the speech.
+	local function toggleNPCTalkFrame(name)
 		if frame:IsShown() then
 			frame:Hide();
 			return;
 		end
 
+		-- Make sure name starts as empty.
+		frame.Name:SetText("");
+		-- If name is given (companion npc speech button), fill it in.
+		if name then
+			frame.Name:SetText("[" .. name .. "]");
+		end
+
 		-- We always rebuild the dropdown on show as some of the colors can change during the session
 		buildChannelDropdown();
 		frame:Show();
+
+		if name then
+			frame.MessageText.scroll.text:SetFocus();
+		else
+			frame.Name:SetFocus();
+		end
 	end
 	TRP3_API.r.toggleNPCTalkFrame = toggleNPCTalkFrame;
 
