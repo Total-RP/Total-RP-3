@@ -46,7 +46,7 @@ end
 --- Mapping of URL handlers to register and unregister with this view.
 local URL_HANDLERS = {
 	right_click_profile = GenerateClosure(toggleSetting, "CONFIG_RIGHT_CLICK_OPEN_PROFILE"),
-	companion_speeches = GenerateClosure(toggleSetting, "chat_npcspeech_replacement"),
+	companion_speech = GenerateClosure(toggleSetting, "chat_npcspeech_replacement"),
 	default_color_picker = GenerateClosure(toggleSetting, "default_color_picker"),
 	disable_chat_ooc = GenerateClosure(toggleSetting, "chat_disable_ooc"),
 	open_mature_filter_settings = function()

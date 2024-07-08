@@ -42,7 +42,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			icon = TRP3_InterfaceIcons.ToolbarCurrently,
 			configText = loc.CURRENTLY_TITLE,
 			tooltip = loc.CURRENTLY_TITLE,
-			tooltipSub = loc.CURRENTLY_BUTTON_TT,
+			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CURRENTLY_BUTTON_TT),
 			onClick = function()
 				toggleCurrentlyFrame();
 			end,

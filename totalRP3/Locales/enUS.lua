@@ -585,7 +585,7 @@ Possible status:
 	CO_ANCHOR_CURSOR = "Show on cursor",
 	CO_CHAT = "Chat settings",
 	CO_CHAT_DISABLE_OOC = "Disable customizations when OOC",
-	CO_CHAT_DISABLE_OOC_TT = "Disable all of Total RP 3's chat customizations (custom names, emote detection, NPC speeches, etc.) when your character is set as Out Of Character.",
+	CO_CHAT_DISABLE_OOC_TT = "Disable all of Total RP 3's chat customizations (custom names, emote detection, NPC speech, etc.) when your character is set as Out Of Character.",
 	CO_CHAT_MAIN = "Chat main settings",
 	CO_CHAT_MAIN_NAMING = "Naming method",
 	CO_CHAT_MAIN_NAMING_1 = "Keep original names",
@@ -619,7 +619,7 @@ Possible status:
 	CO_CHAT_MAIN_SPEECH = "Speech detection",
 	CO_CHAT_MAIN_SPEECH_USE = "Use speech detection",
 	CO_CHAT_MAIN_SPEECH_USE_TT = "Text surrounded by quotation marks will be colored as if written in /say.",
-	CO_CHAT_NPCSPEECH_REPLACEMENT = "Customize companion names in NPC speeches",
+	CO_CHAT_NPCSPEECH_REPLACEMENT = "Customize companion names in NPC speech",
 	CO_CHAT_NPCSPEECH_REPLACEMENT_TT = "If a companion name is in brackets in an NPC speech, it will be colored and its icon will be shown depending on your settings above.",
 	CO_GLANCE_MAIN = "\"At first glance\" bar",
 	CO_GLANCE_RESET_TT = "Reset the bar position to the bottom left of the anchored frame.",
@@ -682,10 +682,10 @@ Possible status:
 	TB_DND_MODE = "Do not disturb",
 	TB_AFK_MODE = "Away",
 	TB_STATUS = "Player",
-	TB_RPSTATUS_ON = "Character: |cff00ff00In character",
-	TB_RPSTATUS_OFF = "Character: |cffff0000Out of character",
-	TB_RPSTATUS_TO_ON = "Go |cff00ff00in character",
-	TB_RPSTATUS_TO_OFF = "Go |cffff0000out of character",
+	TB_RPSTATUS_ON = "Character: |cnGREEN_FONT_COLOR:In character|r",
+	TB_RPSTATUS_OFF = "Character: |cnRED_FONT_COLOR:Out of character|r",
+	TB_RPSTATUS_TO_ON = "Go in character",
+	TB_RPSTATUS_TO_OFF = "Go out of character",
 	TB_SWITCH_PROFILE = "Switch to another profile",
 	TF_OPEN_CHARACTER = "Show character page",
 	TF_OPEN_COMPANION = "Show companion page",
@@ -1092,10 +1092,10 @@ The content of their profiles will be hidden again.]],
 	DICE_TOTAL_T = "%s %s got a total of |cff00ff00%s|r for the roll.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- NPC Speeches
+	-- NPC Speech
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	NPC_TALK_TITLE = "NPC speeches",
+	NPC_TALK_TITLE = "NPC speech",
 	NPC_TALK_NAME = "NPC name",
 	NPC_TALK_NAME_TT = [[You can use standard chat tags like %t to insert your target's name or %f to insert your focus' name.
 
@@ -1107,8 +1107,8 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	NPC_TALK_CHANNEL = "Channel: ",
 	NPC_TALK_SEND = "Send",
 	NPC_TALK_ERROR_EMPTY_MESSAGE = "The message cannot be empty.",
-	NPC_TALK_COMMAND_HELP = "Open the NPC speeches frame.",
-	NPC_TALK_BUTTON_TT = "Open the NPC speeches frame allowing you to do NPC speeches or emotes.",
+	NPC_TALK_COMMAND_HELP = "Open the NPC speech frame.",
+	NPC_TALK_BUTTON_TT = "Open the NPC speech frame, allowing you to perform NPC speech or emotes.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Currently
