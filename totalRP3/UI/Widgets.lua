@@ -176,3 +176,17 @@ function TRP3_CategoryButtonMixin:SetSelected(selected)
 	self:SetEnabled(not selected);
 	self:SetHighlightLocked(selected);
 end
+
+local g_lastCopiedIcon;
+
+--- TRP3_API.SetLastCopiedIcon sets the last copied icon.
+---@param icon string Contains the name of the icon to be copied.
+function TRP3_API.SetLastCopiedIcon(icon)
+	g_lastCopiedIcon = icon;
+end
+
+--- TRP3_API.GetLastCopiedIcon gets the last copied icon.
+---@return string icon Contains the name of the last icon that was copied.
+function TRP3_API.GetLastCopiedIcon()
+	return g_lastCopiedIcon;
+end

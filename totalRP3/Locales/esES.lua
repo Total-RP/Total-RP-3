@@ -1219,13 +1219,8 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 	["UI_COMPANION_BROWSER_HELP"] = "Seleccionar compañero",
 	["UI_FILTER"] = "Filtro",
 	["UI_ICON_BROWSER"] = "Buscador de icono",
-	["UI_ICON_BROWSER_HELP"] = "Copiar icono",
-	["UI_ICON_BROWSER_HELP_TT"] = [=[Mientras este marco esté abierto puedes hacer |cffffff00ctrl + clic|r en un icono para copiar su nombre.
-
-Esto funcionará en:|cff00ff00
-- Cualquier objeto de tu mochila
-- Cualquier icono del libro de hechizos|r]=],
 	["UI_ICON_SELECT"] = "Seleccionar icono",
+	["UI_ICON_COPY"] = "Copiar icono",
 	["UI_IMAGE_BROWSER"] = "Buscador de imagen",
 	["UI_IMAGE_SELECT"] = "Seleccionar imagen",
 	["UI_LINK_SAFE"] = "Aquí está el link URL.",

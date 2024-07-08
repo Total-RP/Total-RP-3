@@ -417,6 +417,14 @@ local function onIconSelected(icon)
 	TRP3_AtFirstGlanceEditorIcon.icon = icon;
 end
 
+--- pasteCopiedIcon handles receiving an icon from the right-click menu.
+---@param frame Frame The frame the icon belongs to.
+local function pasteCopiedIcon(frame)
+	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIcons.Default;
+	TRP3_AtFirstGlanceEditorIcon.icon = icon;
+	setupIconButton(frame, icon);
+end
+
 local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 	assert(callback, "No callback for glance editor");
 
@@ -439,12 +447,22 @@ local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 	TRP3_AtFirstGlanceEditorName:HighlightText();
 
 	TRP3_AtFirstGlanceEditorIcon.isExternal = external;
-	TRP3_AtFirstGlanceEditorIcon:SetScript("OnClick", function(self)
-		TRP3_API.popup.hideIconBrowser();
-		if self.isExternal then
-			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = TRP3_AtFirstGlanceEditor, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, nil, TRP3_AtFirstGlanceEditorIcon.icon});
-		else
-			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {onIconSelected, nil, nil, TRP3_AtFirstGlanceEditorIcon.icon});
+	setTooltipForSameFrame(TRP3_AtFirstGlanceEditorIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	TRP3_AtFirstGlanceEditorIcon:SetScript("onMouseDown", function(self, button)
+		if button == "LeftButton" then
+			TRP3_API.popup.hideIconBrowser();
+			if self.isExternal then
+				TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = TRP3_AtFirstGlanceEditor, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, nil, TRP3_AtFirstGlanceEditorIcon.icon});
+			else
+				TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {onIconSelected, nil, nil, TRP3_AtFirstGlanceEditorIcon.icon});
+			end
+		elseif button == "RightButton" then
+			local icon = TRP3_AtFirstGlanceEditorIcon.icon or TRP3_InterfaceIcons.Default;
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(self); end);
+			end);
 		end
 	end);
 	onIconSelected(slotData.IC);

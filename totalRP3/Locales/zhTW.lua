@@ -771,13 +771,8 @@ L = {
 	["UI_COMPANION_BROWSER_HELP"] = "請選擇一隻戰寵",
 	["UI_FILTER"] = "過濾器",
 	["UI_ICON_BROWSER"] = "圖示瀏覽器",
-	["UI_ICON_BROWSER_HELP"] = "複製圖示",
-	["UI_ICON_BROWSER_HELP_TT"] = [=[當此欄開啟時，你可以使用 |cffffff00ctrl + click|r 來複製圖示的名稱。
-
-這會作用於:|cff00ff00
-- 任何你背包中的物品。
-- 任何法術書中的圖示。]=],
 	["UI_ICON_SELECT"] = "選擇圖示",
+	["UI_ICON_COPY"] = "複製圖示",
 	["UI_IMAGE_BROWSER"] = "圖片瀏覽器",
 	["UI_IMAGE_SELECT"] = "選擇圖片",
 	["UI_LINK_SAFE"] = "這是連結網址。",

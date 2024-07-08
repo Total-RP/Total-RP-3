@@ -1232,13 +1232,8 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["UI_COMPANION_BROWSER_HELP"] = "选择一个战斗的宠物",
 	["UI_FILTER"] = "筛选",
 	["UI_ICON_BROWSER"] = "图标浏览器",
-	["UI_ICON_BROWSER_HELP"] = "复制图标",
-	["UI_ICON_BROWSER_HELP_TT"] = [=[当这个框架打开时，您可以在图标上单击 |cffffff00ctrl + 单击|r 来复制它的名称。
-
-这对以下内容有效:|cff00ff00
-- 在你包里的任何东西上
-- 在任何法术图标上|r]=],
 	["UI_ICON_SELECT"] = "选择图标",
+	["UI_ICON_COPY"] = "复制图标",
 	["UI_IMAGE_BROWSER"] = "图片浏览器",
 	["UI_IMAGE_SELECT"] = "选择图片",
 	["UI_LINK_SAFE"] = "这是链接URL。",
