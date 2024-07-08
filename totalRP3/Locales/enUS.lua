@@ -339,6 +339,8 @@ The |cnGREEN_FONT_COLOR:note only filter|r will filter the character profile lis
 	REG_COMPANION_PROFILES = "Companions profiles",
 	REG_COMPANION_TF_PROFILE = "Companion profile",
 	REG_COMPANION_TF_PROFILE_MOUNT = "Mount profile",
+	REG_COMPANION_TF_PROFILE_SPEECH = "Companion speech",
+	REG_COMPANION_TF_PROFILE_SPEECH_TT = "Open the NPC speech frame with your companion's name filled in.",
 	REG_COMPANION_TF_NO = "No profile",
 	REG_COMPANION_TF_CREATE = "Create new profile",
 	REG_COMPANION_TF_UNBOUND = "Unlink from profile",

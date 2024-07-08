@@ -27,6 +27,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		frame.CurrentlyText.scroll.text:SetText(AddOn_TotalRP3.Player.GetCurrentUser():GetCurrentlyText());
 
 		frame:Show();
+		frame.CurrentlyText.scroll.text:SetFocus();
 	end
 	TRP3_API.r.toggleCurrentlyFrame = toggleCurrentlyFrame;
 

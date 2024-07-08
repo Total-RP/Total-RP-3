@@ -616,6 +616,31 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			end,
 		});
 
+		TRP3_API.target.registerButton({
+			id = "bb_companion_profile_speech",
+			configText = loc.REG_COMPANION_TF_PROFILE_SPEECH,
+			icon = TRP3_InterfaceIcons.ToolbarNPCTalk;
+			condition = function(targetType, unitID)
+				if isTargetTypeACompanion(targetType) then
+					local ownerID, companionID = companionIDToInfo(unitID);
+					return ownerID == Globals.player_id and getCompanionInfo(ownerID, companionID, unitID);
+				end
+			end,
+			tooltip = loc.REG_COMPANION_TF_PROFILE_SPEECH,
+			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_COMPANION_TF_PROFILE_SPEECH_TT),
+			onClick = function(unitID)
+				local ownerID, companionID = companionIDToInfo(unitID);
+				local profile = getCompanionInfo(ownerID, companionID, unitID);
+
+				-- Check if the pet has a profile first (always true here).
+				if profile and profile.data then
+					-- Retrieve profile name.
+					local name = profile.data.NA;
+					TRP3_API.r.toggleNPCTalkFrame(name);
+				end
+			end,
+		});
+
 		-- Target bar button for mounts
 		TRP3_API.target.registerButton({
 			id = "bb_companion_profile_mount",
