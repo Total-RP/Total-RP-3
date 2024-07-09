@@ -636,12 +636,24 @@ local function configTooltipAnchor()
 	return getConfigValue(CONFIG_GLANCE_TT_ANCHOR);
 end
 
+function TRP3_API.register.glance.addClickHandlers(text)
+	if not text then
+		text = "";
+	else
+		text = text .. "\n\n";
+	end
+	text = text .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT)
+		.. "\n" .. TRP3_API.FormatShortcutWithInstruction("DCLICK", loc.REG_PLAYER_GLANCE_CONFIG_TOGGLE)
+		.. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_GLANCE_CONFIG_PRESETS)
+		.. "\n" .. TRP3_API.FormatShortcutWithInstruction("DRAGDROP", loc.REG_PLAYER_GLANCE_CONFIG_REORDER);
+	return text;
+end
+
 local function displayGlanceSlots()
 	local glanceTab = getGlanceTab();
 
 	if glanceTab ~= nil and (isCurrentMine or atLeastOneactiveGlance(glanceTab)) then
 		ui_GlanceBar:Show();
-		local clickHandlers = "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("DCLICK", loc.REG_PLAYER_GLANCE_CONFIG_TOGGLE) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_GLANCE_CONFIG_PRESETS) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("DRAGDROP", loc.REG_PLAYER_GLANCE_CONFIG_REORDER);
 		for i=1,5,1 do
 			local button = _G["TRP3_GlanceBarSlot"..i];
 			local glance = glanceTab[tostring(i)];
@@ -655,20 +667,20 @@ local function displayGlanceSlots()
 				if glance.IC and glance.IC:len() > 0 then
 					icon = glance.IC;
 				end
-				local TTText = glance.TX or "";
+				local TTText = glance.TX;
 				local glanceTitle = glance.TI or "...";
 				if not isCurrentMine and shouldCropTexts() then
 					TTText = crop(TTText, GLANCE_TOOLTIP_CROP);
 					glanceTitle = crop(glanceTitle, GLANCE_TITLE_CROP);
 				end
 				if isCurrentMine then
-					TTText = TTText .. clickHandlers;
+					TTText = TRP3_API.register.glance.addClickHandlers(TTText);
 				end
 				setTooltipForSameFrame(button, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
 			else
 				button:SetAlpha(0.25);
 				if isCurrentMine then
-					local TTText = "";
+					local TTText;
 					local glanceTitle = loc.REG_PLAYER_GLANCE_UNUSED;
 					if glance then
 						if glance.IC and glance.IC:len() > 0 then
@@ -678,7 +690,7 @@ local function displayGlanceSlots()
 						glanceTitle = glance.TI or loc.REG_PLAYER_GLANCE_UNUSED;
 					end
 					if isCurrentMine then
-						TTText = TTText .. clickHandlers;
+						TTText = TRP3_API.register.glance.addClickHandlers(TTText);
 					end
 					setTooltipForSameFrame(button, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
 				else
