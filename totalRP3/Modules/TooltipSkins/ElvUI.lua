@@ -21,7 +21,7 @@ TRP3_API.module.registerModule({
 			return false, loc.MO_ADDON_NOT_INSTALLED:format("ElvUI");
 		end
 
-		local skinTargetFrame, skinTooltips, skinToolbarFrame;
+		local skinFrame, skinTooltips;
 
 		local CONFIG = {
 			SKIN_TOOLTIPS = "elvui_skin_tooltips",
@@ -104,13 +104,13 @@ TRP3_API.module.registerModule({
 			end);
 			TRP3_API.configuration.registerHandler(CONFIG.SKIN_TARGET_FRAME, function()
 				if TRP3_API.configuration.getValue(CONFIG.SKIN_TARGET_FRAME) then
-					skinTargetFrame();
+					skinFrame(SKINNABLE_TARGET_FRAMES);
 				end
 				TRP3_API.popup.showConfirmPopup(loc.CO_UI_RELOAD_WARNING, ReloadUI);
 			end);
 			TRP3_API.configuration.registerHandler(CONFIG.SKIN_TOOLBAR_FRAME, function()
 				if TRP3_API.configuration.getValue(CONFIG.SKIN_TOOLBAR_FRAME) then
-					skinToolbarFrame();
+					skinFrame(SKINNABLE_TOOLBAR_FRAMES);
 				end
 				TRP3_API.popup.showConfirmPopup(loc.CO_UI_RELOAD_WARNING, ReloadUI);
 			end);
@@ -138,26 +138,9 @@ TRP3_API.module.registerModule({
 				tt:SetTemplate('Transparent');
 			end
 
-			function skinTargetFrame()
+			function skinFrame(skinnableFrames)
 				-- Go through each skinnable frames from our table
-				for _, frame in pairs(SKINNABLE_TARGET_FRAMES) do
-					local parentKey;
-					frame, parentKey = string.split(".", frame, 2);
-
-					if _G[frame] then
-						-- If parentKey is not nil, check if a frame exists with said parentKey within this frame
-						if parentKey ~= nil and _G[frame][parentKey] then
-							TT:SecureHookScript(_G[frame][parentKey], 'OnShow', SetStyleForFrame);
-						elseif parentKey == nil then
-							TT:SecureHookScript(_G[frame], 'OnShow', SetStyleForFrame);
-						end
-					end
-				end
-			end
-
-			function skinToolbarFrame()
-				-- Go through each skinnable frames from our table
-				for _, frame in pairs(SKINNABLE_TOOLBAR_FRAMES) do
+				for _, frame in pairs(skinnableFrames) do
 					local parentKey;
 					frame, parentKey = string.split(".", frame, 2);
 
@@ -183,10 +166,10 @@ TRP3_API.module.registerModule({
 				skinTooltips();
 			end
 			if TRP3_API.configuration.getValue(CONFIG.SKIN_TARGET_FRAME) then
-				skinTargetFrame();
+				skinFrame(SKINNABLE_TARGET_FRAMES);
 			end
 			if TRP3_API.configuration.getValue(CONFIG.SKIN_TOOLBAR_FRAME) then
-				skinToolbarFrame();
+				skinFrame(SKINNABLE_TOOLBAR_FRAMES);
 
 				if TRP3_Toolbar:IsShown() then
 					TRP3_Toolbar:Hide();
