@@ -108,7 +108,7 @@ local function onStart()
 
 	local function buildToolbar()
 		local maxButtonPerLine = getConfigValue(CONFIG_ICON_MAX_PER_LINE);
-		local buttonSize = getConfigValue(CONFIG_ICON_SIZE);
+		local buttonSize = getConfigValue(CONFIG_ICON_SIZE) + 8; -- Adding 8 to offset the borders making the icon look smaller
 
 		-- Toggle the visibility of the toolbar title as needed.
 		TRP3_ToolbarTopFrame:SetShown(not getConfigValue(CONFIG_HIDE_TITLE));
@@ -142,9 +142,7 @@ local function onStart()
 					uiButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 					tinsert(uiButtons, uiButton);
 				end
-				uiButton:SetNormalTexture(Utils.getIconTexture(buttonStructure.icon or TRP3_InterfaceIcons.Default));
-				uiButton:SetPushedTexture(Utils.getIconTexture(buttonStructure.icon or TRP3_InterfaceIcons.Default));
-				uiButton:GetPushedTexture():SetDesaturated(1);
+				uiButton:SetIconTexture(buttonStructure.icon or TRP3_InterfaceIcons.Default);
 				uiButton:SetPoint("TOPLEFT", x, y);
 				uiButton:SetScript("OnClick", function(self, button)
 					if buttonStructure.onClick then
@@ -192,13 +190,13 @@ local function onStart()
 						numLines = numLines + 1;
 					end
 				else
-					x = x + buttonSize;
+					x = x + buttonSize - 4;
 				end
 			end
 			if index <= maxButtonPerLine then
-				toolbarContainer:SetWidth(14 + index*buttonSize);
+				toolbarContainer:SetWidth(index*buttonSize - 6);
 			else
-				toolbarContainer:SetWidth(14 + maxButtonPerLine*buttonSize);
+				toolbarContainer:SetWidth(maxButtonPerLine*buttonSize - 6);
 			end
 			toolbarContainer:SetHeight(14 + numLines*buttonSize);
 			toolbar:SetHeight(34 + numLines*buttonSize);
@@ -277,10 +275,8 @@ local function onStart()
 	--
 	local function updateToolbarButton(toolbarButton, buttonStructure)
 		-- Setting the textures
-		toolbarButton:SetNormalTexture(Utils.getIconTexture(buttonStructure.icon));
-		toolbarButton:SetPushedTexture(Utils.getIconTexture(buttonStructure.icon));
+		toolbarButton:SetIconTexture(buttonStructure.icon);
 
-		toolbarButton:GetPushedTexture():SetDesaturated(1);
 		-- Refreshing the tooltip
 		setTooltipForFrame(toolbarButton, toolbarButton, "LEFT", 0, 0, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
 	end

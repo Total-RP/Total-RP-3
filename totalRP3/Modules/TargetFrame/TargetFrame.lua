@@ -42,7 +42,7 @@ local function onStart()
 	local loaded = false;
 
 	local function createButton(index)
-		local uiButton = CreateFrame("Button", "TRP3_TargetFrameButton"..index, ui_TargetFrame, "TRP3_TargetFrameButton");
+		local uiButton = CreateFrame("Button", "TRP3_TargetFrameButton"..index, ui_TargetFrame, "TRP3_TargetFrameButtonTemplate");
 		uiButton:ClearAllPoints();
 		uiButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		uiButton:SetScript("OnEnter", function(self)
