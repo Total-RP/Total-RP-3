@@ -664,6 +664,9 @@ local function displayGlanceSlots()
 				setTooltipForSameFrame(button, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
 			else
 				button:SetAlpha(0.25);
+				if isCurrentMine and glance.IC and glance.IC:len() > 0 then
+					icon = glance.IC;
+				end
 				setTooltipForSameFrame(button);
 			end
 

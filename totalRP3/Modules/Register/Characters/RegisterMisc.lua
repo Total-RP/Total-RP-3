@@ -231,7 +231,7 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 		setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", text or "");
 	else
 		button:SetAlpha(isMine and 1 or 0.1);
-		button:SetIconTexture(GLANCE_NOT_USED_ICON);
+		button:SetIconTexture(isMine and icon or GLANCE_NOT_USED_ICON);
 		button.Icon:SetAlpha(isMine and 0.75 or 1);
 		button.Icon:SetDesaturated(true);
 		if not isMine then
