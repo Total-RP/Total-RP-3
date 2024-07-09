@@ -59,6 +59,17 @@ local function SetRoleplayStatus(status)
 	currentUser:SetRoleplayStatus(status);
 end
 
+local function GetWalkupButtonText(selection)
+	local status = selection:GetData();
+	local text = TRP3_MenuUtil.GetElementText(selection);
+
+	if status == AddOn_TotalRP3.Enums.WALKUP.YES then
+		text = string.join(" ", "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-walkup:16:16|t ", text);
+	end
+
+	return text;
+end
+
 local function SetWalkup(walkup)
 	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
 	currentUser:SetWalkup(walkup);
@@ -130,6 +141,7 @@ function TRP3_DashboardStatusPanelMixin:OnShow()
 	self.XPStatusLabel:SetText(L.DB_STATUS_XP);
 	self.RPStatusMenu:SetSelectionTranslator(GetRoleplayStatusButtonText);
 	self.RPStatusMenu:SetupMenu(GenerateRPStatusMenu);
+	self.WUStatusMenu:SetSelectionTranslator(GetWalkupButtonText);
 	self.WUStatusMenu:SetupMenu(GenerateWalkupMenu);
 	self.XPStatusMenu:SetSelectionTranslator(GetRoleplayExperienceButtonText);
 	self.XPStatusMenu:SetupMenu(GenerateXPStatusMenu);

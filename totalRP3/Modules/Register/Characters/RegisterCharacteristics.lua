@@ -322,6 +322,12 @@ local function setConsultDisplay(context)
 	TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle:Hide();
 	TRP3_RegisterCharact_CharactPanel_Container.MiscTitle:Hide();
 	TRP3_RegisterCharact_CharactPanel_ResidenceButton:Hide();
+	TRP3_RegisterCharact_NamePanel_WalkupButton:Hide();
+
+	if context.profile.character.WU == AddOn_TotalRP3.Enums.WALKUP.YES then
+		TRP3_RegisterCharact_NamePanel_WalkupButton:Show();
+		setTooltipForSameFrame(TRP3_RegisterCharact_NamePanel_WalkupButton, "RIGHT", 0, 5, loc.DB_STATUS_WU, loc.REG_PLAYER_RESIDENCE_WALKUP_TT);
+	end
 
 	-- Previous var helps for layout building
 	local previous = TRP3_RegisterCharact_CharactPanel_Container.RegisterTitle;
