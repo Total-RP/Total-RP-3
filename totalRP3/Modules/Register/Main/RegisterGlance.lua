@@ -859,29 +859,29 @@ local function onStart()
 
 	-- Config must be built on WORKFLOW_ON_LOADED or else the TargetFrame module could be not yet loaded.
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
 			title = loc.CO_GLANCE_MAIN,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigEditBox",
 			title = loc.CO_MINIMAP_BUTTON_FRAME,
 			configKey = CONFIG_GLANCE_PARENT,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = loc.CO_GLANCE_LOCK,
 			help = loc.CO_GLANCE_LOCK_TT,
 			configKey = CONFIG_GLANCE_LOCK,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigButton",
 			title = loc.CO_MINIMAP_BUTTON_RESET,
 			help = loc.CO_GLANCE_RESET_TT,
 			text = loc.CO_MINIMAP_BUTTON_RESET_BUTTON,
 			callback = TRP3_API.register.resetGlanceBar,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigButton",
 			title = loc.CO_GLANCE_PRESET_TRP2,
 			text = loc.CO_GLANCE_PRESET_TRP2_BUTTON,

@@ -366,11 +366,11 @@ local function onStart()
 		}, buildToolbar);
 
 		-- Build configuration page
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
 			title = loc.CO_TOOLBAR_CONTENT,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigDropDown",
 			widgetName = "TRP3_ConfigToolbarVisibility",
 			title = loc.CO_TOOLBAR_VISIBILITY,
@@ -383,7 +383,7 @@ local function onStart()
 			configKey = CONFIG_TOOLBAR_VISIBILITY,
 			listCancel = true,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
 			title = loc.CO_TOOLBAR_ICON_SIZE,
 			configKey = CONFIG_ICON_SIZE,
@@ -392,7 +392,7 @@ local function onStart()
 			step = 1,
 			integer = true,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
 			title = loc.CO_TOOLBAR_MAX,
 			help = loc.CO_TOOLBAR_MAX_TT,
@@ -402,7 +402,7 @@ local function onStart()
 			step = 1,
 			integer = true,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = loc.CO_TOOLBAR_HIDE_TITLE,
 			help = loc.CO_TOOLBAR_HIDE_TITLE_HELP,
@@ -423,7 +423,7 @@ local function onStart()
 				buildToolbar();
 			end);
 			button.visible = getConfigValue(configKey);
-			tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+			tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 				inherit = "TRP3_ConfigCheck",
 				title = button.configText or buttonID,
 				configKey = configKey,
