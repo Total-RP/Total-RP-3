@@ -101,9 +101,8 @@ local function GenerateWalkupMenu(_, rootDescription)
 
 	do  -- Walkup No
 		local walkup = AddOn_TotalRP3.Enums.WALKUP.NO;
-		local elementDescription = rootDescription:CreateRadio(L.CM_NO, IsWalkupFriendly, SetWalkup, walkup);
+		local elementDescription = rootDescription:CreateRadio(L.REG_PLAYER_STYLE_HIDE, IsWalkupFriendly, SetWalkup, walkup);
 		TRP3_MenuUtil.AttachTexture(elementDescription);
-		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_WU_NO_TT);
 	end
 end
 

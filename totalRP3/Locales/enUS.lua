@@ -808,7 +808,6 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	DB_STATUS_RP_OOC_TT = "This selection will indicate to other players that you are currently out of character and that they should not take your character's actions into account.|n|nThis will be shown as a red notice on your tooltip.",
 	DB_STATUS_WU = "Walkup friendly",
 	DB_STATUS_WU_YES_TT = "Tells other players that you are okay with them walking up to you.|n|nThis will be shown as an icon on your tooltip.",
-	DB_STATUS_WU_NO_TT = "Tells other players that you prefer not to be walked up to.",
 	DB_STATUS_XP = "Roleplay proficiency",
 	DB_STATUS_XP_NEWCOMER = "Newcomer",
 	DB_STATUS_XP_NEWCOMER_TT = "This selection will indicate to other players that you are a beginner roleplayer.|n|nThis will be shown as an icon on your tooltip.",
