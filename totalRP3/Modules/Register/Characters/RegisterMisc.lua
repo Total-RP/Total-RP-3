@@ -223,6 +223,13 @@ local GLANCE_NOT_USED_ICON = TRP3_InterfaceIcons.Default;
 local function setupGlanceButton(button, active, icon, title, text, isMine)
 	button:Enable();
 	button.isCurrentMine = isMine;
+
+	text = text or "";
+	-- Add our click handlers
+	if isMine then
+		text = text .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("DCLICK", loc.REG_PLAYER_GLANCE_CONFIG_TOGGLE) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_GLANCE_CONFIG_PRESETS) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("DRAGDROP", loc.REG_PLAYER_GLANCE_CONFIG_REORDER);
+	end
+
 	if active then
 		button:SetAlpha(1);
 		button:SetIconTexture(icon or GLANCE_NOT_USED_ICON);
@@ -250,6 +257,7 @@ local function displayPeek(context)
 		local glanceData = (dataTab.PE or {})[tostring(i)] or {};
 		local button = _G["TRP3_RegisterMiscViewGlanceSlot" .. i];
 		button.data = glanceData;
+
 		setupGlanceButton(button, glanceData.AC, glanceData.IC, glanceData.TI, glanceData.TX, context.isPlayer);
 	end
 	if context.isPlayer then
@@ -517,7 +525,7 @@ function TRP3_API.register.inits.miscInit()
 	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC.HelpButton, "LEFT", 0, 10, loc.DB_STATUS_CURRENTLY_OOC, loc.DB_STATUS_CURRENTLY_OOC_TT);
 	TRP3_RegisterMiscViewCurrentlyOOC:RegisterCallback("OnTextChanged", onOOCInfoChanged, {});
 
-	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "LEFT", 0, 10, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG);
+	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "LEFT", 0, 10, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("DCLICK", loc.REG_PLAYER_GLANCE_CONFIG_TOGGLE) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_GLANCE_CONFIG_PRESETS) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("DRAGDROP", loc.REG_PLAYER_GLANCE_CONFIG_REORDER));
 
 	for index=1,5,1 do
 		-- DISPLAY
