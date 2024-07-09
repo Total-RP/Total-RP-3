@@ -228,7 +228,7 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 		button:SetIconTexture(icon or GLANCE_NOT_USED_ICON);
 		button.Icon:SetAlpha(1);
 		button.Icon:SetDesaturated(false);
-		setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", text or "");
+		setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", text);
 	else
 		button:SetAlpha(isMine and 1 or 0.1);
 		button:SetIconTexture(isMine and icon or GLANCE_NOT_USED_ICON);
@@ -237,7 +237,7 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 		if not isMine then
 			button:Disable();
 		else
-			setTooltipForSameFrame(button, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE_UNUSED);
+			setTooltipForSameFrame(button, "RIGHT", 0, 5, title or loc.REG_PLAYER_GLANCE_UNUSED, text);
 		end
 	end
 end

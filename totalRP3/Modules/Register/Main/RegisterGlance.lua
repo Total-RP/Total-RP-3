@@ -654,7 +654,7 @@ local function displayGlanceSlots()
 				if glance.IC and glance.IC:len() > 0 then
 					icon = glance.IC;
 				end
-				local TTText = glance.TX or "";
+				local TTText = glance.TX;
 				local glanceTitle = glance.TI or "...";
 				if not isCurrentMine and shouldCropTexts() then
 					TTText = crop(TTText, GLANCE_TOOLTIP_CROP);
@@ -664,10 +664,20 @@ local function displayGlanceSlots()
 				setTooltipForSameFrame(button, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
 			else
 				button:SetAlpha(0.25);
-				if isCurrentMine and glance.IC and glance.IC:len() > 0 then
-					icon = glance.IC;
+				if isCurrentMine then
+					local TTText;
+					local glanceTitle = loc.REG_PLAYER_GLANCE_UNUSED;
+					if glance then
+						if glance.IC and glance.IC:len() > 0 then
+							icon = glance.IC;
+						end
+						TTText = glance.TX;
+						glanceTitle = glance.TI or loc.REG_PLAYER_GLANCE_UNUSED;
+					end
+					setTooltipForSameFrame(button, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
+				else
+					setTooltipForSameFrame(button);
 				end
-				setTooltipForSameFrame(button);
 			end
 
 			button:SetNormalTexture("Interface\\ICONS\\" .. icon);
