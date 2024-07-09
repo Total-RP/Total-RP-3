@@ -368,7 +368,6 @@ L = {
 	["CO_TARGETFRAME_USE_2"] = "Только когда \"в отыгрыше\"",
 	["CO_TARGETFRAME_USE_3"] = "Никогда (Отключено)",
 	["CO_TARGETFRAME_USE_TT"] = "Определяет при каких условиях будет показана рамка цели при выборе цели.",
-	["CO_TOOLBAR"] = "Настройки рамок",
 	["CO_TOOLBAR_CONTENT"] = "Настройки панели инструментов",
 	["CO_TOOLBAR_CONTENT_CAPE"] = "Отображение плаща",
 	["CO_TOOLBAR_CONTENT_HELMET"] = "Отображение шлема",

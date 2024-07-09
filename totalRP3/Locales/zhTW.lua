@@ -242,7 +242,6 @@ L = {
 	["CO_TARGETFRAME_USE_2"] = "只有進入角色（IC）時顯示",
 	["CO_TARGETFRAME_USE_3"] = "永不顯示（停用）",
 	["CO_TARGETFRAME_USE_TT"] = "選擇你想在什麼情況下顯示對方的角色卡。",
-	["CO_TOOLBAR"] = "各項欄位設定",
 	["CO_TOOLBAR_CONTENT"] = "工具列設定",
 	["CO_TOOLBAR_CONTENT_RPSTATUS"] = "角色狀態（IC／OOC）",
 	["CO_TOOLBAR_CONTENT_STATUS"] = "玩家狀態（離開／請勿打擾）",

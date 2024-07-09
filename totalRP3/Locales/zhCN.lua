@@ -313,7 +313,6 @@ L = {
 	["CO_TARGETFRAME_USE_2"] = "只有在 IC时",
 	["CO_TARGETFRAME_USE_3"] = "从不 (关闭)",
 	["CO_TARGETFRAME_USE_TT"] = "确定选定目标时显示目标框架的条件。",
-	["CO_TOOLBAR"] = "框架设置",
 	["CO_TOOLBAR_CONTENT"] = "工具栏设置",
 	["CO_TOOLBAR_CONTENT_CAPE"] = "披风开关",
 	["CO_TOOLBAR_CONTENT_HELMET"] = "头盔开关",
