@@ -427,7 +427,19 @@ end
 TRP3_API.register.ui.showMiscTab = showMiscTab;
 
 function TRP3_API.register.player.getMiscExchangeData()
-	return get("player/misc");
+	local miscData = CopyTable(get("player/misc"));
+
+	-- Remove data from disabled glances
+	if miscData.PE then
+		for i=1,5 do
+			local index = tostring(i);
+			if miscData.PE[index] and miscData.PE[index].AC == false then
+				miscData.PE[index] = nil;
+			end
+		end
+	end
+
+	return miscData;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
