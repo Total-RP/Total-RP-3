@@ -704,8 +704,14 @@ local function displayGlanceSlots()
 	end
 end
 
+-- Dragging & dropping a glance on the bar at the bottom of the target frame swaps the content of the glances.
+-- This then calls the REGISTER_DATA_UPDATED event, which refreshes the glance bar, which causes the drop event
+-- to be called again, breaking everything. This was added to stop the duplicate call from doing anything.
+local draggingGlance = false;
+
 local function onGlanceDragStart(button)
 	if button.isCurrentMine and button.data then
+		draggingGlance = true;
 		SetCursor("Interface\\ICONS\\" .. (button.data.IC or TRP3_InterfaceIcons.Default));
 	end
 end
@@ -731,7 +737,8 @@ end
 
 local function onGlanceDragStop(button)
 	ResetCursor();
-	if button.isCurrentMine and button and button.slot then
+	if draggingGlance and button.isCurrentMine and button and button.slot then
+		draggingGlance = false;
 		local from, to = button.slot;
 		local toButton = GetGlanceDropTarget();
 		if toButton then
