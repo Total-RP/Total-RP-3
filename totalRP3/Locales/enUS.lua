@@ -695,7 +695,7 @@ Possible status:
 	TF_MORE_OPTIONS = "More options",
 	TF_OPEN_MOUNT = "Show mount page",
 	TF_PLAY_THEME = "Play character theme",
-	TF_PLAY_THEME_TT = "|cffffff00Click:|r Play |cff00ff00%s\n|cffffff00Right-click:|r Stop theme",
+	TF_PLAY_THEME_TT = "Play %s",
 	TF_IGNORE = "Ignore character",
 	TF_IGNORE_TT = "Hide this character's profile and no longer share your profile or map location with them.",
 	TF_IGNORE_CONFIRM = "Are you sure you want to ignore this player?\n\n|cffffff00%s|r\n\n|cffff7700You can optionally enter below the reason why you ignore it. This is a personal note, it won't be visible by others and will serve as a reminder.",

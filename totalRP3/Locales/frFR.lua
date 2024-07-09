@@ -1418,8 +1418,7 @@ Change le statut de votre personnage en fonction de l'option spécifiée:
 	["TF_OPEN_COMPANION"] = "Afficher la fiche du familier",
 	["TF_OPEN_MOUNT"] = "Afficher la fiche de la monture",
 	["TF_PLAY_THEME"] = "Jouer le thème du personnage",
-	["TF_PLAY_THEME_TT"] = [=[|cffffff00Clic gauche:|r Jouer |cff00ff00%s
-|cffffff00Clic droit:|r Arrêter le thème]=],
+	["TF_PLAY_THEME_TT"] = "Jouer %s",
 	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
 {p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}

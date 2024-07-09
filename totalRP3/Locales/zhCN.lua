@@ -1203,8 +1203,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["TF_OPEN_COMPANION"] = "显示同伴页面",
 	["TF_OPEN_MOUNT"] = "显示坐骑页面",
 	["TF_PLAY_THEME"] = "播放角色主题音乐",
-	["TF_PLAY_THEME_TT"] = [=[|cffffff00点击：|r 播放音乐 |cff00ff00%s
-	|cffffff00右击：|r 停止音乐]=],
+	["TF_PLAY_THEME_TT"] = "播放音乐 %s",
 	["THANK_YOU_ROLE_AUTHOR"] = "作者",
 	["THANK_YOU_ROLE_COMMUNITY_MANAGER"] = "社区经理",
 	["THANK_YOU_ROLE_CONTRIBUTOR"] = "贡献者",

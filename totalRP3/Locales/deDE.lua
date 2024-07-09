@@ -1060,8 +1060,7 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 	["TF_OPEN_COMPANION"] = "Begleiterseite anzeigen",
 	["TF_OPEN_MOUNT"] = "Reittierseite anzeigen",
 	["TF_PLAY_THEME"] = "Charaktersoundtrack abspielen",
-	["TF_PLAY_THEME_TT"] = [=[|cffffff00Linksklick:|r Abspielen |cff00ff00%s
-|cffffff00Rechtsklick:|r Anhalten]=],
+	["TF_PLAY_THEME_TT"] = "Abspielen %s",
 	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
 {p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}

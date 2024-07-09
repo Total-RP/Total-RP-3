@@ -724,8 +724,7 @@ L = {
 	["TF_OPEN_COMPANION"] = "顯示夥伴頁面",
 	["TF_OPEN_MOUNT"] = "顯示坐騎頁面",
 	["TF_PLAY_THEME"] = "播放角色主題曲",
-	["TF_PLAY_THEME_TT"] = [=[|cffffff00Click:|r 播放 |cff00ff00%s
-|cffffff00Right-click:|r 停止播放]=],
+	["TF_PLAY_THEME_TT"] = "播放 %s",
 	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}版本 %s (build %s){/col}{/p}
 {p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
