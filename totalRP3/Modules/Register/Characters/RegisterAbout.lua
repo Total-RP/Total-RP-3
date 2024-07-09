@@ -927,7 +927,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			adapter = function(buttonStructure, unitID)
 				local theme = getUnitIDTheme(unitID);
 				if theme then
-					buttonStructure.tooltipSub = loc.TF_PLAY_THEME_TT:format(Utils.music.getTitle(theme));
+					buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TF_PLAY_THEME_TT:format(Utils.music.getTitle(theme))) .. "\n" ..  TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_ABOUT_MUSIC_STOP);
 				end
 			end,
 			tooltip = loc.TF_PLAY_THEME,

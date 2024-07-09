@@ -1165,8 +1165,7 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 	["TF_OPEN_COMPANION"] = "Mostrar página del compañero",
 	["TF_OPEN_MOUNT"] = "Mostrar página de montura",
 	["TF_PLAY_THEME"] = "Sonar tema del personaje",
-	["TF_PLAY_THEME_TT"] = [=[|cffffff00Clic:|r Tocar |cff00ff00%s
-|cffffff00Clic-derecho:|r Parar tema]=],
+	["TF_PLAY_THEME_TT"] = "Tocar %s",
 	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Versión %s (build %s){/col}{/p}
 {p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}

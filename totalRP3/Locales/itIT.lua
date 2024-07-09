@@ -471,8 +471,7 @@ Ci sono diverse maniere per farlo:|c0000ff00
 	["TF_OPEN_COMPANION"] = "Mostra pagina compagno",
 	["TF_OPEN_MOUNT"] = "Mostra pagina cavalcatura",
 	["TF_PLAY_THEME"] = "Avvia tema personaggio",
-	["TF_PLAY_THEME_TT"] = [=[|cffffff00Clicca:|r Avvia |cff00ff00%s
-|cffffff00Clic-destro:|r Ferma tema]=],
+	["TF_PLAY_THEME_TT"] = "Avvia %s",
 	["UI_CLOSE_ALL"] = "Chiudi tutto",
 	["UI_COLOR_BROWSER_SELECT"] = "Seleziona colore",
 	["UI_COMPANION_BROWSER_HELP"] = "Seleziona un animale per la battaglia",

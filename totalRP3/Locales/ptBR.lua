@@ -1167,8 +1167,7 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["TF_OPEN_COMPANION"] = "Mostrar página do companheiro",
 	["TF_OPEN_MOUNT"] = "Exibir página de montarias",
 	["TF_PLAY_THEME"] = "Tocar tema do personagem",
-	["TF_PLAY_THEME_TT"] = [=[|cffffff00Clique:|r Tocar |cff00ff00%s
-|cffffff00Duplo-clique:|r Parar tema]=],
+	["TF_PLAY_THEME_TT"] = "Tocar %s",
 	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Versão %s (build %s){/col}{/p}
 {p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
