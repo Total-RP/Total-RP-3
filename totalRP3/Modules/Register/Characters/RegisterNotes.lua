@@ -118,7 +118,7 @@ function TRP3_API.register.inits.notesInit()
 				openNotesTab();
 			end,
 			tooltip = loc.REG_NOTES_PROFILE,
-			tooltipSub = "\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_NOTES_PROFILE_TT),
+			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_NOTES_PROFILE_TT),
 			icon = Ellyb.Icon(TRP3_InterfaceIcons.TargetNotes),
 		});
 	end)
