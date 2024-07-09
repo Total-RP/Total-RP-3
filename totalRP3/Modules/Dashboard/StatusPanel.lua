@@ -16,6 +16,20 @@ local function IsRoleplayExperienceLevel(level)
 	return currentExperience == level;
 end
 
+local function GetRoleplayExperienceButtonText(selection)
+	local status = selection:GetData();
+	local text = TRP3_MenuUtil.GetElementText(selection);
+
+	local icon = TRP3_API.GetRoleplayExperienceIcon(status);
+	if icon and C_Texture.GetAtlasInfo(icon) then
+		text = string.join(" ", "|A:" .. icon .. ":16:16|a ", text);
+	elseif icon and GetFileIDFromPath(icon) then
+		text = string.join(" ", "|T" .. icon .. ":16:16|t ", text);
+	end
+
+	return text;
+end
+
 local function SetRoleplayExperienceLevel(level)
 	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
 	currentUser:SetRoleplayExperience(level);
@@ -89,6 +103,7 @@ function TRP3_DashboardStatusPanelMixin:OnShow()
 	self.XPStatusLabel:SetText(L.DB_STATUS_XP);
 	self.RPStatusMenu:SetSelectionTranslator(GetRoleplayStatusButtonText);
 	self.RPStatusMenu:SetupMenu(GenerateRPStatusMenu);
+	self.XPStatusMenu:SetSelectionTranslator(GetRoleplayExperienceButtonText);
 	self.XPStatusMenu:SetupMenu(GenerateXPStatusMenu);
 end
 

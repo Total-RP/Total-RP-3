@@ -308,9 +308,7 @@ L = {
 	["DB_STATUS_CURRENTLY_OOC"] = "其他資訊（OOC）",
 	["DB_STATUS_RP"] = "角色狀態",
 	["DB_STATUS_RP_IC"] = "進入角色（IC）",
-	["DB_STATUS_RP_IC_TT"] = "這表示你正在扮演你的角色，所有你的行動都不再依據你本人的好惡抉擇，而是衷於你所設定的角色性格來起心動念。",
 	["DB_STATUS_RP_OOC"] = "脫離角色（OOC）",
-	["DB_STATUS_RP_OOC_TT"] = "你已經脫離你的角色狀態了，你的行為不再依據他／她的性格和行事風格。",
 	["DB_TUTO_1"] = [=[|cffffff00角色狀態|r 指示你是進入角色還是脫離角色扮演的狀態。
 
 |cffffff00扮演程度|r 顯示你是菜鳥、老鳥還是志願的教學者。
