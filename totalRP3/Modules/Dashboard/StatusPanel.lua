@@ -16,6 +16,12 @@ local function IsRoleplayExperienceLevel(level)
 	return currentExperience == level;
 end
 
+local function IsWalkupFriendly(walkup)
+	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	local currentWalkup = currentUser:GetWalkup();
+	return currentWalkup == walkup;
+end
+
 local function GetRoleplayExperienceButtonText(selection)
 	local status = selection:GetData();
 	local text = TRP3_MenuUtil.GetElementText(selection);
@@ -48,10 +54,14 @@ local function GetRoleplayStatusButtonText(selection)
 	return text;
 end
 
-
 local function SetRoleplayStatus(status)
 	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
 	currentUser:SetRoleplayStatus(status);
+end
+
+local function SetWalkup(walkup)
+	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	currentUser:SetWalkup(walkup);
 end
 
 local function GenerateRPStatusMenu(_, rootDescription)
@@ -67,6 +77,22 @@ local function GenerateRPStatusMenu(_, rootDescription)
 		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_RP_OOC, IsRoleplayStatus, SetRoleplayStatus, status);
 		TRP3_MenuUtil.AttachTexture(elementDescription, [[Interface\COMMON\Indicator-Red]]);
 		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_RP_OOC_TT);
+	end
+end
+
+local function GenerateWalkupMenu(_, rootDescription)
+	do  -- Walkup Yes
+		local walkup = AddOn_TotalRP3.Enums.WALKUP.YES;
+		local elementDescription = rootDescription:CreateRadio(L.CM_YES, IsWalkupFriendly, SetWalkup, walkup);
+		TRP3_MenuUtil.AttachTexture(elementDescription, [[Interface\AddOns\totalRP3\Resources\UI\ui-walkup.tga]]);
+		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_WU_YES_TT);
+	end
+
+	do  -- Walkup No
+		local walkup = AddOn_TotalRP3.Enums.WALKUP.NO;
+		local elementDescription = rootDescription:CreateRadio(L.CM_NO, IsWalkupFriendly, SetWalkup, walkup);
+		TRP3_MenuUtil.AttachTexture(elementDescription);
+		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_WU_NO_TT);
 	end
 end
 
@@ -100,9 +126,11 @@ end
 function TRP3_DashboardStatusPanelMixin:OnShow()
 	self:SetTitleText(L.DB_STATUS);
 	self.RPStatusLabel:SetText(L.DB_STATUS_RP);
+	self.WUStatusLabel:SetText(L.DB_STATUS_WU);
 	self.XPStatusLabel:SetText(L.DB_STATUS_XP);
 	self.RPStatusMenu:SetSelectionTranslator(GetRoleplayStatusButtonText);
 	self.RPStatusMenu:SetupMenu(GenerateRPStatusMenu);
+	self.WUStatusMenu:SetupMenu(GenerateWalkupMenu);
 	self.XPStatusMenu:SetSelectionTranslator(GetRoleplayExperienceButtonText);
 	self.XPStatusMenu:SetupMenu(GenerateXPStatusMenu);
 end
@@ -114,6 +142,7 @@ function TRP3_DashboardStatusPanelMixin:OnRegisterDataUpdated(_, characterID, _,
 		return;
 	else
 		self.RPStatusMenu:Update();
+		self.WUStatusMenu:Update();
 		self.XPStatusMenu:Update();
 	end
 end

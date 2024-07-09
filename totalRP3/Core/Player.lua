@@ -198,6 +198,10 @@ function Player:IsInCharacter()
 	return self:GetRoleplayStatus() ~= Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
 end
 
+function Player:IsWalkupFriendly()
+	return self:GetWalkup() ~= Enums.WALKUP.NO;
+end
+
 function Player:GetRoleplayLanguage()
 	return nil;  -- Deprecated, will remove soon.
 end
@@ -219,6 +223,10 @@ end
 
 function Player:GetCurrentlyText()
 	return self:GetInfo("character/CU");
+end
+
+function Player:GetWalkup()
+	return self:GetInfo("character/WU") or AddOn_TotalRP3.Enums.WALKUP.NO;
 end
 
 function Player:GetMiscFieldByType(miscType)
@@ -434,6 +442,10 @@ end
 
 function CurrentUser:SetCurrentlyText(currentlyText)
 	UpdateProfileField(self, "character", "CU", currentlyText);
+end
+
+function CurrentUser:SetWalkup(walkup)
+	UpdateProfileField(self, "character", "WU", walkup);
 end
 
 function CurrentUser:SetFirstName(firstName)
