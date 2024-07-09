@@ -426,11 +426,7 @@ Seus perfis, perfis de companheiro e configurações serão temporariamente depo
 	["DB_STATUS_LC_TT"] = "Define a sua linguagem de encenação preferida. Esta será partilhada com outros utilizadores de addon's de RP compatíveis. |cffff9900Note:|r Isto faz |cffffff0000não|r alterar o idioma da interface de utilizador do Total RP 3. Esta opção pode ser encontrada na página. |cfffff569Configurações Avançadas|r. ",
 	["DB_STATUS_RP"] = "Estado do personagem",
 	["DB_STATUS_RP_IC"] = "Interpretando",
-	["DB_STATUS_RP_IC_TT"] = [=[Isso significa que você está atualmente interpretando seu personagem.
-Todas as suas ações vão ser vistas como sendo o seu personagem a fazê-las.]=],
 	["DB_STATUS_RP_OOC"] = "Não interpretando",
-	["DB_STATUS_RP_OOC_TT"] = [=[Você não está interpretando seu personagem.
-Suas ações não podem ser associadas a ele/ela.]=],
 	["DB_TUTO_1"] = [=[|cffffff00O estado do personagem|r indica se você está atualmente interpretando seu personagem ou não.
 
 |cffffff00O estado do roleplayer|r permite que você mostre que é um iniciante ou um veterano disposto a ajudar novatos.

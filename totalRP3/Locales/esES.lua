@@ -434,11 +434,7 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["DB_STATUS_LC_DEFAULT"] = "Por defecto (%1$s)",
 	["DB_STATUS_RP"] = "Estado de personaje",
 	["DB_STATUS_RP_IC"] = "En rol",
-	["DB_STATUS_RP_IC_TT"] = [=[Significa que actualmente estás interpretando tu personaje.
-Todas tus acciones serán interpretadas como si tu personaje las realizara.]=],
 	["DB_STATUS_RP_OOC"] = "Fuera de rol",
-	["DB_STATUS_RP_OOC_TT"] = [=[Estás fuera de rol.
-Tus acciones no se asociarán a tu personaje.]=],
 	["DB_TUTO_1"] = [=[|cffffff00El estado del personaje|r indica si actualmente estás interpretando a tu personaje.
 
 |cffffff00El estado del jugador|r indica si eres un jugador de rol principiante o un veterano dispuesto a ayudar.
