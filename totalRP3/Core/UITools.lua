@@ -64,6 +64,18 @@ local tiledBackgrounds = {
 	[37] = { bgFile = "interface\\garrison\\garrisonshipmissionparchment", tile = true, tileSize = 256 },
 	[38] = { bgFile = "interface\\garrison\\garrisonuibackground", tile = true, tileSize = 256 },
 	[39] = { bgFile = "interface\\garrison\\garrisonuibackground2", tile = true, tileSize = 256 },
+	[40] = { bgFile = "interface\\framegeneral\\uiframethewarwithinbackground", tile = true, tileSize = 256 },
+	[41] = { bgFile = "interface\\credits\\creditsscreenbackground0wow", tile = true, tileSize = 512 },
+	[42] = { bgFile = "interface\\credits\\creditsscreenbackground1bc", tile = true, tileSize = 512 },
+	[43] = { bgFile = "interface\\credits\\creditsscreenbackground2wotlk", tile = true, tileSize = 512 },
+	[44] = { bgFile = "interface\\credits\\creditsscreenbackground3cataclysm", tile = true, tileSize = 512 },
+	[45] = { bgFile = "interface\\credits\\creditsscreenbackground4mop", tile = true, tileSize = 512 },
+	[46] = { bgFile = "interface\\credits\\creditsscreenbackground5wod", tile = true, tileSize = 512 },
+	[47] = { bgFile = "interface\\credits\\creditsscreenbackground6legion", tile = true, tileSize = 512 },
+	[48] = { bgFile = "interface\\credits\\creditsscreenbackground7bfa", tile = true, tileSize = 512 },
+	[49] = { bgFile = "interface\\credits\\creditsscreenbackground8shadowlands", tile = true, tileSize = 512 },
+	[50] = { bgFile = "interface\\credits\\creditsscreenbackground9dragonflight", tile = true, tileSize = 512 },
+	[51] = { bgFile = "interface\\credits\\creditsscreenbackground10thewarwithin", tile = true, tileSize = 512 },
 };
 
 function TRP3_API.ui.frame.getTiledBackground(index)
