@@ -106,13 +106,13 @@ local function getRelationTexture(profileID)
 end
 TRP3_API.register.relation.getRelationTexture = getRelationTexture;
 
-local function getRelationColors(profileID)
+local function getRelationColor(profileID)
 	local relation = getRelation(profileID);
 	if relation.color then
 		return TRP3_API.CreateColorFromHexString(relation.color);
 	end
 end
-TRP3_API.register.relation.getRelationColors = getRelationColors;
+TRP3_API.register.relation.getRelationColor = getRelationColor;
 
 local function getColor(relation)
 	local relationColor = getRelationInfo(relation).color;

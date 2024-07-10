@@ -32,7 +32,7 @@ local refreshList;
 local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
 local getCompanionProfiles = TRP3_API.companions.register.getProfiles;
-local getRelationColors = TRP3_API.register.relation.getRelationColors;
+local getRelationColor = TRP3_API.register.relation.getRelationColor;
 local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
 local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 local profileIDISFilteredForMatureContent = TRP3_API.register.profileIDISFilteredForMatureContent;
@@ -276,7 +276,7 @@ local function decorateCharacterLine(line, characterIndex)
 		leftTooltipText = leftTooltipText .. "\n|r" .. loc.REG_LIST_CHAR_TT_DATE:format(formatDate, profile.zone);
 	end
 	-- Middle column : relation
-	local relation, relationColor = getRelationText(profileID, true), getRelationColors(profileID);
+	local relation, relationColor = getRelationText(profileID, true), getRelationColor(profileID);
 	local color = (relationColor or TRP3_API.Colors.White):GenerateHexColorMarkup();
 	if relation:len() > 0 then
 		local middleTooltipTitle, middleTooltipText = relation, getRelationTooltipText(profileID, profile);

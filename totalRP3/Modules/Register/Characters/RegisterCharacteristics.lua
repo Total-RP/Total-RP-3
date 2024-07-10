@@ -1315,7 +1315,7 @@ end
 local function setupRelationButton(profileID, profile)
 	setupIconButton(TRP3_RegisterCharact_ActionButton, getRelationTexture(profileID));
 	local relationColoredName = getRelationText(profileID);
-	local relationColor = TRP3_API.register.relation.getRelationColors(profileID);
+	local relationColor = TRP3_API.register.relation.getRelationColor(profileID);
 	if relationColor then
 		relationColoredName = relationColor:WrapTextInColorCode(relationColoredName);
 	end
