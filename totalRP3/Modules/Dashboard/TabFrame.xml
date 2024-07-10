@@ -8,7 +8,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_DashboardTabFrame" mixin="TRP3_DashboardTabFrameMixin" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 		</KeyValues>
 		<Frames>
 			<Frame parentKey="TabBar" frameLevel="1">
@@ -27,8 +27,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="TOPLEFT" x="5" y="-5"/>
-					<Anchor point="BOTTOMRIGHT" x="-20" y="5"/>
+					<Anchor point="TOPLEFT" x="8" y="-8"/>
+					<Anchor point="BOTTOMRIGHT" x="-24" y="8"/>
 				</Anchors>
 				<ScrollChild>
 					<Frame>

@@ -15,38 +15,38 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size x="10" y="32"/>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture parentKey="LeftActive" atlas="uiframe-activetab-left" useAtlasSize="false" rotation="180">
+				<Texture parentKey="LeftActive" atlas="uiframe-activetab-left" useAtlasSize="false" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
 					<Size x="26" y="32"/>
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="RightActive" atlas="uiframe-activetab-right" useAtlasSize="false" rotation="180">
+				<Texture parentKey="RightActive" atlas="uiframe-activetab-right" useAtlasSize="false" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
 					<Size x="28" y="32"/>
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="-6"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="MiddleActive" atlas="_uiframe-activetab-center" useAtlasSize="false" horizTile="true" rotation="180">
+				<Texture parentKey="MiddleActive" atlas="_uiframe-activetab-center" useAtlasSize="false" horizTile="true" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
 					<Size x="1" y="32"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeKey="$parent.RightActive" relativePoint="TOPRIGHT"/>
 						<Anchor point="TOPRIGHT" relativeKey="$parent.LeftActive" relativePoint="TOPLEFT"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="Left" atlas="uiframe-tab-left" useAtlasSize="false" rotation="180">
+				<Texture parentKey="Left" atlas="uiframe-tab-left" useAtlasSize="false" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
 					<Size x="27" y="28"/>
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="Right" atlas="uiframe-tab-right" useAtlasSize="false" rotation="180">
+				<Texture parentKey="Right" atlas="uiframe-tab-right" useAtlasSize="false" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
 					<Size x="29" y="28"/>
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="-6"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="Middle" atlas="_uiframe-tab-center" useAtlasSize="false" horizTile="true" rotation="180">
+				<Texture parentKey="Middle" atlas="_uiframe-tab-center" useAtlasSize="false" horizTile="true" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
 					<Size x="1" y="28"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeKey="$parent.Right" relativePoint="TOPRIGHT"/>
@@ -55,20 +55,20 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 			<Layer level="HIGHLIGHT">
-				<Texture parentKey="LeftHighlight" atlas="uiframe-tab-left" useAtlasSize="false" alphaMode="ADD" alpha="0.4" rotation="180">
+				<Texture parentKey="LeftHighlight" atlas="uiframe-tab-left" useAtlasSize="false" alphaMode="ADD" alpha="0.4" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
 					<Size x="27" y="28"/>
 					<Anchors>
 						<Anchor point="TOPRIGHT" relativeKey="$parent.Left"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="MiddleHighlight" atlas="_uiframe-tab-center" useAtlasSize="false" horizTile="true" alphaMode="ADD" alpha="0.4" rotation="180">
+				<Texture parentKey="MiddleHighlight" atlas="_uiframe-tab-center" useAtlasSize="false" horizTile="true" alphaMode="ADD" alpha="0.4" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
 					<Size x="1" y="28"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeKey="$parent.Middle" relativePoint="TOPLEFT"/>
 						<Anchor point="TOPRIGHT" relativeKey="$parent.Middle" relativePoint="TOPRIGHT"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="RightHighlight" atlas="uiframe-tab-right" useAtlasSize="false" alphaMode="ADD" alpha="0.4" rotation="180">
+				<Texture parentKey="RightHighlight" atlas="uiframe-tab-right" useAtlasSize="false" alphaMode="ADD" alpha="0.4" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
 					<Size x="29" y="28"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeKey="$parent.Right"/>

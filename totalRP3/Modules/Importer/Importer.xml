@@ -9,13 +9,19 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ImporterTemplate" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_LIGHT_GREY" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 		</KeyValues>
 		<Anchors>
-			<Anchor point="TOPRIGHT" x="2" y="-28" />
-			<Anchor point="BOTTOMLEFT" x="2" y="0" />
+			<Anchor point="TOPLEFT" y="-30"/>
+			<Anchor point="BOTTOMRIGHT"/>
 		</Anchors>
 		<Frames>
+			<Frame parentKey="Background" inherits="TRP3_PageBackgroundProfiles">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="4" y="-4"/>
+					<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+				</Anchors>
+			</Frame>
 			<Frame name="$parentList" inherits="TRP3_InnerFrame">
 				<Size x="0" y="350" />
 				<Anchors>

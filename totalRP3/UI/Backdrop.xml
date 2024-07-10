@@ -76,12 +76,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</KeyValues>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<!-- TODO: Convert to a file asset for Classic. -->
-				<Texture atlas="Professions-Recipe-Background-Engineering">
+				<Texture file="Interface/AddOns/totalRP3/Resources/UI/ui-frame-settings-background">
+					<KeyValues>
+						<KeyValue key="sourceWidth" value="675" type="number"/>
+						<KeyValue key="sourceHeight" value="548" type="number"/>
+					</KeyValues>
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT"/>
 					</Anchors>
 					<Color r="0.8" g="0.8" b="0.8"/>
+					<TexCoords left="0.0009765625" right="0.66015625" top="0.0009765625" bottom="0.5361328125"/>
 				</Texture>
 			</Layer>
 		</Layers>
@@ -93,15 +97,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</KeyValues>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<!-- TODO: Convert to a file asset for Classic. -->
-				<Texture atlas="islands-queue-background">
+				<Texture file="Interface/AddOns/totalRP3/Resources/UI/ui-frame-profiles-background">
 					<KeyValues>
+						<KeyValue key="sourceWidth" value="922" type="number"/>
+						<KeyValue key="sourceHeight" value="620" type="number"/>
 						<KeyValue key="extraWidth" value="50" type="number"/>
 						<KeyValue key="extraHeight" value="50" type="number"/>
 					</KeyValues>
 					<Anchors>
 						<Anchor point="TOPLEFT" x="-50" y="50"/>
 					</Anchors>
+					<TexCoords left="0.0009765625" right="0.9013671875" top="0.0009765625" bottom="0.6064453125"/>
 				</Texture>
 			</Layer>
 		</Layers>

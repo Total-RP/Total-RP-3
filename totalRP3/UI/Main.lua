@@ -87,15 +87,6 @@ TRP3_MainFrameLayoutMixin = CreateFromMixins(TRP3_MainFrameMixin);
 
 function TRP3_MainFrameLayoutMixin:OnLoad()
 	TRP3_MainFrameMixin.OnLoad(self);
-
-	if C_Texture.GetAtlasInfo("UI-Frame-Neutral-BackgroundTile") then
-		self.Background:SetAtlas("UI-Frame-Neutral-BackgroundTile");
-		self.Background:SetVertexColor(0.6, 0.6, 0.6, 1);
-	else
-		self.Background:SetAtlas("Garr_InfoBox-BackgroundTile");
-		self.Background:SetVertexColor(0.4, 0.4, 0.4, 1);
-	end
-
 	self.windowLayout = nil;  -- Aliases configuration table; set during addon load.
 	TRP3_Addon.RegisterCallback(self, "WORKFLOW_ON_FINISH", "OnLayoutLoaded");
 end
@@ -135,4 +126,33 @@ function TRP3_MainFrameLayoutMixin:SaveLayout()
 	self.windowLayout.w = width;
 	self.windowLayout.h = height;
 	LibWindow.SavePosition(self);
+end
+
+TRP3_SidebarLogoMixin = {};
+
+function TRP3_SidebarLogoMixin:OnLoad()
+	TRP3_Addon.RegisterCallback(self, "CONFIGURATION_CHANGED", "OnConfigurationChanged");
+end
+
+function TRP3_SidebarLogoMixin:OnShow()
+	self:Update();
+end
+
+function TRP3_SidebarLogoMixin:OnConfigurationChanged(_, key)
+	if key == "secret_party" then
+		self:Update();
+	end
+end
+
+function TRP3_SidebarLogoMixin:Update()
+	local isSeriousDay = TRP3_API.globals.serious_day;
+	local isSeriousTime = TRP3_API.configuration.getValue("secret_party");
+
+	if isSeriousDay or isSeriousTime then
+		self:SetTexture([[Interface\AddOns\totalRP3\Resources\UI\ui-sidebar-logo-alt]]);
+		self:SetVertexColor(1, 1, 1, 1);
+	else
+		self:SetTexture([[Interface\AddOns\totalRP3\Resources\UI\ui-sidebar-logo]]);
+		self:SetVertexColor(0.5, 0.4, 0.3, 0.5);
+	end
 end

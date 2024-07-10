@@ -75,15 +75,21 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 			</Frame>
-			<Frame name="TRP3_RegisterDefault" inherits="TRP3_TooltipBackdropEdgeTemplate" useParentLevel="true">
+			<Frame name="TRP3_RegisterDefault" useParentLevel="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 				<Frames>
+					<Frame parentKey="Background" inherits="TRP3_PageBackgroundParchment">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="4" y="-4"/>
+							<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+						</Anchors>
+					</Frame>
 					<Frame name="TRP3_RegisterDefaultView">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="10" y="-20"/>

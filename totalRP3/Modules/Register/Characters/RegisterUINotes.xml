@@ -6,9 +6,17 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Register Notes panel -->
-	<Frame name="TRP3_RegisterNotesTemplate" virtual="true">
+	<Frame name="TRP3_RegisterNotesTemplate" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+		</KeyValues>
 		<Frames>
-			<Frame parentKey="Background" inherits="TRP3_PageBackgroundParchment" setAllPoints="true"/>
+			<Frame parentKey="Background" inherits="TRP3_PageBackgroundParchment">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="4" y="-4"/>
+					<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+				</Anchors>
+			</Frame>
 			<Frame name="TRP3_RegisterNotesView">
 				<Anchors>
 					<Anchor point="TOPLEFT" x="10" y="-20"/>
@@ -18,7 +26,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Frames>
 					<Frame name="TRP3_RegisterNotesViewContainer" inherits="TRP3_GroupBoxTemplate">
 						<KeyValues>
-							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 						</KeyValues>
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="0"/>

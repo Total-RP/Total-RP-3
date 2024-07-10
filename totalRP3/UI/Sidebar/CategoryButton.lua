@@ -3,14 +3,6 @@
 
 TRP3_CategoryButtonArtMixin = {};
 
-local function GetEffectiveButtonState(button, overrideState)
-	if not button:IsEnabled() then
-		return "DISABLED";
-	else
-		return overrideState;
-	end
-end
-
 function TRP3_CategoryButtonArtMixin:OnDisable()
 	self:SetVisualState(self:GetButtonState());
 end
@@ -20,15 +12,19 @@ function TRP3_CategoryButtonArtMixin:OnEnable()
 end
 
 function TRP3_CategoryButtonArtMixin:OnShow()
-	self:SetVisualState(GetEffectiveButtonState(self, "NORMAL"));
+	self:SetVisualState(self:GetButtonState());
 end
 
 function TRP3_CategoryButtonArtMixin:OnMouseDown()
-	self:SetVisualState(GetEffectiveButtonState(self, "PUSHED"));
+	if self:IsEnabled() then
+		self:SetVisualState("PUSHED");
+	end
 end
 
 function TRP3_CategoryButtonArtMixin:OnMouseUp()
-	self:SetVisualState(GetEffectiveButtonState(self, "NORMAL"));
+	if self:IsEnabled() then
+		self:SetVisualState("NORMAL");
+	end
 end
 
 function TRP3_CategoryButtonArtMixin:SetVisualState(state)

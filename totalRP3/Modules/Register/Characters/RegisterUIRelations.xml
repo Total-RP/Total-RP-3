@@ -126,7 +126,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Button parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
 								<Size x="55" y="55"/>
 								<HighlightTexture parentKey="HighlightBorder" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-glow" alphaMode="ADD">
-									<Color r="1" g="0.675" b="0.125"/>
+									<Color r="0.92" g="0.68" b="0"/>
 								</HighlightTexture>
 								<Anchors>
 									<Anchor point="LEFT" x="20" y="-10"/>

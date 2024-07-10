@@ -9,7 +9,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_DashboardStatusPanelTemplate" virtual="true" inherits="TRP3_GroupBoxTemplate" mixin="TRP3_DashboardStatusPanelMixin">
 		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 		</KeyValues>
 		<Layers>
 			<Layer level="OVERLAY">

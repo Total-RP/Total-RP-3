@@ -381,14 +381,22 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<!-- Register characteristics panel -->
-	<Frame name="TRP3_RegisterCharactTemplate" virtual="true">
+	<Frame name="TRP3_RegisterCharactTemplate" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+		</KeyValues>
 		<Frames>
-			<Frame parentKey="Background" inherits="TRP3_PageBackgroundParchment" setAllPoints="true"/>
+			<Frame parentKey="Background" inherits="TRP3_PageBackgroundParchment">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="4" y="-4"/>
+					<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+				</Anchors>
+			</Frame>
 			<!-- CONSULT MODE -->
 			<Frame name="TRP3_RegisterCharact_NamePanel" inherits="TRP3_GroupBoxTemplate">
 				<Size x="0" y="70"/>
 				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-20"/>
@@ -432,7 +440,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Frame>
 			<Frame name="TRP3_RegisterCharact_CharactPanel" inherits="TRP3_GroupBoxTemplate">
 				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_NamePanel" y="-10"/>
@@ -453,14 +461,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<ScrollFrame name="TRP3_RegisterCharact_CharactPanel_Scroll" inherits="ScrollFrameTemplate">
 						<KeyValues>
 							<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
-							<KeyValue key="scrollBarX" value="0" type="number"/>
+							<KeyValue key="scrollBarX" value="-5" type="number"/>
 							<KeyValue key="scrollBarTopY" value="-2" type="number"/>
 							<KeyValue key="scrollBarBottomY" value="4" type="number"/>
 							<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
 						</KeyValues>
 						<Anchors>
-							<Anchor point="TOPLEFT" x="5" y="-13"/>
-							<Anchor point="BOTTOMRIGHT" x="-20" y="5"/>
+							<Anchor point="TOPLEFT" x="5" y="-17"/>
+							<Anchor point="BOTTOMRIGHT" x="-20" y="10"/>
 						</Anchors>
 						<ScrollChild>
 							<Frame name="TRP3_RegisterCharact_CharactPanel_Container">
@@ -488,7 +496,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Button name="TRP3_RegisterCharact_ActionButton" inherits="TRP3_BorderedIconTemplate">
 				<Size x="45" y="45" />
 				<HighlightTexture parentKey="HighlightBorder" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-glow" alphaMode="ADD">
-					<Color r="1" g="0.675" b="0.125"/>
+					<Color r="0.92" g="0.68" b="0"/>
 				</HighlightTexture>
 				<Anchors>
 					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_NamePanel" x="20" y="0"/>
@@ -499,7 +507,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Frame name="TRP3_RegisterCharact_Edit_NamePanel" inherits="TRP3_GroupBoxTemplate">
 				<Size x="0" y="70"/>
 				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-20"/>
@@ -553,7 +561,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Frame name="TRP3_RegisterCharact_Edit_CharactPanel" inherits="TRP3_GroupBoxTemplate">
 				<Size x="0" y="70"/>
 				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-10" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_NamePanel"/>
@@ -563,14 +571,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<ScrollFrame name="TRP3_RegisterCharact_Edit_CharactPanel_Scroll" inherits="ScrollFrameTemplate">
 						<KeyValues>
 							<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
-							<KeyValue key="scrollBarX" value="0" type="number"/>
+							<KeyValue key="scrollBarX" value="-5" type="number"/>
 							<KeyValue key="scrollBarTopY" value="-2" type="number"/>
 							<KeyValue key="scrollBarBottomY" value="4" type="number"/>
 							<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
 						</KeyValues>
 						<Anchors>
-							<Anchor point="TOPLEFT" x="5" y="-13"/>
-							<Anchor point="BOTTOMRIGHT" x="-20" y="5"/>
+							<Anchor point="TOPLEFT" x="5" y="-17"/>
+							<Anchor point="BOTTOMRIGHT" x="-20" y="10"/>
 						</Anchors>
 						<ScrollChild>
 							<Frame name="TRP3_RegisterCharact_Edit_CharactPanel_Container">

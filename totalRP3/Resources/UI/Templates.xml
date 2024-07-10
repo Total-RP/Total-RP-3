@@ -42,4 +42,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Texture name="TRP3_UIFrameMediumMaskTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-md-mask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE" virtual="true">
 		<Size x="128" y="128"/>
 	</Texture>
+
+	<Button name="TRP3_RedButtonMenuArtTemplate" virtual="true">
+		<NormalTexture file="Interface\AddOns\totalRP3\Resources\UI\ui-red-buttons">
+			<TexCoords left="0.5" bottom="0.5"/>
+		</NormalTexture>
+		<PushedTexture file="Interface\AddOns\totalRP3\Resources\UI\ui-red-buttons">
+			<TexCoords left="0.5" top="0.5"/>
+		</PushedTexture>
+		<HighlightTexture file="Interface\AddOns\totalRP3\Resources\UI\ui-red-buttons" alphaMode="ADD">
+			<TexCoords right="0.5" top="0.5"/>
+		</HighlightTexture>
+	</Button>
 </Ui>
