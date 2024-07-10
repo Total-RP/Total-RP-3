@@ -35,7 +35,7 @@ local get, getDefaultProfile = TRP3_API.profile.getData, TRP3_API.profile.getDef
 getDefaultProfile().player.character = {
 	v = 1,
 	RP = TRP3_Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER,
-	WU =  TRP3_Enums.WALKUP.NO,
+	WU = TRP3_Enums.WALKUP.NO,
 }
 
 local function incrementCharacterVernum()
