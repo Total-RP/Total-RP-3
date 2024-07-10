@@ -115,19 +115,23 @@ function TRP3_DropdownButtonMixin:OnLeave()
 end
 
 function TRP3_DropdownButtonMixin:OnMouseDown()
-	self.Button:SetButtonState(self:IsEnabled() and "PUSHED" or "DISABLED");
+	if self:IsEnabled() then
+		self.Button:SetButtonState("PUSHED");
 
-	if self:IsMenuOpen() then
-		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF);
-		self:CloseMenu();
-	else
-		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-		self:OpenMenu();
+		if self:IsMenuOpen() then
+			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF);
+			self:CloseMenu();
+		else
+			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			self:OpenMenu();
+		end
 	end
 end
 
 function TRP3_DropdownButtonMixin:OnMouseUp()
-	self.Button:SetButtonState(self:IsEnabled() and "NORMAL" or "DISABLED");
+	if self:IsEnabled() then
+		self.Button:SetButtonState("NORMAL");
+	end
 end
 
 function TRP3_DropdownButtonMixin:HandlesGlobalMouseEvent(buttonName, event)
@@ -166,11 +170,18 @@ function TRP3_DropdownButtonMixin:SetMenuAnchor(anchor)
 end
 
 function TRP3_DropdownButtonMixin:IsEnabled()
-	return UIDropDownMenu_IsEnabled(self);
+	return (self.isEnabled ~= false);
 end
 
 function TRP3_DropdownButtonMixin:SetEnabled(enabled)
-	UIDropDownMenu_SetDropDownEnabled(self, enabled);
+	self.Icon:SetVertexColor((enabled and HIGHLIGHT_FONT_COLOR or DISABLED_FONT_COLOR):GetRGB());
+	self.Text:SetVertexColor((enabled and HIGHLIGHT_FONT_COLOR or DISABLED_FONT_COLOR):GetRGB());
+	self.Button:SetButtonState(enabled and "NORMAL" or "DISABLED");
+	self.isEnabled = enabled;
+
+	if not enabled and self:IsMenuOpen() then
+		self:CloseMenu();
+	end
 end
 
 function TRP3_DropdownButtonMixin:GetDefaultText()
