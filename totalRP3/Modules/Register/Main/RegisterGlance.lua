@@ -227,7 +227,8 @@ local clipboardCurrentEntries = {
 local function getGlanceMenuClipboardEntries(button, output)
 	-- If the button has no name we'll fail because we can't do a copy,
 	-- and I don't much trust our chances of doing a paste either.
-	if not button:GetName() then
+	-- Also only allow any glance menus on the player's own buttons.
+	if not button:GetName() or not button.isCurrentMine then
 		return;
 	end
 
@@ -248,12 +249,11 @@ local function getGlanceMenuClipboardEntries(button, output)
 		tinsert(output, { loc.REG_PLAYER_GLANCE_MENU_COPY, copyKey });
 	end
 
-	-- The paste operation should only be present if you have something,
-	-- and if this is your own profile.
+	-- The paste operation should only be present if you have something.
 	--
 	-- As this is a destructive operation potentially, we'll also validate
 	-- the slot ID is present since defaulting it could silently misbehave.
-	if not clipboardCurrentEntries[clipboardType] or not button.isCurrentMine or not button.slot then
+	if not clipboardCurrentEntries[clipboardType] or not button.slot then
 		return;
 	end
 
@@ -636,6 +636,19 @@ local function configTooltipAnchor()
 	return getConfigValue(CONFIG_GLANCE_TT_ANCHOR);
 end
 
+function TRP3_API.register.glance.addClickHandlers(text)
+	if not text then
+		text = "";
+	else
+		text = text .. "\n\n";
+	end
+	text = text .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT)
+		.. "\n" .. TRP3_API.FormatShortcutWithInstruction("DCLICK", loc.REG_PLAYER_GLANCE_CONFIG_TOGGLE)
+		.. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_GLANCE_CONFIG_PRESETS)
+		.. "\n" .. TRP3_API.FormatShortcutWithInstruction("DRAGDROP", loc.REG_PLAYER_GLANCE_CONFIG_REORDER);
+	return text;
+end
+
 local function displayGlanceSlots()
 	local glanceTab = getGlanceTab();
 
@@ -654,17 +667,35 @@ local function displayGlanceSlots()
 				if glance.IC and glance.IC:len() > 0 then
 					icon = glance.IC;
 				end
-				local TTText = glance.TX or "";
+				local TTText = glance.TX;
 				local glanceTitle = glance.TI or "...";
 				if not isCurrentMine and shouldCropTexts() then
 					TTText = crop(TTText, GLANCE_TOOLTIP_CROP);
 					glanceTitle = crop(glanceTitle, GLANCE_TITLE_CROP);
 				end
-				TTText = "|cffff9900" .. TTText;
+				if isCurrentMine then
+					TTText = TRP3_API.register.glance.addClickHandlers(TTText);
+				end
 				setTooltipForSameFrame(button, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
 			else
 				button:SetAlpha(0.25);
-				setTooltipForSameFrame(button);
+				if isCurrentMine then
+					local TTText;
+					local glanceTitle = loc.REG_PLAYER_GLANCE_UNUSED;
+					if glance then
+						if glance.IC and glance.IC:len() > 0 then
+							icon = glance.IC;
+						end
+						TTText = glance.TX;
+						glanceTitle = glance.TI or loc.REG_PLAYER_GLANCE_UNUSED;
+					end
+					if isCurrentMine then
+						TTText = TRP3_API.register.glance.addClickHandlers(TTText);
+					end
+					setTooltipForSameFrame(button, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
+				else
+					setTooltipForSameFrame(button);
+				end
 			end
 
 			button:SetNormalTexture("Interface\\ICONS\\" .. icon);
@@ -673,8 +704,14 @@ local function displayGlanceSlots()
 	end
 end
 
+-- Dragging & dropping a glance on the bar at the bottom of the target frame swaps the content of the glances.
+-- This then calls the REGISTER_DATA_UPDATED event, which refreshes the glance bar, which causes the drop event
+-- to be called again, breaking everything. This was added to stop the duplicate call from doing anything.
+local draggingGlance = false;
+
 local function onGlanceDragStart(button)
 	if button.isCurrentMine and button.data then
+		draggingGlance = true;
 		SetCursor("Interface\\ICONS\\" .. (button.data.IC or TRP3_InterfaceIcons.Default));
 	end
 end
@@ -700,7 +737,8 @@ end
 
 local function onGlanceDragStop(button)
 	ResetCursor();
-	if button.isCurrentMine and button and button.slot then
+	if draggingGlance and button.isCurrentMine and button and button.slot then
+		draggingGlance = false;
 		local from, to = button.slot;
 		local toButton = GetGlanceDropTarget();
 		if toButton then
