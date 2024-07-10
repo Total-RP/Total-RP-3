@@ -1314,7 +1314,12 @@ end
 
 local function setupRelationButton(profileID, profile)
 	setupIconButton(TRP3_RegisterCharact_ActionButton, getRelationTexture(profileID));
-	setTooltipAll(TRP3_RegisterCharact_ActionButton, "LEFT", 0, 0, loc.CM_ACTIONS, loc.REG_RELATION_BUTTON_TT:format(getRelationText(profileID), getRelationTooltipText(profileID, profile)));
+	local relationColoredName = getRelationText(profileID);
+	local relationColor = TRP3_API.register.relation.getRelationColor(profileID);
+	if relationColor then
+		relationColoredName = relationColor:WrapTextInColorCode(relationColoredName);
+	end
+	setTooltipAll(TRP3_RegisterCharact_ActionButton, "LEFT", 0, 0, loc.CM_ACTIONS, loc.REG_RELATION_BUTTON_TT:format(relationColoredName, getRelationTooltipText(profileID, profile)));
 end
 
 local function saveCharacteristics()

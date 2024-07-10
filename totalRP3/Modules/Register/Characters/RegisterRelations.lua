@@ -83,9 +83,9 @@ local function getRelation(profileID)
 end
 TRP3_API.register.relation.getRelation = getRelation;
 
-local function getRelationText(profileID)
+local function getRelationText(profileID, ignoreNone)
 	local relation = getRelation(profileID);
-	if relation.id == getRelation().id then
+	if relation.id == DEFAULT_RELATIONS.NONE.id and ignoreNone then
 		return "";
 	end
 	return relation.name or loc:GetText("REG_RELATION_" .. relation.id);
@@ -106,13 +106,13 @@ local function getRelationTexture(profileID)
 end
 TRP3_API.register.relation.getRelationTexture = getRelationTexture;
 
-local function getRelationColors(profileID)
+local function getRelationColor(profileID)
 	local relation = getRelation(profileID);
 	if relation.color then
 		return TRP3_API.CreateColorFromHexString(relation.color);
 	end
 end
-TRP3_API.register.relation.getRelationColors = getRelationColors;
+TRP3_API.register.relation.getRelationColor = getRelationColor;
 
 local function getColor(relation)
 	local relationColor = getRelationInfo(relation).color;
@@ -349,7 +349,12 @@ TRP3_API.register.inits.relationsInit = function()
 			onClick = onTargetButtonClicked,
 			adapter = function(buttonStructure, unitID)
 				local profileID = hasProfile(unitID);
-				buttonStructure.tooltip = loc.REG_RELATION .. ": " .. TRP3_API.register.relation.getRelationText(profileID);
+				local relationColoredName = getRelationText(profileID);
+				local relationColor = TRP3_API.register.relation.getRelationColor(profileID);
+				if relationColor then
+					relationColoredName = relationColor:WrapTextInColorCode(relationColoredName);
+				end
+				buttonStructure.tooltip = loc.REG_RELATION .. ": " .. relationColoredName;
 				buttonStructure.tooltipSub = TRP3_API.register.relation.getRelationTooltipText(profileID, getProfile(profileID)) .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_RELATION_TARGET);
 				buttonStructure.icon = TRP3_API.register.relation.getRelationTexture(profileID);
 			end,
