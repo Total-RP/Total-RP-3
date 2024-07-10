@@ -181,8 +181,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<DisabledFont style="GameFontNormal"/>
 		<ButtonText parentKey="Text" wordwrap="false" justifyH="CENTER">
 			<Anchors>
-				<Anchor point="LEFT" x="16"/>
-				<Anchor point="RIGHT" x="-16"/>
+				<Anchor point="LEFT" x="12"/>
+				<Anchor point="RIGHT" x="-12"/>
 			</Anchors>
 		</ButtonText>
 		<Scripts>
