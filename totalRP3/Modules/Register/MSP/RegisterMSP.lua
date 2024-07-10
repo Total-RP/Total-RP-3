@@ -52,13 +52,13 @@ local function onStart()
 		end
 		if character.RP == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER then
 			if character.WU == AddOn_TotalRP3.Enums.WALKUP.YES then
-			  msp.my['FC'] = "3";
+				msp.my['FC'] = "3";
 			else
-			  msp.my['FC'] = "2";
+				msp.my['FC'] = "2";
 			end
-		  else
-			  msp.my['FC'] = "1";
-		  end
+		else
+			msp.my['FC'] = "1";
+		end
 	end
 
 	local function removeTextTags(text)
