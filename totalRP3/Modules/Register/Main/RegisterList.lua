@@ -30,7 +30,6 @@ local deleteProfile, deleteCharacter, getProfileList = TRP3_API.register.deleteP
 local ignoreID = TRP3_API.register.ignoreID;
 local refreshList;
 local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
-local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
 local getCompanionProfiles = TRP3_API.companions.register.getProfiles;
 local getRelationColors = TRP3_API.register.relation.getRelationColors;
 local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
