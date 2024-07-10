@@ -276,7 +276,7 @@ local function decorateCharacterLine(line, characterIndex)
 		leftTooltipText = leftTooltipText .. "\n|r" .. loc.REG_LIST_CHAR_TT_DATE:format(formatDate, profile.zone);
 	end
 	-- Middle column : relation
-	local relation, relationColor = getRelationText(profileID), getRelationColors(profileID);
+	local relation, relationColor = getRelationText(profileID, true), getRelationColors(profileID);
 	local color = (relationColor or TRP3_API.Colors.White):GenerateHexColorMarkup();
 	if relation:len() > 0 then
 		local middleTooltipTitle, middleTooltipText = relation, getRelationTooltipText(profileID, profile);
@@ -381,7 +381,7 @@ local function getCharacterLines()
 			notesIsConform = notesIsConform or not notesOnly;
 
 			if nameIsConform and guildIsConform and realmIsConform and notesIsConform then
-				tinsert(characterLines, {profileID, completeName, getRelationText(profileID), profile.time});
+				tinsert(characterLines, {profileID, completeName, getRelationText(profileID, true), profile.time});
 			end
 
 		end

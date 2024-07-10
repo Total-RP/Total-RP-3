@@ -83,9 +83,9 @@ local function getRelation(profileID)
 end
 TRP3_API.register.relation.getRelation = getRelation;
 
-local function getRelationText(profileID)
+local function getRelationText(profileID, ignoreNone)
 	local relation = getRelation(profileID);
-	if relation.id == getRelation().id then
+	if relation.id == DEFAULT_RELATIONS.NONE.id and ignoreNone then
 		return "";
 	end
 	return relation.name or loc:GetText("REG_RELATION_" .. relation.id);
