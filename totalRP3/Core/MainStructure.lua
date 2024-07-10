@@ -81,12 +81,14 @@ local function rebuildMenu()
 				button:SetJustifyH(menuStructure.align or "RIGHT");
 				button:SetDisabledFontObject(GameFontHighlight);
 				button:SetNormalFontObject(GameFontHighlight);
-				button:SetPoint("TOPLEFT", 15, y);
 				button:SetPoint("TOPRIGHT", -20, y);
 
 				if isCloseable(id) then
 					closeableChildCount = closeableChildCount + 1;
 					button:SetCloseCallback(function() unregisterMenu(id); end);
+					button:SetPoint("TOPLEFT", 30, y);
+				else
+					button:SetPoint("TOPLEFT", 15, y);
 				end
 			else
 				button:SetJustifyH(menuStructure.align or "LEFT");
@@ -101,8 +103,8 @@ local function rebuildMenu()
 
 			if closeableChildCount > 0 and menuStructure.isChildOf and menuStructures[menuStructure.isChildOf].closeable and (not ids[i + 1] or not menuStructures[ids[i + 1]].isChildOf) then
 				-- Place close all button
-				closeAllButton:SetPoint("LEFT", 32, y);
-				closeAllButton:SetPoint("RIGHT", -20, y);
+				closeAllButton:SetPoint("LEFT", 30, y - 10);
+				closeAllButton:SetPoint("RIGHT", -22, y - 10);
 				closeAllButton.parentMenu = menuStructure.isChildOf;
 				closeAllButton:Show();
 				y = y - buttonHeight;

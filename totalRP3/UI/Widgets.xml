@@ -173,7 +173,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Frames>
 			<Button parentKey="CloseButton" inherits="TRP3_CloseButton">
 				<Anchors>
-					<Anchor point="RIGHT" relativePoint="LEFT" x="5" y="-2"/>
+					<Anchor point="RIGHT" relativePoint="LEFT"/>
 				</Anchors>
 			</Button>
 		</Frames>
