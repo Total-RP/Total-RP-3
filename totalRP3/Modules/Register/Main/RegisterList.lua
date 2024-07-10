@@ -225,8 +225,10 @@ local selectedIDs = {};
 local ICON_SIZE = 30;
 local currentMode = 1;
 local IGNORED_ICON = Utils.str.texture("Interface\\Buttons\\UI-GroupLoot-Pass-Down", 15);
-local GLANCE_ICON = Utils.str.texture("Interface\\MINIMAP\\TRACKING\\None", 15);
-local NEW_ABOUT_ICON = Utils.str.texture("Interface\\Buttons\\UI-GuildButton-PublicNote-Up", 15);
+local NEW_ABOUT_ICON = "|A:QuestNormal:15:15|a";
+local PROFILE_NOTES_ICON = "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:15:15|t";
+local WALKUP_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-walkup:15:15|t";
+local WALKUP_ICON_OFFSET = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-walkup:15:15:5|t";
 local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 15);
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -247,8 +249,10 @@ local function decorateCharacterLine(line, characterIndex)
 		leftTooltipTitle = Utils.str.icon(profile.characteristics.IC, ICON_SIZE) .. " " .. name;
 	end
 
-	local hasGlance = profile.misc and profile.misc.PE and checkGlanceActivation(profile.misc.PE);
 	local hasNewAbout = profile.about and not profile.about.read;
+	local currentNotes = TRP3_API.profile.getPlayerCurrentProfile().notes or {};
+	local hasNotes = TRP3_Notes and TRP3_Notes[profileID] or currentNotes[profileID];
+	local isWalkupFriendly = profile.character and profile.character.WU == AddOn_TotalRP3.Enums.WALKUP.YES;
 
 	local atLeastOneIgnored = false;
 	_G[line:GetName().."Info2"]:SetText("");
@@ -299,13 +303,17 @@ local function decorateCharacterLine(line, characterIndex)
 		table.insert(flags, IGNORED_ICON);
 		table.insert(rightTooltipTexts, IGNORED_ICON .. " " .. loc.REG_LIST_CHAR_TT_IGNORE);
 	end
-	if hasGlance then
-		table.insert(flags, GLANCE_ICON);
-		table.insert(rightTooltipTexts, GLANCE_ICON .. " " .. loc.REG_LIST_CHAR_TT_GLANCE);
-	end
 	if hasNewAbout then
 		table.insert(flags, NEW_ABOUT_ICON);
 		table.insert(rightTooltipTexts, NEW_ABOUT_ICON .. " " .. loc.REG_TT_NOTIF);
+	end
+	if hasNotes then
+		table.insert(flags, PROFILE_NOTES_ICON);
+		table.insert(rightTooltipTexts, PROFILE_NOTES_ICON .. " " .. loc.REG_NOTES_PROFILE);
+	end
+	if isWalkupFriendly then
+		table.insert(flags, WALKUP_ICON_OFFSET);
+		table.insert(rightTooltipTexts, WALKUP_ICON .. " " .. loc.DB_STATUS_WU);
 	end
 	if profile.hasMatureContent then
 		table.insert(flags, MATURE_CONTENT_ICON);
@@ -539,7 +547,6 @@ local function decorateCompanionLine(line, index)
 	local profile = getCompanionProfiles()[profileID];
 	line.id = profileID;
 
-	local hasGlance = profile.PE and checkGlanceActivation(profile.PE);
 	local hasNewAbout = profile.data and profile.data.read == false;
 
 	local name = UNKNOWN;
@@ -587,10 +594,6 @@ local function decorateCompanionLine(line, index)
 	-- Third column : flags
 	---@type string[]
 	local rightTooltipText, flags = {}, {};
-	if hasGlance then
-		table.insert(flags, GLANCE_ICON);
-		table.insert(rightTooltipText, GLANCE_ICON .. " " .. loc.REG_LIST_CHAR_TT_GLANCE);
-	end
 	if hasNewAbout then
 		table.insert(flags, NEW_ABOUT_ICON);
 		table.insert(rightTooltipText, NEW_ABOUT_ICON .. " " .. loc.REG_TT_NOTIF);
