@@ -162,7 +162,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</StatusBar>
 			<Frame parentKey="LeftIcon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
-				<Size x="30" y="30"/>
+				<Size x="38" y="38"/>
 				<Anchors>
 					<Anchor point="RIGHT" relativePoint="LEFT" x="-7" y="0" relativeKey="$parent.Bar"/>
 				</Anchors>
@@ -171,7 +171,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</KeyValues>
 			</Frame>
 			<Frame parentKey="RightIcon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
-				<Size x="30" y="30"/>
+				<Size x="38" y="38"/>
 				<Anchors>
 					<Anchor point="LEFT" relativePoint="RIGHT" x="7" y="0" relativeKey="$parent.Bar"/>
 				</Anchors>

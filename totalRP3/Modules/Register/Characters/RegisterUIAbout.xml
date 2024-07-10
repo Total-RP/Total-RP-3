@@ -127,7 +127,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</KeyValues>
 		<Frames>
 			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
-				<Size x="50" y="50"/>
+				<Size x="58" y="58"/>
 			</Frame>
 			<SimpleHTML parentKey="Text" inherits="TRP3_HyperLinkedScripts">
 				<Size x="380" y="0"/>
