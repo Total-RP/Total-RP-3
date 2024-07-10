@@ -349,7 +349,12 @@ TRP3_API.register.inits.relationsInit = function()
 			onClick = onTargetButtonClicked,
 			adapter = function(buttonStructure, unitID)
 				local profileID = hasProfile(unitID);
-				buttonStructure.tooltip = loc.REG_RELATION .. ": " .. TRP3_API.register.relation.getRelationText(profileID);
+				local relationColoredName = getRelationText(profileID);
+				local relationColor = TRP3_API.register.relation.getRelationColor(profileID);
+				if relationColor then
+					relationColoredName = relationColor:WrapTextInColorCode(relationColoredName);
+				end
+				buttonStructure.tooltip = loc.REG_RELATION .. ": " .. relationColoredName;
 				buttonStructure.tooltipSub = TRP3_API.register.relation.getRelationTooltipText(profileID, getProfile(profileID)) .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_RELATION_TARGET);
 				buttonStructure.icon = TRP3_API.register.relation.getRelationTexture(profileID);
 			end,
