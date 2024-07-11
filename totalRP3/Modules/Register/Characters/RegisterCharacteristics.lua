@@ -622,9 +622,9 @@ local function refreshEditIcon(frame)
 end
 
 local function onMiscDelete(self)
-	assert(self and self:GetParent(), "Badly initialiazed remove, reference");
+	assert(self and self:GetParent(), "Badly initialized remove, reference");
 	local frame = self:GetParent();
-	assert(frame.frameIndex and draftData.MI[frame.frameIndex], "Badly initialiazed remove, index");
+	assert(frame.frameIndex and draftData.MI[frame.frameIndex], "Badly initialized remove, index");
 	saveInDraft();
 	wipe(draftData.MI[frame.frameIndex]);
 	tremove(draftData.MI, frame.frameIndex);
@@ -643,9 +643,9 @@ local function miscAdd(ID, NA, VA, IC)
 end
 
 local function onMiscDuplicate(self)
-	assert(self and self:GetParent(), "Badly initialiazed duplicate, reference");
+	assert(self and self:GetParent(), "Badly initialized duplicate, reference");
 	local frame = self:GetParent();
-	assert(frame.frameIndex and draftData.MI[frame.frameIndex], "Badly initialiazed duplicate, index");
+	assert(frame.frameIndex and draftData.MI[frame.frameIndex], "Badly initialized duplicate, index");
 	saveInDraft();
 	tinsert(draftData.MI, CopyTable(draftData.MI[frame.frameIndex]));
 	setEditDisplay();
@@ -723,9 +723,9 @@ local function psychoAdd(presetID)
 end
 
 local function onPsychoDelete(self)
-	assert(self and self:GetParent(), "Badly initialiazed remove, reference");
+	assert(self and self:GetParent(), "Badly initialized remove, reference");
 	local frame = self:GetParent();
-	assert(frame.frameIndex and draftData.PS[frame.frameIndex], "Badly initialiazed remove button, index");
+	assert(frame.frameIndex and draftData.PS[frame.frameIndex], "Badly initialized remove button, index");
 	saveInDraft();
 	wipe(draftData.PS[frame.frameIndex]);
 	tremove(draftData.PS, frame.frameIndex);
@@ -733,9 +733,9 @@ local function onPsychoDelete(self)
 end
 
 local function onPsychoDuplicate(self)
-	assert(self and self:GetParent(), "Badly initialiazed duplicate, reference");
+	assert(self and self:GetParent(), "Badly initialized duplicate, reference");
 	local frame = self:GetParent();
-	assert(frame.frameIndex and draftData.PS[frame.frameIndex], "Badly initialiazed duplicate, index");
+	assert(frame.frameIndex and draftData.PS[frame.frameIndex], "Badly initialized duplicate, index");
 	saveInDraft();
 	tinsert(draftData.PS, CopyTable(draftData.PS[frame.frameIndex]));
 	setEditDisplay();

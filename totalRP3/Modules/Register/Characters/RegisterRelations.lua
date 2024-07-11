@@ -247,7 +247,7 @@ function updateRelationsList()
 		TRP3_API.ui.frame.setupIconButton(widget.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
 
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(widget.Actions, "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
-		widget.Actions:SetScript("onMouseDown", function(button)
+		widget.Actions:SetScript("OnMouseDown", function(button)
 			TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 				description:CreateButton(loc.CO_RELATIONS_MENU_EDIT, onActionSelected, ACTIONS.EDIT..relation.id);
 				checkRelationUse();

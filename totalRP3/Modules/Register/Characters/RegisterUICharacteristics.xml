@@ -76,7 +76,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</EditBox>
 			<Button name="$parentAction" inherits="TRP3_ActionButton">
 				<Anchors>
-					<Anchor point="RIGHT" relativeKey="$parent" relativePoint="RIGHT" x="20" y="0"/>
+					<Anchor point="RIGHT" relativeKey="$parent" x="20"/>
 				</Anchors>
 			</Button>
 		</Frames>
