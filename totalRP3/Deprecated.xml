@@ -20,9 +20,15 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- A bordered frame with a title -->
 	<Frame name="TRP3_FieldSetFrame" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+		</KeyValues>
 		<Frames>
 			<Frame name="$parentCaptionPanel" parentKey="caption" inherits="TRP3_SolidTooltipBackdropTemplate">
 				<Size x="150" y="23"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+				</KeyValues>
 				<Layers>
 					<Layer level="OVERLAY">
 						<FontString name="$parentCaption" text="[Caption text]" inherits="GameFontNormal" wordwrap="false">

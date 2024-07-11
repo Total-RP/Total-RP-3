@@ -38,6 +38,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</GameTooltip>
 
 	<Frame name="TRP3_ResizeShadowFrame" parent="UIParent" frameStrata="FULLSCREEN" hidden="true" resizable="true" inherits="TRP3_TooltipBackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+		</KeyValues>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="text" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">

@@ -213,7 +213,7 @@ local function showTemplate2(dataTab)
 		end
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, -10);
-		frame:SetPoint("RIGHT", 0, 0);
+		frame:SetPoint("RIGHT", -5, 0);
 
 		local icon = frame.Icon;
 		local text = frame.Text;
@@ -332,7 +332,7 @@ function refreshTemplate2EditDisplay()
 		-- Position
 		frame:ClearAllPoints();
 		frame:SetPoint("LEFT", 0, 0);
-		frame:SetPoint("RIGHT", 0, 0);
+		frame:SetPoint("RIGHT", -5, 0);
 		if previous == nil then
 			frame:SetPoint("TOPLEFT", TRP3_RegisterAbout_Edit_Template2_Container, "TOPLEFT", 10, -10);
 		else
@@ -548,11 +548,11 @@ local function ResizeTemplateViews()
 
 	TRP3_RegisterAbout_AboutPanel_Container:SetSize(containerWidth - 40, 5);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetSize(containerWidth - 50, 5);
-	TRP3_RegisterAbout_AboutPanel_Template3_1_Text:SetWidth(containerWidth - 70);
+	TRP3_RegisterAbout_AboutPanel_Template3_1_Text:SetWidth(containerWidth - 75);
 	resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_1_Text);
-	TRP3_RegisterAbout_AboutPanel_Template3_2_Text:SetWidth(containerWidth - 70);
+	TRP3_RegisterAbout_AboutPanel_Template3_2_Text:SetWidth(containerWidth - 75);
 	resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_2_Text);
-	TRP3_RegisterAbout_AboutPanel_Template3_3_Text:SetWidth(containerWidth - 70);
+	TRP3_RegisterAbout_AboutPanel_Template3_3_Text:SetWidth(containerWidth - 75);
 	resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_3_Text);
 	TRP3_RegisterAbout_Edit_Template3_Phys:SetHeight((containerHeight - 165) * 0.33);
 	TRP3_RegisterAbout_Edit_Template3_Psy:SetHeight((containerHeight - 165) * 0.33);

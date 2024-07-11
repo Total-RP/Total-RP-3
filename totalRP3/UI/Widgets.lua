@@ -160,8 +160,6 @@ function TRP3_CategoryButtonMixin:SetJustifyH(justifyH)
 end
 
 function TRP3_CategoryButtonMixin:SetIcon(icon)
-	self.Icon:SetShown(icon ~= nil);
-
 	if icon then
 		if C_Texture.GetAtlasInfo(icon) then
 			local useAtlasSize = false;
@@ -169,12 +167,17 @@ function TRP3_CategoryButtonMixin:SetIcon(icon)
 		else
 			self.Icon:SetTexture(icon);
 		end
+
+		self.Text:SetPoint("LEFT", 28, 0);
+		self.Icon:Show();
+	else
+		self.Text:SetPoint("LEFT", 12, 0);
+		self.Icon:Hide();
 	end
 end
 
 function TRP3_CategoryButtonMixin:SetSelected(selected)
 	self:SetEnabled(not selected);
-	self:SetHighlightLocked(selected);
 end
 
 local g_lastCopiedIcon;

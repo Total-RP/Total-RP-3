@@ -51,51 +51,45 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Register characteristics panel -->
 	<Frame name="TRP3_RegisterMain" hidden="true">
 		<Frames>
-			<Frame name="TRP3_RegisterCharact" inherits="TRP3_RegisterCharactTemplate" frameLevel="2">
+			<Frame name="TRP3_RegisterCharact" inherits="TRP3_RegisterCharactTemplate" useParentLevel="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 			</Frame>
-			<Frame name="TRP3_RegisterAbout" inherits="TRP3_RegisterAboutTemplate" frameLevel="2">
+			<Frame name="TRP3_RegisterAbout" inherits="TRP3_RegisterAboutTemplate" useParentLevel="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 			</Frame>
-			<Frame name="TRP3_RegisterMisc" inherits="TRP3_RegisterMiscTemplate" frameLevel="2">
+			<Frame name="TRP3_RegisterMisc" inherits="TRP3_RegisterMiscTemplate" useParentLevel="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 			</Frame>
-			<Frame name="TRP3_RegisterNotes" inherits="TRP3_RegisterNotesTemplate" frameLevel="2">
+			<Frame name="TRP3_RegisterNotes" inherits="TRP3_RegisterNotesTemplate" useParentLevel="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 			</Frame>
-			<Frame name="TRP3_RegisterDefault" inherits="TRP3_TooltipBackdropEdgeTemplate" frameLevel="2">
+			<Frame name="TRP3_RegisterDefault" useParentLevel="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
-				<Layers>
-					<Layer level="BACKGROUND">
-						<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
-							<Anchors>
-								<Anchor point="TOPRIGHT" x="-5" y="-2"/>
-								<Anchor point="BOTTOMRIGHT" x="-5" y="-2"/>
-								<Anchor point="LEFT" x="5"/>
-							</Anchors>
-							<TexCoords left="0.07" right="1" top="0" bottom="0.975"/>
-						</Texture>
-					</Layer>
-				</Layers>
 				<Frames>
+					<Frame parentKey="Background" inherits="TRP3_PageBackgroundParchment">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="4" y="-4"/>
+							<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+						</Anchors>
+					</Frame>
 					<Frame name="TRP3_RegisterDefaultView">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="10" y="-20"/>

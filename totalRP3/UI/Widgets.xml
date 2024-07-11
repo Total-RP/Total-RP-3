@@ -18,6 +18,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Widgets.lua"/>
 	<Include file="Menu\Menu.xml"/>
 	<Include file="IconTemplates.xml"/>
+	<Include file="Sidebar\Sidebar.xml"/>
 
 	<GameTooltip name="TRP3_TooltipTemplate" mixin="TRP3_TooltipMixin" inherits="GameTooltipTemplate" virtual="true"/>
 
@@ -113,11 +114,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Button>
 
-	<Button name="TRP3_ActionButton" inherits="TRP3_StyledButtonTemplate" virtual="true">
+	<Button name="TRP3_ActionButton" inherits="TRP3_RedButtonMenuArtTemplate" virtual="true">
 		<Size x="24" y="24"/>
-		<KeyValues>
-			<KeyValue key="styleName" value="MinimizeButton" type="string"/>
-		</KeyValues>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
@@ -160,26 +158,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Button>
 
 	<!-- Category button -->
-	<Button name="TRP3_CategoryButton" mixin="TRP3_CategoryButtonMixin" motionScriptsWhileDisabled="true" virtual="true">
-		<Size x="158" y="24"/>
+	<Button name="TRP3_CategoryButton" mixin="TRP3_CategoryButtonMixin" inherits="TRP3_CategoryButtonArtTemplate" motionScriptsWhileDisabled="true" virtual="true">
+		<Size x="158" y="32"/>
 		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture parentKey="Background" file="Interface\AchievementFrame\UI-Achievement-Category-Background">
-					<Size x="170" y="32"/>
-					<Anchors>
-						<Anchor point="TOPLEFT"/>
-						<Anchor point="TOPRIGHT"/>
-					</Anchors>
-					<TexCoords left="0" right="0.6640625" top="0" bottom="1"/>
-					<TextureSliceMargins left="16" top="16" bottom="16" right="16"/>
-					<TextureSliceMode mode="Stretched"/>
-				</Texture>
-			</Layer>
 			<Layer level="BORDER">
 				<Texture parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark" hidden="true">
 					<Size x="16" y="16"/>
 					<Anchors>
-						<Anchor point="LEFT" x="10" y="-2"/>
+						<Anchor point="LEFT" x="8"/>
 					</Anchors>
 				</Texture>
 			</Layer>
@@ -187,27 +173,18 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Frames>
 			<Button parentKey="CloseButton" inherits="TRP3_CloseButton">
 				<Anchors>
-					<Anchor point="RIGHT" relativePoint="LEFT" x="5" y="-2"/>
+					<Anchor point="RIGHT" relativePoint="LEFT"/>
 				</Anchors>
 			</Button>
 		</Frames>
-		<ButtonText parentKey="Text" wordwrap="false" justifyH="CENTER">
-			<Anchors>
-				<Anchor point="TOPLEFT" x="24" y="-6"/>
-				<Anchor point="BOTTOMRIGHT" x="-16" y="2"/>
-			</Anchors>
-		</ButtonText>
 		<NormalFont style="GameFontNormal"/>
 		<DisabledFont style="GameFontNormal"/>
-		<HighlightTexture file="Interface\AchievementFrame\UI-Achievement-Category-Highlight" alphaMode="ADD">
+		<ButtonText parentKey="Text" wordwrap="false" justifyH="CENTER">
 			<Anchors>
-				<Anchor point="TOPLEFT"/>
-				<Anchor point="TOPRIGHT"/>
+				<Anchor point="LEFT" x="12"/>
+				<Anchor point="RIGHT" x="-12"/>
 			</Anchors>
-			<TexCoords left="0" right="0.6640625" top="0" bottom="1"/>
-			<TextureSliceMargins left="16" top="16" bottom="16" right="16"/>
-			<TextureSliceMode mode="Stretched"/>
-		</HighlightTexture>
+		</ButtonText>
 		<Scripts>
 			<OnLoad method="OnLoad"/>
 			<OnEnter method="OnEnter"/>

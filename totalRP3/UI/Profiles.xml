@@ -8,6 +8,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Profile manager : Line -->
 	<Frame name="TRP3_ProfileManagerLine" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
 		<Size x="0" y="65"/>
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+		</KeyValues>
 		<Frames>
 			<Frame name="$parentIcon" inherits="TRP3_SimpleIcon">
 				<Size x="40" y="40"/>
@@ -111,27 +114,21 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Profile manager -->
 	<Frame name="TRP3_ProfileManagerTemplate" hidden="true" virtual="true">
 		<Frames>
-			<Frame frameLevel="2" parentKey="list" inherits="TRP3_TooltipBackdropEdgeTemplate">
+			<Frame parentKey="list" useParentLevel="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
-				<Layers>
-					<Layer level="BACKGROUND">
-						<Texture file="Interface\ARCHEOLOGY\Arch-BookCompletedLeft">
-							<Anchors>
-								<Anchor point="TOPRIGHT" x="-5" y="-2"/>
-								<Anchor point="BOTTOMRIGHT" x="-5" y="-2"/>
-								<Anchor point="LEFT" x="5" y="0"/>
-							</Anchors>
-							<TexCoords left="0.07" right="1" top="0" bottom="0.975"/>
-						</Texture>
-					</Layer>
-				</Layers>
 				<Frames>
+					<Frame parentKey="Background" inherits="TRP3_PageBackgroundProfiles">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="4" y="-4"/>
+							<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+						</Anchors>
+					</Frame>
 					<Frame name="$parentList" inherits="TRP3_InnerFrame">
 						<Size x="0" y="350"/>
 						<Anchors>

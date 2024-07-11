@@ -48,7 +48,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Button name="TRP3_RegisterMiscGlanceButton" inherits="TRP3_BorderedIconTemplate" virtual="true">
 		<Size x="48" y="48"/>
 		<HighlightTexture parentKey="HighlightBorder" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-glow" alphaMode="ADD">
-			<Color r="1" g="0.675" b="0.125"/>
+			<Color r="0.92" g="0.68" b="0"/>
 		</HighlightTexture>
 		<Scripts>
 			<OnEnter>
@@ -66,21 +66,15 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Register Peek panel -->
 	<Frame name="TRP3_RegisterMiscTemplate" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 		</KeyValues>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1" setAllPoints="true">
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-5" y="-2"/>
-						<Anchor point="BOTTOMRIGHT" x="-5" y="-2"/>
-						<Anchor point="LEFT" x="5" y="0"/>
-					</Anchors>
-					<TexCoords left="0.07" right="1" top="0" bottom="0.975" />
-				</Texture>
-			</Layer>
-		</Layers>
 		<Frames>
+			<Frame parentKey="Background" inherits="TRP3_PageBackgroundParchment">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="4" y="-4"/>
+					<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+				</Anchors>
+			</Frame>
 			<Frame name="TRP3_RegisterMiscView">
 				<Anchors>
 					<Anchor point="TOPLEFT" x="10" y="-20"/>
@@ -92,7 +86,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Frame name="TRP3_RegisterMiscViewGlance" inherits="TRP3_GroupBoxTemplate">
 						<Size x="0" y="70"/>
 						<KeyValues>
-							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 						</KeyValues>
 						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="0"/>
@@ -137,7 +131,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Frame name="TRP3_RegisterMiscViewRPStyle" inherits="TRP3_GroupBoxTemplate">
 						<Size x="0" y="200"/>
 						<KeyValues>
-							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 						</KeyValues>
 						<Anchors>
 							<Anchor point="LEFT" x="0" y="0"/>
@@ -167,7 +161,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Frame name="TRP3_RegisterMiscViewCurrently" inherits="TRP3_GroupBoxTemplate">
 						<Size x="0" y="100"/>
 						<KeyValues>
-							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 						</KeyValues>
 						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterMiscViewGlance" x="0" y="-10"/>

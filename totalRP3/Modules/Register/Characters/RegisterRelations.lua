@@ -231,14 +231,15 @@ function updateRelationsList()
 	for _, relation in ipairs(relations) do
 		local widget = widgetsList[widgetCount];
 		if not widget then
-			widget = CreateFrame("Frame", nil, TRP3_RelationsList.Inner.Scroll.Container, "TRP3_ConfigurationRelationsFrame");
+			widget = CreateFrame("Frame", nil, TRP3_RelationsList.ScrollFrame.Content, "TRP3_ConfigurationRelationsFrame");
 			widget:ClearAllPoints();
-			widget:SetPoint("LEFT", TRP3_RelationsList.Inner.Scroll.Container, "LEFT", 0, 0);
-			widget:SetPoint("RIGHT", TRP3_RelationsList.Inner.Scroll.Container, "RIGHT", -10, 0);
+			widget:SetPoint("LEFT", TRP3_RelationsList.ScrollFrame.Content, "LEFT", 0, 0);
+			widget.Border:SetVertexColor(TRP3_BACKDROP_COLOR_CREAMY_BROWN:GetRGB());
+			widget:SetPoint("RIGHT", TRP3_RelationsList.ScrollFrame.Content, "RIGHT", -20, 0);
 			if widgetCount > 1 then
 				widget:SetPoint("TOP", widgetsList[widgetCount - 1], "BOTTOM", 0, 0);
 			else
-				widget:SetPoint("TOP", TRP3_RelationsList.Inner.Scroll.Container, "TOP", 0, 0);
+				widget:SetPoint("TOP", TRP3_RelationsList.ScrollFrame.Content, "TOP", 0, 0);
 				widget.Actions:Hide();
 			end
 			widgetsList[widgetCount] = widget;
@@ -365,7 +366,7 @@ TRP3_API.register.inits.relationsInit = function()
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 
 		TRP3_RelationsList.Title:SetText(loc.CO_RELATIONS);
-		TRP3_RelationsList.Inner.CreateNew:SetText(loc.CO_RELATIONS_NEW);
+		TRP3_RelationsList.CreateNew:SetText(loc.CO_RELATIONS_NEW);
 		TRP3_RelationsList.Editor.Content.CloseButton:SetScript("OnClick", function()
 			TRP3_RelationsList.Editor:Hide();
 			TRP3_API.popup.hidePopups();
@@ -398,12 +399,12 @@ TRP3_API.register.inits.relationsInit = function()
 			isChildOf = "main_40_customization",
 			onSelected = function()
 				TRP3_API.navigation.page.setPage(RELATIONS_PAGE_ID);
-				TRP3_RelationsList.Inner.Scroll.Container:SetWidth(TRP3_RelationsList.Inner.Scroll:GetWidth());
+				TRP3_RelationsList.ScrollFrame.Content:SetWidth(TRP3_RelationsList.ScrollFrame:GetWidth());
 			end,
 		});
 	end)
 
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_)
-		TRP3_RelationsList.Inner.Scroll.Container:SetWidth(TRP3_RelationsList.Inner.Scroll:GetWidth());
+		TRP3_RelationsList.ScrollFrame.Content:SetWidth(TRP3_RelationsList.ScrollFrame:GetWidth());
 	end);
 end
