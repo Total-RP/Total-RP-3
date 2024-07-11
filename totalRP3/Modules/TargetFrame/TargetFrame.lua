@@ -60,7 +60,7 @@ local function onStart()
 			if self.onMouseDown then
 				self.onMouseDown(self.unitID, self.targetType, button, self);
 			end
-		end);	
+		end);
 		return uiButton;
 	end
 

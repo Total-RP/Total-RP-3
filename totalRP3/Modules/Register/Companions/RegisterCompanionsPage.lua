@@ -13,7 +13,7 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 local hidePopups = TRP3_API.popup.hidePopups;
 local displayConsult;
-local tcopy, tsize, tinsert, EMPTY = Utils.table.copy, Utils.table.size, tinsert, Globals.empty;
+local tcopy, tsize, EMPTY = Utils.table.copy, Utils.table.size, Globals.empty;
 local stEtN = Utils.str.emptyToNil;
 local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;

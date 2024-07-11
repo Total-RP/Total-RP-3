@@ -10,7 +10,6 @@ local tcopy, tsize = Utils.table.copy, Utils.table.size;
 local loc = TRP3_API.loc;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local getKeys = Utils.table.keys;
-local setupDropDownMenu = TRP3_API.ui.listbox.setupDropDownMenu;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
@@ -698,7 +697,7 @@ local function miscAddDropDown()
 		table.insert(values, { preset.list or preset.localizedName, index });
 	end
 	table.sort(values, SortCompareMiscEntries);
-	
+
 	TRP3_MenuUtil.CreateContextMenu(TRP3_RegisterCharact_Edit_MiscAdd, function(_, description)
 		description:CreateTitle(loc.REG_PLAYER_MISC_ADD);
 		for _, preset in pairs(values) do
@@ -1237,7 +1236,7 @@ function setEditDisplay()
 			setTooltipForSameFrame(frame.CustomLeftIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_LEFTICON_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 			setTooltipForSameFrame(frame.CustomRightIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_RIGHTICON_TT.. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 			setTooltipForSameFrame(frame.ActionButton, "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
-			
+
 			setTooltipForSameFrame(frame.CustomLeftColor, "TOP", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT);
 			setTooltipForSameFrame(frame.CustomRightColor, "TOP", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT);
 
