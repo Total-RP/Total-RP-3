@@ -7,8 +7,6 @@ local L = TRP3_API.loc;
 TRP3_AutomationSettingsMixin = {};
 
 function TRP3_AutomationSettingsMixin:OnLoad()
-	self:OnBackdropLoaded();
-
 	self.TitleText:SetText(L.AUTOMATION_MODULE_SETTINGS_TITLE);
 	self.DescriptionText:SetText(L.AUTOMATION_MODULE_DESCRIPTION);
 	self.HelpText:SetText(L.AUTOMATION_MODULE_SETTINGS_HELP);

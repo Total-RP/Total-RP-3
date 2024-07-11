@@ -44,11 +44,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="TOPLEFT" x="12" y="-8"/>
 				</Anchors>
 			</Button>
-			<Button parentKey="Action" inherits="TRP3_StyledButtonTemplate">
+			<Button parentKey="Action" inherits="TRP3_RedButtonMenuArtTemplate">
 				<Size x="24" y="24"/>
-				<KeyValues>
-					<KeyValue key="styleName" value="MinimizeButton" type="string"/>
-				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
 				</Anchors>
@@ -56,10 +53,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
-		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true">
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="Title" inherits="GameFontHighlightHuge" justifyH="LEFT">
@@ -78,6 +72,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
+			<Frame parentKey="Background" inherits="TRP3_PageBackgroundSettings" setAllPoints="true"/>
 			<ScrollFrame parentKey="ScrollFrame" inherits="ScrollFrameTemplate">
 				<KeyValues>
 					<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>

@@ -223,21 +223,27 @@ local GLANCE_NOT_USED_ICON = TRP3_InterfaceIcons.Default;
 local function setupGlanceButton(button, active, icon, title, text, isMine)
 	button:Enable();
 	button.isCurrentMine = isMine;
+
+	-- Add our click handlers
+	if isMine then
+		text = TRP3_API.register.glance.addClickHandlers(text);
+	end
+
 	if active then
 		button:SetAlpha(1);
 		button:SetIconTexture(icon or GLANCE_NOT_USED_ICON);
 		button.Icon:SetAlpha(1);
 		button.Icon:SetDesaturated(false);
-		setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", text or "");
+		setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", text);
 	else
 		button:SetAlpha(isMine and 1 or 0.1);
-		button:SetIconTexture(GLANCE_NOT_USED_ICON);
+		button:SetIconTexture(isMine and icon or GLANCE_NOT_USED_ICON);
 		button.Icon:SetAlpha(isMine and 0.75 or 1);
 		button.Icon:SetDesaturated(true);
 		if not isMine then
 			button:Disable();
 		else
-			setTooltipForSameFrame(button, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE_UNUSED);
+			setTooltipForSameFrame(button, "RIGHT", 0, 5, title or loc.REG_PLAYER_GLANCE_UNUSED, text);
 		end
 	end
 end
@@ -250,6 +256,7 @@ local function displayPeek(context)
 		local glanceData = (dataTab.PE or {})[tostring(i)] or {};
 		local button = _G["TRP3_RegisterMiscViewGlanceSlot" .. i];
 		button.data = glanceData;
+
 		setupGlanceButton(button, glanceData.AC, glanceData.IC, glanceData.TI, glanceData.TX, context.isPlayer);
 	end
 	if context.isPlayer then
@@ -427,7 +434,19 @@ end
 TRP3_API.register.ui.showMiscTab = showMiscTab;
 
 function TRP3_API.register.player.getMiscExchangeData()
-	return get("player/misc");
+	local miscData = CopyTable(get("player/misc"));
+
+	-- Remove data from disabled glances
+	if miscData.PE then
+		for i=1,5 do
+			local index = tostring(i);
+			if miscData.PE[index] and miscData.PE[index].AC == false then
+				miscData.PE[index] = nil;
+			end
+		end
+	end
+
+	return miscData;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -505,7 +524,7 @@ function TRP3_API.register.inits.miscInit()
 	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC.HelpButton, "LEFT", 0, 10, loc.DB_STATUS_CURRENTLY_OOC, loc.DB_STATUS_CURRENTLY_OOC_TT);
 	TRP3_RegisterMiscViewCurrentlyOOC:RegisterCallback("OnTextChanged", onOOCInfoChanged, {});
 
-	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "LEFT", 0, 10, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG);
+	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "LEFT", 0, 10, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("DCLICK", loc.REG_PLAYER_GLANCE_CONFIG_TOGGLE) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_GLANCE_CONFIG_PRESETS) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("DRAGDROP", loc.REG_PLAYER_GLANCE_CONFIG_REORDER));
 
 	for index=1,5,1 do
 		-- DISPLAY

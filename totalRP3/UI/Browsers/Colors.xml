@@ -9,7 +9,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Frame name="TRP3_ColorBrowser" parent="TRP3_PopupsFrame" hidden="true" inherits="TRP3_BrowserDialogBackdropTemplate">
 		<Size x="440" y="285"/>
 		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_LIGHT_GREY" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
 		</KeyValues>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
@@ -46,7 +46,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Frame inherits="TRP3_TooltipBackdropTemplate">
 				<Size x="0" y="60"/>
 				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_LIGHT_GREY" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ColorBrowserTitle" x="0" y="-10"/>

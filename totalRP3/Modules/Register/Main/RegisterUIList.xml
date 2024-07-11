@@ -118,24 +118,15 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_RegisterList" hidden="true">
 		<Frames>
-			<Frame name="TRP3_RegisterListContainer" parentKey="Container" inherits="TRP3_TooltipBackdropEdgeTemplate">
+			<Frame name="TRP3_RegisterListContainer" parentKey="Container" useParentLevel="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>
 					<Anchor point="BOTTOMRIGHT"/>
 				</Anchors>
 				<Layers>
-					<Layer level="BACKGROUND">
-						<Texture file="Interface\ACHIEVEMENTFRAME\UI-Achievement-StatsBackground">
-							<Anchors>
-								<Anchor point="TOPRIGHT" x="-5" y="0"/>
-								<Anchor point="BOTTOMRIGHT" x="-5" y="2"/>
-								<Anchor point="LEFT" x="5" y="0"/>
-							</Anchors>
-						</Texture>
-					</Layer>
 					<Layer level="OVERLAY">
 						<FontString name="TRP3_RegisterListEmpty" parentKey="Empty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
 							<Size x="0" y="10" />
@@ -148,6 +139,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Layers>
 				<Size x="0" y="0" />
 				<Frames>
+					<Frame parentKey="Background" inherits="TRP3_PageBackgroundParchment">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="4" y="-4"/>
+							<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+						</Anchors>
+					</Frame>
 					<Slider name="TRP3_RegisterListSlider" parentKey="slider" inherits="TRP3_Scrollbar">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="-48"/>
@@ -360,7 +357,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Frame name="TRP3_RegisterListCharactFilter" parentKey="CharacterFilters" inherits="TRP3_GroupBoxTemplate">
 						<Size x="0" y="65" />
 						<KeyValues>
-							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 						</KeyValues>
 						<Anchors>
 							<Anchor point="BOTTOMLEFT" x="8" y="8" />
@@ -401,7 +398,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Frame name="TRP3_RegisterListPetFilter" parentKey="CompanionFilters" inherits="TRP3_GroupBoxTemplate">
 						<Size x="0" y="65" />
 						<KeyValues>
-							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 						</KeyValues>
 						<Anchors>
 							<Anchor point="BOTTOMLEFT" x="8" y="8" />

@@ -9,7 +9,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Frame name="TRP3_TextToolbar" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
 		<Size x="0" y="30"/>
 		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 		</KeyValues>
 		<Layers>
 			<Layer level="OVERLAY">
@@ -76,7 +76,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_RegisterAbout_Edit_Template3Frame" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 		</KeyValues>
 		<Size x="0" y="105"/>
 		<Frames>
@@ -123,11 +123,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Register about template 2 frame -->
 	<Frame name="TRP3_RegisterAbout_Template2_Frame" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 		</KeyValues>
 		<Frames>
 			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
-				<Size x="50" y="50"/>
+				<Size x="58" y="58"/>
 			</Frame>
 			<SimpleHTML parentKey="Text" inherits="TRP3_HyperLinkedScripts">
 				<Size x="380" y="0"/>
@@ -140,7 +140,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Frame name="TRP3_RegisterAbout_Template2_Edit" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
 		<Size x="0" y="120"/>
 		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 		</KeyValues>
 		<Frames>
 			<Button name="$parentIcon" inherits="TRP3_IconButton">
@@ -200,7 +200,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Register characteristics panel -->
 	<Frame name="TRP3_RegisterAboutTemplate" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 		</KeyValues>
 		<Frames>
 			<Frame name="TRP3_RegisterAbout_AboutPanel_Edit" setAllPoints="true">
@@ -281,7 +281,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Frame>
 					<Frame name="TRP3_RegisterAbout_Edit_Template2" inherits="TRP3_TooltipBackdropTemplate">
 						<KeyValues>
-							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 						</KeyValues>
 						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Toolbar" x="0" y="-5"/>
@@ -299,14 +299,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<ScrollFrame name="TRP3_RegisterAbout_Edit_Template2_Scroll" inherits="ScrollFrameTemplate">
 								<KeyValues>
 									<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
-									<KeyValue key="scrollBarX" value="0" type="number"/>
+									<KeyValue key="scrollBarX" value="-5" type="number"/>
 									<KeyValue key="scrollBarTopY" value="-4" type="number"/>
 									<KeyValue key="scrollBarBottomY" value="4" type="number"/>
 									<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
 								</KeyValues>
 								<Anchors>
-									<Anchor point="TOPLEFT" x="5" y="-5"/>
-									<Anchor point="BOTTOMRIGHT" x="-20" y="5"/>
+									<Anchor point="TOPLEFT" x="5" y="-10"/>
+									<Anchor point="BOTTOMRIGHT" x="-20" y="10"/>
 								</Anchors>
 								<ScrollChild>
 									<Frame name="TRP3_RegisterAbout_Edit_Template2_Container">
@@ -366,14 +366,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<ScrollFrame name="TRP3_RegisterAbout_AboutPanel_Scroll" inherits="ScrollFrameTemplate">
 						<KeyValues>
 							<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
-							<KeyValue key="scrollBarX" value="10" type="number"/>
+							<KeyValue key="scrollBarX" value="5" type="number"/>
 							<KeyValue key="scrollBarTopY" value="-4" type="number"/>
 							<KeyValue key="scrollBarBottomY" value="4" type="number"/>
 							<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
 						</KeyValues>
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-5"/>
-							<Anchor point="BOTTOMRIGHT" x="-30" y="5"/>
+							<Anchor point="TOPLEFT" x="10" y="-10"/>
+							<Anchor point="BOTTOMRIGHT" x="-30" y="10"/>
 						</Anchors>
 						<ScrollChild>
 							<Frame name="TRP3_RegisterAbout_AboutPanel_Container">
@@ -412,11 +412,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 										<Frames>
 											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_1" inherits="TRP3_SolidTooltipBackdropTemplate">
 												<KeyValues>
-													<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+													<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 												</KeyValues>
 												<Anchors>
 													<Anchor point="TOPLEFT" x="0" y="-5"/>
-													<Anchor point="RIGHT" x="0" y="0"/>
+													<Anchor point="RIGHT" x="-5" y="0"/>
 												</Anchors>
 												<Layers>
 													<Layer level="OVERLAY">
@@ -442,11 +442,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 											</Frame>
 											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_2" inherits="TRP3_SolidTooltipBackdropTemplate">
 												<KeyValues>
-													<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+													<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 												</KeyValues>
 												<Anchors>
 													<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_1"/>
-													<Anchor point="RIGHT" x="0" y="0"/>
+													<Anchor point="RIGHT" x="-5" y="0"/>
 												</Anchors>
 												<Layers>
 													<Layer level="OVERLAY">
@@ -472,11 +472,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 											</Frame>
 											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_3" inherits="TRP3_SolidTooltipBackdropTemplate">
 												<KeyValues>
-													<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+													<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 												</KeyValues>
 												<Anchors>
 													<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_2"/>
-													<Anchor point="RIGHT" x="0" y="0"/>
+													<Anchor point="RIGHT" x="-5" y="0"/>
 												</Anchors>
 												<Layers>
 													<Layer level="OVERLAY">
@@ -516,7 +516,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Frame name="TRP3_RegisterAbout_AboutPanel_MusicPlayer" inherits="TRP3_TooltipBackdropTemplate">
 								<Size x="200" y="65"/>
 								<KeyValues>
-									<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
+									<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 								</KeyValues>
 								<Anchors>
 									<Anchor point="BOTTOM" x="0" y="5"/>

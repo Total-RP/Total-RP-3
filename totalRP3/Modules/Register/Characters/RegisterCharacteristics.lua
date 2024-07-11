@@ -321,6 +321,12 @@ local function setConsultDisplay(context)
 	TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle:Hide();
 	TRP3_RegisterCharact_CharactPanel_Container.MiscTitle:Hide();
 	TRP3_RegisterCharact_CharactPanel_ResidenceButton:Hide();
+	TRP3_RegisterCharact_NamePanel_WalkupButton:Hide();
+
+	if context.profile.character.WU == AddOn_TotalRP3.Enums.WALKUP.YES then
+		TRP3_RegisterCharact_NamePanel_WalkupButton:Show();
+		setTooltipForSameFrame(TRP3_RegisterCharact_NamePanel_WalkupButton, "RIGHT", 0, 5, loc.DB_STATUS_WU, loc.REG_PLAYER_WALKUP_TT);
+	end
 
 	-- Previous var helps for layout building
 	local previous = TRP3_RegisterCharact_CharactPanel_Container.RegisterTitle;
@@ -1345,7 +1351,12 @@ end
 
 local function setupRelationButton(profileID, profile)
 	setupIconButton(TRP3_RegisterCharact_ActionButton, getRelationTexture(profileID));
-	setTooltipAll(TRP3_RegisterCharact_ActionButton, "LEFT", 0, 0, loc.CM_ACTIONS, loc.REG_RELATION_BUTTON_TT:format(getRelationText(profileID), getRelationTooltipText(profileID, profile)));
+	local relationColoredName = getRelationText(profileID);
+	local relationColor = TRP3_API.register.relation.getRelationColor(profileID);
+	if relationColor then
+		relationColoredName = relationColor:WrapTextInColorCode(relationColoredName);
+	end
+	setTooltipAll(TRP3_RegisterCharact_ActionButton, "LEFT", 0, 0, loc.CM_ACTIONS, loc.REG_RELATION_BUTTON_TT:format(relationColoredName, getRelationTooltipText(profileID, profile)));
 end
 
 local function saveCharacteristics()

@@ -8,7 +8,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Button name="TRP3_TargetFrameButtonTemplate" inherits="TRP3_BorderedIconTemplate" virtual="true">
 		<Size x="35" y="35" />
 		<HighlightTexture parentKey="HighlightBorder" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-glow" alphaMode="ADD">
-			<Color r="1" g="0.675" b="0.125"/>
+			<Color r="0.92" g="0.68" b="0"/>
 		</HighlightTexture>
 		<Layers>
 			<Layer level="OVERLAY">
@@ -25,6 +25,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Target Frame -->
 	<Frame name="TRP3_TargetFrameTemplate" toplevel="true" enableMouse="true" hidden="true" inherits="TRP3_GroupBoxTemplate" virtual="true">
 		<Size x="200" y="50" />
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+		</KeyValues>
 		<Scripts>
 			<OnLoad inherit="prepend">
 				self:SetClampedToScreen(true);

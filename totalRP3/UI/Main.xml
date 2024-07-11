@@ -99,108 +99,56 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_MainFrameTemplate" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" virtual="true" inherits="BackdropTemplate">
-		<KeyValues>
-			<KeyValue key="backdropInfo" value="BACKDROP_ACHIEVEMENTS_0_64" type="global"/>
-		</KeyValues>
-		<Size x="768" y="500"/>
-		<Layers>
-			<Layer level="ARTWORK">
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Left">
-					<Size x="16" y="0"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="14" y="0"/>
-						<Anchor point="BOTTOMLEFT" x="14" y="10"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="0" bottom=".87"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Left">
-					<Size x="16" y="0"/>
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-13" y="-10"/>
-						<Anchor point="BOTTOMRIGHT" x="-13" y="10"/>
-					</Anchors>
-					<TexCoords left="1" right="0" top=".87" bottom="0"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Top">
-					<Size x="450" y="16"/>
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="28" y="13"/>
-						<Anchor point="BOTTOMRIGHT" x="-28" y="13"/>
-					</Anchors>
-					<TexCoords left="0" right=".87" top="1.0" bottom="0"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Top">
-					<Size x="450" y="16"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="28" y="-12"/>
-						<Anchor point="TOPRIGHT" x="-28" y="-12"/>
-					</Anchors>
-					<TexCoords left=".87" right="0" top="0" bottom="1"/>
-				</Texture>
-			</Layer>
-			<Layer level="OVERLAY" textureSubLevel="2">
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
-					<Size x="32" y="32"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="9" y="-7"/>
-					</Anchors>
-					<TexCoords left="1" right="0" top="1" bottom="0"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
-					<Size x="32" y="32"/>
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-8" y="-7"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="1" bottom="0"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
-					<Size x="32" y="32"/>
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="9" y="8"/>
-					</Anchors>
-					<TexCoords left="1" right="0" top="0" bottom="1"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
-					<Size x="32" y="32"/>
-					<Anchors>
-						<Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="0" bottom="1"/>
-				</Texture>
-			</Layer>
-			<Layer level="OVERLAY" textureSubLevel="1">
-				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
-					<Size x="64" y="64"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="4" y="-2"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="0" bottom="1"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
-					<Size x="64" y="64"/>
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-4" y="-2"/>
-					</Anchors>
-					<TexCoords left="1" right="0" top="0" bottom="1"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
-					<Size x="64" y="64"/>
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="4" y="3"/>
-					</Anchors>
-					<TexCoords left="0" right="1" top="1" bottom="0"/>
-				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
-					<Size x="64" y="64"/>
-					<Anchors>
-						<Anchor point="BOTTOMRIGHT" x="-4" y="3"/>
-					</Anchors>
-					<TexCoords left="1" right="0" top="1" bottom="0"/>
-				</Texture>
-			</Layer>
-		</Layers>
+	<Frame name="TRP3_MainFrameTemplate" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" virtual="true">
+		<Size x="840" y="600"/>
 		<Frames>
+			<Frame parentKey="Backdrop" inherits="TooltipBorderBackdropTemplate" setAllPoints="true">
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
+				<Layers>
+					<Layer level="BORDER" textureSubLevel="-3">
+						<Texture parentKey="LeftWoodBorder" file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
+							<Size x="22"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="4" y="-4"/>
+								<Anchor point="BOTTOMLEFT" x="4" y="4"/>
+							</Anchors>
+							<Color r="1" g="0.8" b="0.8"/>
+							<TexCoords left="0.0078125" right="0.2265625"/>
+						</Texture>
+						<Texture parentKey="RightWoodBorder" file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
+							<Size x="22"/>
+							<Anchors>
+								<Anchor point="TOPRIGHT" x="-4" y="-4"/>
+								<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+							</Anchors>
+							<Color r="1" g="0.8" b="0.8"/>
+							<TexCoords left="0.2265625" right="0.0078125"/>
+						</Texture>
+					</Layer>
+					<Layer level="BORDER" textureSubLevel="-2">
+						<Texture parentKey="TopWoodBorder" file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true">
+							<Size y="22"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="4" y="-4"/>
+								<Anchor point="TOPRIGHT" x="-4" y="-4"/>
+							</Anchors>
+							<Color r="1" g="0.8" b="0.8"/>
+							<TexCoords top="0.484375" bottom="0.921875"/>
+						</Texture>
+						<Texture parentKey="BottomWoodBorder" file="Interface\AddOns\totalRP3\Resources\UI\_ui-frame-wooden-border" horizTile="true">
+							<Size y="22"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" x="4" y="4"/>
+								<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+							</Anchors>
+							<Color r="1" g="0.8" b="0.8"/>
+							<TexCoords top="0.015625" bottom="0.453125"/>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
 			<!-- CLOSE MAIN FRAME -->
 			<Button parentKey="Close" inherits="TRP3_StyledButtonTemplate">
 				<Size x="24" y="24"/>
@@ -208,7 +156,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<KeyValue key="styleName" value="CloseButton" type="string"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="TOPRIGHT"/>
+					<Anchor point="TOPRIGHT" x="-1" y="-1"/>
 				</Anchors>
 			</Button>
 
@@ -243,7 +191,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<KeyValue key="styleName" value="ResizeButton" type="string"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT"/>
+					<Anchor point="BOTTOMRIGHT" x="-1" y="1"/>
 				</Anchors>
 			</Button>
 		</Frames>
@@ -255,27 +203,18 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture parentKey="ContentBackground" horizTile="true" vertTile="true">
+				<Texture parentKey="Background" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-neutral-background" horizTile="true" vertTile="true">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="16" y="-16"/>
-						<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
+						<Anchor point="TOPLEFT" x="4" y="-4"/>
+						<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
 					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer level="ARTWORK">
-				<Texture file="Interface\AchievementFrame\UI-Achievement-Parchment">
-					<Size x="195" y="0"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="20" y="-20"/>
-						<Anchor point="BOTTOMLEFT" x="20" y="20"/>
-					</Anchors>
-					<TexCoords left="0" right="0.5" top="0" bottom="1"/>
+					<Color r="0.6" g="0.6" b="0.6"/>
 				</Texture>
 			</Layer>
 		</Layers>
 		<Frames>
 			<!-- RIGHT PART : Place for content. Needs to be defined first as the menu scroll invokes OnSizeChanged. -->
-			<Frame name="TRP3_MainFramePageContainer">
+			<Frame name="TRP3_MainFramePageContainer" useParentLevel="true">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
 					<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
@@ -287,16 +226,48 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<ScrollFrame name="TRP3_MainFrameMenuScroll" inherits="ScrollFrameTemplate">
 				<KeyValues>
 					<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
-					<KeyValue key="scrollBarX" value="6" type="number"/>
+					<KeyValue key="scrollBarX" value="8" type="number"/>
 					<KeyValue key="scrollBarTopY" value="0" type="number"/>
 					<KeyValue key="scrollBarBottomY" value="4" type="number"/>
 					<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
 				</KeyValues>
 				<Size x="175" y="0"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" x="20" y="-23"/>
-					<Anchor point="BOTTOM" x="0" y="20"/>
+					<Anchor point="TOPLEFT" x="20" y="-24"/>
+					<Anchor point="BOTTOM" y="24"/>
 				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture parentKey="Background" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-neutral-background" horizTile="true" vertTile="true">
+							<Color r="0.6" g="0.6" b="0.6"/>
+						</Texture>
+					</Layer>
+					<Layer level="BORDER" textureSubLevel="-3">
+						<Texture parentKey="SidebarWoodBorder" file="Interface\AddOns\totalRP3\Resources\UI\!ui-frame-wooden-border" vertTile="true">
+							<Size x="24"/>
+							<Anchors>
+								<Anchor point="TOP" y="20"/>
+								<Anchor point="LEFT" x="179"/>
+								<Anchor point="BOTTOM" y="-20"/>
+							</Anchors>
+							<Color r="1" g="0.8" b="0.8"/>
+							<TexCoords left="0.0078125" right="0.2265625"/>
+						</Texture>
+					</Layer>
+					<Layer level="ARTWORK">
+						<Texture parentKey="SidebarLogo" mixin="TRP3_SidebarLogoMixin" file="Interface\AddOns\totalRP3\Resources\UI\ui-sidebar-logo">
+							<Size x="112" y="112"/>
+							<Anchors>
+								<Anchor point="BOTTOM" y="30"/>
+							</Anchors>
+							<Color r="0.5" g="0.4" b="0.3" a="0.5"/>
+							<Scripts>
+								<OnLoad method="OnLoad"/>
+								<OnShow method="OnShow"/>
+							</Scripts>
+						</Texture>
+					</Layer>
+				</Layers>
 				<ScrollChild>
 					<Frame name="TRP3_MainFrameMenuContainer">
 						<Size x="195" y="10"/>
@@ -306,7 +277,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Button name="TRP3_MainTutorialButton">
 						<Size x="46" y="46"/>
 						<Anchors>
-							<Anchor point="BOTTOMLEFT" x="75" y="-15"/>
+							<Anchor point="BOTTOMLEFT" x="70" y="-15"/>
 						</Anchors>
 						<Layers>
 							<Layer level="BACKGROUND">
@@ -342,27 +313,18 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</ScrollFrame>
 
 			<!-- RIGHT PART : STATIC POPUP : blocking access to content behind it -->
-			<Frame name="TRP3_PopupsFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="TRP3_TooltipBackdropTemplate">
-				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-				</KeyValues>
+			<Frame name="TRP3_PopupsFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="TRP3_OverlayBackdropTemplate">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
-					<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
-					<Anchor point="LEFT" x="215" y="0"/>
+					<Anchor point="TOPLEFT" x="211" y="-18"/>
+					<Anchor point="BOTTOMRIGHT" x="-18" y="18"/>
 				</Anchors>
 			</Frame>
 
 			<!-- Update alert popup -->
-			<Frame name="TRP3_UpdateFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="TRP3_TooltipBackdropTemplate">
-				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-				</KeyValues>
-
+			<Frame name="TRP3_UpdateFrame" frameStrata="DIALOG" enableMouse="true" hidden="true" inherits="TRP3_OverlayBackdropTemplate">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
-					<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
-					<Anchor point="LEFT" x="215" y="0"/>
+					<Anchor point="TOPLEFT" x="211" y="-18"/>
+					<Anchor point="BOTTOMRIGHT" x="-18" y="18"/>
 				</Anchors>
 
 				<Frames>

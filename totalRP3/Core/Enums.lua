@@ -45,3 +45,9 @@ AddOn_TotalRP3.Enums.UNIT_TYPE = {
 	MOUNT = "MOUNT", -- Not a real unit, but used for companion profiles.
 	NPC = "NPC",
 };
+
+-- WALKUP is an enumeration of walkup options for a player.
+AddOn_TotalRP3.Enums.WALKUP = {
+	NO = 1,
+	YES = 2,
+};

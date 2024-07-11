@@ -1,0 +1,121 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="CategoryButton.lua"/>
+
+	<Button name="TRP3_CategoryButtonArtTemplate" mixin="TRP3_CategoryButtonArtMixin" virtual="true">
+		<Size y="32"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="EdgeLeft" file="Interface\AddOns\totalRP3\Resources\UI\ui-category-button">
+					<Size x="16"/>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+						<Anchor point="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords left="0.5" right="0.75" bottom="0.125"/>
+				</Texture>
+				<Texture parentKey="EdgeRight" file="Interface\AddOns\totalRP3\Resources\UI\ui-category-button">
+					<Size x="16"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.75" bottom="0.125"/>
+				</Texture>
+				<Texture parentKey="Center" file="Interface\AddOns\totalRP3\Resources\UI\ui-category-button" horizTile="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.EdgeLeft" relativePoint="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.EdgeRight" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords top="0.375" bottom="0.5"/>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture parentKey="BorderEdgeLeft" file="Interface\AddOns\totalRP3\Resources\UI\ui-category-button">
+					<Size x="16"/>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+						<Anchor point="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords right="0.25" bottom="0.125"/>
+				</Texture>
+				<Texture parentKey="BorderEdgeRight" file="Interface\AddOns\totalRP3\Resources\UI\ui-category-button">
+					<Size x="16"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.25" right="0.5" bottom="0.125"/>
+				</Texture>
+				<Texture parentKey="BorderCenter" file="Interface\AddOns\totalRP3\Resources\UI\ui-category-button" horizTile="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.BorderEdgeLeft" relativePoint="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.BorderEdgeRight" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords top="0.125" bottom="0.25"/>
+				</Texture>
+			</Layer>
+			<Layer level="HIGHLIGHT" textureSubLevel="0">
+				<Texture parentKey="HighlightEdgeLeft" file="Interface\AddOns\totalRP3\Resources\UI\ui-category-button" alphaMode="ADD">
+					<Size x="16"/>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+						<Anchor point="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords right="0.25" top="0.25" bottom="0.375"/>
+				</Texture>
+				<Texture parentKey="HighlightEdgeRight" file="Interface\AddOns\totalRP3\Resources\UI\ui-category-button" alphaMode="ADD">
+					<Size x="16"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.25" right="0.5" top="0.25" bottom="0.375"/>
+				</Texture>
+				<Texture parentKey="HighlightCenter" file="Interface\AddOns\totalRP3\Resources\UI\ui-category-button" alphaMode="ADD" horizTile="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.HighlightEdgeLeft" relativePoint="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.HighlightEdgeRight" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords top="0.5" bottom="0.625"/>
+				</Texture>
+			</Layer>
+			<Layer level="HIGHLIGHT" textureSubLevel="1">
+				<Texture parentKey="HighlightBorderEdgeLeft" file="Interface\AddOns\totalRP3\Resources\UI\ui-category-button" alphaMode="ADD">
+					<Size x="16"/>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+						<Anchor point="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords right="0.25" top="0.75" bottom="0.875"/>
+				</Texture>
+				<Texture parentKey="HighlightBorderEdgeRight" file="Interface\AddOns\totalRP3\Resources\UI\ui-category-button" alphaMode="ADD">
+					<Size x="16"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.25" right="0.5" top="0.75" bottom="0.875"/>
+				</Texture>
+				<Texture parentKey="HighlightBorderCenter" file="Interface\AddOns\totalRP3\Resources\UI\ui-category-button" alphaMode="ADD" horizTile="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.HighlightBorderEdgeLeft" relativePoint="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.HighlightBorderEdgeRight" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords top="0.875"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnDisable method="OnDisable"/>
+			<OnEnable method="OnEnable"/>
+			<OnMouseDown method="OnMouseDown"/>
+			<OnMouseUp method="OnMouseUp"/>
+			<OnShow method="OnShow"/>
+		</Scripts>
+	</Button>
+</Ui>

@@ -141,10 +141,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		GENERAL SETTINGS
 	-->
 
-	<Frame name="TRP3_ConfigurationPage" virtual="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
-		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GOLD" type="global"/>
-		</KeyValues>
+	<Frame name="TRP3_ConfigurationPage" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="Title" inherits="GameFontHighlightHuge" justifyH="LEFT">
@@ -163,6 +160,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
+			<Frame parentKey="Background" inherits="TRP3_PageBackgroundSettings" setAllPoints="true"/>
 			<ScrollFrame parentKey="ScrollFrame" inherits="ScrollFrameTemplate">
 				<KeyValues>
 					<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>

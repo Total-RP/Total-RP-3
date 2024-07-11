@@ -18,7 +18,7 @@ local getOtherCharacter = TRP3_API.register.getUnitIDCharacter;
 local getYourCharacter = TRP3_API.profile.getPlayerCharacter;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local Events = TRP3_Addon.Events;
-local hasProfile, getRelationColors = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColors;
+local hasProfile, getRelationColor = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColor;
 local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
 local EMPTY = Globals.empty;
 local unitIDToInfo = Utils.str.unitIDToInfo;
@@ -31,8 +31,10 @@ local TRP3_Enums = AddOn_TotalRP3.Enums;
 local OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15:15|t";
 local ALLIANCE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Alliance:20:20|t";
 local HORDE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Horde:20:20|t";
-local NEW_ABOUT_ICON = "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:18:18|t";
-local TRANSPARENT_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\transparent:18:18|t";
+local NEW_ABOUT_ICON = "|A:QuestNormal:22:22|a";
+local PROFILE_NOTES_ICON = "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:22:22|t";
+local TRANSPARENT_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\transparent:22:22|t";
+local WALKUP_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-walkup:18:18:5|t";
 
 local ConfigKeys = {
 	PROFILE_ONLY = "tooltip_profile_only";
@@ -893,6 +895,14 @@ local function writeTooltipForCharacter(targetID, targetType)
 			table.insert(notifPieces, NEW_ABOUT_ICON);
 		end
 
+		if player:GetCharacterSpecificNotes() or player:GetAccountWideNotes() then
+			table.insert(notifPieces, PROFILE_NOTES_ICON);
+		end
+
+		if player:IsWalkupFriendly() then
+			table.insert(notifPieces, WALKUP_ICON);
+		end
+
 		-- Forcing an icon ensures the line height remains consistent. This
 		-- also acts as the anchor for the progress spinner, so needs to be
 		-- the last one.
@@ -1315,7 +1325,7 @@ local function show(targetType, targetID, targetMode)
 				if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER then
 					writeTooltipForCharacter(targetID, targetType);
 					if showRelationColor() and targetID ~= Globals.player_id and not isIDIgnored(targetID) and IsUnitIDKnown(targetID) and hasProfile(targetID) then
-						local borderColor = getRelationColors(hasProfile(targetID));
+						local borderColor = getRelationColor(hasProfile(targetID));
 						if borderColor then
 							TRP3_CharacterTooltip:SetBorderColor(borderColor:GetRGB());
 						end

@@ -6,7 +6,7 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Frame name="TRP3_MatureFilterPopup" hidden="true" inherits="TRP3_TooltipBackdropEdgeTemplate">
 		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_LIGHT_GREY" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
 		</KeyValues>
 		<Size x="420" y="400"/>
 		<Anchors>
@@ -86,6 +86,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Mature dictionary browser line  -->
 	<Button name="TRP3_MatureDictionaryLine" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
 		<Size x="0" y="28"/>
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+		</KeyValues>
 		<Anchors>
 			<Anchor point="LEFT" x="8" y="0"/>
 			<Anchor point="RIGHT" x="-25" y="0"/>
@@ -135,7 +138,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Mature dictionary editor  -->
 	<Frame name="TRP3_MatureDictionaryEditor" hidden="true" inherits="TRP3_BrowserDialogBackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_LIGHT_GREY" type="global"/>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
 		</KeyValues>
 		<Size x="420" y="410"/>
 		<Anchors>
@@ -168,7 +171,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Frame>
 			<Frame parentKey="addNewWord" inherits="TRP3_TooltipBackdropTemplate">
 				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_LIGHT_GREY" type="global"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
 				</KeyValues>
 				<Size x="0" y="60"/>
 				<Anchors>

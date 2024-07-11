@@ -199,7 +199,7 @@ local function decorateProfileList(widget, index)
 		widget:SetBackdropBorderColor(0, 1, 0);
 		_G[widget:GetName().."Current"]:Show();
 	else
-		widget:SetBackdropBorderColor(1, 1, 1);
+		widget:SetBackdropBorderColor(TRP3_BACKDROP_COLOR_GREY:GetRGB());
 		_G[widget:GetName().."Current"]:Hide();
 	end
 
