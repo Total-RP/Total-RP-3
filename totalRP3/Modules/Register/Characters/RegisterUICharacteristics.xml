@@ -69,11 +69,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Anchors>
 					<Anchor point="LEFT" x="30" y="0"/>
 				</Anchors>
-				<Scripts>
-					<OnClick>
-						TRP3_UI_CharacteristicsMiscIconButton(self);
-					</OnClick>
-				</Scripts>
 			</Button>
 			<EditBox name="$parentNameField" inherits="TRP3_TitledHelpEditBox">
 				<Size x="100" y="18"/>
