@@ -9,7 +9,6 @@ local loc = TRP3_API.loc;
 local MODULE_REGISTRATION = {};
 local MODULE_ACTIVATION;
 local hasBeenInit = false;
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
 local registerMenu = TRP3_API.navigation.menu.registerMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
@@ -421,13 +420,14 @@ end
 
 local function onActionClicked(button)
 	local module = button:GetParent().module;
-	local values = {};
-	if MODULE_ACTIVATION[module.id] ~= false then
-		tinsert(values, { loc.CO_MODULES_DISABLE, 1 });
-	else
-		tinsert(values, { loc.CO_MODULES_ENABLE, 2 });
-	end
-	displayDropDown(button, values, onActionSelected, 0, true);
+
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+		if MODULE_ACTIVATION[module.id] ~= false then
+			description:CreateButton(loc.CO_MODULES_DISABLE, onActionSelected, 1);
+		else
+			description:CreateButton(loc.CO_MODULES_ENABLE, onActionSelected, 2);
+		end
+	end);
 end
 
 function onModuleStarted()
@@ -456,8 +456,8 @@ function onModuleStarted()
 		previous = frame;
 		frame:Init(module);
 		local actionButton = frame.Action;
-		setTooltipAll(actionButton, "BOTTOMLEFT", 10, 10, loc.CM_ACTIONS);
-		actionButton:SetScript("OnClick", onActionClicked);
+		setTooltipAll(actionButton, "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+		actionButton:SetScript("OnMouseDown", onActionClicked);
 		i = i + 1;
 	end
 end

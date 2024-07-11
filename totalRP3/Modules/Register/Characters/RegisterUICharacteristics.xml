@@ -83,9 +83,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="RIGHT" x="-40" y="0"/>
 				</Anchors>
 			</EditBox>
-			<Button name="$parentDelete" inherits="TRP3_CloseButton">
+			<Button name="$parentAction" inherits="TRP3_ActionButton">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentValueField" x="5" y="0"/>
+					<Anchor point="RIGHT" relativeKey="$parent" x="20"/>
 				</Anchors>
 			</Button>
 		</Frames>
@@ -347,7 +347,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</KeyValues>
 			</EditBox>
 
-			<Button name="$parentDelete" parentKey="DeleteButton" inherits="TRP3_CloseButton">
+			<Button name="$parentAction" parentKey="ActionButton" inherits="TRP3_ActionButton">
 				<Anchors>
 					<Anchor point="RIGHT" relativeKey="$parent" relativePoint="RIGHT" x="10" y="0"/>
 				</Anchors>

@@ -10,7 +10,6 @@ local tcopy, tsize = Utils.table.copy, Utils.table.size;
 local loc = TRP3_API.loc;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local getKeys = Utils.table.keys;
-local setupDropDownMenu = TRP3_API.ui.listbox.setupDropDownMenu;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
@@ -18,7 +17,6 @@ local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
 local getRelationTexture = TRP3_API.register.relation.getRelationTexture;
 local RELATIONS = TRP3_API.register.relation;
 local getRelationText, getRelationTooltipText, setRelation = RELATIONS.getRelationText, RELATIONS.getRelationTooltipText, RELATIONS.setRelation;
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local showConfirmPopup, showTextInputPopup = TRP3_API.popup.showConfirmPopup, TRP3_API.popup.showTextInputPopup;
 local deleteProfile = TRP3_API.register.deleteProfile;
@@ -629,9 +627,9 @@ local function refreshEditIcon(frame)
 end
 
 local function onMiscDelete(self)
-	assert(self and self:GetParent(), "Badly initialiazed remove button, reference");
+	assert(self and self:GetParent(), "Badly initialized remove, reference");
 	local frame = self:GetParent();
-	assert(frame.frameIndex and draftData.MI[frame.frameIndex], "Badly initialiazed remove button, index");
+	assert(frame.frameIndex and draftData.MI[frame.frameIndex], "Badly initialized remove, index");
 	saveInDraft();
 	wipe(draftData.MI[frame.frameIndex]);
 	tremove(draftData.MI, frame.frameIndex);
@@ -649,6 +647,15 @@ local function miscAdd(ID, NA, VA, IC)
 	setEditDisplay();
 end
 
+local function onMiscDuplicate(self)
+	assert(self and self:GetParent(), "Badly initialized duplicate, reference");
+	local frame = self:GetParent();
+	assert(frame.frameIndex and draftData.MI[frame.frameIndex], "Badly initialized duplicate, index");
+	saveInDraft();
+	tinsert(draftData.MI, CopyTable(draftData.MI[frame.frameIndex]));
+	setEditDisplay();
+end
+
 local MISC_PRESET = {
 	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.House),
 	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Nickname),
@@ -663,7 +670,7 @@ local MISC_PRESET = {
 	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Tattoos),
 	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.VoiceReference),
 	Mixin(TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Custom), {
-		list = "|cff00ff00" .. loc.REG_PLAYER_ADD_NEW,
+		list = "|cnGREEN_FONT_COLOR:" .. loc.REG_PLAYER_ADD_NEW,
 		value = loc.CM_VALUE,
 	}),
 };
@@ -686,15 +693,17 @@ end
 
 local function miscAddDropDown()
 	local values = {};
-
 	for index, preset in pairs(MISC_PRESET) do
 		table.insert(values, { preset.list or preset.localizedName, index });
 	end
-
 	table.sort(values, SortCompareMiscEntries);
-	table.insert(values, 1, { loc.REG_PLAYER_MISC_ADD });
 
-	displayDropDown(TRP3_RegisterCharact_Edit_MiscAdd, values, miscAddDropDownSelection, 0, true);
+	TRP3_MenuUtil.CreateContextMenu(TRP3_RegisterCharact_Edit_MiscAdd, function(_, description)
+		description:CreateTitle(loc.REG_PLAYER_MISC_ADD);
+		for _, preset in pairs(values) do
+			description:CreateButton(preset[1], miscAddDropDownSelection, preset[2]);
+		end
+	end);
 end
 
 local function psychoAdd(presetID)
@@ -719,12 +728,21 @@ local function psychoAdd(presetID)
 end
 
 local function onPsychoDelete(self)
-	assert(self and self:GetParent(), "Badly initialiazed remove button, reference");
+	assert(self and self:GetParent(), "Badly initialized remove, reference");
 	local frame = self:GetParent();
-	assert(frame.frameIndex and draftData.PS[frame.frameIndex], "Badly initialiazed remove button, index");
+	assert(frame.frameIndex and draftData.PS[frame.frameIndex], "Badly initialized remove button, index");
 	saveInDraft();
 	wipe(draftData.PS[frame.frameIndex]);
 	tremove(draftData.PS, frame.frameIndex);
+	setEditDisplay();
+end
+
+local function onPsychoDuplicate(self)
+	assert(self and self:GetParent(), "Badly initialized duplicate, reference");
+	local frame = self:GetParent();
+	assert(frame.frameIndex and draftData.PS[frame.frameIndex], "Badly initialized duplicate, index");
+	saveInDraft();
+	tinsert(draftData.PS, CopyTable(draftData.PS[frame.frameIndex]));
 	setEditDisplay();
 end
 
@@ -1125,8 +1143,13 @@ function setEditDisplay()
 			frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscEditLine" .. frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_MiscEditLine");
 			_G[frame:GetName() .. "NameFieldText"]:SetText(loc.CM_NAME);
 			_G[frame:GetName() .. "ValueFieldText"]:SetText(loc.CM_VALUE);
-			_G[frame:GetName() .. "Delete"]:SetScript("OnClick", onMiscDelete);
-			setTooltipForSameFrame(_G[frame:GetName() .. "Delete"], "TOP", 0, 5, loc.CM_REMOVE);
+			_G[frame:GetName() .. "Action"]:SetScript("OnMouseDown", function(self)
+				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+					description:CreateButton(loc.CM_DUPLICATE, onMiscDuplicate, self);
+					description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CM_REMOVE .. "|r", onMiscDelete, self);
+				end);
+			end);
+			setTooltipForSameFrame(_G[frame:GetName() .. "Action"], "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 			scaleField(frame, TRP3_RegisterCharact_Edit_CharactPanel_Container:GetWidth(), "NameField");
 
 			-- Register the drag/drop handlers for reordering. Use the
@@ -1146,8 +1169,8 @@ function setEditDisplay()
 			elseif button == "RightButton" then
 				local icon = miscStructure.IC or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
+					description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(_G[frame:GetName() .. "Icon"], "misc", miscStructure); end);
 				end);
 			end
@@ -1192,7 +1215,13 @@ function setEditDisplay()
 		if frame == nil then
 			-- Create psycho attribute widget if not already exists
 			frame = CreateFrame("Frame", "TRP3_RegisterCharact_PsychoEditLine" .. frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_PsychoInfoEditLine");
-			frame.DeleteButton:SetScript("OnClick", onPsychoDelete);
+			frame.ActionButton:SetScript("OnMouseDown", function(self)
+				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+					description:CreateButton(loc.CM_DUPLICATE, onPsychoDuplicate, self);
+					description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CM_REMOVE .. "|r", onPsychoDelete, self);
+				end);
+			end);
+
 			frame.CustomLeftField.title:SetText(loc.REG_PLAYER_LEFTTRAIT);
 			frame.CustomRightField.title:SetText(loc.REG_PLAYER_RIGHTTRAIT);
 
@@ -1206,7 +1235,8 @@ function setEditDisplay()
 
 			setTooltipForSameFrame(frame.CustomLeftIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_LEFTICON_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 			setTooltipForSameFrame(frame.CustomRightIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_RIGHTICON_TT.. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-			setTooltipForSameFrame(frame.DeleteButton, "TOP", 0, 5, loc.CM_REMOVE);
+			setTooltipForSameFrame(frame.ActionButton, "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+
 			setTooltipForSameFrame(frame.CustomLeftColor, "TOP", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT);
 			setTooltipForSameFrame(frame.CustomRightColor, "TOP", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT);
 
@@ -1242,8 +1272,8 @@ function setEditDisplay()
 			elseif button == "RightButton" then
 				local icon = psychoStructure.LI or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
+					description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.CustomLeftIcon, "psychoLeft", psychoStructure); end);
 				end);
 			end
@@ -1258,8 +1288,8 @@ function setEditDisplay()
 			elseif button == "RightButton" then
 				local icon = psychoStructure.RI or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
+					description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.CustomRightIcon, "psychoRight", psychoStructure); end);
 				end);
 			end
@@ -1422,21 +1452,18 @@ local function onActionClicked(button)
 	assert(context, "No context for page player_main !");
 	assert(context.profile, "No profile in context");
 
-	local values = {};
-	tinsert(values, { loc.PR_DELETE_PROFILE, 1 });
-	if context.profile.link and tsize(context.profile.link) > 0 then
-		tinsert(values, { loc.REG_PLAYER_IGNORE:format(tsize(context.profile.link)), 2 });
-	end
-	local relations = getRelationList(true);
-	local relationValues = {};
-	for _, relation in ipairs(relations) do
-		tinsert(relationValues, {relation.name or loc["REG_RELATION_"..relation.id], relation.id});
-	end
-	tinsert(values, {
-		loc.REG_RELATION,
-		relationValues,
-	});
-	displayDropDown(button, values, onActionSelected, 0, true);
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+		if context.profile.link and tsize(context.profile.link) > 0 then
+			description:CreateButton(loc.REG_PLAYER_IGNORE:format(tsize(context.profile.link)), onActionSelected, 2);
+		end
+		local relations = getRelationList(true);
+		local relationValues = description:CreateButton(loc.REG_RELATION);
+		for _, relation in ipairs(relations) do
+			relationValues:CreateButton(relation.name or loc["REG_RELATION_"..relation.id], onActionSelected, relation.id);
+		end
+		description:CreateDivider();
+		description:CreateButton("|cnRED_FONT_COLOR:" .. loc.PR_DELETE_PROFILE .. "|r", onActionSelected, 1);
+	end);
 end
 
 local function showCharacteristicsTab()
@@ -1560,7 +1587,7 @@ local function initStructures()
 		{ loc.REG_PLAYER_PSYCHO_Acete .. " - " .. loc.REG_PLAYER_PSYCHO_Bonvivant, 10 },
 		{ loc.REG_PLAYER_PSYCHO_Valeureux .. " - " .. loc.REG_PLAYER_PSYCHO_Couard, 11 },
 		{ loc.REG_PLAYER_PSYCHO_CUSTOM },
-		{ loc.REG_PLAYER_PSYCHO_CREATENEW, "new" },
+		{ "|cnGREEN_FONT_COLOR:" .. loc.REG_PLAYER_PSYCHO_CREATENEW .. "|r", "new" },
 	};
 
 	RELATIONSHIP_STATUS_DROPDOWN = {
@@ -1584,8 +1611,8 @@ function TRP3_API.register.inits.characteristicsInit()
 		elseif button == "RightButton" then
 			local icon = draftData.IC or TRP3_InterfaceIcons.ProfileDefault;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
+				description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
 				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end
@@ -1593,7 +1620,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_NamePanel_Edit_CancelButton:SetScript("OnClick", showCharacteristicsTab);
 	TRP3_RegisterCharact_NamePanel_Edit_SaveButton:SetScript("OnClick", onSave);
 	TRP3_RegisterCharact_NamePanel_EditButton:SetScript("OnClick", onEdit);
-	TRP3_RegisterCharact_ActionButton:SetScript("OnClick", onActionClicked);
+	TRP3_RegisterCharact_ActionButton:SetScript("OnMouseDown", onActionClicked);
 	TRP3_RegisterCharact_Edit_ResidenceButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 	TRP3_RegisterCharact_Edit_ResidenceButton:SetScript("OnClick", function(_, button)
 		if button == "LeftButton" then
@@ -1619,7 +1646,18 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_ClassButton.onSelection = onClassColorSelected;
 	TRP3_RegisterCharact_Edit_EyeButton.onSelection = onEyeColorSelected;
 
-	setupDropDownMenu(TRP3_RegisterCharact_Edit_PsychoAdd, PSYCHO_PRESETS_DROPDOWN, psychoAdd, 0, true, false);
+	TRP3_RegisterCharact_Edit_PsychoAdd:SetScript("OnMouseDown", function(button)
+		TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+			for _, preset in pairs(PSYCHO_PRESETS_DROPDOWN) do
+				-- If there is no index or action, it is a title
+				if not preset[2] then
+					description:CreateTitle(preset[1]);
+				else
+					description:CreateButton(preset[1], psychoAdd, preset[2]);
+				end
+			end
+		end);
+	end);
 
 	-- Localz
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "RIGHT", 0, 5, loc.REG_PLAYER_ICON, loc.REG_PLAYER_ICON_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
