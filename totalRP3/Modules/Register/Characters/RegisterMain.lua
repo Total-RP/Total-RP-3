@@ -540,12 +540,9 @@ local function createTabBar()
 
 	-- Adding unread flag
 	tabGroup.tabs[2].textMargin = 20;
-	local unreadFlag = CreateFrame("Button", nil, tabGroup.tabs[2]);
-	unreadFlag:SetNormalAtlas("QuestNormal");
-	unreadFlag:SetHighlightAtlas("QuestNormal", "ADD");
+	local unreadFlag = tabGroup.tabs[2]:CreateTexture(nil, "ARTWORK");
+	unreadFlag:SetAtlas("QuestNormal");
 	unreadFlag:SetSize(15, 15);
-	unreadFlag:SetScript("OnEnter", function(self) TRP3_RefreshTooltipForFrame(self); end);
-	unreadFlag:SetScript("OnLeave", function() TRP3_MainTooltip:Hide(); end);
 	unreadFlag:SetPoint("RIGHT", tabGroup.tabs[2].Text, "LEFT", 0, 0);
 	tabGroup.tabs[2].Unread = unreadFlag;
 
