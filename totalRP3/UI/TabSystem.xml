@@ -9,6 +9,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Button name="TRP3_TabButtonTemplate" mixin="TRP3_TabButtonMixin" motionScriptsWhileDisabled="true" virtual="true">
 		<KeyValues>
 			<KeyValue key="selected" value="false" type="boolean"/>
+			<KeyValue key="textMargin" value="10" type="number"/>
 			<KeyValue key="selectedFontObject" value="GameFontHighlightSmall" type="global"/>
 			<KeyValue key="unselectedFontObject" value="GameFontNormalSmall" type="global"/>
 		</KeyValues>
