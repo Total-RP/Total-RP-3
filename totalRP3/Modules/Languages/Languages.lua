@@ -11,7 +11,6 @@ local _, TRP3_API = ...;
 
 -- Imports
 local refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.refresh, TRP3_MainTooltip;
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local loc = TRP3_API.loc;
 local Globals = TRP3_API.globals;
 local GetNumLanguages, GetLanguageByIndex, GetDefaultLanguage = GetNumLanguages, GetLanguageByIndex, GetDefaultLanguage;
@@ -115,23 +114,17 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or TRP3_InterfaceIcons.ToolbarLanguage;
 			end
 		end,
-		onClick = function(Uibutton)
-			local dropdownItems = {};
-			tinsert(dropdownItems,{loc.TB_LANGUAGE, nil});
-			for _, language in ipairs(Languages.getAvailableLanguages()) do
-				if language:IsActive() then
-					tinsert(dropdownItems, {
-						language:GetIcon():GenerateString(15) .. " " .. TRP3_API.Colors.Green(language:GetName()),
-						nil
-					})
-				else
-					tinsert(dropdownItems,{
-						language:GetIcon():GenerateString(15) .. " " .. language:GetName(),
-						language:GetID()
-					})
+		onMouseDown = function(Uibutton)
+			TRP3_MenuUtil.CreateContextMenu(Uibutton, function(_, description)
+				description:CreateTitle(loc.TB_LANGUAGE);
+				for _, language in ipairs(Languages.getAvailableLanguages()) do
+					if language:IsActive() then
+						description:CreateButton(language:GetIcon():GenerateString(15) .. " " .. TRP3_API.Colors.Green(language:GetName()));
+					else
+						description:CreateButton(language:GetIcon():GenerateString(15) .. " " .. language:GetName(), Languages.setLanguageByID, language:GetID());
+					end
 				end
-			end
-			displayDropDown(Uibutton, dropdownItems, Languages.setLanguageByID, 0, true);
+			end);
 		end,
 		onLeave = function()
 			mainTooltip:Hide();

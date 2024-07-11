@@ -21,7 +21,6 @@ local playUISound = TRP3_API.ui.misc.playUISound;
 local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 local registerMenu, registerPage = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.page.registerPage;
 local setPage = TRP3_API.navigation.page.setPage;
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
@@ -137,6 +136,19 @@ end
 
 local function profileSelected(profileID)
 	TRP3_API.profile.selectProfile(profileID);
+end
+
+local function getPlayerProfilesAsList(currentProfileID)
+	local list = {};
+	for profileID, profile in pairs(getProfiles()) do
+		if currentProfileID == profileID then
+			tinsert(list, {profile.profileName, profile.player.characteristics.IC, nil});
+		else
+			tinsert(list, {profile.profileName, profile.player.characteristics.IC, profileID});
+		end
+	end
+	table.sort(list, function(a,b) return string.lower(a[1]) < string.lower(b[1]) end);
+	return list;
 end
 
 TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
@@ -261,24 +273,25 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					buttonStructure.icon = OOC_ICON;
 				end
 			end,
-			onClick = function(Uibutton, _, button)
+			onMouseDown = function(Uibutton, _, button)
 
 				if button == "RightButton" then
+					local currentProfileID = getPlayerCurrentProfileID();
+					local profileList = getPlayerProfilesAsList(currentProfileID);
 
-					local list = getProfiles();
+					TRP3_MenuUtil.CreateContextMenu(Uibutton, function(_, description)
+						description:CreateTitle(loc.TB_SWITCH_PROFILE);
 
-					local dropdownItems = {};
-					tinsert(dropdownItems,{loc.TB_SWITCH_PROFILE, nil});
-					local currentProfileID = getPlayerCurrentProfileID()
-					for key, value in pairs(list) do
-						local icon = value.player.characteristics.IC or TRP3_InterfaceIcons.ProfileDefault;
-						if key == currentProfileID then
-							tinsert(dropdownItems,{"|Tinterface\\icons\\"..icon..":15|t|cff00ff00 "..value.profileName.."|r", nil});
-						else
-							tinsert(dropdownItems,{"|Tinterface\\icons\\"..icon..":15|t "..value.profileName, key});
+						for _, profile in ipairs(profileList) do
+							-- Current profile has nil profileID (profile[3])
+							local icon = profile[2] or TRP3_InterfaceIcons.ProfileDefault;
+							if profile[3] then
+								description:CreateButton("|Tinterface\\icons\\" .. icon .. ":15|t " .. profile[1] .. "|r", profileSelected, profile[3]);
+							else
+								description:CreateButton("|Tinterface\\icons\\" .. icon .. ":15|t|cnGREEN_FONT_COLOR: " .. profile[1] .."|r");
+							end
 						end
-					end
-					displayDropDown(Uibutton, dropdownItems, profileSelected, 0, true);
+					end);
 				else
 					switchStatus();
 					playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);

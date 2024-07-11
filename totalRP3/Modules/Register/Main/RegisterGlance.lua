@@ -459,8 +459,8 @@ local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 		elseif button == "RightButton" then
 			local icon = TRP3_AtFirstGlanceEditorIcon.icon or TRP3_InterfaceIcons.Default;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
+				description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
 				description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(self); end);
 			end);
 		end
@@ -476,7 +476,6 @@ TRP3_API.register.glance.openGlanceEditor = openGlanceEditor;
 -- Glance bar module section
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
 local getUnitID, companionIDToInfo = Utils.str.getUnitID, Utils.str.companionIDToInfo;
 local get, getDataDefault = TRP3_API.profile.getData, TRP3_API.profile.getDataDefault;
@@ -614,11 +613,38 @@ local function onGlanceSlotClick(button, clickType)
 			flags = GLANCE_MENU_FLAGSET_IS_USER;
 		end
 
-		local values = getGlanceMenuEntries(button, flags);
-		local onSelected = function(value) onGlanceSelection(value, button) end;
+		local glances = getGlanceMenuEntries(button, flags);
 
-		if #values > 0 then
-			displayDropDown(button, values, onSelected, 0, true);
+		if #glances > 0 then
+			TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+				for _, glance in ipairs(glances) do
+					-- If no action (glance[2]), assume title.
+					if glance[2] then
+						-- "-1" action is create new.
+						if glance[2] == -1 then
+							description:CreateButton("|cnGREEN_FONT_COLOR:" .. glance[1] .. "|r", function() onGlanceSelection(glance[2], button); end);
+						elseif type(glance[2]) == "table" then
+							local glanceCategory = description:CreateButton(glance[1]);
+							for _, innerGlance in ipairs(glance[2]) do
+								local innerGlanceCategory = glanceCategory:CreateButton(innerGlance[1]);
+
+								for _, innerGlanceOptions in ipairs(innerGlance[2]) do
+									-- Check between LOAD and REMOVE button.
+									if innerGlanceOptions[1] == loc.CM_LOAD then
+										innerGlanceCategory:CreateButton(innerGlanceOptions[1], function() onGlanceSelection(innerGlanceOptions[2], button); end);
+									else
+										innerGlanceCategory:CreateButton("|cnRED_FONT_COLOR:" .. innerGlanceOptions[1] .. "|r", function() onGlanceSelection(innerGlanceOptions[2], button); end);
+									end
+								end
+							end
+						else
+							description:CreateButton(glance[1], function() onGlanceSelection(glance[2], button); end);
+						end
+					else
+						description:CreateTitle(glance[1]);
+					end
+				end
+			end);
 		end
 	end
 end

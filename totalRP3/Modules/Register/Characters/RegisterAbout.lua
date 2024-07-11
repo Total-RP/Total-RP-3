@@ -13,7 +13,6 @@ local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
 local showIfMouseOver = TRP3_API.ui.frame.showIfMouseOverFrame;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
@@ -353,8 +352,8 @@ function refreshTemplate2EditDisplay()
 			elseif button == "RightButton" then
 				local icon = frameData.IC or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
+					description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(_G[frame:GetName().."Icon"], frameData); end);
 				end);
 			end
@@ -769,14 +768,14 @@ local function onMusicEditSelected(value)
 end
 
 local function onMusicEditClicked(button)
-	local values = {};
-	tinsert(values, {loc.REG_PLAYER_ABOUT_MUSIC_SELECT, 1});
-	if draftData.MU then
-		tinsert(values, {loc.REG_PLAYER_ABOUT_MUSIC_REMOVE, 2});
-		tinsert(values, {loc.REG_PLAYER_ABOUT_MUSIC_LISTEN, 3});
-		tinsert(values, {loc.REG_PLAYER_ABOUT_MUSIC_STOP, 4});
-	end
-	displayDropDown(button, values, onMusicEditSelected, 0, true);
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+		description:CreateButton(loc.REG_PLAYER_ABOUT_MUSIC_SELECT, onMusicEditSelected, 1);
+		if draftData.MU then
+			description:CreateButton(loc.REG_PLAYER_ABOUT_MUSIC_REMOVE, onMusicEditSelected, 2);
+			description:CreateButton(loc.REG_PLAYER_ABOUT_MUSIC_LISTEN, onMusicEditSelected, 3);
+			description:CreateButton(loc.REG_PLAYER_ABOUT_MUSIC_STOP, onMusicEditSelected, 4);
+		end
+	end);
 end
 
 local function getUnitIDTheme(unitID)
@@ -953,8 +952,8 @@ function TRP3_API.register.inits.aboutInit()
 		elseif button == "RightButton" then
 			local icon = draftData.T3.PH.IC or TEMPLATE3_ICON_PHYSICAL;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
+				description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
 				description:CreateButton(loc.UI_ICON_PASTE, function() onPhisIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end
@@ -966,8 +965,8 @@ function TRP3_API.register.inits.aboutInit()
 		elseif button == "RightButton" then
 			local icon = draftData.T3.PS.IC or TEMPLATE3_ICON_PSYCHO;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
+				description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
 				description:CreateButton(loc.UI_ICON_PASTE, function() onPsychoIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end
@@ -979,13 +978,13 @@ function TRP3_API.register.inits.aboutInit()
 		elseif button == "RightButton" then
 			local icon = draftData.T3.HI.IC or TEMPLATE3_ICON_HISTORY;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
+				description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
 				description:CreateButton(loc.UI_ICON_PASTE, function() onHistoIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end
 	end);
-	TRP3_RegisterAbout_Edit_Music_Action:SetScript("OnClick", onMusicEditClicked);
+	TRP3_RegisterAbout_Edit_Music_Action:SetScript("onMouseDown", onMusicEditClicked);
 	TRP3_RegisterAbout_Edit_Template2_Add:SetScript("OnClick", template2AddFrame);
 	TRP3_RegisterAbout_AboutPanel_EditButton:SetScript("OnClick", onEdit);
 	TRP3_RegisterAbout_Edit_SaveButton:SetScript("OnClick", onSave);

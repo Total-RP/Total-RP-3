@@ -149,6 +149,11 @@ local function onStart()
 						buttonStructure.onClick(self, buttonStructure, button);
 					end
 				end);
+				uiButton:SetScript("OnMouseDown", function(self, button)
+					if buttonStructure.onMouseDown then
+						buttonStructure.onMouseDown(self, buttonStructure, button);
+					end
+				end);
 				uiButton:SetScript("OnEnter", function(self)
 					if buttonStructure.onEnter then
 						buttonStructure.onEnter(self, buttonStructure);
@@ -223,6 +228,11 @@ local function onStart()
 				OnClick = function(Uibutton, button)
 					if buttonStructure.onClick then
 						buttonStructure.onClick(Uibutton, buttonStructure, button);
+					end
+				end,
+				OnMouseDown = function(Uibutton, button)
+					if buttonStructure.onMouseDown then
+						buttonStructure.onMouseDown(Uibutton, buttonStructure, button);
 					end
 				end,
 				tooltipTitle = getTooltipTitleWithIcon(buttonStructure),

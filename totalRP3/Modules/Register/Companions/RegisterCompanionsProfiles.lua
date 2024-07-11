@@ -21,7 +21,6 @@ local duplicateProfile = TRP3_API.companions.player.duplicateProfile;
 local editProfile = TRP3_API.companions.player.editProfile;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local EMPTY = Globals.empty;
 local getCompanionProfile, getCompanionProfileID = TRP3_API.companions.player.getCompanionProfile, TRP3_API.companions.player.getCompanionProfileID;
 local getCompanionProfiles = TRP3_API.companions.player.getProfiles;
@@ -274,37 +273,31 @@ end
 local function onBoundClicked(button)
 	local profileID = button:GetParent().profileID;
 	local profile = getCompanionProfiles()[profileID];
-	local values = {};
-	tinsert(values, {
-		loc.REG_COMPANION_BOUND_TO,
-		{
-			{loc.PR_CO_BATTLE, 4},
-			{loc.PR_CO_MOUNT, 5},
-			{loc.REG_COMPANION_BOUND_TO_TARGET, 6},
-		}
-	});
 
-	if AddOn_TotalRP3.Ui.IsPetBrowserEnabled() then
-		tinsert(values[1][2], 1, {loc.REG_COMPANION_BIND_TO_PET, 7});
-	end
-
-	if profile.links and tsize(profile.links) > 0 then
-		local linksTab = {};
-		for companionID, companionType in pairs(profile.links) do
-			tinsert(linksTab, {getCompanionNameFromSpellID(companionID), companionID .. "|" .. companionType});
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+		local boundTab = description:CreateButton(loc.REG_COMPANION_BOUND_TO);
+		if AddOn_TotalRP3.Ui.IsPetBrowserEnabled() then
+			boundTab:CreateButton(loc.REG_COMPANION_BIND_TO_PET, function() onActionSelected(7, button); end);
 		end
-		tinsert(values, {loc.REG_COMPANION_UNBOUND, linksTab});
-	end
+		boundTab:CreateButton(loc.PR_CO_BATTLE, function() onActionSelected(4, button); end);
+		boundTab:CreateButton(loc.PR_CO_MOUNT, function() onActionSelected(5, button); end);
+		boundTab:CreateButton(loc.REG_COMPANION_BOUND_TO_TARGET, function() onActionSelected(6, button); end);
 
-	displayDropDown(button, values, onActionSelected, 0, true);
+		if profile.links and tsize(profile.links) > 0 then
+			local linksTab = description:CreateButton(loc.REG_COMPANION_UNBOUND);
+			for companionID, companionType in pairs(profile.links) do
+				linksTab:CreateButton(getCompanionNameFromSpellID(companionID), function() onActionSelected(companionID .. "|" .. companionType, button); end);
+			end
+		end
+	end);
 end
 
 local function onActionClicked(button)
-	local values = {};
-	tinsert(values, {loc.PR_DELETE_PROFILE, 1});
-	tinsert(values, {loc.PR_PROFILEMANAGER_RENAME, 2});
-	tinsert(values, {loc.PR_DUPLICATE_PROFILE, 3});
-	displayDropDown(button, values, onActionSelected, 0, true);
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+		description:CreateButton(loc.PR_PROFILEMANAGER_RENAME, function() onActionSelected(2, button); end);
+		description:CreateButton(loc.PR_DUPLICATE_PROFILE, function() onActionSelected(3, button); end);
+		description:CreateButton("|cnRED_FONT_COLOR:" .. loc.PR_DELETE_PROFILE .. "|r", function() onActionSelected(1, button); end);
+	end);
 end
 
 local function onOpenProfile(button)
@@ -419,18 +412,26 @@ local function companionProfileSelectionList(unitID, targetType, buttonClick, bu
 				createNewAndBound(companionID, targetType);
 			end
 		elseif buttonClick == "RightButton" then
-			local list = {};
-			if getCompanionProfile(companionID) then
-				tinsert(list, {loc.REG_COMPANION_TF_OPEN, 0});
-				tinsert(list, {loc.REG_COMPANION_TF_UNBOUND, 1});
-			end
-			tinsert(list, {loc.REG_COMPANION_TF_CREATE, 2});
-			local profileList = getPlayerCompanionProfilesAsList(companionID);
-			if next(profileList) ~= nil then
-				tinsert(list, {loc.REG_COMPANION_TF_BOUND_TO, profileList});
-			end
 
-			displayDropDown(button, list, function(value) onCompanionProfileSelection(value, companionID, targetType) end, 0, true);
+			TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+				description:CreateTitle(loc.TB_SWITCH_PROFILE);
+
+				if getCompanionProfile(companionID) then
+					description:CreateButton(loc.REG_COMPANION_TF_OPEN, function() onCompanionProfileSelection(0, companionID, targetType); end);
+					description:CreateButton(loc.REG_COMPANION_TF_UNBOUND, function() onCompanionProfileSelection(1, companionID, targetType); end);
+				end
+				description:CreateButton("|cnGREEN_FONT_COLOR:" .. loc.REG_COMPANION_TF_CREATE .. "|r", function() onCompanionProfileSelection(2, companionID, targetType); end);
+				local profileList = getPlayerCompanionProfilesAsList(companionID);
+				local profileButton = description:CreateButton( loc.REG_COMPANION_TF_BOUND_TO);
+				for _, profile in ipairs(profileList) do
+					-- Current profile has nil profileID (profile[2])
+					if profile[2] then
+						profileButton:CreateButton(profile[1], function() onCompanionProfileSelection(profile[2], companionID, targetType); end);
+					else
+						profileButton:CreateButton("|cnGREEN_FONT_COLOR:" .. profile[1] .. "|r"):SetEnabled(false);
+					end
+				end
+			end);
 		end
 	else
 		if companionHasProfile(companionFullID) then
@@ -514,16 +515,14 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			end
 		end);
-		_G[widget:GetName().."Action"]:SetScript("OnClick", onActionClicked);
+		_G[widget:GetName().."Action"]:SetScript("onMouseDown", onActionClicked);
 		_G[widget:GetName().."Bound"]:SetText(loc.REG_COMPANION_BOUNDS);
 		_G[widget:GetName().."Bound"]:Show();
-		_G[widget:GetName().."Bound"]:SetScript("OnClick", onBoundClicked);
+		_G[widget:GetName().."Bound"]:SetScript("onMouseDown", onBoundClicked);
 		tinsert(widgetTab, widget);
 
 
-		Ellyb.Tooltips.getTooltip(_G[widget:GetName().."Action"])
-			:SetAnchor(Ellyb.Tooltips.ANCHORS.TOP)
-			:SetTitle(loc.PR_PROFILEMANAGER_ACTIONS);
+		setTooltipForSameFrame(_G[widget:GetName().."Action"], "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 
 		-- Display indications in the tooltip on how to create a chat link
 		Ellyb.Tooltips.getTooltip(widget)
@@ -578,7 +577,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					return ownerID == Globals.player_id or companionHasProfile(unitID);
 				end
 			end,
-			onClick = companionProfileSelectionList,
+			onMouseDown = companionProfileSelectionList,
 			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
 			adapter = function(buttonStructure, unitID)
 				-- Initialize the buttonStructure parts.
@@ -653,7 +652,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				local _, profileID = TRP3_API.companions.register.getUnitMount(unitID, "target");
 				return profileID ~= nil;
 			end,
-			onClick = companionProfileSelectionList,
+			onMouseDown = companionProfileSelectionList,
 			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
 			adapter = function(buttonStructure, unitID)
 				-- Initialize the buttonStructure parts.

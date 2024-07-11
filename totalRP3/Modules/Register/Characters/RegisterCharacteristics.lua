@@ -18,7 +18,6 @@ local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
 local getRelationTexture = TRP3_API.register.relation.getRelationTexture;
 local RELATIONS = TRP3_API.register.relation;
 local getRelationText, getRelationTooltipText, setRelation = RELATIONS.getRelationText, RELATIONS.getRelationTooltipText, RELATIONS.setRelation;
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local showConfirmPopup, showTextInputPopup = TRP3_API.popup.showConfirmPopup, TRP3_API.popup.showTextInputPopup;
 local deleteProfile = TRP3_API.register.deleteProfile;
@@ -680,15 +679,17 @@ end
 
 local function miscAddDropDown()
 	local values = {};
-
 	for index, preset in pairs(MISC_PRESET) do
 		table.insert(values, { preset.list or preset.localizedName, index });
 	end
-
 	table.sort(values, SortCompareMiscEntries);
-	table.insert(values, 1, { loc.REG_PLAYER_MISC_ADD });
-
-	displayDropDown(TRP3_RegisterCharact_Edit_MiscAdd, values, miscAddDropDownSelection, 0, true);
+	
+	TRP3_MenuUtil.CreateContextMenu(TRP3_RegisterCharact_Edit_MiscAdd, function(_, description)
+		description:CreateTitle(loc.REG_PLAYER_MISC_ADD);
+		for _, preset in pairs(values) do
+			description:CreateButton(preset[1], miscAddDropDownSelection, preset[2]);
+		end
+	end);
 end
 
 local function psychoAdd(presetID)
@@ -1140,8 +1141,8 @@ function setEditDisplay()
 			elseif button == "RightButton" then
 				local icon = miscStructure.IC or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
+					description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(_G[frame:GetName() .. "Icon"], "misc", miscStructure); end);
 				end);
 			end
@@ -1236,8 +1237,8 @@ function setEditDisplay()
 			elseif button == "RightButton" then
 				local icon = psychoStructure.LI or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
+					description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.CustomLeftIcon, "psychoLeft", psychoStructure); end);
 				end);
 			end
@@ -1252,8 +1253,8 @@ function setEditDisplay()
 			elseif button == "RightButton" then
 				local icon = psychoStructure.RI or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
+					description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.CustomRightIcon, "psychoRight", psychoStructure); end);
 				end);
 			end
@@ -1411,21 +1412,18 @@ local function onActionClicked(button)
 	assert(context, "No context for page player_main !");
 	assert(context.profile, "No profile in context");
 
-	local values = {};
-	tinsert(values, { loc.PR_DELETE_PROFILE, 1 });
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 	if context.profile.link and tsize(context.profile.link) > 0 then
-		tinsert(values, { loc.REG_PLAYER_IGNORE:format(tsize(context.profile.link)), 2 });
+			description:CreateButton(loc.REG_PLAYER_IGNORE:format(tsize(context.profile.link)), onActionSelected, 2);
 	end
 	local relations = getRelationList(true);
-	local relationValues = {};
+		local relationValues = description:CreateButton(loc.REG_RELATION);
 	for _, relation in ipairs(relations) do
-		tinsert(relationValues, {relation.name or loc["REG_RELATION_"..relation.id], relation.id});
+			relationValues:CreateButton(relation.name or loc["REG_RELATION_"..relation.id], onActionSelected, relation.id);
 	end
-	tinsert(values, {
-		loc.REG_RELATION,
-		relationValues,
-	});
-	displayDropDown(button, values, onActionSelected, 0, true);
+		description:CreateDivider();
+		description:CreateButton("|cnRED_FONT_COLOR:" .. loc.PR_DELETE_PROFILE .. "|r", onActionSelected, 1);
+	end);
 end
 
 local function showCharacteristicsTab()
@@ -1549,7 +1547,7 @@ local function initStructures()
 		{ loc.REG_PLAYER_PSYCHO_Acete .. " - " .. loc.REG_PLAYER_PSYCHO_Bonvivant, 10 },
 		{ loc.REG_PLAYER_PSYCHO_Valeureux .. " - " .. loc.REG_PLAYER_PSYCHO_Couard, 11 },
 		{ loc.REG_PLAYER_PSYCHO_CUSTOM },
-		{ loc.REG_PLAYER_PSYCHO_CREATENEW, "new" },
+		{ "|cnGREEN_FONT_COLOR:" .. loc.REG_PLAYER_PSYCHO_CREATENEW .. "|r", "new" },
 	};
 
 	RELATIONSHIP_STATUS_DROPDOWN = {
@@ -1573,8 +1571,8 @@ function TRP3_API.register.inits.characteristicsInit()
 		elseif button == "RightButton" then
 			local icon = draftData.IC or TRP3_InterfaceIcons.ProfileDefault;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(icon); end);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
+				description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
 				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end
@@ -1582,7 +1580,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_NamePanel_Edit_CancelButton:SetScript("OnClick", showCharacteristicsTab);
 	TRP3_RegisterCharact_NamePanel_Edit_SaveButton:SetScript("OnClick", onSave);
 	TRP3_RegisterCharact_NamePanel_EditButton:SetScript("OnClick", onEdit);
-	TRP3_RegisterCharact_ActionButton:SetScript("OnClick", onActionClicked);
+	TRP3_RegisterCharact_ActionButton:SetScript("onMouseDown", onActionClicked);
 	TRP3_RegisterCharact_Edit_ResidenceButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 	TRP3_RegisterCharact_Edit_ResidenceButton:SetScript("OnClick", function(_, button)
 		if button == "LeftButton" then

@@ -56,6 +56,11 @@ local function onStart()
 				self.onClick(self.unitID, self.targetType, button, self);
 			end
 		end);
+		uiButton:SetScript("OnMouseDown", function(self, button)
+			if self.onMouseDown then
+				self.onMouseDown(self.unitID, self.targetType, button, self);
+			end
+		end);	
 		return uiButton;
 	end
 
@@ -113,6 +118,7 @@ local function onStart()
 			uiButton:Show();
 			uiButton.buttonId = id;
 			uiButton.onClick = buttonStructure.onClick;
+			uiButton.onMouseDown = buttonStructure.onMouseDown;
 			uiButton.unitID = currentTargetID;
 			uiButton.targetType = currentTargetType;
 			if buttonStructure.tooltip then
