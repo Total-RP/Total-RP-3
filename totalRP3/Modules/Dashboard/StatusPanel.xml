@@ -20,10 +20,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Anchors>
 					<Color b="1.0" r="1.0" g="1.0"/>
 				</FontString>
-				<FontString parentKey="XPStatusLabel" inherits="GameFontNormal" justifyH="LEFT">
+				<FontString parentKey="WUStatusLabel" inherits="GameFontNormal" justifyH="LEFT">
 					<Size x="200" y="18"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeKey="$parent.RPStatusLabel" relativePoint="BOTTOMLEFT" x="0" y="-13"/>
+					</Anchors>
+					<Color b="1.0" r="1.0" g="1.0"/>
+				</FontString>
+				<FontString parentKey="XPStatusLabel" inherits="GameFontNormal" justifyH="LEFT">
+					<Size x="200" y="18"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.WUStatusLabel" relativePoint="BOTTOMLEFT" x="0" y="-13"/>
 					</Anchors>
 					<Color b="1.0" r="1.0" g="1.0"/>
 				</FontString>
@@ -34,6 +41,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Size x="200" y="32"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeKey="$parent.RPStatusLabel" relativePoint="RIGHT" x="10" y="-2"/>
+				</Anchors>
+			</Frame>
+			<Frame parentKey="WUStatusMenu" inherits="TRP3_DropdownButtonTemplate">
+				<Size x="200" y="32"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.WUStatusLabel" relativePoint="RIGHT" x="10" y="-2"/>
 				</Anchors>
 			</Frame>
 			<Frame parentKey="XPStatusMenu" inherits="TRP3_DropdownButtonTemplate">

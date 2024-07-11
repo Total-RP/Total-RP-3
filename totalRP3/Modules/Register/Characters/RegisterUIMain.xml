@@ -6,13 +6,13 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_TooltipRequestSpinnerTemplate" hidden="true" virtual="true">
-		<Size x="18" y="18"/>
+		<Size x="22" y="22"/>
 		<Layers>
 			<Layer level="OVERLAY">
 				<Texture parentKey="Icon" file="Interface\AddOns\totalRP3\Resources\UI\ui-refresh" texelSnappingBias="0.0" snapToPixelGrid="false">
 					<Size x="16" y="16"/>
 					<Anchors>
-						<Anchor point="RIGHT"/>
+						<Anchor point="CENTER"/>
 					</Anchors>
 				</Texture>
 			</Layer>

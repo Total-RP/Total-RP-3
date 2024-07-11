@@ -103,7 +103,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 			<!-- Status -->
 			<Frame parentKey="StatusPanel" name="$parentStatus" inherits="TRP3_DashboardStatusPanelTemplate">
-				<Size x="0" y="85"/>
+				<Size x="0" y="117"/>
 				<Anchors>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>

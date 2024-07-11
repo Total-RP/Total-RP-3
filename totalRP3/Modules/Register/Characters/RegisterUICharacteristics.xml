@@ -20,6 +20,20 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Button>
 
+	<Button name="TRP3_WalkupButton" virtual="true">
+		<Size x="16" y="16"/>
+		<NormalTexture file="Interface/AddOns/totalRP3/Resources/UI/ui-walkup"/>
+		<HighlightTexture alphaMode="ADD" file="Interface/AddOns/totalRP3/Resources/UI/ui-walkup"/>
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
+
 	<!-- Reorder button -->
 	<Button name="TRP3_RegisterEditReorderButtonTemplate" virtual="true">
 		<Size x="36" y="39"/>
@@ -443,6 +457,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</FontString>
 					</Layer>
 				</Layers>
+				<Frames>
+					<Button name="TRP3_RegisterCharact_NamePanel_WalkupButton" inherits="TRP3_WalkupButton">
+						<Anchors>
+							<Anchor point="LEFT" x="-18" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_NamePanel_Name"/>
+						</Anchors>
+					</Button>
+				</Frames>
 			</Frame>
 			<Frame name="TRP3_RegisterCharact_CharactPanel" inherits="TRP3_GroupBoxTemplate">
 				<KeyValues>

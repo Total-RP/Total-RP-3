@@ -198,6 +198,10 @@ function Player:IsInCharacter()
 	return self:GetRoleplayStatus() ~= Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
 end
 
+function Player:IsWalkupFriendly()
+	return self:GetWalkup() ~= Enums.WALKUP.NO;
+end
+
 function Player:GetRoleplayLanguage()
 	return nil;  -- Deprecated, will remove soon.
 end
@@ -219,6 +223,10 @@ end
 
 function Player:GetCurrentlyText()
 	return self:GetInfo("character/CU");
+end
+
+function Player:GetWalkup()
+	return self:GetInfo("character/WU") or AddOn_TotalRP3.Enums.WALKUP.NO;
 end
 
 function Player:GetMiscFieldByType(miscType)
@@ -274,6 +282,18 @@ function Player:IsOnATrialAccount()
 		-- Backward compatible check, for versions where the trial flag was true or false
 		return accountType == true
 	end
+end
+
+function Player:GetCharacterSpecificNotes()
+	local profile = TRP3_API.profile.getPlayerCurrentProfile();
+	local profileID = self:GetProfileID();
+
+	return profile and profile.notes and profile.notes[profileID] or nil;
+end
+
+function Player:GetAccountWideNotes()
+	local profileID = self:GetProfileID();
+	return TRP3_Notes and TRP3_Notes[profileID] or nil;
 end
 
 -- TODO Deprecate GetInfo(path) in favor of proper type safe methods to access profile data
@@ -422,6 +442,10 @@ end
 
 function CurrentUser:SetCurrentlyText(currentlyText)
 	UpdateProfileField(self, "character", "CU", currentlyText);
+end
+
+function CurrentUser:SetWalkup(walkup)
+	UpdateProfileField(self, "character", "WU", walkup);
 end
 
 function CurrentUser:SetFirstName(firstName)

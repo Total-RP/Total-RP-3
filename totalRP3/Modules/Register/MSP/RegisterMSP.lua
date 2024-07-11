@@ -50,8 +50,12 @@ local function onStart()
 		else
 			msp.my['FR'] = "2";  -- MRP: Casual
 		end
-		if character.RP == 1 then
-			msp.my['FC'] = "2";
+		if character.RP == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER then
+			if character.WU == AddOn_TotalRP3.Enums.WALKUP.YES then
+				msp.my['FC'] = "3";
+			else
+				msp.my['FC'] = "2";
+			end
 		else
 			msp.my['FC'] = "1";
 		end
@@ -445,12 +449,17 @@ local function onStart()
 							end
 						end
 					elseif CHARACTER_FIELDS[field] then
-						if field == "FC" then
-							if value == "1" then
-								profile.character.RP = 2;
-							else
-								profile.character.RP = 1;
-							end
+					if field == "FC" then
+						if value == "1" then
+							profile.character.RP = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+						else
+							profile.character.RP = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
+						end
+						if value == "3" then
+							profile.character.WU = AddOn_TotalRP3.Enums.WALKUP.YES;
+						else
+							profile.character.WU = AddOn_TotalRP3.Enums.WALKUP.NO;
+						end
 						elseif field == "CU" then
 							profile.character.CU = value;
 						elseif field == "CO" then
