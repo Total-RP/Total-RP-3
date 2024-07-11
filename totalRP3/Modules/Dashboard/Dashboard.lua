@@ -74,24 +74,6 @@ function TRP3_API.dashboard.getCharacterExchangeData()
 	return get("player/character");
 end
 
-local function onWalkupChange(walkup)
-	local character = get("player/character");
-	local old = character.WU;
-	character.WU = walkup;
-	if old ~= walkup then
-		incrementCharacterVernum();
-	end
-end
-
-local function switchWalkup()
-	if get("player/character/WU") == TRP3_Enums.WALKUP.NO then
-		onWalkupChange(TRP3_Enums.WALKUP.YES);
-	else
-		onWalkupChange(TRP3_Enums.WALKUP.NO);
-	end
-end
-TRP3_API.dashboard.switchWalkup = switchWalkup;
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SANITIZE
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
