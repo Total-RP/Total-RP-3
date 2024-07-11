@@ -989,7 +989,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_RegisterListHeaderTimeTT:SetScript("OnClick", switchTimeSorting);
 
 	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
-	TRP3_RegisterListHeaderActions:SetScript("onMouseDown", function(self)
+	TRP3_RegisterListHeaderActions:SetScript("OnMouseDown", function(self)
 		if currentMode == MODE_CHARACTER then
 			onCharactersActions(self);
 		elseif currentMode == MODE_PETS then

@@ -1005,7 +1005,7 @@ local function initColorBrowser()
 		end
 	end);
 
-	TRP3_ColorBrowserPresets:SetScript("onMouseDown", colorPresetsDropDown);
+	TRP3_ColorBrowserPresets:SetScript("OnMouseDown", colorPresetsDropDown);
 end
 
 local function showColorBrowser(callback, red, green, blue)

@@ -495,7 +495,7 @@ function TRP3_API.profile.init()
 
 			end
 		end);
-		_G[widget:GetName().."Action"]:SetScript("onMouseDown", onActionClicked);
+		_G[widget:GetName().."Action"]:SetScript("OnMouseDown", onActionClicked);
 		_G[widget:GetName().."Current"]:SetText(loc.PR_PROFILEMANAGER_CURRENT);
 		table.insert(widgetTab, widget);
 

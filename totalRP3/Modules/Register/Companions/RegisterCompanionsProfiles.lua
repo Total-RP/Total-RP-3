@@ -515,10 +515,10 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			end
 		end);
-		_G[widget:GetName().."Action"]:SetScript("onMouseDown", onActionClicked);
+		_G[widget:GetName().."Action"]:SetScript("OnMouseDown", onActionClicked);
 		_G[widget:GetName().."Bound"]:SetText(loc.REG_COMPANION_BOUNDS);
 		_G[widget:GetName().."Bound"]:Show();
-		_G[widget:GetName().."Bound"]:SetScript("onMouseDown", onBoundClicked);
+		_G[widget:GetName().."Bound"]:SetScript("OnMouseDown", onBoundClicked);
 		tinsert(widgetTab, widget);
 
 

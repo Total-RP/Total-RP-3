@@ -984,7 +984,7 @@ function TRP3_API.register.inits.aboutInit()
 			end);
 		end
 	end);
-	TRP3_RegisterAbout_Edit_Music_Action:SetScript("onMouseDown", onMusicEditClicked);
+	TRP3_RegisterAbout_Edit_Music_Action:SetScript("OnMouseDown", onMusicEditClicked);
 	TRP3_RegisterAbout_Edit_Template2_Add:SetScript("OnClick", template2AddFrame);
 	TRP3_RegisterAbout_AboutPanel_EditButton:SetScript("OnClick", onEdit);
 	TRP3_RegisterAbout_Edit_SaveButton:SetScript("OnClick", onSave);

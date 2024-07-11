@@ -1138,7 +1138,7 @@ function setEditDisplay()
 			frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscEditLine" .. frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_MiscEditLine");
 			_G[frame:GetName() .. "NameFieldText"]:SetText(loc.CM_NAME);
 			_G[frame:GetName() .. "ValueFieldText"]:SetText(loc.CM_VALUE);
-			_G[frame:GetName() .. "Action"]:SetScript("onMouseDown", function(self)
+			_G[frame:GetName() .. "Action"]:SetScript("OnMouseDown", function(self)
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 					description:CreateButton(loc.CM_DUPLICATE, onMiscDuplicate, self);
 					description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CM_REMOVE .. "|r", onMiscDelete, self);
@@ -1210,7 +1210,7 @@ function setEditDisplay()
 		if frame == nil then
 			-- Create psycho attribute widget if not already exists
 			frame = CreateFrame("Frame", "TRP3_RegisterCharact_PsychoEditLine" .. frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_PsychoInfoEditLine");
-			frame.ActionButton:SetScript("onMouseDown", function(self)
+			frame.ActionButton:SetScript("OnMouseDown", function(self)
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 					description:CreateButton(loc.CM_DUPLICATE, onPsychoDuplicate, self);
 					description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CM_REMOVE .. "|r", onPsychoDelete, self);
@@ -1610,7 +1610,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_NamePanel_Edit_CancelButton:SetScript("OnClick", showCharacteristicsTab);
 	TRP3_RegisterCharact_NamePanel_Edit_SaveButton:SetScript("OnClick", onSave);
 	TRP3_RegisterCharact_NamePanel_EditButton:SetScript("OnClick", onEdit);
-	TRP3_RegisterCharact_ActionButton:SetScript("onMouseDown", onActionClicked);
+	TRP3_RegisterCharact_ActionButton:SetScript("OnMouseDown", onActionClicked);
 	TRP3_RegisterCharact_Edit_ResidenceButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 	TRP3_RegisterCharact_Edit_ResidenceButton:SetScript("OnClick", function(_, button)
 		if button == "LeftButton" then
@@ -1636,7 +1636,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_ClassButton.onSelection = onClassColorSelected;
 	TRP3_RegisterCharact_Edit_EyeButton.onSelection = onEyeColorSelected;
 
-	TRP3_RegisterCharact_Edit_PsychoAdd:SetScript("onMouseDown", function(button)
+	TRP3_RegisterCharact_Edit_PsychoAdd:SetScript("OnMouseDown", function(button)
 		TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 			for _, preset in pairs(PSYCHO_PRESETS_DROPDOWN) do
 				-- If there is no index or action, it is a title

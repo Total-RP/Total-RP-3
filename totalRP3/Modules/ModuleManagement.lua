@@ -457,7 +457,7 @@ function onModuleStarted()
 		frame:Init(module);
 		local actionButton = frame.Action;
 		setTooltipAll(actionButton, "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
-		actionButton:SetScript("onMouseDown", onActionClicked);
+		actionButton:SetScript("OnMouseDown", onActionClicked);
 		i = i + 1;
 	end
 end
