@@ -1065,6 +1065,14 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 	TRP3_API.ui.tooltip.setTooltipAll(resizeButton, "BOTTOMLEFT", 0, 0, loc.CM_RESIZE, loc.CM_RESIZE_TT);
 	local parentFrame = resizeButton.resizableFrame;
 	resizeButton:RegisterForDrag("LeftButton");
+	resizeButton:SetScript("OnMouseDown", function(self)
+		self.CursorFrame:Show();
+		SetCursor("Interface\\CURSOR\\UI-Cursor-Size");
+	end);
+	resizeButton:SetScript("OnMouseUp", function(self)
+		self.CursorFrame:Hide();
+		ResetCursor();
+	end);
 	resizeButton:SetScript("OnDragStart", function(self)
 		if not self.onResizeStart or not self.onResizeStart() then
 			resizeShadowFrame.minWidth = self.minWidth;
@@ -1080,6 +1088,8 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 	end);
 	resizeButton:SetScript("OnDragStop", function(self)
 		if parentFrame.isSizing then
+			self.CursorFrame:Hide();
+			ResetCursor();
 			resizeShadowFrame:StopMovingOrSizing();
 			parentFrame.isSizing = false;
 			local height, width = resizeShadowFrame:GetHeight(), resizeShadowFrame:GetWidth()
