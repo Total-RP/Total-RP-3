@@ -958,11 +958,16 @@ end
 -- UI : LIST
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local tabGroup;
+
 function refreshList()
 	local lines;
 	local initializer;
 	TRP3_RegisterListEmpty:Hide();
 	TRP3_RegisterListHeaderActions:Hide();
+
+	-- Disable ignored tab when no character ignored
+	tabGroup.tabs[3]:SetTabLocked(tsize(getIgnoredList()) == 0);
 
 	if currentMode == MODE_CHARACTER then
 		lines = getCharacterLines();
@@ -1004,8 +1009,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local tabGroup;
 
 local function createTabBar()
 	local frame = CreateFrame("Frame", "TRP3_RegisterMainTabBar", TRP3_RegisterList);
