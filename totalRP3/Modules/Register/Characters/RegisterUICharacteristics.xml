@@ -357,10 +357,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Register characteristics register line -->
 	<Frame name="TRP3_RegisterCharact_RegisterInfoLine" virtual="true">
-		<Size y="26"/>
+		<Size y="32"/>
 		<Frames>
 			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
-				<Size x="26" y="26"/>
+				<Size x="32" y="32"/>
 				<Anchors>
 					<Anchor point="LEFT" x="15"/>
 				</Anchors>
