@@ -197,24 +197,23 @@ local function getCurrentComparator()
 	return comparators[sortingType];
 end
 
-local ARROW_DOWN = "Interface\\Buttons\\Arrow-Down-Up";
-local ARROW_UP = "Interface\\Buttons\\Arrow-Up-Up";
-local ARROW_SIZE = 15;
+local ARROW_DOWN = "|TInterface\\Buttons\\Arrow-Down-Up:15:15:0:-6|t";
+local ARROW_UP = "|TInterface\\Buttons\\Arrow-Up-Up:15|t";
 
 local function getComparatorArrows()
 	local nameArrow, relationArrow, timeArrow = "", "", "";
 	if sortingType == 1 then
-		nameArrow = " |T" .. ARROW_DOWN .. ":" .. ARROW_SIZE .. "|t";
+		nameArrow = " " .. ARROW_DOWN;
 	elseif sortingType == 2 then
-		nameArrow = " |T" .. ARROW_UP .. ":" .. ARROW_SIZE .. "|t";
+		nameArrow = " " .. ARROW_UP;
 	elseif sortingType == 3 then
-		relationArrow = " |T" .. ARROW_DOWN .. ":" .. ARROW_SIZE .. "|t";
+		relationArrow = " " .. ARROW_DOWN;
 	elseif sortingType == 4 then
-		relationArrow = " |T" .. ARROW_UP .. ":" .. ARROW_SIZE .. "|t";
+		relationArrow = " " .. ARROW_UP;
 	elseif sortingType == 5 then
-		timeArrow = " |T" .. ARROW_DOWN .. ":" .. ARROW_SIZE .. "|t";
+		timeArrow = " " .. ARROW_DOWN;
 	elseif sortingType == 6 then
-		timeArrow = " |T" .. ARROW_UP .. ":" .. ARROW_SIZE .. "|t";
+		timeArrow = " " .. ARROW_UP;
 	end
 	return nameArrow, relationArrow, timeArrow;
 end
