@@ -1,4 +1,6 @@
+.idea
 .release/*
 .venv
+.vscode
 totalRP3/Libs/*
 !totalRP3/Libs/Ellyb
