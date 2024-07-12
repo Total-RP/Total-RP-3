@@ -67,12 +67,12 @@ TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, function()
 		WorldMapButton:SetPoint(position, WorldMapFrame.ScrollContainer, position, xPadding, yPadding);
 	end
 
-	tinsert(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL.elements, {
+	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc.CO_MAP_BUTTON,
 	});
 
-	tinsert(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL.elements, {
+	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigDropDown",
 		widgetName = "TRP3_ConfigurationFrame_MapButtonWidget",
 		title = loc.CO_MAP_BUTTON_POS,
@@ -87,7 +87,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, function()
 		configKey = CONFIG_MAP_BUTTON_POSITION,
 	});
 
-	tinsert(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL.elements, {
+	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc.CO_HIDE_EMPTY_MAP_BUTTON,
 		configKey = CONFIG_HIDE_BUTTON_IF_EMPTY
