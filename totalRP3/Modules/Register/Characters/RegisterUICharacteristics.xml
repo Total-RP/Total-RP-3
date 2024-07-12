@@ -276,7 +276,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 			<Button name="$parentLeftIcon" parentKey="CustomLeftIcon" inherits="TRP3_IconButton">
 				<Anchors>
-					<Anchor point="RIGHT" relativeKey="$parent.LeftIcon" x="-2" />
+					<Anchor point="RIGHT" relativeKey="$parent.LeftIcon" x="-6" />
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
@@ -293,7 +293,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Button>
 			<Button name="$parentRightIcon" parentKey="CustomRightIcon" inherits="TRP3_IconButton">
 				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.RightIcon" x="2" />
+					<Anchor point="LEFT" relativeKey="$parent.RightIcon" x="6" />
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
