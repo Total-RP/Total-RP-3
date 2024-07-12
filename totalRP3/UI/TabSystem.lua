@@ -35,6 +35,15 @@ function TRP3_TabButtonMixin:SetTabSelected(selected)
 	self:MarkDirty();
 end
 
+function TRP3_TabButtonMixin:IsTabLocked()
+	return GetValueOrCallFunction(self, "locked");
+end
+
+function TRP3_TabButtonMixin:SetTabLocked(locked)
+	self.locked = locked;
+	self:MarkDirty();
+end
+
 function TRP3_TabButtonMixin:MarkDirty()
 	self:SetScript("OnUpdate", self.Update);
 end
@@ -45,8 +54,9 @@ end
 
 function TRP3_TabButtonMixin:Update()
 	local selected = self:IsTabSelected();
+	local locked = self:IsTabLocked();
 
-	self:SetEnabled(not selected);
+	self:SetEnabled(not selected and not locked);
 	self.Left:SetShown(not selected);
 	self.Middle:SetShown(not selected);
 	self.Right:SetShown(not selected);
