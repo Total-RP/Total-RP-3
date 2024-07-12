@@ -1062,7 +1062,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					profile = getUnitIDProfile(unitID);
 				end
 
-				local name = getCompleteName(profile.characteristics or {}, nil, true);
+				local name = getCompleteName(profile.characteristics or {}, "", true);
 				buttonStructure.tooltipSub = name .. "\n\n" ..  TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER);
 
 				if unitID ~= Globals.player_id and profile.about and not profile.about.read then
