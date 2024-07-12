@@ -584,7 +584,7 @@ Possible status:
 	CO_ANCHOR_LEFT = "Left",
 	CO_ANCHOR_RIGHT = "Right",
 	CO_ANCHOR_CURSOR = "Show on cursor",
-	CO_CHAT = "Chat",
+	CO_CHAT = "Chat frames",
 	CO_CHAT_DISABLE_OOC = "Disable customizations when OOC",
 	CO_CHAT_DISABLE_OOC_TT = "Disable all of Total RP 3's chat customizations (custom names, emote detection, NPC speech, etc.) when your character is set as Out Of Character.",
 	CO_CHAT_MAIN = "Chat main settings",
@@ -1569,7 +1569,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	SLASH_CMD_SET_SUCCESS = "Successfully updated the %1$q field for your current profile.",
 	MACRO_RPSTATUS_INVALID = "Unknown roleplay status: %s",
 
-	LAUNCHER_CONFIG_MENU_TITLE = "Launcher",
+	LAUNCHER_CONFIG_MENU_TITLE = "Minimap button",
 	LAUNCHER_CONFIG_PAGE_DESCRIPTION = "The settings on this page control the behavior of various widgets that provide access to the Total RP 3 interface, such as minimap buttons.",
 	LAUNCHER_CONFIG_LOCK_MINIMAP_BUTTON = "Lock minimap button",
 	LAUNCHER_CONFIG_LOCK_MINIMAP_BUTTON_HELP = "If checked, prevent the minimap button from being draggable.",
