@@ -49,8 +49,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</GameTooltip>
 
 	<!-- Register characteristics panel -->
-	<Frame name="TRP3_RegisterMain" hidden="true">
+	<Frame name="TRP3_RegisterMain" inherits="TRP3_TabFrameTemplate" hidden="true">
 		<Frames>
+			<Frame parentKey="TabSystem" inherits="TRP3_TabFrameBarTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="TOPRIGHT" x="-40"/>
+				</Anchors>
+			</Frame>
 			<Frame name="TRP3_RegisterCharact" inherits="TRP3_RegisterCharactTemplate" useParentLevel="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" y="-30"/>

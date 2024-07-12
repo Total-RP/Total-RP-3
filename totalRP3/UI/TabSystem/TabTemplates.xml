@@ -4,11 +4,10 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	<Include file="TabSystem.lua"/>
+	<Include file="TabTemplates.lua"/>
 
 	<Button name="TRP3_TabButtonTemplate" mixin="TRP3_TabButtonMixin" motionScriptsWhileDisabled="true" virtual="true">
 		<KeyValues>
-			<KeyValue key="selected" value="false" type="boolean"/>
 			<KeyValue key="selectedFontObject" value="GameFontHighlightSmall" type="global"/>
 			<KeyValue key="unselectedFontObject" value="GameFontNormalSmall" type="global"/>
 		</KeyValues>
@@ -54,6 +53,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Anchors>
 				</Texture>
 			</Layer>
+			<Layer level="ARTWORK">
+				<Texture parentKey="Icon" hidden="true">
+					<Size x="16" y="16"/>
+					<Anchors>
+						<Anchor point="LEFT" x="10" y="-6"/>
+					</Anchors>
+				</Texture>
+			</Layer>
 			<Layer level="HIGHLIGHT">
 				<Texture parentKey="LeftHighlight" atlas="uiframe-tab-left" useAtlasSize="false" alphaMode="ADD" alpha="0.4" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false">
 					<Size x="27" y="28"/>
@@ -84,13 +91,34 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</ButtonText>
 		<NormalFont style="GameFontNormalSmall"/>
 		<HighlightFont style="GameFontHighlightSmall"/>
-		<DisabledFont style="GameFontHighlightSmall"/>
+		<DisabledFont style="GameFontDisableSmall"/>
 		<Scripts>
 			<OnLoad method="OnLoad"/>
-			<OnShow method="OnShow"/>
-			<OnHide method="OnHide"/>
 			<OnEnter method="OnEnter"/>
 			<OnLeave method="OnLeave"/>
 		</Scripts>
 	</Button>
+
+	<Frame name="TRP3_TabFrameButtonTemplate" mixin="TRP3_TabFrameButtonMixin" inherits="TRP3_TabButtonTemplate" virtual="true">
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+			<OnClick method="OnClick"/>
+		</Scripts>
+	</Frame>
+
+	<Frame name="TRP3_TabFrameBarTemplate" mixin="TRP3_TabFrameBarMixin" clipChildren="true" flattenRenderLayers="true" virtual="true">
+		<Size y="32"/>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+			<OnSizeChanged method="OnSizeChanged"/>
+		</Scripts>
+	</Frame>
+
+	<Frame name="TRP3_TabFrameTemplate" mixin="TRP3_TabFrameMixin" virtual="true">
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
+	</Frame>
 </Ui>

@@ -442,7 +442,18 @@ end
 -- Tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tabGroup; -- Reference to the tab panel tabs group
+local TabSystemPages = {
+	Characteristics = 1,
+	About = 2,
+	Misc = 3,
+	Notes = 4,
+};
+
+local TabSystem;  -- Reference to the tab panel tabs group
+
+local function IsTabSelected(id)
+	return TabSystem and (TabSystem:GetSelectedTab() == id);
+end
 
 local function onMouseOver()
 	local unitID = getUnitID("mouseover");
@@ -459,13 +470,13 @@ local function onInformationUpdated(profileID, infoType)
 		local context = getCurrentContext();
 		assert(context, "No context for page player_main !");
 		if not context.isPlayer and profileID == context.profileID then
-			if infoType == registerInfoTypes.ABOUT and tabGroup.current == 2 then
+			if infoType == registerInfoTypes.ABOUT and IsTabSelected(TabSystemPages.About) then
 				showAboutTab();
-			elseif (infoType == registerInfoTypes.CHARACTERISTICS or infoType == registerInfoTypes.CHARACTER) and tabGroup.current == 1 then
+			elseif (infoType == registerInfoTypes.CHARACTERISTICS or infoType == registerInfoTypes.CHARACTER) and IsTabSelected(TabSystemPages.Characteristics) then
 				showCharacteristicsTab();
-			elseif infoType == registerInfoTypes.MISC and tabGroup.current == 3 then
+			elseif infoType == registerInfoTypes.MISC and IsTabSelected(TabSystemPages.Misc) then
 				showMiscTab();
-			elseif infoType == registerInfoTypes.NOTES and tabGroup.current == 4 then
+			elseif infoType == registerInfoTypes.NOTES and IsTabSelected(TabSystemPages.Notes) then
 				showNotesTab();
 			end
 		end
@@ -477,57 +488,73 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function tutorialProvider()
-	if tabGroup then
-		if tabGroup.current == 2 then
-			return TRP3_API.register.ui.aboutTutorialProvider();
-		elseif tabGroup.current == 3 then
-			return TRP3_API.register.ui.miscTutorialProvider();
-		end
+	if IsTabSelected(TabSystemPages.About) then
+		return TRP3_API.register.ui.aboutTutorialProvider();
+	elseif IsTabSelected(TabSystemPages.Misc) then
+		return TRP3_API.register.ui.miscTutorialProvider();
 	end
 end
 
 local function createTabBar()
-	local frame = CreateFrame("Frame", "TRP3_RegisterMainTabBar", TRP3_RegisterMain);
-	frame:SetSize(485, 30);
-	frame:SetPoint("TOPLEFT", 17, 0);
-	frame:SetFrameLevel(1);
-	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
-		{
-			{ loc.REG_PLAYER_CARACT, 1, 150 },
-			{ loc.REG_PLAYER_ABOUT, 2, 110 },
-			{ loc.REG_PLAYER_PEEK, 3, 130 },
-			{ loc.REG_PLAYER_NOTES, 4, 85 }
-		},
-		function(_, value)
-			-- Clear all
+	local function GenerateTabs(owner, description)
+		local characteristics = description:CreateTabWithID(TabSystemPages.Characteristics, loc.REG_PLAYER_CARACT);
+		characteristics:SetMaximumWidth(150);
+		-- TODO: characteristics:SetShown(function() ... end); (to restore SetAllTabsVisible logic)
+
+		local about = description:CreateTabWithID(TabSystemPages.About, loc.REG_PLAYER_ABOUT);
+		about:SetMaximumWidth(110);
+		-- TODO: about:SetEnabled(function() ... end);
+		-- TODO: about:SetIcon(function() ... end);
+		-- TODO: about:SetShown(function() ... end); (to restore SetAllTabsVisible logic)
+
+		local misc = description:CreateTabWithID(TabSystemPages.Misc, loc.REG_PLAYER_PEEK);
+		misc:SetMaximumWidth(130);
+		-- TODO: misc:SetEnabled(function() ... end);
+		-- TODO: misc:SetShown(function() ... end); (to restore SetAllTabsVisible logic)
+
+		local notes = description:CreateTabWithID(TabSystemPages.Notes, loc.REG_PLAYER_NOTES);
+		notes:SetMaximumWidth(85);
+		-- TODO: notes:SetEnabled(function() ... end);
+		-- TODO: notes:SetShown(function() ... end); (to restore SetAllTabsVisible logic)
+
+		local function OnTabClicked(tab)
+			local tabID = tab:GetID();
+
+			if getCurrentContext() and getCurrentContext().isEditMode then
+				TRP3_API.popup.showConfirmPopup(loc.REG_PLAYER_CHANGE_CONFIRM, function() owner:SetSelectedTab(tabID); end);
+			else
+				owner:SetSelectedTab(tabID);
+			end
+		end
+
+		-- This callback is a special case because this code for some daft
+		-- reason runs _functions_ rather than simply toggles regions...
+		local function OnTabSelected()
 			TRP3_RegisterCharact:Hide();
 			TRP3_RegisterAbout:Hide();
 			TRP3_RegisterMisc:Hide();
 			TRP3_RegisterNotes:Hide();
 			TRP3_RegisterDefault:Hide();
-			if value == 1 then
+
+			if IsTabSelected(TabSystemPages.Characteristics) then
 				showCharacteristicsTab();
-			elseif value == 2 then
+			elseif IsTabSelected(TabSystemPages.About) then
 				showAboutTab();
-			elseif value == 3 then
+			elseif IsTabSelected(TabSystemPages.Misc) then
 				showMiscTab();
-			elseif value == 4 then
+			elseif IsTabSelected(TabSystemPages.Notes) then
 				showNotesTab();
 			end
+
 			TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
-		end,
-	-- Confirmation callback
-		function(callback)
-			if getCurrentContext() and getCurrentContext().isEditMode then
-				TRP3_API.popup.showConfirmPopup(loc.REG_PLAYER_CHANGE_CONFIRM,
-					function()
-						callback();
-					end);
-			else
-				callback();
-			end
-		end);
-	TRP3_API.register.player.tabGroup = tabGroup;
+		end
+
+		description:AddSelectionCallback(OnTabSelected);
+		description:SetResponder(OnTabClicked);
+	end
+
+	TabSystem = TRP3_RegisterMain:GetTabSystem();
+	TabSystem:SetupTabs(GenerateTabs);
 end
 
 local function showDefaultTab()
@@ -537,11 +564,10 @@ local function showDefaultTab()
 	TRP3_RegisterNotes:Hide();
 	TRP3_ProfileReportButton:Hide();
 
-	tabGroup:SetAllTabsVisible(false);
+	-- tabGroup:SetAllTabsVisible(false);
 
 	TRP3_RegisterDefault:Show();
 
-	tabGroup.current = 0;	-- To avoid unwanted behaviour
 	getCurrentContext().isEditMode = false;
 	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
 end
@@ -550,22 +576,22 @@ local function showTabs()
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	if not context.isPlayer or getPlayerCurrentProfileID() ~= getConfigValue("default_profile_id") then
-		tabGroup:SetAllTabsVisible(true);
-		tabGroup:SelectTab(1);
+		-- tabGroup:SetAllTabsVisible(true);
+		TabSystem:SetSelectedTab(TabSystemPages.Characteristics);
 	else
 		showDefaultTab();
 	end
 end
 
 function TRP3_API.register.ui.getSelectedTabIndex()
-	return tabGroup.current;
+	return TabSystem:GetSelectedTab();
 end
 
 function TRP3_API.register.ui.isTabSelected(infoType)
-	return (infoType == registerInfoTypes.CHARACTERISTICS and tabGroup.current == 1)
-		or (infoType == registerInfoTypes.ABOUT and tabGroup.current == 2)
-		or (infoType == registerInfoTypes.MISC and tabGroup.current == 3)
-		or (infoType == registerInfoTypes.NOTES and tabGroup.current == 4);
+	return (infoType == registerInfoTypes.CHARACTERISTICS and IsTabSelected(TabSystemPages.Characteristics))
+		or (infoType == registerInfoTypes.ABOUT and IsTabSelected(TabSystemPages.About))
+		or (infoType == registerInfoTypes.MISC and IsTabSelected(TabSystemPages.Misc))
+		or (infoType == registerInfoTypes.NOTES and IsTabSelected(TabSystemPages.Notes));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -719,8 +745,8 @@ function TRP3_API.register.init()
 					else
 						selectProfile(createProfile(newName));
 						getCurrentContext().profile = get("player");
-						tabGroup:SetAllTabsVisible(true);
-						tabGroup:SelectTab(1);
+						-- tabGroup:SetAllTabsVisible(true);
+						TabSystem:SetSelectedTab(TabSystemPages.Characteristics);
 					end
 				end
 			end,

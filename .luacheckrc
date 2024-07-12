@@ -450,6 +450,7 @@ stds.wow = {
 		"CreateAndInitFromMixin",
 		"CreateAtlasMarkup",
 		"CreateCircularBuffer",
+		"CreateCounter",
 		"CreateFont",
 		"CreateFrame",
 		"CreateFramePool",
