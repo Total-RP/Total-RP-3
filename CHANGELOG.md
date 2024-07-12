@@ -62,6 +62,7 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
 ## Removed
 - Removed UI sound and animation settings.
 - Removed Info tooltip size setting. (The game should already auto-adjust font size on high resolutions)
+- Removed the setting to change the tooltip anchor for glances on the target frame.
 - Removed the ability to copy glances from other players.
 
 # Changelog version 2.8.4
