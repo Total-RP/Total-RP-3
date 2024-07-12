@@ -1196,7 +1196,7 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	AUTOMATION_MODULE_DESCRIPTION = "Allows configuring actions such as profile swaps and roleplay status changes to occur automatically.",
 	AUTOMATION_MODULE_NAME = "Automation",
 	AUTOMATION_MODULE_SETTINGS_HELP = "Select an action from the dropdown below and then enter a macro condition string into the displayed text field.",
-	AUTOMATION_MODULE_SETTINGS_TITLE = "Automation settings",
+	AUTOMATION_MODULE_SETTINGS_TITLE = "Automation",
 	AUTOMATION_STATE_IC = "ic",
 	AUTOMATION_STATE_OOC = "ooc",
 	AUTOMATION_STATE_UNSET = "nochange",
