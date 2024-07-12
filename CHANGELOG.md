@@ -20,7 +20,7 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
 - Added the ability to drag and drop personality traits to reorder them
   - Additional info now uses the same button style rather than drag and dropping the icon itself.
 - Added the ability to duplicate a personality trait or additional info line.
-  - This is located within the new Options button at the end of the line, alongside deletion of the trait.
+  - This is located within the new Options button at the end of the line, alongside deletion of the line.
 - Added the ability to right-click an icon button to copy/paste icons between buttons or copy the name of the selected icon.
 - Added 32 new background options for the "About" section (and Extended documents).
 - The toolbar will now be skinned while using ElvUI.
