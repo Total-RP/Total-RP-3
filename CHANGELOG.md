@@ -6,12 +6,23 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
 
 ## Added
 - Added a new Relations menu located in the Customization section, alongside the moved Automation settings.
-  - This menu lets you edit the preset relationships you can have with other players, as well as create new ones.
-  - Those relationships are still only personal, and not shared with other players.
+  - This menu lets you edit the preset relations you can have with other players, as well as create new ones.
+  - Those relations are still only personal, and not shared with other players.
+  - The relation will now be shown as a line on the tooltip in addition to the border color. This can be disabled in Tooltip settings.
 - Added a "Currently" toolbar button letting you open a frame to quickly modify your Currently info.
+- Added a toolbar button to open/close the main Total RP 3 window.
+- Added a target frame button for your own companion to auto-fill the speech window with its name in brackets.
+  - This will apply RP name customization to its speech lines.
+- Added a dropdown to set whether you are open to other players walking up to your character.
+  - This will show as an icon on your tooltip.
+  - Existing tooltip bottom icons have also been changed for clarity.
+    - **TODO: INSERT IMAGE**
 - Added the ability to drag and drop personality traits to reorder them
   - Additional info now uses the same button style rather than drag and dropping the icon itself.
+- Added the ability to duplicate a personality trait or additional info line.
+- Added the ability to right-click an icon button to copy/paste icons between buttons or copy the name of the selected icon.
 - Added 32 new background options for the "About" section (and Extended documents).
+- The toolbar will now be skinned while using ElvUI.
 - Added X icons, X images and X musics from patch 11.0.
 
 ## Changed
@@ -23,12 +34,16 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
 - RP proficiency is now an account-wide setting rather than per profile, and has been adjusted to add an option between Beginner and Experienced.
   - Beginner/Guide icons have been updated on Retail.
   - As part of this change, the setting has been reset and should be set again.
-- Tooltip bottom icons have been changed.
-  - **TODO: INSERT IMAGE**
 - Other players default profiles will no longer appear in your directory or be used for chat/nameplate customization.
 - Character names are now customized in the TRP dice roll output.
 - Glances with empty names will now show as such instead of replacing it with "...".
+- Glances from your character still show their icons on your profile and target frame while disabled.
+  - These will still not be sent to other players.
 - Toolbar button and slash command for the NPC speech window now closes it if already shown.
+- Clicking the target frame button for companion profiles now directly opens the profile.
+  - The options menu to unbind/select a new profile can still be accessed with a right-click.
+- The companion/mount profile buttons no longer change icon based on the selected profile.
+- Tooltip texts across the addon were reworked to follow a more consistent format and add clarity when needed.
 
 ## Fixed
 - Fixed some causes of lingering tooltips.
@@ -46,6 +61,7 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
 ## Removed
 - Removed UI sound and animation settings.
 - Removed Info tooltip size setting. (The game should already auto-adjust font size on high resolutions)
+- Removed the ability to copy glances from other players.
 
 # Changelog version 2.8.4
 
