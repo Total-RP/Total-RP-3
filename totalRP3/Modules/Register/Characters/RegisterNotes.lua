@@ -35,8 +35,8 @@ local function displayNotes(context)
 		TRP3_RegisterNotesViewAccount:Show();
 	end
 
-	local currentProfile = GetCurrentUser():GetProfileName();
-	local profileNotesTitle = string.format(loc.REG_PLAYER_NOTES_PROFILE, currentProfile);
+	local currentProfileName = GetCurrentUser():GetProfileName();
+	local profileNotesTitle = string.format(loc.REG_PLAYER_NOTES_PROFILE, currentProfileName);
 	TRP3_RegisterNotesViewProfile.Title:SetText(profileNotesTitle);
 
 	assert(profileID, "No profileID in context !");
