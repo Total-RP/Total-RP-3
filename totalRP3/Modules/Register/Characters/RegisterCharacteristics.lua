@@ -382,7 +382,7 @@ local function setConsultDisplay(context)
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:Show();
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:ClearAllPoints();
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame.Value, "LEFT", -5, 0);
-			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_RESIDENCE_SHOW, loc.REG_PLAYER_RESIDENCE_SHOW_TT:format(dataTab.RC[4]));
+			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_RESIDENCE_SHOW, dataTab.RC[4] .. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_RESIDENCE_SHOW_TT));
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetScript("OnClick", function()
 				if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
 					-- Bug: https://github.com/Stanzilla/WoWUIBugs/issues/124
@@ -405,9 +405,6 @@ local function setConsultDisplay(context)
 				end
 				AddOn_TotalRP3.Map.placeSingleMarker(dataTab.RC[2], dataTab.RC[3], { characterID = characterID, profileID = profileID }, TRP3_PlayerHousePinMixin.TEMPLATE_NAME)
 			end);
-
-			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5,
-				loc.REG_PLAYER_RESIDENCE_SHOW, TRP3_API.Colors.Green(dataTab.RC[4]));
 		end
 		frame:Show();
 		previous = frame;
@@ -747,9 +744,11 @@ local function onPsychoDuplicate(self)
 end
 
 local function refreshDraftHouseCoordinates()
-	local houseTT = loc.REG_PLAYER_HERE_HOME_TT;
+	local houseTT = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_HERE_HOME_TT_CURRENT) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_HERE_HOME_TT_DISCARD);
 	if draftData.RC and #draftData.RC == 4 then
-		houseTT = loc.REG_PLAYER_HERE_HOME_PRE_TT:format(draftData.RC[4]) .. "\n\n" .. houseTT;
+		houseTT = loc.REG_PLAYER_HERE_HOME_PRE_TT:format(draftData.RC[4]) .. "|n|n" .. houseTT;
+	else
+		houseTT = loc.REG_PLAYER_HERE_TT .. "|n|n" .. houseTT;
 	end
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_HERE, houseTT);
 	TRP3_RegisterCharact_Edit_ResidenceButton:Hide();
@@ -1149,14 +1148,13 @@ function setEditDisplay()
 					description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CM_REMOVE .. "|r", onMiscDelete, self);
 				end);
 			end);
-			setTooltipForSameFrame(_G[frame:GetName() .. "Action"], "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+			setTooltipForSameFrame(_G[frame:GetName() .. "Action"], "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 			scaleField(frame, TRP3_RegisterCharact_Edit_CharactPanel_Container:GetWidth(), "NameField");
 
 			-- Register the drag/drop handlers for reordering. Use the
 			-- icon as our handle, and make it control this frame.
-			setTooltipForSameFrame(frame.DragButton, "LEFT", 0, 10, loc.REG_PLAYER_REORDER, loc.REG_PLAYER_REORDER_TT);
 			setInfoReorderable(frame.DragButton, frame, "misc", TRP3_RegisterCharact_Edit_CharactPanel_Container.MiscTitle, TRP3_RegisterCharact_Edit_MiscAdd);
-			setTooltipForSameFrame(frame.Icon, "LEFT", 0, 10, "Icon Options", "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+			setTooltipForSameFrame(frame.Icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 
 			tinsert(miscEditCharFrame, frame);
 		end
@@ -1233,12 +1231,18 @@ function setEditDisplay()
 			frame.Slider:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 			frame.Slider:SetScript("OnValueChanged", onPsychoValueChanged);
 
-			setTooltipForSameFrame(frame.CustomLeftIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_LEFTICON_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-			setTooltipForSameFrame(frame.CustomRightIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_RIGHTICON_TT.. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-			setTooltipForSameFrame(frame.ActionButton, "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+			setTooltipForSameFrame(frame.CustomLeftIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_LEFTICON_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+			setTooltipForSameFrame(frame.CustomRightIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_RIGHTICON_TT.. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+			setTooltipForSameFrame(frame.ActionButton, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 
-			setTooltipForSameFrame(frame.CustomLeftColor, "TOP", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT);
-			setTooltipForSameFrame(frame.CustomRightColor, "TOP", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT);
+			setTooltipForSameFrame(frame.CustomLeftColor, "RIGHT", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT
+			.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
+			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+			setTooltipForSameFrame(frame.CustomRightColor, "RIGHT", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT
+			.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
+			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 
 			-- Only need to set up the closure for color pickers once, as it
 			-- just needs a reference to the frame itself.
@@ -1257,7 +1261,6 @@ function setEditDisplay()
 
 			-- Register the drag/drop handlers for reordering. Use the
 			-- icon as our handle, and make it control this frame.
-			setTooltipForSameFrame(frame.DragButton, "LEFT", 0, 10, loc.REG_PLAYER_REORDER, loc.REG_PLAYER_REORDER_TT);
 			setInfoReorderable(frame.DragButton, frame, "psycho", TRP3_RegisterCharact_Edit_CharactPanel_Container.TraitsTitle, TRP3_RegisterCharact_Edit_PsychoAdd);
 
 			tinsert(psychoEditCharFrame, frame);
@@ -1355,7 +1358,7 @@ local function setupRelationButton(profileID, profile)
 	if relationColor then
 		relationColoredName = relationColor:WrapTextInColorCode(relationColoredName);
 	end
-	setTooltipAll(TRP3_RegisterCharact_ActionButton, "LEFT", 0, 0, loc.CM_ACTIONS, loc.REG_RELATION_BUTTON_TT:format(relationColoredName, getRelationTooltipText(profileID, profile)));
+	setTooltipAll(TRP3_RegisterCharact_ActionButton, "RIGHT", 0, 5, loc.CM_ACTIONS, loc.REG_RELATION_BUTTON_TT:format(relationColoredName, getRelationTooltipText(profileID, profile)));
 end
 
 local function saveCharacteristics()
@@ -1507,67 +1510,67 @@ local function initStructures()
 	PSYCHO_PRESETS = {
 		{
 			LT = loc.REG_PLAYER_PSYCHO_CHAOTIC,
-			RT = loc.REG_PLAYER_PSYCHO_Loyal,
+			RT = loc.REG_PLAYER_PSYCHO_LAWFUL,
 			LI = TRP3_InterfaceIcons.TraitChaotic,
 			RI = TRP3_InterfaceIcons.TraitLoyal,
 		},
 		{
-			LT = loc.REG_PLAYER_PSYCHO_Chaste,
-			RT = loc.REG_PLAYER_PSYCHO_Luxurieux,
+			LT = loc.REG_PLAYER_PSYCHO_CHASTE,
+			RT = loc.REG_PLAYER_PSYCHO_LUSTFUL,
 			LI = TRP3_InterfaceIcons.TraitChaste,
 			RI = TRP3_InterfaceIcons.TraitLustful,
 		},
 		{
-			LT = loc.REG_PLAYER_PSYCHO_Indulgent,
-			RT = loc.REG_PLAYER_PSYCHO_Rencunier,
+			LT = loc.REG_PLAYER_PSYCHO_FORGIVING,
+			RT = loc.REG_PLAYER_PSYCHO_VINDICTIVE,
 			LI = TRP3_InterfaceIcons.TraitForgiving,
 			RI = TRP3_InterfaceIcons.TraitVindictive,
 		},
 		{
-			LT = loc.REG_PLAYER_PSYCHO_Genereux,
-			RT = loc.REG_PLAYER_PSYCHO_Egoiste,
+			LT = loc.REG_PLAYER_PSYCHO_ALTRUISTIC,
+			RT = loc.REG_PLAYER_PSYCHO_SELFISH,
 			LI = TRP3_InterfaceIcons.TraitAltruistic,
 			RI = TRP3_InterfaceIcons.TraitSelfish,
 		},
 		{
-			LT = loc.REG_PLAYER_PSYCHO_Sincere,
-			RT = loc.REG_PLAYER_PSYCHO_Trompeur,
+			LT = loc.REG_PLAYER_PSYCHO_TRUTHFUL,
+			RT = loc.REG_PLAYER_PSYCHO_DECEITFUL,
 			LI = TRP3_InterfaceIcons.TraitTruthful,
 			RI = TRP3_InterfaceIcons.TraitDeceitful,
 		},
 		{
-			LT = loc.REG_PLAYER_PSYCHO_Misericordieux,
-			RT = loc.REG_PLAYER_PSYCHO_Cruel,
+			LT = loc.REG_PLAYER_PSYCHO_GENTLE,
+			RT = loc.REG_PLAYER_PSYCHO_BRUTAL,
 			LI = TRP3_InterfaceIcons.TraitGentle,
 			RI = TRP3_InterfaceIcons.TraitBrutal,
 		},
 		{
-			LT = loc.REG_PLAYER_PSYCHO_Pieux,
-			RT = loc.REG_PLAYER_PSYCHO_Rationnel,
+			LT = loc.REG_PLAYER_PSYCHO_SUPERSTITIOUS,
+			RT = loc.REG_PLAYER_PSYCHO_RATIONAL,
 			LI = TRP3_InterfaceIcons.TraitSuperstitious,
 			RI = TRP3_InterfaceIcons.TraitRational,
 		},
 		{
-			LT = loc.REG_PLAYER_PSYCHO_Pragmatique,
-			RT = loc.REG_PLAYER_PSYCHO_Conciliant,
+			LT = loc.REG_PLAYER_PSYCHO_RENEGADE,
+			RT = loc.REG_PLAYER_PSYCHO_PARAGON,
 			LI = TRP3_InterfaceIcons.TraitRenegade,
 			RI = TRP3_InterfaceIcons.TraitParagon,
 		},
 		{
-			LT = loc.REG_PLAYER_PSYCHO_Reflechi,
-			RT = loc.REG_PLAYER_PSYCHO_Impulsif,
+			LT = loc.REG_PLAYER_PSYCHO_CAUTIOUS,
+			RT = loc.REG_PLAYER_PSYCHO_IMPULSIVE,
 			LI = TRP3_InterfaceIcons.TraitCautious,
 			RI = TRP3_InterfaceIcons.TraitImpulsive,
 		},
 		{
-			LT = loc.REG_PLAYER_PSYCHO_Acete,
-			RT = loc.REG_PLAYER_PSYCHO_Bonvivant,
+			LT = loc.REG_PLAYER_PSYCHO_ASCETIC,
+			RT = loc.REG_PLAYER_PSYCHO_BONVIVANT,
 			LI = TRP3_InterfaceIcons.TraitAscetic,
 			RI = TRP3_InterfaceIcons.TraitBonVivant,
 		},
 		{
-			LT = loc.REG_PLAYER_PSYCHO_Valeureux,
-			RT = loc.REG_PLAYER_PSYCHO_Couard,
+			LT = loc.REG_PLAYER_PSYCHO_VALOROUS,
+			RT = loc.REG_PLAYER_PSYCHO_SPINELESS,
 			LI = TRP3_InterfaceIcons.TraitValorous,
 			RI = TRP3_InterfaceIcons.TraitSpineless,
 		},
@@ -1575,17 +1578,17 @@ local function initStructures()
 
 	PSYCHO_PRESETS_DROPDOWN = {
 		{ loc.REG_PLAYER_PSYCHO_SOCIAL },
-		{ loc.REG_PLAYER_PSYCHO_CHAOTIC .. " - " .. loc.REG_PLAYER_PSYCHO_Loyal, 1 },
-		{ loc.REG_PLAYER_PSYCHO_Indulgent .. " - " .. loc.REG_PLAYER_PSYCHO_Rencunier, 3 },
-		{ loc.REG_PLAYER_PSYCHO_Genereux .. " - " .. loc.REG_PLAYER_PSYCHO_Egoiste, 4 },
-		{ loc.REG_PLAYER_PSYCHO_Sincere .. " - " .. loc.REG_PLAYER_PSYCHO_Trompeur, 5 },
-		{ loc.REG_PLAYER_PSYCHO_Misericordieux .. " - " .. loc.REG_PLAYER_PSYCHO_Cruel, 6 },
-		{ loc.REG_PLAYER_PSYCHO_Pieux .. " - " .. loc.REG_PLAYER_PSYCHO_Rationnel, 7 },
+		{ loc.REG_PLAYER_PSYCHO_CHAOTIC .. " - " .. loc.REG_PLAYER_PSYCHO_LAWFUL, 1 },
+		{ loc.REG_PLAYER_PSYCHO_FORGIVING .. " - " .. loc.REG_PLAYER_PSYCHO_VINDICTIVE, 3 },
+		{ loc.REG_PLAYER_PSYCHO_ALTRUISTIC .. " - " .. loc.REG_PLAYER_PSYCHO_SELFISH, 4 },
+		{ loc.REG_PLAYER_PSYCHO_TRUTHFUL .. " - " .. loc.REG_PLAYER_PSYCHO_DECEITFUL, 5 },
+		{ loc.REG_PLAYER_PSYCHO_GENTLE .. " - " .. loc.REG_PLAYER_PSYCHO_BRUTAL, 6 },
+		{ loc.REG_PLAYER_PSYCHO_SUPERSTITIOUS .. " - " .. loc.REG_PLAYER_PSYCHO_RATIONAL, 7 },
 		{ loc.REG_PLAYER_PSYCHO_PERSONAL },
-		{ loc.REG_PLAYER_PSYCHO_Pragmatique .. " - " .. loc.REG_PLAYER_PSYCHO_Conciliant, 8 },
-		{ loc.REG_PLAYER_PSYCHO_Reflechi .. " - " .. loc.REG_PLAYER_PSYCHO_Impulsif, 9 },
-		{ loc.REG_PLAYER_PSYCHO_Acete .. " - " .. loc.REG_PLAYER_PSYCHO_Bonvivant, 10 },
-		{ loc.REG_PLAYER_PSYCHO_Valeureux .. " - " .. loc.REG_PLAYER_PSYCHO_Couard, 11 },
+		{ loc.REG_PLAYER_PSYCHO_RENEGADE .. " - " .. loc.REG_PLAYER_PSYCHO_PARAGON, 8 },
+		{ loc.REG_PLAYER_PSYCHO_CAUTIOUS .. " - " .. loc.REG_PLAYER_PSYCHO_IMPULSIVE, 9 },
+		{ loc.REG_PLAYER_PSYCHO_ASCETIC .. " - " .. loc.REG_PLAYER_PSYCHO_BONVIVANT, 10 },
+		{ loc.REG_PLAYER_PSYCHO_VALOROUS .. " - " .. loc.REG_PLAYER_PSYCHO_SPINELESS, 11 },
 		{ loc.REG_PLAYER_PSYCHO_CUSTOM },
 		{ "|cnGREEN_FONT_COLOR:" .. loc.REG_PLAYER_PSYCHO_CREATENEW .. "|r", "new" },
 	};
@@ -1660,7 +1663,9 @@ function TRP3_API.register.inits.characteristicsInit()
 	end);
 
 	-- Localz
-	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "RIGHT", 0, 5, loc.REG_PLAYER_ICON, loc.REG_PLAYER_ICON_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "RIGHT", 0, 5, loc.REG_PLAYER_ICON, loc.REG_PLAYER_ICON_TT
+	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_TitleFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_TITLE, loc.REG_PLAYER_TITLE_TT);
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_FirstFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_FIRSTNAME, loc.REG_PLAYER_FIRSTNAME_TT:format(Globals.player));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_LastFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_LASTNAME, loc.REG_PLAYER_LASTNAME_TT);
@@ -1673,9 +1678,17 @@ function TRP3_API.register.inits.characteristicsInit()
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_EYE, loc.REG_PLAYER_EYE_TT);
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_HeightFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_HEIGHT, loc.REG_PLAYER_HEIGHT_TT);
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_WeightFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_WEIGHT, loc.REG_PLAYER_WEIGHT_TT);
-	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_BirthplaceButton, "RIGHT", 0, 5, loc.REG_PLAYER_HERE, loc.REG_PLAYER_HERE_TT);
-	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeButton, "RIGHT", 0, 5, loc.REG_PLAYER_EYE, loc.REG_PLAYER_COLOR_TT);
-	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassButton, "RIGHT", 0, 5, loc.REG_PLAYER_COLOR_CLASS, loc.REG_PLAYER_COLOR_CLASS_TT .. loc.REG_PLAYER_COLOR_TT);
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_BirthplaceButton, "RIGHT", 0, 5, loc.REG_PLAYER_HERE, loc.REG_PLAYER_HERE_TT
+	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_HERE_HOME_TT_CURRENT)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_HERE_HOME_TT_DISCARD));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeButton, "RIGHT", 0, 5, loc.REG_PLAYER_EYE, loc.REG_PLAYER_EYE_TT
+	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassButton, "RIGHT", 0, 5, loc.REG_PLAYER_COLOR_CLASS, loc.REG_PLAYER_COLOR_CLASS_TT
+	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 
 	TRP3_RegisterCharact_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
 	TRP3_RegisterCharact_Edit_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);

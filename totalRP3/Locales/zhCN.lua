@@ -188,7 +188,7 @@ L = {
 	["CO_CHAT_USE_SAY"] = "说话频道",
 	["CO_CONFIGURATION"] = "设置",
 	["CO_CURSOR_DISABLE_OOC"] = "OOC时禁用",
-	["CO_CURSOR_DISABLE_OOC_TT"] = "当角色|r的角色扮演状态设置为|cffccccccOOC|r.时，禁用光标修改。",
+	["CO_CURSOR_DISABLE_OOC_TT"] = "当角色|r的角色扮演状态设置为|cnGREEN_FONT_COLOR:OOC|r.时，禁用光标修改。",
 	["CO_CURSOR_MODIFIER_KEY"] = "修改按键",
 	["CO_CURSOR_MODIFIER_KEY_TT"] = "需要一个修改按键，用来按住并右键单击一个玩家，以防止意外的点击。",
 	["CO_CURSOR_RIGHT_CLICK"] = "右击打开配置文件",
@@ -196,7 +196,7 @@ L = {
 
 |TInterface\Cursor\WorkOrders:25|t 当玩家有一个配置文件时，这个图标将被附加到游标上，你可以右键单击它们。
 
-|cffcccccc注意:此功能在战斗中禁用。|r]=],
+|cnGREEN_FONT_COLOR:注意:此功能在战斗中禁用。|r]=],
 	["CO_CURSOR_TITLE"] = "光标互动",
 	["CO_GENERAL"] = "常规设置",
 	["CO_GENERAL_BROADCAST"] = "使用广播频道",
@@ -283,7 +283,7 @@ L = {
 |cffff9900缺少的依赖关系:|r 一些依赖项没有加载.
 |cffff9900TRP 需要更新:|r 这个模块需要一个更新版本的 TRP3.
 |cffff0000初始化或启动时的错误:|r 模块加载失败。这个模块很可能会产生错误！
-|cffff9900当禁用模块时，需要重新加载UI.]=],
+|cnGREEN_FONT_COLOR:当禁用模块时，需要重新加载UI.]=],
 	["CO_MODULES_VERSION"] = "版本: %s",
 	["CO_MSP"] = "玛丽苏协议",
 	["CO_REGISTER"] = "登记设置",
@@ -303,7 +303,7 @@ L = {
 
 |cff00ff00请注意，与您的一个角色有关系的玩家数据永远不会被清除。
 
-|cffff9900但这有一个bug，当它到达某个特定的值时，它会丢失所有被保存的数据。我们强烈建议保持这个系统以免整体失效。]=],
+|cnWARNING_FONT_COLOR:但这有一个bug，当它到达某个特定的值时，它会丢失所有被保存的数据。我们强烈建议保持这个系统以免整体失效。]=],
 	["CO_SANITIZER"] = "过滤传入的文件",
 	["CO_SANITIZER_TT"] = "当接收TRP不支持的颜色、图片等信息时对其进行自动过滤。",
 	["CO_TARGETFRAME"] = "目标框架设置",
@@ -339,7 +339,7 @@ L = {
 	["CO_TOOLTIP_CROP_TEXT"] = "裁剪不合理的长文本",
 	["CO_TOOLTIP_CROP_TEXT_TT"] = [=[限制框架中每个字段可以显示的字符数量，以防止不合理的长文本和可能的布局问题。
 
-|cfffff569限制细节:
+|cnGREEN_FONT_COLOR:限制细节:
 名字: 100 字符
 标题: 150 字符
 种族:  50 字符
@@ -405,7 +405,7 @@ L = {
 	["CONFIG_COMMS_QUEUE_POOL_COUNT"] = "排队池大小",
 	["CONFIG_COMMS_QUEUE_POOL_COUNT_DESCRIPTION"] = "控制资料传输时的排队池大小。|n|n较低的值会降低非RP资料传输的延迟，但会在人员密集场合影响向其他玩家传输RP资料的速度。",
 	["CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD"] = "排队池权重阈值",
-	["CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION"] = "控制在使用排队池前RP资料的大小阈值。|n|n对于大数据资料，增加这个值将|cffff0000严重降低|r 插件数据传输的效率。",
+	["CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION"] = "控制在使用排队池前RP资料的大小阈值。|n|n对于大数据资料，增加这个值将|cnWARNING_FONT_COLOR:严重降低|r 插件数据传输的效率。",
 	["CONFIG_COMMS_SETTINGS_HEADER"] = "通信设置",
 	["COPY_DROPDOWN_POPUP_TEXT"] = [=[以%1$s复制。以%2$s粘贴。
 	本窗口会在复制后关闭]=],
@@ -518,15 +518,15 @@ L = {
 {h3}Total RP 3: Extended{/h3}
 |cff9999ffTotal RP 3: Extended|r 让你在魔兽世界当中可以自定义内容: 包含任务和对话的剧情，物品，文件 (书本，标志，协议…)以及更多！
 Total RP3扩展包 包括任务 对话 物品 文档等
-{link*https://www.curseforge.com/wow/addons/total-rp-3-extended*Download on CurseForge}
-
-{h3}TRP3 Currently Frame{/h3}
-Adds a standalone frame to your UI that displays your "Currently" text and allows you to edit it easily.
-{link*https://www.curseforge.com/wow/addons/trp3-currently-frame*Download on CurseForge}
+{col:f2bf1a}{link*https://www.curseforge.com/wow/addons/total-rp-3-extended*Download on CurseForge}{/col}
 
 {h3}TRP3 Location Toggle{/h3}
 Adds a simple button to the toolbar to toggle on and off the map scan location feature.
-{link*https://www.curseforge.com/wow/addons/trp3-location-toggle*Download on CurseForge}]=],
+{col:f2bf1a}{link*https://www.curseforge.com/wow/addons/trp3-location-toggle*Download on CurseForge}{/col}
+
+{h3}Total RP 3: Unit Frames{/h3}
+This module modifies Blizzard player and target frames to use RP name and color, and add a button to open profile.
+{col:f2bf1a}{link*https://www.curseforge.com/wow/addons/total-rp-3-unit-frames*Download on CurseForge}{/col}]=],
 	["NAMEPLATES_CONFIG_ACTIVE_QUERY"] = "自动获取人物卡",
 	["NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP"] = "如果勾选，自动获取有姓名版的单位的人物卡。",
 	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY"] = "隐藏|cff449fe0暴雪|r姓名版",
@@ -553,7 +553,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK"] = "使用默认职业颜色",
 	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP"] = "如果勾选，将在姓名版上用职业颜色代替没有设置职业颜色的角色颜色。|n|n没有RP人物卡的目标不会被此效果影响，会使用默认颜色。",
 	["NAMEPLATES_CONFIG_ICON_SIZE"] = "图标大小",
-	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "如果|cffffff00显示图标|r功能启动，调整姓名版上图标的大小。",
+	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "如果|cnGREEN_FONT_COLOR:显示图标|r功能启动，调整姓名版上图标的大小。",
 	["NAMEPLATES_CONFIG_MENU_TITLE"] = "姓名版",
 	["NAMEPLATES_CONFIG_PAGE_HELP"] = "请注意目前只支持|cff449fe0暴雪|r，|cff9966ffKui|r和|cffa8deffPlater|r姓名版。请阅读设置选项下方的说明来了解如何设置。",
 	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "姓名版设置",
@@ -790,8 +790,8 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_LIST_CHAR_TT_RELATION"] = [=[关系:
 |cff00ff00%s]=],
 	["REG_LIST_FILTERS"] = "过滤",
-	["REG_LIST_FILTERS_TT"] = [=[|cffffff00左击:|r 应用过滤器
-|cffffff00右击:|r 清除过滤器]=],
+	["REG_LIST_FILTERS_APPLY"] = "应用过滤器",
+	["REG_LIST_FILTERS_CLEAR"] = "清除过滤器",
 	["REG_LIST_FLAGS"] = "标记",
 	["REG_LIST_GUILD"] = "角色公会",
 	["REG_LIST_IGNORE_EMPTY"] = "没有忽略的角色",
@@ -853,14 +853,12 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 有几种方法可以做到这一点:|c0000ff00
 - 要么使用年份,
 - 或形容词(年轻、成熟、成熟、可敬等)。]=],
-	["REG_PLAYER_ALERT_HEAVY_SMALL"] = [=[|cffff0000T你的个人资料的总规模相当大.
-|cffff9900你应该减少它.]=],
+	["REG_PLAYER_ALERT_HEAVY_SMALL"] = [=[|cnWARNING_FONT_COLOR:T你的个人资料的总规模相当大.|r
+你应该减少它.]=],
 	["REG_PLAYER_BIRTHPLACE"] = "出生地",
 	["REG_PLAYER_BIRTHPLACE_TT"] = [=[在这里你可以指出你角色的出生地. 这可以是一个地点，一个区域，甚至是一个大陆。 你可以决定你想要多精确。
 
 |c00ffff00你可以使用这个按钮来方便地设置你当前的位置为出生地.]=],
-	["REG_PLAYER_BKG"] = "布置背景",
-	["REG_PLAYER_BKG_TT"] = "这会改变你角色的图像背景.",
 	["REG_PLAYER_CARACT"] = "特征",
 	["REG_PLAYER_CHANGE_CONFIRM"] = [=[您可能有未保存的数据更改.
 你想改变页面吗?
@@ -877,8 +875,9 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_COLOR_CLASS_TT"] = [=[这也决定了名字的颜色.
 
 ]=],
-	["REG_PLAYER_COLOR_TT"] = [=[|cffffff00Click:|r 选择一种颜色
-|cffffff00Right-click:|r 放弃颜色]=],
+	["REG_PLAYER_COLOR_TT_SELECT"] = "选择一种颜色",
+	["REG_PLAYER_COLOR_TT_DISCARD"] = "放弃颜色",
+	["REG_PLAYER_COLOR_TT_DEFAULTPICKER"] = "使用默认的颜色",
 	["REG_PLAYER_EDIT_MUSIC_THEME"] = "主题音乐",
 	["REG_PLAYER_EYE"] = "眼睛颜色",
 	["REG_PLAYER_EYE_TT"] = [=[在这里，你可以看到你的眼睛的颜色。
@@ -901,13 +900,11 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_GLANCE_BAR_SAVE"] = "保存组预设",
 	["REG_PLAYER_GLANCE_BAR_SAVED"] = "组预设 |cff00ff00%s|r 被创建.",
 	["REG_PLAYER_GLANCE_BAR_TARGET"] = "\"第一印象\" 预设",
-	["REG_PLAYER_GLANCE_CONFIG"] = [=[|cff00ff00\"第一印象\"|r 是一组可以用来定义关于这个角色的重要信息的栏位。
-
-可以在槽中使用这些操作:
-|cffffff00单击:|r 配置栏位
-|cffffff00双击:|r 隐藏栏位
-|cffffff00右击:|r 添加栏位
-|cffffff00拖动:|r 移动栏位]=],
+	["REG_PLAYER_GLANCE_CONFIG"] = [=[|cnGREEN_FONT_COLOR:\"第一印象\"|r 是一组可以用来定义关于这个角色的重要信息的栏位。]=],
+	["REG_PLAYER_GLANCE_CONFIG_EDIT"] = "配置栏位",
+	["REG_PLAYER_GLANCE_CONFIG_TOGGLE"] = "隐藏栏位",
+	["REG_PLAYER_GLANCE_CONFIG_PRESETS"] = "添加栏位",
+	["REG_PLAYER_GLANCE_CONFIG_REORDER"] = "移动栏位",
 	["REG_PLAYER_GLANCE_EDITOR"] = "编辑印象: 栏位 %s",
 	["REG_PLAYER_GLANCE_MENU_COPY"] = "复制栏位",
 	["REG_PLAYER_GLANCE_MENU_PASTE"] = "粘贴栏位:%s",
@@ -935,9 +932,9 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_HERE"] = "设置位置",
 	["REG_PLAYER_HERE_HOME_PRE_TT"] = [=[现在的住所地图坐标:
 |cff00ff00%s|r.]=],
-	["REG_PLAYER_HERE_HOME_TT"] = [=[|cffffff00点击|r: 用你当前的坐标作为你的住所的位置。
-|cffffff00Right-click|r: 删除你的住所的位置。]=],
 	["REG_PLAYER_HERE_TT"] = "|cffffff00点击|r: 设定到你目前的位置",
+	["REG_PLAYER_HERE_HOME_TT_CURRENT"] = "用你当前的坐标作为你的住所的位置",
+	["REG_PLAYER_HERE_HOME_TT_DISCARD"] = "删除你的住所的位置",
 	["REG_PLAYER_HISTORY"] = "历史",
 	["REG_PLAYER_ICON"] = "角色图标",
 	["REG_PLAYER_ICON_TT"] = "为你的角色选一个图标.",
@@ -957,7 +954,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_NAMESTITLES"] = "名字与称呼",
 	["REG_PLAYER_NO_CHAR"] = "没有特征",
 	["REG_PLAYER_NOTES"] = "笔记",
-	["REG_PLAYER_NOTES_ACCOUNT"] = "通用笔记",
+	["REG_PLAYER_NOTES_ACCOUNT"] = "账号笔记",
 	["REG_PLAYER_NOTES_ACCOUNT_HELP"] = "这些笔记和你的子账号绑定，会在你使用的所有人物卡之间共享。",
 	["REG_PLAYER_NOTES_PROFILE"] = "%s的笔记",
 	["REG_PLAYER_NOTES_PROFILE_HELP"] = "这些笔记和你当前使用的人物卡绑定，并会随着你切换人物卡而改变。",
@@ -965,49 +962,39 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_PEEK"] = "杂项",
 	["REG_PLAYER_PHYSICAL"] = "物理描述",
 	["REG_PLAYER_PSYCHO"] = "个性",
-	["REG_PLAYER_PSYCHO_Acete"] = "禁欲主义",
+	["REG_PLAYER_PSYCHO_ASCETIC"] = "禁欲主义",
 	["REG_PLAYER_PSYCHO_ADD"] = "添加一种性格",
 	["REG_PLAYER_PSYCHO_ATTIBUTENAME_TT"] = "属性名称",
-	["REG_PLAYER_PSYCHO_Bonvivant"] = "享乐主义",
+	["REG_PLAYER_PSYCHO_BONVIVANT"] = "享乐主义",
 	["REG_PLAYER_PSYCHO_CHAOTIC"] = "混乱",
-	["REG_PLAYER_PSYCHO_Chaste"] = "高尚",
-	["REG_PLAYER_PSYCHO_Conciliant"] = "正派",
-	["REG_PLAYER_PSYCHO_Couard"] = "懦弱",
+	["REG_PLAYER_PSYCHO_CHASTE"] = "高尚",
+	["REG_PLAYER_PSYCHO_PARAGON"] = "正派",
+	["REG_PLAYER_PSYCHO_SPINELESS"] = "懦弱",
 	["REG_PLAYER_PSYCHO_CREATENEW"] = "自建特征",
-	["REG_PLAYER_PSYCHO_Cruel"] = "野蛮",
+	["REG_PLAYER_PSYCHO_BRUTAL"] = "野蛮",
 	["REG_PLAYER_PSYCHO_CUSTOM"] = "定制性格",
 	["REG_PLAYER_PSYCHO_CUSTOMCOLOR"] = "选择属性颜色",
-	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT"] = [=[选择使用一个颜色来表示左倾属性。
-
-|cffffff00左健:|r选择一个颜色
-|cffffff00右键:|r放弃颜色
-|cffffff00Shift-左键:|r使用默认的颜色]=],
-	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT"] = [=[选择使用一个颜色来表示右倾属性。
-
-|cffffff00左健:|r选择一个颜色
-|cffffff00右键:|r放弃颜色
-|cffffff00Shift-左键:|r使用默认的颜色]=],
-	["REG_PLAYER_PSYCHO_Egoiste"] = "自私",
-	["REG_PLAYER_PSYCHO_Genereux"] = "无私",
-	["REG_PLAYER_PSYCHO_Impulsif"] = "莽撞",
-	["REG_PLAYER_PSYCHO_Indulgent"] = "宽容",
+	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT"] = "选择使用一个颜色来表示左倾属性。",
+	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT"] = "选择使用一个颜色来表示右倾属性。",
+	["REG_PLAYER_PSYCHO_SELFISH"] = "自私",
+	["REG_PLAYER_PSYCHO_ALTRUISTIC"] = "无私",
+	["REG_PLAYER_PSYCHO_IMPULSIVE"] = "莽撞",
+	["REG_PLAYER_PSYCHO_FORGIVING"] = "宽容",
 	["REG_PLAYER_PSYCHO_LEFTICON_TT"] = "设置左倾图标.",
-	["REG_PLAYER_PSYCHO_Loyal"] = "正义",
-	["REG_PLAYER_PSYCHO_Luxurieux"] = "下流",
-	["REG_PLAYER_PSYCHO_Misericordieux"] = "文雅",
-	["REG_PLAYER_PSYCHO_MORE"] = "增加 \"%s\"",
+	["REG_PLAYER_PSYCHO_LAWFUL"] = "正义",
+	["REG_PLAYER_PSYCHO_LUSTFUL"] = "下流",
+	["REG_PLAYER_PSYCHO_GENTLE"] = "文雅",
 	["REG_PLAYER_PSYCHO_PERSONAL"] = "人格特质",
-	["REG_PLAYER_PSYCHO_Pieux"] = "感性",
-	["REG_PLAYER_PSYCHO_POINT"] = "增加",
-	["REG_PLAYER_PSYCHO_Pragmatique"] = "叛逆",
-	["REG_PLAYER_PSYCHO_Rationnel"] = "理性",
-	["REG_PLAYER_PSYCHO_Reflechi"] = "谨慎",
-	["REG_PLAYER_PSYCHO_Rencunier"] = "记仇",
+	["REG_PLAYER_PSYCHO_SUPERSTITIOUS"] = "感性",
+	["REG_PLAYER_PSYCHO_RENEGADE"] = "叛逆",
+	["REG_PLAYER_PSYCHO_RATIONAL"] = "理性",
+	["REG_PLAYER_PSYCHO_CAUTIOUS"] = "谨慎",
+	["REG_PLAYER_PSYCHO_VINDICTIVE"] = "记仇",
 	["REG_PLAYER_PSYCHO_RIGHTICON_TT"] = "设置右倾图标.",
-	["REG_PLAYER_PSYCHO_Sincere"] = "诚实",
+	["REG_PLAYER_PSYCHO_TRUTHFUL"] = "诚实",
 	["REG_PLAYER_PSYCHO_SOCIAL"] = "社会特征",
-	["REG_PLAYER_PSYCHO_Trompeur"] = "欺诈",
-	["REG_PLAYER_PSYCHO_Valeureux"] = "勇敢",
+	["REG_PLAYER_PSYCHO_DECEITFUL"] = "欺诈",
+	["REG_PLAYER_PSYCHO_VALOROUS"] = "勇敢",
 	["REG_PLAYER_RACE"] = "种族",
 	["REG_PLAYER_RACE_TT"] = "这是你的角色的种族。它不需要被限制在玩家可选的种族中。魔兽争霸和魔兽世界有很多种族可以使用。",
 	["REG_PLAYER_REGISTER"] = "目录信息",
@@ -1021,9 +1008,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED"] = "丧偶",
 	["REG_PLAYER_RESIDENCE"] = "住所",
 	["REG_PLAYER_RESIDENCE_SHOW"] = "住所位置",
-	["REG_PLAYER_RESIDENCE_SHOW_TT"] = [=[|cff00ff00%s
-
-|r点击在地图上显示]=],
+	["REG_PLAYER_RESIDENCE_SHOW_TT"] = "在地图上显示",
 	["REG_PLAYER_RESIDENCE_TT"] = [=[在这里你可以指出你的角色通常生活在哪里. 这可能是他们的个人地址(他们的家)或者是可以遇见他们的地方。
 注意，如果你的角色是一个流浪者，甚至是无家可归者，你需要相应地改变信息。
 
@@ -1076,10 +1061,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 选择模板之后，你可以再次打开模板教学并获取关于各种模板的帮助。]=],
 	["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[这个部分提供了 |cnGREEN_FONT_COLOR:5个栏位|r 来描述 |cnGREEN_FONT_COLOR:关于您的角色的最重要的信息|r。
 
-这些槽会在其他人点击你的头像时显示在 |cnGREEN_FONT_COLOR:"第一印象"|r 当中。
-
-|cff00ff00提示:您可以拖动栏位来重新排序.|r
-这也会显示在 |cnGREEN_FONT_COLOR:"第一印象"|r!]=],
+这些槽会在其他人点击你的头像时显示在 |cnGREEN_FONT_COLOR:"第一印象"|r 当中。]=],
 	["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "这部分包含用来回答 |cnGREEN_FONT_COLOR:许多人们可能问你的常见问题，关于你、你的角色、以及你希望和他/她的互动方式|r 的|cnGREEN_FONT_COLOR:一些信息|r 。",
 	["REG_PLAYER_TUTO_ABOUT_T1"] = [=[这个模板允许您 |cff00ff00自由地组织您的描述|r。
 
@@ -1106,11 +1088,8 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_RELATION"] = "人物关系",
 	["REG_RELATION_BUSINESS"] = "商业上的",
 	["REG_RELATION_BUSINESS_TT"] = "%s 和 %s 有着商业合作关系。",
-	["REG_RELATION_BUTTON_TT"] = [=[关系: %s
-|cff00ff00%s
-
-|cffffff00单击以显示可能的操作]=],
-	["REG_RELATION_FAMILY"] = "家人",
+	["REG_RELATION_BUTTON_TT"] = "|cnGREEN_FONT_COLOR:关系: %s|r|n%s",
+	["REG_RELATION_BUTTON_TT_ACTIONS"] = "显示可能的操作",
 	["REG_RELATION_FAMILY_TT"] = "%s 和 %s有着血缘关系。",
 	["REG_RELATION_FRIEND"] = "朋友",
 	["REG_RELATION_FRIEND_TT"] = "%s 认为 %s 是朋友。",
@@ -1130,7 +1109,7 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_REPORT_PLAYER_PROFILE"] = "向 |cff449fe0暴雪|r举报玩家",
 	["REG_REPORT_PLAYER_PROFILE_TT"] = [=[你可以举报违反暴雪游戏条款的行为，包括但不限于骚扰，不当言论, 淫秽内容等。
 
-	|cffff0000请注意，本功能并非是用来举报不严谨的RP设定，滥用此功能将遭到惩罚！]=],
+	|cnWARNING_FONT_COLOR:请注意，本功能并非是用来举报不严谨的RP设定，滥用此功能将遭到惩罚！]=],
 	["REG_REPORT_PLAYER_TEMPLATE"] = "此玩家通过分享 %s 的RP插件信息违反了暴雪的游戏条款。",
 	["REG_REPORT_PLAYER_TEMPLATE_DATE"] = "插件数据是通过 %s 的信息传输的。",
 	["REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT"] = "这个玩家使用试玩账号。",
@@ -1248,7 +1227,7 @@ Total RP不对导致有害内容的链接负责。]=],
 	["UI_PET_BROWSER_INTRO_TEXT"] = "用下方按钮选择一个宠物并点击|cffffff00绑定|r来将其绑定到宠物卡",
 	["UI_PET_BROWSER_NAME_WARNING"] = "|cffff0000警告：|r该宠物没有命名，我们推荐对其命名以防它与你的其他同名宠物重复。",
 	["UI_TUTO_BUTTON"] = "教学模式",
-	["UI_TUTO_BUTTON_TT"] = "点击打开/关闭教程模式",
+	["UI_TUTO_BUTTON_TT"] = "打开/关闭教程模式",
 	["UNIT_POPUPS_CHARACTER_STATUS"] = "角色状态",
 	["UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT"] = "战斗中隐藏菜单",
 	["UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT_HELP"] = "勾选后，将在战斗中隐藏额外的菜单选项。",

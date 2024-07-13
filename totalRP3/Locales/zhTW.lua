@@ -221,7 +221,7 @@ L = {
 |cffff9900需要更新 Total RP 3:|r 此插件需要更高版本的Total RP 3支援。
 |cffff0000啟動時或初始化時發生錯誤:|r 此插件在初始化時出現錯誤，有可能造成更多問題。
 
-|cffff9900停用插件後，必須重新啟動遊戲。]=],
+|cnGREEN_FONT_COLOR:停用插件後，必須重新啟動遊戲。]=],
 	["CO_MODULES_VERSION"] = "版本: %s",
 	["CO_MSP"] = "Mary Sue 協議",
 	["CO_REGISTER"] = "資訊設定",
@@ -232,7 +232,7 @@ L = {
 
 |cff00ff00備註：跟你有特殊關係的角色將永遠不會被清除。
 
-|cffff9900當你的資料數量達到一定的極限值時，魔獸世界會自動清除所有資料，所以我們強烈建議你不要關閉此選項。]=],
+|cnWARNING_FONT_COLOR:當你的資料數量達到一定的極限值時，魔獸世界會自動清除所有資料，所以我們強烈建議你不要關閉此選項。]=],
 	["CO_SANITIZER"] = "整理接收的角色資訊",
 	["CO_SANITIZER_TT"] = "清除接收的資訊中不被你的設定所允許的部分。（色彩、圖像等…）",
 	["CO_TARGETFRAME"] = "目標欄位設定",
@@ -264,7 +264,7 @@ L = {
 	["CO_TOOLTIP_CROP_TEXT"] = "剪裁不合理的過長文本",
 	["CO_TOOLTIP_CROP_TEXT_TT"] = [=[角色卡提示欄中各欄位的字數有限，避免產生過長的情況。
 
-|cfffff569各欄位限制：
+|cnGREEN_FONT_COLOR:各欄位限制：
 名稱：100單位
 稱號：150單位
 種族：50單位
@@ -467,7 +467,6 @@ L = {
 	["REG_PLAYER_BIRTHPLACE_TT"] = [=[這裡指的是您的角色的出生地。可以是區里鄉鎮市、也可以是一塊大陸或一個國家的名字，看您想怎麼使用。
 
 |c00ffff00您也可以點擊按鈕，直接在地圖上選擇您的出生地。]=],
-	["REG_PLAYER_BKG"] = "背景設計",
 	["REG_PLAYER_CARACT"] = "特徵",
 	["REG_PLAYER_CHANGE_CONFIRM"] = [=[您似乎還沒儲存此檔案的變更，
 確定要切換頁面嗎？
@@ -482,9 +481,9 @@ L = {
 |cffffff00Right-click:|r 放棄顏色]=],
 	["REG_PLAYER_COLOR_CLASS"] = "職業欄顏色",
 	["REG_PLAYER_COLOR_CLASS_TT"] = "此選項同時將會更改名字的顏色。",
-	["REG_PLAYER_COLOR_TT"] = [=[|cffffff00Click:|r 選擇顏色
-|cffffff00Right-click:|r 放棄顏色
-|cffffff00Shift-Click:|r 直接使用調色盤]=],
+	["REG_PLAYER_COLOR_TT_SELECT"] = "選擇顏色",
+	["REG_PLAYER_COLOR_TT_DISCARD"] = "放棄顏色",
+	["REG_PLAYER_COLOR_TT_DEFAULTPICKER"] = "直接使用調色盤",
 	["REG_PLAYER_EDIT_MUSIC_THEME"] = "主題音樂",
 	["REG_PLAYER_EYE"] = "眼睛顏色",
 	["REG_PLAYER_EYE_TT"] = [=[這裡可以描述你的腳色眼睛的顏色。
@@ -500,13 +499,11 @@ L = {
 然而，重複的頭銜就可以不用再提了，以防空間有限。]=],
 	["REG_PLAYER_GLANCE"] = "第一印象",
 	["REG_PLAYER_GLANCE_BAR_TARGET"] = "「第一印象欄」預設欄位",
-	["REG_PLAYER_GLANCE_CONFIG"] = [=[|cff00ff00「第一印象欄」|r 可以快速地將五個關於此角色重要且明顯的資訊傳達給其他玩家知道，目的是讓其他玩家只要短暫地看一眼就能對角色有「快速」、「精準」且「合理」的認識。因此建議不要有過於冗長、上帝視角的不合理資訊。
-
-您可以這樣使用欄位：
-|cffffff00左鍵點擊：|r 設定欄位內容
-|cffffff00左鍵雙擊：|r 開啟／關閉欄位
-|cffffff00右鍵點擊：|r 預設欄位選項
-|cffffff00拖曳／放置：|r 變更位置]=],
+	["REG_PLAYER_GLANCE_CONFIG"] = [=[|cnGREEN_FONT_COLOR:「第一印象欄」|r 可以快速地將五個關於此角色重要且明顯的資訊傳達給其他玩家知道，目的是讓其他玩家只要短暫地看一眼就能對角色有「快速」、「精準」且「合理」的認識。因此建議不要有過於冗長、上帝視角的不合理資訊。]=],
+	["REG_PLAYER_GLANCE_CONFIG_EDIT"] = "設定欄位內容",
+	["REG_PLAYER_GLANCE_CONFIG_TOGGLE"] = "開啟／關閉欄位",
+	["REG_PLAYER_GLANCE_CONFIG_PRESETS"] = "預設欄位選項",
+	["REG_PLAYER_GLANCE_CONFIG_REORDER"] = "變更位置",
 	["REG_PLAYER_GLANCE_EDITOR"] = "編輯器 : 欄位 %s",
 	["REG_PLAYER_GLANCE_MENU_COPY"] = "複製此欄位",
 	["REG_PLAYER_GLANCE_MENU_PASTE"] = "貼上欄位： %s",
@@ -529,9 +526,9 @@ L = {
 	["REG_PLAYER_HERE"] = "選擇位置",
 	["REG_PLAYER_HERE_HOME_PRE_TT"] = [=[目前居住地設定為：
 |cff00ff00%s|r.]=],
-	["REG_PLAYER_HERE_HOME_TT"] = [=[|cffffff00Click|r：使用角色當前的位置來作為居住地
-|cffffff00Right-click|r：清除欄位內容]=],
 	["REG_PLAYER_HERE_TT"] = "|cffffff00Click|r：以角色當前的位置設定",
+	["REG_PLAYER_HERE_HOME_TT_CURRENT"] = "使用角色當前的位置來作為居住地",
+	["REG_PLAYER_HERE_HOME_TT_DISCARD"] = "清除欄位內容",
 	["REG_PLAYER_ICON"] = "角色圖案",
 	["REG_PLAYER_ICON_TT"] = "選擇一個合適的圖案來代表您的角色。",
 	["REG_PLAYER_LASTNAME"] = "姓氏",
@@ -550,45 +547,37 @@ L = {
 	["REG_PLAYER_PEEK"] = "雜項",
 	["REG_PLAYER_PHYSICAL"] = "生理外觀描述",
 	["REG_PLAYER_PSYCHO"] = "人格特質",
-	["REG_PLAYER_PSYCHO_Acete"] = "禁慾",
+	["REG_PLAYER_PSYCHO_ASCETIC"] = "禁慾",
 	["REG_PLAYER_PSYCHO_ADD"] = "新增一個人格特質",
-	["REG_PLAYER_PSYCHO_Bonvivant"] = "樂天",
+	["REG_PLAYER_PSYCHO_BONVIVANT"] = "樂天",
 	["REG_PLAYER_PSYCHO_CHAOTIC"] = "混亂",
-	["REG_PLAYER_PSYCHO_Chaste"] = "純潔",
-	["REG_PLAYER_PSYCHO_Conciliant"] = "典範人物",
-	["REG_PLAYER_PSYCHO_Couard"] = "懦弱",
+	["REG_PLAYER_PSYCHO_CHASTE"] = "純潔",
+	["REG_PLAYER_PSYCHO_PARAGON"] = "典範人物",
+	["REG_PLAYER_PSYCHO_SPINELESS"] = "懦弱",
 	["REG_PLAYER_PSYCHO_CREATENEW"] = "創建新的特徵",
-	["REG_PLAYER_PSYCHO_Cruel"] = "粗暴",
+	["REG_PLAYER_PSYCHO_BRUTAL"] = "粗暴",
 	["REG_PLAYER_PSYCHO_CUSTOM"] = "自訂特徵",
-	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT"] = [=[選擇一個顏色來代表左側屬性欄。
-
-|cffffff00Click:|r 選擇顏色
-|cffffff00Right-click:|r 放棄顏色
-|cffffff00Shift-Click:|r 使用調色盤]=],
-	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT"] = [=[選擇一個顏色來代表右側屬性條。
-
-|cffffff00Click:|r 選擇顏色
-|cffffff00Right-click:|r 放棄顏色
-|cffffff00Shift-Click:|r 開起調色盤]=],
-	["REG_PLAYER_PSYCHO_Egoiste"] = "自私",
-	["REG_PLAYER_PSYCHO_Genereux"] = "無私",
-	["REG_PLAYER_PSYCHO_Impulsif"] = "衝動",
-	["REG_PLAYER_PSYCHO_Indulgent"] = "寬容",
+	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT"] = "選擇一個顏色來代表左側屬性欄。",
+	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT"] = "選擇一個顏色來代表右側屬性條。",
+	["REG_PLAYER_PSYCHO_SELFISH"] = "自私",
+	["REG_PLAYER_PSYCHO_ALTRUISTIC"] = "無私",
+	["REG_PLAYER_PSYCHO_IMPULSIVE"] = "衝動",
+	["REG_PLAYER_PSYCHO_FORGIVING"] = "寬容",
 	["REG_PLAYER_PSYCHO_LEFTICON_TT"] = "設定左側圖示。",
-	["REG_PLAYER_PSYCHO_Loyal"] = "守序",
-	["REG_PLAYER_PSYCHO_Luxurieux"] = "淫蕩",
-	["REG_PLAYER_PSYCHO_Misericordieux"] = "溫和",
+	["REG_PLAYER_PSYCHO_LAWFUL"] = "守序",
+	["REG_PLAYER_PSYCHO_LUSTFUL"] = "淫蕩",
+	["REG_PLAYER_PSYCHO_GENTLE"] = "溫和",
 	["REG_PLAYER_PSYCHO_PERSONAL"] = "人格特質",
-	["REG_PLAYER_PSYCHO_Pieux"] = "迷信",
-	["REG_PLAYER_PSYCHO_Pragmatique"] = "叛逆者",
-	["REG_PLAYER_PSYCHO_Rationnel"] = "理性",
-	["REG_PLAYER_PSYCHO_Reflechi"] = "謹慎",
-	["REG_PLAYER_PSYCHO_Rencunier"] = "有仇必報",
+	["REG_PLAYER_PSYCHO_SUPERSTITIOUS"] = "迷信",
+	["REG_PLAYER_PSYCHO_RENEGADE"] = "叛逆者",
+	["REG_PLAYER_PSYCHO_RATIONAL"] = "理性",
+	["REG_PLAYER_PSYCHO_CAUTIOUS"] = "謹慎",
+	["REG_PLAYER_PSYCHO_VINDICTIVE"] = "有仇必報",
 	["REG_PLAYER_PSYCHO_RIGHTICON_TT"] = "設定右側圖示",
-	["REG_PLAYER_PSYCHO_Sincere"] = "誠實",
+	["REG_PLAYER_PSYCHO_TRUTHFUL"] = "誠實",
 	["REG_PLAYER_PSYCHO_SOCIAL"] = "社交特質",
-	["REG_PLAYER_PSYCHO_Trompeur"] = "虛偽",
-	["REG_PLAYER_PSYCHO_Valeureux"] = "勇敢",
+	["REG_PLAYER_PSYCHO_DECEITFUL"] = "虛偽",
+	["REG_PLAYER_PSYCHO_VALOROUS"] = "勇敢",
 	["REG_PLAYER_RACE"] = "種族",
 	["REG_PLAYER_RACE_TT"] = "意即角色所屬的種族。不限於遊戲中可玩的種族，魔獸世界裡還有許多外型相仿但並未釋出給一般玩家使用的種族。",
 	["REG_PLAYER_REGISTER"] = "基本資料",
@@ -602,9 +591,7 @@ L = {
 	["REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED"] = "喪偶",
 	["REG_PLAYER_RESIDENCE"] = "居住地",
 	["REG_PLAYER_RESIDENCE_SHOW"] = "居住地地圖座標",
-	["REG_PLAYER_RESIDENCE_SHOW_TT"] = [=[|cff00ff00%s
-
-|r點擊以在地圖上顯示]=],
+	["REG_PLAYER_RESIDENCE_SHOW_TT"] = "在地圖上顯示",
 	["REG_PLAYER_RIGHTTRAIT"] = "右側屬性",
 	["REG_PLAYER_SHOWMISC"] = "顯示雜項欄",
 	["REG_PLAYER_SHOWPSYCHO"] = "顯示個性資料欄",
@@ -662,10 +649,8 @@ L = {
 	["REG_RELATION"] = "人際關係",
 	["REG_RELATION_BUSINESS"] = "工作",
 	["REG_RELATION_BUSINESS_TT"] = "%s 和 %s 之間是生意上的關係。",
-	["REG_RELATION_BUTTON_TT"] = [=[關係： %s
-|cff00ff00%s
-
-|cffffff00點擊以顯示可執行的動作]=],
+	["REG_RELATION_BUTTON_TT"] = "|cnGREEN_FONT_COLOR:關係: %s|r|n%s",
+	["REG_RELATION_BUTTON_TT_ACTIONS"] = "顯示可執行的動作",
 	["REG_RELATION_FAMILY"] = "家人",
 	["REG_RELATION_FAMILY_TT"] = "%s 與 %s 的關係血濃於水。",
 	["REG_RELATION_FRIEND"] = "友善",
@@ -781,7 +766,7 @@ L = {
 	["UI_MUSIC_BROWSER"] = "音樂瀏覽器",
 	["UI_MUSIC_SELECT"] = "選擇音樂",
 	["UI_TUTO_BUTTON"] = "教學模式",
-	["UI_TUTO_BUTTON_TT"] = "點擊以開啟／關閉教學模式"
+	["UI_TUTO_BUTTON_TT"] = "啟／關閉教學模式"
 };
 
 TRP3_API.loc:RegisterNewLocale("zhTW", "繁體中文", L);

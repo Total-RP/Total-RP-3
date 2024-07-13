@@ -179,7 +179,7 @@ local function onStart()
 					end
 				end);
 				if buttonStructure.tooltip then
-					setTooltipForFrame(uiButton, uiButton, "LEFT", 0, 0, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+					setTooltipForFrame(uiButton, uiButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
 				end
 				uiButton:SetWidth(buttonSize);
 				uiButton:SetHeight(buttonSize);
@@ -288,7 +288,7 @@ local function onStart()
 		toolbarButton:SetIconTexture(buttonStructure.icon);
 
 		-- Refreshing the tooltip
-		setTooltipForFrame(toolbarButton, toolbarButton, "LEFT", 0, 0, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+		setTooltipForFrame(toolbarButton, toolbarButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
 	end
 	TRP3_API.toolbar.updateToolbarButton = updateToolbarButton;
 

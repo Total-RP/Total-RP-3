@@ -218,8 +218,7 @@ local function GenerateCreditsString(credits)
 		local lines = {};
 
 		table.insert(lines, string.format("{p:c}{col:6eff51}%1$s{/col}{/p}", VERSION_TEXT));
-		table.insert(lines, string.format("{p:c}%1$s — %2$s{/p}", WEBSITE_LINK, TWITTER_LINK));
-		table.insert(lines, string.format("{p:c}%1$s{/p}", DISCORD_LINK));
+		table.insert(lines, string.format("{p:c}{col:f2bf1a}%1$s{/col} — {col:f2bf1a}%2$s{/col}{/p}", WEBSITE_LINK, DISCORD_LINK));
 
 		table.insert(output, L.CREDITS_THANK_YOU_SECTION_1);
 		table.insert(output, table.concat(lines, "|n"));

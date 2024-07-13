@@ -133,7 +133,7 @@ local function onStart()
 				uiAlert:Show();
 				uiAlert:SetWidth(buttonSize / 2);
 				uiAlert:SetHeight(buttonSize / 2);
-				uiAlert:SetTexture(buttonStructure.alertIcon);
+				uiAlert:SetAtlas(buttonStructure.alertIcon);
 			end
 
 			index = index + 1;

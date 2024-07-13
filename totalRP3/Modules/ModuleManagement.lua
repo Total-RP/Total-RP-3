@@ -306,17 +306,17 @@ local function getModuleTooltip(module)
 	local message = "";
 
 	if module.description and module.description:len() > 0 then
-		message = message .. "|cffffff00" .. module.description .. "\n\n";
+		message = message .. module.description .. "|n|n";
 	end
 
 	if module.hotReload then
-		message = message .. loc.CO_MODULES_SUPPORTS_HOTRELOAD .. "|r\n\n";
+		message = message .. loc.CO_MODULES_SUPPORTS_HOTRELOAD .. "|n|n";
 	end
 
-	message = message .. getModuleHint_TRP(module) .. "\n\n" .. getModuleHint_Deps(module);
+	message = message .. getModuleHint_TRP(module) .. "|n|n" .. getModuleHint_Deps(module);
 
 	if module.error ~= nil then
-		message = message .. "\n\n" .. (loc.CO_MODULES_TT_ERROR:format(module.error));
+		message = message .. "|n|n" .. (loc.CO_MODULES_TT_ERROR:format(module.error));
 	end
 
 	return message;
@@ -348,7 +348,7 @@ function TRP3_ModuleManagerListElementMixin:Init(module)
 	self.ModuleID:SetText(loc.CO_MODULES_ID:format(module.id));
 	self.Status:SetText(loc.CO_MODULES_STATUS:format(moduleStatusText(module.status)));
 	self.Border:SetVertexColor(GetSuggestedBorderColor(module.status):GetRGB());
-	setTooltipForSameFrame(self.Info, "BOTTOMRIGHT", 0, 0, module.name, getModuleTooltip(module));
+	setTooltipForSameFrame(self.Info, "RIGHT", 0, 5, module.name, getModuleTooltip(module));
 end
 
 local function moduleInit()
@@ -456,7 +456,7 @@ function onModuleStarted()
 		previous = frame;
 		frame:Init(module);
 		local actionButton = frame.Action;
-		setTooltipAll(actionButton, "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+		setTooltipAll(actionButton, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 		actionButton:SetScript("OnMouseDown", onActionClicked);
 		i = i + 1;
 	end

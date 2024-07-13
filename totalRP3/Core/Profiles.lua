@@ -235,7 +235,7 @@ local function decorateProfileList(widget, index)
 			text = text..loc.PR_UNUSED_PROFILE;
 		end
 
-		setTooltipForSameFrame(_G[widget:GetName().."Info"], "RIGHT", 0, 0, loc.PR_PROFILE, text);
+		setTooltipForSameFrame(_G[widget:GetName().."Info"], "RIGHT", 0, 5, loc.PR_PROFILE, text);
 	end
 end
 
@@ -499,7 +499,7 @@ function TRP3_API.profile.init()
 		_G[widget:GetName().."Current"]:SetText(loc.PR_PROFILEMANAGER_CURRENT);
 		table.insert(widgetTab, widget);
 
-		setTooltipForSameFrame(_G[widget:GetName().."Action"], "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+		setTooltipForSameFrame(_G[widget:GetName().."Action"], "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 
 		-- Display indications in the tooltip on how to create a chat link
 		Ellyb.Tooltips.getTooltip(widget)
@@ -516,7 +516,7 @@ function TRP3_API.profile.init()
 	TRP3_ProfileManagerListEmpty:SetText(loc.PR_PROFILEMANAGER_EMPTY);
 
 	TRP3_ProfileManagerInfo:Show();
-	setTooltipForSameFrame(TRP3_ProfileManagerInfo, "RIGHT", 0, 0, loc.PR_EXPORT_IMPORT_TITLE, loc.PR_EXPORT_IMPORT_HELP);
+	setTooltipForSameFrame(TRP3_ProfileManagerInfo, "RIGHT", 0, 5, loc.PR_EXPORT_IMPORT_TITLE, loc.PR_EXPORT_IMPORT_HELP);
 
 	TRP3_ProfileManagerSearch:SetScript("OnEnterPressed", uiInitProfileList);
 	TRP3_ProfileManagerSearchText:SetText(loc.PR_PROFILEMANAGER_SEARCH_PROFILE);

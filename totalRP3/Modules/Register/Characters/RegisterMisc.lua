@@ -234,7 +234,7 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 		button:SetIconTexture(icon or GLANCE_NOT_USED_ICON);
 		button.Icon:SetAlpha(1);
 		button.Icon:SetDesaturated(false);
-		setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", text);
+		setTooltipForSameFrame(button, "BOTTOM", 0, -5, title or "...", text);
 	else
 		button:SetAlpha(isMine and 1 or 0.1);
 		button:SetIconTexture(isMine and icon or GLANCE_NOT_USED_ICON);
@@ -243,7 +243,7 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 		if not isMine then
 			button:Disable();
 		else
-			setTooltipForSameFrame(button, "RIGHT", 0, 5, title or loc.REG_PLAYER_GLANCE_UNUSED, text);
+			setTooltipForSameFrame(button, "BOTTOM", 0, -5, title or loc.REG_PLAYER_GLANCE_UNUSED, text);
 		end
 	end
 end
@@ -371,16 +371,6 @@ local function displayCurrently(context)
 	local dataTab = context.profile.character or Globals.empty;
 	TRP3_RegisterMiscViewCurrentlyIC:SetText(dataTab.CU or "");
 	TRP3_RegisterMiscViewCurrentlyOOC:SetText(dataTab.CO or "");
-	if not context.isPlayer and dataTab.CU and dataTab.CU:len() > 0 then
-		setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyIC, "TOP", 0, 5, loc.DB_STATUS_CURRENTLY, dataTab.CU);
-	else
-		setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyIC);
-	end
-	if not context.isPlayer and dataTab.CO and dataTab.CO:len() > 0 then
-		setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC, "TOP", 0, 5, loc.DB_STATUS_CURRENTLY_OOC, dataTab.CO);
-	else
-		setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC);
-	end
 end
 
 local function onCurrentlyChanged()
@@ -473,10 +463,10 @@ local function createTutorialStructure()
 				allPoints = TRP3_RegisterMiscViewCurrently
 			},
 			button = {
-				x = 0, y = 0, anchor = "CENTER",
+				x = 0, y = 10, anchor = "CENTER",
 				text = loc.DB_STATUS_CURRENTLY_COMMON .. "|r\n\n" .. "|cnGREEN_FONT_COLOR:" .. loc.DB_STATUS_CURRENTLY .. "|r\n" .. loc.DB_STATUS_CURRENTLY_TT .. "\n\n|cnGREEN_FONT_COLOR:" .. loc.DB_STATUS_CURRENTLY_OOC .. "|r\n" .. loc.DB_STATUS_CURRENTLY_OOC_TT,
 				textWidth = 400,
-				arrow = "RIGHT"
+				arrow = "BOTTOM"
 			}
 		},
 		{
@@ -487,7 +477,7 @@ local function createTutorialStructure()
 				x = 0, y = 0, anchor = "CENTER",
 				text = loc.REG_PLAYER_TUTO_ABOUT_MISC_3,
 				textWidth = 300,
-				arrow = "RIGHT"
+				arrow = "UP"
 			}
 		}
 	}
@@ -514,17 +504,21 @@ function TRP3_API.register.inits.miscInit()
 	TRP3_AtFirstGlanceEditorNameText:SetText(loc.REG_PLAYER_GLANCE_TITLE);
 	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc.REG_PLAYER_STYLE_EMPTY);
 
-	TRP3_API.ui.tooltip.setTooltipAll(TRP3_AtFirstGlanceEditorActive, "TOP", 0, 0, loc.REG_PLAYER_GLANCE_USE);
+	TRP3_API.ui.tooltip.setTooltipAll(TRP3_AtFirstGlanceEditorActive, "RIGHT", 0, 5, loc.CM_ACTIVATE, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_USE));
 
 	TRP3_RegisterMiscViewCurrentlyIC.Title:SetText(loc.DB_STATUS_CURRENTLY);
-	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyIC.HelpButton, "LEFT", 0, 10, loc.DB_STATUS_CURRENTLY, loc.DB_STATUS_CURRENTLY_TT);
+	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyIC.HelpButton, "RIGHT", 0, 5, loc.DB_STATUS_CURRENTLY, loc.DB_STATUS_CURRENTLY_TT);
 	TRP3_RegisterMiscViewCurrentlyIC:RegisterCallback("OnTextChanged", onCurrentlyChanged, {});
 
 	TRP3_RegisterMiscViewCurrentlyOOC.Title:SetText(loc.DB_STATUS_CURRENTLY_OOC);
-	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC.HelpButton, "LEFT", 0, 10, loc.DB_STATUS_CURRENTLY_OOC, loc.DB_STATUS_CURRENTLY_OOC_TT);
+	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC.HelpButton, "RIGHT", 0, 5, loc.DB_STATUS_CURRENTLY_OOC, loc.DB_STATUS_CURRENTLY_OOC_TT);
 	TRP3_RegisterMiscViewCurrentlyOOC:RegisterCallback("OnTextChanged", onOOCInfoChanged, {});
 
-	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "LEFT", 0, 10, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("DCLICK", loc.REG_PLAYER_GLANCE_CONFIG_TOGGLE) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_GLANCE_CONFIG_PRESETS) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("DRAGDROP", loc.REG_PLAYER_GLANCE_CONFIG_REORDER));
+	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG
+	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("DCLICK", loc.REG_PLAYER_GLANCE_CONFIG_TOGGLE)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_GLANCE_CONFIG_PRESETS)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("DRAGDROP", loc.REG_PLAYER_GLANCE_CONFIG_REORDER));
 
 	for index=1,5,1 do
 		-- DISPLAY

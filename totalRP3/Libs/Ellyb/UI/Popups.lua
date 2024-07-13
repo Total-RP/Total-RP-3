@@ -47,7 +47,7 @@ function Popups:OpenURL(url, customText, customShortcutInstructions, customAlert
 	local copyShortcut = TRP3_API.FormatShortcut("CTRL-C", TRP3_API.ShortcutType.System);
 	local pasteShortcut = TRP3_API.FormatShortcut("CTRL-V", TRP3_API.ShortcutType.System);
 
-	popupText = popupText .. customShortcutInstructions:format(TRP3_API.Colors.Orange(copyShortcut), TRP3_API.Colors.Orange(pasteShortcut));
+	popupText = popupText .. customShortcutInstructions:format(TRP3_API.Colors.Green(copyShortcut), TRP3_API.Colors.Green(pasteShortcut));
 	URLPopup.Text:SetText(popupText);
 	URLPopup.Url:SetText(url);
 	if not customAlertOnClose then

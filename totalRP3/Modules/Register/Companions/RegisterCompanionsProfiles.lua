@@ -209,7 +209,7 @@ local function decorateProfileList(widget, index)
 	end
 
 	setTooltipForSameFrame(
-	_G[widget:GetName().."Info"], "RIGHT", 0, 0,
+	_G[widget:GetName().."Info"], "RIGHT", 0, 5,
 	loc.PR_PROFILE,
 	text
 	)
@@ -459,7 +459,7 @@ local function constructTutorialStructure()
 				allPoints = TRP3_CompanionsProfilesList
 			},
 			button = {
-				x = 0, y = -150, anchor = "CENTER",
+				x = 0, y = -100, anchor = "CENTER",
 				text = loc.PR_CO_PROFILE_HELP,
 				textWidth = 400,
 				arrow = "UP"
@@ -522,7 +522,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		tinsert(widgetTab, widget);
 
 
-		setTooltipForSameFrame(_G[widget:GetName().."Action"], "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+		setTooltipForSameFrame(_G[widget:GetName().."Action"], "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 
 		-- Display indications in the tooltip on how to create a chat link
 		Ellyb.Tooltips.getTooltip(widget)
@@ -577,8 +577,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					return ownerID == Globals.player_id or companionHasProfile(unitID);
 				end
 			end,
-			onMouseDown = companionProfileSelectionList,
-			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
+			onClick = companionProfileSelectionList,
+			alertIcon = "QuestNormal",
 			adapter = function(buttonStructure, unitID)
 				-- Initialize the buttonStructure parts.
 				buttonStructure.alert = false;
@@ -652,8 +652,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				local _, profileID = TRP3_API.companions.register.getUnitMount(unitID, "target");
 				return profileID ~= nil;
 			end,
-			onMouseDown = companionProfileSelectionList,
-			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
+			onClick = companionProfileSelectionList,
+			alertIcon = "QuestNormal",
 			adapter = function(buttonStructure, unitID)
 				-- Initialize the buttonStructure parts.
 				buttonStructure.alert = false;

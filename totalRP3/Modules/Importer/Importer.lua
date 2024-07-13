@@ -139,7 +139,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 			end
 		end
 
-		setTooltipForSameFrame(_G[widget:GetName() .. "Info"], "RIGHT", 0, 0, loc.PR_IMPORT_WILL_BE_IMPORTED .. " :", tooltip);
+		setTooltipForSameFrame(_G[widget:GetName() .. "Info"], "RIGHT", 0, 5, loc.PR_IMPORT_WILL_BE_IMPORTED .. " :", tooltip);
 	end
 
 	local function refreshDisplay()

@@ -451,20 +451,20 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 					local specifiers =
 					{
-						string.format(loc.CO_DATE_FORMAT_SPEC_a, TRP3_API.Colors.Cyan("%a"), TRP3_API.Colors.Green(date("!%a", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_A, TRP3_API.Colors.Cyan("%A"), TRP3_API.Colors.Green(date("!%A", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_b, TRP3_API.Colors.Cyan("%b"), TRP3_API.Colors.Green(date("!%b", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_B, TRP3_API.Colors.Cyan("%B"), TRP3_API.Colors.Green(date("!%B", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_d, TRP3_API.Colors.Cyan("%d"), TRP3_API.Colors.Green(date("!%d", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_H, TRP3_API.Colors.Cyan("%H"), TRP3_API.Colors.Green(date("!%H", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_I, TRP3_API.Colors.Cyan("%I"), TRP3_API.Colors.Green(date("!%I", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_m, TRP3_API.Colors.Cyan("%m"), TRP3_API.Colors.Green(date("!%m", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_M, TRP3_API.Colors.Cyan("%M"), TRP3_API.Colors.Green(date("!%M", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_p, TRP3_API.Colors.Cyan("%p"), TRP3_API.Colors.Green(date("!%p", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_S, TRP3_API.Colors.Cyan("%S"), TRP3_API.Colors.Green(date("!%S", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_y, TRP3_API.Colors.Cyan("%y"), TRP3_API.Colors.Green(date("!%y", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_Y, TRP3_API.Colors.Cyan("%Y"), TRP3_API.Colors.Green(date("!%Y", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_ESC, TRP3_API.Colors.Cyan("%%")),
+						string.format(loc.CO_DATE_FORMAT_SPEC_a, TRP3_API.Colors.Green("%a"), TRP3_API.Colors.Green(date("!%a", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_A, TRP3_API.Colors.Green("%A"), TRP3_API.Colors.Green(date("!%A", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_b, TRP3_API.Colors.Green("%b"), TRP3_API.Colors.Green(date("!%b", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_B, TRP3_API.Colors.Green("%B"), TRP3_API.Colors.Green(date("!%B", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_d, TRP3_API.Colors.Green("%d"), TRP3_API.Colors.Green(date("!%d", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_H, TRP3_API.Colors.Green("%H"), TRP3_API.Colors.Green(date("!%H", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_I, TRP3_API.Colors.Green("%I"), TRP3_API.Colors.Green(date("!%I", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_m, TRP3_API.Colors.Green("%m"), TRP3_API.Colors.Green(date("!%m", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_M, TRP3_API.Colors.Green("%M"), TRP3_API.Colors.Green(date("!%M", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_p, TRP3_API.Colors.Green("%p"), TRP3_API.Colors.Green(date("!%p", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_S, TRP3_API.Colors.Green("%S"), TRP3_API.Colors.Green(date("!%S", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_y, TRP3_API.Colors.Green("%y"), TRP3_API.Colors.Green(date("!%y", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_Y, TRP3_API.Colors.Green("%Y"), TRP3_API.Colors.Green(date("!%Y", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_ESC, TRP3_API.Colors.Green("%%")),
 					};
 
 					return string.format(loc.CO_DATE_FORMAT_HELP, table.concat(specifiers, "|n"))

@@ -267,7 +267,7 @@ Gardez à l'esprit que changer ces paramètres peut altérer votre expérience a
 	["CO_CHAT_USE_SAY"] = "Canal /dire",
 	["CO_CONFIGURATION"] = "Paramètres",
 	["CO_CURSOR_DISABLE_OOC"] = "Désactiver quand HRP",
-	["CO_CURSOR_DISABLE_OOC_TT"] = "Désactiver les modifications du curseur quand votre status roleplay est |cffccccccHors RolePlay|r.",
+	["CO_CURSOR_DISABLE_OOC_TT"] = "Désactiver les modifications du curseur quand votre status roleplay est |cnGREEN_FONT_COLOR:Hors RolePlay|r.",
 	["CO_CURSOR_MODIFIER_KEY"] = "Touche de modification",
 	["CO_CURSOR_MODIFIER_KEY_TT"] = "Necessite d'avoir la touche enfoncé au moment du clic-droit sur un joueur, pour éviter les clics accidentels.",
 	["CO_CURSOR_RIGHT_CLICK"] = "Clic-droit pour ouvrir le profil",
@@ -275,7 +275,7 @@ Gardez à l'esprit que changer ces paramètres peut altérer votre expérience a
 
 |TInterface\Cursor\WorkOrders:25|t Cette icône sera attachée au curseur lorsqu'un joueur a un profil et que vous pouvez cliquer-droit dessus.
 
-|cffccccccNote: Cette fonctionnalité est toujours désactivée durant un combat.|r]=],
+|cnGREEN_FONT_COLOR:Note: Cette fonctionnalité est toujours désactivée durant un combat.|r]=],
 	["CO_CURSOR_TITLE"] = "Interactions avec le curseur",
 	["CO_DATE_FORMAT"] = "Format de date",
 	["CO_DATE_FORMAT_HELP"] = "Chaîne de caractère utilisée pour le format de date/heure dans l'addon.|n|nSi vide, les dates/heures seront affichées dans le format régional correspondant à votre addon.|n|nLes caractères suivants sont supportés :|n|n%1$s|n|nTous les autres caractères sont affichés tels quels.",
@@ -393,7 +393,7 @@ Statuts possibles:
 |cffff9900Mise à jour de TRP requise:|r Le module requiert une version plus récente de TRP3.
 |cffff0000Erreur à l'initialisation ou au démarrage:|r La séquence de chargement du module a échoué. Le module créera sans doute des erreurs !
 
-|cffff9900Lorsque vous désactivez un module, il est nécessaire de recharger l'interface.]=],
+|cnGREEN_FONT_COLOR:Lorsque vous désactivez un module, il est nécessaire de recharger l'interface.]=],
 	["CO_MODULES_VERSION"] = "Version: %s",
 	["CO_MSP"] = "Mary Sue Protocol",
 	["CO_REGISTER"] = "Registre",
@@ -413,7 +413,7 @@ Statuts possibles:
 
 |cff00ff00Notez qu'un profil envers lequel un de vos personnages possède une relation ne sera jamais supprimé.
 
-|cffff9900Il existe un bug dans WoW supprimant toutes les données sauvegardées si le fichier de sauvegarde atteint une certaine taille. Nous déconseillons donc fortement de désactiver totalement la purge.]=],
+|cnWARNING_FONT_COLOR:Il existe un bug dans WoW supprimant toutes les données sauvegardées si le fichier de sauvegarde atteint une certaine taille. Nous déconseillons donc fortement de désactiver totalement la purge.]=],
 	["CO_SANITIZER"] = "Nettoyer les profils",
 	["CO_SANITIZER_TT"] = "Enlève les tags de couleur et d'image insérés dans les champs non-autorisés des profils de joueur et coupe les textes beaucoup trop longs.",
 	["CO_TARGETFRAME"] = "Paramètres du cadre de la cible",
@@ -454,7 +454,7 @@ Statuts possibles:
 	["CO_TOOLTIP_CROP_TEXT"] = "Couper les textes trop longs",
 	["CO_TOOLTIP_CROP_TEXT_TT"] = [=[Limiter le nombre de caractères pouvant être utilisés pour les champs de l'infobulle, pour éviter des soucis d'affichage avec des textes trop longs.
 
-|cfffff569Détails de la limitation:
+|cnGREEN_FONT_COLOR:Détails de la limitation:
 Nom: 100 caractères
 Titre: 150 caractères
 Race: 50 caractères
@@ -682,13 +682,13 @@ Ce profil a été marqué comme contenant du contenu mature.
 |cff9999ffTotal RP 3: Extended|r ajoute la création de campagnes avec des quêtes et des dialogues, des objets, des documents (livres, affiches, contrats) et encore bien plus!
 {link*https://www.curseforge.com/wow/addons/total-rp-3-extended*Télécharger sur CurseForge}
 
-{h3}TRP3 Currently Frame{/h3}
-Ajoute une fenêtre à votre interface pour afficher et éditer facilement le texte de votre section "Actuellement (RP)".
-{link*https://www.curseforge.com/wow/addons/trp3-currently-frame*Télécharger sur CurseForge}
-
 {h3}TRP3 Location Toggle{/h3}
 Ajoute un bouton à votre barre d'outils pour activer ou désactiver votre affichage sur le scan de la carte.
-{link*https://www.curseforge.com/wow/addons/trp3-location-toggle*Télécharger sur CurseForge}]=],
+{link*https://www.curseforge.com/wow/addons/trp3-location-toggle*Télécharger sur CurseForge}
+
+{h3}Total RP 3: Unit Frames{/h3}
+Ce module modifie les noms sur les barres de joueur et cible de Blizzard pour utiliser le nom et la couleur du profil, et leur ajoute un bouton pour ouvrir le profil.
+{col:f2bf1a}{link*https://www.curseforge.com/wow/addons/total-rp-3-unit-frames*Télécharger sur CurseForge}{/col}]=],
 	["NAMEPLATES_CONFIG_ACTIVE_QUERY"] = "Récupérer automatiquement les profils",
 	["NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP"] = "Si coché, récupère automatiquement les profils RP des unités avec des barres d'infos visibles.",
 	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY"] = "Cacher les barres de vie |cff449fe0Blizzard|r",
@@ -725,7 +725,7 @@ Ajoute un bouton à votre barre d'outils pour activer ou désactiver votre affic
 	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK"] = "Utiliser la couleur de classe par défaut",
 	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP"] = "Si coché, la couleur de classe de base sera utilisée par défaut pour les noms et barres de vie (si applicable) des unités dans couleur personnalisée dans leur profil.|n|nLes unités sans profil ne sont pas affectées par ce paramètres et ne seront pas colorées.",
 	["NAMEPLATES_CONFIG_ICON_SIZE"] = "Taille d'icone",
-	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "Configure la taille des icones affichées sur les barres d'infos si l'option |cffffff00Afficher icones|r est activée.",
+	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "Configure la taille des icones affichées sur les barres d'infos si l'option |cnGREEN_FONT_COLOR:Afficher icones|r est activée.",
 	["NAMEPLATES_CONFIG_MAX_GUILD_NAME_CHARS"] = "Longueur de nom de guilde max",
 	["NAMEPLATES_CONFIG_MAX_GUILD_NAME_CHARS_HELP"] = "Le nombre de caractères maximum à afficher dans les noms de guilde. Les noms dépassant cette longueur seront coupés.",
 	["NAMEPLATES_CONFIG_MAX_NAME_CHARS"] = "Longueur de nom max",
@@ -977,7 +977,7 @@ Vous pouvez optionnellement entrer la raison ci-dessous. C'est une note personne
 	["REG_LIST_CHAR_IGNORED"] = "Ignoré",
 	["REG_LIST_CHAR_NAME_COPY"] = "Copier nom de personnage",
 	["REG_LIST_CHAR_SEL"] = "Personnage sélectionné",
-	["REG_LIST_CHAR_TITLE"] = "Liste de personnages",
+	["REG_LIST_CHAR_TITLE"] = "Personnages",
 	["REG_LIST_CHAR_TT"] = "Cliquer pour afficher la page",
 	["REG_LIST_CHAR_TT_CHAR"] = "Personnage(s) WoW lié(s):",
 	["REG_LIST_CHAR_TT_CHAR_NO"] = "Non lié à un personnage",
@@ -988,12 +988,12 @@ Vu pour la dernière fois à: |cff00ff00%s|r]=],
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Relation:
 |cff00ff00%s]=],
 	["REG_LIST_FILTERS"] = "Filtres",
-	["REG_LIST_FILTERS_TT"] = [=[|cffffff00Clic gauche:|r Appliquer les filtres
-|cffffff00Clic droit:|r Effacer les filtres]=],
+	["REG_LIST_FILTERS_APPLY"] = "Appliquer les filtres",
+	["REG_LIST_FILTERS_CLEAR"] = "Effacer les filtres",
 	["REG_LIST_FLAGS"] = "Marqueurs",
 	["REG_LIST_GUILD"] = "Guilde du personnage",
 	["REG_LIST_IGNORE_EMPTY"] = "Pas de personnage ignoré",
-	["REG_LIST_IGNORE_TITLE"] = "Liste des ignorés",
+	["REG_LIST_IGNORE_TITLE"] = "Ignorés",
 	["REG_LIST_IGNORE_TT"] = [=[Raison:
 |cff00ff00%s
 
@@ -1009,7 +1009,7 @@ Vu pour la dernière fois à: |cff00ff00%s|r]=],
 	["REG_LIST_PETS_EMPTY"] = "Aucun compagnon",
 	["REG_LIST_PETS_EMPTY2"] = "Aucun compagnon ne correspond à votre sélection",
 	["REG_LIST_PETS_FILTER"] = "Compagnons: %s / %s",
-	["REG_LIST_PETS_TITLE"] = "Liste des compagnons",
+	["REG_LIST_PETS_TITLE"] = "Compagnons",
 	["REG_LIST_PETS_TOOLTIP"] = "A été vu le",
 	["REG_LIST_PETS_TOOLTIP2"] = "A été vu avec",
 	["REG_LIST_REALMONLY"] = "Ce royaume uniquement",
@@ -1051,14 +1051,12 @@ Si vous ne souhaitez pas que TRP3 soit votre addon MSP et ne voulez plus voir ce
 Il y a plusieurs moyens de le faire:|c0000ff00
 - Utiliser un nombre d'années,
 - Ou un adjectif (Jeune, Mature, Adulte, Vénérable, etc.).]=],
-	["REG_PLAYER_ALERT_HEAVY_SMALL"] = [=[|cffff0000La taille de votre profil est plutôt importante.
-|cffff9900Vous devriez la réduire.]=],
+	["REG_PLAYER_ALERT_HEAVY_SMALL"] = [=[|cnWARNING_FONT_COLOR:La taille de votre profil est plutôt importante.|r
+Vous devriez la réduire.]=],
 	["REG_PLAYER_BIRTHPLACE"] = "Lieu de naissance",
 	["REG_PLAYER_BIRTHPLACE_TT"] = [=[Vous pouvez indiquer ici le lieu de naissance de votre personnage. Cela peut être une région, une zone, ou même un continent. C'est à vous de décider la précision avec laquelle vous souhaitez l'indiquer.
 
 |c00ffff00Vous pouvez utiliser le bouton à droite pour régler facilement votre position actuelle comme Lieu de naissance.]=],
-	["REG_PLAYER_BKG"] = "Format d'arrière-plan",
-	["REG_PLAYER_BKG_TT"] = "Cela représente l'arrière-plan graphique à utiliser pour votre panneau Caractéristiques",
 	["REG_PLAYER_CARACT"] = "Caractéristiques",
 	["REG_PLAYER_CHANGE_CONFIRM"] = [=[Il se peut que vous ayez effectué des changements non sauvegardés.
 Voulez-vous changer de page ?
@@ -1075,8 +1073,9 @@ Chevalier, Pyrotechnicien, Nécromant, Tireur d'élite, Arcaniste ...]=],
 	["REG_PLAYER_COLOR_CLASS_TT"] = [=[Cela déterminera aussi la couleur de votre nom.
 
 ]=],
-	["REG_PLAYER_COLOR_TT"] = [=[|cffffff00Clic gauche:|r Sélectionner une couleur
-|cffffff00Clic droit:|r Effacer la couleur]=],
+	["REG_PLAYER_COLOR_TT_SELECT"] = "Sélectionner une couleur",
+	["REG_PLAYER_COLOR_TT_DISCARD"] = "Effacer la couleur]",
+	["REG_PLAYER_COLOR_TT_DEFAULTPICKER"] = "Utiliser le sélecteur de couleur par défaut",
 	["REG_PLAYER_EDIT_MUSIC_THEME"] = "Thème musical",
 	["REG_PLAYER_EYE"] = "Couleur des yeux",
 	["REG_PLAYER_EYE_TT"] = [=[Vous pouvez indiquer ici la couleur des yeux de votre personnage.
@@ -1101,13 +1100,11 @@ Cependant, vous devriez éviter les répétitions, s'il n'y a aucune information
 	["REG_PLAYER_GLANCE_BAR_SAVE"] = "Sauvegarder comme groupe",
 	["REG_PLAYER_GLANCE_BAR_SAVED"] = "Le groupe d'emplacements |cff00ff00%s|r a été supprimé.",
 	["REG_PLAYER_GLANCE_BAR_TARGET"] = "Groupe de \"Coup d’œil\"",
-	["REG_PLAYER_GLANCE_CONFIG"] = [=[|cff00ff00"Coup d'œil"|r est un ensemble d'emplacements que vous pouvez utiliser pour définir des informations importantes à propos de ce personnage.
-
-Vous pouvez utiliser ces actions sur les emplacements :
-|cffffff00Clic gauche:|r Configurer l'emplacement
-|cffffff00Clic droit:|r Charger/enregistrer un coup d'œil
-|cffffff00Double-clic:|r Activer/Désactiver l'emplacement
-|cffffff00Glisser-déposer:|r Réorganiser les emplacements]=],
+	["REG_PLAYER_GLANCE_CONFIG"] = [=[|cnGREEN_FONT_COLOR:"Coup d'œil"|r est un ensemble d'emplacements que vous pouvez utiliser pour définir des informations importantes à propos de ce personnage.]=],
+	["REG_PLAYER_GLANCE_CONFIG_EDIT"] = "Configurer l'emplacement",
+	["REG_PLAYER_GLANCE_CONFIG_TOGGLE"] = "Activer/Désactiver l'emplacement",
+	["REG_PLAYER_GLANCE_CONFIG_PRESETS"] = "Charger/enregistrer un coup d'œil",
+	["REG_PLAYER_GLANCE_CONFIG_REORDER"] = "Réorganiser les emplacements",
 	["REG_PLAYER_GLANCE_EDITOR"] = "Coup d'œil : Emplacement %s",
 	["REG_PLAYER_GLANCE_MENU_COPY"] = "Copier le coup-d'œil",
 	["REG_PLAYER_GLANCE_MENU_PASTE"] = "Coller le coup-d'œil: %s",
@@ -1135,9 +1132,9 @@ Il y a plusieurs manières de l'indiquer:|c0000ff00
 	["REG_PLAYER_HERE"] = "Obtenir la position",
 	["REG_PLAYER_HERE_HOME_PRE_TT"] = [=[Coordonnées actuelles:
 |cff00ff00%s|r.]=],
-	["REG_PLAYER_HERE_HOME_TT"] = [=[|cffffff00Clic|r: Utiliser la position actuelle comme coordonnées de résidence.
-|cffffff00Clic-droit|r: Effacer les coordonnées de la résidence.]=],
 	["REG_PLAYER_HERE_TT"] = "|cffffff00Clic|r: Obtenir votre position actuelle",
+	["REG_PLAYER_HERE_HOME_TT_CURRENT"] = "Utiliser la position actuelle comme coordonnées de résidence",
+	["REG_PLAYER_HERE_HOME_TT_DISCARD"] = "Effacer les coordonnées de la résidence",
 	["REG_PLAYER_HISTORY"] = "Histoire",
 	["REG_PLAYER_ICON"] = "Icône du personnage",
 	["REG_PLAYER_ICON_TT"] = "Sélectionne une représentation graphique pour votre personnage.",
@@ -1162,7 +1159,7 @@ Il y a plusieurs manières de l'indiquer:|c0000ff00
 	["REG_PLAYER_NAMESTITLES"] = "Noms et titres",
 	["REG_PLAYER_NO_CHAR"] = "Pas de caractéristiques",
 	["REG_PLAYER_NOTES"] = "Notes",
-	["REG_PLAYER_NOTES_ACCOUNT"] = "Notes communes",
+	["REG_PLAYER_NOTES_ACCOUNT"] = "Notes du compte",
 	["REG_PLAYER_NOTES_ACCOUNT_HELP"] = "Ces notes privées sont liées à votre compte et seront partagées avec tous vos profils.",
 	["REG_PLAYER_NOTES_PROFILE"] = "Notes de %s",
 	["REG_PLAYER_NOTES_PROFILE_HELP"] = "Ces notes privées sont liées à votre profil actuel et changeront en fonction de votre profil actuel.",
@@ -1170,49 +1167,39 @@ Il y a plusieurs manières de l'indiquer:|c0000ff00
 	["REG_PLAYER_PEEK"] = "Divers",
 	["REG_PLAYER_PHYSICAL"] = "Physique",
 	["REG_PLAYER_PSYCHO"] = "Personnalité",
-	["REG_PLAYER_PSYCHO_Acete"] = "Ascète",
+	["REG_PLAYER_PSYCHO_ASCETIC"] = "Ascète",
 	["REG_PLAYER_PSYCHO_ADD"] = "Ajouter un trait de personnalité",
 	["REG_PLAYER_PSYCHO_ATTIBUTENAME_TT"] = "Nom de l'attribut",
-	["REG_PLAYER_PSYCHO_Bonvivant"] = "Bon vivant",
+	["REG_PLAYER_PSYCHO_BONVIVANT"] = "Bon vivant",
 	["REG_PLAYER_PSYCHO_CHAOTIC"] = "Chaotique",
-	["REG_PLAYER_PSYCHO_Chaste"] = "Chaste",
-	["REG_PLAYER_PSYCHO_Conciliant"] = "Parangon",
-	["REG_PLAYER_PSYCHO_Couard"] = "Couard",
+	["REG_PLAYER_PSYCHO_CHASTE"] = "Chaste",
+	["REG_PLAYER_PSYCHO_PARAGON"] = "Parangon",
+	["REG_PLAYER_PSYCHO_SPINELESS"] = "Couard",
 	["REG_PLAYER_PSYCHO_CREATENEW"] = "Créer un trait",
-	["REG_PLAYER_PSYCHO_Cruel"] = "Brutal",
+	["REG_PLAYER_PSYCHO_BRUTAL"] = "Brutal",
 	["REG_PLAYER_PSYCHO_CUSTOM"] = "Trait personnalisé",
 	["REG_PLAYER_PSYCHO_CUSTOMCOLOR"] = "Choisir une couleur pour l'attribut",
-	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT"] = [=[Choisir une couleur à utiliser pour la barre de l'attribut de gauche.
-
-|cffffff00Clic:|r Chosir une couleur
-|cffffff00Clic droit:|r Supprimer la couleur
-|cffffff00Maj-Clic:|r Utiliser le sélecteur de couleur du jeu]=],
-	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT"] = [=[Choisir une couleur à utiliser pour la barre de l'attribut de droite.
-
-|cffffff00Clic:|r Chosir une couleur
-|cffffff00Clic droit:|r Supprimer la couleur
-|cffffff00Maj-Clic:|r Utiliser le sélecteur de couleur du jeu]=],
-	["REG_PLAYER_PSYCHO_Egoiste"] = "Egoïste",
-	["REG_PLAYER_PSYCHO_Genereux"] = "Altruiste",
-	["REG_PLAYER_PSYCHO_Impulsif"] = "Impulsif",
-	["REG_PLAYER_PSYCHO_Indulgent"] = "Indulgent",
+	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT"] = "Choisir une couleur à utiliser pour la barre de l'attribut de gauche.",
+	["REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT"] = "Choisir une couleur à utiliser pour la barre de l'attribut de droite.",
+	["REG_PLAYER_PSYCHO_SELFISH"] = "Egoïste",
+	["REG_PLAYER_PSYCHO_ALTRUISTIC"] = "Altruiste",
+	["REG_PLAYER_PSYCHO_IMPULSIVE"] = "Impulsif",
+	["REG_PLAYER_PSYCHO_FORGIVING"] = "Indulgent",
 	["REG_PLAYER_PSYCHO_LEFTICON_TT"] = "Régler l'icône d'attribut de gauche",
-	["REG_PLAYER_PSYCHO_Loyal"] = "Loyal",
-	["REG_PLAYER_PSYCHO_Luxurieux"] = "Luxurieux",
-	["REG_PLAYER_PSYCHO_Misericordieux"] = "Miséricordieux",
-	["REG_PLAYER_PSYCHO_MORE"] = "Ajouter un point à \"%s\"",
+	["REG_PLAYER_PSYCHO_LAWFUL"] = "Loyal",
+	["REG_PLAYER_PSYCHO_LUSTFUL"] = "Luxurieux",
+	["REG_PLAYER_PSYCHO_GENTLE"] = "Miséricordieux",
 	["REG_PLAYER_PSYCHO_PERSONAL"] = "Traits personnels",
-	["REG_PLAYER_PSYCHO_Pieux"] = "Pieux",
-	["REG_PLAYER_PSYCHO_POINT"] = "Ajouter un point",
-	["REG_PLAYER_PSYCHO_Pragmatique"] = "Pragmatique",
-	["REG_PLAYER_PSYCHO_Rationnel"] = "Rationnel",
-	["REG_PLAYER_PSYCHO_Reflechi"] = "Réfléchi",
-	["REG_PLAYER_PSYCHO_Rencunier"] = "Rancunier",
+	["REG_PLAYER_PSYCHO_SUPERSTITIOUS"] = "Pieux",
+	["REG_PLAYER_PSYCHO_RENEGADE"] = "Pragmatique",
+	["REG_PLAYER_PSYCHO_RATIONAL"] = "Rationnel",
+	["REG_PLAYER_PSYCHO_CAUTIOUS"] = "Réfléchi",
+	["REG_PLAYER_PSYCHO_VINDICTIVE"] = "Rancunier",
 	["REG_PLAYER_PSYCHO_RIGHTICON_TT"] = "Régler l'icône de l'attribut de droite.",
-	["REG_PLAYER_PSYCHO_Sincere"] = "Sincère",
+	["REG_PLAYER_PSYCHO_TRUTHFUL"] = "Sincère",
 	["REG_PLAYER_PSYCHO_SOCIAL"] = "Traits sociaux",
-	["REG_PLAYER_PSYCHO_Trompeur"] = "Trompeur",
-	["REG_PLAYER_PSYCHO_Valeureux"] = "Valeureux",
+	["REG_PLAYER_PSYCHO_DECEITFUL"] = "Trompeur",
+	["REG_PLAYER_PSYCHO_VALOROUS"] = "Valeureux",
 	["REG_PLAYER_RACE"] = "Race",
 	["REG_PLAYER_RACE_TT"] = "Il s'agit de la race de votre personnage. Il n'est pas nécessaire de se restreindre aux races jouables. Il y a de nombreuses races de Warcraft qui peuvent posséder des formes communes ...",
 	["REG_PLAYER_REGISTER"] = "Informations du registre",
@@ -1226,9 +1213,7 @@ Il y a plusieurs manières de l'indiquer:|c0000ff00
 	["REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED"] = "Veuf/Veuve",
 	["REG_PLAYER_RESIDENCE"] = "Lieu de résidence",
 	["REG_PLAYER_RESIDENCE_SHOW"] = "Coordonnées de résidence",
-	["REG_PLAYER_RESIDENCE_SHOW_TT"] = [=[|cff00ff00%s
-
-|rClic pour afficher sur la carte]=],
+	["REG_PLAYER_RESIDENCE_SHOW_TT"] = "Afficher sur la carte",
 	["REG_PLAYER_RESIDENCE_TT"] = [=[Vous pouvez indiquer ici où votre personnage vit en temps normal. Il peut s'agir de son adresse personnelle (sa maison) ou un endroit où il séjourne.
 Notez que si votre personnage est un voyageur ou encore un sans-domicile, vous devrez changer l'information en accord avec cela.
 
@@ -1281,17 +1266,11 @@ Le modèle choisi définit |cffffff00le format général et les possibilités d'
 Une fois qu'un modèle est choisi, vous pouvez rouvrir ce tutoriel pour avoir plus d'aide à propos de chaque modèle.]=],
 	["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[Cette section vous fournit des |cnGREEN_FONT_COLOR:5 emplacements|r dans lesquels vous pouvez décrire |cnGREEN_FONT_COLOR:les informations les plus importantes à propos de votre personnage|r.
 
-Ces informations seront visibles sur la |cnGREEN_FONT_COLOR:barre "Coup d'œil"|r lorsque quelqu'un sélectionne votre personnage.
-
-|cff00ff00Astuce: Vous pouvez glisser et déposer les emplacements pour les réorganiser.|r
-Cela marche aussi sur la |cnGREEN_FONT_COLOR:barre "Coup d'œil"|r!]=],
+Ces informations seront visibles sur la |cnGREEN_FONT_COLOR:barre "Coup d'œil"|r lorsque quelqu'un sélectionne votre personnage.]=],
 	["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "Cette section fournit |cnGREEN_FONT_COLOR:une liste d'indicateurs|r pour répondre à beaucoup de |cnGREEN_FONT_COLOR:questions usuelles que les joueurs peuvent vous demander|r à propos de vous, votre personnage, et la manière dont vous souhaitez les jouer.",
 	["REG_PLAYER_TUTO_ABOUT_T1"] = [=[Ce modèle vous permet de |cff00ff00structurer librement votre description|r.
 
-La description n'a pas besoin d'être limitée uniquement à la |cffff9900description physique|r de votre personnage. N'hésitez pas à indiquer des parties de son |cffff9900histoire|r ou des détails sur sa |cffff9900personnalité|r.
-
-Avec ce modèle vous pouvez aussi utiliser les outils de formatage pour accéder à plusieurs paramètres de mise en page tels que |cffffff00les tailles de texte, les couleurs, ou les alignements|r.
-Ces outils vous permettent aussi d'insérer |cffffff00des images, des icônes ou des liens vers des sites web externes|r.]=],
+La description n'a pas besoin d'être limitée uniquement à la |cffff9900description physique|r de votre personnage. N'hésitez pas à indiquer des parties de son |cffff9900histoire|r ou des détails sur sa |cffff9900personnalité|r.]=],
 	["REG_PLAYER_TUTO_ABOUT_T2"] = [=[Ce modèle est plus structuré et consiste en |cff00ff00une liste de cadres indépendants|r.
 
 Chaque cadre est caractérisé par une |cffffff00icône, un arrière-plan et un texte|r. Notez que vous pouvez utiliser quelques balises de texte dans ces cadres, comme celles de couleur, ou d'icônes.
@@ -1302,6 +1281,7 @@ La description n'a pas besoin d'être limitée uniquement à la |cffff9900descri
 Vous n'avez pas à remplir tous les cadres, |cffff9900Si vous laissez un cadre vide, il ne sera pas affiché sur votre description|r.
 
 Chaque cadre est caractérisé par une |cffffff00icône, un arrière-plan et un texte|r. Notez que vous pouvez utiliser quelques balises de texte dans ces cadres, comme celles de couleur, ou d'icônes.]=],
+	["REG_PLAYER_TUTO_FORMATTING_TOOLS"] = "Les outils de formatage vous donnent accès à |cnGREEN_FONT_COLOR:plusieurs paramètres de mise en page|r (les tailles de texte, les couleurs, ou les alignements). Vous pouvez aussi |cnGREEN_FONT_COLOR:d'insérer des images, des icônes ou des liens vers des sites web externes|r.",
 	["REG_PLAYER_WEIGHT"] = "Stature",
 	["REG_PLAYER_WEIGHT_TT"] = [=[Il s'agit de la stature de votre personnage.
 Il pourrait par exemple être |c0000ff00mince, gros ou musclé...|r Ou tout simplement être dans la norme !]=],
@@ -1311,10 +1291,8 @@ Il pourrait par exemple être |c0000ff00mince, gros ou musclé...|r Ou tout simp
 	["REG_RELATION"] = "Relation",
 	["REG_RELATION_BUSINESS"] = "Commerce",
 	["REG_RELATION_BUSINESS_TT"] = "%s et %s sont dans une relation d'affaires.",
-	["REG_RELATION_BUTTON_TT"] = [=[Relation: %s
-|cff00ff00%s
-
-|cffffff00Cliquer pour afficher les actions possibles]=],
+	["REG_RELATION_BUTTON_TT"] = "|cnGREEN_FONT_COLOR:Relation: %s|r|n%s",
+	["REG_RELATION_BUTTON_TT_ACTIONS"] = "Afficher les actions possibles",
 	["REG_RELATION_FAMILY"] = "Famille",
 	["REG_RELATION_FAMILY_TT"] = "%s partage des liens du sang avec %s.",
 	["REG_RELATION_FRIEND"] = "Amical",
@@ -1335,7 +1313,7 @@ Si vous souhaitez signaler le profil de %s comme enfreignant le Code de Conduite
 	["REG_REPORT_PLAYER_PROFILE"] = "Signaler ce profil à |cff449fe0Blizzard|r",
 	["REG_REPORT_PLAYER_PROFILE_TT"] = [=[Vous pouvez signaler un profil qui enfreint les conditions d'utilisation de Blizzard. Cela inclut le harcèlement, partage de données privées, incitation à la haine, contenu obscène ou autre forme de contenu perturbant.
 
-|cffff0000Veuillez noter que cette fonctionnalité n'est PAS pour signaler des profils RP qui vous semblent de faible qualité ou pour chercher à nuire à un joueur. Tout abus de cette fonctionnalité pourrait entraîner des sanctions.]=],
+|cnWARNING_FONT_COLOR:Veuillez noter que cette fonctionnalité n'est PAS pour signaler des profils RP qui vous semblent de faible qualité ou pour chercher à nuire à un joueur. Tout abus de cette fonctionnalité pourrait entraîner des sanctions.]=],
 	["REG_REPORT_PLAYER_TEMPLATE"] = "Ce joueur utilise l'addon RP %s pour partager du contenu allant à l'encontre du Code de Conduite.",
 	["REG_REPORT_PLAYER_TEMPLATE_DATE"] = "Les données de l'addon ont été transférées via messages loggés le %s.",
 	["REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT"] = "Ce joueur utilisait un compte d'essai.",
@@ -1498,7 +1476,7 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 	["UI_PET_BROWSER_INTRO_TEXT"] = "Sélectionnez un familier avec les boutons ci-dessous et cliquez |cffffff00Assigner|r pour le lier au profil.",
 	["UI_PET_BROWSER_NAME_WARNING"] = "|cffff0000Attention:|r Ce familier n'a pas été renommé. Il est recommandé de renommer le familier pour éviter d'afficher ce profil sur les autres familiers que vous possédez partageant le même nom.",
 	["UI_TUTO_BUTTON"] = "Mode tutoriel",
-	["UI_TUTO_BUTTON_TT"] = "Cliquer pour afficher ou masquer le mode tutoriel",
+	["UI_TUTO_BUTTON_TT"] = "Afficher ou masquer le mode tutoriel",
 	["UNIT_POPUPS_CHARACTER_STATUS"] = "Statut de personnage",
 	["UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT"] = "Désactiver les éléments de menu en combat",
 	["UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT_HELP"] = "Si coché, les éléments de menu additionnels ne seront pas affichés en combat.",

@@ -24,18 +24,19 @@ local function displayNotes(context)
 	local profileID = context.profileID;
 	if context.isPlayer then
 		profileID = getPlayerCurrentProfileID();
+		TRP3_RegisterNotesViewContainer.Notice:Hide();
 		TRP3_RegisterNotesViewAccount:Hide();
 		TRP3_RegisterNotesViewProfile:SetPoint("BOTTOM", TRP3_RegisterNotesView, "BOTTOM", 0, 10);
+		TRP3_RegisterNotesViewProfile:SetPoint("TOP", 0, -25);
 	else
-		TRP3_RegisterNotesViewProfile:SetPoint("BOTTOM", TRP3_RegisterNotesViewPoint, "TOP", 0, 5);
+		TRP3_RegisterNotesViewContainer.Notice:Show();
+		TRP3_RegisterNotesViewProfile:SetPoint("BOTTOM", TRP3_RegisterNotesViewContainer, "CENTER", 0, -8);
+		TRP3_RegisterNotesViewProfile:SetPoint("TOP", 0, -45);
 		TRP3_RegisterNotesViewAccount:Show();
 	end
 
-	local currentName = GetCurrentUser():GetRoleplayingName();
-	local profileNotesTitle = loc.REG_PLAYER_NOTES_PROFILE_NONAME;
-	if currentName then
-		profileNotesTitle = string.format(loc.REG_PLAYER_NOTES_PROFILE, currentName);
-	end
+	local currentProfile = GetCurrentUser():GetProfileName();
+	local profileNotesTitle = string.format(loc.REG_PLAYER_NOTES_PROFILE, currentProfile);
 	TRP3_RegisterNotesViewProfile.Title:SetText(profileNotesTitle);
 
 	assert(profileID, "No profileID in context !");
@@ -88,6 +89,7 @@ function TRP3_API.register.inits.notesInit()
 	end
 
 	TRP3_RegisterNotesViewContainer:SetTitleText(loc.REG_PLAYER_NOTES);
+	TRP3_RegisterNotesViewContainer.Notice:SetText(string.format(loc.REG_PLAYER_NOTES_NOTICE, "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:16:16|t"));
 
 	TRP3_RegisterNotesViewAccount.Title:SetText(loc.REG_PLAYER_NOTES_ACCOUNT);
 

@@ -51,10 +51,6 @@ Total RP 3 is also a **fully modular** add-on. You choose exactly which features
 
 This awesome module brings the new creation system. Create items, readable documents, campaigns with quests, customized NPCs and dialogs, loots. Use the inventory system to show items you are wearing and inspect other players' inventory. Create stashes that other players will be able to inspect. Trade items with other players safely thanks to our security level system that allows you to define authorizations per item and be sure you won't suddenly shout weird stuff because of a cursed item!
 
-### [TRP3 Currently Frame](https://www.curseforge.com/wow/addons/trp3-currently-frame), by tammymg
-
-Adds a standalone frame to your UI that displays your "Currently" text and allows you to edit it easily.
-
 ### [TRP3 Location Toggle](https://www.curseforge.com/wow/addons/trp3-location-toggle), by iMintty_
 
 Adds a simple button to the toolbar to toggle on and off the map scan location feature.

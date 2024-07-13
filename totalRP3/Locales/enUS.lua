@@ -15,7 +15,7 @@ L = {
 	-- REGISTER
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	REG_PLAYER = "Character",
-	REG_PLAYER_CHANGE_CONFIRM = "You may have unsaved data changes.\nDo you want to change page anyway?\n|cffff9900Any changes will be lost.",
+	REG_PLAYER_CHANGE_CONFIRM = "You may have unsaved data changes.|nDo you want to change the page anyway?|n|cnWARNING_FONT_COLOR:All changes will be lost.|r",
 	REG_PLAYER_CARACT = "Characteristics",
 	REG_PLAYER_NAMESTITLES = "Names and titles",
 	REG_PLAYER_CHARACTERISTICS = "Characteristics",
@@ -23,42 +23,42 @@ L = {
 	REG_PLAYER_ICON = "Character icon",
 	REG_PLAYER_ICON_TT = "Choose an icon that represents your character.",
 	REG_PLAYER_TITLE = "Title",
-	REG_PLAYER_TITLE_TT = "Your character's title is the title by which your character is usually called. Avoid long titles, as for those you should use the Full title attribute below.\n\nExample of |c0000ff00appropriate titles|r:\n|c0000ff00- Countess,\n- Marquis,\n- Magus,\n- Lord,\n- etc.\n|rExample of |cffff0000inappropriate titles|r:\n|cffff0000- Countess of the North Marshes,\n- Magus of the Stormwind Tower,\n- Diplomat for the Draenei Government,\n- etc.",
+	REG_PLAYER_TITLE_TT = "Your character's title is the title by which your character is usually referred to. Avoid long titles, for which you should use the Full title attribute below.|n|nExample of |cnGREEN_FONT_COLOR:appropriate titles|r:|n|cnGREEN_FONT_COLOR:- Countess,|n- Marquis,|n- Magus,|n- Lord,|r|n- etc.|nExample of |cnWARNING_FONT_COLOR:inappropriate titles|r:|n|cnWARNING_FONT_COLOR:- Countess of the North Marshes,|n- Magus of the Stormwind Tower,|n- Diplomat for the Draenei Government,|r|n- etc.",
 	REG_PLAYER_FIRSTNAME = "First name",
-	REG_PLAYER_FIRSTNAME_TT = "This is your character's first name. This is a mandatory field, so if you don't specify a name, the default character's name (|cffffff00%s|r) will be used.\n\nYou can use a |c0000ff00nickname|r!",
+	REG_PLAYER_FIRSTNAME_TT = "Your character's first name. This is a mandatory field, so if you don't enter a name, your character's default name (|cnGREEN_FONT_COLOR:%s|r) will be used.|n|nYou can use a |cnGREEN_FONT_COLOR:nickname|r!",
 	REG_PLAYER_LASTNAME = "Last name",
-	REG_PLAYER_LASTNAME_TT = "This is your character's family name.",
+	REG_PLAYER_LASTNAME_TT = "Your character's last name.",
 	REG_PLAYER_HERE = "Set position",
-	REG_PLAYER_HERE_TT = "|cffffff00Click|r: Set to your current position",
-	REG_PLAYER_HERE_HOME_TT = "|cffffff00Click|r: Use your current coordinates as your house position.\n|cffffff00Right-click|r: Discard your house position.",
-	REG_PLAYER_HERE_HOME_PRE_TT = "Current house map coordinates:\n|cff00ff00%s|r.",
+	REG_PLAYER_HERE_TT = "Set to your current position",
+	REG_PLAYER_HERE_HOME_TT_CURRENT = "Use your current coordinates as your house position",
+	REG_PLAYER_HERE_HOME_TT_DISCARD = "Discard your house position",
+	REG_PLAYER_HERE_HOME_PRE_TT = "Current house map coordinates:|n|cnGREEN_FONT_COLOR:%s|r.",
 	REG_PLAYER_RESIDENCE_SHOW = "Residence coordinates",
-	REG_PLAYER_RESIDENCE_SHOW_TT = "|cff00ff00%s\n\n|rClick to show on map",
+	REG_PLAYER_RESIDENCE_SHOW_TT = "Show on map",
 	REG_PLAYER_COLOR_CLASS = "Class color",
-	REG_PLAYER_COLOR_CLASS_TT = "This will also determine the name color.\n\n",
-	REG_PLAYER_COLOR_TT = "|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color\n|cffffff00Shift-Click:|r Use the default color picker",
-	REG_PLAYER_COLOR_ALWAYS_DEFAULT_TT = "|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color",
+	REG_PLAYER_COLOR_CLASS_TT = "Your character's class color. This also determines the color of your character's name.",
+	REG_PLAYER_COLOR_TT_SELECT = "Select a color",
+	REG_PLAYER_COLOR_TT_DISCARD = "Discard color",
+	REG_PLAYER_COLOR_TT_DEFAULTPICKER = "Use the default color picker",
 	REG_PLAYER_FULLTITLE = "Full title",
-	REG_PLAYER_FULLTITLE_TT = "Here you can write down your character's full title. It can either be a longer version of the Title or another title entirely.\n\nHowever, you may want to avoid repetitions, in case there's no additional info to mention.",
+	REG_PLAYER_FULLTITLE_TT = "Your character's full title. This can either be a longer version of your |cnGREEN_FONT_COLOR:Title|r or a different title altogether.|n|nHowever, you may want to avoid repetition if there's no additional information to mention.",
 	REG_PLAYER_RACE = "Race",
-	REG_PLAYER_RACE_TT = "Here goes your character's race. It doesn't have to be restricted to playable races. There are many Warcraft races that can assume common shapes...",
-	REG_PLAYER_BKG = "Background layout",
-	REG_PLAYER_BKG_TT = "This represents the graphical background to use for your Characteristics layout.",
+	REG_PLAYER_RACE_TT = "Your character's race. You do not have to limit yourself to the playable races.|n|nFor example:|cnGREEN_FONT_COLOR:|n- Dragon|n- Half-Elf|n- Human|n- Orc|r|n- etc.",
 	REG_PLAYER_CLASS = "Class",
-	REG_PLAYER_CLASS_TT = "This is your character's custom class.\n\n|cff00ff00For instance :|r\nKnight, Pyrotechnist, Necromancer, Elite shooter, Arcanist...",
+	REG_PLAYER_CLASS_TT = "Your character's (custom) class.|n|nFor example:|cnGREEN_FONT_COLOR:|n- Knight|n- Pyrotechnist|n- Necromancer|n- Elite marksman|n- Arcanist|r|n- etc.",
 	REG_PLAYER_AGE = "Age",
-	REG_PLAYER_AGE_TT = "Here you can indicate how old your character is.\n\nThere are several ways to do this:|c0000ff00\n- Either use years,\n- Or an adjective (Young, Mature, Adult, Venerable, etc.).",
+	REG_PLAYER_AGE_TT = "Your character's current age.|n|nFor example:|cnGREEN_FONT_COLOR:|n- Years: 25, 32|n- Adjective: Young, mature, adult, venerable, etc.|r",
 	REG_PLAYER_EYE = "Eye color",
-	REG_PLAYER_EYE_TT = "Here you can indicate the color of your character's eyes.\n\nKeep in mind that, even if your character's face is constantly hidden, that might still be worth mentioning, just in case.",
+	REG_PLAYER_EYE_TT = "Your character's eye color.|n|nEven if your character's face is always hidden, this might be worth mentioning just in case.",
 	REG_PLAYER_HEIGHT = "Height",
-	REG_PLAYER_HEIGHT_TT = "This is your character's height.\nThere are several ways to do this:|c0000ff00\n- A precise number: 170 cm, 6'5\"...\n- A qualificative: Tall, short...",
+	REG_PLAYER_HEIGHT_TT = "Your character's height.|n|nFor example:|cnGREEN_FONT_COLOR:|n- An exact number: 170 cm, 6'5\"|n- A qualifier: Tall, short|r|n- etc.",
 	REG_PLAYER_WALKUP_TT = "This player is okay with other players walking up to them.",
 	REG_PLAYER_WEIGHT = "Body shape",
-	REG_PLAYER_WEIGHT_TT = "This is your character's body shape.\nFor instance they could be |c0000ff00slim, fat or muscular...|r Or they could simply be regular!",
+	REG_PLAYER_WEIGHT_TT = "Your character's body type.|n|nFor example:|cnGREEN_FONT_COLOR:|n- Regular|n- Slim|n- Fat|n- Muscular|r|n- etc.",
 	REG_PLAYER_BIRTHPLACE = "Birthplace",
-	REG_PLAYER_BIRTHPLACE_TT = "Here you can indicate the birthplace of your character. This can either be a region, a zone, or even a continent. It's for you to decide how accurate you want to be.\n\n|c00ffff00You can use the button to the right to easily set your current location as Birthplace.",
+	REG_PLAYER_BIRTHPLACE_TT = "Your character's birthplace. This can be a region, a zone, or even a continent. It's up to you how accurate you want to be.|n|n|cnGREEN_FONT_COLOR:You can use the button to the right to easily set your current location as your Birthplace.|r",
 	REG_PLAYER_RESIDENCE = "Residence",
-	REG_PLAYER_RESIDENCE_TT = "Here you can indicate where your character normally lives. This could be their personal address (their home) or a place they can crash.\nNote that if your character is a wanderer or even homeless, you will need to change the information accordingly.\n\n|c00ffff00You can use the button to the right to easily set your current location as Residence.",
+	REG_PLAYER_RESIDENCE_TT = "Your character's current residence. This can be their personal address (their home) or a place where they can crash.|n|nNote that if your character is a wanderer or even homeless, you will need to change this information accordingly.|n|n|cnGREEN_FONT_COLOR:You can use the button to the right to easily set your current location as your Residence.|r",
 	REG_PLAYER_MSP_MOTTO = "Motto",
 	REG_PLAYER_MSP_HOUSE = "House name",
 	REG_PLAYER_MSP_NICK = "Nickname",
@@ -74,53 +74,51 @@ L = {
 	REG_PLAYER_SHOWPSYCHO = "Show personality frame",
 	REG_PLAYER_SHOWPSYCHO_TT = "Check if you want to use the personality description.\n\nIf you don't want to indicate your character's personality this way, keep this box unchecked and the personality frame will remain totally hidden.",
 	REG_PLAYER_PSYCHO_ADD = "Add a personality trait",
-	REG_PLAYER_PSYCHO_POINT = "Add a point",
-	REG_PLAYER_PSYCHO_MORE = "Add a point to \"%s\"",
 	REG_PLAYER_PSYCHO_ATTIBUTENAME_TT = "Attribute name",
 	REG_PLAYER_PSYCHO_RIGHTICON_TT = "Set the right attribute icon.",
 	REG_PLAYER_PSYCHO_LEFTICON_TT = "Set the left attribute icon.",
 	REG_PLAYER_PSYCHO_SOCIAL = "Social traits",
 	REG_PLAYER_PSYCHO_PERSONAL = "Personal traits",
 	REG_PLAYER_PSYCHO_CHAOTIC = "Chaotic";
-	REG_PLAYER_PSYCHO_Loyal = "Lawful";
-	REG_PLAYER_PSYCHO_Chaste = "Chaste";
-	REG_PLAYER_PSYCHO_Luxurieux = "Lustful";
-	REG_PLAYER_PSYCHO_Indulgent = "Forgiving";
-	REG_PLAYER_PSYCHO_Rencunier = "Vindictive";
-	REG_PLAYER_PSYCHO_Genereux = "Altruistic";
-	REG_PLAYER_PSYCHO_Egoiste = "Selfish";
-	REG_PLAYER_PSYCHO_Sincere = "Truthful";
-	REG_PLAYER_PSYCHO_Trompeur = "Deceitful";
-	REG_PLAYER_PSYCHO_Misericordieux = "Gentle";
-	REG_PLAYER_PSYCHO_Cruel = "Brutal";
-	REG_PLAYER_PSYCHO_Pieux = "Superstitious";
-	REG_PLAYER_PSYCHO_Pragmatique = "Renegade";
-	REG_PLAYER_PSYCHO_Conciliant = "Paragon";
-	REG_PLAYER_PSYCHO_Rationnel = "Rational";
-	REG_PLAYER_PSYCHO_Reflechi = "Cautious";
-	REG_PLAYER_PSYCHO_Impulsif = "Impulsive";
-	REG_PLAYER_PSYCHO_Acete = "Ascetic";
-	REG_PLAYER_PSYCHO_Bonvivant = "Bon vivant";
-	REG_PLAYER_PSYCHO_Valeureux = "Valorous";
-	REG_PLAYER_PSYCHO_Couard = "Spineless";
+	REG_PLAYER_PSYCHO_LAWFUL = "Lawful";
+	REG_PLAYER_PSYCHO_CHASTE = "Chaste";
+	REG_PLAYER_PSYCHO_LUSTFUL = "Lustful";
+	REG_PLAYER_PSYCHO_FORGIVING = "Forgiving";
+	REG_PLAYER_PSYCHO_VINDICTIVE = "Vindictive";
+	REG_PLAYER_PSYCHO_ALTRUISTIC = "Altruistic";
+	REG_PLAYER_PSYCHO_SELFISH = "Selfish";
+	REG_PLAYER_PSYCHO_TRUTHFUL = "Truthful";
+	REG_PLAYER_PSYCHO_DECEITFUL = "Deceitful";
+	REG_PLAYER_PSYCHO_GENTLE = "Gentle";
+	REG_PLAYER_PSYCHO_BRUTAL = "Brutal";
+	REG_PLAYER_PSYCHO_SUPERSTITIOUS = "Superstitious";
+	REG_PLAYER_PSYCHO_RENEGADE = "Renegade";
+	REG_PLAYER_PSYCHO_PARAGON = "Paragon";
+	REG_PLAYER_PSYCHO_RATIONAL = "Rational";
+	REG_PLAYER_PSYCHO_CAUTIOUS = "Cautious";
+	REG_PLAYER_PSYCHO_IMPULSIVE = "Impulsive";
+	REG_PLAYER_PSYCHO_ASCETIC = "Ascetic";
+	REG_PLAYER_PSYCHO_BONVIVANT = "Bon vivant";
+	REG_PLAYER_PSYCHO_VALOROUS = "Valorous";
+	REG_PLAYER_PSYCHO_SPINELESS = "Spineless";
 	REG_PLAYER_PSYCHO_CUSTOM = "Custom trait",
 	REG_PLAYER_PSYCHO_CREATENEW = "Create a trait",
 	REG_PLAYER_PSYCHO_CUSTOMCOLOR = "Select attribute color",
-	REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT = "Select a color used by the bar for the left attribute.\n\n|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color\n|cffffff00Shift-Click:|r Use the default color picker",
-	REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT = "Select a color used by the bar for the right attribute.\n\n|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color\n|cffffff00Shift-Click:|r Use the default color picker",
+	REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT = "Color of the left attribute bar.",
+	REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT = "Color of the right attribute bar.",
 	REG_PLAYER_LEFTTRAIT = "Left attribute",
 	REG_PLAYER_RIGHTTRAIT = "Right attribute",
-	REG_DELETE_WARNING = "Are you sure you want to delete %s's profile?\n",
+	REG_DELETE_WARNING = "Are you sure you want to delete %s's profile?",
 	REG_IGNORE_TOAST = "Character ignored",
 	REG_PLAYER_IGNORE = "Ignore linked characters (%s)",
-	REG_PLAYER_IGNORE_WARNING = "Do you want to ignore those characters?\n\n|cffff9900%s\n\n|rYou can optionally enter the reason below. This is a personal note that will serve as reminder.",
+	REG_PLAYER_IGNORE_WARNING = "Do you want to ignore this character?|n|n|cnWARNING_FONT_COLOR:%s|n|n|rYou can optionally enter the reason below. This is a personal note that serves as a reminder.",
 	REG_PLAYER_SHOWMISC = "Show miscellaneous frame",
 	REG_PLAYER_SHOWMISC_TT = "Check if you want to show custom fields for your character.\n\nIf you don't want to show custom fields, keep this box unchecked and the miscellaneous frame will remain totally hidden.",
 	REG_PLAYER_MISC_ADD = "Add an additional field",
 	REG_PLAYER_ABOUT = "About",
 	REG_PLAYER_ABOUTS = "About %s",
-	REG_PLAYER_ABOUT_NOMUSIC = "|cffff9900No theme",
-	REG_PLAYER_ABOUT_UNMUSIC = "|cffff9900Unknown theme",
+	REG_PLAYER_ABOUT_NOMUSIC = "|cnWARNING_FONT_COLOR:No theme",
+	REG_PLAYER_ABOUT_UNMUSIC = "|cnWARNING_FONT_COLOR:Unknown theme",
 	REG_PLAYER_ABOUT_MUSIC_SELECT = "Select character theme",
 	REG_PLAYER_ABOUT_MUSIC_REMOVE = "Unselect theme",
 	REG_PLAYER_ABOUT_MUSIC_LISTEN = "Play theme",
@@ -134,8 +132,8 @@ L = {
 	REG_PLAYER_ABOUT_TAGS = "Formatting tools",
 	REG_PLAYER_ABOUT_SOME = "Some text...",
 	REG_PLAYER_ABOUT_EMPTY = "No description",
-	REG_PLAYER_REORDER = "Reorder fields",
-	REG_PLAYER_REORDER_TT = "Reorder these fields by dragging up and down.",
+	REG_PLAYER_REORDER = "Reorder",
+	REG_PLAYER_REORDER_TT = "Reorder this field.",
 	REG_PLAYER_STYLE_RPSTYLE = "Roleplay style",
 	REG_PLAYER_STYLE_HIDE = "Do not show",
 	REG_PLAYER_STYLE_PERMI = "With player permission",
@@ -154,7 +152,7 @@ L = {
 	REG_PLAYER_STYLE_GUILD_TT = "Indicates the |cnGREEN_FONT_COLOR:roleplay status of your membership within your guild.|r",
 	REG_PLAYER_STYLE_GUILD_IC = "IC membership",
 	REG_PLAYER_STYLE_GUILD_OOC = "OOC membership",
-	REG_PLAYER_ALERT_HEAVY_SMALL = "|cffff0000The total size of your profile is quite big.\n|cffff9900You should reduce it.",
+	REG_PLAYER_ALERT_HEAVY_SMALL = "|cnWARNING_FONT_COLOR:The total size of your profile is quite big.|r|nYou should reduce it.",
 	CO_GENERAL_HEAVY = "Heavy profile alert",
 	CO_GENERAL_HEAVY_TT = "Get an alert when your profile total size exceed a reasonable value.",
 	REG_PLAYER_PEEK = "Miscellaneous",
@@ -162,7 +160,7 @@ L = {
 	REG_PLAYER_GLANCE_USE = "Activate this slot",
 	REG_PLAYER_GLANCE_TITLE = "Attribute name",
 	REG_PLAYER_GLANCE_UNUSED = "Unused slot",
-	REG_PLAYER_GLANCE_CONFIG = "|cff00ff00\"At first glance\"|r is a set of slots you can use to define important information about this character.",
+	REG_PLAYER_GLANCE_CONFIG = "These slots can be used to define important yet concise information for the current profile.",
 	REG_PLAYER_GLANCE_CONFIG_EDIT = "Configure glance slot",
 	REG_PLAYER_GLANCE_CONFIG_TOGGLE = "Toggle glance slot",
 	REG_PLAYER_GLANCE_CONFIG_PRESETS = "Glance preset menu",
@@ -173,9 +171,9 @@ L = {
 	REG_PLAYER_GLANCE_BAR_SAVE = "Save group as a preset",
 	REG_PLAYER_GLANCE_BAR_LOAD = "Group preset",
 	REG_PLAYER_GLANCE_BAR_EMPTY = "The preset name can't be empty.",
-	REG_PLAYER_GLANCE_BAR_NAME = "Please enter the preset name.\n\n|cff00ff00Note: If the name is already used by another group preset, this other group will be replaced.",
-	REG_PLAYER_GLANCE_BAR_SAVED = "Group preset |cff00ff00%s|r has been created.",
-	REG_PLAYER_GLANCE_BAR_DELETED = "Group preset |cffff9900%s|r deleted.",
+	REG_PLAYER_GLANCE_BAR_NAME = "Please enter the preset name.|n|n|cnGREEN_FONT_COLOR:Note: If the name is already used by another group preset, this other group will be replaced.|r",
+	REG_PLAYER_GLANCE_BAR_SAVED = "Group preset |cnGREEN_FONT_COLOR:%s|r has been created.",
+	REG_PLAYER_GLANCE_BAR_DELETED = "Group preset |cnRED_FONT_COLOR:%s|r deleted.",
 	REG_PLAYER_GLANCE_PRESET = "Load a preset",
 	REG_PLAYER_GLANCE_PRESET_SELECT = "Select a preset",
 	REG_PLAYER_GLANCE_PRESET_SAVE = "Save information as a preset",
@@ -183,48 +181,42 @@ L = {
 	REG_PLAYER_GLANCE_PRESET_CATEGORY = "Preset category",
 	REG_PLAYER_GLANCE_PRESET_NAME = "Preset name",
 	REG_PLAYER_GLANCE_PRESET_CREATE = "Create preset",
-	REG_PLAYER_GLANCE_PRESET_REMOVE = "Removed preset |cff00ff00%s|r.";
-	REG_PLAYER_GLANCE_PRESET_ADD = "Created preset |cff00ff00%s|r.";
+	REG_PLAYER_GLANCE_PRESET_REMOVE = "Removed preset |cnGREEN_FONT_COLOR:%s|r.";
+	REG_PLAYER_GLANCE_PRESET_ADD = "Created preset |cnGREEN_FONT_COLOR:%s|r.";
 	REG_PLAYER_GLANCE_PRESET_ALERT1 = "You must enter a preset category.",
-	REG_PLAYER_GLANCE_PRESET_GET_CAT = "%s\n\nPlease enter the category name for this preset.",
+	REG_PLAYER_GLANCE_PRESET_GET_CAT = "%s|n|nPlease enter the category name for this preset.",
 	REG_PLAYER_GLANCE_MENU_COPY = "Copy slot",
-	REG_PLAYER_GLANCE_MENU_PASTE = "Paste slot: %s",
+	REG_PLAYER_GLANCE_MENU_PASTE = "Paste slot: |cnGREEN_FONT_COLOR:%s|r",
 	REG_PLAYER_STATUS = "Status",
-	REG_PLAYER_TUTO_ABOUT_COMMON = [[|cff00ff00Character theme:|r
-You can choose a |cffffff00theme|r for your character. Think of it as an |cffffff00ambiance music for reading your character description|r.
+	REG_PLAYER_TUTO_ABOUT_COMMON = [[|cnGREEN_FONT_COLOR:Character theme:|r
+Set your |cnGREEN_FONT_COLOR:character theme|r. Think of it as |cnGREEN_FONT_COLOR:ambient music for reading your character description|r.
 
-|cff00ff00Background:|r
-This is a |cffffff00background texture|r for your character description.
+|cnGREEN_FONT_COLOR:Background:|r
+Set a |cnGREEN_FONT_COLOR:background texture|r for your character description
 
-|cff00ff00Template:|r
-The chosen template defines |cffffff00the general layout and writing possibilities|r for your description.
-|cffff9900Only the selected template is visible by others, so you don't have to fill them all.|r
-Once a template is selected, you can open this tutorial again to have more help about each template.]],
-	REG_PLAYER_TUTO_ABOUT_T1 = [[This template allows you to |cff00ff00freely structure your description|r.
+|cnGREEN_FONT_COLOR:Template:|r
+The template you select determines the |cnGREEN_FONT_COLOR:general layout and writing possibilities|r for your character description.
+|cnWARNING_FONT_COLOR:Only the selected template is visible by others, so you don't have to fill them all.|r
+Once a template is selected, you can reopen this tutorial to receive more help on each template.]],
+	REG_PLAYER_TUTO_ABOUT_T1 = [[This template allows you to |cnGREEN_FONT_COLOR:freely structure your description|r.
 
-The description doesn't have to be limited to your character's |cffff9900physical description|r. Feel free to indicate parts from their |cffff9900background|r or details about their |cffff9900personality|r.
+The description doesn't have to be limited to your character's |cnGREEN_FONT_COLOR:physical description|r. Feel free to indicate parts from their |cnGREEN_FONT_COLOR:background|r or details about their |cnGREEN_FONT_COLOR:personality|r.]],
+	REG_PLAYER_TUTO_ABOUT_T2 = [[This template is more structured and consists of |cnGREEN_FONT_COLOR:a list of independent frames|r.
 
-With this template you can use the formatting tools to access several layout parameters like |cffffff00text sizes, colors, and alignments|r.
-These tools also allow you to insert |cffffff00images, icons, or links to external web sites|r.]],
-	REG_PLAYER_TUTO_ABOUT_T2 = [[This template is more structured and consists of |cff00ff00a list of independent frames|r.
+Each frame consists of |cnGREEN_FONT_COLOR:an icon, a background and a text|r.
 
-Each frame is caracterized by an |cffffff00icon, a background and a text|r. Note that you can use some text tags in these frames, like the color and the icon text tags.
+The description doesn't have to be limited to your character's |cnGREEN_FONT_COLOR:physical description|r. Feel free to indicate parts from their |cnGREEN_FONT_COLOR:background|r or details about their |cnGREEN_FONT_COLOR:personality|r.]],
+	REG_PLAYER_TUTO_ABOUT_T3 = [[This template is cut in 3 sections: |cnGREEN_FONT_COLOR:Physical description, personality and history|r.
 
-The description doesn't have to be limited to your character's |cffff9900physical description|r. Feel free to indicate parts from their |cffff9900background|r or details about their |cffff9900personality|r.]],
-	REG_PLAYER_TUTO_ABOUT_T3 = [[This template is cut in 3 sections: |cff00ff00Physical description, personality and history|r.
+Each frame consists of |cnGREEN_FONT_COLOR:an icon, a background and a text|r. Keep in mind |cnGREEN_FONT_COLOR:if you leave a frame empty, it won't be shown in your description|r.]],
+	REG_PLAYER_TUTO_ABOUT_MISC_1 = [[This section provides |cnGREEN_FONT_COLOR:5 slots|r for you to describe |cnGREEN_FONT_COLOR:important, yet concise, information about your character.|r
 
-You don't have to fill all the frames, |cffff9900if you leave an empty frame it won't be shown on your description|r.
-
-Each frame is caracterized by an |cffffff00icon, a background and a text|r. Note that you can use some text tags in these frames, like the color and the icon text tags.]],
-	REG_PLAYER_TUTO_ABOUT_MISC_1 = [[This section provides you |cnGREEN_FONT_COLOR:5 slots|r with which you can describe |cnGREEN_FONT_COLOR:the most important pieces of information about your character|r.
-
-These slots will be visible on the |cnGREEN_FONT_COLOR:"At first glance" bar|r when someone selects your character.
-
-|cff00ff00Hint: You can drag & drop slots to reorder them.|r
-It also works on the |cnGREEN_FONT_COLOR:"At first glance" bar|r!]],
+These slots will also be visible on the target frame's |cnGREEN_FONT_COLOR:"At first glance"|r bar when someone selects your character.]],
 	REG_PLAYER_TUTO_ABOUT_MISC_3 = [[This section contains |cnGREEN_FONT_COLOR:a list of flags|r to answer a lot of |cnGREEN_FONT_COLOR:common questions people could ask|r about you, your character and the way you want to play them.]],
+	REG_PLAYER_TUTO_FORMATTING_TOOLS = "The formatting tools give you access to various |cnGREEN_FONT_COLOR:layout parameters|r (text size, color, and alignment). You can also |cnGREEN_FONT_COLOR:insert images, icons, or links to external websites|r.",
 	REG_RELATION = "Relation",
-	REG_RELATION_BUTTON_TT = "Relation: %s\n|cff00ff00%s\n\n|cffffff00Click to display possible actions",
+	REG_RELATION_BUTTON_TT = "|cnGREEN_FONT_COLOR:Relation: %s|r|n%s",
+	REG_RELATION_BUTTON_TT_ACTIONS = "Display possible actions",
 	REG_RELATION_UNFRIENDLY = "Unfriendly",
 	REG_RELATION_NONE = "None",
 	REG_RELATION_NEUTRAL = "Neutral",
@@ -247,20 +239,20 @@ It also works on the |cnGREEN_FONT_COLOR:"At first glance" bar|r!]],
 	REG_TT_GUILD_IC = "IC member",
 	REG_TT_GUILD_OOC = "OOC member",
 	REG_TT_LEVEL = "Level %s %s",
-	REG_TT_REALM = "Realm: |cffff9900%s",
-	REG_TT_GUILD = "%s of |cffff9900%s",
-	REG_TT_TARGET = "Target: |cffff9900%s",
+	REG_TT_REALM = "Realm: %s",
+	REG_TT_GUILD = "%s of %s",
+	REG_TT_TARGET = "Target: %s",
 	REG_TT_ZONE = "Zone",
 	REG_TT_NOTIF = "Unread description",
 	REG_TT_IGNORED = "< Character is ignored >",
 	REG_TT_IGNORED_OWNER = "< Owner is ignored >",
-	REG_LIST_CHAR_TITLE = "Character list",
+	REG_LIST_CHAR_TITLE = "Characters",
 	REG_LIST_CHAR_SEL = "Selected character",
 	REG_LIST_CHAR_TT = "Click to show page",
-	REG_LIST_CHAR_TT_RELATION = "Relation:\n|cff00ff00%s",
+	REG_LIST_CHAR_TT_RELATION = "Relation:|n|cnGREEN_FONT_COLOR:%s",
 	REG_LIST_CHAR_TT_CHAR = "Linked WoW characters:",
 	REG_LIST_CHAR_TT_CHAR_NO = "Not linked to any character",
-	REG_LIST_CHAR_TT_DATE = "Last seen date: |cff00ff00%s|r\nLast seen location: |cff00ff00%s|r",
+	REG_LIST_CHAR_TT_DATE = "Last seen date: |cnGREEN_FONT_COLOR:%s|r|nLast seen location: |cnGREEN_FONT_COLOR:%s|r",
 	REG_LIST_CHAR_TT_GLANCE = "At first glance",
 	REG_LIST_CHAR_TT_IGNORE = "Ignored characters",
 	REG_LIST_CHAR_FILTER = "Characters: %s/%s",
@@ -268,11 +260,12 @@ It also works on the |cnGREEN_FONT_COLOR:"At first glance" bar|r!]],
 	REG_LIST_CHAR_EMPTY2 = "No character matches your selection",
 	REG_LIST_CHAR_IGNORED = "Ignored",
 	REG_LIST_CHAR_NAME_COPY = "Copy character name",
-	REG_LIST_IGNORE_TITLE = "Ignored list",
+	REG_LIST_IGNORE_TITLE = "Ignored",
 	REG_LIST_IGNORE_EMPTY = "No ignored character",
-	REG_LIST_IGNORE_TT = "Reason:\n|cff00ff00%s\n\n|cffffff00Click to remove from ignore list",
+	REG_LIST_IGNORE_TT = "|cnGREEN_FONT_COLOR:Reason:|r|n%s",
+	REG_LIST_IGNORE_REMOVE = "Remove from ignore list",
 	REG_LIST_PETS_FILTER = "Companions: %s/%s",
-	REG_LIST_PETS_TITLE = "Companion list",
+	REG_LIST_PETS_TITLE = "Companions",
 	REG_LIST_PETS_EMPTY = "No companion",
 	REG_LIST_PETS_EMPTY2 = "No companion matches your selection",
 	REG_LIST_PETS_TOOLTIP = "Has been seen on",
@@ -281,7 +274,8 @@ It also works on the |cnGREEN_FONT_COLOR:"At first glance" bar|r!]],
 	REG_LIST_PET_TYPE = "Companion's type",
 	REG_LIST_PET_MASTER = "Owner's name",
 	REG_LIST_FILTERS = "Filters",
-	REG_LIST_FILTERS_TT = "|cffffff00Click:|r Apply filters\n|cffffff00Right-Click:|r Clear filters",
+	REG_LIST_FILTERS_APPLY = "Apply filters",
+	REG_LIST_FILTERS_CLEAR = "Clear filters",
 	REG_LIST_REALMONLY = "This realm only",
 	REG_LIST_NOTESONLY = "Has notes only",
 	REG_LIST_GUILD = "Character's guild",
@@ -290,21 +284,21 @@ It also works on the |cnGREEN_FONT_COLOR:"At first glance" bar|r!]],
 	REG_LIST_ADDON = "Profile type",
 	REG_LIST_ACTIONS_PURGE = "Purge register",
 	REG_LIST_ACTIONS_PURGE_ALL = "Remove all profiles",
-	REG_LIST_ACTIONS_PURGE_ALL_COMP_C = "This purge will remove all companions from the directory.\n\n|cff00ff00%s companions.",
-	REG_LIST_ACTIONS_PURGE_ALL_C = "This purge will remove all profiles and linked characters from the directory.\n\n|cff00ff00%s characters.",
+	REG_LIST_ACTIONS_PURGE_ALL_COMP_C = "This purge will remove all companions from the directory.|n|n|cnGREEN_FONT_COLOR:%s companions.",
+	REG_LIST_ACTIONS_PURGE_ALL_C = "This purge will remove all profiles and linked characters from the directory.|n|n|cnGREEN_FONT_COLOR:%s characters.",
 	REG_LIST_ACTIONS_PURGE_TIME = "Profiles not seen for 1 month",
-	REG_LIST_ACTIONS_PURGE_TIME_C = "This purge will remove all profiles that have not been seen for a month.\n\n|cff00ff00%s",
+	REG_LIST_ACTIONS_PURGE_TIME_C = "This purge will remove all profiles that have not been seen for a month.|n|n|cnGREEN_FONT_COLOR:%s",
 	REG_LIST_ACTIONS_PURGE_UNLINKED = "Profiles not linked to a character",
-	REG_LIST_ACTIONS_PURGE_UNLINKED_C = "This purge will remove all profiles that are not linked to a WoW character.\n\n|cff00ff00%s",
+	REG_LIST_ACTIONS_PURGE_UNLINKED_C = "This purge will remove all profiles that are not linked to a WoW character.|n|n|cnGREEN_FONT_COLOR:%s",
 	REG_LIST_ACTIONS_PURGE_IGNORE = "Profiles from ignored characters",
-	REG_LIST_ACTIONS_PURGE_IGNORE_C = "This purge will remove all profiles linked to an ignored WoW character.\n\n|cff00ff00%s",
+	REG_LIST_ACTIONS_PURGE_IGNORE_C = "This purge will remove all profiles linked to an ignored WoW character.|n|n|cnGREEN_FONT_COLOR:%s",
 	REG_LIST_ACTIONS_PURGE_EMPTY = "No profile to purge.",
 	REG_LIST_ACTIONS_PURGE_COUNT = "%s profiles will be removed.",
 	REG_LIST_ACTIONS_MASS = "Action on %s selected profiles",
 	REG_LIST_ACTIONS_MASS_REMOVE = "Remove profiles",
-	REG_LIST_ACTIONS_MASS_REMOVE_C = "This action will remove |cff00ff00%s selected |4profile:profiles;|r.",
+	REG_LIST_ACTIONS_MASS_REMOVE_C = "This action will remove |cnGREEN_FONT_COLOR:%s selected |4profile:profiles;|r.",
 	REG_LIST_ACTIONS_MASS_IGNORE = "Ignore profiles",
-	REG_LIST_ACTIONS_MASS_IGNORE_C = [[This action will add |cff00ff00%s |4character:characters;|r to the ignore list.
+	REG_LIST_ACTIONS_MASS_IGNORE_C = [[This action will add |cnGREEN_FONT_COLOR:%s |4character:characters;|r to the ignore list.
 
 You can optionally enter the reason below. This is a personal note, it will serve as a reminder.]],
 	REG_LIST_CHAR_TUTO_LIST = [[The checkboxes in the |cnGREEN_FONT_COLOR:first column|r allow you to select multiple characters to perform actions on with the top-left button.
@@ -327,7 +321,7 @@ The |cnGREEN_FONT_COLOR:guild filter|r will filter the character profile list by
 The |cnGREEN_FONT_COLOR:realm only filter|r will filter the character profile list to only show profiles from your current realm.
 
 The |cnGREEN_FONT_COLOR:note only filter|r will filter the character profile list to only show profiles with notes attached.]],
-	REG_LIST_NOTIF_ADD = "New profile discovered for |cff00ff00%s",
+	REG_LIST_NOTIF_ADD = "New profile discovered for |cnGREEN_FONT_COLOR:%s|r",
 	REG_LIST_NOTIF_ADD_CONFIG = "New profile discovered",
 	REG_LIST_NOTIF_ADD_NOT = "This profile doesn't exist anymore.",
 	REG_COMPANION_LINKED = "The companion %s is now linked to the profile %s.",
@@ -358,24 +352,22 @@ The |cnGREEN_FONT_COLOR:note only filter|r will filter the character profile lis
 	REG_COMPANION_NAME = "Name",
 	REG_COMPANION_TITLE = "Title",
 	REG_COMPANION_NAME_COLOR = "Name color",
-	REG_MSP_ALERT = [[|cffff0000WARNING
+	REG_COMPANION_NAME_COLOR_TT = "Your companion's name color.",
+	REG_MSP_ALERT = [[|cnWARNING_FONT_COLOR:WARNING
 
-You can't have simultaneously more than one addon using the Mary Sue Protocol, as they would be in conflict.|r
+You can only run a single addon utilising the Mary Sue Protocol.
 
-Currently loaded: |cff00ff00%s
-
-|cffff9900Therefore the MSP support for Total RP3 will be disabled.|r
-
-If you don't want TRP3 to be your MSP addon and don't want to see this alert again, you can disable the Mary Sue Protocol module in the TRP3 Settings -> Module status.]],
+MSP support in Total RP 3 will be disabled while |cnGREEN_FONT_COLOR:%s|r is loaded.|r]],
 	REG_COMPANION_PAGE_TUTO_C_1 = "Consult",
-	REG_COMPANION_PAGE_TUTO_E_1 = "This is |cff00ff00your companion main information|r.\n\nAll these information will appear on |cffff9900your companion's tooltip|r.",
-	REG_COMPANION_PAGE_TUTO_E_2 = [[This is |cff00ff00your companion description|r.
+	REG_COMPANION_PAGE_TUTO_E_1 = "This is |cnGREEN_FONT_COLOR:your companion main information|r.|n|nAll of this information will appear on |cnGREEN_FONT_COLOR:your companion's tooltip|r.",
+	REG_COMPANION_PAGE_TUTO_E_2 = [[|cnGREEN_FONT_COLOR:Background:|r
+Set a |cnGREEN_FONT_COLOR:background texture|r for your companion description
 
-It isn't limited to |cffff9900physical description|r. Feel free to indicate parts from their |cffff9900background|r or details about their |cffff9900personality|r.
+|cnGREEN_FONT_COLOR:Formatting tools:|r
+The formatting tools give you access to various |cnGREEN_FONT_COLOR:layout parameters|r (text size, color, and alignment). You can also |cnGREEN_FONT_COLOR:insert images, icons, or links to external websites|r.
 
-There are a lot of ways to customize the description.
-You can choose a |cffffff00background texture|r for the description. You can also use the formatting tools to access several layout parameters like |cffffff00texts sizes, colors and alignments|r.
-These tools also allow you to insert |cffffff00images, icons or links to external web sites|r.]],
+|cnGREEN_FONT_COLOR:Companion description:|r
+The description doesn't have to be limited to |cnGREEN_FONT_COLOR:physical description|r. Feel free to indicate parts from their |cnGREEN_FONT_COLOR:background|r or details about their |cnGREEN_FONT_COLOR:personality|r.]],
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- CONFIGURATION
@@ -421,7 +413,7 @@ These tools also allow you to insert |cffffff00images, icons or links to externa
 	CO_TOOLTIP_CROP_TEXT = "Crop unreasonably long texts",
 	CO_TOOLTIP_CROP_TEXT_TT = [[Limit the number of characters that can be displayed by each field in the tooltip to prevent unreasonably long texts and possible layout issues.
 
-|cfffff569Limit details:
+|cnGREEN_FONT_COLOR:Limit details:
 Name: 100 characters
 Title: 150 characters
 Race: 50 characters
@@ -501,16 +493,17 @@ Class: 50 characters|r]],
 	CO_REGISTER_ABOUT_P_SIZE = "Paragraph text size",
 	CO_REGISTER_ABOUT_P_SIZE_TT = "Size of the text outside of header tags. Default: %d",
 	CO_REGISTER_AUTO_PURGE = "Auto purge directory",
-	CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reaches a certain threshold. We strongly recommend to avoid disabling the purge system.",
+	CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletio	n.|n|n|cnGREEN_FONT_COLOR:Keep in mind that profiles that have a relation to one of your characters or an attached note will never be purged.\n\n|cnWARNING_FONT_COLOR:Due to a bug in the game, saved data can be lost when the directory reaches a certain threshold. We recommend keeping this setting enabled.",
 	CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
 	CO_REGISTER_AUTO_PURGE_1 = "After %s |4day:days;",
 	CO_RELATIONS = "Relations",
 	CO_RELATIONS_DESCRIPTION = "Description",
 	CO_RELATIONS_DESCRIPTION_TT = "|cnGREEN_FONT_COLOR:%p|r for your character's name.|n|cnGREEN_FONT_COLOR:%t|r for the other character's name.",
 	CO_RELATIONS_NEW = "Create new relation",
-	CO_RELATIONS_NEW_TITLE = "Enter the name of the new relation",
 	CO_RELATIONS_NEW_ERROR = "You must enter a name for the new relation.",
 	CO_RELATIONS_DELETE_WARNING = "Are you sure you want to delete the relation %s?",
+	CO_RELATIONS_NEW_COLOR = "Relation color",
+	CO_RELATIONS_NEW_COLOR_TT = "This will determine the relation color.",
 	CO_RELATIONS_MENU_EDIT = "Edit relation",
 	CO_RELATIONS_MENU_DELETE = "Delete relation",
 	CO_CURSOR_TITLE = "Cursor interactions",
@@ -519,9 +512,9 @@ Class: 50 characters|r]],
 
 |TInterface\Cursor\WorkOrders:25|t This icon will be attached to the cursor when a player has a profile and you can right-click them.
 
-|cffccccccNote: This feature is disabled during combat.|r]],
+|cnGREEN_FONT_COLOR:Note: This feature is disabled during combat.|r]],
 	CO_CURSOR_DISABLE_OOC = "Disabled while OOC",
-	CO_CURSOR_DISABLE_OOC_TT = "Disable the cursor modifications when your roleplay status is set to |cffccccccOut Of Character|r.",
+	CO_CURSOR_DISABLE_OOC_TT = "Disable the cursor modifications when your roleplay status is set to |cnGREEN_FONT_COLOR:Out Of Character|r.",
 	CO_CURSOR_MODIFIER_KEY = "Modifier key",
 	CO_CURSOR_MODIFIER_KEY_TT = "Requires a modifier key to be held down while right-clicking a player, to prevent accidental clicks.",
 	CO_MODULES = "Modules status",
@@ -537,8 +530,8 @@ Class: 50 characters|r]],
 	CO_MODULES_TT_NONE = "No dependencies";
 	CO_MODULES_TT_DEPS = "Dependencies";
 	CO_MODULES_TT_TRP = "%sFor Total RP 3 build %s minimum.|r",
-	CO_MODULES_TT_DEP = "\n%s- %s (version %s)|r",
-	CO_MODULES_TT_ERROR = "\n\n|cffff0000Error:|r\n%s";
+	CO_MODULES_TT_DEP = "|n%s- %s (version %s)|r",
+	CO_MODULES_TT_ERROR = "|n|n|cnRED_FONT_COLOR:Error:|r\n%s";
 	CO_MODULES_TUTO = [[A module is a independent feature that can be enabled or disabled.
 
 Possible status:
@@ -548,7 +541,7 @@ Possible status:
 |cffff9900TRP update required:|r The module requires a more recent version of TRP3.
 |cffff0000Error on init or on startup:|r The module loading sequence failed. The module will likely create errors!
 
-|cffff9900When disabling a module, a UI reload is necessary.]],
+|cnGREEN_FONT_COLOR:When disabling a module, a UI reload is necessary.]],
 	CO_MODULES_SHOWERROR = "Show error",
 	CO_MODULES_DISABLE = "Disable module",
 	CO_MODULES_ENABLE = "Enable module",
@@ -576,7 +569,7 @@ Possible status:
 	CO_MINIMAP_BUTTON_SHOW_TITLE = "Show minimap button",
 	CO_MINIMAP_BUTTON_SHOW_HELP = [[If you are using another add-on to display Total RP 3's minimap button (FuBar, Titan, Bazooka) you can remove the button from the minimap.
 
-|cff00ff00Reminder : You can open Total RP 3 using /trp3 switch main|r]],
+|cnGREEN_FONT_COLOR:Reminder: You can open Total RP 3 using /trp3 switch main|r]],
 	CO_MINIMAP_BUTTON_FRAME = "Frame to anchor",
 	CO_MINIMAP_BUTTON_RESET = "Reset position",
 	CO_MINIMAP_BUTTON_RESET_BUTTON = "Reset",
@@ -614,7 +607,7 @@ Possible status:
 	CO_CHAT_MAIN_NPC = "NPC talk detection",
 	CO_CHAT_MAIN_NPC_USE = "Use NPC talk detection",
 	CO_CHAT_MAIN_NPC_PREFIX = "NPC talk detection pattern",
-	CO_CHAT_MAIN_NPC_PREFIX_TT = "If a chat line said in the EMOTE channel begins with this prefix, it will be interpreted as an NPC chat.\n\n|cff00ff00By default: \"|| \"\n(without the \" and with a space after the pipe)",
+	CO_CHAT_MAIN_NPC_PREFIX_TT = "If a chat line said in the EMOTE channel begins with this prefix, it will be interpreted as an NPC chat.|n|n|cnGREEN_FONT_COLOR:By default: \"|| \"|n(without the \" and with a space after the pipe)",
 	CO_CHAT_MAIN_EMOTE = "Emote detection",
 	CO_CHAT_MAIN_EMOTE_USE = "Use emote detection",
 	CO_CHAT_MAIN_EMOTE_PATTERN = "Emote detection pattern",
@@ -677,12 +670,12 @@ Possible status:
 
 	TB_TOOLBAR = "Toolbar",
 	TB_SWITCH_TOOLBAR = "Switch toolbar",
-	TB_SWITCH_CAPE_ON = "Cloak: |cff00ff00Shown",
-	TB_SWITCH_CAPE_OFF = "Cloak: |cffff0000Hidden",
+	TB_SWITCH_CAPE_ON = "Cloak: |cnGREEN_FONT_COLOR:Shown",
+	TB_SWITCH_CAPE_OFF = "Cloak: |cnRED_FONT_COLOR:Hidden",
 	TB_SWITCH_CAPE_1 = "Show cloak",
 	TB_SWITCH_CAPE_2 = "Hide cloak",
-	TB_SWITCH_HELM_ON = "Helm: |cff00ff00Shown",
-	TB_SWITCH_HELM_OFF = "Helm: |cffff0000Hidden",
+	TB_SWITCH_HELM_ON = "Helm: |cnGREEN_FONT_COLOR:Shown",
+	TB_SWITCH_HELM_OFF = "Helm: |cnRED_FONT_COLOR:Hidden",
 	TB_SWITCH_HELM_1 = "Show helmet",
 	TB_SWITCH_HELM_2 = "Hide helmet",
 	TB_GO_TO_MODE = "Switch to %s mode",
@@ -703,7 +696,7 @@ Possible status:
 	TF_PLAY_THEME_TT = "Play %s",
 	TF_IGNORE = "Ignore character",
 	TF_IGNORE_TT = "Hide this character's profile and no longer share your profile or map location with them.",
-	TF_IGNORE_CONFIRM = "Are you sure you want to ignore this player?\n\n|cffffff00%s|r\n\n|cffff7700You can optionally enter below the reason why you ignore it. This is a personal note, it won't be visible by others and will serve as a reminder.",
+	TF_IGNORE_CONFIRM = "Are you sure you want to ignore this player?|n|n|cnWARNING_FONT_COLOR:%s|r|n|n|rYou can optionally enter the reason below. This is a personal note that serves as a reminder.",
 	TF_IGNORE_NO_REASON = "No reason",
 	TB_LANGUAGE = "Language",
 	TB_LANGUAGES_TT = "Change language",
@@ -719,7 +712,7 @@ Possible status:
 	PR_PROFILE_CREATED = "Profile %s created.",
 	PR_CREATE_PROFILE = "Create profile",
 	PR_PROFILE_DELETED = "Profile %s deleted.",
-	PR_PROFILE_HELP = "A profile contains all information about a |cffffff00\"character\"|r as a |cff00ff00roleplay character|r.\n\nA real |cffffff00\"WoW character\"|r can be linked to only one profile at a time, but can switch from one to another whenever you want.\n\nYou can also link several |cffffff00\"WoW characters\"|r to the same |cff00ff00profile|r!",
+	PR_PROFILE_HELP = "A profile contains all information about a |cnGREEN_FONT_COLOR:\"character\"|r as a |cnGREEN_FONT_COLOR:roleplay character|r.|n|nA real |cnGREEN_FONT_COLOR:\"WoW character\"|r can be linked to only one profile at a time, but can switch from one to another whenever you want.|n|nYou can also link several |cnGREEN_FONT_COLOR:\"WoW characters\"|r to the same |cnGREEN_FONT_COLOR:profile|r!",
 	PR_PROFILE_DETAIL = "This profile is currently linked to these WoW characters",
 	PR_DELETE_PROFILE = "Delete profile",
 	PR_DUPLICATE_PROFILE = "Duplicate profile",
@@ -737,21 +730,24 @@ Possible status:
 	PR_PROFILEMANAGER_SEARCH_PROFILE = "Search profile",
 	PR_PROFILEMANAGER_EMPTY = "No profiles found",
 	PR_CO_PROFILEMANAGER_TITLE = "Companion profiles",
-	PR_CO_PROFILE_HELP = [[A profile contains all information about a |cffffff00"pet"|r as a |cff00ff00roleplay character|r.
+	PR_CO_PROFILE_HELP = [[A profile contains all information about a |cnGREEN_FONT_COLOR:"pet"|r as a |cnGREEN_FONT_COLOR:roleplay character|r.
 
 A companion profile can be linked to:
 - A battle pet
 - A hunter pet
 - A warlock minion
 - A mage elemental
-- A death knight ghoul |cffff9900(see below)|r
+- A mount
+- A death knight ghoul |cnGREEN_FONT_COLOR:(see below)|r
 
-Just like characters profiles, a |cff00ff00companion profile|r can be linked to |cffffff00several pets|r, and a |cffffff00pet|r can switch easily from one profile to another.
+Just like characters profiles, a |cnGREEN_FONT_COLOR:companion profile|r can be linked to |cnGREEN_FONT_COLOR:several pets|r, and a |cnGREEN_FONT_COLOR:pet|r can switch easily from one profile to another.
 
-|cffff9900Ghouls:|r As ghouls get a new name each time they are summoned, you will have to re-link the profile to the ghoul for all possible names.]],
-	PR_CO_PROFILE_HELP2 = [[Click here to create a new companion profile.
+|cnGREEN_FONT_COLOR:Ghouls:|r As ghouls get a new name each time they are summoned, you will have to re-link the profile to the ghoul for all possible names.]],
+	PR_CO_PROFILE_HELP2 = [[|cnGREEN_FONT_COLOR:Click here to create a new companion profile.|r
 
-|cff00ff00To link a profile to a pet (hunter pet, warlock minion...), just summon the pet, select it and use the target frame to link it to a existing profile (or create a new one).|r]],
+Link a pet/mount to an existing profile or create a new one:
+|cnGREEN_FONT_COLOR:Pet:|r Summon the pet, select it and use the target frame (this includes hunter pets, warlock minions, etc.).
+|cnGREEN_FONT_COLOR:Mount:|r Summon the mount, select yourself and use the target frame.]],
 	PR_CO_MASTERS = "Owners",
 	PR_CO_EMPTY = "No companion profile",
 	PR_CO_NEW_PROFILE = "New companion profile",
@@ -774,9 +770,11 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 	PR_EXPORT_IMPORT_TITLE = "Export/import profile",
 	PR_EXPORT_IMPORT_HELP = [[You can export and import profiles using the options in the dropdown menu.
 
-Use the |cffffff00Export profile|r option to generate a chunk of text containing the profile serialized data. You can copy the text using Control-C (or Command-C on a Mac) and paste it somewhere else as a backup. (|cffff0000Please note that some advanced text editing tools like Microsoft Word will reformat special characters like quotes, altering the data. Use simpler text editing tools like Notepad.|r)
+Use the |cnGREEN_FONT_COLOR:Export profile|r option to generate a chunk of text that contains the serialized profile data. You can copy the text using Control-C (or Command-C on a Mac) and paste it somewhere else as a backup.
 
-Use the |cffffff00Import profile|r option to paste data from a previous export inside an existing profile. The existing data in this profile will be replaced by the ones you have pasted. You cannot import data directly into your currently selected profile.]],
+|cnWARNING_FONT_COLOR:Note that some advanced text editors, such as Microsoft Word, reformat special characters such as quotation marks, which changes the data. Use a simpler text editor such as Notepad.|r
+
+Use the |cnGREEN_FONT_COLOR:Import profile|r option to paste data from a previous export into an existing profile. The existing data in that profile will be replaced by the pasted data. You cannot import data directly into the currently selected profile.]],
 	PR_EXPORT_PROFILE = "Export profile",
 	PR_IMPORT_PROFILE = "Import profile",
 	PR_EXPORT_NAME = "Serial for profile %s (size %0.2f kB)",
@@ -832,11 +830,13 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 
 	-- DB_STATUS_ICON_ITEM will be formatted with an icon texture and a label for a dropdown item.
 	DB_STATUS_ICON_ITEM = "%1$s %2$s",
-	DB_TUTO_1 = [[|cffffff00The character status|r indicates if you are currently playing your character's role or not.
+	DB_TUTO_1 = [[|cnGREEN_FONT_COLOR:Character status|r indicates whether other players should take your character's actions into account or not.
 
-|cffffff00The roleplayer status|r allows you to state that you are a beginner, or a veteran willing to help rookies!
+|cnGREEN_FONT_COLOR:Walkup friendly|r indicates to other players that you are okay with them walking up to you.
 
-|cff00ff00These information will be placed in your character's tooltip.]],
+|cnGREEN_FONT_COLOR:Roleplay proficiency|r indicates to other players how proficient you are in regards to roleplaying and whether or not you are willing to guide newer players.
+
+|cnGREEN_FONT_COLOR:Some information will be displayed on your character's tooltip.]],
 	DB_NEW = "What's new?",
 	DB_ABOUT = "About Total RP 3",
 	DB_MORE = "More modules",
@@ -851,6 +851,7 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	UI_COMPANION_BROWSER_HELP = "Select a battle pet",
 	UI_COMPANION_BROWSER_RENAME_WARNING = "|cffff0000Warning:|r It is strongly recommended to only link companion profiles to renamed pets.",
 	UI_ICON_SELECT = "Select icon",
+	UI_ICON_OPENBROWSER = "Open icon browser",
 	UI_ICON_OPTIONS = "Show icon options",
 	UI_ICON_COPY = "Copy icon",
 	UI_ICON_COPYNAME = "Copy icon name",
@@ -878,10 +879,10 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	UI_LINK_WARNING = [[Here's the link URL.
 You can copy/paste it in your web browser.
 
-|cffff0000!! Disclaimer !!|r
-Total RP is not responsible for links leading to harmful content.]],
+|cnWARNING_FONT_COLOR:!! DISCLAIMER !!
+Total RP is not responsible for links leading to harmful content.|r]],
 	UI_TUTO_BUTTON = "Tutorial mode",
-	UI_TUTO_BUTTON_TT = "Click to toggle on/off the tutorial mode",
+	UI_TUTO_BUTTON_TT = "Toggle the tutorial mode",
 	UI_CLOSE_ALL = "Close all",
 
 	NPC_TALK_SAY_PATTERN = "says:",
@@ -947,7 +948,7 @@ Total RP is not responsible for links leading to harmful content.]],
 	CM_CLASS_EVOKER = "Evoker",
 	CM_CLASS_UNKNOWN = "Unknown",
 	CM_RESIZE = "Resize",
-	CM_RESIZE_TT = "Drag to resize the frame.",
+	CM_RESIZE_TT = "Resize the frame",
 	CM_TWEET_PROFILE = "Show profile url",
 	CM_TWEET = "Send a tweet",
 	CM_SEARCH = "Search",
@@ -956,6 +957,9 @@ Total RP is not responsible for links leading to harmful content.]],
 	CM_DUPLICATE = "Duplicate",
 	CM_YES = "Yes",
 	CM_NO = "No",
+	CM_OPTIONS = "Options",
+	CM_OPTIONS_ADDITIONAL = "Additional options",
+	CM_ACTIVATE = "Activate",
 
 	CM_ORANGE = "Orange",
 	CM_WHITE = "White",
@@ -1052,11 +1056,11 @@ Changes your character status to the specified option:
 
 A mature profile will have a muted tooltip and you will have to confirm that you want to view the profile the first time you open it.
 
-|cffccccccNote: The mature filter dictionary is pre-populated with a list of words from a crowd sourced repository. You can edit the words using the option below.|r]],
+|cnGREEN_FONT_COLOR:Note: The mature filter dictionary is pre-populated with a list of words from a crowd sourced repository. You can edit the words using the option below.|r]],
 	MATURE_FILTER_STRENGTH = "Mature filter strength",
 	MATURE_FILTER_STRENGTH_TT = [[Set the strength of the mature filter.
 
-|cffcccccc1 is weak (10 bad words required to flag), 10 is strong (only 1 bad word required to flag).|r]],
+|cnGREEN_FONT_COLOR:1 is weak (10 bad words required to flag), 10 is strong (only 1 bad word required to flag).|r]],
 	MATURE_FILTER_FLAG_PLAYER = "Flag as mature",
 	MATURE_FILTER_FLAG_PLAYER_TT = "Flag this profile has containing mature content. The profile content will be hidden.",
 	MATURE_FILTER_FLAG_PLAYER_OPTION = "Flag as mature",
@@ -1266,15 +1270,15 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 	MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended{/h3}
 |cff9999ffTotal RP 3: Extended|r add the possibility to create new content in WoW: campaigns with quests and dialogues, items, documents (books, signs, contracts, …) and many more!
-{link*https://www.curseforge.com/wow/addons/total-rp-3-extended*Download on CurseForge}
-
-{h3}TRP3 Currently Frame{/h3}
-Adds a standalone frame to your UI that displays your "Currently" text and allows you to edit it easily.
-{link*https://www.curseforge.com/wow/addons/trp3-currently-frame*Download on CurseForge}
+{col:f2bf1a}{link*https://www.curseforge.com/wow/addons/total-rp-3-extended*Download on CurseForge}{/col}
 
 {h3}TRP3 Location Toggle{/h3}
 Adds a simple button to the toolbar to toggle on and off the map scan location feature.
-{link*https://www.curseforge.com/wow/addons/trp3-location-toggle*Download on CurseForge}
+{col:f2bf1a}{link*https://www.curseforge.com/wow/addons/trp3-location-toggle*Download on CurseForge}{/col}
+
+{h3}Total RP 3: Unit Frames{/h3}
+This module modifies Blizzard player and target frames to use RP name and color, and add a button to open profile.
+{col:f2bf1a}{link*https://www.curseforge.com/wow/addons/total-rp-3-unit-frames*Download on CurseForge}{/col}
 ]],
 
 	THANK_YOU_1 = [[{h1:c}Total RP 3{/h1}
@@ -1378,7 +1382,7 @@ Please keep in mind that changing those settings might alter your experience wit
 	REG_REPORT_PLAYER_PROFILE = "Report profile to |cff449fe0Blizzard|r",
 	REG_REPORT_PLAYER_PROFILE_TT = [[You can report a profile that infringe on Blizzard's Terms of Service. This can include harassment, doxxing, hate speech, obscene content or other form of disruptive content.
 
-|cffff0000Please note that this option is NOT to report RP profiles of disputable quality or griefing. Abuses of this feature are punishable!]],
+|cnWARNING_FONT_COLOR:Please note that this option is NOT to report RP profiles of disputable quality or griefing. Abuses of this feature are punishable!]],
 	REG_REPORT_PLAYER_TEMPLATE = "This player is using the RP profile addon %s to share content against the Terms of Service.",
 	REG_REPORT_PLAYER_TEMPLATE_DATE = "The addon data was transferred through logged addon messages on %s.",
 	REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT = "This player was on a trial account.",
@@ -1398,10 +1402,11 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	REG_NOTES_PROFILE = "Notes",
 	REG_NOTES_PROFILE_TT = "Open the notes window for the target character.",
 	REG_PLAYER_NOTES = "Notes",
-	REG_PLAYER_NOTES_PROFILE = "Notes from %s",
+	REG_PLAYER_NOTES_NOTICE = "Setting a note will display a %s icon in the character's tooltip.",
+	REG_PLAYER_NOTES_PROFILE = "Notes from |cnGREEN_FONT_COLOR:%s|r",
 	REG_PLAYER_NOTES_PROFILE_NONAME = "Profile notes",
 	REG_PLAYER_NOTES_PROFILE_HELP = "These private notes are tied to your current profile and will change based on what profile you currently have active.",
-	REG_PLAYER_NOTES_ACCOUNT = "Common notes",
+	REG_PLAYER_NOTES_ACCOUNT = "Account-wide notes",
 	REG_PLAYER_NOTES_ACCOUNT_HELP = "These private notes are tied to your account and will be shared with all of your profiles.",
 
 	BINDING_NAME_TRP3_OPEN_TARGET_PROFILE = "Open target profile",
@@ -1482,7 +1487,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_CUSTOMIZE_NPC_UNITS = "Customize NPC units",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NPC_UNITS_HELP = "Controls the customization of NPC units.",
 	NAMEPLATES_CONFIG_ICON_SIZE = "Icon size",
-	NAMEPLATES_CONFIG_ICON_SIZE_HELP = "Configures the size of icons displayed on nameplates if the |cffffff00Show icons|r option is enabled.",
+	NAMEPLATES_CONFIG_ICON_SIZE_HELP = "Configures the size of icons displayed on nameplates if the |cnGREEN_FONT_COLOR:Show icons|r option is enabled.",
 	NAMEPLATES_CONFIG_ACTIVE_QUERY = "Automatically fetch profiles",
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP = "If checked, automatically fetches roleplay profiles for units with nameplates attached.",
 	NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK = "Use class color by default",
@@ -1513,7 +1518,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	CONFIG_COMMS_QUEUE_POOL_COUNT = "Queue pool size",
 	CONFIG_COMMS_QUEUE_POOL_COUNT_DESCRIPTION = "Controls the size of the queue pool used for profile communications.|n|nLower values will reduce latency of addon communications for non-RP profile data, but may increase the amount of time before other players begin to receive any profile data at all in high load scenarios.",
 	CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD = "Queue pool data weight threshold",
-	CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION = "Controls the minimum weight your RP profile data must be before queue pools will be used.|n|nFor larger profiles, increasing this value may |cffff0000severely deteriorate|r the performance of all addon communications.",
+	CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION = "Controls the minimum weight your RP profile data must be before queue pools will be used.|n|nFor larger profiles, increasing this value may |cnWARNING_FONT_COLOR:severely deteriorate|r the performance of all addon communications.",
 
 	CREDITS_THANK_YOU_SECTION_1 = [[{h1:c}Total RP 3{/h1}]],
 	CREDITS_THANK_YOU_SECTION_2 = [[{h2}%1$s Created by{/h2}]],
@@ -1639,7 +1644,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 ]],
 
 	CO_TOOLBAR_VISIBILITY = "Display conditions",
-	CO_TOOLBAR_VISIBILITY_HELP = "Configures the conditions under which the toolbar should be shown.|n|nThe visibility of the toolbar can be forcefully toggled by running the |cff00ff00/trp3 switch toolbar|r slash command or by right-clicking the minimap button.",
+	CO_TOOLBAR_VISIBILITY_HELP = "Configures the conditions under which the toolbar should be shown.|n|nThe visibility of the toolbar can be forcefully toggled by running the |cnGREEN_FONT_COLOR:/trp3 switch toolbar|r slash command or by right-clicking the minimap button.",
 	CO_TOOLBAR_VISIBILITY_1 = "Always show",
 	CO_TOOLBAR_VISIBILITY_2 = "Only show in-character",
 	CO_TOOLBAR_VISIBILITY_3 = "Always hidden",
