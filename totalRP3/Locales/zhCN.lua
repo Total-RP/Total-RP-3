@@ -434,7 +434,7 @@ L = {
 
 |cffffff00角色状态|r 允许你说明你是一个初学者或者是一个愿意帮助新手的老手!
 
-|cff00ff00这些信息将被放置在你的角色的工具栏中.]=],
+|cff00ff00这些信息将被放置在你的角色的工具栏中.|r]=],
 	["DICE_HELP"] = "摇一个或者多个色子，定义几个面，例如: 1d6, 2d12 3d20 ...",
 	["DICE_ROLL"] = "%s roll点 |cffff9900%sx d%s|r 得到了 |cff00ff00%s|r.",
 	["DICE_ROLL_T"] = "%s %s roll点 |cffff9900%sx d%s|r 得到了 |cff00ff00%s|r.",

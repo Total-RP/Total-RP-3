@@ -431,7 +431,7 @@ Seus perfis, perfis de companheiro e configurações serão temporariamente depo
 
 |cffffff00O estado do roleplayer|r permite que você mostre que é um iniciante ou um veterano disposto a ajudar novatos.
 
-|cff00ff00Essas informações serão exibidas na tela de informações do seu personagem.]=],
+|cff00ff00Essas informações serão exibidas na tela de informações do seu personagem.|r]=],
 	["DICE_HELP"] = "Uma ou mais rolagens separadas por espaços, por exemplo: 1d6, 2d12 3d20...",
 	["DICE_ROLL"] = "%s rolou |cffff9900%sx d%s|r|cffcc6600%s|r e tirou |cff00ff00%s|r. ",
 	["DICE_ROLL_T"] = "%s %s rolou |cffff9900%sx d%s|r|cffcc6600%s|r e tirou |cff00ff00%s|r. ",

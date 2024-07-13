@@ -439,7 +439,7 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 
 |cffffff00El estado del jugador|r indica si eres un jugador de rol principiante o un veterano dispuesto a ayudar.
 
-|cff00ff00Esta información se colocará en la descripción de tu personaje.]=],
+|cff00ff00Esta información se colocará en la descripción de tu personaje.|r]=],
 	["DICE_HELP"] = "Tira un dado o varios dados separados por espacios, ejemplo: 1d6, 2d12 3d20 ...",
 	["DICE_ROLL"] = "%s tira |cffff9900%sx d%s|r|cffcc6600%s|r y obtiene |cff00ff00%s|r.",
 	["DICE_ROLL_T"] = "%s %s tira |cffff9900%sx d%s|r|cffcc6600%s|r y obtiene |cff00ff00%s|r.",

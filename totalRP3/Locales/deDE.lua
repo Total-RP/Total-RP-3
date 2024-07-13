@@ -385,7 +385,7 @@ Deine Profile, Begleiterprofile und Einstellungen werden temporär ausgelagert u
 
 |cffffff00Die Rollenspielerfahrung|r gibt an, ob du ein blutiger Anfänger oder ein erfahrener Rollenspieler bist, der gerne Neulingen hilft!
 
-|cff00ff00Diese Informationen werden im Tooltip deines Charakters angezeigt.]=],
+|cff00ff00Diese Informationen werden im Tooltip deines Charakters angezeigt.|r]=],
 	["DICE_HELP"] = "Ein Würfelwurf oder mehrere Würfe durch Leerzeichen getrennt, z.B: 1d6, 2d12 3d20 ...",
 	["DICE_ROLL"] = "%s rollt |cffff9900%sx d%s|r|cffcc6600%s|r und erziehlt |cff00ff00%s|r.",
 	["DICE_ROLL_T"] = "%s %s würfelt |cffff9900%sx w%s|r|cffcc6600%s|r und erhält |cff00ff00%s|r.",

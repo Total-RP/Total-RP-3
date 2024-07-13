@@ -836,7 +836,7 @@ Use the |cnGREEN_FONT_COLOR:Import profile|r option to paste data from a previou
 
 |cnGREEN_FONT_COLOR:Roleplay proficiency|r indicates to other players how proficient you are in regards to roleplaying and whether or not you are willing to guide newer players.
 
-|cnGREEN_FONT_COLOR:Some information will be displayed on your character's tooltip.]],
+|cnGREEN_FONT_COLOR:Some information will be displayed on your character's tooltip.|r]],
 	DB_NEW = "What's new?",
 	DB_ABOUT = "About Total RP 3",
 	DB_MORE = "More modules",

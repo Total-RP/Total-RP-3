@@ -575,7 +575,7 @@ Cette fenêtre sera fermée à la copie.]=],
 
 |cffffff00Le statut roleplay|r vous permet d'indiquer que vous êtes un débutant ou un vétéran désireux d'aider les novices !
 
-|cff00ff00Cette information sera placée dans la bulle d'aide de votre personnage.]=],
+|cff00ff00Cette information sera placée dans la bulle d'aide de votre personnage.|r]=],
 	["DEFAULT_GUILD_RANK"] = "Membre",
 	["DICE_HELP"] = "Un ou des jets de dés, séparés par des espaces. Examples: 1d6, 2d12 3d20 ...",
 	["DICE_ROLL"] = "%s Lancer de |cffff9900%sx d%s|r|cffcc6600%s|r et obtenu |cff00ff00%s|r.",
