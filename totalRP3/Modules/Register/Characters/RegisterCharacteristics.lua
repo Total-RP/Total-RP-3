@@ -1512,7 +1512,7 @@ local function initStructures()
 			LT = loc.REG_PLAYER_PSYCHO_CHAOTIC,
 			RT = loc.REG_PLAYER_PSYCHO_LAWFUL,
 			LI = TRP3_InterfaceIcons.TraitChaotic,
-			RI = TRP3_InterfaceIcons.TraitLoyal,
+			RI = TRP3_InterfaceIcons.TraitLawful,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_CHASTE,
