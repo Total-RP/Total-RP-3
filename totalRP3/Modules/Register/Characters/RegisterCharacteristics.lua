@@ -1231,8 +1231,8 @@ function setEditDisplay()
 			frame.Slider:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 			frame.Slider:SetScript("OnValueChanged", onPsychoValueChanged);
 
-			setTooltipForSameFrame(frame.CustomLeftIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_LEFTICON_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-			setTooltipForSameFrame(frame.CustomRightIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_RIGHTICON_TT.. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+			setTooltipForSameFrame(frame.CustomLeftIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_LEFTICON_TT .. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+			setTooltipForSameFrame(frame.CustomRightIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_RIGHTICON_TT.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 			setTooltipForSameFrame(frame.ActionButton, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 
 			setTooltipForSameFrame(frame.CustomLeftColor, "RIGHT", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT
