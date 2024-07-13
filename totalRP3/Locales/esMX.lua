@@ -602,7 +602,6 @@ Este es el |cffffff00tipo de fondo|r para la descripción de tu personaje.
 La plantilla elegida define |cffffff00las posibilidades del diseño y escritura generales|r para tu descripción.
 |cffff9900Sólo la plantilla seleccionada se verá, no hace falta rellenar todas.|r
 Una vez elegida la plantilla puedes volver a abrir este tutorial para tener más ayuda sobre cada plantilla.]=],
-	["REG_PLAYER_TUTO_FORMATTING_TOOLS"] = "",
 	["REG_PLAYER_WEIGHT"] = "Complexión",
 	["REG_PLAYER_WEIGHT_TT"] = [=[Esta es la complexión de tu personaje.
 Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplemente podría ser normal!]=],
