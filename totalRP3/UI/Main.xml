@@ -186,8 +186,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Button parentKey="Resize" inherits="TRP3_StyledButtonTemplate">
 				<Size x="24" y="24"/>
 				<KeyValues>
-					<KeyValue key="minWidth" value="768" type="number"/>
-					<KeyValue key="minHeight" value="500" type="number"/>
+					<KeyValue key="minWidth" value="840" type="number"/>
+					<KeyValue key="minHeight" value="600" type="number"/>
 					<KeyValue key="styleName" value="ResizeButton" type="string"/>
 				</KeyValues>
 				<Anchors>
