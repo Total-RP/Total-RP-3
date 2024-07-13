@@ -96,7 +96,7 @@ local function onStart()
 
 			if type(buttonStructure.icon) == "table" and buttonStructure.icon.Apply then
 				if buttonStructure.icon:GetFileID() == 516771 then
-					uiButton.Icon:SetTexture(buttonStructure.icon:GetFileID())
+					uiButton:SetIconTextureToFile(buttonStructure.icon:GetFileID())
 				else
 					uiButton:SetIconTexture(buttonStructure.icon:GetFileID())
 				end
