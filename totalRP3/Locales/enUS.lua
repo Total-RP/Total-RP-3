@@ -192,7 +192,7 @@ L = {
 Set your |cnGREEN_FONT_COLOR:character theme|r. Think of it as |cnGREEN_FONT_COLOR:ambient music for reading your character description|r.
 
 |cnGREEN_FONT_COLOR:Background:|r
-Set a |cnGREEN_FONT_COLOR:background texture|r for your character description
+Set a |cnGREEN_FONT_COLOR:background texture|r for your character description.
 
 |cnGREEN_FONT_COLOR:Template:|r
 The template you select determines the |cnGREEN_FONT_COLOR:general layout and writing possibilities|r for your character description.
