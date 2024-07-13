@@ -62,7 +62,21 @@ local function rebuildMenu()
 			tinsert(ids, id);
 		end
 	end
-	table.sort(ids);
+
+	local function SortCompareMenuEntries(a, b)
+		local groupA = menuStructures[a].sortGroup or a;
+		local groupB = menuStructures[b].sortGroup or b;
+		local indexA = menuStructures[a].sortIndex;
+		local indexB = menuStructures[b].sortIndex;
+
+		if groupA ~= groupB or not indexA or not indexB then
+			return groupA < groupB;
+		else
+			return indexA < indexB;
+		end
+	end
+
+	table.sort(ids, SortCompareMenuEntries);
 
 	local closeableChildCount = 0;
 	local y = marginTop;

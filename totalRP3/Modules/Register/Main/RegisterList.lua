@@ -80,6 +80,8 @@ local function openPage(profileID, unitID)
 			closeable = true,
 			icon = [[interface\icons\]] .. TRP3_InterfaceIcons.CharacterMenuItem,
 			pageContext = pageContext,
+			sortGroup = currentlyOpenedProfilePrefix,
+			sortIndex = -time(),
 		});
 		selectMenu(menuID);
 		TRP3_API.navigation.page.getCurrentContext().openingWithUnitID = false
@@ -111,6 +113,8 @@ local function openCompanionPage(profileID)
 			onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PAGE, {profile = profile, profileID = profileID, isPlayer = false}) end,
 			isChildOf = REGISTER_PAGE,
 			closeable = true,
+			sortGroup = currentlyOpenedProfilePrefix,
+			sortIndex = -time(),
 		});
 		selectMenu(currentlyOpenedProfilePrefix .. profileID);
 	end
