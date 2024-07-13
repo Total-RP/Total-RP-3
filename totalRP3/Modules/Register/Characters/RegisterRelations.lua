@@ -6,7 +6,6 @@ local EMPTY = TRP3_API.globals.empty;
 local getProfile = TRP3_API.register.getProfile;
 local hasProfile = TRP3_API.register.hasProfile;
 local getUnitID = TRP3_API.utils.str.getUnitID;
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 
 TRP3_API.register.relation = {};
 
@@ -247,14 +246,16 @@ function updateRelationsList()
 		widget.Title:SetText((getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_"..relation.id)));
 		widget.Text:SetText(loc:GetText(relation.description or "REG_RELATION_" .. relation.id .. "_TT"):format("%p", "%t"));
 		TRP3_API.ui.frame.setupIconButton(widget.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
-		widget.Actions:SetScript("OnClick", function(button)
-			local values = {};
-			table.insert(values, {loc.CO_RELATIONS_MENU_EDIT, ACTIONS.EDIT..relation.id});
-			checkRelationUse();
-			if not relation.inUse then
-				table.insert(values, {loc.CO_RELATIONS_MENU_DELETE, ACTIONS.DELETE..relation.id});
-			end
-			TRP3_API.ui.listbox.displayDropDown(button, values, onActionSelected, 0, true);
+
+		TRP3_API.ui.tooltip.setTooltipForSameFrame(widget.Actions, "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+		widget.Actions:SetScript("OnMouseDown", function(button)
+			TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+				description:CreateButton(loc.CO_RELATIONS_MENU_EDIT, onActionSelected, ACTIONS.EDIT..relation.id);
+				checkRelationUse();
+				if not relation.inUse then
+					description:CreateButton(loc.CO_RELATIONS_MENU_DELETE, onActionSelected, ACTIONS.DELETE..relation.id);
+				end
+			end);
 		end);
 		widget:Show();
 
@@ -325,13 +326,12 @@ local function onRelationSelected(value)
 end
 
 local function onTargetButtonClicked(_, _, _, button)
-	local values = {};
-	local relations = TRP3_API.register.relation.getRelationList(true);
-	for _, thisRelation in ipairs(relations) do
-		tinsert(values, {thisRelation.name or loc["REG_RELATION_" .. thisRelation.id], thisRelation.id})
-	end
-
-	displayDropDown(button, values, onRelationSelected, 0, true);
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+		local relations = TRP3_API.register.relation.getRelationList(true);
+		for _, thisRelation in ipairs(relations) do
+			description:CreateButton(thisRelation.name or loc["REG_RELATION_" .. thisRelation.id], onRelationSelected, thisRelation.id);
+		end
+	end);
 end
 
 TRP3_API.register.inits.relationsInit = function()
@@ -347,7 +347,7 @@ TRP3_API.register.inits.relationsInit = function()
 			condition = function(_, unitID)
 				return UnitIsPlayer("target") and unitID ~= TRP3_API.globals.player_id and hasProfile(unitID);
 			end,
-			onClick = onTargetButtonClicked,
+			onMouseDown = onTargetButtonClicked,
 			adapter = function(buttonStructure, unitID)
 				local profileID = hasProfile(unitID);
 				local relationColoredName = getRelationText(profileID);

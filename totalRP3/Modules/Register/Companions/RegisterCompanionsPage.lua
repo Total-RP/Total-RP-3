@@ -13,11 +13,10 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 local hidePopups = TRP3_API.popup.hidePopups;
 local displayConsult;
-local tcopy, tsize, tinsert, EMPTY = Utils.table.copy, Utils.table.size, tinsert, Globals.empty;
+local tcopy, tsize, EMPTY = Utils.table.copy, Utils.table.size, Globals.empty;
 local stEtN = Utils.str.emptyToNil;
 local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local isUnitIDKnown, hasProfile, getUnitProfile = TRP3_API.register.isUnitIDKnown, TRP3_API.register.hasProfile, TRP3_API.register.getProfile;
 local getCompleteName, openPageByUnitID = TRP3_API.register.getCompleteName;
 local deleteProfile = TRP3_API.companions.register.deleteProfile;
@@ -232,30 +231,29 @@ local function onActionClick(button)
 	assert(context, "No context !");
 	assert(context.profile, "No profile in context");
 
-	local values = {};
-	tinsert(values,{loc.PR_DELETE_PROFILE, 1});
-	local masters = {};
-	for companionFullId, _ in pairs(context.profile.links or EMPTY) do
-		local ownerID, _ = companionIDToInfo(companionFullId);
-		masters[ownerID] = true;
-	end
-	local mastersProfiles = {};
-	for ownerID, _ in pairs(masters) do
-		if isUnitIDKnown(ownerID) and hasProfile(ownerID) then
-			mastersProfiles[hasProfile(ownerID)] = ownerID;
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+		local masters = {};
+		for companionFullId, _ in pairs(context.profile.links or EMPTY) do
+			local ownerID, _ = companionIDToInfo(companionFullId);
+			masters[ownerID] = true;
 		end
-	end
-	if tsize(mastersProfiles) > 0 then
-		local masterTab = {};
-		for profileID, ownerID in pairs(mastersProfiles) do
-			local profile = getUnitProfile(profileID);
-			local name = getCompleteName(profile.characteristics or EMPTY, ownerID, true);
-			tinsert(masterTab, {name, ownerID});
+		local mastersProfiles = {};
+		for ownerID, _ in pairs(masters) do
+			if isUnitIDKnown(ownerID) and hasProfile(ownerID) then
+				mastersProfiles[hasProfile(ownerID)] = ownerID;
+			end
 		end
-		tinsert(values, {loc.PR_CO_MASTERS, masterTab});
-	end
-
-	displayDropDown(button, values, onActionSelected, 0, true);
+		if tsize(mastersProfiles) > 0 then
+			local masterTab = description:CreateButton(loc.PR_CO_MASTERS);
+			for profileID, ownerID in pairs(mastersProfiles) do
+				local profile = getUnitProfile(profileID);
+				local name = getCompleteName(profile.characteristics or EMPTY, ownerID, true);
+				masterTab:CreateButton(name, onActionSelected, ownerID);
+			end
+		end
+		description:CreateDivider();
+		description:CreateButton("|cnRED_FONT_COLOR:" .. loc.PR_DELETE_PROFILE .. "|r", onActionSelected, 1);
+	end);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -422,8 +420,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 			showIconBrowser(onPlayerIconSelected, draftData.IC);
 		elseif button == "RightButton" then
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, function() TRP3_API.SetLastCopiedIcon(draftData.IC); end);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftData.IC}); end);
+				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, draftData.IC);
+				description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {draftData.IC});
 				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end
@@ -437,8 +435,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_CompanionsPageInformationConsult_About_Empty:SetText(loc.REG_PLAYER_ABOUT_EMPTY);
 	TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:SetText(loc.CM_EDIT);
 	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, TRP3_InterfaceIcons.Gears);
-	setTooltipForSameFrame(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, "TOP", 0, 5, loc.CM_ACTIONS);
-	TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton:SetScript("OnClick", onActionClick);
+	setTooltipForSameFrame(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+	TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton:SetScript("OnMouseDown", onActionClick);
 
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationEdit_NamePanel_NameColor, "RIGHT", 0, 5, loc.REG_COMPANION_NAME_COLOR, loc.REG_PLAYER_COLOR_TT);
 	TRP3_CompanionsPageInformationEdit_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);

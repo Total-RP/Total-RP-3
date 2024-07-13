@@ -12,7 +12,6 @@ TRP3_API.profile = {};
 local Globals, Events, Utils = TRP3_API.globals, TRP3_Addon.Events, TRP3_API.utils;
 local loc = TRP3_API.loc;
 local unitIDToInfo = Utils.str.unitIDToInfo;
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local initList = TRP3_API.ui.list.initList;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -376,27 +375,27 @@ end
 
 local function onActionClicked(button)
 	local profileID = button:GetParent().profileID;
-	local values = {};
 
-	tinsert(values, {loc.PR_PROFILE_MANAGEMENT_TITLE});
-	tinsert(values, {loc.PR_PROFILEMANAGER_RENAME, PROFILEMANAGER_ACTIONS.RENAME});
-	tinsert(values, {loc.PR_DUPLICATE_PROFILE, PROFILEMANAGER_ACTIONS.DUPLICATE});
-	if currentProfileId ~= profileID then
-		tinsert(values, {loc.PR_DELETE_PROFILE, PROFILEMANAGER_ACTIONS.DELETE});
-	else
-		tinsert(values, {"|cff999999" .. loc.PR_DELETE_PROFILE, nil});
-	end
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+		description:CreateTitle(loc.PR_PROFILE_MANAGEMENT_TITLE);
+		description:CreateButton(loc.PR_PROFILEMANAGER_RENAME, function() onActionSelected(PROFILEMANAGER_ACTIONS.RENAME, button); end);
+		description:CreateButton(loc.PR_DUPLICATE_PROFILE, function() onActionSelected(PROFILEMANAGER_ACTIONS.DUPLICATE, button); end);
+		if currentProfileId ~= profileID then
+			description:CreateButton("|cnRED_FONT_COLOR:" .. loc.PR_DELETE_PROFILE .. "|r", function() onActionSelected(PROFILEMANAGER_ACTIONS.DELETE, button); end);
+		else
+			description:CreateButton(loc.PR_DELETE_PROFILE):SetEnabled(false);
+		end
 
-	tinsert(values, {""});
-	tinsert(values, {loc.PR_EXPORT_IMPORT_TITLE});
-	if currentProfileId ~= profileID then
-		tinsert(values, {loc.PR_IMPORT_PROFILE, PROFILEMANAGER_ACTIONS.IMPORT});
-	else
-		tinsert(values, {"|cff999999" .. loc.PR_IMPORT_PROFILE, nil});
-	end
-	tinsert(values, {loc.PR_EXPORT_PROFILE, PROFILEMANAGER_ACTIONS.EXPORT});
+		description:CreateDivider();
 
-	displayDropDown(button, values, onActionSelected, 0, true);
+		description:CreateTitle(loc.PR_EXPORT_IMPORT_TITLE);
+		if currentProfileId ~= profileID then
+			description:CreateButton(loc.PR_IMPORT_PROFILE, function() onActionSelected(PROFILEMANAGER_ACTIONS.EXPORT, button); end);
+		else
+			description:CreateButton(loc.PR_IMPORT_PROFILE):SetEnabled(false);
+		end
+		description:CreateButton(loc.PR_EXPORT_PROFILE, function() onActionSelected(PROFILEMANAGER_ACTIONS.EXPORT, button); end);
+	end);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -496,13 +495,11 @@ function TRP3_API.profile.init()
 
 			end
 		end);
-		_G[widget:GetName().."Action"]:SetScript("OnClick", onActionClicked);
+		_G[widget:GetName().."Action"]:SetScript("OnMouseDown", onActionClicked);
 		_G[widget:GetName().."Current"]:SetText(loc.PR_PROFILEMANAGER_CURRENT);
 		table.insert(widgetTab, widget);
 
-		Ellyb.Tooltips.getTooltip(_G[widget:GetName().."Action"])
-			:SetAnchor(Ellyb.Tooltips.ANCHORS.TOP)
-			:SetTitle(loc.PR_PROFILEMANAGER_ACTIONS);
+		setTooltipForSameFrame(_G[widget:GetName().."Action"], "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 
 		-- Display indications in the tooltip on how to create a chat link
 		Ellyb.Tooltips.getTooltip(widget)

@@ -12,7 +12,6 @@ local initList = TRP3_API.ui.list.initList;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForFrame, setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getImageList, getImageListSize, getMusicList, getMusicListSize;
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -919,52 +918,44 @@ local function colorPresetsDropDownSelection(hexValue)
 end
 
 local function colorPresetsDropDown()
-	local values = {};
+	TRP3_MenuUtil.CreateContextMenu(TRP3_ColorBrowserPresets, function(_, description)
+		description:CreateTitle(loc.BW_COLOR_PRESET_TITLE);
 
-	local values_basic = {};
+		local existingPreset = getPresetForColor(TRP3_API.CreateColor(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue));
+		if existingPreset then
+			local coloredText = TRP3_API.CreateColorFromHexString(existingPreset.CO):WrapTextInColorCode(existingPreset.TX);
+			description:CreateButton(loc.BW_COLOR_PRESET_RENAME:format(coloredText), colorPresetsDropDownSelection, "RENAME");
+			description:CreateButton("|cnRED_FONT_COLOR:" .. loc.BW_COLOR_PRESET_DELETE:format(coloredText) .. "|r", colorPresetsDropDownSelection, "DELETE");
+		else
+			description:CreateButton(loc.BW_COLOR_PRESET_SAVE, colorPresetsDropDownSelection, "SAVE");
+		end
+		description:CreateDivider();
 
-	tinsert(values, { TRP3_API.Colors.Yellow(loc.BW_COLOR_PRESET_TITLE)});
+		local values_basic = description:CreateButton(loc.UI_COLOR_BROWSER_PRESETS_BASIC);
+		for _, preset in pairs(COLOR_PRESETS_BASIC) do
+			values_basic:CreateButton(preset.CO:WrapTextInColorCode(preset.TX), colorPresetsDropDownSelection, preset.CO:GenerateHexColorOpaque());
+		end
 
-	local existingPreset = getPresetForColor(TRP3_API.CreateColor(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue));
-	if existingPreset then
-		local coloredText = TRP3_API.CreateColorFromHexString(existingPreset.CO):WrapTextInColorCode(existingPreset.TX);
-		tinsert(values, { loc.BW_COLOR_PRESET_RENAME:format(coloredText), "RENAME" });
-		tinsert(values, { loc.BW_COLOR_PRESET_DELETE:format(coloredText), "DELETE" });
-	else
-		tinsert(values, { loc.BW_COLOR_PRESET_SAVE, "SAVE" });
-	end
-	tinsert(values, { "" }); -- Separator
+		local values_classes = description:CreateButton(loc.UI_COLOR_BROWSER_PRESETS_CLASSES);
+		for _, preset in pairs(COLOR_PRESETS_CLASS) do
+			values_classes:CreateButton(preset.CO:WrapTextInColorCode(preset.TX), colorPresetsDropDownSelection, preset.CO:GenerateHexColorOpaque());
+		end
 
-	for _, preset in pairs(COLOR_PRESETS_BASIC) do
-		tinsert(values_basic, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexColorOpaque() });
-	end
-	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_BASIC, values_basic});
+		local values_resources = description:CreateButton(loc.UI_COLOR_BROWSER_PRESETS_RESOURCES);
+		for _, preset in pairs(COLOR_PRESETS_RESOURCES) do
+			values_resources:CreateButton(preset.CO:WrapTextInColorCode(preset.TX), colorPresetsDropDownSelection, preset.CO:GenerateHexColorOpaque());
+		end
 
-	local values_classes = {};
-	for _, preset in pairs(COLOR_PRESETS_CLASS) do
-		tinsert(values_classes, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexColorOpaque() });
-	end
-	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_CLASSES, values_classes});
+		local values_items = description:CreateButton(loc.UI_COLOR_BROWSER_PRESETS_ITEMS);
+		for _, preset in pairs(COLOR_PRESETS_ITEMS) do
+			values_items:CreateButton(preset.CO:WrapTextInColorCode(preset.TX), colorPresetsDropDownSelection, preset.CO:GenerateHexColorOpaque());
+		end
 
-	local values_resources = {};
-	for _, preset in pairs(COLOR_PRESETS_RESOURCES) do
-		tinsert(values_resources, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexColorOpaque() });
-	end
-	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_RESOURCES, values_resources});
-
-	local values_items = {};
-	for _, preset in pairs(COLOR_PRESETS_ITEMS) do
-		tinsert(values_items, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexColorOpaque() });
-	end
-	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_ITEMS, values_items});
-
-	local values_custom = {};
-	for _, preset in pairs(TRP3_Colors) do
-		tinsert(values_custom, { TRP3_API.CreateColorFromHexString(preset.CO):WrapTextInColorCode(preset.TX), preset.CO });
-	end
-	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_CUSTOM, values_custom});
-
-	displayDropDown(TRP3_ColorBrowserPresets, values, colorPresetsDropDownSelection, 0, true);
+		local values_custom = description:CreateButton(loc.UI_COLOR_BROWSER_PRESETS_CUSTOM);
+		for _, preset in pairs(TRP3_Colors) do
+			values_custom:CreateButton(TRP3_API.CreateColorFromHexString(preset.CO):WrapTextInColorCode(preset.TX), colorPresetsDropDownSelection, preset.CO);
+		end
+	end);
 end
 
 local function initColorBrowser()
@@ -1014,7 +1005,7 @@ local function initColorBrowser()
 		end
 	end);
 
-	TRP3_ColorBrowserPresets:SetScript("OnClick", colorPresetsDropDown);
+	TRP3_ColorBrowserPresets:SetScript("OnMouseDown", colorPresetsDropDown);
 end
 
 local function showColorBrowser(callback, red, green, blue)

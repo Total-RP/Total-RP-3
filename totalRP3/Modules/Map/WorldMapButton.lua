@@ -11,7 +11,6 @@ local Events = TRP3_Addon.Events;
 local getConfigValue = TRP3_API.configuration.getValue;
 local setConfigValue = TRP3_API.configuration.setValue;
 local registerConfigKey = TRP3_API.configuration.registerConfigKey;
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 --endregion
 
 --region Ellyb imports
@@ -140,7 +139,7 @@ end);
 
 --endregion
 
-WorldMapButton:SetScript("OnClick", function(self)
+WorldMapButton:SetScript("OnMouseDown", function(self)
 	local structure = {};
 	local scans = TRP3_API.MapScannersManager.getAllScans();
 	---@param scan MapScanner
@@ -172,7 +171,12 @@ WorldMapButton:SetScript("OnClick", function(self)
 	if #structure == 0 then
 		tinsert(structure, {loc.MAP_BUTTON_NO_SCAN, nil});
 	end
-	displayDropDown(self, structure, TRP3_API.MapScannersManager.launch, 0, true);
+
+	TRP3_MenuUtil.CreateContextMenu(TRP3_RegisterCharact_Edit_MiscAdd, function(_, description)
+		for _, scan in pairs(structure) do
+			description:CreateButton(scan[1], TRP3_API.MapScannersManager.launch, scan[2]);
+		end
+	end);
 end);
 
 function WorldMapButton.resetCooldown()

@@ -24,7 +24,7 @@ local getProfile = TRP3_API.register.getProfile;
 local getIgnoredList, unignoreID, isIDIgnored = TRP3_API.register.getIgnoredList, TRP3_API.register.unignoreID, TRP3_API.register.isIDIgnored;
 local getRelationText, getRelationTooltipText = TRP3_API.register.relation.getRelationText, TRP3_API.register.relation.getRelationTooltipText;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
-local displayDropDown, showAlertPopup, showConfirmPopup = TRP3_API.ui.listbox.displayDropDown, TRP3_API.popup.showAlertPopup, TRP3_API.popup.showConfirmPopup;
+local showAlertPopup, showConfirmPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showConfirmPopup;
 local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
 local deleteProfile, deleteCharacter, getProfileList = TRP3_API.register.deleteProfile, TRP3_API.register.deleteCharacter, TRP3_API.register.getProfileList;
 local ignoreID = TRP3_API.register.ignoreID;
@@ -113,6 +113,7 @@ local function openCompanionPage(profileID)
 			onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PAGE, {profile = profile, profileID = profileID, isPlayer = false}) end,
 			isChildOf = REGISTER_PAGE,
 			closeable = true,
+			icon = [[interface\icons\]] .. TRP3_InterfaceIcons.CompanionMenuItem,
 			sortGroup = currentlyOpenedProfilePrefix,
 			sortIndex = -time(),
 		});
@@ -201,24 +202,23 @@ local function getCurrentComparator()
 	return comparators[sortingType];
 end
 
-local ARROW_DOWN = "Interface\\Buttons\\Arrow-Down-Up";
-local ARROW_UP = "Interface\\Buttons\\Arrow-Up-Up";
-local ARROW_SIZE = 15;
+local ARROW_DOWN = "|TInterface\\Buttons\\Arrow-Down-Up:15:15:0:-6|t";
+local ARROW_UP = "|TInterface\\Buttons\\Arrow-Up-Up:15|t";
 
 local function getComparatorArrows()
 	local nameArrow, relationArrow, timeArrow = "", "", "";
 	if sortingType == 1 then
-		nameArrow = " |T" .. ARROW_DOWN .. ":" .. ARROW_SIZE .. "|t";
+		nameArrow = " " .. ARROW_DOWN;
 	elseif sortingType == 2 then
-		nameArrow = " |T" .. ARROW_UP .. ":" .. ARROW_SIZE .. "|t";
+		nameArrow = " " .. ARROW_UP;
 	elseif sortingType == 3 then
-		relationArrow = " |T" .. ARROW_DOWN .. ":" .. ARROW_SIZE .. "|t";
+		relationArrow = " " .. ARROW_DOWN;
 	elseif sortingType == 4 then
-		relationArrow = " |T" .. ARROW_UP .. ":" .. ARROW_SIZE .. "|t";
+		relationArrow = " " .. ARROW_UP;
 	elseif sortingType == 5 then
-		timeArrow = " |T" .. ARROW_DOWN .. ":" .. ARROW_SIZE .. "|t";
+		timeArrow = " " .. ARROW_DOWN;
 	elseif sortingType == 6 then
-		timeArrow = " |T" .. ARROW_UP .. ":" .. ARROW_SIZE .. "|t";
+		timeArrow = " " .. ARROW_UP;
 	end
 	return nameArrow, relationArrow, timeArrow;
 end
@@ -522,21 +522,19 @@ local function onCharactersActionSelected(value)
 	end
 end
 
-local function onCharactersActions(self)
-	local values = {};
-	tinsert(values, {loc.REG_LIST_ACTIONS_PURGE, {
-			{loc.REG_LIST_ACTIONS_PURGE_TIME, "purge_time"},
-			{loc.REG_LIST_ACTIONS_PURGE_UNLINKED, "purge_unlinked"},
-			{loc.REG_LIST_ACTIONS_PURGE_IGNORE, "purge_ignore"},
-			{loc.REG_LIST_ACTIONS_PURGE_ALL, "purge_all"},
-		}});
-	if tsize(selectedIDs) > 0 then
-		tinsert(values, {loc.REG_LIST_ACTIONS_MASS:format(tsize(selectedIDs)), {
-				{loc.REG_LIST_ACTIONS_MASS_REMOVE, "actions_delete"},
-				{loc.REG_LIST_ACTIONS_MASS_IGNORE, "actions_ignore"},
-			}});
-	end
-	displayDropDown(self, values, onCharactersActionSelected, 0, true);
+local function onCharactersActions(button)
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+		local purge = description:CreateButton(loc.REG_LIST_ACTIONS_PURGE);
+		purge:CreateButton(loc.REG_LIST_ACTIONS_PURGE_TIME, onCharactersActionSelected, "purge_time");
+		purge:CreateButton(loc.REG_LIST_ACTIONS_PURGE_UNLINKED, onCharactersActionSelected, "purge_unlinked");
+		purge:CreateButton(loc.REG_LIST_ACTIONS_PURGE_IGNORE, onCharactersActionSelected, "purge_ignore");
+		purge:CreateButton(loc.REG_LIST_ACTIONS_PURGE_ALL, onCharactersActionSelected, "purge_all");
+		if tsize(selectedIDs) > 0 then
+			local mass = description:CreateButton(loc.REG_LIST_ACTIONS_MASS:format(tsize(selectedIDs)));
+			mass:CreateButton(loc.REG_LIST_ACTIONS_MASS_REMOVE, onCharactersActionSelected, "actions_delete");
+			mass:CreateButton(loc.REG_LIST_ACTIONS_MASS_IGNORE, onCharactersActionSelected, "actions_ignore");
+		end
+	end);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -708,17 +706,15 @@ local function onCompanionActionSelected(value)
 	end
 end
 
-local function onPetsActions(self)
-	local values = {};
-	tinsert(values, {loc.REG_LIST_ACTIONS_PURGE, {
-			{loc.REG_LIST_ACTIONS_PURGE_ALL, "purge_all"},
-		}});
-	if tsize(selectedIDs) > 0 then
-		tinsert(values, {loc.REG_LIST_ACTIONS_MASS:format(tsize(selectedIDs)), {
-				{loc.REG_LIST_ACTIONS_MASS_REMOVE, "actions_delete"},
-			}});
-	end
-	displayDropDown(self, values, onCompanionActionSelected, 0, true);
+local function onPetsActions(button)
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+		local purge = description:CreateButton(loc.REG_LIST_ACTIONS_PURGE);
+		purge:CreateButton(loc.REG_LIST_ACTIONS_PURGE_ALL, onCompanionActionSelected, "purge_all");
+		if tsize(selectedIDs) > 0 then
+			local mass = description:CreateButton(loc.REG_LIST_ACTIONS_MASS:format(tsize(selectedIDs)));
+			mass:CreateButton(loc.REG_LIST_ACTIONS_MASS_REMOVE, onCompanionActionSelected, "actions_delete");
+		end
+	end);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1000,8 +996,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_RegisterListHeaderInfoTT:SetScript("OnClick", switchInfoSorting);
 	TRP3_RegisterListHeaderTimeTT:SetScript("OnClick", switchTimeSorting);
 
-	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "TOP", 0, 0, loc.CM_ACTIONS);
-	TRP3_RegisterListHeaderActions:SetScript("OnClick", function(self)
+	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+	TRP3_RegisterListHeaderActions:SetScript("OnMouseDown", function(self)
 		if currentMode == MODE_CHARACTER then
 			onCharactersActions(self);
 		elseif currentMode == MODE_PETS then
@@ -1070,7 +1066,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					profile = getUnitIDProfile(unitID);
 				end
 
-				local name = getCompleteName(profile.characteristics or {}, nil, true);
+				local name = getCompleteName(profile.characteristics or {}, "", true);
 				buttonStructure.tooltipSub = name .. "\n\n" ..  TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER);
 
 				if unitID ~= Globals.player_id and profile.about and not profile.about.read then
