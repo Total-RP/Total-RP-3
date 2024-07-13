@@ -437,7 +437,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Size x="0" y="15"/>
 							<Anchors>
 								<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="10" relativeKey="$parent.Icon"/>
-								<Anchor point="RIGHT" x="-10" y="0"/>
+								<Anchor point="RIGHT" x="-35" y="0"/>
 							</Anchors>
 							<Color b="0.95" r="0.95" g="0.95"/>
 						</FontString>
@@ -454,7 +454,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Frames>
 					<Button name="TRP3_RegisterCharact_NamePanel_WalkupButton" inherits="TRP3_WalkupButton">
 						<Anchors>
-							<Anchor point="LEFT" x="-18" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_NamePanel_Name"/>
+							<Anchor point="LEFT" x="5" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_NamePanel_Name"/>
 						</Anchors>
 					</Button>
 				</Frames>
