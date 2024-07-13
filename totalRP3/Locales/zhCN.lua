@@ -301,9 +301,9 @@ L = {
 	["CO_REGISTER_AUTO_PURGE_1"] = "在 %s 天后",
 	["CO_REGISTER_AUTO_PURGE_TT"] = [=[自动从目录中删除你在一定时间内没有遇到的角色。你可以设定这个时间跨度
 
-|cff00ff00请注意，与您的一个角色有关系的玩家数据永远不会被清除。
+|cnGREEN_FONT_COLOR:请注意，与您的一个角色有关系的玩家数据永远不会被清除。|r
 
-|cnWARNING_FONT_COLOR:但这有一个bug，当它到达某个特定的值时，它会丢失所有被保存的数据。我们强烈建议保持这个系统以免整体失效。]=],
+|cnWARNING_FONT_COLOR:但这有一个bug，当它到达某个特定的值时，它会丢失所有被保存的数据。我们强烈建议保持这个系统以免整体失效。|r]=],
 	["CO_SANITIZER"] = "过滤传入的文件",
 	["CO_SANITIZER_TT"] = "当接收TRP不支持的颜色、图片等信息时对其进行自动过滤。",
 	["CO_TARGETFRAME"] = "目标框架设置",

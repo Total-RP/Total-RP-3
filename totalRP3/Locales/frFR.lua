@@ -411,9 +411,9 @@ Statuts possibles:
 	["CO_REGISTER_AUTO_PURGE_1"] = "Après %s jours",
 	["CO_REGISTER_AUTO_PURGE_TT"] = [=[Retire automatiquement du registre les profils de personnages que vous n'avez pas croisés depuis un certain temps. Vous pouvez choisir le délai avant la suppression.
 
-|cff00ff00Notez qu'un profil envers lequel un de vos personnages possède une relation ne sera jamais supprimé.
+|cnGREEN_FONT_COLOR:Notez qu'un profil envers lequel un de vos personnages possède une relation ne sera jamais supprimé.|r
 
-|cnWARNING_FONT_COLOR:Il existe un bug dans WoW supprimant toutes les données sauvegardées si le fichier de sauvegarde atteint une certaine taille. Nous déconseillons donc fortement de désactiver totalement la purge.]=],
+|cnWARNING_FONT_COLOR:Il existe un bug dans WoW supprimant toutes les données sauvegardées si le fichier de sauvegarde atteint une certaine taille. Nous déconseillons donc fortement de désactiver totalement la purge.|r]=],
 	["CO_SANITIZER"] = "Nettoyer les profils",
 	["CO_SANITIZER_TT"] = "Enlève les tags de couleur et d'image insérés dans les champs non-autorisés des profils de joueur et coupe les textes beaucoup trop longs.",
 	["CO_TARGETFRAME"] = "Paramètres du cadre de la cible",

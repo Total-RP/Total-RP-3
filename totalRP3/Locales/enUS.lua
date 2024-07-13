@@ -361,7 +361,7 @@ MSP support in Total RP 3 will be disabled while |cnGREEN_FONT_COLOR:%s|r is loa
 	REG_COMPANION_PAGE_TUTO_C_1 = "Consult",
 	REG_COMPANION_PAGE_TUTO_E_1 = "This is |cnGREEN_FONT_COLOR:your companion main information|r.|n|nAll of this information will appear on |cnGREEN_FONT_COLOR:your companion's tooltip|r.",
 	REG_COMPANION_PAGE_TUTO_E_2 = [[|cnGREEN_FONT_COLOR:Background:|r
-Set a |cnGREEN_FONT_COLOR:background texture|r for your companion description
+Set a |cnGREEN_FONT_COLOR:background texture|r for your companion description.
 
 |cnGREEN_FONT_COLOR:Formatting tools:|r
 The formatting tools give you access to various |cnGREEN_FONT_COLOR:layout parameters|r (text size, color, and alignment). You can also |cnGREEN_FONT_COLOR:insert images, icons, or links to external websites|r.
@@ -493,7 +493,7 @@ Class: 50 characters|r]],
 	CO_REGISTER_ABOUT_P_SIZE = "Paragraph text size",
 	CO_REGISTER_ABOUT_P_SIZE_TT = "Size of the text outside of header tags. Default: %d",
 	CO_REGISTER_AUTO_PURGE = "Auto purge directory",
-	CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletio	n.|n|n|cnGREEN_FONT_COLOR:Keep in mind that profiles that have a relation to one of your characters or an attached note will never be purged.\n\n|cnWARNING_FONT_COLOR:Due to a bug in the game, saved data can be lost when the directory reaches a certain threshold. We recommend keeping this setting enabled.",
+	CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletion.|n|n|cnGREEN_FONT_COLOR:Keep in mind that profiles that have a relation to one of your characters or an attached note will never be purged.|r|n|n|cnWARNING_FONT_COLOR:Due to a bug in the game, saved data can be lost when the directory reaches a certain threshold. We recommend keeping this setting enabled.|r",
 	CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
 	CO_REGISTER_AUTO_PURGE_1 = "After %s |4day:days;",
 	CO_RELATIONS = "Relations",

@@ -283,10 +283,10 @@ Möglicher Status:
 	["CO_REGISTER_AUTO_PURGE_0"] = "Bereinigung abschalten",
 	["CO_REGISTER_AUTO_PURGE_1"] = "Nach %s Tag(en)",
 	["CO_REGISTER_AUTO_PURGE_TT"] = [=[Entferne automatisch die Profile von Charakteren aus dem Verzeichnis, denen du seit einer bestimmten Zeit nicht mehr begegnet bist. Du eine Verzögerung vor der Löschung auswählen.
-|cff00ff00Beachte dass Profile mit einem Verhältnis zu einem deiner Charaktere niemals bereinigt werden.
-|cnWARNING_FONT_COLOR:Es gibt einen Bug in WoW bei dem alle gespeicherten Daten verloren gehen, wenn ein bestimmtes Limit überschritten wird. Wir raten eindringlich davon ab das Bereinigungssystem abzuschalten.
 
-]=],
+|cnGREEN_FONT_COLOR:Beachte dass Profile mit einem Verhältnis zu einem deiner Charaktere niemals bereinigt werden.|r
+
+|cnWARNING_FONT_COLOR:Es gibt einen Bug in WoW bei dem alle gespeicherten Daten verloren gehen, wenn ein bestimmtes Limit überschritten wird. Wir raten eindringlich davon ab das Bereinigungssystem abzuschalten.|r]=],
 	["CO_SANITIZER"] = "Zensiere eingehende Profile",
 	["CO_SANITIZER_TT"] = "Entfernt benutzerdefinierte Kommandos in Tooltips von neuen Profilen, wenn TRP diese nicht gestattet. ( Farben, Bilder ...)",
 	["CO_TARGETFRAME"] = "Zielfenstereinstellungen",

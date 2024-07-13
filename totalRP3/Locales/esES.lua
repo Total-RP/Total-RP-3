@@ -304,9 +304,9 @@ Posibles estados:
 	["CO_REGISTER_AUTO_PURGE_1"] = "Después de %s día(s)",
 	["CO_REGISTER_AUTO_PURGE_TT"] = [=[Eliminar automáticamente del directorio los perfiles de personajes con los que no te has cruzado en determinado tiempo. Puedes aplazarlo antes de eliminar.
 
-|cff00ff00Ten en cuenta que los perfiles que tengan alguna relación con tus personajes no serán eliminados.
+|cnGREEN_FONT_COLOR:Ten en cuenta que los perfiles que tengan alguna relación con tus personajes no serán eliminados.|r
 
-|cnWARNING_FONT_COLOR:Hay un error en WoW que pierde toda la información guardada al llegar a cierto límite. Recomendamos encarecidamente evitar deshabilitar el sistema de purga.]=],
+|cnWARNING_FONT_COLOR:Hay un error en WoW que pierde toda la información guardada al llegar a cierto límite. Recomendamos encarecidamente evitar deshabilitar el sistema de purga.|r]=],
 	["CO_SANITIZER"] = "Sanear perfiles entrantes",
 	["CO_SANITIZER_TT"] = "Eliminar secuencias de escape en campos de información de herramientas de los perfiles entrantes cuando TRP no lo permite (color, imágenes...).",
 	["CO_TARGETFRAME"] = "Ajustes del marco de objetivo",

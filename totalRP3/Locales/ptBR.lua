@@ -296,9 +296,9 @@ Status possíveis:
 	["CO_REGISTER_AUTO_PURGE_1"] = "Depois de %s dia(s)",
 	["CO_REGISTER_AUTO_PURGE_TT"] = [=[Automaticamente remover do diretório os perfis de personagens que você não encontrou por um certo tempo. Você pode escolher o tempo até a exclusão.
 
-|cff00ff00Note que perfis com uma relação com um dos seus personagens jamais serão expurgados.
+|cnGREEN_FONT_COLOR:Note que perfis com uma relação com um dos seus personagens jamais serão expurgados.|r
 
-|cnWARNING_FONT_COLOR:Há um bug no WoW que perde todos os dados salvos quando atinge um certo limite. Recomendamos evitar desativar o sistema de expurgo.]=],
+|cnWARNING_FONT_COLOR:Há um bug no WoW que perde todos os dados salvos quando atinge um certo limite. Recomendamos evitar desativar o sistema de expurgo.|r]=],
 	["CO_SANITIZER"] = "Limpar perfis recebidos",
 	["CO_SANITIZER_TT"] = "Remover sequências em campos de telas de informações de perfis recebidos quando o TRP não os permitir (cores, imagens...)",
 	["CO_TARGETFRAME"] = "Configurações do frame alvo",
