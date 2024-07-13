@@ -952,24 +952,24 @@ Vous pouvez optionnellement entrer la raison ci-dessous. C'est une note personne
 	["REG_LIST_ACTIONS_PURGE_ALL"] = "Supprimer tous les profils",
 	["REG_LIST_ACTIONS_PURGE_ALL_C"] = [=[Cette purge supprimera tous les profils et les personnages auxquels ils sont liés du registre.
 
-|cff00ff00%s personnages.]=],
+|cff00ff00%s personnages|r]=],
 	["REG_LIST_ACTIONS_PURGE_ALL_COMP_C"] = [=[Cette purge supprimera tous les compagnons du registre.
 
-|cff00ff00%s compagnons.]=],
+|cff00ff00%s compagnons|r]=],
 	["REG_LIST_ACTIONS_PURGE_COUNT"] = "%s profils seront supprimés.",
 	["REG_LIST_ACTIONS_PURGE_EMPTY"] = "Pas de profil à purger.",
 	["REG_LIST_ACTIONS_PURGE_IGNORE"] = "Profils de personnages ignorés",
 	["REG_LIST_ACTIONS_PURGE_IGNORE_C"] = [=[Cette purge supprimera tous les profils liés à un personnage WoW ignoré.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ACTIONS_PURGE_TIME"] = "Profils non vus depuis 1 mois",
 	["REG_LIST_ACTIONS_PURGE_TIME_C"] = [=[Cette purge supprimera tous les profils qui n'ont pas été vus depuis un mois.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ACTIONS_PURGE_UNLINKED"] = "Profils non-liés à un personnage",
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Cette purge supprimera tous les profils qui ne sont pas liés à un personnage WoW.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ADDON"] = "Type de profil",
 	["REG_LIST_CHAR_EMPTY"] = "Aucun personnage",
 	["REG_LIST_CHAR_EMPTY2"] = "Aucun personnage ne correspond à votre sélection",
@@ -986,7 +986,7 @@ Vu pour la dernière fois à: |cff00ff00%s|r]=],
 	["REG_LIST_CHAR_TT_GLANCE"] = "Coup d'œil",
 	["REG_LIST_CHAR_TT_IGNORE"] = "Personnage(s) ignoré(s)",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Relation:
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_FILTERS"] = "Filtres",
 	["REG_LIST_FILTERS_APPLY"] = "Appliquer les filtres",
 	["REG_LIST_FILTERS_CLEAR"] = "Effacer les filtres",
@@ -1036,13 +1036,13 @@ Si vous ne souhaitez pas que TRP3 soit votre addon MSP et ne voulez plus voir ce
 	["REG_PLAYER_ABOUT_MUSIC_SELECT2"] = "Choisir le thème",
 	["REG_PLAYER_ABOUT_MUSIC_STOP"] = "Arrêter le thème",
 	["REG_PLAYER_ABOUT_MUSIC_THEME"] = "Thème musical du personnage",
-	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Aucun thème",
+	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Aucun thème|r",
 	["REG_PLAYER_ABOUT_P"] = "Tag de paragraphe",
 	["REG_PLAYER_ABOUT_REMOVE_FRAME"] = "Supprimer ce cadre",
 	["REG_PLAYER_ABOUT_SOME"] = "Du texte ...",
 	["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "Votre texte ici",
 	["REG_PLAYER_ABOUT_TAGS"] = "Outils de mise en page",
-	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Thème inconnu",
+	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Thème inconnu|r",
 	["REG_PLAYER_ABOUTS"] = "À propos de %s",
 	["REG_PLAYER_ADD_NEW"] = "Créer nouveau",
 	["REG_PLAYER_AGE"] = "Âge",

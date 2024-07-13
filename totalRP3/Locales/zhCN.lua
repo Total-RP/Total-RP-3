@@ -754,24 +754,24 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	["REG_LIST_ACTIONS_PURGE_ALL"] = "删除所有同伴卡",
 	["REG_LIST_ACTIONS_PURGE_ALL_C"] = [=[这将从目录中删除所有同伴卡和角色链接.
 
-|cff00ff00%s .]=],
+|cff00ff00%s characters|r]=],
 	["REG_LIST_ACTIONS_PURGE_ALL_COMP_C"] = [=[这将删除目录中所有同伴.
 
-|cff00ff00%s 同伴.]=],
+|cff00ff00%s 同伴|r]=],
 	["REG_LIST_ACTIONS_PURGE_COUNT"] = "%s 同伴卡将被删除.",
 	["REG_LIST_ACTIONS_PURGE_EMPTY"] = "没有同伴卡被清除.",
 	["REG_LIST_ACTIONS_PURGE_IGNORE"] = "已忽略的角色的同伴卡",
 	["REG_LIST_ACTIONS_PURGE_IGNORE_C"] = [=[这将清除所有链接魔兽世界的同伴卡。
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ACTIONS_PURGE_TIME"] = "超过一个月没见到的同伴卡",
 	["REG_LIST_ACTIONS_PURGE_TIME_C"] = [=[这将移除所有一个月未见的同伴卡。
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ACTIONS_PURGE_UNLINKED"] = "没有和角色绑定的同伴卡",
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[这个清除将删除所有没有绑定到魔兽世界角色的同伴卡。
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ADDON"] = "档案种类",
 	["REG_LIST_CHAR_EMPTY"] = "没有角色",
 	["REG_LIST_CHAR_EMPTY2"] = "没有匹配的角色",
@@ -788,7 +788,7 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	["REG_LIST_CHAR_TT_GLANCE"] = "第一印象",
 	["REG_LIST_CHAR_TT_IGNORE"] = "忽略的角色(s)",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[关系:
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_FILTERS"] = "过滤",
 	["REG_LIST_FILTERS_APPLY"] = "应用过滤器",
 	["REG_LIST_FILTERS_CLEAR"] = "清除过滤器",
@@ -838,13 +838,13 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	["REG_PLAYER_ABOUT_MUSIC_SELECT2"] = "选择角色主题音乐",
 	["REG_PLAYER_ABOUT_MUSIC_STOP"] = "停止角色主题音乐",
 	["REG_PLAYER_ABOUT_MUSIC_THEME"] = "角色主题音乐",
-	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900没有角色主题音乐",
+	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900没有角色主题音乐|r",
 	["REG_PLAYER_ABOUT_P"] = "段落标记",
 	["REG_PLAYER_ABOUT_REMOVE_FRAME"] = "删除这个框架",
 	["REG_PLAYER_ABOUT_SOME"] = "一些文字 ...",
 	["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "您在此处输入的文字",
 	["REG_PLAYER_ABOUT_TAGS"] = "格式化工具",
-	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900未知主题",
+	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900未知主题|r",
 	["REG_PLAYER_ABOUTS"] = "关于 %s",
 	["REG_PLAYER_ADD_NEW"] = "创建新的",
 	["REG_PLAYER_AGE"] = "年龄",

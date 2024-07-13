@@ -646,24 +646,24 @@ Optional kann hier ein Grund angegeben werden. Es handelt sich um eine persönli
 	["REG_LIST_ACTIONS_PURGE_ALL"] = "Alle Profile löschen",
 	["REG_LIST_ACTIONS_PURGE_ALL_C"] = [=[Dies wird alle Profile und verlinkten Charaktere löschen.
 
-|cff00ff00%s Charaktere.]=],
+|cff00ff00%s Charaktere|r]=],
 	["REG_LIST_ACTIONS_PURGE_ALL_COMP_C"] = [=[Dies wird alle deine Begleiter löschen.
 
-|cff00ff00%s Begleiter.]=],
+|cff00ff00%s Begleiter|r]=],
 	["REG_LIST_ACTIONS_PURGE_COUNT"] = "%s Profile werden gelöscht.",
 	["REG_LIST_ACTIONS_PURGE_EMPTY"] = "Keine Profile zum Löschen.",
 	["REG_LIST_ACTIONS_PURGE_IGNORE"] = "Profile von ignorierten Charakteren",
 	["REG_LIST_ACTIONS_PURGE_IGNORE_C"] = [=[Diese Aktion wird alle Profile, die mit ignorierten Charakteren verbunden sind, löschen.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ACTIONS_PURGE_TIME"] = "Seit 1 Monat nicht mehr gesehene Profile",
 	["REG_LIST_ACTIONS_PURGE_TIME_C"] = [=[Dies wird alle Profile löschen, die seit einem Monat nicht gesehen wurden.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ACTIONS_PURGE_UNLINKED"] = "Profile ohne Charakter",
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Dies wird alle Profile, die nicht an einen WoW Charakter gebunden sind, löschen.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ADDON"] = "Profiltyp",
 	["REG_LIST_CHAR_EMPTY"] = "Kein Charakter",
 	["REG_LIST_CHAR_EMPTY2"] = "Kein Charakter passt zu deiner Auswahl",
@@ -679,7 +679,7 @@ Wo zuletzt gesehen: |cff00ff00%s|r]=],
 	["REG_LIST_CHAR_TT_GLANCE"] = "Auf den ersten Blick",
 	["REG_LIST_CHAR_TT_IGNORE"] = "Ignorierte Charakter/e",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Beziehung:
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_FILTERS"] = "Filter",
 	["REG_LIST_FILTERS_APPLY"] = "Filter anwenden",
 	["REG_LIST_FILTERS_CLEAR"] = "Filter zurücksetzen",
@@ -728,13 +728,13 @@ Wenn du TRP3 nicht als dein MSP Addon nutzen und diese Meldung nicht noch einmal
 	["REG_PLAYER_ABOUT_MUSIC_SELECT2"] = "Soundtrack wählen",
 	["REG_PLAYER_ABOUT_MUSIC_STOP"] = "Soundtrack stoppen",
 	["REG_PLAYER_ABOUT_MUSIC_THEME"] = "Charakter-Musikthema",
-	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Kein Soundtrack",
+	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Kein Soundtrack|r",
 	["REG_PLAYER_ABOUT_P"] = "Paragraph tag",
 	["REG_PLAYER_ABOUT_REMOVE_FRAME"] = "Diese Fenster entfernen",
 	["REG_PLAYER_ABOUT_SOME"] = "Irgendein Text ...",
 	["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "Dein Text hier",
 	["REG_PLAYER_ABOUT_TAGS"] = "Formatierungstools",
-	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Unbekannter Soundtrack",
+	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Unbekannter Soundtrack|r",
 	["REG_PLAYER_ABOUTS"] = "Über %s",
 	["REG_PLAYER_ADD_NEW"] = "Neues Profil erstellen",
 	["REG_PLAYER_AGE"] = "Alter",

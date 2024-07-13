@@ -774,24 +774,24 @@ Link it anyway ?]=],
 	["REG_LIST_ACTIONS_PURGE_ALL"] = "Удалить все профили",
 	["REG_LIST_ACTIONS_PURGE_ALL_C"] = [=[Очистка удалит все профили и связанных персонажей из директории.
 
-|cff00ff00%s персонажей.]=],
+|cff00ff00%s персонажей|r]=],
 	["REG_LIST_ACTIONS_PURGE_ALL_COMP_C"] = [=[Очистка удалит всех спутников из директории.
 
-|cff00ff00%s спутников.]=],
+|cff00ff00%s спутников|r]=],
 	["REG_LIST_ACTIONS_PURGE_COUNT"] = "%s профилей будет удалено.",
 	["REG_LIST_ACTIONS_PURGE_EMPTY"] = "Нет профилей для удаления.",
 	["REG_LIST_ACTIONS_PURGE_IGNORE"] = "Профили персонажей из черного списка",
 	["REG_LIST_ACTIONS_PURGE_IGNORE_C"] = [=[Очистка удалит все профили, связанные с персонажами WoW из черного списка.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ACTIONS_PURGE_TIME"] = "Профиль не появлялся более месяца",
 	["REG_LIST_ACTIONS_PURGE_TIME_C"] = [=[Очистка удалит все профили, которые не появлялись больше месяца.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ACTIONS_PURGE_UNLINKED"] = "Профиль не привязан к персонажу",
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Очистка удалит все профили, не связанные с персонажами WoW.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ADDON"] = "Тип профиля",
 	["REG_LIST_CHAR_EMPTY"] = "Нет персонажей",
 	["REG_LIST_CHAR_EMPTY2"] = "Ни один персонаж не подходит под описание",
@@ -808,7 +808,7 @@ Link it anyway ?]=],
 	["REG_LIST_CHAR_TT_GLANCE"] = "На первый взгляд",
 	["REG_LIST_CHAR_TT_IGNORE"] = "Черный список",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Отношение:
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_FILTERS"] = "Фильтры",
 	["REG_LIST_FILTERS_APPLY"] = "Применить фильтр",
 	["REG_LIST_FILTERS_CLEAR"] = "Сбросить фильтр",
@@ -858,13 +858,13 @@ Link it anyway ?]=],
 	["REG_PLAYER_ABOUT_MUSIC_SELECT2"] = "Выбрать тему",
 	["REG_PLAYER_ABOUT_MUSIC_STOP"] = "Остановить тему",
 	["REG_PLAYER_ABOUT_MUSIC_THEME"] = "Музыкальная тема персонажа",
-	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Тема не выбрана",
+	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Тема не выбрана|r",
 	["REG_PLAYER_ABOUT_P"] = "Метка абзаца",
 	["REG_PLAYER_ABOUT_REMOVE_FRAME"] = "Удалить окно",
 	["REG_PLAYER_ABOUT_SOME"] = "Текст ...",
 	["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "Вставьте Ваш текст",
 	["REG_PLAYER_ABOUT_TAGS"] = "Инструменты форматирования",
-	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Неизвестная тема",
+	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Неизвестная тема|r",
 	["REG_PLAYER_ABOUTS"] = "О %s",
 	["REG_PLAYER_ADD_NEW"] = "Создать новый",
 	["REG_PLAYER_AGE"] = "Возраст",

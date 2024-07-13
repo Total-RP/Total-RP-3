@@ -345,24 +345,24 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["REG_LIST_ACTIONS_PURGE_ALL"] = "Eliminar todos los perfiles",
 	["REG_LIST_ACTIONS_PURGE_ALL_C"] = [=[Esta purga eliminará todos los perfiles vinculados desde el directorio.
 
-|cff00ff00%s personajes.]=],
+|cff00ff00%s personajes|r]=],
 	["REG_LIST_ACTIONS_PURGE_ALL_COMP_C"] = [=[Esta purga eliminará todos los compañeros del directorio.
 
-|cff00ff00%s compañeros.]=],
+|cff00ff00%s compañeros|r]=],
 	["REG_LIST_ACTIONS_PURGE_COUNT"] = "%s perfiles serán eliminados.",
 	["REG_LIST_ACTIONS_PURGE_EMPTY"] = "No hay perfiles que purgar.",
 	["REG_LIST_ACTIONS_PURGE_IGNORE"] = "Perfiles de personajes ignorados.",
 	["REG_LIST_ACTIONS_PURGE_IGNORE_C"] = [=[Esta purga eliminará a todos los perfiles vinculados a un personaje de WoW ignorado.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ACTIONS_PURGE_TIME"] = "Perfiles no vistos desde hace 1 mes",
 	["REG_LIST_ACTIONS_PURGE_TIME_C"] = [=[Esta purga eliminará a todos los personajes no vistos desde hace un mes.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ACTIONS_PURGE_UNLINKED"] = "Perfiles no vinculados a un personaje",
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Esta purga eliminará todos los perfiles no vinculados a un personaje de WoW.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ADDON"] = "Tipo de perfil",
 	["REG_LIST_CHAR_EMPTY"] = "Sin personajes",
 	["REG_LIST_CHAR_EMPTY2"] = "Ningún personaje encaja con tu selección",
@@ -378,7 +378,7 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["REG_LIST_CHAR_TT_GLANCE"] = "A primera vista",
 	["REG_LIST_CHAR_TT_IGNORE"] = "Personaje(s) ignorado(s)",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Relación:
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_FILTERS"] = "Filtros",
 	["REG_LIST_FILTERS_APPLY"] = "Aplicar filtros",
 	["REG_LIST_FILTERS_CLEAR"] = "Limpiar filtros",
@@ -423,13 +423,13 @@ Si no quieres que el TRP3 sea tu PMS y no quieres ver esta alerta de nuevo, pued
 	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Selecciona un tema para el personaje",
 	["REG_PLAYER_ABOUT_MUSIC_SELECT2"] = "Seleccionar tema",
 	["REG_PLAYER_ABOUT_MUSIC_STOP"] = "Parar tema",
-	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Sin tema",
+	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Sin tema|r",
 	["REG_PLAYER_ABOUT_P"] = "Etiqueta del parágrafo",
 	["REG_PLAYER_ABOUT_REMOVE_FRAME"] = "Eliminar este marco",
 	["REG_PLAYER_ABOUT_SOME"] = "Escribir texto aquí...",
 	["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "Tu texto aquí",
 	["REG_PLAYER_ABOUT_TAGS"] = "Herramientas de formato",
-	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Tema desconocido",
+	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Tema desconocido|r",
 	["REG_PLAYER_ABOUTS"] = "Acerca de %s",
 	["REG_PLAYER_ADD_NEW"] = "Crear nuevo",
 	["REG_PLAYER_AGE"] = "Edad",
