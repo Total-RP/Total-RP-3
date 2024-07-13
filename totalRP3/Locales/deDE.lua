@@ -1039,7 +1039,7 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 
 |cffffff00%s|r
 
-|cffff7700Du kannst optional angeben, warum die diesen Spieler ignorierst. Dies ist eine persönliche Notiz und kann nicht von anderen Spielern eingesehen werden.]=],
+|cffff7700Du kannst optional angeben, warum die diesen Spieler ignorierst. Dies ist eine persönliche Notiz und kann nicht von anderen Spielern eingesehen werden.|r]=],
 	["TF_IGNORE_NO_REASON"] = "Kein Grund",
 	["TF_OPEN_CHARACTER"] = "Charakterseite anzeigen",
 	["TF_OPEN_COMPANION"] = "Begleiterseite anzeigen",

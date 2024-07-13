@@ -1390,7 +1390,7 @@ Change le statut de votre personnage en fonction de l'option spécifiée:
 
 |cffffff00%s|r
 
-|cffff7700Vous pouvez entrer optionnellement la raison d'ignorer le joueur ci-dessous. C'est une note personnelle, elle ne sera vue par personne d'autre et servira de rappel.]=],
+|cffff7700Vous pouvez entrer optionnellement la raison d'ignorer le joueur ci-dessous. C'est une note personnelle, elle ne sera vue par personne d'autre et servira de rappel.|r]=],
 	["TF_IGNORE_NO_REASON"] = "Aucune raison",
 	["TF_OPEN_CHARACTER"] = "Afficher la fiche du personnage",
 	["TF_OPEN_COMPANION"] = "Afficher la fiche du familier",

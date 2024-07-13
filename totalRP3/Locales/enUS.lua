@@ -696,7 +696,7 @@ Possible status:
 	TF_PLAY_THEME_TT = "Play %s",
 	TF_IGNORE = "Ignore character",
 	TF_IGNORE_TT = "Hide this character's profile and no longer share your profile or map location with them.",
-	TF_IGNORE_CONFIRM = "Are you sure you want to ignore this player?|n|n|cnWARNING_FONT_COLOR:%s|r|n|n|rYou can optionally enter the reason below. This is a personal note that serves as a reminder.",
+	TF_IGNORE_CONFIRM = "Are you sure you want to ignore this player?|n|n|cnWARNING_FONT_COLOR:%s|r|n|nYou can optionally enter the reason below. This is a personal note that serves as a reminder.",
 	TF_IGNORE_NO_REASON = "No reason",
 	TB_LANGUAGE = "Language",
 	TB_LANGUAGES_TT = "Change language",

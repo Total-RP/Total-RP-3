@@ -1133,7 +1133,7 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 
 |cffffff00%s|r
 
-|cffff7700Opcionalmente puedes escribir debajo la razón por la que le quieres ignorar. Esta es una nota personal, no será visible por otros y servirá como recordatorio.]=],
+|cffff7700Opcionalmente puedes escribir debajo la razón por la que le quieres ignorar. Esta es una nota personal, no será visible por otros y servirá como recordatorio.|r]=],
 	["TF_IGNORE_NO_REASON"] = "Sin razón",
 	["TF_OPEN_CHARACTER"] = "Mostrar página del personaje",
 	["TF_OPEN_COMPANION"] = "Mostrar página del compañero",

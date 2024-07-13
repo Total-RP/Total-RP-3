@@ -1142,7 +1142,7 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 
 |cffffff00%s|r
 
-|cffff7700Você pode inserir abaixo o motivo. Isso é uma nota pessoal, não será visível aos outros e servirá como lembrete.]=],
+|cffff7700Você pode inserir abaixo o motivo. Isso é uma nota pessoal, não será visível aos outros e servirá como lembrete.|r]=],
 	["TF_IGNORE_NO_REASON"] = "Sem motivo",
 	["TF_OPEN_CHARACTER"] = "Mostrar página do personagem",
 	["TF_OPEN_COMPANION"] = "Mostrar página do companheiro",
