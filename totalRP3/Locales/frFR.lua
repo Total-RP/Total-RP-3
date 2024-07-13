@@ -1074,7 +1074,7 @@ Chevalier, Pyrotechnicien, Nécromant, Tireur d'élite, Arcaniste ...]=],
 
 ]=],
 	["REG_PLAYER_COLOR_TT_SELECT"] = "Sélectionner une couleur",
-	["REG_PLAYER_COLOR_TT_DISCARD"] = "Effacer la couleur]",
+	["REG_PLAYER_COLOR_TT_DISCARD"] = "Effacer la couleur",
 	["REG_PLAYER_COLOR_TT_DEFAULTPICKER"] = "Utiliser le sélecteur de couleur par défaut",
 	["REG_PLAYER_EDIT_MUSIC_THEME"] = "Thème musical",
 	["REG_PLAYER_EYE"] = "Couleur des yeux",
