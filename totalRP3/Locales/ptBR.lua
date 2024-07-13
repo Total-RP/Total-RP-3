@@ -169,7 +169,7 @@ Importar conteúdo vindo de uma versão diferente pode causar problemas em casos
 	["CO_CHAT_MAIN_NPC_PREFIX_TT"] = [=[Se uma conversa no canal EMOTE começar com este prefixo, será interpretado como uma fala de PnJ.
 
 |cff00ff00Padrão : "|| "
-(sem aspas e com espaço após a barra)]=],
+(sem aspas e com espaço após a barra)|r]=],
 	["CO_CHAT_MAIN_NPC_USE"] = "Usar detecção de conversa de PnJ",
 	["CO_CHAT_MAIN_OOC"] = "Detecção de OOC",
 	["CO_CHAT_MAIN_OOC_COLOR"] = "Cor de OOC",

@@ -607,7 +607,7 @@ Possible status:
 	CO_CHAT_MAIN_NPC = "NPC talk detection",
 	CO_CHAT_MAIN_NPC_USE = "Use NPC talk detection",
 	CO_CHAT_MAIN_NPC_PREFIX = "NPC talk detection pattern",
-	CO_CHAT_MAIN_NPC_PREFIX_TT = "If a chat line said in the EMOTE channel begins with this prefix, it will be interpreted as an NPC chat.|n|n|cnGREEN_FONT_COLOR:By default: \"|| \"|n(without the \" and with a space after the pipe)",
+	CO_CHAT_MAIN_NPC_PREFIX_TT = "If a chat line said in the EMOTE channel begins with this prefix, it will be interpreted as an NPC chat.|n|n|cnGREEN_FONT_COLOR:By default: \"|| \"|n(without the \" and with a space after the pipe)|r",
 	CO_CHAT_MAIN_EMOTE = "Emote detection",
 	CO_CHAT_MAIN_EMOTE_USE = "Use emote detection",
 	CO_CHAT_MAIN_EMOTE_PATTERN = "Emote detection pattern",

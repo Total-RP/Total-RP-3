@@ -249,7 +249,7 @@ Gardez à l'esprit que changer ces paramètres peut altérer votre expérience a
 	["CO_CHAT_MAIN_NPC_PREFIX_TT"] = [=[Si un message envoyé sur le canal /emote commence par ce préfixe, il sera interprété comme dialogue de PNJ.
 
 |cff00ff00Par défaut : "|| "
-(sans les " et avec un espace après le | )]=],
+(sans les " et avec un espace après le | )|r]=],
 	["CO_CHAT_MAIN_NPC_USE"] = "Utiliser la détection des dialogues de PNJ",
 	["CO_CHAT_MAIN_OOC"] = "Détection du HRP",
 	["CO_CHAT_MAIN_OOC_COLOR"] = "Couleur du HRP",

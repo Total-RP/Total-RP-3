@@ -139,7 +139,7 @@ L = {
 	["CO_CHAT_MAIN_NPC_PREFIX_TT"] = [=[如果對話以EMOTE為字首頻道時，將被解讀為ＮＰＣ對話。
 
 |cff00ff00By default : "|| "
-（除了 " 符號，並在管狀符號後方加上空格。）]=],
+（除了 " 符號，並在管狀符號後方加上空格。）|r]=],
 	["CO_CHAT_MAIN_NPC_USE"] = "使用ＮＰＣ對話判讀",
 	["CO_CHAT_MAIN_OOC"] = "ＯＯＣ判讀",
 	["CO_CHAT_MAIN_OOC_COLOR"] = "ＯＯＣ顏色",

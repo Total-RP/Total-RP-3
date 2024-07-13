@@ -165,7 +165,7 @@ Per favore ricorda che cambiare queste impostazioni potrebbero alterare la tua e
 	["CO_CHAT_MAIN_NPC_PREFIX"] = "Modello della rivelazione del parlare NPC",
 	["CO_CHAT_MAIN_NPC_PREFIX_TT"] = [=[Se comincia una linea chiacchierata nel canale EMOTE con questo prefisso, verrà interpretato come una chiacchierata NPC.
 |cff00ff00Per impostazione predefinita : "|| "
-(senza gli " e con uno spazio dopo la pipa)]=],
+(senza gli " e con uno spazio dopo la pipa)|r]=],
 	["CO_CHAT_MAIN_NPC_USE"] = "Usare rivelazione del parlare di NPC",
 	["CO_CHAT_MAIN_OOC"] = "Rivelazione OOC (fuori dal personaggio)",
 	["CO_CHAT_MAIN_OOC_COLOR"] = "Colore OOC",

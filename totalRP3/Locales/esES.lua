@@ -173,7 +173,7 @@ Por favor, ten en cuenta que cambiar esta configuración puede alterar tu experi
 	["CO_CHAT_MAIN_NPC_PREFIX_TT"] = [=[Si un mensaje enviado por el canal /EMOTE comienza con este prefijo, se interpretará como un diálogo de NPC.
 
 |cff00ff00Por defecto: "|| "
-(Sin el " y con un espacio después del I)]=],
+(Sin el " y con un espacio después del I)|r]=],
 	["CO_CHAT_MAIN_NPC_USE"] = "Usar detección de diálogo de NPC",
 	["CO_CHAT_MAIN_OOC"] = "Detección OOC",
 	["CO_CHAT_MAIN_OOC_COLOR"] = "Color OOC",

@@ -166,7 +166,7 @@ Das Importieren des Inhaltes einer anderen Version könnte aufgrund von Inkompat
 	["CO_CHAT_MAIN_NPC_PREFIX_TT"] = [=[Wenn eine Chatnachricht im Emotekanal mit diesem Zeichen startet, wird sie als NSC-Nachricht interpretiert.
 
 |cff00ff00Voreingestellt : "|| "
-(ohne die " und mit einem Leerzeichen nach dem Strich)]=],
+(ohne die " und mit einem Leerzeichen nach dem Strich)|r]=],
 	["CO_CHAT_MAIN_NPC_USE"] = "Nutze NSC-Spracherkennung",
 	["CO_CHAT_MAIN_OOC"] = "OOC-Erkennung",
 	["CO_CHAT_MAIN_OOC_COLOR"] = "OOC-Farbe",
