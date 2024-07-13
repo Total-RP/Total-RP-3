@@ -221,7 +221,7 @@ L = {
 |cffff9900需要更新 Total RP 3:|r 此插件需要更高版本的Total RP 3支援。
 |cffff0000啟動時或初始化時發生錯誤:|r 此插件在初始化時出現錯誤，有可能造成更多問題。
 
-|cnGREEN_FONT_COLOR:停用插件後，必須重新啟動遊戲。]=],
+|cnGREEN_FONT_COLOR:停用插件後，必須重新啟動遊戲。|r]=],
 	["CO_MODULES_VERSION"] = "版本: %s",
 	["CO_MSP"] = "Mary Sue 協議",
 	["CO_REGISTER"] = "資訊設定",

@@ -541,7 +541,7 @@ Possible status:
 |cffff9900TRP update required:|r The module requires a more recent version of TRP3.
 |cffff0000Error on init or on startup:|r The module loading sequence failed. The module will likely create errors!
 
-|cnGREEN_FONT_COLOR:When disabling a module, a UI reload is necessary.]],
+|cnGREEN_FONT_COLOR:When disabling a module, a UI reload is necessary.|r]],
 	CO_MODULES_SHOWERROR = "Show error",
 	CO_MODULES_DISABLE = "Disable module",
 	CO_MODULES_ENABLE = "Enable module",

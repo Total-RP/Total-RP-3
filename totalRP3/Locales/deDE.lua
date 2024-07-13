@@ -275,7 +275,7 @@ Möglicher Status:
 |cffff9900TRP Update benötigt:|r Diese Modul benötigt eine aktueller Version von TRP3.
 |cffff0000Fehler beim Inizialisieren oder Starten:|r Der Start des Moduls hat nicht funktioniert. Das Modul würde sicher Fehler verursachen!
 
-|cnGREEN_FONT_COLOR:Wenn ein Modul deaktivert wird muss das UI neu geladen werden!]=],
+|cnGREEN_FONT_COLOR:Wenn ein Modul deaktivert wird muss das UI neu geladen werden!|r]=],
 	["CO_MODULES_VERSION"] = "Version: %s",
 	["CO_MSP"] = "Mary Sue Protocol",
 	["CO_REGISTER"] = "Einstellungen registrieren",

@@ -277,7 +277,7 @@ Status possíveis:
 |cffff9900Atualização do TRP necessária:|r O módulo precisa da versão mais recente do TRP3.
 |cffff0000Erro ao carregar ou iniciar:|r O carregamento do módulo apresentou problemas. O módulo possivelmente gerará erros.!
 
-|cnGREEN_FONT_COLOR:Quando um módulo é desabilitado, é necessário recarregar a interface.]=],
+|cnGREEN_FONT_COLOR:Quando um módulo é desabilitado, é necessário recarregar a interface.|r]=],
 	["CO_MODULES_VERSION"] = "Versão: %s",
 	["CO_MSP"] = "Protocolo Mary Sue",
 	["CO_REGISTER"] = "Configuração de registros",

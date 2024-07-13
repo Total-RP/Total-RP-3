@@ -393,7 +393,7 @@ Statuts possibles:
 |cffff9900Mise à jour de TRP requise:|r Le module requiert une version plus récente de TRP3.
 |cffff0000Erreur à l'initialisation ou au démarrage:|r La séquence de chargement du module a échoué. Le module créera sans doute des erreurs !
 
-|cnGREEN_FONT_COLOR:Lorsque vous désactivez un module, il est nécessaire de recharger l'interface.]=],
+|cnGREEN_FONT_COLOR:Lorsque vous désactivez un module, il est nécessaire de recharger l'interface.|r]=],
 	["CO_MODULES_VERSION"] = "Version: %s",
 	["CO_MSP"] = "Mary Sue Protocol",
 	["CO_REGISTER"] = "Registre",

@@ -283,7 +283,7 @@ L = {
 |cffff9900缺少的依赖关系:|r 一些依赖项没有加载.
 |cffff9900TRP 需要更新:|r 这个模块需要一个更新版本的 TRP3.
 |cffff0000初始化或启动时的错误:|r 模块加载失败。这个模块很可能会产生错误！
-|cnGREEN_FONT_COLOR:当禁用模块时，需要重新加载UI.]=],
+|cnGREEN_FONT_COLOR:当禁用模块时，需要重新加载UI.|r]=],
 	["CO_MODULES_VERSION"] = "版本: %s",
 	["CO_MSP"] = "玛丽苏协议",
 	["CO_REGISTER"] = "登记设置",
