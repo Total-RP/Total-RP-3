@@ -111,6 +111,7 @@ local function openCompanionPage(profileID)
 			onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PAGE, {profile = profile, profileID = profileID, isPlayer = false}) end,
 			isChildOf = REGISTER_PAGE,
 			closeable = true,
+			icon = [[interface\icons\]] .. TRP3_InterfaceIcons.CompanionMenuItem,
 		});
 		selectMenu(currentlyOpenedProfilePrefix .. profileID);
 	end
