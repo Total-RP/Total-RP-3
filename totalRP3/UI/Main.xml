@@ -193,6 +193,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT" x="-1" y="1"/>
 				</Anchors>
+				<Frames>
+					<Frame parentKey="CursorFrame" hidden="true" enableMouse="true">
+						<Size x="50" y="50"/>
+						<Anchors>
+							<Anchor point="CENTER" relativePoint="BOTTOMRIGHT" />
+						</Anchors>
+					</Frame>
+				</Frames>
 			</Button>
 		</Frames>
 	</Frame>
