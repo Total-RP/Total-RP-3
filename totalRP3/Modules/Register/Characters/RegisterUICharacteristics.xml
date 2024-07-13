@@ -276,7 +276,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 			<Button name="$parentLeftIcon" parentKey="CustomLeftIcon" inherits="TRP3_IconButton">
 				<Anchors>
-					<Anchor point="RIGHT" relativeKey="$parent.LeftIcon" x="-2" />
+					<Anchor point="RIGHT" relativeKey="$parent.LeftIcon" x="-6" />
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
@@ -293,7 +293,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Button>
 			<Button name="$parentRightIcon" parentKey="CustomRightIcon" inherits="TRP3_IconButton">
 				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.RightIcon" x="2" />
+					<Anchor point="LEFT" relativeKey="$parent.RightIcon" x="6" />
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
@@ -357,10 +357,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Register characteristics register line -->
 	<Frame name="TRP3_RegisterCharact_RegisterInfoLine" virtual="true">
-		<Size y="26"/>
+		<Size y="32"/>
 		<Frames>
 			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
-				<Size x="26" y="26"/>
+				<Size x="32" y="32"/>
 				<Anchors>
 					<Anchor point="LEFT" x="15"/>
 				</Anchors>
@@ -638,7 +638,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_ClassButton" inherits="TRP3_ColorPickerButton">
 										<Anchors>
-											<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_ClassField"/>
+											<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_ClassField"/>
 										</Anchors>
 									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_AgeField" inherits="TRP3_TitledHelpEditBox">
@@ -657,7 +657,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_EyeButton" inherits="TRP3_ColorPickerButton">
 										<Anchors>
-											<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_EyeField"/>
+											<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_EyeField"/>
 										</Anchors>
 									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_HeightField" inherits="TRP3_TitledHelpEditBox">
@@ -670,7 +670,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<Frame name="TRP3_RegisterCharact_Dropdown_RelationshipField" inherits="TRP3_TitledDropdown">
 										<Anchors>
 											<Anchor point="TOPLEFT" x="-5" y="-10" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_HeightField"/>
-											<Anchor point="RIGHT" x="5" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
+											<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
 										</Anchors>
 									</Frame>
 									<EditBox name="TRP3_RegisterCharact_Edit_ResidenceField" inherits="TRP3_TitledHelpEditBox">
@@ -682,7 +682,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_ResidenceButton" inherits="TRP3_MapHereButton">
 										<Anchors>
-											<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_ResidenceField"/>
+											<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_ResidenceField"/>
 										</Anchors>
 									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_BirthplaceField" inherits="TRP3_TitledHelpEditBox">
@@ -694,7 +694,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_BirthplaceButton" inherits="TRP3_MapHereButton">
 										<Anchors>
-											<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_BirthplaceField"/>
+											<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_BirthplaceField"/>
 										</Anchors>
 									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_WeightField" inherits="TRP3_TitledHelpEditBox">
