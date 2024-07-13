@@ -466,7 +466,7 @@ local function createTutorialStructure()
 				x = 0, y = 10, anchor = "CENTER",
 				text = loc.DB_STATUS_CURRENTLY_COMMON .. "|r\n\n" .. "|cnGREEN_FONT_COLOR:" .. loc.DB_STATUS_CURRENTLY .. "|r\n" .. loc.DB_STATUS_CURRENTLY_TT .. "\n\n|cnGREEN_FONT_COLOR:" .. loc.DB_STATUS_CURRENTLY_OOC .. "|r\n" .. loc.DB_STATUS_CURRENTLY_OOC_TT,
 				textWidth = 400,
-				arrow = "BOTTOM"
+				arrow = "DOWN"
 			}
 		},
 		{
