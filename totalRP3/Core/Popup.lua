@@ -514,7 +514,7 @@ local function decorateCompanion(button, index)
 	local description, speciesName = filteredCompanionList[index][3], filteredCompanionList[index][4];
 	button:SetNormalTexture(icon);
 	button:SetPushedTexture(icon);
-	local text = "|cffffff00" .. speciesName .. "|r";
+	local text = "|cnGREEN_FONT_COLOR:" .. speciesName .. "|r";
 	if description and description:len() > 0 then
 		text = text .. "\n\"" .. description .. "\"";
 	end
