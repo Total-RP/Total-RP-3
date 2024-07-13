@@ -31,7 +31,7 @@ TRP3_API.importer.addAddOn = function(addOnName, API)
 	type(API.getFormatedProfile) == "function" and
 	type(API.listAvailableProfiles) == "function" and
 	type(API.getImportableData) == "function" then
-		TRP3_API.Log("Importer : API registered "..addOnName);
+		TRP3_API.Log("Importer: API registered "..addOnName);
 		addOns[addOnName] = API;
 	else
 		print("An API for the addon " .. addOnName .. " tried to register itself in the importer module, but misses some of the required functions.");
@@ -139,7 +139,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 			end
 		end
 
-		setTooltipForSameFrame(_G[widget:GetName() .. "Info"], "RIGHT", 0, 5, loc.PR_IMPORT_WILL_BE_IMPORTED .. " :", tooltip);
+		setTooltipForSameFrame(_G[widget:GetName() .. "Info"], "RIGHT", 0, 5, loc.PR_IMPORT_WILL_BE_IMPORTED, tooltip);
 	end
 
 	local function refreshDisplay()
