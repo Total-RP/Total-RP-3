@@ -577,7 +577,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					return ownerID == Globals.player_id or companionHasProfile(unitID);
 				end
 			end,
-			onClick = companionProfileSelectionList,
+			onMouseDown = companionProfileSelectionList,
 			alertIcon = "QuestNormal",
 			adapter = function(buttonStructure, unitID)
 				-- Initialize the buttonStructure parts.
@@ -627,7 +627,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			end,
 			tooltip = loc.REG_COMPANION_TF_PROFILE_SPEECH,
 			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_COMPANION_TF_PROFILE_SPEECH_TT),
-			onClick = function(unitID)
+			onMouseDown = function(unitID)
 				local ownerID, companionID = companionIDToInfo(unitID);
 				local profile = getCompanionInfo(ownerID, companionID, unitID);
 
@@ -652,7 +652,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				local _, profileID = TRP3_API.companions.register.getUnitMount(unitID, "target");
 				return profileID ~= nil;
 			end,
-			onClick = companionProfileSelectionList,
+			onMouseDown = companionProfileSelectionList,
 			alertIcon = "QuestNormal",
 			adapter = function(buttonStructure, unitID)
 				-- Initialize the buttonStructure parts.
