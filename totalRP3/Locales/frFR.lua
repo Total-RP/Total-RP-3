@@ -1313,7 +1313,7 @@ Si vous souhaitez signaler le profil de %s comme enfreignant le Code de Conduite
 	["REG_REPORT_PLAYER_PROFILE"] = "Signaler ce profil à |cff449fe0Blizzard|r",
 	["REG_REPORT_PLAYER_PROFILE_TT"] = [=[Vous pouvez signaler un profil qui enfreint les conditions d'utilisation de Blizzard. Cela inclut le harcèlement, partage de données privées, incitation à la haine, contenu obscène ou autre forme de contenu perturbant.
 
-|cnWARNING_FONT_COLOR:Veuillez noter que cette fonctionnalité n'est PAS pour signaler des profils RP qui vous semblent de faible qualité ou pour chercher à nuire à un joueur. Tout abus de cette fonctionnalité pourrait entraîner des sanctions.]=],
+|cnWARNING_FONT_COLOR:Veuillez noter que cette fonctionnalité n'est PAS pour signaler des profils RP qui vous semblent de faible qualité ou pour chercher à nuire à un joueur. Tout abus de cette fonctionnalité pourrait entraîner des sanctions.|r]=],
 	["REG_REPORT_PLAYER_TEMPLATE"] = "Ce joueur utilise l'addon RP %s pour partager du contenu allant à l'encontre du Code de Conduite.",
 	["REG_REPORT_PLAYER_TEMPLATE_DATE"] = "Les données de l'addon ont été transférées via messages loggés le %s.",
 	["REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT"] = "Ce joueur utilisait un compte d'essai.",

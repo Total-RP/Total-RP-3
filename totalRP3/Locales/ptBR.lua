@@ -1095,7 +1095,7 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["REG_REPORT_PLAYER_OPEN_URL"] = "Você somente pode reportar jogadores diretamente de dentro do jogo se os puder Marcar (usando o botão de frame alvo do TRP3). Se desejar reportar o perfil do %s e você não puder os marcar, terá de abrir um ticket com o apoio da Blizzard, utilizando o link abaixo.",
 	["REG_REPORT_PLAYER_OPEN_URL_160"] = "Se você deseja reportar o perfil %s, você precisar abrir um ticket com o suporte da blizzard usando o link abaixo:",
 	["REG_REPORT_PLAYER_PROFILE"] = "Reportar perfil para |cff449fe0Blizzard|r",
-	["REG_REPORT_PLAYER_PROFILE_TT"] = "Você pode denunciar um perfil que infrinja os Termos de Serviço da Blizzard. Isto pode incluir assédio, doxxing, discurso de ódio, conteúdo obsceno ou outra forma de conteúdo perturbador. |cnWARNING_FONT_COLOR:Por favor note que esta opção NÃO é denunciar perfis RP de qualidade contestável ou de luto. Os abusos desta característica são puníveis!",
+	["REG_REPORT_PLAYER_PROFILE_TT"] = "Você pode denunciar um perfil que infrinja os Termos de Serviço da Blizzard. Isto pode incluir assédio, doxxing, discurso de ódio, conteúdo obsceno ou outra forma de conteúdo perturbador. |cnWARNING_FONT_COLOR:Por favor note que esta opção NÃO é denunciar perfis RP de qualidade contestável ou de luto. Os abusos desta característica são puníveis!|r",
 	["REG_REPORT_PLAYER_TEMPLATE"] = "Este jogador esta usando o Addon de perfil RP %s para compartilhar conteúdo que vai contra os termos de serviço",
 	["REG_REPORT_PLAYER_TEMPLATE_DATE"] = "Os Arquivos do addon foi transferido através do addon de mensagem logado em %s",
 	["REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT"] = "Este jogador está em uma conta de teste.",

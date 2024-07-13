@@ -1087,7 +1087,7 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 	["REG_REPORT_PLAYER_PROFILE"] = "Denunciar perfil a |cff449fe0Blizzard|r",
 	["REG_REPORT_PLAYER_PROFILE_TT"] = [=[Puedes denunciar un perfil que infrinja los Términos de Servicio de Blizzard. Esto puede incluir acoso, publicación de información privada, lenguaje de odio, contenido obsceno u otras formas de contenido inadecuado.
 
-|cnWARNING_FONT_COLOR:Recuerda que esta opción no es para denunciar perfiles de rol de baja calidad. ¡Los abusos de esta función serán sancionados!]=],
+|cnWARNING_FONT_COLOR:Recuerda que esta opción no es para denunciar perfiles de rol de baja calidad. ¡Los abusos de esta función serán sancionados!|r]=],
 	["REG_REPORT_PLAYER_TEMPLATE"] = "Este jugador está usando el perfil de rol %s del addon para compartir contenido en contra de los Términos de Servicio.",
 	["REG_REPORT_PLAYER_TEMPLATE_DATE"] = "La información del addon fue transferida a través del historial de mensajes del addon en %s.",
 	["REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT"] = "Este jugador tiene una cuenta de prueba.",

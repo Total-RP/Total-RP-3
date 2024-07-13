@@ -1109,7 +1109,7 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	["REG_REPORT_PLAYER_PROFILE"] = "向 |cff449fe0暴雪|r举报玩家",
 	["REG_REPORT_PLAYER_PROFILE_TT"] = [=[你可以举报违反暴雪游戏条款的行为，包括但不限于骚扰，不当言论, 淫秽内容等。
 
-	|cnWARNING_FONT_COLOR:请注意，本功能并非是用来举报不严谨的RP设定，滥用此功能将遭到惩罚！]=],
+	|cnWARNING_FONT_COLOR:请注意，本功能并非是用来举报不严谨的RP设定，滥用此功能将遭到惩罚！|r]=],
 	["REG_REPORT_PLAYER_TEMPLATE"] = "此玩家通过分享 %s 的RP插件信息违反了暴雪的游戏条款。",
 	["REG_REPORT_PLAYER_TEMPLATE_DATE"] = "插件数据是通过 %s 的信息传输的。",
 	["REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT"] = "这个玩家使用试玩账号。",

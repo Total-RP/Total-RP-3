@@ -1382,7 +1382,7 @@ Please keep in mind that changing those settings might alter your experience wit
 	REG_REPORT_PLAYER_PROFILE = "Report profile to |cff449fe0Blizzard|r",
 	REG_REPORT_PLAYER_PROFILE_TT = [[You can report a profile that infringe on Blizzard's Terms of Service. This can include harassment, doxxing, hate speech, obscene content or other form of disruptive content.
 
-|cnWARNING_FONT_COLOR:Please note that this option is NOT to report RP profiles of disputable quality or griefing. Abuses of this feature are punishable!]],
+|cnWARNING_FONT_COLOR:Please note that this option is NOT to report RP profiles of disputable quality or griefing. Abuses of this feature are punishable!|r]],
 	REG_REPORT_PLAYER_TEMPLATE = "This player is using the RP profile addon %s to share content against the Terms of Service.",
 	REG_REPORT_PLAYER_TEMPLATE_DATE = "The addon data was transferred through logged addon messages on %s.",
 	REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT = "This player was on a trial account.",
