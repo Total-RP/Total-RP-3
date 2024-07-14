@@ -504,7 +504,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		local button = description:GetOwner();
 		local title = button.NameText:GetText();
 		local text = nil;
-		local instructions = {{"CLICK", loc.CM_OPEN}, {"SHIFT-CLICK", loc.CL_TOOLTIP}};
+		local instructions = {{"LCLICK", loc.CL_OPEN_COMPANION}, {"SHIFT-CLICK", loc.CL_TOOLTIP}};
 
 		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
 	end
