@@ -442,7 +442,6 @@ function TRP3_Tooltip.ProcessTooltipDescription(tooltip, description)
 		tooltip:SetOwner(owner, "ANCHOR_PRESERVE");
 	end
 
-	tooltip:SetOwner(owner, "ANCHOR_RIGHT");
 	description:ExecutePreTooltipCallbacks(tooltip);
 
 	for _, lineDescription in description:EnumerateLines() do
