@@ -487,7 +487,7 @@ function TRP3_API.profile.init()
 		local button = description:GetOwner();
 		local title = button.NameText:GetText();
 		local text = nil;
-		local instructions = {{"CLICK", loc.CM_OPEN}, {"SHIFT-CLICK", loc.CL_TOOLTIP}};
+		local instructions = {{"CLICK", loc.PR_PROFILEMANAGER_SWITCH}, {"SHIFT-CLICK", loc.CL_TOOLTIP}};
 
 		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
 	end
