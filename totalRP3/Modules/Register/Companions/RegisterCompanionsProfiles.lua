@@ -492,18 +492,21 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
 	});
 
+	local function OnMenuButtonTooltip(_, description)
+		local title = loc.CM_OPTIONS;
+		local text = nil;
+		local instructions = {{"CLICK", loc.CM_OPTIONS_ADDITIONAL}};
 
-
-	local function OnMenuButtonTooltip(tooltip)
-		GameTooltip_SetTitle(tooltip, loc.CM_OPTIONS);
-		GameTooltip_AddNormalLine(tooltip, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
 	end
 
-	local function OnListElementTooltip(tooltip)
-		local button = tooltip:GetOwner();
-		GameTooltip_SetTitle(tooltip, button.NameText:GetText());
-		GameTooltip_AddNormalLine(tooltip, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPEN));
-		GameTooltip_AddNormalLine(tooltip, TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
+	local function OnListElementTooltip(_, description)
+		local button = description:GetOwner();
+		local title = button.NameText:GetText();
+		local text = nil;
+		local instructions = {{"CLICK", loc.CM_OPEN}, {"SHIFT-CLICK", loc.CL_TOOLTIP}};
+
+		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
 	end
 
 	local function OnListElementClick(button)
