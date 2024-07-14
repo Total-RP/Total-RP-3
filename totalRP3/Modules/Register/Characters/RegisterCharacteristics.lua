@@ -657,6 +657,15 @@ local function onMiscDuplicate(self)
 	setEditDisplay();
 end
 
+local function onMiscConvert(self)
+	assert(self and self:GetParent(), "Badly initialized convert, reference");
+	local frame = self:GetParent();
+	assert(frame.frameIndex and draftData.MI[frame.frameIndex], "Badly initialized convert, index");
+	saveInDraft();
+	draftData.MI[frame.frameIndex]["ID"] = 1;
+	setEditDisplay();
+end
+
 local MISC_PRESET = {
 	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.House),
 	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Nickname),
@@ -695,14 +704,18 @@ end
 local function miscAddDropDown()
 	local values = {};
 	for index, preset in pairs(MISC_PRESET) do
-		table.insert(values, { preset.list or preset.localizedName, index });
+		table.insert(values, { preset.list or preset.localizedName, index, preset.shownOnTooltip });
 	end
 	table.sort(values, SortCompareMiscEntries);
 
 	TRP3_MenuUtil.CreateContextMenu(TRP3_RegisterCharact_Edit_MiscAdd, function(_, description)
 		description:CreateTitle(loc.REG_PLAYER_MISC_ADD);
 		for _, preset in pairs(values) do
-			description:CreateButton(preset[1], miscAddDropDownSelection, preset[2]);
+			local addOption = description:CreateButton(preset[1], miscAddDropDownSelection, preset[2]);
+			if preset[3] then
+				TRP3_MenuUtil.AttachTexture(addOption, "transmog-icon-chat");
+				TRP3_MenuUtil.SetElementTooltip(addOption, loc.REG_PLAYER_MISC_ADD_TOOLTIP);
+			end
 		end
 	end);
 end
@@ -744,6 +757,27 @@ local function onPsychoDuplicate(self)
 	assert(frame.frameIndex and draftData.PS[frame.frameIndex], "Badly initialized duplicate, index");
 	saveInDraft();
 	tinsert(draftData.PS, CopyTable(draftData.PS[frame.frameIndex]));
+	setEditDisplay();
+end
+
+local function onPsychoConvert(self)
+	assert(self and self:GetParent(), "Badly initialized convert, reference");
+	local frame = self:GetParent();
+	assert(frame.frameIndex and draftData.PS[frame.frameIndex], "Badly initialized convert, index");
+	saveInDraft();
+	local newPsycho = CopyTable(draftData.PS[frame.frameIndex])
+
+	-- Grab psycho text and icons through its preset ID
+	local preset = PSYCHO_PRESETS[newPsycho.ID] or PSYCHO_PRESETS_UNKOWN;
+
+	-- Use that data to fill in the blanks of the psycho field.
+	draftData.PS[frame.frameIndex]["ID"] = nil;
+
+	draftData.PS[frame.frameIndex]["LT"] = preset.LT or "";
+	draftData.PS[frame.frameIndex]["RT"] = preset.RT or "";
+
+	draftData.PS[frame.frameIndex]["LI"] = preset.LI;
+	draftData.PS[frame.frameIndex]["RI"] = preset.RI;
 	setEditDisplay();
 end
 
@@ -1146,12 +1180,6 @@ function setEditDisplay()
 			frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscEditLine" .. frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_MiscEditLine");
 			_G[frame:GetName() .. "NameFieldText"]:SetText(loc.CM_NAME);
 			_G[frame:GetName() .. "ValueFieldText"]:SetText(loc.CM_VALUE);
-			_G[frame:GetName() .. "Action"]:SetScript("OnMouseDown", function(self)
-				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.CM_DUPLICATE, onMiscDuplicate, self);
-					description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CM_REMOVE .. "|r", onMiscDelete, self);
-				end);
-			end);
 			setTooltipForSameFrame(_G[frame:GetName() .. "Action"], "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 			scaleField(frame, TRP3_RegisterCharact_Edit_CharactPanel_Container:GetWidth(), "NameField");
 
@@ -1162,6 +1190,21 @@ function setEditDisplay()
 
 			tinsert(miscEditCharFrame, frame);
 		end
+
+		_G[frame:GetName() .. "Action"]:SetScript("OnMouseDown", function(self)
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+				-- If not custom, allow convert to custom.
+				if miscStructure.ID ~= TRP3_API.MiscInfoType.Custom then
+					local convertOption = description:CreateButton(loc.REG_PLAYER_CONVERT, onMiscConvert, self);
+					if TRP3_API.GetMiscTypeInfo(miscStructure.ID).shownOnTooltip then
+						TRP3_MenuUtil.SetElementTooltip(convertOption, loc.REG_PLAYER_CONVERT_WARNING);
+					end
+				end
+				description:CreateButton(loc.CM_DUPLICATE, onMiscDuplicate, self);
+				description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CM_REMOVE .. "|r", onMiscDelete, self);
+			end);
+		end);
+
 		_G[frame:GetName() .. "Icon"]:SetScript("onMouseDown", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(icon)
@@ -1217,12 +1260,6 @@ function setEditDisplay()
 		if frame == nil then
 			-- Create psycho attribute widget if not already exists
 			frame = CreateFrame("Frame", "TRP3_RegisterCharact_PsychoEditLine" .. frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_PsychoInfoEditLine");
-			frame.ActionButton:SetScript("OnMouseDown", function(self)
-				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.CM_DUPLICATE, onPsychoDuplicate, self);
-					description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CM_REMOVE .. "|r", onPsychoDelete, self);
-				end);
-			end);
 
 			frame.CustomLeftField.title:SetText(loc.REG_PLAYER_LEFTTRAIT);
 			frame.CustomRightField.title:SetText(loc.REG_PLAYER_RIGHTTRAIT);
@@ -1269,6 +1306,17 @@ function setEditDisplay()
 
 			tinsert(psychoEditCharFrame, frame);
 		end
+
+		frame.ActionButton:SetScript("OnMouseDown", function(self)
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+				-- If not custom, allow convert to custom.
+				if psychoStructure.ID then
+					description:CreateButton(loc.REG_PLAYER_CONVERT, onPsychoConvert, self);
+				end
+				description:CreateButton(loc.CM_DUPLICATE, onPsychoDuplicate, self);
+				description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CM_REMOVE .. "|r", onPsychoDelete, self);
+			end);
+		end);
 
 		frame.CustomLeftIcon:SetScript("onMouseDown", function(self, button)
 			if button == "LeftButton" then
