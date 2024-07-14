@@ -179,7 +179,7 @@ local function onStart()
 					end
 				end);
 				if buttonStructure.tooltip then
-					setTooltipForFrame(uiButton, uiButton, "LEFT", 0, 0, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+					setTooltipForFrame(uiButton, uiButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
 				end
 				uiButton:SetWidth(buttonSize);
 				uiButton:SetHeight(buttonSize);
@@ -288,7 +288,7 @@ local function onStart()
 		toolbarButton:SetIconTexture(buttonStructure.icon);
 
 		-- Refreshing the tooltip
-		setTooltipForFrame(toolbarButton, toolbarButton, "LEFT", 0, 0, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+		setTooltipForFrame(toolbarButton, toolbarButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
 	end
 	TRP3_API.toolbar.updateToolbarButton = updateToolbarButton;
 
@@ -366,11 +366,11 @@ local function onStart()
 		}, buildToolbar);
 
 		-- Build configuration page
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
 			title = loc.CO_TOOLBAR_CONTENT,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigDropDown",
 			widgetName = "TRP3_ConfigToolbarVisibility",
 			title = loc.CO_TOOLBAR_VISIBILITY,
@@ -383,7 +383,7 @@ local function onStart()
 			configKey = CONFIG_TOOLBAR_VISIBILITY,
 			listCancel = true,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
 			title = loc.CO_TOOLBAR_ICON_SIZE,
 			configKey = CONFIG_ICON_SIZE,
@@ -392,7 +392,7 @@ local function onStart()
 			step = 1,
 			integer = true,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
 			title = loc.CO_TOOLBAR_MAX,
 			help = loc.CO_TOOLBAR_MAX_TT,
@@ -402,7 +402,7 @@ local function onStart()
 			step = 1,
 			integer = true,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = loc.CO_TOOLBAR_HIDE_TITLE,
 			help = loc.CO_TOOLBAR_HIDE_TITLE_HELP,
@@ -423,7 +423,7 @@ local function onStart()
 				buildToolbar();
 			end);
 			button.visible = getConfigValue(configKey);
-			tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+			tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 				inherit = "TRP3_ConfigCheck",
 				title = button.configText or buttonID,
 				configKey = configKey,

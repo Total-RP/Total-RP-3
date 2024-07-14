@@ -807,7 +807,7 @@ function TRP3_API.register.init()
 
 	-- Build configuration page
 	TRP3_API.register.CONFIG_STRUCTURE = {
-		id = "main_config_register",
+		id = "main_config_directory",
 		menuText = loc.CO_REGISTER,
 		pageText = loc.CO_REGISTER,
 		elements = {
@@ -854,7 +854,7 @@ function TRP3_API.register.init()
 		Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", reportText, nil, loc.COPY_SYSTEM_MESSAGE);
 	end)
 
-	Ellyb.Tooltips.getTooltip(TRP3_ProfileReportButton):SetTitle(loc.REG_REPORT_PLAYER_PROFILE)
+	TRP3_API.ui.tooltip.setTooltipAll(TRP3_ProfileReportButton, "RIGHT", 0, 5,  loc.REG_REPORT_PLAYER_PROFILE, loc.REG_REPORT_PLAYER_PROFILE_TT)
 
 	createTabBar();
 end

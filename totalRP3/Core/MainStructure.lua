@@ -414,7 +414,7 @@ TRP3_API.navigation.init = function()
 			showTutorial(self.provider());
 		end
 	end);
-	TRP3_API.ui.tooltip.setTooltipAll(TRP3_MainTutorialButton, "TOP", 0, 0, loc.UI_TUTO_BUTTON, loc.UI_TUTO_BUTTON_TT);
+	TRP3_API.ui.tooltip.setTooltipAll(TRP3_MainTutorialButton, "RIGHT", 0, 5, loc.UI_TUTO_BUTTON, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_TUTO_BUTTON_TT));
 	closeAllButton:SetText(loc.UI_CLOSE_ALL);
 	closeAllButton:SetScript("OnClick", function(self)
 		closeAll(self.parentMenu);

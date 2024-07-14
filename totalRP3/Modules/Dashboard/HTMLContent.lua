@@ -61,10 +61,7 @@ function TRP3_DashboardHTMLContentMixin:OnHyperlinkEnter(_, text)
 	tooltip:Hide();
 	tooltip:SetOwner(self, "ANCHOR_CURSOR");
 	tooltip:AddLine(text, 1, 1, 1, true);
-	tooltip:AddLine(string.format(
-		"|cffffff00%s:|r %s",
-		loc.CM_CLICK, loc.CM_OPEN
-	), 1, 1, 1, true);
+	tooltip:AddLine(TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPEN), 1, 1, 1, true);
 	tooltip:Show();
 end
 

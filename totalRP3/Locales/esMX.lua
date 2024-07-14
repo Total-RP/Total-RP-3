@@ -113,7 +113,7 @@ L = {
 	["CO_ANCHOR_TOP"] = "Arriba",
 	["CO_ANCHOR_TOP_LEFT"] = "Arriba a la izquierda",
 	["CO_ANCHOR_TOP_RIGHT"] = "Arriba a la derecha",
-	["CO_CHAT"] = "Ajustes del chat",
+	["CO_CHAT"] = "Marco de chat",
 	["CO_CHAT_DISABLE_OOC"] = "Desactivar las personalizaciones cuando esté FdP",
 	["CO_CHAT_INSERT_FULL_RP_NAME"] = "Insertar nombres de rol con shift+clic",
 	["CO_CHAT_MAIN"] = "Ajustes de chat principal",
@@ -142,10 +142,10 @@ L = {
 	["CO_CHAT_USE_SAY"] = "Canal /decir",
 	["CO_CONFIGURATION"] = "Ajustes",
 	["CO_CURSOR_DISABLE_OOC"] = "Deshabilitar en modo FdP",
-	["CO_CURSOR_DISABLE_OOC_TT"] = "Deshabilita las modificaciones del cursor cuando estás en modo |cffccccccFuera de Personaje|r.",
+	["CO_CURSOR_DISABLE_OOC_TT"] = "Deshabilita las modificaciones del cursor cuando estás en modo |cnGREEN_FONT_COLOR:Fuera de Personaje|r.",
 	["CO_CURSOR_RIGHT_CLICK"] = "Clic derecho para abrir el perfil",
 	["CO_CURSOR_TITLE"] = "Interacciones del cursor",
-	["CO_GENERAL"] = "Ajustes generales",
+	["CO_GENERAL"] = "General",
 	["CO_GENERAL_BROADCAST"] = "Usar canal de emisión",
 	["CO_GENERAL_BROADCAST_C"] = "Nombre del canal de emisión",
 	["CO_GENERAL_COM"] = "Comunicación",
@@ -178,7 +178,7 @@ L = {
 	["CO_MINIMAP_BUTTON_RESET"] = "Reiniciar posición",
 	["CO_MINIMAP_BUTTON_RESET_BUTTON"] = "Reiniciar",
 	["CO_MINIMAP_BUTTON_SHOW_TITLE"] = "Mostrar botón en el minimapa",
-	["CO_MODULES"] = "Estado de los módulos",
+	["CO_MODULES"] = "Módulos",
 	["CO_MODULES_DISABLE"] = "Deshabilitar módulos",
 	["CO_MODULES_ENABLE"] = "Habilitar módulo",
 	["CO_MODULES_ID"] = "ID del módulo: %s",
@@ -196,7 +196,7 @@ L = {
 	["CO_MODULES_TT_NONE"] = "Sin dependencias",
 	["CO_MODULES_VERSION"] = "Version: %s",
 	["CO_MSP"] = "Protocolo Mary Sue",
-	["CO_REGISTER"] = "Configuración de registro",
+	["CO_REGISTER"] = "Registro",
 	["CO_REGISTER_ABOUT_H1_SIZE"] = "Tamaño del texto de encabezado 1",
 	["CO_REGISTER_ABOUT_H1_SIZE_TT"] = "Tamaño del texto entre las etiquetas {h1}. Por defecto: %d",
 	["CO_REGISTER_ABOUT_H2_SIZE"] = "Tamaño del texto de encabezado 2",
@@ -213,7 +213,7 @@ L = {
 	["CO_TARGETFRAME_USE_1"] = "Siempre",
 	["CO_TARGETFRAME_USE_2"] = "Sólo Dentro del Personaje",
 	["CO_TARGETFRAME_USE_3"] = "Nunca (deshabilitado)",
-	["CO_TOOLBAR"] = "Ajustes del marco",
+	["CO_TOOLBAR"] = "Barra de herramientas",
 	["CO_TOOLBAR_CONTENT"] = "Ajustes de la barra de herramientas",
 	["CO_TOOLBAR_CONTENT_RPSTATUS"] = "Estado del personaje (ER/FdR)",
 	["CO_TOOLBAR_CONTENT_STATUS"] = "Estado del jugador (AUS/NM)",
@@ -345,31 +345,31 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["REG_LIST_ACTIONS_PURGE_ALL"] = "Eliminar todos los perfiles",
 	["REG_LIST_ACTIONS_PURGE_ALL_C"] = [=[Esta purga eliminará todos los perfiles vinculados desde el directorio.
 
-|cff00ff00%s personajes.]=],
+|cff00ff00%s personajes|r]=],
 	["REG_LIST_ACTIONS_PURGE_ALL_COMP_C"] = [=[Esta purga eliminará todos los compañeros del directorio.
 
-|cff00ff00%s compañeros.]=],
+|cff00ff00%s compañeros|r]=],
 	["REG_LIST_ACTIONS_PURGE_COUNT"] = "%s perfiles serán eliminados.",
 	["REG_LIST_ACTIONS_PURGE_EMPTY"] = "No hay perfiles que purgar.",
 	["REG_LIST_ACTIONS_PURGE_IGNORE"] = "Perfiles de personajes ignorados.",
 	["REG_LIST_ACTIONS_PURGE_IGNORE_C"] = [=[Esta purga eliminará a todos los perfiles vinculados a un personaje de WoW ignorado.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ACTIONS_PURGE_TIME"] = "Perfiles no vistos desde hace 1 mes",
 	["REG_LIST_ACTIONS_PURGE_TIME_C"] = [=[Esta purga eliminará a todos los personajes no vistos desde hace un mes.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ACTIONS_PURGE_UNLINKED"] = "Perfiles no vinculados a un personaje",
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Esta purga eliminará todos los perfiles no vinculados a un personaje de WoW.
 
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_ADDON"] = "Tipo de perfil",
 	["REG_LIST_CHAR_EMPTY"] = "Sin personajes",
 	["REG_LIST_CHAR_EMPTY2"] = "Ningún personaje encaja con tu selección",
 	["REG_LIST_CHAR_FILTER"] = "Personajes: %s / %s",
 	["REG_LIST_CHAR_IGNORED"] = "Ignorado",
 	["REG_LIST_CHAR_SEL"] = "Seleccionar personaje",
-	["REG_LIST_CHAR_TITLE"] = "Lista de personajes",
+	["REG_LIST_CHAR_TITLE"] = "Personajes",
 	["REG_LIST_CHAR_TT"] = "Click para mostrar página",
 	["REG_LIST_CHAR_TT_CHAR"] = "Personaje(s) de WoW ligado(s):",
 	["REG_LIST_CHAR_TT_CHAR_NO"] = "No está vinculado a ningún personaje",
@@ -378,14 +378,14 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["REG_LIST_CHAR_TT_GLANCE"] = "A primera vista",
 	["REG_LIST_CHAR_TT_IGNORE"] = "Personaje(s) ignorado(s)",
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Relación:
-|cff00ff00%s]=],
+|cff00ff00%s|r]=],
 	["REG_LIST_FILTERS"] = "Filtros",
-	["REG_LIST_FILTERS_TT"] = [=[|cffffff00Click:|r Aplicar filtros
-|cffffff00Click derecho:|r Limpiar filtros]=],
+	["REG_LIST_FILTERS_APPLY"] = "Aplicar filtros",
+	["REG_LIST_FILTERS_CLEAR"] = "Limpiar filtros",
 	["REG_LIST_FLAGS"] = "Banderas",
 	["REG_LIST_GUILD"] = "Hermandad del personaje",
 	["REG_LIST_IGNORE_EMPTY"] = "Personaje no ignorado",
-	["REG_LIST_IGNORE_TITLE"] = "Lista de ignorados",
+	["REG_LIST_IGNORE_TITLE"] = "Ignorados",
 	["REG_LIST_IGNORE_TT"] = [=[Razón:
 |cff00ff00%s
 
@@ -400,7 +400,7 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["REG_LIST_PETS_EMPTY"] = "No hay compañero",
 	["REG_LIST_PETS_EMPTY2"] = "Ningún compañero encaja con tu selección",
 	["REG_LIST_PETS_FILTER"] = "Compañeros: %s / %s",
-	["REG_LIST_PETS_TITLE"] = "Lista de compañeros",
+	["REG_LIST_PETS_TITLE"] = "Compañeros",
 	["REG_LIST_PETS_TOOLTIP"] = "Se ha visto en",
 	["REG_LIST_PETS_TOOLTIP2"] = "Se ha visto con",
 	["REG_LIST_REALMONLY"] = "Sólo en este reino",
@@ -423,13 +423,13 @@ Si no quieres que el TRP3 sea tu PMS y no quieres ver esta alerta de nuevo, pued
 	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Selecciona un tema para el personaje",
 	["REG_PLAYER_ABOUT_MUSIC_SELECT2"] = "Seleccionar tema",
 	["REG_PLAYER_ABOUT_MUSIC_STOP"] = "Parar tema",
-	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Sin tema",
+	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Sin tema|r",
 	["REG_PLAYER_ABOUT_P"] = "Etiqueta del parágrafo",
 	["REG_PLAYER_ABOUT_REMOVE_FRAME"] = "Eliminar este marco",
 	["REG_PLAYER_ABOUT_SOME"] = "Escribir texto aquí...",
 	["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "Tu texto aquí",
 	["REG_PLAYER_ABOUT_TAGS"] = "Herramientas de formato",
-	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Tema desconocido",
+	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Tema desconocido|r",
 	["REG_PLAYER_ABOUTS"] = "Acerca de %s",
 	["REG_PLAYER_ADD_NEW"] = "Crear nuevo",
 	["REG_PLAYER_AGE"] = "Edad",
@@ -438,13 +438,12 @@ Si no quieres que el TRP3 sea tu PMS y no quieres ver esta alerta de nuevo, pued
 Puedes hacerlo de distintas maneras:|c0000ff00
 - Usa años,
 - O un adjetivo (joven, maduro, adulto, venerable, etc.).]=],
-	["REG_PLAYER_ALERT_HEAVY_SMALL"] = [=[|cffff0000El tamaño total de tu perfil es demasiado extenso.
-|cffff9900Debes reducirlo.]=],
+	["REG_PLAYER_ALERT_HEAVY_SMALL"] = [=[|cnWARNING_FONT_COLOR:El tamaño total de tu perfil es demasiado extenso.|r
+Debes reducirlo.]=],
 	["REG_PLAYER_BIRTHPLACE"] = "Lugar de nacimiento",
 	["REG_PLAYER_BIRTHPLACE_TT"] = [=[Aquí puedes indicar el lugar de nacimiento tu personaje. Puede ser una región, zona o incluso un continente. Tú eres quien decide cuán preciso quieres que sea.
 
 |c00ffff00Puedes usar el botón de la derecha para seleccionar tu ubicación actual como lugar de nacimiento.]=],
-	["REG_PLAYER_BKG"] = "Diseño de fondo",
 	["REG_PLAYER_CARACT"] = "Características",
 	["REG_PLAYER_CHANGE_CONFIRM"] = [=[Puede que tengas algunos cambios sin guardar.
 ¿Deseas cambiar la página de todos modos?
@@ -458,8 +457,9 @@ Caballero, pirotécnico, nigromante, arcanista...]=],
 	["REG_PLAYER_COLOR_CLASS"] = "Color de clase",
 	["REG_PLAYER_COLOR_CLASS_TT"] = [=[Esto determina el color en que se visualizará la clase.
 ]=],
-	["REG_PLAYER_COLOR_TT"] = [=[|cffffff00Clic:|r Seleccionar color
-|cffffff00Clic derecho:|r Descartar color]=],
+	["REG_PLAYER_COLOR_TT_SELECT"] = "Seleccionar color",
+	["REG_PLAYER_COLOR_TT_DISCARD"] = "Descartar color",
+	["REG_PLAYER_COLOR_TT_DEFAULTPICKER"] = "Usar el selector de color por defecto",
 	["REG_PLAYER_EYE"] = "Color de ojos",
 	["REG_PLAYER_EYE_TT"] = [=[Aquí puedes indicar el color de ojos de tu personaje.
 
@@ -507,9 +507,9 @@ Tienes varias formas de hacerlo:|c0000ff00
 	["REG_PLAYER_HERE"] = "Seleccionar posición",
 	["REG_PLAYER_HERE_HOME_PRE_TT"] = [=[Actual posición de la residencia:
 |cff00ff00%s|r.]=],
-	["REG_PLAYER_HERE_HOME_TT"] = [=[|cffffff00Clic|r: Usar la posición actual como tu residencia.
-|cffffff00Clic-derecho|r: Elimina la posición de la residencia.]=],
 	["REG_PLAYER_HERE_TT"] = "|cffffff00Click|r: Seleccionar tu posición actual",
+	["REG_PLAYER_HERE_HOME_TT_CURRENT"] = "Usar la posición actual como tu residencia",
+	["REG_PLAYER_HERE_HOME_TT_DISCARD"] = "Elimina la posición de la residencia",
 	["REG_PLAYER_HISTORY"] = "Historia",
 	["REG_PLAYER_ICON"] = "Icono del personaje",
 	["REG_PLAYER_ICON_TT"] = "Selecciona una representación gráfica para tu personaje.",
@@ -527,31 +527,29 @@ Tienes varias formas de hacerlo:|c0000ff00
 	["REG_PLAYER_PEEK"] = "Varios",
 	["REG_PLAYER_PHYSICAL"] = "Descripción física",
 	["REG_PLAYER_PSYCHO"] = "Rasgos de personalidad",
-	["REG_PLAYER_PSYCHO_Acete"] = "Ascético",
+	["REG_PLAYER_PSYCHO_ASCETIC"] = "Ascético",
 	["REG_PLAYER_PSYCHO_ADD"] = "Añadir un rasgo de personalidad",
 	["REG_PLAYER_PSYCHO_ATTIBUTENAME_TT"] = "Nombre del atributo",
 	["REG_PLAYER_PSYCHO_CHAOTIC"] = "Caótico",
-	["REG_PLAYER_PSYCHO_Chaste"] = "Casto",
-	["REG_PLAYER_PSYCHO_Conciliant"] = "Conciliador",
+	["REG_PLAYER_PSYCHO_CHASTE"] = "Casto",
+	["REG_PLAYER_PSYCHO_PARAGON"] = "Conciliador",
 	["REG_PLAYER_PSYCHO_CREATENEW"] = "Crear rasgo",
-	["REG_PLAYER_PSYCHO_Cruel"] = "Cruel",
+	["REG_PLAYER_PSYCHO_BRUTAL"] = "Cruel",
 	["REG_PLAYER_PSYCHO_CUSTOM"] = "Rasgo personalizado",
-	["REG_PLAYER_PSYCHO_Egoiste"] = "Egoísta",
-	["REG_PLAYER_PSYCHO_Genereux"] = "Generoso",
-	["REG_PLAYER_PSYCHO_Impulsif"] = "Impulsivo",
-	["REG_PLAYER_PSYCHO_Indulgent"] = "Indulgente",
+	["REG_PLAYER_PSYCHO_SELFISH"] = "Egoísta",
+	["REG_PLAYER_PSYCHO_ALTRUISTIC"] = "Generoso",
+	["REG_PLAYER_PSYCHO_IMPULSIVE"] = "Impulsivo",
+	["REG_PLAYER_PSYCHO_FORGIVING"] = "Indulgente",
 	["REG_PLAYER_PSYCHO_LEFTICON_TT"] = "Establece el icono del atributo de la izquierda",
-	["REG_PLAYER_PSYCHO_Loyal"] = "Leal",
-	["REG_PLAYER_PSYCHO_Luxurieux"] = "Lujuria",
-	["REG_PLAYER_PSYCHO_Misericordieux"] = "Amable",
-	["REG_PLAYER_PSYCHO_MORE"] = "Añadir un punto a \"%s\"",
+	["REG_PLAYER_PSYCHO_LAWFUL"] = "Leal",
+	["REG_PLAYER_PSYCHO_LUSTFUL"] = "Lujuria",
+	["REG_PLAYER_PSYCHO_GENTLE"] = "Amable",
 	["REG_PLAYER_PSYCHO_PERSONAL"] = "Características personales",
-	["REG_PLAYER_PSYCHO_Pieux"] = "Supersticioso",
-	["REG_PLAYER_PSYCHO_POINT"] = "Añadir un punto",
-	["REG_PLAYER_PSYCHO_Pragmatique"] = "Renegado",
-	["REG_PLAYER_PSYCHO_Rationnel"] = "Racional",
-	["REG_PLAYER_PSYCHO_Reflechi"] = "Cauto",
-	["REG_PLAYER_PSYCHO_Rencunier"] = "Vengativo",
+	["REG_PLAYER_PSYCHO_SUPERSTITIOUS"] = "Supersticioso",
+	["REG_PLAYER_PSYCHO_RENEGADE"] = "Renegado",
+	["REG_PLAYER_PSYCHO_RATIONAL"] = "Racional",
+	["REG_PLAYER_PSYCHO_CAUTIOUS"] = "Cauto",
+	["REG_PLAYER_PSYCHO_VINDICTIVE"] = "Vengativo",
 	["REG_PLAYER_PSYCHO_RIGHTICON_TT"] = "Establece el icono del atributo de la derecha.",
 	["REG_PLAYER_PSYCHO_SOCIAL"] = "Rasgos personales",
 	["REG_PLAYER_RACE"] = "Raza",
@@ -559,9 +557,7 @@ Tienes varias formas de hacerlo:|c0000ff00
 	["REG_PLAYER_REGISTER"] = "Información del directorio",
 	["REG_PLAYER_RESIDENCE"] = "Residencia",
 	["REG_PLAYER_RESIDENCE_SHOW"] = "Coordenadas de residencia",
-	["REG_PLAYER_RESIDENCE_SHOW_TT"] = [=[|cff00ff00%s
-
-|rClick para que aparezca en el mapa]=],
+	["REG_PLAYER_RESIDENCE_SHOW_TT"] = "Mostrar en el mapa",
 	["REG_PLAYER_RESIDENCE_TT"] = [=[Aquí puedes indicar donde vive el personaje normalmente. Esta podría ser su dirección personal (su casa) o el lugar donde se hospeda.
 Ten en cuenta que si tu personaje es un vagabundo, tendrás que cambiar la información.
 
@@ -645,7 +641,7 @@ Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplement
 	["TF_IGNORE"] = "Ignorar jugador",
 	["TF_IGNORE_NO_REASON"] = "Sin razón",
 	["UI_TUTO_BUTTON"] = "Modo tutorial",
-	["UI_TUTO_BUTTON_TT"] = "Haz clic para activar/desactivar el modo tutorial"
+	["UI_TUTO_BUTTON_TT"] = "Activar/desactivar el modo tutorial"
 };
 
 TRP3_API.loc:RegisterNewLocale("esMX", "Español (AL)", L);

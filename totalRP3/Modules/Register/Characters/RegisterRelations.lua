@@ -6,6 +6,7 @@ local EMPTY = TRP3_API.globals.empty;
 local getProfile = TRP3_API.register.getProfile;
 local hasProfile = TRP3_API.register.hasProfile;
 local getUnitID = TRP3_API.utils.str.getUnitID;
+local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll
 
 TRP3_API.register.relation = {};
 
@@ -162,6 +163,7 @@ local function initRelationEditor(relationID)
 	draftRelationTexture = relation.texture or TRP3_InterfaceIcons.ProfileDefault;
 	-- set icon, name, description, color
 	TRP3_API.ui.frame.setupIconButton(TRP3_RelationsList.Editor.Content.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
+	setTooltipAll(TRP3_RelationsList.Editor.Content.Icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	TRP3_RelationsList.Editor.Content.Icon:SetScript("OnClick", function()
 		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {function(icon)
 			draftRelationTexture = icon;
@@ -181,6 +183,10 @@ local function initRelationEditor(relationID)
 	end
 	TRP3_RelationsList.Editor.Content.Description:SetText(descriptionText:gsub("%%.$s", { ["%1$s"] = "%p", ["%2$s"] = "%t" }));
 
+	setTooltipAll(TRP3_RelationsList.Editor.Content.Color, "RIGHT", 0, 5, loc.CO_RELATIONS_NEW_COLOR, loc.CO_RELATIONS_NEW_COLOR_TT
+	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 	if relation.color then
 		TRP3_RelationsList.Editor.Content.Color.setColor(TRP3_API.CreateColorFromHexString(relation.color):GetRGBAsBytes());
 	else
@@ -247,7 +253,7 @@ function updateRelationsList()
 		widget.Text:SetText(loc:GetText(relation.description or "REG_RELATION_" .. relation.id .. "_TT"):format("%p", "%t"));
 		TRP3_API.ui.frame.setupIconButton(widget.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
 
-		TRP3_API.ui.tooltip.setTooltipForSameFrame(widget.Actions, "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+		TRP3_API.ui.tooltip.setTooltipForSameFrame(widget.Actions, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 		widget.Actions:SetScript("OnMouseDown", function(button)
 			TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 				description:CreateButton(loc.CO_RELATIONS_MENU_EDIT, onActionSelected, ACTIONS.EDIT..relation.id);
@@ -340,6 +346,11 @@ TRP3_API.register.inits.relationsInit = function()
 
 	-- Register target frame button
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+		if not TRP3_API.target then
+			-- Target bar module disabled.
+			return;
+		end
+
 		TRP3_API.target.registerButton({
 			id = "aa_player_d_relation",
 			configText = loc.REG_RELATION,

@@ -32,19 +32,25 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="TOPLEFT" x="0" y="0"/>
 							<Anchor point="BOTTOMRIGHT" x="-3" y="0"/>
 						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="Notice" inherits="GameFontHighlightSmall" justifyH="LEFT">
+									<Size x="0" y="15"/>
+									<Anchors>
+										<Anchor point="TOP" x="0" y="-15"/>
+										<Anchor point="LEFT" x="15" y="0"/>
+										<Anchor point="RIGHT" x="-15" y="0"/>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
 						<Frames>
-							<Frame name="TRP3_RegisterNotesViewPoint">
-								<Size x="10" y="10"/>
-								<Anchors>
-									<Anchor point="CENTER" x="0" y="0"/>
-								</Anchors>
-							</Frame>
 							<Frame name="TRP3_RegisterNotesViewProfile" inherits="TRP3_InsetScrollingEditBoxTemplate">
 								<Anchors>
-									<Anchor point="TOP" x="0" y="-25"/>
+									<Anchor point="TOP" x="0" y="-40"/>
 									<Anchor point="LEFT" x="10" y="0"/>
 									<Anchor point="RIGHT" x="-10" y="0"/>
-									<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="TRP3_RegisterNotesViewPoint" x="0" y="5"/>
+									<Anchor point="BOTTOM" relativePoint="CENTER" x="0" y="-8"/>
 								</Anchors>
 								<Layers>
 									<Layer level="OVERLAY">
@@ -72,7 +78,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<Anchor point="BOTTOM" x="0" y="10"/>
 									<Anchor point="LEFT" x="10" y="0"/>
 									<Anchor point="RIGHT" x="-10" y="0"/>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterNotesViewPoint" x="0" y="-5"/>
+									<Anchor point="TOP" relativePoint="CENTER" x="0" y="-27"/>
 								</Anchors>
 								<Layers>
 									<Layer level="OVERLAY">

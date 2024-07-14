@@ -116,7 +116,7 @@ TRP3_API.dashboard.init = function()
 				x = -50, y = 0, anchor = "RIGHT",
 				text = loc.DB_TUTO_1:format(TRP3_API.globals.player_id),
 				textWidth = 425,
-				arrow = "UP"
+				arrow = "LEFT"
 			}
 		},
 	}

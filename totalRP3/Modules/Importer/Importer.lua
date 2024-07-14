@@ -11,12 +11,10 @@ TRP3_API.importer = {};
 local loc = TRP3_API.loc;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local initList = TRP3_API.ui.list.initList;
-local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local isProfileNameAvailable = TRP3_API.profile.isProfileNameAvailable;
 local tsize, tcopy = TRP3_API.utils.table.size, TRP3_API.utils.table.copy;
-local playAnimation = TRP3_API.ui.misc.playAnimation;
 local duplicateProfile = TRP3_API.profile.duplicateProfile;
 
 local profiles = {};
@@ -31,7 +29,7 @@ TRP3_API.importer.addAddOn = function(addOnName, API)
 	type(API.getFormatedProfile) == "function" and
 	type(API.listAvailableProfiles) == "function" and
 	type(API.getImportableData) == "function" then
-		TRP3_API.Log("Importer : API registered "..addOnName);
+		TRP3_API.Log("Importer: API registered "..addOnName);
 		addOns[addOnName] = API;
 	else
 		print("An API for the addon " .. addOnName .. " tried to register itself in the importer module, but misses some of the required functions.");
@@ -76,14 +74,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		for profileID, addOn in pairs(profiles) do
 			importProfile(addOn, profileID);
 		end
-		for i = 1, 5 do
-			local widget = _G["TRP3_CharacterImporterListLine" .. i];
-			C_Timer.After((0.1 * (i - 1)), function()
-				playAnimation(_G[widget:GetName() .. "Animate"]);
-				playAnimation(_G[widget:GetName() .. "HighlightAnimate"]);
-			end
-			);
-		end
 		playUISound("Sound\\Interface\\Ui_Pet_Levelup_01.wav", true);
 	end
 
@@ -112,8 +102,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 	local function onImportButtonClicked(button)
 		importProfile(button:GetParent().addOn, button:GetParent().profileID);
-		playAnimation(_G[button:GetParent():GetName() .. "Animate"]);
-		playAnimation(_G[button:GetParent():GetName() .. "HighlightAnimate"]);
 		playUISound("Sound\\Interface\\Ui_Pet_Levelup_01.wav", true);
 	end
 
@@ -123,9 +111,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		local importableData = addOns[profiles[id]].getImportableData();
 		widget.profileID = id;
 		widget.addOn = profiles[id];
-		_G[widget:GetName() .. "Count"]:SetText(profiles[id]);
-		_G[widget:GetName() .. "Name"]:SetText(profile.name);
-		setupIconButton(_G[widget:GetName() .. "Icon"], profile.info.icon or TRP3_InterfaceIcons.ProfileDefault);
+		widget:SetCountText(profiles[id]);
+		widget:SetNameText(profile.name);
+		widget:SetIcon(profile.info.icon);
 
 		local tooltip = "";
 
@@ -139,7 +127,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 			end
 		end
 
-		setTooltipForSameFrame(_G[widget:GetName() .. "Info"], "RIGHT", 0, 0, loc.PR_IMPORT_WILL_BE_IMPORTED .. " :", tooltip);
+		setTooltipForSameFrame(widget.HelpButton, "RIGHT", 0, 5, loc.PR_IMPORT_WILL_BE_IMPORTED, tooltip);
 	end
 
 	local function refreshDisplay()
@@ -158,10 +146,10 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	local widgetTab = {};
 	for i = 1, 5 do
 		local widget = _G["TRP3_CharacterImporterListLine" .. i];
-		_G[widget:GetName() .. "Bound"]:Show();
-		_G[widget:GetName() .. "Bound"]:SetScript("OnClick", onImportButtonClicked);
-		_G[widget:GetName() .. "Bound"]:SetText("Import");
-		_G[widget:GetName() .. "Action"]:Hide();
+		widget.BindButton:Show();
+		widget.BindButton:SetScript("OnClick", onImportButtonClicked);
+		widget.BindButton:SetText("Import");
+		widget.MenuButton:Hide();
 		tinsert(widgetTab, widget);
 	end
 	TRP3_CharacterImporterList.widgetTab = widgetTab;
