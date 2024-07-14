@@ -72,7 +72,10 @@ end
 function TRP3_TooltipTemplates.ShowBasicTooltip(owner, title, text)
 	local function GenerateBasicTooltip(_, description)
 		description:AddTitleLine(title);
-		description:AddNormalLine(text);
+
+		if text and text ~= "" then
+			description:AddNormalLine(text);
+		end
 	end
 
 	TRP3_TooltipUtil.ShowTooltip(owner, GenerateBasicTooltip);
