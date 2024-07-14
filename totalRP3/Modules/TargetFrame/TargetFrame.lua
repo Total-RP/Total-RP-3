@@ -306,11 +306,11 @@ local function onStart()
 		registerConfigKey(CONFIG_TARGET_ICON_SIZE, 30);
 		registerConfigHandler({CONFIG_TARGET_USE, CONFIG_TARGET_ICON_SIZE}, onTargetChanged);
 
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
 			title = loc.CO_TARGETFRAME,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigDropDown",
 			widgetName = "TRP3_ConfigTarget_Usage",
 			title = loc.CO_TARGETFRAME_USE,
@@ -324,7 +324,7 @@ local function onStart()
 			listWidth = nil,
 			listCancel = true,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
 			title = loc.CO_TARGETFRAME_ICON_SIZE,
 			configKey = CONFIG_TARGET_ICON_SIZE,
@@ -333,7 +333,7 @@ local function onStart()
 			step = 1,
 			integer = true,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigButton",
 			title = loc.CO_MINIMAP_BUTTON_RESET,
 			text = loc.CO_MINIMAP_BUTTON_RESET_BUTTON,
@@ -360,7 +360,7 @@ local function onStart()
 				onTargetChanged();
 			end);
 			button.visible = getConfigValue(configKey);
-			tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+			tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 				inherit = "TRP3_ConfigCheck",
 				title = button.configText or buttonID,
 				configKey = configKey,

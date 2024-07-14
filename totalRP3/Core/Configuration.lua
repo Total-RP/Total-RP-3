@@ -368,10 +368,17 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		onSelected = function() selectMenu("main_91_config_main_config_0_general") end,
 	});
 
-	TRP3_API.configuration.CONFIG_FRAME_PAGE = {
+	TRP3_API.configuration.CONFIG_TOOLBAR_PAGE = {
 		id = "main_config_toolbar",
 		menuText = loc.CO_TOOLBAR,
 		pageText = loc.CO_TOOLBAR,
+		elements = {},
+	};
+
+	TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE = {
+		id = "main_config_targetframe",
+		menuText = loc.CO_TARGETFRAME,
+		pageText = loc.CO_TARGETFRAME,
 		elements = {},
 	};
 
@@ -478,6 +485,7 @@ end);
 AddOn_TotalRP3.Configuration = {}
 
 function TRP3_API.configuration.constructConfigPage()
-	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_FRAME_PAGE);
+	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE);
+	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE);
 	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL);
 end

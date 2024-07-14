@@ -143,7 +143,7 @@ Per favore ricorda che cambiare queste impostazioni potrebbero alterare la tua e
 	["CO_ANCHOR_TOP"] = "In alto",
 	["CO_ANCHOR_TOP_LEFT"] = "In alto a sinistra",
 	["CO_ANCHOR_TOP_RIGHT"] = "In alto a destra",
-	["CO_CHAT"] = "Impostazioni della chiacchierata",
+	["CO_CHAT"] = "Riquadro della chat",
 	["CO_CHAT_INCREASE_CONTRAST"] = "Aumentare contrasto dei colori",
 	["CO_CHAT_INSERT_FULL_RP_NAME"] = "Inserire i nomi RP con maiusc-clic",
 	["CO_CHAT_INSERT_FULL_RP_NAME_TT"] = [=[Inserire il nome RP intero di un giocatore quando si maiusc-clicca il loro nome nella cornice della chiacchierata.

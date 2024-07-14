@@ -1785,8 +1785,14 @@ local function onModuleInit()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_TOOLTIP_TARGET,
-				configKey = ConfigKeys.CHARACT_TARGET,
+				title = loc.CO_TOOLTIP_RELATION_LINE,
+				configKey = ConfigKeys.CHARACT_RELATION_LINE,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_RELATION,
+				help = loc.CO_TOOLTIP_RELATION_TT,
+				configKey = ConfigKeys.CHARACT_RELATION,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -1810,6 +1816,11 @@ local function onModuleInit()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_TARGET,
+				configKey = ConfigKeys.CHARACT_TARGET,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_ZONE,
 				help = loc.CO_TOOLTIP_ZONE_TT,
 				configKey = ConfigKeys.CHARACT_ZONE,
@@ -1829,17 +1840,6 @@ local function onModuleInit()
 				title = loc.CO_TOOLTIP_NOTIF,
 				configKey = ConfigKeys.CHARACT_NOTIF,
 				help = loc.CO_TOOLTIP_NOTIF_TT,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_TOOLTIP_RELATION_LINE,
-				configKey = ConfigKeys.CHARACT_RELATION_LINE,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_TOOLTIP_RELATION,
-				help = loc.CO_TOOLTIP_RELATION_TT,
-				configKey = ConfigKeys.CHARACT_RELATION,
 			},
 			{
 				inherit = "TRP3_ConfigSlider",

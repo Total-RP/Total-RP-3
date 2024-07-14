@@ -807,7 +807,7 @@ function TRP3_API.register.init()
 
 	-- Build configuration page
 	TRP3_API.register.CONFIG_STRUCTURE = {
-		id = "main_config_register",
+		id = "main_config_directory",
 		menuText = loc.CO_REGISTER,
 		pageText = loc.CO_REGISTER,
 		elements = {
