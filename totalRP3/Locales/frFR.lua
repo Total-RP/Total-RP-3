@@ -224,7 +224,7 @@ Gardez à l'esprit que changer ces paramètres peut altérer votre expérience a
 	["CO_ANCHOR_TOP"] = "Haut",
 	["CO_ANCHOR_TOP_LEFT"] = "Haut-gauche",
 	["CO_ANCHOR_TOP_RIGHT"] = "Haut-droite",
-	["CO_CHAT"] = "	Fenêtre de discussion",
+	["CO_CHAT"] = "Fenêtre de discussion",
 	["CO_CHAT_DISABLE_OOC"] = "Désactiver les modifications quand HRP",
 	["CO_CHAT_DISABLE_OOC_TT"] = "Désactiver toutes les modifications de discussions de Total RP 3 (noms personnalisés, détection des émotes, dialogues de PNJ, etc.) quand votre personnage est défini comme étant en Hors RolePlay.",
 	["CO_CHAT_INCREASE_CONTRAST"] = "Améliorer le contraste des couleurs",
