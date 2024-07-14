@@ -117,6 +117,7 @@ L = {
 	REG_PLAYER_SHOWMISC = "Show miscellaneous frame",
 	REG_PLAYER_SHOWMISC_TT = "Check if you want to show custom fields for your character.\n\nIf you don't want to show custom fields, keep this box unchecked and the miscellaneous frame will remain totally hidden.",
 	REG_PLAYER_MISC_ADD = "Add an additional field",
+	REG_PLAYER_MISC_ADD_TOOLTIP = "This information will |cnGREEN_FONT_COLOR:show on your tooltip|r.",
 	REG_PLAYER_CONVERT = "Convert to |cnGREEN_FONT_COLOR:custom|r",
 	REG_PLAYER_CONVERT_WARNING = "This information will |cnWARNING_FONT_COLOR:no longer show on your tooltip|r.",
 	REG_PLAYER_ABOUT = "About",

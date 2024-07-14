@@ -707,14 +707,18 @@ end
 local function miscAddDropDown()
 	local values = {};
 	for index, preset in pairs(MISC_PRESET) do
-		table.insert(values, { preset.list or preset.localizedName, index });
+		table.insert(values, { preset.list or preset.localizedName, index, preset.shownOnTooltip });
 	end
 	table.sort(values, SortCompareMiscEntries);
 
 	TRP3_MenuUtil.CreateContextMenu(TRP3_RegisterCharact_Edit_MiscAdd, function(_, description)
 		description:CreateTitle(loc.REG_PLAYER_MISC_ADD);
 		for _, preset in pairs(values) do
-			description:CreateButton(preset[1], miscAddDropDownSelection, preset[2]);
+			local addOption = description:CreateButton(preset[1], miscAddDropDownSelection, preset[2]);
+			if preset[3] then
+				TRP3_MenuUtil.AttachTexture(addOption, "transmog-icon-chat");
+				TRP3_MenuUtil.SetElementTooltip(addOption, loc.REG_PLAYER_MISC_ADD_TOOLTIP);
+			end
 		end
 	end);
 end
