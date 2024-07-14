@@ -84,7 +84,11 @@ end
 function TRP3_TooltipTemplates.ShowInstructionTooltip(owner, title, text, instructions)
 	local function GenerateInstructionTooltip(_, description)
 		description:AddTitleLine(title);
-		description:AddNormalLine(text);
+
+		if text and text ~= "" then
+			description:AddNormalLine(text);
+		end
+
 		description:QueueBlankLine();
 
 		for _, instruction in ipairs(instructions) do
