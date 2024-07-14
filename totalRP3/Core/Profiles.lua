@@ -256,13 +256,7 @@ local function uiInitProfileList()
 	end
 
 	local provider = CreateDataProvider(profileListID);
-	TRP3_ProfileManager.list.ScrollBox:SetDataProvider(provider);
-
-	if not profileSearch then
-		TRP3_ProfileManager.list.ScrollBox:ScrollToElementData(currentProfileId);
-	else
-		TRP3_ProfileManager.list.ScrollBox:ScrollToBegin();
-	end
+	TRP3_ProfileManager.list.ScrollBox:SetDataProvider(provider, ScrollBoxConstants.RetainScrollPosition);
 end
 
 local showTextInputPopup, showConfirmPopup = TRP3_API.popup.showTextInputPopup, TRP3_API.popup.showConfirmPopup;
@@ -471,6 +465,18 @@ function TRP3_API.profile.init()
 	-- UI
 	local tabGroup; -- Reference to the tab panel tabs group
 
+	local function OnSearchTextChanged()
+		local text = TRP3_ProfileManager.list:GetSearchText();
+
+		uiInitProfileList();
+
+		if text == "" then
+			TRP3_ProfileManager.list.ScrollBox:ScrollToElementData(currentProfileId);
+		else
+			TRP3_ProfileManager.list.ScrollBox:ScrollToBegin();
+		end
+	end
+
 	local function OnHelpButtonTooltip(_, description)
 		TRP3_TooltipTemplates.CreateBasicTooltip(description, loc.PR_EXPORT_IMPORT_TITLE, loc.PR_EXPORT_IMPORT_HELP);
 	end
@@ -516,7 +522,7 @@ function TRP3_API.profile.init()
 	TRP3_ProfileManager.list:SetElementInitializer("TRP3_ProfileManagerListElement", OnListElementInitialize);
 	TRP3_ProfileManager.list:SetCreateCallback(uiCreateProfile);
 	TRP3_ProfileManager.list:SetHelpCallback(OnHelpButtonTooltip);
-	TRP3_ProfileManager.list:SetSearchCallback(TRP3_FunctionUtil.Debounce(0.25, uiInitProfileList));
+	TRP3_ProfileManager.list:SetSearchCallback(TRP3_FunctionUtil.Debounce(0.25, OnSearchTextChanged));
 
 	registerPage({
 		id = "player_profiles",
@@ -534,6 +540,7 @@ function TRP3_API.profile.init()
 
 	TRP3_ProfileManager.list.onTab = function()
 		uiInitProfileList();
+		TRP3_ProfileManager.list.ScrollBox:ScrollToElementData(currentProfileId);
 	end
 
 	local frame = CreateFrame("Frame", "TRP3_ProfileManagerTabBar", TRP3_ProfileManager);
@@ -567,7 +574,7 @@ function TRP3_API.profile.init()
 	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_PROFILES_LOADED, function()
 		if getCurrentPageID() == "player_profiles" then
 			if tabGroup.current == 1 then
-				tabGroup:SelectTab(1); -- Force refresh
+				uiInitProfileList();  -- Force refresh
 			end
 		end
 	end);

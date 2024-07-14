@@ -416,6 +416,12 @@ stds.wow = {
 			},
 		},
 
+		ScrollBoxConstants = {
+			fields = {
+				"RetainScrollPosition",
+			},
+		},
+
 		ScrollUtil = {
 			fields = {
 				"AddManagedScrollBarVisibilityBehavior",
