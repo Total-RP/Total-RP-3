@@ -1,0 +1,75 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="ProfileManagerList.lua"/>
+
+	<Frame name="TRP3_ProfileManagerListTemplate" mixin="TRP3_ProfileManagerListMixin" inherits="TRP3_TooltipBackdropEdgeTemplate" virtual="true">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture parentKey="Divider" atlas="Options_HorizontalDivider" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="16" y="-55"/>
+						<Anchor point="RIGHT" x="-16"/>
+					</Anchors>
+					<Color r="1" g="0.675" b="0.125"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey="Background" inherits="TRP3_PageBackgroundProfiles">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="4" y="-4"/>
+					<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+				</Anchors>
+			</Frame>
+			<Button parentKey="CreateButton" inherits="TRP3_RedButtonTemplate" hidden="true">
+				<Size x="150" y="30"/>
+				<Anchors>
+					<Anchor point="TOP" y="-15"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="HelpButton" inherits="TRP3_HelpButton" hidden="true">
+				<Size x="15" y="15"/>
+				<Anchors>
+					<Anchor point="TOP" y="-22"/>
+					<Anchor point="RIGHT" x="-15"/>
+				</Anchors>
+			</Button>
+			<EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" hidden="true">
+				<Size x="175" y="20"/>
+				<Anchors>
+					<Anchor point="TOP" y="-20"/>
+					<Anchor point="RIGHT" x="-15"/>
+				</Anchors>
+			</EditBox>
+			<Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="EmptyText" inherits="GameFontHighlightLarge" justifyH="CENTER" hidden="true">
+							<Size y="10"/>
+							<Anchors>
+								<Anchor point="CENTER"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+			<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.Divider" relativePoint="BOTTOM" y="-6"/>
+					<Anchor point="BOTTOMRIGHT" x="-12" y="8"/>
+				</Anchors>
+			</EventFrame>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+		</Scripts>
+	</Frame>
+</Ui>
