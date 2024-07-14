@@ -40,7 +40,7 @@ local ChatLinkModule = TRP3_API.ChatLinkModule;
 local loc = TRP3_API.loc;
 --endregion
 
-local LINK_CODE = "garrmission:totalrp3";
+local LINK_CODE = "addon:totalrp3";
 local LINK_LENGTHS = LINK_CODE:len();
 
 local LINK_COLOR = TRP3_API.Colors.Yellow;
@@ -178,18 +178,19 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		if IsAltKeyDown() then
 			TRP3_RefTooltip:AddLine(" ");
 			if itemData.moduleName then
-				TRP3_RefTooltip:AddLine(loc.CL_TYPE:format(ORANGE(itemData.moduleName)));
+				TRP3_RefTooltip:AddLine(loc.CL_TYPE:format("|cnWHITE_FONT_COLOR:" .. itemData.moduleName .. "|r"));
 			end
-			TRP3_RefTooltip:AddLine(loc.CL_SENT_BY:format(ORANGE(sender)));
+			TRP3_RefTooltip:AddLine(loc.CL_SENT_BY:format("|cnWHITE_FONT_COLOR:" .. sender.. "|r"));
 			if itemData.size then
-				TRP3_RefTooltip:AddLine(loc.CL_CONTENT_SIZE:format(ORANGE(Ellyb.Strings.formatBytes(itemData.size))));
+				TRP3_RefTooltip:AddLine(loc.CL_CONTENT_SIZE:format("|cnWHITE_FONT_COLOR:" .. Ellyb.Strings.formatBytes(itemData.size).. "|r"));
 			end
 			TRP3_RefTooltip.wasAltKeyDown = true;
 		else
 			TRP3_RefTooltip.wasAltKeyDown = false;
 		end
 
-		local minWidth = 0;
+		local minWidth = 250;
+		TRP3_RefTooltip:SetMinimumWidth(minWidth);
 		local buttonAddedHeight = 0;
 		if actionButtons and ChatLinks:HasModule(itemData.moduleID) then
 			for i, button in pairs(actionButtons) do
@@ -204,9 +205,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		TRP3_RefTooltip.itemData = itemData;
 		TRP3_RefTooltip:Show();
 		TRP3_RefTooltip:SetHeight(TRP3_RefTooltip:GetHeight() + buttonAddedHeight + 5);
-		if TRP3_RefTooltip:GetWidth() < minWidth then
-			TRP3_RefTooltip:SetWidth(minWidth + 20)
-		end
 	end
 
 	function TRP3_RefTooltip:Refresh()
