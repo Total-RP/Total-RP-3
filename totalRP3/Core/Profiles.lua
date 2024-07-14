@@ -471,21 +471,25 @@ function TRP3_API.profile.init()
 	-- UI
 	local tabGroup; -- Reference to the tab panel tabs group
 
-	local function OnHelpButtonTooltip(tooltip)
-		GameTooltip_SetTitle(tooltip, loc.PR_EXPORT_IMPORT_TITLE);
-		GameTooltip_AddNormalLine(tooltip, loc.PR_EXPORT_IMPORT_HELP);
+	local function OnHelpButtonTooltip(_, description)
+		TRP3_TooltipTemplates.CreateBasicTooltip(description, loc.PR_EXPORT_IMPORT_TITLE, loc.PR_EXPORT_IMPORT_HELP);
 	end
 
-	local function OnMenuButtonTooltip(tooltip)
-		GameTooltip_SetTitle(tooltip, loc.CM_OPTIONS);
-		GameTooltip_AddNormalLine(tooltip, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+	local function OnMenuButtonTooltip(_, description)
+		local title = loc.CM_OPTIONS;
+		local text = nil;
+		local instructions = {{"CLICK", loc.CM_OPTIONS_ADDITIONAL}};
+
+		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
 	end
 
-	local function OnListElementTooltip(tooltip)
-		local button = tooltip:GetOwner();
-		GameTooltip_SetTitle(tooltip, button.NameText:GetText());
-		GameTooltip_AddNormalLine(tooltip, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPEN));
-		GameTooltip_AddNormalLine(tooltip, TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
+	local function OnListElementTooltip(_, description)
+		local button = description:GetOwner();
+		local title = button.NameText:GetText();
+		local text = nil;
+		local instructions = {{"CLICK", loc.CM_OPEN}, {"SHIFT-CLICK", loc.CL_TOOLTIP}};
+
+		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
 	end
 
 	local function OnListElementClick(button)

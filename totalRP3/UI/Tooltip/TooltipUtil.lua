@@ -103,11 +103,10 @@ function TRP3_TooltipUtil.HideTooltip(owner)
 	end
 end
 
-function TRP3_TooltipUtil.ShowTooltip(owner, initializer, ...)
-	local tooltip = TRP3_MainTooltip;
-	tooltip:SetOwner(owner, "ANCHOR_RIGHT");
-	initializer(tooltip, ...);
-	tooltip:Show();
+function TRP3_TooltipUtil.ShowTooltip(owner, generator, ...)
+	local description = TRP3_Tooltip.CreateTooltipDescription(owner);
+	TRP3_Tooltip.PopulateTooltipDescription(generator, owner, description, ...);
+	TRP3_Tooltip.ProcessTooltipDescription(TRP3_MainTooltip, description);
 end
 
 ---@class TRP3_TooltipUtil.LineOptions

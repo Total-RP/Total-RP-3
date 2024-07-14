@@ -16,8 +16,8 @@ end
 
 function TRP3_TabButtonMixin:OnEnter()
 	if self.Text:IsTruncated() then
-		TRP3_TooltipUtil.ShowTooltip(self, function(tooltip)
-			GameTooltip_SetTitle(tooltip, self:GetText());
+		TRP3_TooltipUtil.ShowTooltip(self, function(_, tooltip)
+			tooltip:AddTitleLine(self:GetText());
 		end);
 	end
 end
