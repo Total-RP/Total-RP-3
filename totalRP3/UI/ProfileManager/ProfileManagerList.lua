@@ -33,7 +33,7 @@ function TRP3_ProfileManagerListMixin:OnShow()
 end
 
 function TRP3_ProfileManagerListMixin:GetSearchText()
-	return self.SearchBox:GetText("");
+	return self.SearchBox:GetText();
 end
 
 function TRP3_ProfileManagerListMixin:SetSearchText(text)
