@@ -141,7 +141,7 @@ Das Importieren des Inhaltes einer anderen Version könnte aufgrund von Inkompat
 	["CO_ANCHOR_TOP"] = "Oben",
 	["CO_ANCHOR_TOP_LEFT"] = "Oben Links",
 	["CO_ANCHOR_TOP_RIGHT"] = "Oben Rechts",
-	["CO_CHAT"] = "Chat",
+	["CO_CHAT"] = "Chatrahmen",
 	["CO_CHAT_DISABLE_OOC"] = "Deaktiviere Anpassungen wenn Ihr OOC seid",
 	["CO_CHAT_DISABLE_OOC_TT"] = "Deaktiviere alle Total RP 3 Chatanpassungen (benutzerdefinierte Namen, Emote-Erkennung, NPC-Reden, etc.), wenn dein Charakter als \"Out Of Character\" markiert ist.",
 	["CO_CHAT_INCREASE_CONTRAST"] = "Farbkontrast erhöhen",

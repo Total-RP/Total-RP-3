@@ -144,7 +144,7 @@ Importar conteúdo vindo de uma versão diferente pode causar problemas em casos
 	["CO_ANCHOR_TOP"] = "Cima",
 	["CO_ANCHOR_TOP_LEFT"] = "Cima-esquerda",
 	["CO_ANCHOR_TOP_RIGHT"] = "Cima-direita",
-	["CO_CHAT"] = "Conversa",
+	["CO_CHAT"] = "Quadro de bate-papo",
 	["CO_CHAT_DISABLE_OOC"] = "Desativar Configurações quando OOC (Fora do personagem)",
 	["CO_CHAT_DISABLE_OOC_TT"] = "Desativar todas as personalizações de chat do Total RP 3 (nomes personalizados, detecção de emoções, discursos NPC, etc.) quando o seu personagem é definido como \"Fora Do Personagem\" ",
 	["CO_CHAT_INCREASE_CONTRAST"] = "Aumentar contraste de cores ",

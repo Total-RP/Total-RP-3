@@ -584,7 +584,7 @@ Possible status:
 	CO_ANCHOR_LEFT = "Left",
 	CO_ANCHOR_RIGHT = "Right",
 	CO_ANCHOR_CURSOR = "Show on cursor",
-	CO_CHAT = "Chat frames",
+	CO_CHAT = "Chat frame",
 	CO_CHAT_DISABLE_OOC = "Disable customizations when OOC",
 	CO_CHAT_DISABLE_OOC_TT = "Disable all of Total RP 3's chat customizations (custom names, emote detection, NPC speech, etc.) when your character is set as Out Of Character.",
 	CO_CHAT_MAIN = "Chat main settings",

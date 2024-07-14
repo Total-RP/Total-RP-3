@@ -148,7 +148,7 @@ Por favor, ten en cuenta que cambiar esta configuración puede alterar tu experi
 	["CO_ANCHOR_TOP"] = "Parte superior",
 	["CO_ANCHOR_TOP_LEFT"] = "Parte superior izquierda",
 	["CO_ANCHOR_TOP_RIGHT"] = "Parte superior derecha",
-	["CO_CHAT"] = "Chat",
+	["CO_CHAT"] = "Marco del chat",
 	["CO_CHAT_DISABLE_OOC"] = "Deshabilitar personalizaciones cuando se está FDP",
 	["CO_CHAT_DISABLE_OOC_TT"] = "Deshabilita todas las personalizaciones de chat del Total RP 3 (nombres personalizados, detección de emotes, diálogos de NPC, etc.) cuando tu personaje está puesto como Fuera de Personaje.",
 	["CO_CHAT_INCREASE_CONTRAST"] = "Aumentar contraste de color",
