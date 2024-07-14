@@ -574,7 +574,7 @@ function TRP3_API.profile.init()
 	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_PROFILES_LOADED, function()
 		if getCurrentPageID() == "player_profiles" then
 			if tabGroup.current == 1 then
-				tabGroup:SelectTab(1); -- Force refresh
+				uiInitProfileList();  -- Force refresh
 			end
 		end
 	end);
