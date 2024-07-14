@@ -1053,11 +1053,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			end,
 			onClick = function(unitID)
 				openMainFrame();
-				if unitID == Globals.player_id then
-					TRP3_API.navigation.menu.selectMenu("main_10_player");
-				else
-					openPageByUnitID(unitID);
-				end
+				openPageByUnitID(unitID);
 			end,
 			adapter = function(buttonStructure, unitID)
 				-- Initialize the buttonStructure parts.
