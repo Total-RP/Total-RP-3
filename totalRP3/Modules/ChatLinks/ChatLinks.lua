@@ -19,10 +19,6 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 local ChatLinks = {};
 TRP3_API.ChatLinks = ChatLinks;
 
---region Ellyb imports
-local ORANGE = TRP3_API.Colors.Orange;
---endregion
-
 --region Wow Imports
 local assert = assert;
 local pairs = pairs;
@@ -281,7 +277,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		Ellyb.Assertions.isType(linkType, "string", "linkType");
 		Ellyb.Assertions.isType(callback, "function", "callback");
 
-		TRP3_API.popup.showCustomYesNoPopup(loc.CL_MAKE_IMPORTABLE_SIMPLER:format(TRP3_API.Colors.Orange(linkType)),
+		TRP3_API.popup.showCustomYesNoPopup(loc.CL_MAKE_IMPORTABLE_SIMPLER:format("|cnGREEN_FONT_COLOR:" .. linkType .. "|r"),
 			loc.CL_MAKE_IMPORTABLE_BUTTON_TEXT,
 			loc.CL_MAKE_NON_IMPORTABLE,
 			function()
