@@ -1116,7 +1116,6 @@ Total RP ist NICHT für Links verantwortlich, die auf schädlichen oder illegale
 	["UI_MUSIC_SELECT"] = "Musik auswählen",
 	["UI_TUTO_BUTTON"] = "Tutorialmodus",
 	["UI_TUTO_BUTTON_TT"] = "Tutorialmodus ein/aus zu schalten",
-	["LAUNCHER_CONFIG_MENU_TITLE"] = "Launcher",
 };
 
 TRP3_API.loc:RegisterNewLocale("deDE", "Deutsch", L);
