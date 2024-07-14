@@ -951,7 +951,7 @@ Há várias maneiras de mostrar isso:|c0000ff00
 	["REG_PLAYER_NAMESTITLES"] = "Nomes e títulos",
 	["REG_PLAYER_NO_CHAR"] = "Sem características",
 	["REG_PLAYER_NOTES"] = "Anotações",
-	["REG_PLAYER_NOTES_ACCOUNT"] = "Notas de conta",
+	["REG_PLAYER_NOTES_ACCOUNT"] = "Anotações de conta",
 	["REG_PLAYER_NOTES_ACCOUNT_HELP"] = "Estas anotações privadas estão vinculadas a sua conta e serão compartilhadas com todos seus perfis.",
 	["REG_PLAYER_NOTES_PROFILE"] = "Anotações de %s",
 	["REG_PLAYER_NOTES_PROFILE_HELP"] = "Estar anotações privadas estão vinculadas ao seu perfil atual e irão mudar baseado em qual perfil você tem atualmente ativo.",
