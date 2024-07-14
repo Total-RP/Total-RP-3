@@ -346,6 +346,11 @@ TRP3_API.register.inits.relationsInit = function()
 
 	-- Register target frame button
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+		if not TRP3_API.target then
+			-- Target bar module disabled.
+			return;
+		end
+
 		TRP3_API.target.registerButton({
 			id = "aa_player_d_relation",
 			configText = loc.REG_RELATION,
