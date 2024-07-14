@@ -133,7 +133,12 @@ local function onStart()
 				uiAlert:Show();
 				uiAlert:SetWidth(buttonSize / 2);
 				uiAlert:SetHeight(buttonSize / 2);
-				uiAlert:SetAtlas(buttonStructure.alertIcon);
+				if C_Texture.GetAtlasInfo(buttonStructure.alertIcon) then
+					local useAtlasSize = false;
+					uiAlert:SetAtlas(buttonStructure.alertIcon, useAtlasSize);
+				else
+					uiAlert:SetTexture(buttonStructure.alertIcon);
+				end
 			end
 
 			index = index + 1;
