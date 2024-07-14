@@ -26,7 +26,7 @@ end
 TRP3_API.register.ignoreID = ignoreID;
 
 local function ignoreIDConfirm(unitID)
-	showTextInputPopup(loc.TF_IGNORE_CONFIRM:format(unitID), function(text)
+	showTextInputPopup(loc.REG_PLAYER_IGNORE_WARNING:format(unitID), function(text)
 		ignoreID(unitID, text);
 	end);
 end

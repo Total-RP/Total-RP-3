@@ -211,15 +211,13 @@ local function GenerateCreditsString(credits)
 
 	do  -- Header
 		local WEBSITE_LINK = string.format("{link*%1$s*%2$s}", "http://totalrp3.info", L.CREDITS_WEBSITE_LINK_TEXT);
-		local TWITTER_LINK = string.format("{twitter*%1$s*@%1$s}", "TotalRP3");
 		local DISCORD_LINK = string.format("{link*%1$s*%2$s}", "http://discord.totalrp3.info", L.CREDITS_DISCORD_LINK_TEXT);
 		local VERSION_TEXT = string.format(L.CREDITS_VERSION_TEXT, TRP3_API.utils.str.sanitizeVersion(TRP3_API.globals.version_display));
 
 		local lines = {};
 
 		table.insert(lines, string.format("{p:c}{col:6eff51}%1$s{/col}{/p}", VERSION_TEXT));
-		table.insert(lines, string.format("{p:c}%1$s — %2$s{/p}", WEBSITE_LINK, TWITTER_LINK));
-		table.insert(lines, string.format("{p:c}%1$s{/p}", DISCORD_LINK));
+		table.insert(lines, string.format("{p:c}{col:f2bf1a}%1$s{/col} — {col:f2bf1a}%2$s{/col}{/p}", WEBSITE_LINK, DISCORD_LINK));
 
 		table.insert(output, L.CREDITS_THANK_YOU_SECTION_1);
 		table.insert(output, table.concat(lines, "|n"));

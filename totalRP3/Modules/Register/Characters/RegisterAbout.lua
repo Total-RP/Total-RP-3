@@ -303,10 +303,9 @@ local function createTemplate2Frame(frameIndex)
 	_G[frame:GetName().."Delete"]:SetText(loc.CM_REMOVE);
 	_G[frame:GetName().."Up"]:SetScript("OnClick", template2UpFrame);
 	_G[frame:GetName().."Down"]:SetScript("OnClick", template2DownFrame);
-	setTooltipAll(_G[frame:GetName().."Up"], "TOP", 0, 0, loc.CM_MOVE_UP);
-	setTooltipAll(_G[frame:GetName().."Down"], "TOP", 0, 0, loc.CM_MOVE_DOWN);
-	setTooltipAll(_G[frame:GetName().."Delete"], "TOP", 0, 5, loc.REG_PLAYER_ABOUT_REMOVE_FRAME);
-	setTooltipAll(_G[frame:GetName().."Icon"], "TOP", 0, 5, loc.UI_ICON_SELECT, "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	setTooltipAll(_G[frame:GetName().."Up"], "RIGHT", 0, 5, loc.REG_PLAYER_REORDER, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.CM_MOVE_UP));
+	setTooltipAll(_G[frame:GetName().."Down"], "RIGHT", 0, 5, loc.REG_PLAYER_REORDER, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.CM_MOVE_DOWN));
+	setTooltipAll(_G[frame:GetName().."Icon"], "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, _G["TRP3_RegisterAbout_Template2_Edit"..frameIndex.."TextScrollText"]);
 	tinsert(template2EditFrames, frame);
 	return frame;
@@ -720,6 +719,7 @@ end
 
 local function showAboutTab()
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer:Hide();
+	TRP3_MainTutorialButton:Hide();
 	TRP3_RegisterAbout:Show();
 	getCurrentContext().isEditMode = false;
 	refreshDisplay();
@@ -824,20 +824,28 @@ end
 -- TUTORIAL
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TUTORIAL_EDIT_COMMON, TUTORIAL_EDIT_T1, TUTORIAL_EDIT_T2, TUTORIAL_EDIT_T3
+local TUTORIAL_EDIT_COMMON, TUTORIAL_EDIT_FORMATTING, TUTORIAL_EDIT_T1, TUTORIAL_EDIT_T2, TUTORIAL_EDIT_T3
 
 local function createTutorialStructures()
 	TUTORIAL_EDIT_COMMON = {
 		box = {
-			width = 510,
-			height = 70,
-			anchor = "TOP",
-			x = 1,
-			y = -40
+			allPoints = TRP3_RegisterAbout_Edit_Options
 		},
 		button = {
-			x = 125, y = 0, anchor = "CENTER",
+			x = 0, y = 0, anchor = "CENTER",
 			text = loc.REG_PLAYER_TUTO_ABOUT_COMMON,
+			textWidth = 450,
+			arrow = "DOWN"
+		}
+	};
+
+	TUTORIAL_EDIT_FORMATTING = {
+		box = {
+			allPoints = TRP3_RegisterAbout_Edit_Toolbar
+		},
+		button = {
+			x = 0, y = 0, anchor = "CENTER",
+			text = loc.REG_PLAYER_TUTO_FORMATTING_TOOLS,
 			textWidth = 450,
 			arrow = "DOWN"
 		}
@@ -849,28 +857,30 @@ local function createTutorialStructures()
 				allPoints = TRP3_RegisterAbout_Edit_Template1
 			},
 			button = {
-				x = 0, y = 20, anchor = "BOTTOM",
+				x = 0, y = 0, anchor = "CENTER",
 				text = loc.REG_PLAYER_TUTO_ABOUT_T1,
 				textWidth = 450,
 				arrow = "UP"
 			}
 		},
-		TUTORIAL_EDIT_COMMON
+		TUTORIAL_EDIT_COMMON,
+		TUTORIAL_EDIT_FORMATTING
 	}
 
 	TUTORIAL_EDIT_T2 = {
 		{
 			box = {
-				allPoints = TRP3_RegisterAbout_Edit_Template1
+				allPoints = TRP3_RegisterAbout_Edit_Template2
 			},
 			button = {
-				x = 0, y = 20, anchor = "BOTTOM",
+				x = 0, y = 0, anchor = "CENTER",
 				text = loc.REG_PLAYER_TUTO_ABOUT_T2,
 				textWidth = 450,
 				arrow = "UP"
 			}
 		},
-		TUTORIAL_EDIT_COMMON
+		TUTORIAL_EDIT_COMMON,
+		TUTORIAL_EDIT_FORMATTING
 	}
 
 	TUTORIAL_EDIT_T3 = {
@@ -879,13 +889,14 @@ local function createTutorialStructures()
 				allPoints = TRP3_RegisterAbout_Edit_Template3
 			},
 			button = {
-				x = 0, y = 20, anchor = "BOTTOM",
+				x = 0, y = 0, anchor = "CENTER",
 				text = loc.REG_PLAYER_TUTO_ABOUT_T3,
 				textWidth = 450,
 				arrow = "UP"
 			}
 		},
-		TUTORIAL_EDIT_COMMON
+		TUTORIAL_EDIT_COMMON,
+		TUTORIAL_EDIT_FORMATTING
 	}
 end
 
@@ -946,6 +957,7 @@ function TRP3_API.register.inits.aboutInit()
 	setupListBox(TRP3_RegisterAbout_Edit_Template3_PhysBkg, bkgTab, setTemplate3PhysBkg, nil, 150, true);
 	setupListBox(TRP3_RegisterAbout_Edit_Template3_PsyBkg, bkgTab, setTemplate3PsyBkg, nil, 150, true);
 	setupListBox(TRP3_RegisterAbout_Edit_Template3_HistBkg, bkgTab, setTemplate3HistBkg, nil, 150, true);
+	setTooltipAll(TRP3_RegisterAbout_Edit_Template3_PhysIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("onMouseDown", function(self, button)
 		if button == "LeftButton" then
 			showIconBrowser(onPhisIconSelected, draftData.T3.PH.IC);
@@ -959,6 +971,7 @@ function TRP3_API.register.inits.aboutInit()
 		end
 	end);
 
+	setTooltipAll(TRP3_RegisterAbout_Edit_Template3_PsyIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	TRP3_RegisterAbout_Edit_Template3_PsyIcon:SetScript("onMouseDown", function(self, button)
 		if button == "LeftButton" then
 			showIconBrowser(onPsychoIconSelected, draftData.T3.PS.IC);
@@ -972,6 +985,7 @@ function TRP3_API.register.inits.aboutInit()
 		end
 	end);
 
+	setTooltipAll(TRP3_RegisterAbout_Edit_Template3_HistIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("onMouseDown", function(self, button)
 		if button == "LeftButton" then
 			showIconBrowser(onHistoIconSelected, draftData.T3.HI.IC);

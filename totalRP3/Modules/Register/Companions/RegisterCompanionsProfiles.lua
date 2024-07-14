@@ -204,7 +204,7 @@ local function decorateProfileList(widget, id)
 		text = text..loc.PR_CO_UNUSED_PROFILE;
 	end
 
-	setTooltipForSameFrame(widget.HelpButton, "RIGHT", 0, 0, loc.PR_PROFILE, text);
+	setTooltipForSameFrame(widget.HelpButton, "RIGHT", 0, 5, loc.PR_PROFILE, text);
 	Ellyb.Tooltips.getTooltip(widget):SetTitle(mainText)
 end
 
@@ -452,7 +452,7 @@ local function constructTutorialStructure()
 				allPoints = TRP3_CompanionsProfilesList
 			},
 			button = {
-				x = 0, y = -150, anchor = "CENTER",
+				x = 0, y = -100, anchor = "CENTER",
 				text = loc.PR_CO_PROFILE_HELP,
 				textWidth = 400,
 				arrow = "UP"
@@ -575,7 +575,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				end
 			end,
 			onMouseDown = companionProfileSelectionList,
-			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
+			alertIcon = "QuestNormal",
 			adapter = function(buttonStructure, unitID)
 				-- Initialize the buttonStructure parts.
 				buttonStructure.alert = false;
@@ -624,7 +624,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			end,
 			tooltip = loc.REG_COMPANION_TF_PROFILE_SPEECH,
 			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_COMPANION_TF_PROFILE_SPEECH_TT),
-			onClick = function(unitID)
+			onMouseDown = function(unitID)
 				local ownerID, companionID = companionIDToInfo(unitID);
 				local profile = getCompanionInfo(ownerID, companionID, unitID);
 
@@ -650,7 +650,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				return profileID ~= nil;
 			end,
 			onMouseDown = companionProfileSelectionList,
-			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
+			alertIcon = "QuestNormal",
 			adapter = function(buttonStructure, unitID)
 				-- Initialize the buttonStructure parts.
 				buttonStructure.alert = false;

@@ -261,26 +261,27 @@ local function decorateCharacterLine(line, characterIndex)
 	_G[line:GetName().."Info2"]:SetText("");
 	local firstLink;
 	if profile.link and tsize(profile.link) > 0 then
-		leftTooltipText = leftTooltipText .. loc.REG_LIST_CHAR_TT_CHAR;
+		leftTooltipText = leftTooltipText .. loc.REG_LIST_CHAR_TT_CHAR .. "|cnGREEN_FONT_COLOR:";
 		for unitID, _ in pairs(profile.link) do
 			if not firstLink then
 				firstLink = unitID;
 			end
 			local unitName, unitRealm = unitIDToInfo(unitID);
 			if isIDIgnored(unitID) then
-				leftTooltipText = leftTooltipText .. "\n|cffff0000 - " .. unitName .. " ( " .. unitRealm .. " ) - " .. IGNORED_ICON .. " " .. loc.REG_LIST_CHAR_IGNORED;
+				leftTooltipText = leftTooltipText .. "\n - " .. unitName .. " ( " .. unitRealm .. " ) - " .. IGNORED_ICON .. " " .. loc.REG_LIST_CHAR_IGNORED;
 				atLeastOneIgnored = true;
 			else
-				leftTooltipText = leftTooltipText .. "\n|cff00ff00 - " .. unitName .. " ( " .. unitRealm .. " )";
+				leftTooltipText = leftTooltipText .. "\n - " .. unitName .. " ( " .. unitRealm .. " )";
 			end
 		end
+		leftTooltipText = leftTooltipText .. "|r";
 	else
-		leftTooltipText = leftTooltipText .. "|cffffff00" .. loc.REG_LIST_CHAR_TT_CHAR_NO;
+		leftTooltipText = leftTooltipText .. loc.REG_LIST_CHAR_TT_CHAR_NO;
 	end
 
 	if profile.time and profile.zone then
 		local formatDate = Utils.GenerateFormattedDateString(profile.time);
-		leftTooltipText = leftTooltipText .. "\n|r" .. loc.REG_LIST_CHAR_TT_DATE:format(formatDate, profile.zone);
+		leftTooltipText = leftTooltipText .. "\n" .. loc.REG_LIST_CHAR_TT_DATE:format(formatDate, profile.zone);
 	end
 	-- Middle column : relation
 	local relation, relationColor = getRelationText(profileID, true), getRelationColor(profileID);
@@ -345,7 +346,7 @@ local function decorateCharacterLine(line, characterIndex)
 	_G[line:GetName().."Select"]:Show();
 
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, leftTooltipTitle, leftTooltipText .. "\n\n" ..
-		TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPEN) .. "\n" ..
+		TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER) .. "\n" ..
 		TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_CHAR_NAME_COPY) .. "\n" ..
 		TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
 end
@@ -572,16 +573,20 @@ local function decorateCompanionLine(line, index)
 	end
 
 	local companionList = "";
+	companionList = companionList .. "|cnGREEN_FONT_COLOR:";
 	for companionID, _ in pairs(links) do
-		companionList = companionList .. "- |cff00ff00" .. getCompanionNameFromSpellID(companionID) .. "|r\n";
+		companionList = companionList .. "- " .. getCompanionNameFromSpellID(companionID) .. "\n";
 	end
+	companionList = companionList .. "|r";
 	local masterList, firstMaster = "", "";
+	masterList = masterList .. "|cnGREEN_FONT_COLOR:";
 	for ownerID, _ in pairs(masters) do
-		masterList = masterList .. "- |cff00ff00" .. ownerID .. "|r\n";
+		masterList = masterList .. "- " .. ownerID .. "\n";
 		if firstMaster == "" then
 			firstMaster = ownerID;
 		end
 	end
+	masterList = masterList .. "|r";
 
 	if isUnitIDKnown(firstMaster) and  TRP3_API.register.profileExists(firstMaster) then
 		firstMaster = getCompleteName(getUnitIDProfile(firstMaster).characteristics or {}, "", true);
@@ -590,7 +595,7 @@ local function decorateCompanionLine(line, index)
 
 	local secondLine = loc.REG_LIST_PETS_TOOLTIP .. ":\n" .. companionList .. "\n" .. loc.REG_LIST_PETS_TOOLTIP2 .. ":\n" .. masterList;
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n\n" ..
-		TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPEN) .. "\n" ..
+		TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "\n" ..
 		TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
 	setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
 
@@ -729,7 +734,8 @@ local function decorateIgnoredLine(line, unitID)
 	_G[line:GetName().."Info2"]:SetText("");
 	_G[line:GetName().."Addon"]:SetText("");
 	_G[line:GetName().."Select"]:Hide();
-	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, unitID, loc.REG_LIST_IGNORE_TT:format(getIgnoredList()[unitID]));
+	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, unitID, loc.REG_LIST_IGNORE_TT:format(getIgnoredList()[unitID])
+	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_LIST_IGNORE_REMOVE));
 	setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
 	setTooltipForSameFrame(_G[line:GetName().."ClickRight"]);
 end
@@ -867,7 +873,7 @@ local function createTutorialStructure()
 				allPoints = TRP3_RegisterListTutorialHook
 			},
 			button = {
-				x = 0, y = 0, anchor = "CENTER",
+				x = 0, y = -10, anchor = "TOP",
 				text = loc.REG_LIST_CHAR_TUTO_LIST,
 				textWidth = 400,
 				arrow = "DOWN"
@@ -967,7 +973,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		end
 		refreshList();
 	end)
-	setTooltipForSameFrame(TRP3_RegisterListCharactFilterButton, "LEFT", 0, 5, loc.REG_LIST_FILTERS, loc.REG_LIST_FILTERS_TT);
+	setTooltipForSameFrame(TRP3_RegisterListCharactFilterButton, "RIGHT", 0, 5, loc.REG_LIST_FILTERS, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_LIST_FILTERS_APPLY)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_FILTERS_CLEAR));
 	TRP3_RegisterListFilterCharactNameText:SetText(loc.REG_LIST_NAME);
 	TRP3_RegisterListFilterCharactGuildText:SetText(loc.REG_LIST_GUILD);
 	TRP3_RegisterListFilterCharactRealm:SetText(loc.REG_LIST_REALMONLY);
@@ -986,7 +993,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		end
 		refreshList();
 	end)
-	setTooltipForSameFrame(TRP3_RegisterListPetFilterButton, "LEFT", 0, 5, loc.REG_LIST_FILTERS, loc.REG_LIST_FILTERS_TT);
+	setTooltipForSameFrame(TRP3_RegisterListPetFilterButton, "RIGHT", 0, 5, loc.REG_LIST_FILTERS, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_LIST_FILTERS_APPLY)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_FILTERS_CLEAR));
 	TRP3_RegisterListPetFilterNameText:SetText(loc.REG_LIST_PET_NAME);
 	TRP3_RegisterListPetFilterTypeText:SetText(loc.REG_LIST_PET_TYPE);
 	TRP3_RegisterListPetFilterMasterText:SetText(loc.REG_LIST_PET_MASTER);
@@ -996,7 +1004,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_RegisterListHeaderInfoTT:SetScript("OnClick", switchInfoSorting);
 	TRP3_RegisterListHeaderTimeTT:SetScript("OnClick", switchTimeSorting);
 
-	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 	TRP3_RegisterListHeaderActions:SetScript("OnMouseDown", function(self)
 		if currentMode == MODE_CHARACTER then
 			onCharactersActions(self);
@@ -1074,7 +1082,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					buttonStructure.alert = true;
 				end
 			end,
-			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
+			alertIcon = "QuestNormal",
 		});
 	end
 end);

@@ -371,7 +371,7 @@ local function saveSlotPreset(glanceTab)
 	local presetIcon = glanceTab.IC or TRP3_InterfaceIcons.Unknown;
 	local presetID = Utils.str.id();
 
-	local icon = Utils.str.icon(presetIcon, 25) .. "\n|cff00ff00" .. presetTitle .. "|r";
+	local icon = Utils.str.icon(presetIcon, 40) .. "|n|n|cnGREEN_FONT_COLOR:" .. presetTitle .. "|r";
 	TRP3_API.popup.showTextInputPopup(loc.REG_PLAYER_GLANCE_PRESET_GET_CAT:format(icon), function(presetCategory)
 		if not presetCategory or presetCategory:len() == 0 then
 			presetMessage(loc.REG_PLAYER_GLANCE_PRESET_ALERT1, 2);
@@ -447,7 +447,7 @@ local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 	TRP3_AtFirstGlanceEditorName:HighlightText();
 
 	TRP3_AtFirstGlanceEditorIcon.isExternal = external;
-	setTooltipForSameFrame(TRP3_AtFirstGlanceEditorIcon, "TOP", 0, 5, loc.UI_ICON_SELECT, "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	setTooltipForSameFrame(TRP3_AtFirstGlanceEditorIcon, "LEFT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	TRP3_AtFirstGlanceEditorIcon:SetScript("onMouseDown", function(self, button)
 		if button == "LeftButton" then
 			TRP3_API.popup.hideIconBrowser();
@@ -603,6 +603,8 @@ local function onGlanceSlotClick(button, clickType)
 				y = y / scale;
 				TRP3_API.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, y <= 200 and "BOTTOM" or "TOP");
 				TRP3_AtFirstGlanceEditor.current = button;
+				-- Hide glance tooltip on open to not overlap with editor.
+				TRP3_TooltipUtil.HideTooltip(button);
 				openGlanceEditor(button.slot, button.data or button.glanceTab[button.slot] or {}, getOnGlanceEditorConfirmFunction(button), TRP3_AtFirstGlanceEditor, button.targetID, button.profileID);
 			end
 		end
@@ -656,12 +658,6 @@ local function onGlanceDoubleClick(button, clickType)
 end
 TRP3_API.register.glance.onGlanceDoubleClick = onGlanceDoubleClick;
 
-local CONFIG_GLANCE_TT_ANCHOR = "CONFIG_GLANCE_TT_ANCHOR";
-
-local function configTooltipAnchor()
-	return getConfigValue(CONFIG_GLANCE_TT_ANCHOR);
-end
-
 function TRP3_API.register.glance.addClickHandlers(text)
 	if not text then
 		text = "";
@@ -702,7 +698,7 @@ local function displayGlanceSlots()
 				if isCurrentMine then
 					TTText = TRP3_API.register.glance.addClickHandlers(TTText);
 				end
-				setTooltipForSameFrame(button, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
+				setTooltipForSameFrame(button, "TOP", 0, 5, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
 			else
 				button:SetAlpha(0.25);
 				if isCurrentMine then
@@ -718,7 +714,7 @@ local function displayGlanceSlots()
 					if isCurrentMine then
 						TTText = TRP3_API.register.glance.addClickHandlers(TTText);
 					end
-					setTooltipForSameFrame(button, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
+					setTooltipForSameFrame(button, "TOP", 0, 5, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
 				else
 					setTooltipForSameFrame(button);
 				end
@@ -850,9 +846,7 @@ local function onStart()
 	registerConfigKey(CONFIG_GLANCE_ANCHOR_X, 0);
 	registerConfigKey(CONFIG_GLANCE_ANCHOR_Y, -14);
 	registerConfigKey(CONFIG_GLANCE_LOCK, true);
-	registerConfigKey(CONFIG_GLANCE_TT_ANCHOR, "LEFT");
 	registerConfigHandler({CONFIG_GLANCE_PARENT}, replaceBar);
-	registerConfigHandler({CONFIG_GLANCE_TT_ANCHOR}, onTargetChanged);
 	replaceBar();
 	ui_GlanceBar:SetScript("OnUpdate", glanceBar_DraggingFrame_OnUpdate);
 
@@ -898,24 +892,6 @@ local function onStart()
 				setConfigValue(CONFIG_GLANCE_ANCHOR_Y, 31);
 				replaceBar();
 			end,
-		});
-		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
-			inherit = "TRP3_ConfigDropDown",
-			widgetName = "TRP3_ConfigurationTooltip_GlanceTT_Anchor",
-			title = loc.CO_GLANCE_TT_ANCHOR,
-			listContent = {
-				{loc.CO_ANCHOR_TOP_LEFT, "TOPLEFT"},
-				{loc.CO_ANCHOR_TOP, "TOP"},
-				{loc.CO_ANCHOR_TOP_RIGHT, "TOPRIGHT"},
-				{loc.CO_ANCHOR_RIGHT, "RIGHT"},
-				{loc.CO_ANCHOR_BOTTOM_RIGHT, "BOTTOMRIGHT"},
-				{loc.CO_ANCHOR_BOTTOM, "BOTTOM"},
-				{loc.CO_ANCHOR_BOTTOM_LEFT, "BOTTOMLEFT"},
-				{loc.CO_ANCHOR_LEFT, "LEFT"}
-			},
-			configKey = CONFIG_GLANCE_TT_ANCHOR,
-			listWidth = nil,
-			listCancel = true,
 		});
 	end);
 

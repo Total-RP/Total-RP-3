@@ -261,23 +261,20 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="RIGHT" x="-10" y="0"/>
 						</Anchors>
 					</Frame>
-					<Frame name="TRP3_RegisterAbout_Edit_Template1">
+					<Frame name="TRP3_RegisterAbout_Edit_Template1" inherits="TRP3_TextArea">
 						<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_TemplateField"/>
-							<Anchor point="BOTTOM" x="0" y="0"/>
-							<Anchor point="LEFT" x="0" y="0"/>
-							<Anchor point="RIGHT" x="0" y="0"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Toolbar" x="0" y="-5"/>
+							<Anchor point="BOTTOM" x="0" y="5"/>
+							<Anchor point="LEFT" x="10" y="0"/>
+							<Anchor point="RIGHT" x="-10" y="0"/>
 						</Anchors>
-						<Frames>
-							<Frame name="TRP3_RegisterAbout_Edit_Template1" inherits="TRP3_TextArea">
-								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Toolbar" x="0" y="-5"/>
-									<Anchor point="BOTTOM" x="0" y="5"/>
-									<Anchor point="LEFT" x="10" y="0"/>
-									<Anchor point="RIGHT" x="-10" y="0"/>
-								</Anchors>
-							</Frame>
-						</Frames>
+					</Frame>
+					<Frame name="TRP3_RegisterAbout_Edit_Options">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="TRP3_RegisterAbout_Edit_Music_Action" />
+							<Anchor point="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Music_Text" />
+							<Anchor point="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_TemplateField" />
+						</Anchors>
 					</Frame>
 					<Frame name="TRP3_RegisterAbout_Edit_Template2" inherits="TRP3_TooltipBackdropTemplate">
 						<KeyValues>

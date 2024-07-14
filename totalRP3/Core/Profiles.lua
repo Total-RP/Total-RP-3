@@ -224,7 +224,7 @@ local function decorateProfileList(widget, id)
 			text = text..loc.PR_UNUSED_PROFILE;
 		end
 
-		setTooltipForSameFrame(widget.HelpButton, "RIGHT", 0, 0, loc.PR_PROFILE, text);
+		setTooltipForSameFrame(widget.HelpButton, "RIGHT", 0, 5, loc.PR_PROFILE, text);
 	end
 end
 

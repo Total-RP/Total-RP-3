@@ -256,7 +256,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							</Button>
 							<Button name="TRP3_RegisterListHeaderActions" parentKey="Actions" inherits="TRP3_ActionButton">
 								<Anchors>
-									<Anchor point="LEFT" x="-3" y="0" />
+									<Anchor point="LEFT" x="3" y="-1" />
 								</Anchors>
 							</Button>
 						</Frames>

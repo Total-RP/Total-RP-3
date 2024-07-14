@@ -315,17 +315,14 @@ local function decorateMusic(lineFrame, musicID)
 	local musicFile = filteredMusicList[musicID][2];
 	local musicDuration = filteredMusicList[musicID][3];
 
-	local musicShortName = Utils.music.getTitle(musicName);
 	local musicDefaultName = Utils.music.getTitle(musicFile);
 	local tooltipContent;
-	if musicDefaultName == musicShortName then
-		tooltipContent = ("|cff00ff00%s: %ss\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(loc.UI_MUSIC_DURATION, floor(musicDuration + 0.5), loc.CM_L_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_SELECT2, loc.CM_R_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_LISTEN);
-	else
-		tooltipContent = ("|cffffff00%s: %s\n|cff00ff00%s: %ss\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(loc.UI_MUSIC_ALTTITLE, musicDefaultName, loc.UI_MUSIC_DURATION, floor(musicDuration + 0.5), loc.CM_L_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_SELECT2, loc.CM_R_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_LISTEN);
-		musicName = musicName.."|cffffff00*";
-	end
 
-	setTooltipForFrame(lineFrame, lineFrame, "RIGHT", 0, -30, musicShortName, tooltipContent);
+	tooltipContent = loc.UI_MUSIC_DURATION .. ": " .. floor(musicDuration + 0.5) .."s"
+	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_ABOUT_MUSIC_SELECT2)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_ABOUT_MUSIC_LISTEN);
+
+	setTooltipForFrame(lineFrame, lineFrame, "RIGHT", 0, 5, musicDefaultName, tooltipContent);
 	_G[lineFrame:GetName().."Text"]:SetText(musicName);
 
 	lineFrame.musicURL = musicFile;
@@ -517,7 +514,7 @@ local function decorateCompanion(button, index)
 	local description, speciesName = filteredCompanionList[index][3], filteredCompanionList[index][4];
 	button:SetNormalTexture(icon);
 	button:SetPushedTexture(icon);
-	local text = "|cffffff00" .. speciesName .. "|r";
+	local text = "|cnGREEN_FONT_COLOR:" .. speciesName .. "|r";
 	if description and description:len() > 0 then
 		text = text .. "\n\"" .. description .. "\"";
 	end
@@ -535,7 +532,7 @@ local function decorateCompanion(button, index)
 		button.RenameWarning:Hide();
 	end
 
-	setTooltipForFrame(button, TRP3_CompanionBrowser, "RIGHT", 0, -100, tooltipTitle, tooltipText);
+	TRP3_API.ui.tooltip.setTooltipAll(button, "RIGHT", 0, 0, tooltipTitle, tooltipText);
 	button.index = index;
 end
 
