@@ -397,21 +397,21 @@ local function moduleHotReload(frame, value)
 	frame:Init(module);
 end
 
-local function onActionSelected(value, button)
-	local module = button:GetParent().module;
-	if value == 1 then
+local function onActionSelected(data)
+	local button, module, state = unpack(data);
+	if state == 1 then
 		MODULE_ACTIVATION[module.id] = false;
 
 		if module.hotReload then
-			moduleHotReload(button:GetParent(), value); -- this handles reloading the module display when hot reloading, also calls disableModule()
+			moduleHotReload(button:GetParent(), state); -- this handles reloading the module display when hot reloading, also calls disableModule()
 		else
 			ReloadUI();
 		end
 
-	elseif value == 2 then
+	elseif state == 2 then
 		MODULE_ACTIVATION[module.id] = true;
 		if module.hotReload then
-			moduleHotReload(button:GetParent(), value); -- this handles reloading the module display when hot reloading, also calls startModule()
+			moduleHotReload(button:GetParent(), state); -- this handles reloading the module display when hot reloading, also calls startModule()
 		else
 			ReloadUI();
 		end
@@ -423,9 +423,9 @@ local function onActionClicked(button)
 
 	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 		if MODULE_ACTIVATION[module.id] ~= false then
-			description:CreateButton(loc.CO_MODULES_DISABLE, onActionSelected, 1);
+			description:CreateButton(loc.CO_MODULES_DISABLE, onActionSelected, {button, module, 1});
 		else
-			description:CreateButton(loc.CO_MODULES_ENABLE, onActionSelected, 2);
+			description:CreateButton(loc.CO_MODULES_ENABLE, onActionSelected, {button, module, 2});
 		end
 	end);
 end
