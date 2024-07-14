@@ -58,7 +58,9 @@ function TRP3_TooltipTemplates.CreateInstructionLine(binding, instruction, short
 	local line = TRP3_Tooltip.CreateLineDescription();
 	line:SetText(TRP3_API.FormatShortcutWithInstruction(binding, instruction, shortcutType));
 	line:SetTextColor(GREEN_FONT_COLOR);
-	line:SetUseFixedColor(true);
+	-- Disable fixed colors for now as this breaks tooltips not using the new
+	-- system; can re-enable later.
+	-- line:SetUseFixedColor(true);
 	line:SetWordWrap(false);
 	return line;
 end
