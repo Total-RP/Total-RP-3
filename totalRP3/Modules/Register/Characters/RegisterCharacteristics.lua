@@ -759,7 +759,7 @@ local function onPsychoDuplicate(self)
 	setEditDisplay();
 end
 
-local function onPyschoConvert(self)
+local function onPsychoConvert(self)
 	assert(self and self:GetParent(), "Badly initialized convert, reference");
 	local frame = self:GetParent();
 	assert(frame.frameIndex and draftData.PS[frame.frameIndex], "Badly initialized convert, index");
@@ -1304,7 +1304,7 @@ function setEditDisplay()
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 				-- If not custom, allow convert to custom.
 				if psychoStructure.ID then
-					description:CreateButton(loc.REG_PLAYER_CONVERT, onPyschoConvert, self);
+					description:CreateButton(loc.REG_PLAYER_CONVERT, onPsychoConvert, self);
 				end
 				description:CreateButton(loc.CM_DUPLICATE, onPsychoDuplicate, self);
 				description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CM_REMOVE .. "|r", onPsychoDelete, self);
