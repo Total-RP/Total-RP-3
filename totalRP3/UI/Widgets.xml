@@ -19,6 +19,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Menu\Menu.xml"/>
 	<Include file="IconTemplates.xml"/>
 	<Include file="Sidebar\Sidebar.xml"/>
+	<Include file="ProfileManager\ProfileManager.xml"/>
 
 	<GameTooltip name="TRP3_TooltipTemplate" mixin="TRP3_TooltipMixin" inherits="GameTooltipTemplate" virtual="true"/>
 
@@ -71,6 +72,48 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<PostClick>
 				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			</PostClick>
+		</Scripts>
+	</Button>
+
+	<Button name="TRP3_RedButtonTemplate" mixin="TRP3_RedButtonMixin" virtual="true">
+		<Size x="200" y="30"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="EdgeLeft" atlas="128-RedButton-Left" useAtlasSize="false">
+					<Size x="26"/>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+						<Anchor point="BOTTOMLEFT"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="EdgeRight" atlas="128-RedButton-Right" useAtlasSize="false">
+					<Size x="68"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="Center" atlas="_128-RedButton-Center" horizTile="true" useAtlasSize="false">
+					<Size x="26"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.EdgeLeft" relativePoint="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.EdgeRight" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<HighlightTexture atlas="128-RedButton-Highlight" alphaMode="ADD"/>
+		<NormalFont style="GameFontNormal"/>
+		<HighlightFont style="GameFontHighlight"/>
+		<DisabledFont style="GameFontDisable"/>
+		<Scripts>
+			<OnDisable method="OnDisable"/>
+			<OnEnable method="OnEnable"/>
+			<OnMouseDown method="OnMouseDown"/>
+			<OnMouseUp method="OnMouseUp"/>
 		</Scripts>
 	</Button>
 

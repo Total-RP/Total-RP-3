@@ -13,15 +13,11 @@ local isMenuRegistered, rebuildMenu = TRP3_API.navigation.menu.isMenuRegistered,
 local registerMenu, selectMenu, openMainFrame = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu, TRP3_API.navigation.openMainFrame;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local showAlertPopup, showTextInputPopup, showConfirmPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showTextInputPopup, TRP3_API.popup.showConfirmPopup;
-local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
-local initList = TRP3_API.ui.list.initList;
 local getProfiles, isProfileNameAvailable = TRP3_API.companions.player.getProfiles, TRP3_API.companions.player.isProfileNameAvailable;
 local createProfile, deleteProfile = TRP3_API.companions.player.createProfile, TRP3_API.companions.player.deleteProfile;
 local duplicateProfile = TRP3_API.companions.player.duplicateProfile;
 local editProfile = TRP3_API.companions.player.editProfile;
-local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local EMPTY = Globals.empty;
 local getCompanionProfile, getCompanionProfileID = TRP3_API.companions.player.getCompanionProfile, TRP3_API.companions.player.getCompanionProfileID;
 local getCompanionProfiles = TRP3_API.companions.player.getProfiles;
 local getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
@@ -182,24 +178,24 @@ local function getCompanionTypeText(companionType)
 	return "";
 end
 
-local function decorateProfileList(widget, index)
-	local id = profileListID[index];
+local function decorateProfileList(widget, id)
 	widget.profileID = id;
 	local profile = getProfiles()[id];
 	local dataTab = profile.data or {};
 	local mainText = profile.profileName;
 
-	setupIconButton(_G[widget:GetName().."Icon"], dataTab.IC or TRP3_InterfaceIcons.ProfileDefault);
-	_G[widget:GetName().."Name"]:SetText(mainText);
+	widget:SetIcon(dataTab.IC);
+	widget:SetNameText(mainText);
 
 	local listText = "";
 	local i = 0;
-	for companionID, companionType in pairs(profile.links or EMPTY) do
+	for companionID, companionType in pairs(profile.links or {}) do
 		listText = listText .. "- |cff00ff00" .. getCompanionNameFromSpellID(companionID)
 				.. "|cffff9900 (" .. getCompanionTypeText(companionType) .. ")|r\n";
 		i = i + 1;
 	end
-	_G[widget:GetName().."Count"]:SetText(loc.PR_CO_COUNT:format(i));
+	widget:SetCountText(loc.PR_CO_COUNT:format(i));
+	widget:SetBorderColor(TRP3_BACKDROP_COLOR_CREAMY_BROWN);
 
 	local text = "";
 	if i > 0 then
@@ -208,12 +204,7 @@ local function decorateProfileList(widget, index)
 		text = text..loc.PR_CO_UNUSED_PROFILE;
 	end
 
-	setTooltipForSameFrame(
-	_G[widget:GetName().."Info"], "RIGHT", 0, 0,
-	loc.PR_PROFILE,
-	text
-	)
-
+	setTooltipForSameFrame(widget.HelpButton, "RIGHT", 0, 0, loc.PR_PROFILE, text);
 	Ellyb.Tooltips.getTooltip(widget):SetTitle(mainText)
 end
 
@@ -226,7 +217,7 @@ end
 function uiInitProfileList()
 	wipe(profileListID);
 	local profiles = getProfiles();
-	local profileSearch = Utils.str.emptyToNil(TRP3_CompanionsProfilesSearch:GetText());
+	local profileSearch = Utils.str.emptyToNil(TRP3_CompanionsProfiles.list.SearchBox:GetText());
 	for profileID, _ in pairs(profiles) do
 		if not profileSearch or string.find(profiles[profileID].profileName:lower(), profileSearch:lower(), 1, true) then
 			tinsert(profileListID, profileID);
@@ -234,19 +225,21 @@ function uiInitProfileList()
 	end
 
 	local size = #profileListID;
-	TRP3_CompanionsProfilesListEmpty:Hide();
+	TRP3_CompanionsProfiles.list.ScrollBox.EmptyText:Hide();
 	if size == 0 then
 		if not profileSearch then
-			TRP3_CompanionsProfilesListEmpty:SetText(loc.PR_CO_EMPTY);
+			TRP3_CompanionsProfiles.list.ScrollBox.EmptyText:SetText(loc.PR_CO_EMPTY);
 		else
-			TRP3_CompanionsProfilesListEmpty:SetText(loc.PR_PROFILEMANAGER_EMPTY);
+			TRP3_CompanionsProfiles.list.ScrollBox.EmptyText:SetText(loc.PR_PROFILEMANAGER_EMPTY);
 		end
-		TRP3_CompanionsProfilesListEmpty:Show();
+		TRP3_CompanionsProfiles.list.ScrollBox.EmptyText:Show();
 	end
 
 	table.sort(profileListID, profileSortingByProfileName);
 
-	initList(TRP3_CompanionsProfilesList, profileListID, TRP3_CompanionsProfilesListSlider);
+	local provider = CreateDataProvider(profileListID);
+	TRP3_CompanionsProfiles.list.ScrollBox:SetDataProvider(provider);
+	TRP3_CompanionsProfiles.list.ScrollBox:ScrollToBegin();
 end
 
 local function onActionSelected(value, button)
@@ -292,7 +285,7 @@ local function onBoundClicked(button)
 	end);
 end
 
-local function onActionClicked(button)
+local function onActionClicked(_, button)
 	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 		description:CreateButton(loc.PR_PROFILEMANAGER_RENAME, function() onActionSelected(2, button); end);
 		description:CreateButton(loc.PR_DUPLICATE_PROFILE, function() onActionSelected(3, button); end);
@@ -467,7 +460,7 @@ local function constructTutorialStructure()
 		},
 		{
 			box = {
-				allPoints = TRP3_CompanionsProfilesAdd
+				allPoints = TRP3_CompanionsProfiles.list.CreateButton
 			},
 			button = {
 				x = 0, y = 15, anchor = "CENTER",
@@ -499,46 +492,47 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
 	});
 
-	-- UI
-	handleMouseWheel(TRP3_CompanionsProfilesList, TRP3_CompanionsProfilesListSlider);
-	TRP3_CompanionsProfilesListSlider:SetValue(0);
-	local widgetTab = {};
-	for i=1,5 do
-		local widget = _G["TRP3_CompanionsProfilesListLine"..i];
-		widget:SetScript("OnMouseUp",function ()
-			if IsShiftKeyDown() then
-				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_COMPANION_PROFILE, function(canBeImported)
-					TRP3_API.CompanionProfileChatLinksModule:InsertLink(widget.profileID, canBeImported)
-				end);
-			else
-				onOpenProfile(widget);
-				playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-			end
-		end);
-		_G[widget:GetName().."Action"]:SetScript("OnMouseDown", onActionClicked);
-		_G[widget:GetName().."Bound"]:SetText(loc.REG_COMPANION_BOUNDS);
-		_G[widget:GetName().."Bound"]:Show();
-		_G[widget:GetName().."Bound"]:SetScript("OnMouseDown", onBoundClicked);
-		tinsert(widgetTab, widget);
 
 
-		setTooltipForSameFrame(_G[widget:GetName().."Action"], "TOP", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
-
-		-- Display indications in the tooltip on how to create a chat link
-		Ellyb.Tooltips.getTooltip(widget)
-			:AddLine(TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPEN))
-			:AddLine(TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
+	local function OnMenuButtonTooltip(tooltip)
+		GameTooltip_SetTitle(tooltip, loc.CM_OPTIONS);
+		GameTooltip_AddNormalLine(tooltip, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 	end
-	TRP3_CompanionsProfilesList.widgetTab = widgetTab;
-	TRP3_CompanionsProfilesList.decorate = decorateProfileList;
-	TRP3_CompanionsProfilesAdd:SetScript("OnClick", uiCreateProfile);
 
-	--Localization
-	TRP3_CompanionsProfilesAdd:SetText(loc.PR_CREATE_PROFILE);
-	TRP3_CompanionsProfilesListEmpty:SetText(loc.PR_CO_EMPTY);
+	local function OnListElementTooltip(tooltip)
+		local button = tooltip:GetOwner();
+		GameTooltip_SetTitle(tooltip, button.NameText:GetText());
+		GameTooltip_AddNormalLine(tooltip, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPEN));
+		GameTooltip_AddNormalLine(tooltip, TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
+	end
 
-	TRP3_CompanionsProfilesSearch:SetScript("OnEnterPressed", uiInitProfileList);
-	TRP3_CompanionsProfilesSearchText:SetText(loc.PR_PROFILEMANAGER_SEARCH_PROFILE);
+	local function OnListElementClick(button)
+		if IsShiftKeyDown() then
+			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_COMPANION_PROFILE, function(canBeImported)
+				TRP3_API.CompanionProfileChatLinksModule:InsertLink(button.profileID, canBeImported)
+			end);
+		else
+			onOpenProfile(button);
+			playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+		end
+	end
+
+	local function OnListElementInitialize(button, profileID)
+		button:SetMenuButtonCallback(onActionClicked);
+		button:SetMenuButtonTooltip(OnMenuButtonTooltip);
+		button:SetScript("OnClick", OnListElementClick);
+		button:SetTooltip(OnListElementTooltip);
+
+		button.BindButton:SetText(loc.REG_COMPANION_BOUNDS);
+		button.BindButton:Show();
+		button.BindButton:SetScript("OnMouseDown", onBoundClicked);
+
+		decorateProfileList(button, profileID);
+	end
+
+	TRP3_CompanionsProfiles.list:SetElementInitializer("TRP3_ProfileManagerListElement", OnListElementInitialize);
+	TRP3_CompanionsProfiles.list:SetCreateCallback(uiCreateProfile);
+	TRP3_CompanionsProfiles.list:SetSearchCallback(TRP3_FunctionUtil.Debounce(0.25, uiInitProfileList));
 
 	local frame = CreateFrame("Frame", "TRP3_CompanionsProfilesTabBar", TRP3_CompanionsProfiles);
 	frame:SetSize(400, 30);

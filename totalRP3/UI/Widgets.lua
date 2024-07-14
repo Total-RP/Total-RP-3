@@ -180,6 +180,46 @@ function TRP3_CategoryButtonMixin:SetSelected(selected)
 	self:SetEnabled(not selected);
 end
 
+TRP3_RedButtonMixin = {};
+
+function TRP3_RedButtonMixin:OnDisable()
+	self:UpdateVisualState();
+end
+
+function TRP3_RedButtonMixin:OnEnable()
+	self:UpdateVisualState();
+end
+
+function TRP3_RedButtonMixin:OnMouseDown()
+	self:UpdateVisualState("PUSHED");
+end
+
+function TRP3_RedButtonMixin:OnMouseUp()
+	self:UpdateVisualState("NORMAL");
+end
+
+function TRP3_RedButtonMixin:UpdateVisualState(overrideState)
+	local state = overrideState or self:GetButtonState();
+
+	if not self:IsEnabled() then
+		state = "DISABLED";
+	end
+
+	local suffix = "";
+
+	if state == "DISABLED" then
+		suffix = "-Disabled";
+	elseif state == "PUSHED" then
+		suffix = "-Pressed";
+	end
+
+	local useAtlasSize = false;
+	self.EdgeLeft:SetAtlas("128-RedButton-Left" .. suffix, useAtlasSize);
+	self.EdgeRight:SetAtlas("128-RedButton-Right" .. suffix, useAtlasSize);
+	self.Center:SetAtlas("_128-RedButton-Center" .. suffix, useAtlasSize);
+end
+
+
 local g_lastCopiedIcon;
 
 --- TRP3_API.SetLastCopiedIcon sets the last copied icon.
