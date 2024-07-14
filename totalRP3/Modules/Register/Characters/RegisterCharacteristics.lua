@@ -351,7 +351,7 @@ local function setConsultDisplay(context)
 	if #shownCharacteristics > 0 then
 		hasCharac = true;
 		TRP3_RegisterCharact_CharactPanel_Container.RegisterTitle:Show();
-		margin = 0;
+		margin = -5;
 	else
 		margin = 50;
 	end
@@ -428,7 +428,11 @@ local function setConsultDisplay(context)
 				tinsert(miscCharFrame, frame);
 			end
 			frame:ClearAllPoints();
-			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
+			if frameIndex == 1 then
+				frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, -5);
+			else
+				frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
+			end
 			frame:SetPoint("RIGHT", 0, 0);
 			frame.Icon:SetIconTexture(field.icon);
 			frame.Name:SetText(field.localizedName or "");

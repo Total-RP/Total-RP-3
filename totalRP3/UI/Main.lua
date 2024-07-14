@@ -113,8 +113,8 @@ end
 function TRP3_MainFrameLayoutMixin:RestoreLayout()
 	assert(self:IsLayoutLoaded(), "attempted to restore window layout before layout has been loaded");
 
-	local width = self.windowLayout.w or DEFAULT_WINDOW_WIDTH;
-	local height = self.windowLayout.h or DEFAULT_WINDOW_HEIGHT;
+	local width = math.max(self.windowLayout.w or DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_WIDTH);
+	local height = math.max(self.windowLayout.h or DEFAULT_WINDOW_HEIGHT, DEFAULT_WINDOW_HEIGHT);
 	self:SetSize(width, height);
 	LibWindow.RestorePosition(self);
 end

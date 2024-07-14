@@ -1,0 +1,86 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="ProfileManagerListElement.lua"/>
+
+	<Button name="TRP3_ProfileManagerListElement" mixin="TRP3_ProfileManagerListElementMixin" virtual="true">
+		<Size y="65"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background" inherits="TRP3_UIFrameMediumFillTextureTemplate"/>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture parentKey="Border" inherits="TRP3_UIFrameMediumEdgeTextureTemplate"/>
+			</Layer>
+			<Layer level="HIGHLIGHT">
+				<Texture parentKey="Highlight" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-md-glow" alphaMode="ADD">
+					<TextureSliceMargins left="32" top="32" right="32" bottom="32"/>
+					<TextureSliceMode mode="Tiled"/>
+					<Color r="0.92" g="0.68" b="0"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
+				<Size x="48" y="48"/>
+				<Anchors>
+					<Anchor point="LEFT" x="10" y="0"/>
+				</Anchors>
+			</Frame>
+			<Button parentKey="BindButton" inherits="UIPanelButtonTemplate" hidden="true">
+				<Size x="95" y="25"/>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
+				</Anchors>
+				<Scripts>
+					<PostClick>
+						TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+					</PostClick>
+				</Scripts>
+			</Button>
+			<Button parentKey="MenuButton" inherits="TRP3_ActionButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="HelpButton" inherits="TRP3_HelpButton">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.Icon" x="5" y="7"/>
+				</Anchors>
+			</Button>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="CurrentText" inherits="GameFontNormalSmall" justifyH="RIGHT" hidden="true">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
+					</Anchors>
+					<Color color="GREEN_FONT_COLOR"/>
+				</FontString>
+				<FontString parentKey="NameText" inherits="GameFontHighlightLarge" justifyH="LEFT" wordwrap="false">
+					<Size y="20"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.Icon" x="5" y="-5"/>
+						<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.MenuButton" x="-5" y="0"/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey="CountText" inherits="GameFontNormalSmall" justifyH="LEFT" wordwrap="false">
+					<Size y="10"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.Icon" x="25" y="10"/>
+						<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parentKey.BindButton" x="-5" y="0"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+</Ui>

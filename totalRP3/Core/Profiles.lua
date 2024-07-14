@@ -3,7 +3,6 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
 
 -- Public accessor
 TRP3_API.profile = {};
@@ -11,14 +10,8 @@ TRP3_API.profile = {};
 -- imports
 local Globals, Events, Utils = TRP3_API.globals, TRP3_Addon.Events, TRP3_API.utils;
 local loc = TRP3_API.loc;
-local unitIDToInfo = Utils.str.unitIDToInfo;
-local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
-local initList = TRP3_API.ui.list.initList;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local registerPage = TRP3_API.navigation.page.registerPage;
-local setupIconButton = TRP3_API.ui.frame.setupIconButton;
-local playUISound = TRP3_API.ui.misc.playUISound;
-local playAnimation = TRP3_API.ui.misc.playAnimation;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 local getPlayerCurrentProfile;
 local getConfigValue = TRP3_API.configuration.getValue;
@@ -187,46 +180,42 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 local profileListID = {};
 
-local function decorateProfileList(widget, index)
-	local id = profileListID[index];
+local function decorateProfileList(widget, id)
 	widget.profileID = id;
 	local profile = profiles[id];
 	local dataTab = getData("player/characteristics", profile);
 	local mainText = profile.profileName;
 
 	if id == currentProfileId then
-
-		widget:SetBackdropBorderColor(0, 1, 0);
-		_G[widget:GetName().."Current"]:Show();
+		widget:SetBorderColor(TRP3_API.CreateColor(0.1, 0.8, 0.1));
+		widget.CurrentText:Show();
 	else
-		widget:SetBackdropBorderColor(TRP3_BACKDROP_COLOR_GREY:GetRGB());
-		_G[widget:GetName().."Current"]:Hide();
+		widget:SetBorderColor(TRP3_BACKDROP_COLOR_CREAMY_BROWN);
+		widget.CurrentText:Hide();
 	end
 
-	setupIconButton(_G[widget:GetName().."Icon"], dataTab.IC or TRP3_InterfaceIcons.ProfileDefault);
-	_G[widget:GetName().."Name"]:SetText(mainText);
-	Ellyb.Tooltips.getTooltip(widget):SetTitle(mainText);
+	widget:SetIcon(dataTab.IC);
+	widget:SetNameText(mainText);
 
 	local listText = "";
 	local i = 0;
 	for characterID, characterInfo in pairs(characters) do
 		if characterInfo.profileID == id then
-			local charactName, charactRealm = unitIDToInfo(characterID);
+			local charactName, charactRealm = TRP3_API.utils.str.unitIDToInfo(characterID);
 			listText = listText.."- |cff00ff00"..charactName.." ( "..charactRealm.." )|r\n";
 			i = i + 1;
 		end
 	end
 
 	if id == getConfigValue("default_profile_id") then
-		_G[widget:GetName().."Info"]:Hide();
-		_G[widget:GetName().."Count"]:Hide();
-		_G[widget:GetName().."Action"]:Hide();
+		widget.HelpButton:Hide();
+		widget:SetCountText(nil);
+		widget.MenuButton:Hide();
 	else
-		_G[widget:GetName().."Info"]:Show();
-		_G[widget:GetName().."Count"]:Show();
-		_G[widget:GetName().."Action"]:Show();
+		widget.HelpButton:Show();
+		widget.MenuButton:Show();
 
-		_G[widget:GetName().."Count"]:SetText(loc.PR_PROFILEMANAGER_COUNT:format(i));
+		widget:SetCountText(loc.PR_PROFILEMANAGER_COUNT:format(i));
 
 		local text = "";
 		if i > 0 then
@@ -235,7 +224,7 @@ local function decorateProfileList(widget, index)
 			text = text..loc.PR_UNUSED_PROFILE;
 		end
 
-		setTooltipForSameFrame(_G[widget:GetName().."Info"], "RIGHT", 0, 5, loc.PR_PROFILE, text);
+		setTooltipForSameFrame(widget.HelpButton, "RIGHT", 0, 5, loc.PR_PROFILE, text);
 	end
 end
 
@@ -247,7 +236,7 @@ end
 local function uiInitProfileList()
 	wipe(profileListID);
 	local defaultProfileID = getConfigValue("default_profile_id");
-	local profileSearch = Utils.str.emptyToNil(TRP3_ProfileManagerSearch:GetText());
+	local profileSearch = Utils.str.emptyToNil(TRP3_ProfileManager.list.SearchBox:GetText());
 	for profileID, _ in pairs(profiles) do
 		if profileID ~= defaultProfileID and (not profileSearch or string.find(profiles[profileID].profileName:lower(), profileSearch:lower(), 1, true)) then
 			tinsert(profileListID, profileID);
@@ -257,15 +246,23 @@ local function uiInitProfileList()
 	table.sort(profileListID, profileSortingByProfileName);
 
 	local size = #profileListID;
-	TRP3_ProfileManagerListEmpty:Hide();
+	TRP3_ProfileManager.list.ScrollBox.EmptyText:Hide();
 	if profileSearch then
 		if size == 0 then
-			TRP3_ProfileManagerListEmpty:Show();
+			TRP3_ProfileManager.list.ScrollBox.EmptyText:Show();
 		end
 	else
 		tinsert(profileListID, 1, defaultProfileID);
 	end
-	initList(TRP3_ProfileManagerList, profileListID, TRP3_ProfileManagerListSlider);
+
+	local provider = CreateDataProvider(profileListID);
+	TRP3_ProfileManager.list.ScrollBox:SetDataProvider(provider);
+
+	if not profileSearch then
+		TRP3_ProfileManager.list.ScrollBox:ScrollToElementData(currentProfileId);
+	else
+		TRP3_ProfileManager.list.ScrollBox:ScrollToBegin();
+	end
 end
 
 local showTextInputPopup, showConfirmPopup = TRP3_API.popup.showTextInputPopup, TRP3_API.popup.showConfirmPopup;
@@ -341,8 +338,6 @@ end
 
 local function onProfileSelected(button)
 	local profileID = button.profileID;
-	playAnimation(_G[button:GetName() .. "HighlightAnimate"]);
-	playAnimation(_G[button:GetName() .. "Animate"]);
 	uiSelectProfile(profileID);
 end
 
@@ -373,7 +368,7 @@ local function onActionSelected(value, button)
 	end
 end
 
-local function onActionClicked(button)
+local function onActionClicked(_, button)
 	local profileID = button:GetParent().profileID;
 
 	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
@@ -475,51 +470,53 @@ function TRP3_API.profile.init()
 
 	-- UI
 	local tabGroup; -- Reference to the tab panel tabs group
-	handleMouseWheel(TRP3_ProfileManagerList, TRP3_ProfileManagerListSlider);
-	TRP3_ProfileManagerListSlider:SetValue(0);
-	local widgetTab = {};
-	for i=1,5 do
-		local widget = _G["TRP3_ProfileManagerListLine"..i];
-		widget:SetScript("OnMouseUp",function (self)
-			if IsShiftKeyDown() then
-				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_PLAYER_PROFILE, function(canBeImported)
-					TRP3_API.ProfilesChatLinkModule:InsertLink(self.profileID, canBeImported);
-				end);
-			else
-				if currentProfileId ~= self.profileID then
-					onProfileSelected(widget);
-					playAnimation(_G[self:GetName() .. "HighlightAnimate"]);
-					playAnimation(_G[self:GetName() .. "Animate"]);
-					playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-				end
 
-			end
-		end);
-		_G[widget:GetName().."Action"]:SetScript("OnMouseDown", onActionClicked);
-		_G[widget:GetName().."Current"]:SetText(loc.PR_PROFILEMANAGER_CURRENT);
-		table.insert(widgetTab, widget);
-
-		setTooltipForSameFrame(_G[widget:GetName().."Action"], "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
-
-		-- Display indications in the tooltip on how to create a chat link
-		Ellyb.Tooltips.getTooltip(widget)
-			:AddLine(TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPEN))
-			:AddLine(TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
-
+	local function OnHelpButtonTooltip(_, description)
+		TRP3_TooltipTemplates.CreateBasicTooltip(description, loc.PR_EXPORT_IMPORT_TITLE, loc.PR_EXPORT_IMPORT_HELP);
 	end
-	TRP3_ProfileManagerList.widgetTab = widgetTab;
-	TRP3_ProfileManagerList.decorate = decorateProfileList;
-	TRP3_ProfileManagerAdd:SetScript("OnClick", uiCreateProfile);
 
-	--Localization
-	TRP3_ProfileManagerAdd:SetText(loc.PR_CREATE_PROFILE);
-	TRP3_ProfileManagerListEmpty:SetText(loc.PR_PROFILEMANAGER_EMPTY);
+	local function OnMenuButtonTooltip(_, description)
+		local title = loc.CM_OPTIONS;
+		local text = nil;
+		local instructions = {{"CLICK", loc.CM_OPTIONS_ADDITIONAL}};
 
-	TRP3_ProfileManagerInfo:Show();
-	setTooltipForSameFrame(TRP3_ProfileManagerInfo, "RIGHT", 0, 5, loc.PR_EXPORT_IMPORT_TITLE, loc.PR_EXPORT_IMPORT_HELP);
+		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
+	end
 
-	TRP3_ProfileManagerSearch:SetScript("OnEnterPressed", uiInitProfileList);
-	TRP3_ProfileManagerSearchText:SetText(loc.PR_PROFILEMANAGER_SEARCH_PROFILE);
+	local function OnListElementTooltip(_, description)
+		local button = description:GetOwner();
+		local title = button.NameText:GetText();
+		local text = nil;
+		local instructions = {{"CLICK", loc.CM_OPEN}, {"SHIFT-CLICK", loc.CL_TOOLTIP}};
+
+		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
+	end
+
+	local function OnListElementClick(button)
+		if IsShiftKeyDown() then
+			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_PLAYER_PROFILE, function(canBeImported)
+				TRP3_API.ProfilesChatLinkModule:InsertLink(button.profileID, canBeImported);
+			end);
+		else
+			if currentProfileId ~= button.profileID then
+				onProfileSelected(button);
+				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			end
+		end
+	end
+
+	local function OnListElementInitialize(button, profileID)
+		button:SetMenuButtonCallback(onActionClicked);
+		button:SetMenuButtonTooltip(OnMenuButtonTooltip);
+		button:SetScript("OnClick", OnListElementClick);
+		button:SetTooltip(OnListElementTooltip);
+		decorateProfileList(button, profileID);
+	end
+
+	TRP3_ProfileManager.list:SetElementInitializer("TRP3_ProfileManagerListElement", OnListElementInitialize);
+	TRP3_ProfileManager.list:SetCreateCallback(uiCreateProfile);
+	TRP3_ProfileManager.list:SetHelpCallback(OnHelpButtonTooltip);
+	TRP3_ProfileManager.list:SetSearchCallback(TRP3_FunctionUtil.Debounce(0.25, uiInitProfileList));
 
 	registerPage({
 		id = "player_profiles",
