@@ -69,48 +69,25 @@ function TRP3_TooltipTemplates.CreateBlankLine()
 	return line;
 end
 
-TRP3_TooltipScriptMixin = {};
-
-function TRP3_TooltipScriptMixin:OnEnter()
-	self:SetTooltipShown(self:ShouldShowTooltip());
-end
-
-function TRP3_TooltipScriptMixin:OnLeave()
-	self:SetTooltipShown(false);
-end
-
-function TRP3_TooltipScriptMixin:ShouldShowTooltip()
-	-- Override if the tooltip should only be shown conditionally when
-	-- hovered, eg. if associated text is truncated.
-	return true;
-end
-
-function TRP3_TooltipScriptMixin:OnTooltipShow(description)  -- luacheck: no unused (description)
-	-- Override to populate the tooltip when shown or refreshed.
-end
-
-function TRP3_TooltipScriptMixin:IsTooltipShown()
-	return TRP3_MainTooltip:IsOwned(self);
-end
-
-function TRP3_TooltipScriptMixin:ShowTooltip()
-	TRP3_TooltipUtil.ShowTooltip(self, self.OnTooltipShow);
-end
-
-function TRP3_TooltipScriptMixin:RefreshTooltip()
-	if self:IsTooltipShown() then
-		self:ShowTooltip();
+function TRP3_TooltipTemplates.ShowBasicTooltip(owner, title, text)
+	local function GenerateBasicTooltip(_, description)
+		description:AddTitleLine(title);
+		description:AddNormalLine(text);
 	end
+
+	TRP3_TooltipUtil.ShowTooltip(owner, GenerateBasicTooltip);
 end
 
-function TRP3_TooltipScriptMixin:HideTooltip()
-	TRP3_TooltipUtil.HideTooltip(self);
-end
+function TRP3_TooltipTemplates.ShowInstructionTooltip(owner, title, text, instructions)
+	local function GenerateInstructionTooltip(_, description)
+		description:AddTitleLine(title);
+		description:AddNormalLine(text);
+		description:QueueBlankLine();
 
-function TRP3_TooltipScriptMixin:SetTooltipShown(shown)
-	if shown then
-		self:ShowTooltip();
-	else
-		self:HideTooltip();
+		for _, instruction in ipairs(instructions) do
+			description:AddInstructionLine(instruction[1], instruction[2]);
+		end
 	end
+
+	TRP3_TooltipUtil.ShowTooltip(owner, GenerateInstructionTooltip);
 end
