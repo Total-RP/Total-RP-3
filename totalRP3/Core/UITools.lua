@@ -1113,7 +1113,7 @@ end
 local VALID_SIZE_COLOR = TRP3_API.Colors.Green;
 local INVALID_SIZE_COLOR = TRP3_API.Colors.Red;
 resizeShadowFrame:SetScript("OnUpdate", function(self)
-	local height, width = self:GetHeight(), self:GetWidth();
+	local height, width = math.ceil(self:GetHeight()), math.ceil(self:GetWidth());
 	local heightColor, widthColor = VALID_SIZE_COLOR, VALID_SIZE_COLOR;
 	if height < self.minHeight then
 		heightColor = INVALID_SIZE_COLOR;
@@ -1121,7 +1121,7 @@ resizeShadowFrame:SetScript("OnUpdate", function(self)
 	if width < self.minWidth then
 		widthColor = INVALID_SIZE_COLOR;
 	end
-	resizeShadowFrame.text:SetText(widthColor(math.ceil(width)) .. " x " .. heightColor(math.ceil(height)));
+	resizeShadowFrame.text:SetText(widthColor(width) .. " x " .. heightColor(height));
 end);
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
