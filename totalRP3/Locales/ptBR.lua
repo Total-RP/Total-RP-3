@@ -393,7 +393,7 @@ Seus perfis, perfis de companheiro e configurações serão temporariamente depo
 	["CONFIG_COMMS_QUEUE_POOL_COUNT"] = "Tamanho da fila de espera ",
 	["CONFIG_COMMS_QUEUE_POOL_COUNT_DESCRIPTION"] = "Controla o tamanho da fila de espera utilizada para as comunicações de perfil.|n|n Valores mais baixos reduzirão a latência de comunicações adicionais para dados de perfil não-RP, mas podem aumentar o tempo antes de outros jogadores começarem a receber quaisquer dados de perfil em cenários de carga elevada. ",
 	["CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD"] = "Limiar de peso dos dados da fila de espera ",
-	["CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION"] = "Controla o peso mínimo que os dados do seu perfil RP devem ter antes de se utilizarem as filas de espera.|n|nPara perfis maiores, o aumento deste valor pode |cnWARNING_FONT_COLOR:severamente deteriorar| o desempenho de todos addons. ",
+	["CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION"] = "Controla o peso mínimo que os dados do seu perfil RP devem ter antes de se utilizarem as filas de espera.|n|nPara perfis maiores, o aumento deste valor pode |cnWARNING_FONT_COLOR:severamente deteriorar|r o desempenho de todos addons. ",
 	["CONFIG_COMMS_SETTINGS_HEADER"] = "Configuração de comunicações ",
 	["COPY_DROPDOWN_POPUP_TEXT"] = "copie com %1$s. cole com %2$s. Este frame irá fechar depois da cópia ",
 	["COPY_SYSTEM_MESSAGE"] = "Copiado para área de Transferência.  ",
