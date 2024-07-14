@@ -69,13 +69,30 @@ function TRP3_TooltipTemplates.CreateBlankLine()
 	return line;
 end
 
+function TRP3_TooltipTemplates.CreateBasicTooltip(description, title, text)
+	description:AddTitleLine(title);
+
+	if text and text ~= "" then
+		description:AddNormalLine(text);
+	end
+end
+
+function TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions)
+	description:AddTitleLine(title);
+
+	if text and text ~= "" then
+		description:AddNormalLine(text);
+		description:QueueBlankLine();
+	end
+
+	for _, instruction in ipairs(instructions) do
+		description:AddInstructionLine(instruction[1], instruction[2]);
+	end
+end
+
 function TRP3_TooltipTemplates.ShowBasicTooltip(owner, title, text)
 	local function GenerateBasicTooltip(_, description)
-		description:AddTitleLine(title);
-
-		if text and text ~= "" then
-			description:AddNormalLine(text);
-		end
+		TRP3_TooltipTemplates.CreateBasicTooltip(description, title, text);
 	end
 
 	TRP3_TooltipUtil.ShowTooltip(owner, GenerateBasicTooltip);
@@ -83,16 +100,7 @@ end
 
 function TRP3_TooltipTemplates.ShowInstructionTooltip(owner, title, text, instructions)
 	local function GenerateInstructionTooltip(_, description)
-		description:AddTitleLine(title);
-
-		if text and text ~= "" then
-			description:AddNormalLine(text);
-			description:QueueBlankLine();
-		end
-
-		for _, instruction in ipairs(instructions) do
-			description:AddInstructionLine(instruction[1], instruction[2]);
-		end
+		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
 	end
 
 	TRP3_TooltipUtil.ShowTooltip(owner, GenerateInstructionTooltip);
