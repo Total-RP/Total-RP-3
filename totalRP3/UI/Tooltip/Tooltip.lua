@@ -154,8 +154,12 @@ end
 
 local TooltipDescription = CreateFromMixins(TooltipElementDescription);
 
-function TooltipDescription:__init()
+function TooltipDescription:__init(owner)
 	TooltipElementDescription.__init(self);
+	self.owner = owner;
+	self.anchor = "ANCHOR_RIGHT";
+	self.anchorOffsetX = 0;
+	self.anchorOffsetY = 0;
 	self.sharedTooltipProperties = CreateSharedTooltipProperties();
 	self.lineDescriptions = {};
 	self.queuedDescriptions = {};
@@ -299,6 +303,31 @@ function TooltipDescription:SetPadding(left, right, top, bottom)
 	self.paddingBottom = bottom;
 end
 
+function TooltipDescription:GetOwner()
+	return self.owner;
+end
+
+function TooltipDescription:SetOwner(owner)
+	self.owner = assert(owner, "attempted to assign an invalid tooltip owner");
+end
+
+function TooltipDescription:GetAnchor()
+	return self.anchor;
+end
+
+function TooltipDescription:SetAnchor(anchor)
+	self.anchor = anchor or "ANCHOR_RIGHT";
+end
+
+function TooltipDescription:GetAnchorOffset()
+	return self.anchorOffsetX, self.anchorOffsetY;
+end
+
+function TooltipDescription:GetAnchorOffset(offsetX, offsetY)
+	self.anchorOffsetX = tonumber(offsetX or 0);
+	self.anchorOffsetY = tonumber(offsetY or 0);
+end
+
 function TooltipDescription:AddPreTooltipCallback(callback)
 	table.insert(self.preTooltipCallbacks, callback);
 end
@@ -325,8 +354,8 @@ function TRP3_Tooltip.CreateLineDescription()
 	return TRP3_API.CreateObject(TooltipLineDescription);
 end
 
-function TRP3_Tooltip.CreateTooltipDescription()
-	return TRP3_API.CreateObject(TooltipDescription);
+function TRP3_Tooltip.CreateTooltipDescription(owner)
+	return TRP3_API.CreateObject(TooltipDescription, owner);
 end
 
 local function UnpackColor(color)
@@ -402,6 +431,18 @@ function TRP3_Tooltip.ProcessTooltipDescription(tooltip, description)
 		return;
 	end
 
+	local owner = description:GetOwner();
+	local anchor = description:GetAnchor();
+
+	if type(anchor) ~= "table" then
+		tooltip:SetOwner(owner, anchor, description:GetAnchorOffset());
+	else
+		tooltip:ClearAllPoints();
+		tooltip:SetPoint(anchor:Get());
+		tooltip:SetOwner(owner, "ANCHOR_PRESERVE");
+	end
+
+	tooltip:SetOwner(owner, "ANCHOR_RIGHT");
 	description:ExecutePreTooltipCallbacks(tooltip);
 
 	for _, lineDescription in description:EnumerateLines() do
@@ -412,6 +453,7 @@ function TRP3_Tooltip.ProcessTooltipDescription(tooltip, description)
 	tooltip:SetCustomWordWrapMinWidth(description:GetMinimumWordWrapWidth());
 	tooltip:SetPadding(UnpackTooltipPadding(description:GetPadding()));
 	description:ExecutePostTooltipCallbacks(tooltip);
+	tooltip:Show();
 end
 
 local TooltipModifyCallbacks = TRP3_API.CreateCallbackRegistry();
