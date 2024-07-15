@@ -645,7 +645,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 			race = crop(race, FIELDS_TO_CROP.RACE);
 			class = crop(class, FIELDS_TO_CROP.CLASS);
 		end
-		lineLeft = strconcat(race, " ", color:WrapTextInColorCode(class));
+		lineLeft = string.trim(strconcat(race, " ", color:WrapTextInColorCode(class)));
 		lineRight = loc.REG_TT_LEVEL:format(getLevelIconOrText(targetType), getFactionIcon(targetType));
 
 		tooltipBuilder:AddDoubleLine(lineLeft, lineRight, colors.MAIN, colors.MAIN, getSubLineFontSize());
