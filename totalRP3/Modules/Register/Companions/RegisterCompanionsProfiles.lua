@@ -306,7 +306,7 @@ local displayMessage = Utils.message.displayMessage;
 local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 
 ui_boundPlayerCompanion = function (companionID, profileID, targetType)
-	if targetType == TRP3_Enums.UNIT_TYPE.PET and UnitName("pet") == companionID and PetCanBeAbandoned() then
+	if targetType == TRP3_Enums.UNIT_TYPE.PET and UnitNameUnmodified("pet") == companionID and PetCanBeAbandoned() then
 		showConfirmPopup(loc.PR_CO_WARNING_RENAME, function()
 			boundPlayerCompanion(companionID, profileID, targetType);
 		end);

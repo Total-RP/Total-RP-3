@@ -46,13 +46,12 @@ end
 
 ---@return string unitID @ Returns the unit ID in the format PlayerName-ServerName
 function Unit:GetUnitID()
-	local playerName, realm = UnitFullName(_private[self].rawUnitID);
+	local playerName, realm = UnitNameUnmodified(_private[self].rawUnitID);
 	if not playerName or playerName:len() == 0 or playerName == UNKNOWNOBJECT then
 		return nil;
 	end
 	if not realm then
-		local _, playerRealmName = UnitFullName("player");
-		realm = playerRealmName;
+		realm = GetNormalizedRealmName();
 	end
 	if not realm then
 		return playerName;

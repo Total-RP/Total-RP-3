@@ -173,7 +173,7 @@ end
 -- Create a unit ID based on a targetType (target, player, mouseover ...)
 -- The returned id can be nil.
 function Utils.str.getUnitID(unit)
-	local playerName, realm = UnitFullName(unit);
+	local playerName, realm = UnitNameUnmodified(unit);
 	if not playerName or playerName:len() == 0 or playerName == UNKNOWNOBJECT then
 		return nil;
 	end

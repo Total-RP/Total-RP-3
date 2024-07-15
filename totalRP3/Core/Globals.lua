@@ -45,7 +45,7 @@ TRP3_API.globals = {
 	--@end-non-debug@]===]
 
 
-	player = UnitName("player"),
+	player = UnitNameUnmodified("player"),
 	player_realm = GetRealmName(),
 	player_race_loc = race_loc,
 	player_class_loc = class_loc,
@@ -96,7 +96,7 @@ setmetatable(TRP3_API.globals.empty, emptyMeta);
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_API.globals.build = function()
-	local fullName = UnitName("player");
+	local fullName = UnitNameUnmodified("player");
 	local realm = GetRealmName():gsub("[%s*%-*]", "");
 	TRP3_API.globals.player_realm_id = realm;
 	TRP3_API.globals.player_id = fullName .. "-" .. realm;

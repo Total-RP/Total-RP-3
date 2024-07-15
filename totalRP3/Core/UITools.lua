@@ -612,7 +612,7 @@ end
 TRP3_API.ui.misc.getCompanionOwner = getCompanionOwner;
 
 function TRP3_API.ui.misc.getCompanionShortID(unitToken, unitType)
-	local shortID = UnitName(unitToken);
+	local shortID = UnitNameUnmodified(unitToken);
 
 	if not C_PetJournal and unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.BATTLE_PET then
 		-- Classic: Companions can't be renamed nor can their names be
