@@ -21,6 +21,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Anchors>
 			<Anchor point="BOTTOM" y="80"/>
 		</Anchors>
+		<Scripts>
+			<OnLoad inherit="prepend">
+				tinsert(UISpecialFrames, self:GetName());
+			</OnLoad>
+		</Scripts>
 		<Frames>
 			<Button parentKey="CloseButton" inherits="TRP3_StyledButtonTemplate">
 				<Size x="24" y="24"/>

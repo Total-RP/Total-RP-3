@@ -55,12 +55,12 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		if profile.characteristics and profile.characteristics.FT then
 			tooltipLines:AddLine("< " .. profile.characteristics.FT .. " >", TRP3_API.Colors.Orange);
 		end
-		if profile.character and profile.character.CU then
+		if profile.character and profile.character.CU and profile.character.CU ~= "" then
 			tooltipLines:AddLine(" ");
 			tooltipLines:AddLine(loc.DB_STATUS_CURRENTLY .. ": ");
 			tooltipLines:AddLine(profile.character.CU, TRP3_API.Colors.Yellow);
 		end
-		if profile.character and profile.character.CO then
+		if profile.character and profile.character.CO and profile.character.CO ~= "" then
 			tooltipLines:AddLine(" ");
 			tooltipLines:AddLine(loc.DB_STATUS_CURRENTLY_OOC .. ": ");
 			tooltipLines:AddLine(profile.character.CO, TRP3_API.Colors.Yellow);
@@ -80,6 +80,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 		TRP3_API.register.openPageByProfileID(profileID);
 		TRP3_API.navigation.openMainFrame();
+		TRP3_RefTooltip:Hide();
 	end
 
 	-- Import profile action button
