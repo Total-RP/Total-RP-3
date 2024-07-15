@@ -1550,7 +1550,7 @@ local function onModuleInit()
 	registerConfigKey(ConfigKeys.CHARACT_RELATION_LINE, true);
 	registerConfigKey(ConfigKeys.CHARACT_RELATION, true);
 	registerConfigKey(ConfigKeys.CHARACT_SPACING, true);
-	registerConfigKey(ConfigKeys.SHOW_WORLD_CURSOR, true);
+	registerConfigKey(ConfigKeys.SHOW_WORLD_CURSOR, false);
 	registerConfigKey(ConfigKeys.NO_FADE_OUT, false);
 	registerConfigKey(ConfigKeys.PREFER_OOC_ICON, TRP3_OOCIndicatorStyle.Text);
 	registerConfigKey(ConfigKeys.PETS_ICON, true);
