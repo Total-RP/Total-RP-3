@@ -685,9 +685,9 @@ local function writeTooltipForCharacter(targetID, targetType)
 
 			if info.misc and info.misc.ST then
 				if info.misc.ST["6"] == 1 then -- IC guild membership
-					displayMembership = " |cff00ff00(" .. loc.REG_TT_GUILD_IC .. ")";
+					displayMembership = " |cnGREEN_FONT_COLOR:(" .. loc.REG_TT_GUILD_IC .. ")";
 				elseif info.misc.ST["6"] == 2 then -- OOC guild membership
-					displayMembership = " |cffff0000(" .. loc.REG_TT_GUILD_OOC .. ")";
+					displayMembership = " |cnRED_FONT_COLOR:(" .. loc.REG_TT_GUILD_OOC .. ")";
 				end
 			end
 
@@ -698,7 +698,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 			local displayName = crop(customGuildName, FIELDS_TO_CROP.GUILD_NAME);
 			local displayRank = crop(customGuildRank or loc.DEFAULT_GUILD_RANK, FIELDS_TO_CROP.GUILD_RANK);
 			local displayText = string.format(loc.REG_TT_GUILD, displayRank, colors.SECONDARY:WrapTextInColorCode(displayName));
-			local displayMembership = " |cff82c5ff(" .. loc.REG_TT_GUILD_CUSTOM .. ")";
+			local displayMembership = " |cnBATTLENET_FONT_COLOR:(" .. loc.REG_TT_GUILD_CUSTOM .. ")";
 
 			tooltipBuilder:AddDoubleLine(displayText, displayMembership, colors.MAIN, colors.MAIN, getSubLineFontSize());
 		end
