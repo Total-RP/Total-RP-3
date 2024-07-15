@@ -655,7 +655,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 	-- Realm
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local _, realm = UnitName(targetType);
+	local _, realm = UnitNameUnmodified(targetType);
 	if showRealm() and realm then
 		tooltipBuilder:AddLine(loc.REG_TT_REALM:format(colors.SECONDARY:WrapTextInColorCode(realm)), colors.MAIN, getSubLineFontSize());
 	end
