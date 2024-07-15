@@ -58,6 +58,7 @@ local ConfigKeys = {
 	CHARACT_TARGET = "tooltip_char_target";
 	CHARACT_TITLE = "tooltip_char_title";
 	CHARACT_NOTIF = "tooltip_char_notif";
+	CHARACT_CLIENT = "tooltip_char_client";
 	CHARACT_CURRENT = "tooltip_char_current";
 	CHARACT_OOC = "tooltip_char_ooc";
 	CHARACT_PRONOUNS = "tooltip_char_pronouns";
@@ -166,6 +167,10 @@ end
 
 local function showNotifications()
 	return getConfigValue(ConfigKeys.CHARACT_NOTIF);
+end
+
+local function showClient()
+	return getConfigValue(ConfigKeys.CHARACT_CLIENT);
 end
 
 local function showCurrently()
@@ -911,23 +916,25 @@ local function writeTooltipForCharacter(targetID, targetType)
 		local notifText = table.concat(notifPieces, " ");
 
 		local clientText = "";
-		if targetID == Globals.player_id then
-			clientText = strconcat(Utils.str.sanitize(Globals.addon_name_me), " v", Utils.str.sanitizeVersion(Globals.version_display));
-			if Globals.extended_version then
-				clientText = strconcat(clientText, " x ", Utils.str.sanitizeVersion(Globals.extended_display_version));
-			end
-			if AddOn_TotalRP3.Player.GetCurrentUser():IsOnATrialAccount() then
-				clientText = strconcat(clientText, " ", colors.SECONDARY("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
-			end
-		elseif IsUnitIDKnown(targetID) then
-			if character.client then
-				clientText = strconcat(character.client, " v", character.clientVersion);
-				if character.extendedVersion then
-					clientText = strconcat(clientText, " x ", character.extendedVersion);
+		if showClient() then
+			if targetID == Globals.player_id then
+				clientText = strconcat(Utils.str.sanitize(Globals.addon_name_me), " v", Utils.str.sanitizeVersion(Globals.version_display));
+				if Globals.extended_version then
+					clientText = strconcat(clientText, " x ", Utils.str.sanitizeVersion(Globals.extended_display_version));
 				end
-			end
-			if player:IsOnATrialAccount() then
-				clientText = strconcat(clientText, " ", colors.SECONDARY("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
+				if AddOn_TotalRP3.Player.GetCurrentUser():IsOnATrialAccount() then
+					clientText = strconcat(clientText, " ", colors.SECONDARY("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
+				end
+			elseif IsUnitIDKnown(targetID) then
+				if character.client then
+					clientText = strconcat(character.client, " v", character.clientVersion);
+					if character.extendedVersion then
+						clientText = strconcat(clientText, " x ", character.extendedVersion);
+					end
+				end
+				if player:IsOnATrialAccount() then
+					clientText = strconcat(clientText, " ", colors.SECONDARY("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
+				end
 			end
 		end
 		if (notifText and notifText ~= "") or (clientText and clientText ~= "") then
@@ -1540,6 +1547,7 @@ local function onModuleInit()
 	registerConfigKey(ConfigKeys.CHARACT_TARGET, true);
 	registerConfigKey(ConfigKeys.CHARACT_TITLE, true);
 	registerConfigKey(ConfigKeys.CHARACT_NOTIF, true);
+	registerConfigKey(ConfigKeys.CHARACT_CLIENT, true);
 	registerConfigKey(ConfigKeys.CHARACT_CURRENT, true);
 	registerConfigKey(ConfigKeys.CHARACT_OOC, true);
 	registerConfigKey(ConfigKeys.CHARACT_PRONOUNS, true);
@@ -1840,6 +1848,13 @@ local function onModuleInit()
 				title = loc.CO_TOOLTIP_NOTIF,
 				configKey = ConfigKeys.CHARACT_NOTIF,
 				help = loc.CO_TOOLTIP_NOTIF_TT,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_CLIENT,
+				configKey = ConfigKeys.CHARACT_CLIENT,
+				help = loc.CO_TOOLTIP_CLIENT_TT,
+				dependentOnOptions = {ConfigKeys.CHARACT_NOTIF},
 			},
 			{
 				inherit = "TRP3_ConfigSlider",
