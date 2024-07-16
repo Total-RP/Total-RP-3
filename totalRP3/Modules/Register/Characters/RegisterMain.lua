@@ -35,6 +35,7 @@ local showCharacteristicsTab, showAboutTab, showMiscTab, showNotesTab;
 local get = TRP3_API.profile.getData;
 local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
 local toast = TRP3_API.ui.tooltip.toast;
+local tsize = Utils.table.size;
 
 -- Saved variables references
 local profiles, characters;
@@ -546,10 +547,26 @@ local function showDefaultTab()
 	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
 end
 
+local function getAboutDataExists(profile)
+	if profile and profile.about then
+		if profile.about.MU then
+			return true;
+		elseif profile.about.T1 and profile.about.T1.TX then
+			return true;
+		elseif profile.about.T2 and tsize(profile.about.T2) ~= 0 then
+			return true;
+		elseif profile.about.T3 and (profile.about.T3.PH.TX or profile.about.T3.PS.TX or profile.about.T3.HI.TX) then
+			return true;
+		end
+	end
+	return false;
+end
+
 local function showTabs()
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	if not context.isPlayer or getPlayerCurrentProfileID() ~= getConfigValue("default_profile_id") then
+		tabGroup.tabs[2]:SetTabLocked(not getAboutDataExists(context.profile));
 		tabGroup:SetAllTabsVisible(true);
 		tabGroup:SelectTab(1);
 	else
@@ -571,8 +588,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CLEANUP
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local tsize = Utils.table.size;
 
 -- Unbound character from missing profiles
 local function cleanupCharacters()
