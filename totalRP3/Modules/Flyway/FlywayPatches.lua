@@ -344,9 +344,13 @@ TRP3_API.flyway.patches["20"] = function()
 end
 
 TRP3_API.flyway.patches["21"] = function()
+	-- First handles the following:
 	-- About changes were always marked as unread, which is fine 9/10 of the
 	-- time. However due to an incorrect check in `onAboutReceived` we also
 	-- applied unread to empty abouts. These should not marked as unread.
+	--
+	-- Then we continue on to handling:
+	-- We were sending disabled glances data to other players unintentionally.
 
 	if not TRP3_Register then
 		return;
@@ -356,6 +360,7 @@ TRP3_API.flyway.patches["21"] = function()
 	for profileID, profile in pairs(profileList) do
 		-- Don't check default profiles
 		if not TRP3_API.profile.isDefaultProfile(profileID) and profile.characteristics and next(profile.characteristics) ~= nil then
+			-- Handle the wrong about unread situation first.
 			local aboutData = profile.about;
 
 			-- Skip profiles that have no about data, they do not have
@@ -392,6 +397,20 @@ TRP3_API.flyway.patches["21"] = function()
 				-- marked as unread, it should be marked as read.
 				if not filledDescription and not profile.about.read then
 					profile.about.read = true;
+				end
+
+				-- Handle the inactive glance situation next.
+				local miscData = profile.misc;
+
+				-- Skip profiles without miscData or no glances set up.
+				if miscData and miscData.PE then
+					for i=1,5 do
+						local index = tostring(i);
+						-- If glance is inactive, wipe its data.
+						if miscData.PE[index] and miscData.PE[index].AC == false then
+							miscData.PE[index] = nil;
+						end
+					end
 				end
 			end
 		end
