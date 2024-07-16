@@ -373,26 +373,22 @@ TRP3_API.flyway.patches["21"] = function()
 					filledDescription = templateData.TX and strtrim(templateData.TX):len() > 0;
 				elseif aboutData.TE == 2 then
 					local templateData = aboutData.T2 or {};
-					local atLeastOneFrame = false;
 					for _, frameTab in pairs(templateData) do
 						if frameTab.TX and strtrim(frameTab.TX):len() > 0 then
-							atLeastOneFrame = true;
+							filledDescription = true;
 							break;
 						end
 					end
-					filledDescription = atLeastOneFrame;
 				elseif aboutData.TE == 3 then
-					local atLeastOneFrame = false;
 					local templateData = aboutData.T3 or {};
 					local datas = {templateData.PH, templateData.PS, templateData.HI};
 					for i=1, 3 do
 						local data = datas[i] or {};
 						if data.TX and strtrim(data.TX):len() > 0 then
-							atLeastOneFrame = true;
+							filledDescription = true;
 							break;
 						end
 					end
-					filledDescription = atLeastOneFrame;
 				end
 
 				-- If a profile has both an empty description but is also
@@ -400,18 +396,18 @@ TRP3_API.flyway.patches["21"] = function()
 				if not filledDescription and not profile.about.read then
 					profile.about.read = true;
 				end
+			end
 
-				-- Handle the inactive glance situation next.
-				local miscData = profile.misc;
+			-- Handle the inactive glance situation next.
+			local miscData = profile.misc;
 
-				-- Skip profiles without miscData or no glances set up.
-				if miscData and miscData.PE then
-					for i=1,5 do
-						local index = tostring(i);
-						-- If glance is inactive, wipe its data.
-						if miscData.PE[index] and miscData.PE[index].AC == false then
-							miscData.PE[index] = nil;
-						end
+			-- Skip profiles without miscData or no glances set up.
+			if miscData and miscData.PE then
+				for i=1,5 do
+					local index = tostring(i);
+					-- If glance is inactive, wipe its data.
+					if miscData.PE[index] and miscData.PE[index].AC == false then
+						miscData.PE[index] = nil;
 					end
 				end
 			end
