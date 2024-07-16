@@ -377,6 +377,7 @@ TRP3_API.flyway.patches["21"] = function()
 					for _, frameTab in pairs(templateData) do
 						if frameTab.TX and strtrim(frameTab.TX):len() > 0 then
 							atLeastOneFrame = true;
+							break;
 						end
 					end
 					filledDescription = atLeastOneFrame;
@@ -388,6 +389,7 @@ TRP3_API.flyway.patches["21"] = function()
 						local data = datas[i] or {};
 						if data.TX and strtrim(data.TX):len() > 0 then
 							atLeastOneFrame = true;
+							break;
 						end
 					end
 					filledDescription = atLeastOneFrame;
