@@ -342,3 +342,58 @@ TRP3_API.flyway.patches["20"] = function()
 		end
 	end
 end
+
+TRP3_API.flyway.patches["21"] = function()
+	-- About changes were always marked as unread, which is fine 9/10 of the
+	-- time. However due to an incorrect check in `onAboutReceived` we also
+	-- applied unread to empty abouts. These should not marked as unread.
+
+	if not TRP3_Register then
+		return;
+	end
+
+	local profileList = TRP3_Register.profiles;
+	for profileID, profile in pairs(profileList) do
+		-- Don't check default profiles
+		if not TRP3_API.profile.isDefaultProfile(profileID) and profile.characteristics and next(profile.characteristics) ~= nil then
+			local aboutData = profile.about;
+
+			-- Skip profiles that have no about data, they do not have
+			-- an unread notification as-is.
+			if aboutData then
+				-- Check if anything is filled at all in any template.
+				local filledDescription = false;
+				if aboutData.TE == 1 then
+					local templateData = aboutData.T1 or {};
+					filledDescription = templateData.TX and strtrim(templateData.TX):len() > 0;
+				elseif aboutData.TE == 2 then
+					local templateData = aboutData.T2 or {};
+					local atLeastOneFrame = false;
+					for _, frameTab in pairs(templateData) do
+						if frameTab.TX and strtrim(frameTab.TX):len() > 0 then
+							atLeastOneFrame = true;
+						end
+					end
+					filledDescription = atLeastOneFrame;
+				elseif aboutData.TE == 3 then
+					local atLeastOneFrame = false;
+					local templateData = aboutData.T3 or {};
+					local datas = {templateData.PH, templateData.PS, templateData.HI};
+					for i=1, 3 do
+						local data = datas[i] or {};
+						if data.TX and strtrim(data.TX):len() > 0 then
+							atLeastOneFrame = true;
+						end
+					end
+					filledDescription = atLeastOneFrame;
+				end
+
+				-- If a profile has both an empty description but is also
+				-- marked as unread, it should be marked as read.
+				if not filledDescription and not profile.about.read then
+					profile.about.read = true;
+				end
+			end
+		end
+	end
+end

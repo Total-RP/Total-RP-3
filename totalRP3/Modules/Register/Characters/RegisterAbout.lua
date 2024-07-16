@@ -808,9 +808,9 @@ local function onSave()
 end
 
 local function onAboutReceived(profileID)
-	local aboutData = getProfile(profileID);
+	local aboutData = getProfile(profileID).about;
 	-- Check that there is a description. If not => set read to true !
-	local noDescr = (aboutData.TE == 1 and not shouldShowTemplate1(aboutData)) or (aboutData.TE == 2 and not shouldShowTemplate2(aboutData)) or (aboutData.TE == 3 and not shouldShowTemplate3(aboutData))
+	local noDescr = (aboutData.TE == 1 and not shouldShowTemplate1(aboutData)) or (aboutData.TE == 2 and not shouldShowTemplate2(aboutData)) or (aboutData.TE == 3 and not shouldShowTemplate3(aboutData));
 	if noDescr then
 		aboutData.read = true;
 		TRP3_Addon:TriggerEvent(Events.REGISTER_ABOUT_READ);
