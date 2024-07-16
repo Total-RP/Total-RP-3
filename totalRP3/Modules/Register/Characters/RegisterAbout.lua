@@ -170,6 +170,7 @@ local function shouldShowTemplate2(dataTab)
 	for _, frameTab in pairs(templateData) do
 		if frameTab.TX and strtrim(frameTab.TX):len() > 0 then
 			atLeastOneFrame = true;
+			return atLeastOneFrame;
 		end
 	end
 	return atLeastOneFrame;
@@ -437,6 +438,7 @@ local function shouldShowTemplate3(dataTab)
 		local data = datas[i] or {};
 		if data.TX and strtrim(data.TX):len() > 0 then
 			atLeastOneFrame = true;
+			return atLeastOneFrame;
 		end
 	end
 	return atLeastOneFrame;
@@ -808,9 +810,9 @@ local function onSave()
 end
 
 local function onAboutReceived(profileID)
-	local aboutData = getProfile(profileID).about;
+	local aboutData = getProfile(profileID);
 	-- Check that there is a description. If not => set read to true !
-	local noDescr = (aboutData.TE == 1 and not shouldShowTemplate1(aboutData)) or (aboutData.TE == 2 and not shouldShowTemplate2(aboutData)) or (aboutData.TE == 3 and not shouldShowTemplate3(aboutData));
+	local noDescr = (aboutData.TE == 1 and not shouldShowTemplate1(aboutData)) or (aboutData.TE == 2 and not shouldShowTemplate2(aboutData)) or (aboutData.TE == 3 and not shouldShowTemplate3(aboutData))
 	if noDescr then
 		aboutData.read = true;
 		TRP3_Addon:TriggerEvent(Events.REGISTER_ABOUT_READ);

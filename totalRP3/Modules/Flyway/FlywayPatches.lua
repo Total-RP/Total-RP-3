@@ -359,7 +359,7 @@ TRP3_API.flyway.patches["21"] = function()
 	local profileList = TRP3_Register.profiles;
 	for profileID, profile in pairs(profileList) do
 		-- Don't check default profiles
-		if not TRP3_API.profile.isDefaultProfile(profileID) and profile.characteristics and next(profile.characteristics) ~= nil then
+		if not TRP3_API.profile.isDefaultProfile(profileID) then
 			-- Handle the wrong about unread situation first.
 			local aboutData = profile.about;
 
