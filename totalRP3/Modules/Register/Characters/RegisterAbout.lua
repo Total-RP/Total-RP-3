@@ -138,6 +138,9 @@ end
 -- TEMPLATE 1
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+--- shouldShowTemplate1 checks if the frame in T1 has data in it.
+---@param dataTab table Given profile's about tab data.
+---@return boolean # Whether the T1 frame has data in it.
 local function shouldShowTemplate1(dataTab)
 	local templateData = dataTab.T1 or {};
 	return templateData.TX and strtrim(templateData.TX):len() > 0;
@@ -164,15 +167,17 @@ end
 local template2Frames = {};
 local TEMPLATE2_PADDING = 30;
 
+--- shouldShowTemplate2 checks if at least one frame in T2 has data in it.
+---@param dataTab table Given profile's about tab data.
+---@return boolean # Whether at least one frame has data in it.
 local function shouldShowTemplate2(dataTab)
 	local templateData = dataTab.T2 or {};
-	local atLeastOneFrame = false;
 	for _, frameTab in pairs(templateData) do
 		if frameTab.TX and strtrim(frameTab.TX):len() > 0 then
-			atLeastOneFrame = true;
+			return true;
 		end
 	end
-	return atLeastOneFrame;
+	return false;
 end
 
 local function resizeTemplate2()
@@ -429,17 +434,19 @@ local function onHistoIconSelected(icon)
 	setupIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, icon or TEMPLATE3_ICON_HISTORY);
 end
 
+--- shouldShowTemplate3 checks if at least one frame in T3 has data in it.
+---@param dataTab table Given profile's about tab data.
+---@return boolean # Whether at least one frame has data in it.
 local function shouldShowTemplate3(dataTab)
-	local atLeastOneFrame = false;
 	local templateData = dataTab.T3 or {};
 	local datas = {templateData.PH, templateData.PS, templateData.HI};
 	for i=1, 3 do
 		local data = datas[i] or {};
 		if data.TX and strtrim(data.TX):len() > 0 then
-			atLeastOneFrame = true;
+			return true;
 		end
 	end
-	return atLeastOneFrame;
+	return false;
 end
 
 local function resizeTemplate3()
@@ -808,9 +815,9 @@ local function onSave()
 end
 
 local function onAboutReceived(profileID)
-	local aboutData = getProfile(profileID);
+	local aboutData = getProfile(profileID).about;
 	-- Check that there is a description. If not => set read to true !
-	local noDescr = (aboutData.TE == 1 and not shouldShowTemplate1(aboutData)) or (aboutData.TE == 2 and not shouldShowTemplate2(aboutData)) or (aboutData.TE == 3 and not shouldShowTemplate3(aboutData))
+	local noDescr = (aboutData.TE == 1 and not shouldShowTemplate1(aboutData)) or (aboutData.TE == 2 and not shouldShowTemplate2(aboutData)) or (aboutData.TE == 3 and not shouldShowTemplate3(aboutData));
 	if noDescr then
 		aboutData.read = true;
 		TRP3_Addon:TriggerEvent(Events.REGISTER_ABOUT_READ);

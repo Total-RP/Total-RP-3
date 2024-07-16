@@ -342,3 +342,75 @@ TRP3_API.flyway.patches["20"] = function()
 		end
 	end
 end
+
+TRP3_API.flyway.patches["21"] = function()
+	-- First handles the following:
+	-- About changes were always marked as unread, which is fine 9/10 of the
+	-- time. However due to an incorrect check in `onAboutReceived` we also
+	-- applied unread to empty abouts. These should not marked as unread.
+	--
+	-- Then we continue on to handling:
+	-- We were sending disabled glances data to other players unintentionally.
+
+	if not TRP3_Register then
+		return;
+	end
+
+	local profileList = TRP3_Register.profiles;
+	for profileID, profile in pairs(profileList) do
+		-- Don't check default profiles
+		if not TRP3_API.profile.isDefaultProfile(profileID) then
+			-- Handle the wrong about unread situation first.
+			local aboutData = profile.about;
+
+			-- Skip profiles that have no about data, they do not have
+			-- an unread notification as-is.
+			if aboutData then
+				-- Check if anything is filled at all in any template.
+				local filledDescription = false;
+				if aboutData.TE == 1 then
+					local templateData = aboutData.T1 or {};
+					filledDescription = templateData.TX and strtrim(templateData.TX):len() > 0;
+				elseif aboutData.TE == 2 then
+					local templateData = aboutData.T2 or {};
+					for _, frameTab in pairs(templateData) do
+						if frameTab.TX and strtrim(frameTab.TX):len() > 0 then
+							filledDescription = true;
+							break;
+						end
+					end
+				elseif aboutData.TE == 3 then
+					local templateData = aboutData.T3 or {};
+					local datas = {templateData.PH, templateData.PS, templateData.HI};
+					for i=1, 3 do
+						local data = datas[i] or {};
+						if data.TX and strtrim(data.TX):len() > 0 then
+							filledDescription = true;
+							break;
+						end
+					end
+				end
+
+				-- If a profile has both an empty description but is also
+				-- marked as unread, it should be marked as read.
+				if not filledDescription and not profile.about.read then
+					profile.about.read = true;
+				end
+			end
+
+			-- Handle the inactive glance situation next.
+			local miscData = profile.misc;
+
+			-- Skip profiles without miscData or no glances set up.
+			if miscData and miscData.PE then
+				for i=1,5 do
+					local index = tostring(i);
+					-- If glance is inactive, wipe its data.
+					if miscData.PE[index] and miscData.PE[index].AC == false then
+						miscData.PE[index] = nil;
+					end
+				end
+			end
+		end
+	end
+end
