@@ -1094,7 +1094,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenCharacterH;
 				else
 					buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenCharacterN;
-				end	
+				end
 				buttonStructure.tooltip = loc.REG_PLAYER;
 
 				-- Retrieve the character's profile.
