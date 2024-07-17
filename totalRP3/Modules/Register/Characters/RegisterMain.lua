@@ -797,13 +797,16 @@ function TRP3_API.register.init()
 	registerConfigKey("register_auto_purge_mode", 864000);
 
 	local AUTO_PURGE_VALUES = {
-		{ loc.CO_REGISTER_AUTO_PURGE_0, false },
 		{ loc.CO_REGISTER_AUTO_PURGE_1:format(1), 86400 },
 		{ loc.CO_REGISTER_AUTO_PURGE_1:format(2), 86400 * 2 },
 		{ loc.CO_REGISTER_AUTO_PURGE_1:format(5), 86400 * 5 },
 		{ loc.CO_REGISTER_AUTO_PURGE_1:format(10), 86400 * 10 },
 		{ loc.CO_REGISTER_AUTO_PURGE_1:format(30), 86400 * 30 },
 	}
+
+	if TRP3_API.globals.DEBUG_MODE then
+		table.insert(AUTO_PURGE_VALUES, { loc.CO_REGISTER_AUTO_PURGE_0, false });
+	end
 
 	-- Build configuration page
 	TRP3_API.register.CONFIG_STRUCTURE = {
