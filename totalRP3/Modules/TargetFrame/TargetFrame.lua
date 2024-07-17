@@ -41,6 +41,21 @@ local function onStart()
 	local marginLeft = 10;
 	local loaded = false;
 
+	--- getTooltipTitleWithIcon creates a tooltip title string with icon in front of it by its atlas or icon.
+	---@param buttonStructure {iconAtlas: string, iconFile: string|Icon, tooltip: string, configText: string}
+	---@param iconType number Icon type: 0 = Report/Other,  1 = Atlas, 2 = Icon
+	---@return string # The tooltip tiple with an icon in front.
+	local function getTooltipTitleWithIcon(buttonStructure, iconType)
+		local icon = "";
+		if iconType == 1 then
+			icon = TRP3_MarkupUtil.GenerateAtlasMarkup(buttonStructure.iconAtlas, { size = 32 }) .. " " ;
+		elseif iconType == 2 then
+			icon = TRP3_MarkupUtil.GenerateIconMarkup(buttonStructure.iconFile, { size = 32 }) .. " " ;
+		end
+		-- "Report" and "Other" types don't get an icon, so keep it empty.
+		return icon .. (buttonStructure.tooltip or buttonStructure.configText);
+	end
+
 	local function createButton(index)
 		local uiButton = CreateFrame("Button", "TRP3_TargetFrameButton"..index, ui_TargetFrame, "TRP3_TargetFrameButtonTemplate");
 		uiButton:ClearAllPoints();
@@ -99,14 +114,30 @@ local function onStart()
 				buttonStructure.adapter(buttonStructure, currentTargetID, currentTargetType);
 			end
 
-			if type(buttonStructure.icon) == "table" and buttonStructure.icon.Apply then
-				if buttonStructure.icon:GetFileID() == 516771 then
-					uiButton:SetIconTextureToFile(buttonStructure.icon:GetFileID())
-				else
-					uiButton:SetIconTexture(buttonStructure.icon:GetFileID())
-				end
+			-- Store iconType so we don't have to re-do checks later on in
+			-- `getTooltipTitleWithIcon` to see which one is actually valid.
+			-- 0 = Report/Other,  1 = Atlas, 2 = Icon
+			local iconType = 0;
+			-- Check if an atlas is set and that it is valid.
+			if buttonStructure.iconAtlas and C_Texture.GetAtlasInfo(buttonStructure.iconAtlas) then
+				iconType = 1;
+				uiButton:SetIconTextureToAtlas(buttonStructure.iconAtlas);
 			else
-				uiButton:SetIconTexture(buttonStructure.icon);
+				-- If atlas isn't valid at all, default to iconFile!
+				if buttonStructure.iconFile then
+					iconType = 2;
+					if type(buttonStructure.iconFile) == "table" and buttonStructure.iconFile.Apply then
+						if buttonStructure.iconFile:GetFileID() == 516771 then
+							iconType = 0;
+							uiButton:SetIconTextureToFile(buttonStructure.iconFile:GetFileID())
+						else
+							-- This handles the Ellyb.Icon() icons.
+							uiButton:SetIconTexture(buttonStructure.iconFile:GetFileID())
+						end
+					else
+						uiButton:SetIconTexture(buttonStructure.iconFile);
+					end
+				end
 			end
 
 			if uiButton:GetPushedTexture() then
@@ -122,7 +153,7 @@ local function onStart()
 			uiButton.unitID = currentTargetID;
 			uiButton.targetType = currentTargetType;
 			if buttonStructure.tooltip then
-				setTooltipForSameFrame(uiButton, "TOP", 0, 5, buttonStructure.tooltip, buttonStructure.tooltipSub);
+				setTooltipForSameFrame(uiButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure, iconType), buttonStructure.tooltipSub);
 			else
 				setTooltipForSameFrame(uiButton);
 			end

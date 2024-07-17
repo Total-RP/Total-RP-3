@@ -33,6 +33,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		end,
 		tooltip =  REPORT_ICON:GenerateString(25) .. loc.REG_REPORT_PLAYER_PROFILE,
 		tooltipSub = loc.REG_REPORT_PLAYER_PROFILE_TT,
-		icon = REPORT_ICON
+		iconFile = REPORT_ICON
 	});
 end)

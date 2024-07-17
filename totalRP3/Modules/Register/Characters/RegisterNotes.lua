@@ -121,7 +121,7 @@ function TRP3_API.register.inits.notesInit()
 			end,
 			tooltip = loc.REG_NOTES_PROFILE,
 			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_NOTES_PROFILE_TT),
-			icon = Ellyb.Icon(TRP3_InterfaceIcons.TargetNotes),
+			iconFile = TRP3_InterfaceIcons.TargetNotes,
 		});
 	end)
 end

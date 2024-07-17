@@ -87,7 +87,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			end,
 			tooltipSub = loc.TF_IGNORE_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_IGNORE),
 			tooltip = loc.TF_IGNORE,
-			icon = TRP3_InterfaceIcons.TargetIgnoreCharacter,
+			iconAtlas = TRP3_InterfaceAtlases.TargetIgnoreCharacter,
 		});
 	end
 end);

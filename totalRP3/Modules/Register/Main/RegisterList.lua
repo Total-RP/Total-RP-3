@@ -1087,7 +1087,14 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			adapter = function(buttonStructure, unitID)
 				-- Initialize the buttonStructure parts.
 				buttonStructure.alert = false;
-				buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenCharacter;
+				local factionTag = UnitFactionGroup("target");
+				if factionTag == "Alliance" then
+					buttonStructure.iconFile = TRP3_InterfaceIcons.TargetOpenCharacterA;
+				elseif factionTag == "Horde" then
+					buttonStructure.iconFile = TRP3_InterfaceIcons.TargetOpenCharacterH;
+				else
+					buttonStructure.iconFile = TRP3_InterfaceIcons.TargetOpenCharacterN;
+				end	
 				buttonStructure.tooltip = loc.REG_PLAYER;
 
 				-- Retrieve the character's profile.

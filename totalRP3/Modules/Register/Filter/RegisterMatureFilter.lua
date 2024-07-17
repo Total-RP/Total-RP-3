@@ -559,7 +559,7 @@ local function onStart()
 			onClick = presentAddUnitToSafeListPopup,
 			tooltipSub = "|cffffff00" .. loc.CM_CLICK .. "|r: " .. loc.MATURE_FILTER_ADD_TO_SAFELIST_TT,
 			tooltip = loc.MATURE_FILTER_ADD_TO_SAFELIST,
-			icon = TRP3_InterfaceIcons.TargetFlagMatureSafe,
+			iconFile = TRP3_InterfaceIcons.TargetFlagMatureSafe,
 		});
 		-- Remove from safe list button
 		TRP3_API.target.registerButton({
@@ -580,7 +580,7 @@ local function onStart()
 			end,
 			tooltipSub = loc.MATURE_FILTER_REMOVE_FROM_SAFELIST_TT,
 			tooltip = loc.MATURE_FILTER_REMOVE_FROM_SAFELIST,
-			icon = TRP3_InterfaceIcons.TargetFlagMatureUnsafe,
+			iconFile = TRP3_InterfaceIcons.TargetFlagMatureUnsafe,
 		});
 
 		-- Manually flag player button
@@ -602,7 +602,7 @@ local function onStart()
 			end,
 			tooltipSub = loc.MATURE_FILTER_FLAG_PLAYER_TT,
 			tooltip = loc.MATURE_FILTER_FLAG_PLAYER,
-			icon = TRP3_InterfaceIcons.TargetFlagMature,
+			iconFile = TRP3_InterfaceIcons.TargetFlagMature,
 		});
 	end
 

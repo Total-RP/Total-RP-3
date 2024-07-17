@@ -102,7 +102,7 @@ local function onStart()
 	--- @param buttonStructure {icon: string|Icon, tooltip: string, configText: string}
 	--- @return string
 	local function getTooltipTitleWithIcon(buttonStructure)
-		return Utils.str.icon(buttonStructure.icon, 25) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
+		return TRP3_MarkupUtil.GenerateIconMarkup(buttonStructure.icon, { size = 32 }) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
 	end
 
 
