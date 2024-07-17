@@ -41,6 +41,21 @@ local function onStart()
 	local marginLeft = 10;
 	local loaded = false;
 
+	--- getTooltipTitleWithIcon creates a tooltip title string with icon in front of it by its atlas or icon.
+	---@param buttonStructure table Contains all the button data.
+	---@return string # The tooltip title with an icon in front.
+	local function getTooltipTitleWithIcon(buttonStructure)
+		local icon = "";
+		if buttonStructure.icon then
+			icon = TRP3_MarkupUtil.GenerateIconMarkup(buttonStructure.icon, { size = 32 }) .. " ";
+		elseif buttonStructure.iconAtlas and C_Texture.GetAtlasInfo(buttonStructure.iconAtlas) then
+			icon = TRP3_MarkupUtil.GenerateAtlasMarkup(buttonStructure.iconAtlas, { size = 32 }) .. " ";
+		elseif buttonStructure.iconFile then
+			icon = TRP3_MarkupUtil.GenerateFileMarkup(buttonStructure.iconFile, { size = 32 }) .. " ";
+		end
+		return icon .. (buttonStructure.tooltip or buttonStructure.configText);
+	end
+
 	local function createButton(index)
 		local uiButton = CreateFrame("Button", "TRP3_TargetFrameButton"..index, ui_TargetFrame, "TRP3_TargetFrameButtonTemplate");
 		uiButton:ClearAllPoints();
@@ -99,15 +114,15 @@ local function onStart()
 				buttonStructure.adapter(buttonStructure, currentTargetID, currentTargetType);
 			end
 
-			if type(buttonStructure.icon) == "table" and buttonStructure.icon.Apply then
-				if buttonStructure.icon:GetFileID() == 516771 then
-					uiButton:SetIconTextureToFile(buttonStructure.icon:GetFileID())
-				else
-					uiButton:SetIconTexture(buttonStructure.icon:GetFileID())
-				end
-			else
+			-- icon > iconAtlas > iconFile so sayeth the Meorawr.
+			if buttonStructure.icon then
 				uiButton:SetIconTexture(buttonStructure.icon);
+			elseif buttonStructure.iconAtlas and C_Texture.GetAtlasInfo(buttonStructure.iconAtlas) then
+				uiButton:SetIconTextureToAtlas(buttonStructure.iconAtlas);
+			elseif buttonStructure.iconFile then
+				uiButton:SetIconTextureToFile(buttonStructure.iconFile);
 			end
+
 
 			if uiButton:GetPushedTexture() then
 				uiButton:GetPushedTexture():SetDesaturated(1);
@@ -122,7 +137,7 @@ local function onStart()
 			uiButton.unitID = currentTargetID;
 			uiButton.targetType = currentTargetType;
 			if buttonStructure.tooltip then
-				setTooltipForSameFrame(uiButton, "TOP", 0, 5, buttonStructure.tooltip, buttonStructure.tooltipSub);
+				setTooltipForSameFrame(uiButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
 			else
 				setTooltipForSameFrame(uiButton);
 			end

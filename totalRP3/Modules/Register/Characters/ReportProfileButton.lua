@@ -5,8 +5,6 @@ local Ellyb = TRP3_API.Ellyb;
 
 local loc = TRP3_API.loc;
 
-local REPORT_ICON = Ellyb.Icon([[Interface\HelpFrame\HelpIcon-OpenTicket]]);
-
 TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	if not TRP3_API.target then
 		-- Target bar module disabled.
@@ -31,8 +29,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			end
 			Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", reportText, nil, loc.COPY_SYSTEM_MESSAGE);
 		end,
-		tooltip =  REPORT_ICON:GenerateString(25) .. loc.REG_REPORT_PLAYER_PROFILE,
+		tooltip = loc.REG_REPORT_PLAYER_PROFILE,
 		tooltipSub = loc.REG_REPORT_PLAYER_PROFILE_TT,
-		icon = REPORT_ICON
+		iconFile = [[Interface\HelpFrame\HelpIcon-OpenTicket]],
 	});
 end)

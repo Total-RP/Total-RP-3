@@ -3,7 +3,6 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
 
 local loc = TRP3_API.loc;
 local Globals = TRP3_API.globals;
@@ -121,7 +120,7 @@ function TRP3_API.register.inits.notesInit()
 			end,
 			tooltip = loc.REG_NOTES_PROFILE,
 			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_NOTES_PROFILE_TT),
-			icon = Ellyb.Icon(TRP3_InterfaceIcons.TargetNotes),
+			icon = TRP3_InterfaceIcons.TargetNotes,
 		});
 	end)
 end
