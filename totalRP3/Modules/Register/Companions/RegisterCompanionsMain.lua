@@ -240,9 +240,9 @@ local function UpdateSummonedPetGUID(speciesID)
 end
 
 local function UpdateSummonedPetGUIDFromCast(unitToken, castGUID)
-	-- For Classic clients we need to be creative with how we know what
-	-- non-combat pet the player has summoned. None of the companion API
-	-- exists, nor does the COMPANION_UPDATE event.
+	-- For Classic era we need to be creative with how we know what non-combat
+	-- pet the player has summoned. None of the companion API exists, nor does
+	-- the COMPANION_UPDATE event.
 	--
 	-- Our approach is to monitor for successful spellcasts whose spell IDs
 	-- are associated with that of a known companion pet. We assume that the
@@ -254,10 +254,9 @@ local function UpdateSummonedPetGUIDFromCast(unitToken, castGUID)
 	-- if it's dismissed other players can't see the unit to request the data
 	-- anyway.
 	--
-	-- For persistence across UI reloads we store the summoned pet data in a
-	-- temporary CVar. When logging out pets aren't resummoned in Classic, so
-	-- we don't need to worry about the case where a player switches
-	-- characters.
+	-- For persistence across UI reloads we store the summoned pet data in our
+	-- saved variables, and reset it upon initial login of a new character.
+	-- When logging out pets aren't resummoned in Classic Era.
 
 	if unitToken ~= "player" then
 		return;
@@ -280,8 +279,8 @@ end
 local function GetSummonedPetGUID()
 	if C_PetJournal then
 		return C_PetJournal.GetSummonedPetGUID();
-	else
-		return GetCVar("totalRP3_SummonedPetID");
+	elseif TRP3_Companions then
+		return TRP3_Companions.summonedPetID;
 	end
 end
 
