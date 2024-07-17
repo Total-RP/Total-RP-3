@@ -279,7 +279,7 @@ end
 local function GetSummonedPetGUID()
 	if C_PetJournal then
 		return C_PetJournal.GetSummonedPetGUID();
-	else
+	elseif TRP3_Companions then
 		return TRP3_Companions.summonedPetID;
 	end
 end
