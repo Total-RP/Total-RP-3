@@ -85,19 +85,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="TOPLEFT" x="15" y="-12"/>
 				</Anchors>
 			</Button>
-			<Frame name="$parentBkg" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
+			<Button name="$parentBkg" inherits="TRP3_CommonButton">
+				<Size x="170" y="22"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentIcon" x="-7" y="-5"/>
 				</Anchors>
-				<Scripts>
-					<OnEnter inherit="prepend">
-						TRP3_RefreshTooltipForFrame(self);
-					</OnEnter>
-					<OnLeave inherit="prepend">
-						TRP3_MainTooltip:Hide();
-					</OnLeave>
-				</Scripts>
-			</Frame>
+			</Button>
 			<Frame name="$parentText" inherits="TRP3_TextArea">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-10"/>
@@ -172,20 +165,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<PushedTexture file="Interface\Buttons\UI-Panel-CollapseButton-Down"/>
 				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 			</Button>
-			<Frame name="$parentBkg" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
-				<Size x="170" y="32"/>
+			<Button name="$parentBkg" inherits="TRP3_CommonButton">
+				<Size x="170" y="22"/>
 				<Anchors>
-					<Anchor point="BOTTOMLEFT" x="58" y="5"/>
+					<Anchor point="BOTTOMLEFT" x="58" y="10"/>
 				</Anchors>
-				<Scripts>
-					<OnEnter inherit="prepend">
-						TRP3_RefreshTooltipForFrame(self);
-					</OnEnter>
-					<OnLeave inherit="prepend">
-						TRP3_MainTooltip:Hide();
-					</OnLeave>
-				</Scripts>
-			</Frame>
+			</Button>
 			<Frame name="$parentText" inherits="TRP3_TextArea">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-10"/>
@@ -224,16 +209,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 						<Frames>
 							<Button name="TRP3_RegisterAbout_Edit_Music_Action" inherits="TRP3_CommonButton">
-								<Size x="100" y="22"/>
+								<Size x="180" y="22"/>
 								<Anchors>
-									<Anchor point="TOPLEFT" x="15" y="-5"/>
+									<Anchor point="TOPLEFT" x="13" y="-5"/>
 								</Anchors>
 							</Button>
 						</Frames>
 						<Layers>
 							<Layer level="OVERLAY">
 								<FontString name="TRP3_RegisterAbout_Edit_Music_Text" inherits="GameFontNormal" justifyH="LEFT" text="[Music_title]">
-									<Size x="350" y="10"/>
+									<Size x="270" y="10"/>
 									<Anchors>
 										<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Music_Action" x="0" y="0"/>
 									</Anchors>
@@ -242,12 +227,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							</Layer>
 						</Layers>
 					</Frame>
-					<Frame name="TRP3_RegisterAbout_Edit_BckField" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
-						<Size x="170" y="32"/>
+					<Button name="TRP3_RegisterAbout_Edit_BckField" inherits="TRP3_CommonButton">
+						<Size x="180" y="22"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" x="13" y="-35"/>
 						</Anchors>
-					</Frame>
+					</Button>
 					<Frame name="TRP3_RegisterAbout_Edit_TemplateField" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
 						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="0" relativeTo="TRP3_RegisterAbout_Edit_BckField"/>

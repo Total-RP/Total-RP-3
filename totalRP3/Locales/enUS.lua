@@ -850,6 +850,8 @@ Use the |cnGREEN_FONT_COLOR:Import profile|r option to paste data from a previou
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	UI_BKG = "Background %s",
+	UI_BKG_BROWSER = "Background browser",
+	UI_BKG_BUTTON = "Change background",
 	UI_ICON_BROWSER = "Icon browser",
 	UI_ICON_BROWSER_SEARCHING = "Searching...",
 	UI_COMPANION_BROWSER_HELP = "Select a battle pet",

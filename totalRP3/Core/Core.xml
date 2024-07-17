@@ -69,6 +69,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Include file="UIMain.lua"/>
 
+	<Include file="..\UI\Browsers\BackgroundBrowser.xml"/>
 	<Include file="..\UI\Browsers\IconBrowser.xml"/>
 	<Include file="..\UI\Browsers\Companions.xml"/>
 	<Include file="..\UI\Browsers\Musics.xml"/>

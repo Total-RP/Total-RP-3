@@ -10,7 +10,6 @@ local stEtN = Utils.str.emptyToNil;
 local get = TRP3_API.profile.getData;
 local tcopy = Utils.table.copy;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
-local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
 local showIfMouseOver = TRP3_API.ui.frame.showIfMouseOverFrame;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
@@ -114,6 +113,7 @@ local function setConsultBkg(bkg)
 end
 
 local function setEditBkg(bkg)
+	draftData.BK = bkg;
 	setBkg(TRP3_RegisterAbout, bkg);
 end
 
@@ -303,7 +303,17 @@ end
 
 local function createTemplate2Frame(frameIndex)
 	local frame = CreateFrame("Frame", "TRP3_RegisterAbout_Template2_Edit"..frameIndex, TRP3_RegisterAbout_Edit_Template2_Container, "TRP3_RegisterAbout_Template2_Edit");
-	setupListBox(_G["TRP3_RegisterAbout_Template2_Edit"..frameIndex.."Bkg"], getTiledBackgroundList(), setTemplate2EditBkg, nil, 120, true);
+
+	local BackgroundButton = _G["TRP3_RegisterAbout_Template2_Edit"..frameIndex.."Bkg"];
+	BackgroundButton:SetText(loc.UI_BKG_BUTTON);
+	BackgroundButton:SetScript("OnClick", function()
+		local function OnBackgroundSelected(imageInfo)
+			setTemplate2EditBkg(imageInfo and imageInfo.id or nil, BackgroundButton);
+		end
+
+		TRP3_API.popup.ShowBackgroundBrowser(OnBackgroundSelected, frame.frameData.BK);
+	end);
+
 	_G[frame:GetName().."Delete"]:SetScript("OnClick", template2DeleteFrame);
 	_G[frame:GetName().."Delete"]:SetText(loc.CM_REMOVE);
 	_G[frame:GetName().."Up"]:SetScript("OnClick", template2UpFrame);
@@ -344,7 +354,6 @@ function refreshTemplate2EditDisplay()
 		-- Values
 		frame.index = frameIndex;
 		frame.frameData = frameData;
-		_G[frame:GetName().."Bkg"]:SetSelectedIndex(frameData.BK or 1);
 		_G[frame:GetName().."TextScrollText"]:SetText(frameData.TX or "");
 		setupIconButton(_G[frame:GetName().."Icon"], frameData.IC or TRP3_InterfaceIcons.Default);
 		_G[frame:GetName().."Icon"]:SetScript("onMouseDown", function(self, button)
@@ -408,14 +417,17 @@ local TEMPLATE3_ICON_PSYCHO = TRP3_InterfaceIcons.TraitSection;
 local TEMPLATE3_ICON_HISTORY = TRP3_InterfaceIcons.HistorySection;
 
 local function setTemplate3PhysBkg(bkg)
+	draftData.T3.PH.BK = bkg;
 	setBkg(TRP3_RegisterAbout_Edit_Template3_Phys, bkg);
 end
 
 local function setTemplate3PsyBkg(bkg)
+	draftData.T3.PS.BK = bkg;
 	setBkg(TRP3_RegisterAbout_Edit_Template3_Psy, bkg);
 end
 
 local function setTemplate3HistBkg(bkg)
+	draftData.T3.HI.BK = bkg;
 	setBkg(TRP3_RegisterAbout_Edit_Template3_Hist, bkg);
 end
 
@@ -616,16 +628,12 @@ end
 
 function saveInDraft()
 	assert(type(draftData) == "table", "Error: Nil draftData or not a table.");
-	draftData.BK = TRP3_RegisterAbout_Edit_BckField:GetSelectedValue();
 	draftData.TE = TRP3_RegisterAbout_Edit_TemplateField:GetSelectedValue();
 	-- Template 1
 	draftData.T1.TX = TRP3_RegisterAbout_Edit_Template1ScrollText:GetText();
 	-- Template 2
 	template2SaveToDraft();
 	-- Template 3
-	draftData.T3.PH.BK = TRP3_RegisterAbout_Edit_Template3_PhysBkg:GetSelectedValue();
-	draftData.T3.PS.BK = TRP3_RegisterAbout_Edit_Template3_PsyBkg:GetSelectedValue();
-	draftData.T3.HI.BK = TRP3_RegisterAbout_Edit_Template3_HistBkg:GetSelectedValue();
 	draftData.T3.PH.TX = stEtN(TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText:GetText());
 	draftData.T3.PS.TX = stEtN(TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:GetText());
 	draftData.T3.HI.TX = stEtN(TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:GetText());
@@ -674,7 +682,6 @@ local function refreshEditDisplay()
 		tcopy(draftData, dataTab);
 	end
 
-	TRP3_RegisterAbout_Edit_BckField:SetSelectedIndex(draftData.BK or 1);
 	TRP3_RegisterAbout_Edit_TemplateField:SetSelectedIndex(draftData.TE or 1);
 	selectMusic(draftData.MU);
 	-- Template 1
@@ -689,9 +696,6 @@ local function refreshEditDisplay()
 	setTemplate3PhysBkg(template3Data.PH.BK or 1);
 	setTemplate3PsyBkg(template3Data.PS.BK or 1);
 	setTemplate3HistBkg(template3Data.HI.BK or 1);
-	TRP3_RegisterAbout_Edit_Template3_PhysBkg:SetSelectedIndex(template3Data.PH.BK or 1);
-	TRP3_RegisterAbout_Edit_Template3_PsyBkg:SetSelectedIndex(template3Data.PS.BK or 1);
-	TRP3_RegisterAbout_Edit_Template3_HistBkg:SetSelectedIndex(template3Data.HI.BK or 1);
 	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, template3Data.PH.IC or TEMPLATE3_ICON_PHYSICAL);
 	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, template3Data.PS.IC or TEMPLATE3_ICON_PSYCHO);
 	setupIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, template3Data.HI.IC or TEMPLATE3_ICON_HISTORY);
@@ -958,12 +962,17 @@ function TRP3_API.register.inits.aboutInit()
 
 	-- UI
 	createRefreshOnFrame(TRP3_RegisterAbout_AboutPanel, 0.2, onPlayerAboutRefresh);
-	local bkgTab = getTiledBackgroundList();
-	setupListBox(TRP3_RegisterAbout_Edit_BckField, bkgTab, setEditBkg, nil, 150, true);
+
+	TRP3_RegisterAbout_Edit_BckField:SetText(loc.UI_BKG_BUTTON);
+	TRP3_RegisterAbout_Edit_BckField:SetScript("OnClick", function()
+		local function OnBackgroundSelected(imageInfo)
+			setEditBkg(imageInfo and imageInfo.id or nil);
+		end
+
+		TRP3_API.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.BK);
+	end);
+
 	setupListBox(TRP3_RegisterAbout_Edit_TemplateField, {{"Template 1", 1}, {"Template 2", 2}, {"Template 3", 3}}, setEditTemplate, nil, 150, true);
-	setupListBox(TRP3_RegisterAbout_Edit_Template3_PhysBkg, bkgTab, setTemplate3PhysBkg, nil, 150, true);
-	setupListBox(TRP3_RegisterAbout_Edit_Template3_PsyBkg, bkgTab, setTemplate3PsyBkg, nil, 150, true);
-	setupListBox(TRP3_RegisterAbout_Edit_Template3_HistBkg, bkgTab, setTemplate3HistBkg, nil, 150, true);
 	setTooltipAll(TRP3_RegisterAbout_Edit_Template3_PhysIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("onMouseDown", function(self, button)
 		if button == "LeftButton" then
@@ -976,6 +985,33 @@ function TRP3_API.register.inits.aboutInit()
 				description:CreateButton(loc.UI_ICON_PASTE, function() onPhisIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end
+	end);
+
+	TRP3_RegisterAbout_Edit_Template3_PhysBkg:SetText(loc.UI_BKG_BUTTON);
+	TRP3_RegisterAbout_Edit_Template3_PhysBkg:SetScript("OnClick", function()
+		local function OnBackgroundSelected(imageInfo)
+			setTemplate3PhysBkg(imageInfo and imageInfo.id or nil);
+		end
+
+		TRP3_API.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.T3.PH.BK);
+	end);
+
+	TRP3_RegisterAbout_Edit_Template3_PsyBkg:SetText(loc.UI_BKG_BUTTON);
+	TRP3_RegisterAbout_Edit_Template3_PsyBkg:SetScript("OnClick", function()
+		local function OnBackgroundSelected(imageInfo)
+			setTemplate3PsyBkg(imageInfo and imageInfo.id or nil);
+		end
+
+		TRP3_API.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.T3.PS.BK);
+	end);
+
+	TRP3_RegisterAbout_Edit_Template3_HistBkg:SetText(loc.UI_BKG_BUTTON);
+	TRP3_RegisterAbout_Edit_Template3_HistBkg:SetScript("OnClick", function()
+		local function OnBackgroundSelected(imageInfo)
+			setTemplate3HistBkg(imageInfo and imageInfo.id or nil);
+		end
+
+		TRP3_API.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.T3.HI.BK);
 	end);
 
 	setTooltipAll(TRP3_RegisterAbout_Edit_Template3_PsyIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));

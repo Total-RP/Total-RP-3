@@ -222,12 +222,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="RIGHT" x="-10" y="0"/>
 						</Anchors>
 						<Frames>
-							<Frame name="$parent_BckField" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
-								<Size x="170" y="32"/>
+							<Button name="$parent_BckField" inherits="TRP3_CommonButton">
+								<Size x="180" y="22"/>
 								<Anchors>
 									<Anchor point="TOPLEFT" x="13" y="-15"/>
 								</Anchors>
-							</Frame>
+							</Button>
 
 							<!-- Toolbar -->
 							<Frame name="$parent_Toolbar" inherits="TRP3_TextToolbar">

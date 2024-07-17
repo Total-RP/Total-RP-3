@@ -65,6 +65,11 @@ function TRP3_TooltipTemplates.CreateInstructionLine(binding, instruction, short
 	return line;
 end
 
+function TRP3_TooltipTemplates.CreateDelimitedLine(title, text, wrap, leftOffset)
+	text = string.format("|cnNORMAL_FONT_COLOR:%s:|r %s", title, text);
+	return TRP3_TooltipTemplates.CreateLine(text, HIGHLIGHT_FONT_COLOR, wrap, leftOffset);
+end
+
 function TRP3_TooltipTemplates.CreateBlankLine()
 	local line = TRP3_Tooltip.CreateLineDescription();
 	line:SetShouldShow(true);
