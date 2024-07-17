@@ -15,8 +15,6 @@ local hidePopups = TRP3_API.popup.hidePopups;
 local displayConsult;
 local tcopy, tsize, EMPTY = Utils.table.copy, Utils.table.size, Globals.empty;
 local stEtN = Utils.str.emptyToNil;
-local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
-local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local isUnitIDKnown, hasProfile, getUnitProfile = TRP3_API.register.isUnitIDKnown, TRP3_API.register.hasProfile, TRP3_API.register.getProfile;
 local getCompleteName, openPageByUnitID = TRP3_API.register.getCompleteName;
 local deleteProfile = TRP3_API.companions.register.deleteProfile;
@@ -112,7 +110,6 @@ local function saveInDraft(profileName)
 	assert(type(draftData) == "table", "Error: Nil draftData or not a table.");
 	draftData.NA = stEtN(strtrim(TRP3_CompanionsPageInformationEdit_NamePanel_NameField:GetText())) or profileName;
 	draftData.TI = stEtN(strtrim(TRP3_CompanionsPageInformationEdit_NamePanel_TitleField:GetText()));
-	draftData.BK = TRP3_CompanionsPageInformationEdit_About_BckField:GetSelectedValue();
 	draftData.TX = stEtN(strtrim(TRP3_CompanionsPageInformationEdit_About_TextScrollText:GetText()));
 end
 
@@ -126,6 +123,11 @@ local function onNameColorSelected(red, green, blue)
 end
 
 local function setBkg(frame, bkg)
+	TRP3_API.ui.frame.setBackdropToBackground(frame, bkg);
+end
+
+local function setEditBkg(frame, bkg)
+	draftData.BK = bkg;
 	TRP3_API.ui.frame.setBackdropToBackground(frame, bkg);
 end
 
@@ -169,7 +171,6 @@ local function displayEdit()
 	setupIconButton(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
 	TRP3_CompanionsPageInformationEdit_NamePanel_TitleField:SetText(draftData.TI or "");
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameField:SetText(draftData.NA or Globals.player);
-	TRP3_CompanionsPageInformationEdit_About_BckField:SetSelectedIndex(draftData.BK or 1);
 	TRP3_CompanionsPageInformationEdit_About_TextScrollText:SetText(draftData.TX or "");
 
 	if draftData.NH then
@@ -448,8 +449,16 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_CompanionsPageInformationEdit_NamePanel_TitleFieldText:SetText(loc.REG_COMPANION_TITLE);
 	TRP3_CompanionsPageInformationEdit_NamePanel_CancelButton:SetText(loc.CM_CANCEL);
 	TRP3_CompanionsPageInformationEdit_NamePanel_SaveButton:SetText(loc.CM_SAVE);
-	local bkgTab = getTiledBackgroundList();
-	setupListBox(TRP3_CompanionsPageInformationEdit_About_BckField, bkgTab, function(value) setBkg(TRP3_CompanionsPageInformationEdit_About, value) end, nil, 120, true);
+
+	TRP3_CompanionsPageInformationEdit_About_BckField:SetText(loc.UI_BKG_BUTTON);
+	TRP3_CompanionsPageInformationEdit_About_BckField:SetScript("OnClick", function()
+		local function OnBackgroundSelected(imageInfo)
+			setEditBkg(TRP3_CompanionsPageInformationEdit_About, imageInfo and imageInfo.id or nil);
+		end
+
+		TRP3_API.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.BK);
+	end);
+
 	TRP3_API.ui.text.setupToolbar(TRP3_CompanionsPageInformationEdit_About_Toolbar, TRP3_CompanionsPageInformationEdit_About_TextScrollText);
 
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationConsult_GlanceHelp, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG);

@@ -76,6 +76,7 @@ local tiledBackgrounds = {
 	[49] = { bgFile = "interface\\credits\\creditsscreenbackground8shadowlands", tile = true, tileSize = 512 },
 	[50] = { bgFile = "interface\\credits\\creditsscreenbackground9dragonflight", tile = true, tileSize = 512 },
 	[51] = { bgFile = "interface\\credits\\creditsscreenbackground10thewarwithin", tile = true, tileSize = 512 },
+	[52] = { bgFile = "interface\\glues\\characterselect\\glueannouncementpopupbackground", tile = true, tileSize = 256 },
 };
 
 function TRP3_API.ui.frame.getTiledBackground(index)
@@ -113,7 +114,7 @@ function TRP3_API.ui.frame.getTiledBackgroundList()
 	local tab = {};
 	for index, info in ipairs(tiledBackgrounds) do
 		if GetFileIDFromPath(info.bgFile) then
-			tinsert(tab, {loc.UI_BKG:format(tostring(index)), index, "|T" .. info.bgFile .. ":200:200|t"});
+			tinsert(tab, {index, info.bgFile});
 		end
 	end
 	return tab;

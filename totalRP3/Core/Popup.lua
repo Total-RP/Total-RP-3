@@ -418,6 +418,43 @@ function TRP3_API.popup.hideIconBrowser()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Background browser
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function ShowBackgroundBrowser(onSelectCallback, onCancelCallback, scale, selectedImageID)
+	local function OnAccept(imageInfo)
+		hidePopups();
+
+		if onSelectCallback then
+			onSelectCallback(imageInfo);
+		end
+	end
+
+	local function OnCancel()
+		hidePopups();
+
+		if onCancelCallback then
+			onCancelCallback();
+		end
+	end
+
+	TRP3_BackgroundBrowser.Open({
+		onAcceptCallback = OnAccept,
+		onCancelCallback = OnCancel,
+		scale = scale,
+		selectedImage = selectedImageID,
+	});
+end
+
+function TRP3_API.popup.ShowBackgroundBrowser(callback, selectedImageID)
+	TRP3_API.popup.showPopup(TRP3_API.popup.BACKGROUNDS, nil, {callback, nil, nil, selectedImageID});
+end;
+
+function TRP3_API.popup.HideBackgroundBrowser()
+	TRP3_BackgroundBrowser.Close();
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Companion browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -1169,6 +1206,7 @@ TRP3_API.popup.COLORS = "colors";
 TRP3_API.popup.MUSICS = "musics";
 TRP3_API.popup.COMPANIONS = "companions";
 TRP3_API.popup.PETS = "pets";
+TRP3_API.popup.BACKGROUNDS = "backgrounds";
 
 local POPUP_STRUCTURE = {
 	[TRP3_API.popup.IMAGES] = {
@@ -1195,6 +1233,10 @@ local POPUP_STRUCTURE = {
 		frame = AddOn_TotalRP3.Ui.GetPetBrowserFrame(),
 		showMethod = TRP3_API.popup.showPetBrowser,
 	} or nil,
+	[TRP3_API.popup.BACKGROUNDS] = {
+		frame = TRP3_BackgroundBrowserFrame,
+		showMethod = ShowBackgroundBrowser,
+	},
 }
 TRP3_API.popup.POPUPS = POPUP_STRUCTURE;
 
