@@ -1,0 +1,185 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="BackgroundBrowser.lua"/>
+
+	<CheckButton name="TRP3_BackgroundBrowserButtonTemplate" mixin="TRP3_BackgroundBrowserButtonMixin" virtual="true">
+		<Size x="136" y="136"/>
+		<HitRectInsets left="2" right="2" top="2" bottom="2"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background" inherits="TRP3_UIFrameMediumFillTextureTemplate"/>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture parentKey="Border" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-md-edge">
+					<TextureSliceMargins left="32" top="32" right="32" bottom="32"/>
+					<TextureSliceMode mode="Tiled"/>
+					<Color r="0.3" g="0.3" b="0.3"/>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture parentKey="Image">
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+				</Texture>
+				<MaskTexture parentKey="ImageMask" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-md-mask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE">
+					<MaskedTextures>
+						<MaskedTexture childKey="Image"/>
+					</MaskedTextures>
+				</MaskTexture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture parentKey="SelectedTexture" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-md-glow" alphaMode="ADD">
+					<TextureSliceMargins left="32" top="32" right="32" bottom="32"/>
+					<TextureSliceMode mode="Tiled"/>
+					<Color r="0.92" g="0.68" b="0"/>
+				</Texture>
+			</Layer>
+			<Layer level="HIGHLIGHT">
+				<Texture parentKey="Highlight" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-md-glow" alphaMode="ADD">
+					<TextureSliceMargins left="32" top="32" right="32" bottom="32"/>
+					<TextureSliceMode mode="Tiled"/>
+					<Color r="0.92" g="0.68" b="0"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</CheckButton>
+
+	<Frame name="TRP3_BackgroundBrowserEmptyStateTemplate" mixin="TRP3_BackgroundBrowserEmptyStateMixin" hidden="true" virtual="true">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Title" inherits="GameFontNormalHuge" text="L.UI_FILTER_NO_RESULTS_FOUND_TITLE">
+					<Anchors>
+						<Anchor point="BOTTOM" relativePoint="CENTER" y="3"/>
+						<Anchor point="LEFT"/>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+					<Scripts>
+						<OnLoad function="TRP3_LocalizeTextOnAddOnLoaded"/>
+					</Scripts>
+				</FontString>
+				<FontString parentKey="Text" inherits="GameFontHighlight" text="L.UI_FILTER_NO_RESULTS_FOUND_TEXT">
+					<Anchors>
+						<Anchor point="TOP" relativePoint="CENTER" y="-3"/>
+						<Anchor point="LEFT"/>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+					<Scripts>
+						<OnLoad function="TRP3_LocalizeTextOnAddOnLoaded"/>
+					</Scripts>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Animations>
+			<AnimationGroup parentKey="AnimIn">
+				<Alpha fromAlpha="0" toAlpha="1" duration="0.25" smoothing="IN" order="1"/>
+			</AnimationGroup>
+			<AnimationGroup parentKey="AnimOut" inherits="VisibleWhilePlayingAnimGroupTemplate">
+				<Alpha fromAlpha="1" toAlpha="0" duration="0.15" smoothing="OUT" order="1"/>
+			</AnimationGroup>
+		</Animations>
+	</Frame>
+
+	<Frame name="TRP3_BackgroundBrowserFrame" mixin="TRP3_BackgroundBrowserMixin" parent="TRP3_PopupsFrame" hidden="true" enableMouse="true" toplevel="true">
+		<Size x="500" y="500"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Frames>
+			<Button parentKey="CloseButton" inherits="UIPanelCloseButtonDefaultAnchors"/>
+			<EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" autoFocus="false">
+				<Size x="200" y="22"/>
+				<Anchors>
+					<Anchor point="TOP" y="-30"/>
+					<Anchor point="RIGHT" x="-12"/>
+				</Anchors>
+			</EditBox>
+			<Frame parentKey="Content">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.SearchBox" relativePoint="BOTTOM" y="-5"/>
+					<Anchor point="LEFT" x="14"/>
+					<Anchor point="RIGHT" x="-10"/>
+					<Anchor point="BOTTOM" y="10"/>
+				</Anchors>
+				<Frames>
+					<Frame parentKey="ScrollBox" inherits="WowScrollBoxList"/>
+					<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" x="-12" y="-8"/>
+							<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-12" y="8"/>
+						</Anchors>
+					</EventFrame>
+					<Frame parentKey="EmptyState" inherits="TRP3_BackgroundBrowserEmptyStateTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="4" y="-4"/>
+							<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+						</Anchors>
+					</Frame>
+					<Frame parentKey="NineSlice" inherits="NineSlicePanelTemplate" useParentLevel="true">
+						<KeyValues>
+							<KeyValue key="layoutType" value="TooltipDefaultLayout" type="string"/>
+						</KeyValues>
+						<Layers>
+							<Layer level="BACKGROUND" textureSubLevel="7">
+								<Texture parentKey="Background" atlas="collections-background-tile">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="4" y="-4"/>
+										<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+									</Anchors>
+									<Color r="0.7" g="0.7" b="0.7"/>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnLoad inherit="prepend">
+								self:SetBorderColor(0.5, 0.5, 0.5)
+							</OnLoad>
+						</Scripts>
+					</Frame>
+				</Frames>
+			</Frame>
+			<Frame parentKey="NineSlice" inherits="NineSlicePanelTemplate" useParentLevel="true">
+				<KeyValues>
+					<KeyValue key="layoutType" value="ButtonFrameTemplateNoPortrait" type="string"/>
+				</KeyValues>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture atlas="collections-background-tile" vertTile="true" horizTile="true" useAtlasSize="true">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="7" y="-2"/>
+								<Anchor point="BOTTOMRIGHT" x="-2" y="2"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<FontString parentKey="Text" inherits="GameFontNormal" text="L.UI_BKG_BROWSER" wordwrap="false">
+							<Anchors>
+								<Anchor point="TOP" x="0" y="-5"/>
+								<Anchor point="LEFT" x="60"/>
+								<Anchor point="RIGHT" x="-60"/>
+							</Anchors>
+							<Scripts>
+								<OnLoad function="TRP3_LocalizeTextOnAddOnLoaded"/>
+							</Scripts>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+			<OnHide method="OnHide"/>
+		</Scripts>
+	</Frame>
+</Ui>

@@ -220,7 +220,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								<FontString name="TRP3_RegisterAbout_Edit_Music_Text" inherits="GameFontNormal" justifyH="LEFT" text="[Music_title]">
 									<Size x="270" y="10"/>
 									<Anchors>
-										<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Music_Action" x="0" y="0"/>
+										<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Music_Action" x="12" y="0"/>
 									</Anchors>
 									<Color b="1.0" r="1.0" g="1.0"/>
 								</FontString>
@@ -235,7 +235,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Button>
 					<Frame name="TRP3_RegisterAbout_Edit_TemplateField" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
 						<Anchors>
-							<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="0" relativeTo="TRP3_RegisterAbout_Edit_BckField"/>
+							<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="-1" relativeTo="TRP3_RegisterAbout_Edit_BckField"/>
 						</Anchors>
 					</Frame>
 					<!-- Toolbar -->
