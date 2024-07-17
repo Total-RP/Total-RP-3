@@ -979,20 +979,13 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		local scrollBoxAnchorsWithBar = {
 			AnchorUtil.CreateAnchor("TOP", self.Header, "BOTTOM", 0, -3),
 			AnchorUtil.CreateAnchor("LEFT", self, "LEFT", 16, 0),
-			AnchorUtil.CreateAnchor("RIGHT", self.ScrollBar, "LEFT", -8, 0),
-			AnchorUtil.CreateAnchor("BOTTOM", self, "BOTTOM", 0, 88),
-		};
-
-		local scrollBoxAnchorsWithoutBar = {
-			scrollBoxAnchorsWithBar[1],
-			scrollBoxAnchorsWithBar[2],
 			AnchorUtil.CreateAnchor("RIGHT", self, "RIGHT", -16, 0),
-			scrollBoxAnchorsWithBar[4],
+			AnchorUtil.CreateAnchor("BOTTOM", self, "BOTTOM", 0, 88),
 		};
 
 		self.ScrollView = CreateScrollBoxListLinearView();
 		ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
-		ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, scrollBoxAnchorsWithBar, scrollBoxAnchorsWithoutBar);
+		ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, scrollBoxAnchorsWithBar, scrollBoxAnchorsWithBar);
 	end
 
 	TRP3_RegisterListFilterCharactNotes:SetChecked(false);
