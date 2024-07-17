@@ -264,7 +264,6 @@ L = {
 
 Tus perfiles, los de tus compañeros y configuración se acumulará temporalmente y tu interfaz se cargará sin información, como si hubieras instalado Total RP 3 de nuevo.
 |cff00ff00Utiliza el mismo comando de nuevo (|cff999999/trp3 stash|cff00ff00) para restaurar la información.|r]=],
-	["CONFIG_COMMS_SETTINGS_HEADER"] = "Configuración de comunicaciones",
 	["COPY_SYSTEM_MESSAGE"] = "Copiado al portapapeles.",
 	["CREDITS_DISCORD_LINK_TEXT"] = "Únetenos en Discord",
 	["CREDITS_GUILD_NAME"] = "<%1$s>",

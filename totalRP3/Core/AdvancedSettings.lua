@@ -103,37 +103,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		listCancel = true,
 	});
 
-	-- Comms settings
-
-	tAppendAll(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements,
-		{
-			{
-				inherit = "TRP3_ConfigH1",
-				title = loc.CONFIG_COMMS_SETTINGS_HEADER,
-			},
-			{
-				inherit = "TRP3_ConfigSlider",
-				title = loc.CONFIG_COMMS_QUEUE_POOL_COUNT,
-				help = loc.CONFIG_COMMS_QUEUE_POOL_COUNT_DESCRIPTION,
-				configKey = "Exchange_QueuePoolCount",
-				min = TRP3_API.r.MINIMUM_QUEUE_POOL_COUNT,
-				max = TRP3_API.r.MAXIMUM_QUEUE_POOL_COUNT,
-				step = 1,
-				integer = true,
-			},
-			{
-				inherit = "TRP3_ConfigSlider",
-				title = loc.CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD,
-				help = loc.CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION,
-				configKey = "Exchange_QueuePoolWeightThreshold",
-				min = TRP3_API.r.MINIMUM_QUEUE_POOL_MINIMUM_WEIGHT,
-				max = TRP3_API.r.MAXIMUM_QUEUE_POOL_MINIMUM_WEIGHT,
-				step = 1,
-				integer = true,
-			},
-		}
-	);
-
 	-- Reset button
 	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, 1, {
 		inherit = "TRP3_ConfigH1",

@@ -401,11 +401,6 @@ L = {
 你的个人资料、伙伴档案和设置会暂时被隐藏起来，你的UI会重新载入临时的空数据，就像你刚安装TRP3时一样。
 |cff00ff00U再次使用相同命令 (|cff999999/trp3 stash|cff00ff00) 恢复您的数据。|r]=],
 	["COM_SWITCH_USAGE"] = "使用：重置界面或者切换工具栏。",
-	["CONFIG_COMMS_QUEUE_POOL_COUNT"] = "排队池大小",
-	["CONFIG_COMMS_QUEUE_POOL_COUNT_DESCRIPTION"] = "控制资料传输时的排队池大小。|n|n较低的值会降低非RP资料传输的延迟，但会在人员密集场合影响向其他玩家传输RP资料的速度。",
-	["CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD"] = "排队池权重阈值",
-	["CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION"] = "控制在使用排队池前RP资料的大小阈值。|n|n对于大数据资料，增加这个值将|cnWARNING_FONT_COLOR:严重降低|r 插件数据传输的效率。",
-	["CONFIG_COMMS_SETTINGS_HEADER"] = "通信设置",
 	["COPY_DROPDOWN_POPUP_TEXT"] = [=[以%1$s复制。以%2$s粘贴。
 	本窗口会在复制后关闭]=],
 	["COPY_SYSTEM_MESSAGE"] = "已复制到剪切板。",

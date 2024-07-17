@@ -206,58 +206,18 @@ local QueueStrategy =
 {
 	-- The independent queue strategy leaves the role of queuing messages
 	-- to the underlying transport mechanism. Typically this will put all
-	-- messages to a single player in single per-channel queue, and is best
-	-- for small streams of messages.
+	-- messages to a single player in single per-prefix queue.
 	Independent = 1,
 
-	-- The pooled queue strategy uses a fixed set of queues used for all
-	-- comms from the player to other people irrespective of channel. This
-	-- is enabled when dealing with players who are sending profiles above
-	-- a minimum weight threshold.
-	--
-	-- This strategy is best used for larger data transfers where the number
-	-- of people we may be sending data to could be a large number. Using
-	-- pooled queues should improve comms performance for both other addons
-	-- and any metadata-style comms from ourselves.
+	-- The pooled queue strategy uses a fixed pool of queues used for all
+	-- comms from the player to other people irrespective of channel.
 	Pooled = 2,
 };
 
-local DEFAULT_QUEUE_POOL_COUNT = 10;
-local MINIMUM_QUEUE_POOL_COUNT = 5;
-local MAXIMUM_QUEUE_POOL_COUNT = 30;
-
-local DEFAULT_QUEUE_POOL_MINIMUM_WEIGHT = 4;
-local MINIMUM_QUEUE_POOL_MINIMUM_WEIGHT = 1;
-local MAXIMUM_QUEUE_POOL_MINIMUM_WEIGHT = 20;
-
--- The below is exposed purely for the settings UI; don't rely on these.
-TRP3_API.r.MINIMUM_QUEUE_POOL_COUNT = MINIMUM_QUEUE_POOL_COUNT;
-TRP3_API.r.MAXIMUM_QUEUE_POOL_COUNT = MAXIMUM_QUEUE_POOL_COUNT;
-TRP3_API.r.MINIMUM_QUEUE_POOL_MINIMUM_WEIGHT = MINIMUM_QUEUE_POOL_MINIMUM_WEIGHT;
-TRP3_API.r.MAXIMUM_QUEUE_POOL_MINIMUM_WEIGHT = MAXIMUM_QUEUE_POOL_MINIMUM_WEIGHT;
-
-local function GetQueuePoolCount()
-	local count = tonumber(TRP3_API.configuration.getValue("Exchange_QueuePoolCount"));
-
-	if type(count) ~= "number" then
-		count = DEFAULT_QUEUE_POOL_COUNT;
-	end
-
-	return Clamp(count, MINIMUM_QUEUE_POOL_COUNT, MAXIMUM_QUEUE_POOL_COUNT);
-end
-
-local function GetQueuePoolMinimumWeight()
-	local threshold = tonumber(TRP3_API.configuration.getValue("Exchange_QueuePoolWeightThreshold"));
-
-	if type(threshold) ~= "number" then
-		threshold = DEFAULT_QUEUE_POOL_MINIMUM_WEIGHT;
-	end
-
-	return Clamp(threshold, MINIMUM_QUEUE_POOL_MINIMUM_WEIGHT, MAXIMUM_QUEUE_POOL_MINIMUM_WEIGHT);
-end
+local QUEUE_POOL_COUNT = 5;
 
 local function GetSuggestedQueueStrategy(query, infoType, target)  -- luacheck: no unused
-	if query == INFO_TYPE_SEND_PREFIX and GetPlayerDataWeight() >= GetQueuePoolMinimumWeight() then
+	if query == INFO_TYPE_SEND_PREFIX then
 		return QueueStrategy.Pooled;
 	else
 		return QueueStrategy.Independent;
@@ -270,7 +230,7 @@ local function GenerateQueueName(query, infoType, target)
 	if strategy == QueueStrategy.Independent then
 		return nil;
 	elseif strategy == QueueStrategy.Pooled then
-		local queueIndex = Wrap(FNV1ACache[target], GetQueuePoolCount());
+		local queueIndex = Wrap(FNV1ACache[target], QUEUE_POOL_COUNT);
 		return string.format("TRP3-Queue-%d", queueIndex);
 	else
 		error("unknown queue strategy: " .. tostring(strategy));
@@ -573,9 +533,6 @@ function TRP3_API.register.inits.dataExchangeInit()
 	if not TRP3_Register then
 		TRP3_Register = {};
 	end
-
-	TRP3_API.configuration.registerConfigKey("Exchange_QueuePoolCount", DEFAULT_QUEUE_POOL_COUNT);
-	TRP3_API.configuration.registerConfigKey("Exchange_QueuePoolWeightThreshold", DEFAULT_QUEUE_POOL_MINIMUM_WEIGHT);
 
 	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID)
 		if unitID == Globals.player_id then
