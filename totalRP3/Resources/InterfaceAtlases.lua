@@ -34,7 +34,7 @@ do
 		end
 
 		-- No default atlas, but all assets with a potential non-valid atlas
-		-- will have an iconFile attached to have an Icon fallback.
+		-- should have an iconFile attached as well to handle fallbacks.
 		TRP3_InterfaceAtlases[id] = name;
 	end
 end

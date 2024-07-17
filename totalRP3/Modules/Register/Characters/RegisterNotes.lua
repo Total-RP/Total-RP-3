@@ -120,7 +120,7 @@ function TRP3_API.register.inits.notesInit()
 			end,
 			tooltip = loc.REG_NOTES_PROFILE,
 			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_NOTES_PROFILE_TT),
-			iconFile = TRP3_InterfaceIcons.TargetNotes,
+			icon = TRP3_InterfaceIcons.TargetNotes,
 		});
 	end)
 end

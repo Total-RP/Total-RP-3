@@ -368,7 +368,7 @@ TRP3_API.register.inits.relationsInit = function()
 				end
 				buttonStructure.tooltip = loc.REG_RELATION .. ": " .. relationColoredName;
 				buttonStructure.tooltipSub = TRP3_API.register.relation.getRelationTooltipText(profileID, getProfile(profileID)) .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_RELATION_TARGET);
-				buttonStructure.iconFile = TRP3_API.register.relation.getRelationTexture(profileID);
+				buttonStructure.icon = TRP3_API.register.relation.getRelationTexture(profileID);
 			end,
 		});
 	end);

@@ -42,17 +42,17 @@ local function onStart()
 	local loaded = false;
 
 	--- getTooltipTitleWithIcon creates a tooltip title string with icon in front of it by its atlas or icon.
-	---@param buttonStructure {iconAtlas: string, iconFile: string|Icon, tooltip: string, configText: string}
-	---@param iconType number Icon type: 0 = Report/Other,  1 = Atlas, 2 = Icon
+	---@param buttonStructure table Contains all the button data.
 	---@return string # The tooltip tiple with an icon in front.
-	local function getTooltipTitleWithIcon(buttonStructure, iconType)
+	local function getTooltipTitleWithIcon(buttonStructure)
 		local icon = "";
-		if iconType == 1 then
-			icon = TRP3_MarkupUtil.GenerateAtlasMarkup(buttonStructure.iconAtlas, { size = 32 }) .. " " ;
-		elseif iconType == 2 then
-			icon = TRP3_MarkupUtil.GenerateIconMarkup(buttonStructure.iconFile, { size = 32 }) .. " " ;
+		if buttonStructure.icon then
+			icon = TRP3_MarkupUtil.GenerateIconMarkup(buttonStructure.icon, { size = 32 }) .. " ";
+		elseif buttonStructure.iconAtlas and C_Texture.GetAtlasInfo(buttonStructure.iconAtlas) then
+			icon = TRP3_MarkupUtil.GenerateAtlasMarkup(buttonStructure.iconAtlas, { size = 32 }) .. " ";
+		elseif buttonStructure.iconFile then
+			icon = TRP3_MarkupUtil.GenerateFileMarkup(buttonStructure.iconFile, { size = 32 }) .. " ";
 		end
-		-- "Report" and "Other" types don't get an icon, so keep it empty.
 		return icon .. (buttonStructure.tooltip or buttonStructure.configText);
 	end
 
@@ -114,10 +114,16 @@ local function onStart()
 				buttonStructure.adapter(buttonStructure, currentTargetID, currentTargetType);
 			end
 
-			-- Store iconType so we don't have to re-do checks later on in
-			-- `getTooltipTitleWithIcon` to see which one is actually valid.
-			-- 0 = Report/Other,  1 = Atlas, 2 = Icon
-			local iconType = 0;
+			-- icon > iconAtlas > iconFile so sayeth the Meorawr.
+			if buttonStructure.icon then
+				uiButton:SetIconTexture(buttonStructure.icon);
+			elseif buttonStructure.iconAtlas and C_Texture.GetAtlasInfo(buttonStructure.iconAtlas) then
+				uiButton:SetIconTextureToAtlas(buttonStructure.iconAtlas);
+			elseif buttonStructure.iconFile then
+				uiButton:SetIconTextureToFile(buttonStructure.iconFile)
+			end
+
+			--[[
 			-- Check if an atlas is set and that it is valid.
 			if buttonStructure.iconAtlas and C_Texture.GetAtlasInfo(buttonStructure.iconAtlas) then
 				iconType = 1;
@@ -139,6 +145,7 @@ local function onStart()
 					end
 				end
 			end
+			]]
 
 			if uiButton:GetPushedTexture() then
 				uiButton:GetPushedTexture():SetDesaturated(1);
@@ -153,7 +160,7 @@ local function onStart()
 			uiButton.unitID = currentTargetID;
 			uiButton.targetType = currentTargetType;
 			if buttonStructure.tooltip then
-				setTooltipForSameFrame(uiButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure, iconType), buttonStructure.tooltipSub);
+				setTooltipForSameFrame(uiButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
 			else
 				setTooltipForSameFrame(uiButton);
 			end

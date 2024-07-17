@@ -952,7 +952,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				end
 			end,
 			tooltip = loc.TF_PLAY_THEME,
-			iconFile = TRP3_InterfaceIcons.TargetPlayMusic,
+			icon = TRP3_InterfaceIcons.TargetPlayMusic,
 		});
 	end
 end);

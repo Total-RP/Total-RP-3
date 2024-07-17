@@ -1089,11 +1089,11 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				buttonStructure.alert = false;
 				local factionTag = UnitFactionGroup("target");
 				if factionTag == "Alliance" then
-					buttonStructure.iconFile = TRP3_InterfaceIcons.TargetOpenCharacterA;
+					buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenCharacterA;
 				elseif factionTag == "Horde" then
-					buttonStructure.iconFile = TRP3_InterfaceIcons.TargetOpenCharacterH;
+					buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenCharacterH;
 				else
-					buttonStructure.iconFile = TRP3_InterfaceIcons.TargetOpenCharacterN;
+					buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenCharacterN;
 				end	
 				buttonStructure.tooltip = loc.REG_PLAYER;
 
