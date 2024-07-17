@@ -43,7 +43,7 @@ local function onStart()
 
 	--- getTooltipTitleWithIcon creates a tooltip title string with icon in front of it by its atlas or icon.
 	---@param buttonStructure table Contains all the button data.
-	---@return string # The tooltip tiple with an icon in front.
+	---@return string # The tooltip title with an icon in front.
 	local function getTooltipTitleWithIcon(buttonStructure)
 		local icon = "";
 		if buttonStructure.icon then
@@ -120,32 +120,9 @@ local function onStart()
 			elseif buttonStructure.iconAtlas and C_Texture.GetAtlasInfo(buttonStructure.iconAtlas) then
 				uiButton:SetIconTextureToAtlas(buttonStructure.iconAtlas);
 			elseif buttonStructure.iconFile then
-				uiButton:SetIconTextureToFile(buttonStructure.iconFile)
+				uiButton:SetIconTextureToFile(buttonStructure.iconFile);
 			end
 
-			--[[
-			-- Check if an atlas is set and that it is valid.
-			if buttonStructure.iconAtlas and C_Texture.GetAtlasInfo(buttonStructure.iconAtlas) then
-				iconType = 1;
-				uiButton:SetIconTextureToAtlas(buttonStructure.iconAtlas);
-			else
-				-- If atlas isn't valid at all, default to iconFile!
-				if buttonStructure.iconFile then
-					iconType = 2;
-					if type(buttonStructure.iconFile) == "table" and buttonStructure.iconFile.Apply then
-						if buttonStructure.iconFile:GetFileID() == 516771 then
-							iconType = 0;
-							uiButton:SetIconTextureToFile(buttonStructure.iconFile:GetFileID())
-						else
-							-- This handles the Ellyb.Icon() icons.
-							uiButton:SetIconTexture(buttonStructure.iconFile:GetFileID())
-						end
-					else
-						uiButton:SetIconTexture(buttonStructure.iconFile);
-					end
-				end
-			end
-			]]
 
 			if uiButton:GetPushedTexture() then
 				uiButton:GetPushedTexture():SetDesaturated(1);

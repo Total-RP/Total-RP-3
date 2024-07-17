@@ -29,7 +29,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			end
 			Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", reportText, nil, loc.COPY_SYSTEM_MESSAGE);
 		end,
-		tooltip =  loc.REG_REPORT_PLAYER_PROFILE,
+		tooltip = loc.REG_REPORT_PLAYER_PROFILE,
 		tooltipSub = loc.REG_REPORT_PLAYER_PROFILE_TT,
 		iconFile = [[Interface\HelpFrame\HelpIcon-OpenTicket]],
 	});
