@@ -528,7 +528,6 @@ Souhaitez-vous recharger l'interface maintenant ?]=],
 Vos profils, les profils de vos compagnons et vos préférences seront temporairement archivés et l'interface sera rechargée avec des données vides, comme après une nouvelle installation de Total RP 3.
 |cff00ff00Utilisez la même commande à nouveau (|cff999999/trp3 stash|cff00ff00) pour restaurer vos données.|r]=],
 	["COM_SWITCH_USAGE"] = "Utilisation: |cff00ff00/trp3 switch main|r pour afficher ou masquer la fenêtre principale ou |cff00ff00/trp3 switch toolbar|r pour afficher ou masquer la barre d'outils.",
-	["CONFIG_COMMS_SETTINGS_HEADER"] = "Paramètres de communication",
 	["COPY_DROPDOWN_POPUP_TEXT"] = [=[Copiez avec %1$s. Collez avec %2$s.
 Cette fenêtre sera fermée à la copie.]=],
 	["COPY_SYSTEM_MESSAGE"] = "Copié dans le presse-papiers.",

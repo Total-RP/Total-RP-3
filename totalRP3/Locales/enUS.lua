@@ -1516,12 +1516,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	KUI_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Kui nameplates.",
 	KUI_NAMEPLATES_WARN_OUTDATED_MODULE = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
 
-	CONFIG_COMMS_SETTINGS_HEADER = "Communications settings",
-	CONFIG_COMMS_QUEUE_POOL_COUNT = "Queue pool size",
-	CONFIG_COMMS_QUEUE_POOL_COUNT_DESCRIPTION = "Controls the size of the queue pool used for profile communications.|n|nLower values will reduce latency of addon communications for non-RP profile data, but may increase the amount of time before other players begin to receive any profile data at all in high load scenarios.",
-	CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD = "Queue pool data weight threshold",
-	CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION = "Controls the minimum weight your RP profile data must be before queue pools will be used.|n|nFor larger profiles, increasing this value may |cnWARNING_FONT_COLOR:severely deteriorate|r the performance of all addon communications.",
-
 	CREDITS_THANK_YOU_SECTION_1 = [[{h1:c}Total RP 3{/h1}]],
 	CREDITS_THANK_YOU_SECTION_2 = [[{h2}%1$s Created by{/h2}]],
 	CREDITS_THANK_YOU_SECTION_3 = [[{h2}%1$s The Rest of the Team{/h2}]],
