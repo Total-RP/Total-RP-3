@@ -10,8 +10,6 @@ local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local unitIDToInfo, tsize = Utils.str.unitIDToInfo, Utils.table.size;
-local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
-local initList = TRP3_API.ui.list.initList;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local isMenuRegistered = TRP3_API.navigation.menu.isMenuRegistered;
 local registerMenu, selectMenu, openMainFrame = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu, TRP3_API.navigation.openMainFrame;
@@ -234,20 +232,90 @@ local WALKUP_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-walkup:15:
 local WALKUP_ICON_OFFSET = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-walkup:15:15:5|t";
 local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 15);
 
+local function onLineClicked(self, button)
+	if currentMode == MODE_CHARACTER then
+		assert(self:GetParent().id, "No profileID on line.");
+		if button == "LeftButton" then
+			if IsShiftKeyDown() then
+				TRP3_API.RegisterPlayerChatLinksModule:InsertLink(self:GetParent().id);
+			else
+				openPage(self:GetParent().id);
+			end
+		else
+			local profile = getProfile(self:GetParent().id);
+			if profile.link and tsize(profile.link) > 0 then
+				local characterList = {};
+				for unitID, _ in pairs(profile.link) do
+					local unitName, unitRealm = unitIDToInfo(unitID);
+					if unitRealm == Globals.player_realm_id then
+						tinsert(characterList, unitName);
+					else
+						tinsert(characterList, unitName .. "-" .. unitRealm);
+					end
+				end
+				TRP3_API.popup.showCopyDropdownPopup(characterList);
+			end
+		end
+	elseif currentMode == MODE_PETS then
+		assert(self:GetParent().id, "No profileID on line.");
+		if IsShiftKeyDown() then
+			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_COMPANION_PROFILE, function(canBeImported)
+				TRP3_API.RegisterCompanionChatLinksModule:InsertLink(self:GetParent().id, canBeImported);
+			end);
+		else
+			openCompanionPage(self:GetParent().id);
+		end
+	elseif currentMode == MODE_IGNORE then
+		assert(self:GetParent().id, "No unitID on line.");
+		unignoreID(self:GetParent().id);
+		refreshList();
+	end
+end
+
+local function onLineSelected(self)
+	assert(self:GetParent().id, "No id on line.");
+	selectedIDs[self:GetParent().id] = self:GetChecked() or nil;
+end
+
+local function ResizeLineContents(line)
+	local containerWidth = TRP3_MainFramePageContainer:GetWidth();
+
+	if containerWidth < 690 then
+		line.Time:SetWidth(2);
+	else
+		line.Time:SetWidth(160);
+	end
+
+	if containerWidth < 850 then
+		line.Addon:SetWidth(2);
+	else
+		line.Addon:SetWidth(160);
+	end
+end
+
+local function decorateGenericLine(line)
+	line.Click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	line.Click:SetScript("OnClick", onLineClicked);
+	line.Click:SetHighlightTexture("Interface\\FriendsFrame\\UI-FriendsFrame-HighlightBar-Blue");
+	line.Click:SetAlpha(0.75);
+	line.Select:SetScript("OnClick", onLineSelected);
+	ResizeLineContents(line);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI : CHARACTERS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-local characterLines = {};
 
-local function decorateCharacterLine(line, characterIndex)
-	local profileID = characterLines[characterIndex][1];
+local function decorateCharacterLine(line, elementData)
+	decorateGenericLine(line);
+	local profileID = elementData[1];
 	local profile = getProfile(profileID);
 	line.id = profileID;
 
 	local name = getCompleteName(profile.characteristics or {}, UNKNOWN, true);
 	local leftTooltipTitle, leftTooltipText = name, "";
 
-	_G[line:GetName().."Name"]:SetText(name);
+	line.Name:SetText(name);
 	if profile.characteristics and profile.characteristics.IC then
 		leftTooltipTitle = Utils.str.icon(profile.characteristics.IC, ICON_SIZE) .. " " .. name;
 	end
@@ -258,7 +326,7 @@ local function decorateCharacterLine(line, characterIndex)
 	local isWalkupFriendly = profile.character and profile.character.WU == AddOn_TotalRP3.Enums.WALKUP.YES;
 
 	local atLeastOneIgnored = false;
-	_G[line:GetName().."Info2"]:SetText("");
+	line.Info2:SetText("");
 	local firstLink;
 	if profile.link and tsize(profile.link) > 0 then
 		leftTooltipText = leftTooltipText .. loc.REG_LIST_CHAR_TT_CHAR .. "|cnGREEN_FONT_COLOR:";
@@ -286,21 +354,21 @@ local function decorateCharacterLine(line, characterIndex)
 	-- Middle column : relation
 	local relation, relationColor = getRelationText(profileID, true), getRelationColor(profileID);
 	local color = (relationColor or TRP3_API.Colors.White):GenerateHexColorMarkup();
-	if relation:len() > 0 then
+	if #relation > 0 then
 		if relationColor then
 			relation = relationColor:WrapTextInColorCode(relation);
 		end
-		setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"], "TOPLEFT", 0, 5, loc.REG_RELATION .. ": " .. relation, getRelationTooltipText(profileID, profile));
+		setTooltipForSameFrame(line.ClickMiddle, "TOPLEFT", 0, 5, loc.REG_RELATION .. ": " .. relation, getRelationTooltipText(profileID, profile));
 	else
-		setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
+		setTooltipForSameFrame(line.ClickMiddle);
 	end
-	_G[line:GetName().."Info"]:SetText(color .. relation);
+	line.Info:SetText(color .. relation);
 
 	local timeStr = "";
 	if profile.time then
 		timeStr = Utils.GenerateFormattedDateString(profile.time);
 	end
-	_G[line:GetName().."Time"]:SetText(timeStr);
+	line.Time:SetText(timeStr);
 
 	-- Third column : flags
 	---@type string[]
@@ -326,11 +394,11 @@ local function decorateCharacterLine(line, characterIndex)
 		table.insert(rightTooltipTexts, MATURE_CONTENT_ICON .. " " .. loc.MATURE_FILTER_TOOLTIP_WARNING);
 	end
 	if #rightTooltipTexts > 0 then
-		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, table.concat(rightTooltipTexts, "\n"));
+		setTooltipForSameFrame(line.ClickRight, "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, table.concat(rightTooltipTexts, "\n"));
 	else
-		setTooltipForSameFrame(_G[line:GetName().."ClickRight"]);
+		setTooltipForSameFrame(line.ClickRight);
 	end
-	_G[line:GetName().."Info2"]:SetText(table.concat(flags, " "));
+	line.Info2:SetText(table.concat(flags, " "));
 
 	local addon = Globals.addon_name;
 	if profile.msp then
@@ -340,12 +408,12 @@ local function decorateCharacterLine(line, characterIndex)
 			addon = character.client or "Mary-Sue Protocol";
 		end
 	end
-	_G[line:GetName().."Addon"]:SetText(addon);
+	line.Addon:SetText(addon);
 
-	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
-	_G[line:GetName().."Select"]:Show();
+	line.Select:SetChecked(selectedIDs[profileID]);
+	line.Select:Show();
 
-	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, leftTooltipTitle, leftTooltipText .. "\n\n" ..
+	setTooltipForSameFrame(line.Click, "TOPLEFT", 0, 5, leftTooltipTitle, leftTooltipText .. "\n\n" ..
 		TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER) .. "\n" ..
 		TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_CHAR_NAME_COPY) .. "\n" ..
 		TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
@@ -358,7 +426,8 @@ local function getCharacterLines()
 	local notesOnly = TRP3_RegisterListFilterCharactNotes:GetChecked();
 	local profileList = getProfileList();
 	local fullSize = tsize(profileList);
-	wipe(characterLines);
+	local characterLines = {};
+	local connectedRealms = tInvert(GetAutoCompleteRealms());
 
 	for profileID, profile in pairs(profileList) do
 		local nameIsConform, guildIsConform, realmIsConform, notesIsConform = false, false, false, false;
@@ -372,7 +441,7 @@ local function getCharacterLines()
 				if string.find(unitName:lower(), nameSearch, 1, true) then
 					nameIsConform = true;
 				end
-				if unitRealm == Globals.player_realm_id or tContains(GetAutoCompleteRealms(), unitRealm) then
+				if unitRealm == Globals.player_realm_id or connectedRealms[unitRealm] then
 					realmIsConform = true;
 				end
 				local characterData = AddOn_TotalRP3.Directory.getCharacterDataForCharacterId(unitID);
@@ -389,8 +458,8 @@ local function getCharacterLines()
 				nameIsConform = true;
 			end
 
-			nameIsConform = nameIsConform or nameSearch:len() == 0;
-			guildIsConform = guildIsConform or guildSearch:len() == 0;
+			nameIsConform = nameIsConform or #nameSearch == 0;
+			guildIsConform = guildIsConform or #guildSearch == 0;
 			realmIsConform = realmIsConform or not realmOnly;
 			notesIsConform = notesIsConform or not notesOnly;
 
@@ -544,10 +613,10 @@ end
 
 local companionIDToInfo, getAssociationsForProfile = TRP3_API.utils.str.companionIDToInfo, TRP3_API.companions.register.getAssociationsForProfile;
 local deleteCompanionProfile = TRP3_API.companions.register.deleteProfile;
-local companionLines = {};
 
-local function decorateCompanionLine(line, index)
-	local profileID = companionLines[index][1];
+local function decorateCompanionLine(line, elementData)
+	decorateGenericLine(line);
+	local profileID = elementData[1];
 	local profile = getCompanionProfiles()[profileID];
 	line.id = profileID;
 
@@ -557,7 +626,7 @@ local function decorateCompanionLine(line, index)
 	if profile.data and profile.data.NA then
 		name = profile.data.NA;
 	end
-	_G[line:GetName().."Name"]:SetText(name);
+	line.Name:SetText(name);
 
 	local tooltip = name;
 	if profile.data and profile.data.IC then
@@ -591,13 +660,13 @@ local function decorateCompanionLine(line, index)
 	if isUnitIDKnown(firstMaster) and  TRP3_API.register.profileExists(firstMaster) then
 		firstMaster = getCompleteName(getUnitIDProfile(firstMaster).characteristics or {}, "", true);
 	end
-	_G[line:GetName().."Addon"]:SetText(firstMaster);
+	line.Addon:SetText(firstMaster);
 
 	local secondLine = loc.REG_LIST_PETS_TOOLTIP .. ":\n" .. companionList .. "\n" .. loc.REG_LIST_PETS_TOOLTIP2 .. ":\n" .. masterList;
-	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n\n" ..
+	setTooltipForSameFrame(line.Click, "TOPLEFT", 0, 5, tooltip, secondLine .. "\n\n" ..
 		TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "\n" ..
 		TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
-	setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
+	setTooltipForSameFrame(line.ClickMiddle);
 
 	-- Third column : flags
 	---@type string[]
@@ -607,17 +676,17 @@ local function decorateCompanionLine(line, index)
 		table.insert(rightTooltipText, NEW_ABOUT_ICON .. " " .. loc.REG_TT_NOTIF);
 	end
 	if #rightTooltipText > 0 then
-		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, table.concat(rightTooltipText, "\n"));
+		setTooltipForSameFrame(line.ClickRight, "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, table.concat(rightTooltipText, "\n"));
 	else
-		setTooltipForSameFrame(_G[line:GetName().."ClickRight"]);
+		setTooltipForSameFrame(line.ClickRight);
 	end
-	_G[line:GetName().."Info2"]:SetText(table.concat(flags, " "));
+	line.Info2:SetText(table.concat(flags, " "));
 
-	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
-	_G[line:GetName().."Select"]:Show();
+	line.Select:SetChecked(selectedIDs[profileID]);
+	line.Select:Show();
 
-	_G[line:GetName().."Info"]:SetText("");
-	_G[line:GetName().."Time"]:SetText("");
+	line.Info:SetText("");
+	line.Time:SetText("");
 end
 
 local function getCompanionLines()
@@ -626,13 +695,13 @@ local function getCompanionLines()
 	local masterSearch = TRP3_RegisterListPetFilterMaster:GetText():lower();
 	local profiles = getCompanionProfiles();
 	local fullSize = tsize(profiles);
-	wipe(companionLines);
+	local companionLines = {};
 
 	for profileID, profile in pairs(profiles) do
 		local nameIsConform, typeIsConform, masterIsConform = false, false, false;
 
 		-- Run this test only if there are criterias
-		if typeSearch:len() > 0 or masterSearch:len() > 0 then
+		if #typeSearch > 0 or #masterSearch > 0 then
 			for companionFullID, _ in pairs(profile.links) do
 				local masterID, companionID = companionIDToInfo(companionFullID);
 				if string.find(companionID:lower(), typeSearch, 1, true) then
@@ -648,13 +717,13 @@ local function getCompanionLines()
 		if profile.data and profile.data.NA then
 			companionName = profile.data.NA;
 		end
-		if nameSearch:len() ~= 0 and profile.data and profile.data.NA and string.find(profile.data.NA:lower(), nameSearch, 1, true) then
+		if #nameSearch ~= 0 and profile.data and profile.data.NA and string.find(profile.data.NA:lower(), nameSearch, 1, true) then
 			nameIsConform = true;
 		end
 
-		nameIsConform = nameIsConform or nameSearch:len() == 0;
-		typeIsConform = typeIsConform or typeSearch:len() == 0;
-		masterIsConform = masterIsConform or masterSearch:len() == 0;
+		nameIsConform = nameIsConform or #nameSearch == 0;
+		typeIsConform = typeIsConform or #typeSearch == 0;
+		masterIsConform = masterIsConform or #masterSearch == 0;
 
 		if nameIsConform and typeIsConform and masterIsConform then
 			tinsert(companionLines, {profileID, companionName, companionName, companionName});
@@ -727,17 +796,18 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function decorateIgnoredLine(line, unitID)
+	decorateGenericLine(line);
 	line.id = unitID;
-	_G[line:GetName().."Name"]:SetText(unitID);
-	_G[line:GetName().."Info"]:SetText("");
-	_G[line:GetName().."Time"]:SetText("");
-	_G[line:GetName().."Info2"]:SetText("");
-	_G[line:GetName().."Addon"]:SetText("");
-	_G[line:GetName().."Select"]:Hide();
-	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, unitID, loc.REG_LIST_IGNORE_TT:format(getIgnoredList()[unitID])
+	line.Name:SetText(unitID);
+	line.Info:SetText("");
+	line.Time:SetText("");
+	line.Info2:SetText("");
+	line.Addon:SetText("");
+	line.Select:Hide();
+	setTooltipForSameFrame(line.Click, "TOPLEFT", 0, 5, unitID, loc.REG_LIST_IGNORE_TT:format(getIgnoredList()[unitID])
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_LIST_IGNORE_REMOVE));
-	setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
-	setTooltipForSameFrame(_G[line:GetName().."ClickRight"]);
+	setTooltipForSameFrame(line.ClickMiddle);
+	setTooltipForSameFrame(line.ClickRight);
 end
 
 local function getIgnoredLines()
@@ -752,7 +822,7 @@ local function getIgnoredLines()
 	TRP3_RegisterListHeaderNameTT:Disable();
 	TRP3_RegisterListHeaderInfo2:SetText("");
 
-	return getIgnoredList();
+	return GetKeysArray(getIgnoredList());
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -761,69 +831,28 @@ end
 
 function refreshList()
 	local lines;
+	local initializer;
 	TRP3_RegisterListEmpty:Hide();
 	TRP3_RegisterListHeaderActions:Hide();
 
 	if currentMode == MODE_CHARACTER then
 		lines = getCharacterLines();
-		TRP3_RegisterList.decorate = decorateCharacterLine;
+		initializer = decorateCharacterLine;
 	elseif currentMode == MODE_PETS then
 		lines = getCompanionLines();
-		TRP3_RegisterList.decorate = decorateCompanionLine;
+		initializer = decorateCompanionLine;
 	elseif currentMode == MODE_IGNORE then
 		lines = getIgnoredLines();
-		TRP3_RegisterList.decorate = decorateIgnoredLine;
+		initializer = decorateIgnoredLine;
 	end
 
 	if tsize(lines) == 0 then
 		TRP3_RegisterListEmpty:Show();
 	end
-	initList(TRP3_RegisterList, lines, TRP3_RegisterListSlider);
-end
 
-local function onLineClicked(self, button)
-	if currentMode == MODE_CHARACTER then
-		assert(self:GetParent().id, "No profileID on line.");
-		if button == "LeftButton" then
-			if IsShiftKeyDown() then
-				TRP3_API.RegisterPlayerChatLinksModule:InsertLink(self:GetParent().id);
-			else
-				openPage(self:GetParent().id);
-			end
-		else
-			local profile = getProfile(self:GetParent().id);
-			if profile.link and tsize(profile.link) > 0 then
-				local characterList = {};
-				for unitID, _ in pairs(profile.link) do
-					local unitName, unitRealm = unitIDToInfo(unitID);
-					if unitRealm == Globals.player_realm_id then
-						tinsert(characterList, unitName);
-					else
-						tinsert(characterList, unitName .. "-" .. unitRealm);
-					end
-				end
-				TRP3_API.popup.showCopyDropdownPopup(characterList);
-			end
-		end
-	elseif currentMode == MODE_PETS then
-		assert(self:GetParent().id, "No profileID on line.");
-		if IsShiftKeyDown() then
-			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_COMPANION_PROFILE, function(canBeImported)
-				TRP3_API.RegisterCompanionChatLinksModule:InsertLink(self:GetParent().id, canBeImported);
-			end);
-		else
-			openCompanionPage(self:GetParent().id);
-		end
-	elseif currentMode == MODE_IGNORE then
-		assert(self:GetParent().id, "No unitID on line.");
-		unignoreID(self:GetParent().id);
-		refreshList();
-	end
-end
-
-local function onLineSelected(self)
-	assert(self:GetParent().id, "No id on line.");
-	selectedIDs[self:GetParent().id] = self:GetChecked() or nil;
+	local provider = CreateDataProvider(lines);
+	TRP3_RegisterListContainer.ScrollView:SetElementInitializer("TRP3_RegisterListLine", initializer);
+	TRP3_RegisterListContainer.ScrollView:SetDataProvider(provider, ScrollBoxConstants.RetainScrollPosition);
 end
 
 local function changeMode(_, value)
@@ -870,7 +899,7 @@ local function createTutorialStructure()
 	TUTORIAL_CHARACTER = {
 		{
 			box = {
-				allPoints = TRP3_RegisterListTutorialHook
+				allPoints = TRP3_RegisterListContainer.ScrollBox,
 			},
 			button = {
 				x = 0, y = -10, anchor = "TOP",
@@ -944,21 +973,28 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		tutorialProvider = tutorialProvider,
 	});
 
-	TRP3_RegisterListSlider:SetValue(0);
-	handleMouseWheel(TRP3_RegisterListContainer, TRP3_RegisterListSlider);
-	local widgetTab = {};
-	for i=1,14 do
-		local widget = _G["TRP3_RegisterListLine"..i];
-		local widgetClick = _G["TRP3_RegisterListLine"..i.."Click"];
-		local widgetSelect = _G["TRP3_RegisterListLine"..i.."Select"];
-		widgetSelect:SetScript("OnClick", onLineSelected);
-		widgetClick:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-		widgetClick:SetScript("OnClick", onLineClicked);
-		widgetClick:SetHighlightTexture("Interface\\FriendsFrame\\UI-FriendsFrame-HighlightBar-Blue");
-		widgetClick:SetAlpha(0.75);
-		table.insert(widgetTab, widget);
+	do
+		local self = TRP3_RegisterListContainer;
+
+		local scrollBoxAnchorsWithBar = {
+			AnchorUtil.CreateAnchor("TOP", self.Header, "BOTTOM", 0, -3),
+			AnchorUtil.CreateAnchor("LEFT", self, "LEFT", 16, 0),
+			AnchorUtil.CreateAnchor("RIGHT", self.ScrollBar, "LEFT", -8, 0),
+			AnchorUtil.CreateAnchor("BOTTOM", self, "BOTTOM", 0, 88),
+		};
+
+		local scrollBoxAnchorsWithoutBar = {
+			scrollBoxAnchorsWithBar[1],
+			scrollBoxAnchorsWithBar[2],
+			AnchorUtil.CreateAnchor("RIGHT", self, "RIGHT", -16, 0),
+			scrollBoxAnchorsWithBar[4],
+		};
+
+		self.ScrollView = CreateScrollBoxListLinearView();
+		ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
+		ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, scrollBoxAnchorsWithBar, scrollBoxAnchorsWithoutBar);
 	end
-	TRP3_RegisterList.widgetTab = widgetTab;
+
 	TRP3_RegisterListFilterCharactNotes:SetChecked(false);
 	TRP3_RegisterListFilterCharactName:SetScript("OnEnterPressed", refreshList);
 	TRP3_RegisterListFilterCharactGuild:SetScript("OnEnterPressed", refreshList);
@@ -1017,20 +1053,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 
 	-- Resizing
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerwidth, containerHeight)
-		local lineHeight = (containerHeight - 120) * 0.065;
-		for _, line in pairs(widgetTab) do
-			line:SetHeight(lineHeight);
-			if containerwidth < 690 then
-				_G[line:GetName() .. "Time"]:SetWidth(2);
-			else
-				_G[line:GetName() .. "Time"]:SetWidth(160);
-			end
-			if containerwidth < 850 then
-				_G[line:GetName() .. "Addon"]:SetWidth(2);
-			else
-				_G[line:GetName() .. "Addon"]:SetWidth(160);
-			end
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerwidth, containerHeight)  -- luacheck: no unused
+		for _, line in TRP3_RegisterListContainer.ScrollBox:EnumerateFrames() do
+			ResizeLineContents(line);
 		end
 		if containerwidth < 690 then
 			TRP3_RegisterListHeaderTime:SetWidth(2);
@@ -1042,7 +1067,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		else
 			TRP3_RegisterListHeaderAddon:SetWidth(160);
 		end
-		TRP3_RegisterListSlider:SetPoint("BOTTOM", TRP3_RegisterListSlider:GetParent(), "TOP", 0, -24 - 14 * lineHeight);
 	end);
 
 end);
