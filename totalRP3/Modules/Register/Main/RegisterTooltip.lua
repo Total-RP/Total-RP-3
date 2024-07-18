@@ -153,7 +153,13 @@ local function showRealm()
 	return getConfigValue(ConfigKeys.CHARACT_REALM);
 end
 
-local function showRelationLine()
+local RelationLineOption = {
+	Hidden = 1,  -- Do not show.
+	Simple = 2,  -- Show "Relation: Type" text.
+	Full = 3,    -- Show fully formatted relationship descriptions.
+};
+
+local function GetRelationLineDisplay()
 	return getConfigValue(ConfigKeys.CHARACT_RELATION_LINE);
 end
 
@@ -513,7 +519,8 @@ local function writeTooltipForCharacter(targetID, targetType)
 	local targetName = UnitName(targetType);
 	local colors = getTooltipTextColors();
 	---@type Player
-	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(targetID)
+	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(targetID);
+	local profileID = player:GetProfileID();
 
 	local FIELDS_TO_CROP = {
 		TITLE = 150,
@@ -713,12 +720,26 @@ local function writeTooltipForCharacter(targetID, targetType)
 	-- Relationship
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	if showRelationLine() and player:GetProfileID() then
-		local relation = TRP3_API.register.relation.getRelation(player:GetProfileID());
+	local relationLineDisplay = GetRelationLineDisplay();
+
+	if relationLineDisplay ~= RelationLineOption.Hidden and profileID then
+		local relation = TRP3_API.register.relation.getRelation(profileID);
 		if relation and relation.id ~= "NONE" then
 			local relationColor = TRP3_API.register.relation.getColor(relation) or colors.SECONDARY;
-			local relationName = TRP3_API.register.relation.getRelationText(player:GetProfileID());
-			tooltipBuilder:AddLine(loc.REG_RELATION .. ": " .. relationColor:WrapTextInColorCode(relationName), colors.MAIN, getSubLineFontSize());
+			local relationText;
+			local relationTextWrap;
+
+			if relationLineDisplay == RelationLineOption.Full then
+				local relationDescription = TRP3_API.register.relation.getRelationTooltipText(profileID, player:GetProfile());
+				relationText = relationColor:WrapTextInColorCode(relationDescription);
+				relationTextWrap = true;
+			else
+				local relationName = TRP3_API.register.relation.getRelationText(profileID);
+				relationText = loc.REG_RELATION .. ": " .. relationColor:WrapTextInColorCode(relationName);
+				relationTextWrap = false;
+			end
+
+			tooltipBuilder:AddLine(relationText, colors.MAIN, getSubLineFontSize(), relationTextWrap);
 		end
 	end
 
@@ -1555,7 +1576,7 @@ local function onModuleInit()
 	registerConfigKey(ConfigKeys.CHARACT_ZONE, true);
 	registerConfigKey(ConfigKeys.CHARACT_HEALTH, 0);
 	registerConfigKey(ConfigKeys.CHARACT_CURRENT_SIZE, 140);
-	registerConfigKey(ConfigKeys.CHARACT_RELATION_LINE, true);
+	registerConfigKey(ConfigKeys.CHARACT_RELATION_LINE, RelationLineOption.Simple);
 	registerConfigKey(ConfigKeys.CHARACT_RELATION, true);
 	registerConfigKey(ConfigKeys.CHARACT_SPACING, true);
 	registerConfigKey(ConfigKeys.SHOW_WORLD_CURSOR, false);
@@ -1792,9 +1813,14 @@ local function onModuleInit()
 				listCancel = false,
 			},
 			{
-				inherit = "TRP3_ConfigCheck",
+				inherit = "TRP3_ConfigDropDown",
 				title = loc.CO_TOOLTIP_RELATION_LINE,
 				configKey = ConfigKeys.CHARACT_RELATION_LINE,
+				listContent = {
+					{ loc.CO_TOOLTIP_RELATION_LINE_HIDDEN, RelationLineOption.Hidden, loc.CO_TOOLTIP_RELATION_LINE_HIDDEN_TT },
+					{ loc.CO_TOOLTIP_RELATION_LINE_SIMPLE, RelationLineOption.Simple, loc.CO_TOOLTIP_RELATION_LINE_SIMPLE_TT },
+					{ loc.CO_TOOLTIP_RELATION_LINE_FULL, RelationLineOption.Full, loc.CO_TOOLTIP_RELATION_LINE_FULL_TT },
+				}
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
