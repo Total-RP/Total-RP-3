@@ -414,7 +414,7 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["CREDITS_THANK_YOU_SECTION_2"] = "{h2}%1$s Creado por{/h2}",
 	["CREDITS_THANK_YOU_SECTION_3"] = "{h2}%1$s El Resto del Equipo{/h2}",
 	["CREDITS_THANK_YOU_SECTION_4"] = "{h2}%1$s Agradecimientos{/h2}",
-	["CREDITS_THANK_YOU_SECTION_5"] = "{col:ffffff}Logo e ícono del minimapa:{/col} %1$s",
+	["CREDITS_THANK_YOU_SECTION_5"] = "{col:ffffff}Logo e ícono del minimapa:{/col} %1$s|n{col:ffffff}Sidebar dice icon:{/col} %2$s",
 	["CREDITS_THANK_YOU_SECTION_7"] = "{col:ffffff}Gracias a todos nuestros amigos por su apoyo todos estos años:{/col}",
 	["CREDITS_THANK_YOU_SECTION_8"] = "{col:ffffff}Por ayudarnos a crear la guild Total RP en el reino Kirin Tor (EU):{/col}",
 	["CREDITS_THANK_YOU_SECTION_9"] = "{col:ffffff}Gracias a Horionne por enviarnos el Magazine Gamer Culte Online #14 con un artículo sobre el Total RP.{/col}",
@@ -809,8 +809,7 @@ Si no quieres que el TRP3 sea tu PMS y no quieres ver esta alerta de nuevo, pued
 	["REG_PLAYER_ABOUT_HEADER"] = "Etiqueta del título",
 	["REG_PLAYER_ABOUT_MUSIC_LISTEN"] = "Tocar tema",
 	["REG_PLAYER_ABOUT_MUSIC_REMOVE"] = "Deseleccionar tema",
-	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Selecciona un tema para el personaje",
-	["REG_PLAYER_ABOUT_MUSIC_SELECT2"] = "Seleccionar tema",
+	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Seleccionar tema",
 	["REG_PLAYER_ABOUT_MUSIC_STOP"] = "Parar tema",
 	["REG_PLAYER_ABOUT_MUSIC_THEME"] = "Tema musical del personaje",
 	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Sin tema|r",
@@ -1137,8 +1136,8 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 	["TF_OPEN_CHARACTER"] = "Mostrar página del personaje",
 	["TF_OPEN_COMPANION"] = "Mostrar página del compañero",
 	["TF_OPEN_MOUNT"] = "Mostrar página de montura",
-	["TF_PLAY_THEME"] = "Sonar tema del personaje",
-	["TF_PLAY_THEME_TT"] = "Tocar %s",
+	["TF_CHAR_THEME"] = "Tema del personaje",
+	["TF_CHAR_THEME_PLAY"] = "Tocar %s",
 	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Versión %s (build %s){/col}{/p}
 {p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}

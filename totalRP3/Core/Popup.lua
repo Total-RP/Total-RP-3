@@ -319,7 +319,7 @@ local function decorateMusic(lineFrame, musicID)
 	local tooltipContent;
 
 	tooltipContent = loc.UI_MUSIC_DURATION .. ": " .. floor(musicDuration + 0.5) .."s"
-	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_ABOUT_MUSIC_SELECT2)
+	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_ABOUT_MUSIC_SELECT)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_ABOUT_MUSIC_LISTEN);
 
 	setTooltipForFrame(lineFrame, lineFrame, "RIGHT", 0, 5, musicDefaultName, tooltipContent);

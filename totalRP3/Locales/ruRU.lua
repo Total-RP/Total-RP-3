@@ -483,6 +483,7 @@ L = {
 
 ]=],
 	["CREDITS_THANK_YOU_SECTION_5"] = [=[{col:ffffff}Логотип и иконка кнопки на миникарте:{/col} %1$s
+{col:ffffff}Sidebar dice icon:{/col} %2$s
 
 ]=],
 	["CREDITS_THANK_YOU_SECTION_6"] = "{col:ffffff}Наша пре-альфа команда QA:{/col}",
@@ -852,8 +853,7 @@ Link it anyway ?]=],
 	["REG_PLAYER_ABOUT_HEADER"] = "Метка заголовка",
 	["REG_PLAYER_ABOUT_MUSIC_LISTEN"] = "Играть тему",
 	["REG_PLAYER_ABOUT_MUSIC_REMOVE"] = "Отключить тему",
-	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Выбрать музыкальную тему персонажа",
-	["REG_PLAYER_ABOUT_MUSIC_SELECT2"] = "Выбрать тему",
+	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Выбрать тему",
 	["REG_PLAYER_ABOUT_MUSIC_STOP"] = "Остановить тему",
 	["REG_PLAYER_ABOUT_MUSIC_THEME"] = "Музыкальная тема персонажа",
 	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Тема не выбрана|r",
@@ -1168,8 +1168,8 @@ Link it anyway ?]=],
 	["TF_OPEN_CHARACTER"] = "Показать лист персонажа",
 	["TF_OPEN_COMPANION"] = "Показать страницу спутника",
 	["TF_OPEN_MOUNT"] = "Показать каталог транспортных средств",
-	["TF_PLAY_THEME"] = "Проиграть тему персонажа",
-	["TF_PLAY_THEME_TT"] = "Играть %s",
+	["TF_CHAR_THEME"] = "Тему персонажа",
+	["TF_CHAR_THEME_PLAY"] = "Играть %s",
 	["THANK_YOU_1"] = "{h1:c}Total RP 3{/h1} {p:c}{col:6eff51}Версия%s (сборка%s){/col}{/p} {p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p} {p:c}{link*http://discord.totalrp3.info*Присоединяйтесь к нам в Discord}{/p} {h2}{icon:INV_Eng_gizmo1:20} Создано{/h2} %АВТОРЫ$s {h2}{icon:QUEST_KHADGAR:20} Остальная Команда{/h2} %УЧАСТНИКИ$s {h2}{icon:THUMBUP:20} Благодарности{/h2} {col:ffffff}Логотип и иконка миникарты:{/col} - {link*https://twitter.com/Kelandiir*@Kelandiir} {col:ffffff}Наша пре-альфа команда QA:{/col} %ТЕСТЕРЫ$s {col:ffffff}Спасибо всем нашим друзьям за их поддержку все эти годы:{/col} - За Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma... - За Ellypse: Гильдии Eglise du Saint Gamon, Maison Celwë'Belore, Mercenaires Atal'ai, а конкретнее Erzan, Elenna, Caleb, Siana and Adaeria {col:ffffff}За помощь при создании гильдии Total RP на Kirin-Tor(EU):{/col} %ЧЛЕНЫ ГИЛЬДИИ$s {col:ffffff}Спасибо Horionne за отправку нам магазина Gamer Culte Online #14 со статьёй про Total RP{/col}",
 	["THANK_YOU_ROLE_AUTHOR"] = "Автор",
 	["THANK_YOU_ROLE_CONTRIBUTOR"] = "Участник",
