@@ -240,11 +240,12 @@ local function GenerateCreditsString(credits)
 	-- Acknowledgements
 
 	do  -- Logo Author
-		local LOGO_AUTHOR_LINK = string.format("{twitter*%1$s*@%1$s}", "Kelandiir");
+		local LOGO_AUTHOR_LINK = string.format("{twitter*%1$s*%1$s}", "Kelandiir");
+		local SIDEBAR_DICE_AUTHOR_LINK = string.format("{twitter*%1$s*%2$s}", "keyboardturn", "keyboardturner");
 		local ICON_MARKUP = string.format("{icon:%1$s:20}", TRP3_InterfaceIcons.CreditsOthers);
 
 		table.insert(output, string.format(L.CREDITS_THANK_YOU_SECTION_4, ICON_MARKUP));
-		table.insert(output, string.format(L.CREDITS_THANK_YOU_SECTION_5, LOGO_AUTHOR_LINK));
+		table.insert(output, string.format(L.CREDITS_THANK_YOU_SECTION_5, LOGO_AUTHOR_LINK, SIDEBAR_DICE_AUTHOR_LINK));
 	end
 
 	-- Discord members

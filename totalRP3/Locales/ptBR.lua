@@ -406,7 +406,7 @@ Seus perfis, perfis de companheiro e configurações serão temporariamente depo
 	["CREDITS_THANK_YOU_SECTION_2"] = "{h2}%1$s Criado por{/h2}",
 	["CREDITS_THANK_YOU_SECTION_3"] = "{h2}%1$s Outros da equipe{/h2}",
 	["CREDITS_THANK_YOU_SECTION_4"] = "{h2}%1$s Agradecimentos{/h2}",
-	["CREDITS_THANK_YOU_SECTION_5"] = "{col:ffffff}Logo e ícone do botão do mini mapa:{/col} %1$s",
+	["CREDITS_THANK_YOU_SECTION_5"] = "{col:ffffff}Logo e ícone do botão do mini mapa:{/col} %1$s|n{col:ffffff}Sidebar dice icon:{/col} %2$s",
 	["CREDITS_THANK_YOU_SECTION_6"] = "{col:ffffff}Nosso time pré-alpha de perguntas e respostas:{/col}",
 	["CREDITS_THANK_YOU_SECTION_7"] = "{col:ffffff}Agradecimentos a todos nossos amigos por seus suportes todos esses anos:{/col}",
 	["CREDITS_THANK_YOU_SECTION_8"] = "{col:ffffff}Por nos ajudar na criação  da guilda do Total RP no Kirin Tor (EU):{/col}",
@@ -823,8 +823,7 @@ Se você não quer que TRP3 seja seu addon de PMS e não quer mais ver este aler
 	["REG_PLAYER_ABOUT_HEADER"] = "Nota título",
 	["REG_PLAYER_ABOUT_MUSIC_LISTEN"] = "Tocar tema",
 	["REG_PLAYER_ABOUT_MUSIC_REMOVE"] = "De-selecionar tema",
-	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Selecionar tema do personagem",
-	["REG_PLAYER_ABOUT_MUSIC_SELECT2"] = "Selecionar tema",
+	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Selecionar tema",
 	["REG_PLAYER_ABOUT_MUSIC_STOP"] = "Parar tema",
 	["REG_PLAYER_ABOUT_MUSIC_THEME"] = "Música tema do personagem",
 	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Sem tema|r",
@@ -1148,8 +1147,8 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["TF_OPEN_CHARACTER"] = "Mostrar página do personagem",
 	["TF_OPEN_COMPANION"] = "Mostrar página do companheiro",
 	["TF_OPEN_MOUNT"] = "Exibir página de montarias",
-	["TF_PLAY_THEME"] = "Tocar tema do personagem",
-	["TF_PLAY_THEME_TT"] = "Tocar %s",
+	["TF_CHAR_THEME"] = "Tema do personagem",
+	["TF_CHAR_THEME_PLAY"] = "Tocar %s",
 	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Versão %s (build %s){/col}{/p}
 {p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}

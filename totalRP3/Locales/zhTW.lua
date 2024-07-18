@@ -444,8 +444,7 @@ L = {
 	["REG_PLAYER_ABOUT_EMPTY"] = "無敘述",
 	["REG_PLAYER_ABOUT_MUSIC_LISTEN"] = "播放主題曲",
 	["REG_PLAYER_ABOUT_MUSIC_REMOVE"] = "取消已選擇的主題曲",
-	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "選擇角色主題曲",
-	["REG_PLAYER_ABOUT_MUSIC_SELECT2"] = "選擇主題曲",
+	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "選擇主題曲",
 	["REG_PLAYER_ABOUT_MUSIC_STOP"] = "停止播放主題曲",
 	["REG_PLAYER_ABOUT_MUSIC_THEME"] = "角色主題曲",
 	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900沒有主題曲|r",
@@ -707,8 +706,8 @@ L = {
 	["TF_OPEN_CHARACTER"] = "顯示角色頁面",
 	["TF_OPEN_COMPANION"] = "顯示夥伴頁面",
 	["TF_OPEN_MOUNT"] = "顯示坐騎頁面",
-	["TF_PLAY_THEME"] = "播放角色主題曲",
-	["TF_PLAY_THEME_TT"] = "播放 %s",
+	["TF_CHAR_THEME"] = "角色主題曲",
+	["TF_CHAR_THEME_PLAY"] = "播放 %s",
 	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}版本 %s (build %s){/col}{/p}
 {p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}

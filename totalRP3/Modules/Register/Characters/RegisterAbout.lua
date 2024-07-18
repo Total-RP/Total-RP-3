@@ -934,7 +934,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		TRP3_API.target.registerButton({
 			id = "aa_player_b_music",
 			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
-			configText = loc.TF_PLAY_THEME,
+			configText = loc.TF_CHAR_THEME,
 			condition = function(_, unitID)
 				return getUnitIDTheme(unitID) ~= nil;
 			end,
@@ -948,10 +948,10 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			adapter = function(buttonStructure, unitID)
 				local theme = getUnitIDTheme(unitID);
 				if theme then
-					buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TF_PLAY_THEME_TT:format(Utils.music.getTitle(theme))) .. "\n" ..  TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_ABOUT_MUSIC_STOP);
+					buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TF_CHAR_THEME_PLAY:format(Utils.music.getTitle(theme))) .. "\n" ..  TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_ABOUT_MUSIC_STOP);
 				end
 			end,
-			tooltip = loc.TF_PLAY_THEME,
+			tooltip = loc.TF_CHAR_THEME,
 			icon = TRP3_InterfaceIcons.TargetPlayMusic,
 		});
 	end
@@ -1059,7 +1059,7 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_Edit_CancelButton:SetText(loc.CM_CANCEL);
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetText(loc.CM_PLAY);
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Stop:SetText(loc.CM_STOP);
-	TRP3_RegisterAbout_Edit_Music_Action:SetText(loc.REG_PLAYER_EDIT_MUSIC_THEME);
+	TRP3_RegisterAbout_Edit_Music_Action:SetText(loc.TF_CHAR_THEME);
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Title:SetText(loc.REG_PLAYER_ABOUT_MUSIC_THEME);
 
 	setupHTMLFonts(TRP3_RegisterAbout_AboutPanel_Template1);

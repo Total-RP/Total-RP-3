@@ -724,8 +724,7 @@ Wenn du TRP3 nicht als dein MSP Addon nutzen und diese Meldung nicht noch einmal
 	["REG_PLAYER_ABOUT_HEADER"] = "Titeltag",
 	["REG_PLAYER_ABOUT_MUSIC_LISTEN"] = "Soundtrack abspielen",
 	["REG_PLAYER_ABOUT_MUSIC_REMOVE"] = "Soundtrack abwählen",
-	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Charakter Soundtrack wählen",
-	["REG_PLAYER_ABOUT_MUSIC_SELECT2"] = "Soundtrack wählen",
+	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Soundtrack wählen",
 	["REG_PLAYER_ABOUT_MUSIC_STOP"] = "Soundtrack stoppen",
 	["REG_PLAYER_ABOUT_MUSIC_THEME"] = "Charakter-Musikthema",
 	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Kein Soundtrack|r",
@@ -1044,8 +1043,8 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 	["TF_OPEN_CHARACTER"] = "Charakterseite anzeigen",
 	["TF_OPEN_COMPANION"] = "Begleiterseite anzeigen",
 	["TF_OPEN_MOUNT"] = "Reittierseite anzeigen",
-	["TF_PLAY_THEME"] = "Charaktersoundtrack abspielen",
-	["TF_PLAY_THEME_TT"] = "Abspielen %s",
+	["TF_CHAR_THEME"] = "Charaktersoundtrack",
+	["TF_CHAR_THEME_PLAY"] = "Abspielen %s",
 	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
 {p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}
