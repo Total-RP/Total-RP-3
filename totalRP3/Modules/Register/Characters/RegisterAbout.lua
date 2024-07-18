@@ -362,7 +362,7 @@ function refreshTemplate2EditDisplay()
 				local icon = frameData.IC or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-					description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
+					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(_G[frame:GetName().."Icon"], frameData); end);
 				end);
 			end
@@ -979,7 +979,7 @@ function TRP3_API.register.inits.aboutInit()
 			local icon = draftData.T3.PH.IC or TEMPLATE3_ICON_PHYSICAL;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
 				description:CreateButton(loc.UI_ICON_PASTE, function() onPhisIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end
@@ -1020,7 +1020,7 @@ function TRP3_API.register.inits.aboutInit()
 			local icon = draftData.T3.PS.IC or TEMPLATE3_ICON_PSYCHO;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
 				description:CreateButton(loc.UI_ICON_PASTE, function() onPsychoIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end
@@ -1034,7 +1034,7 @@ function TRP3_API.register.inits.aboutInit()
 			local icon = draftData.T3.HI.IC or TEMPLATE3_ICON_HISTORY;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
 				description:CreateButton(loc.UI_ICON_PASTE, function() onHistoIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end
