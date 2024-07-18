@@ -248,7 +248,7 @@ function TRP3_API.popup.showNumberInputPopup(text, onAccept, onCancel, default)
 end
 
 --- Open a popup with an autofocused text field to let the user copy the a text selected via dropdown
----@param copyText string The text we want to let the user copy
+---@param copyTexts table The text we want to let the user copy
 ---@param customText string A custom text to display, instead of the default hint to copy the URL
 ---@param customShortcutInstructions string A custom text for the copy and paste shortcut instructions.
 ---@overload fun(url: string)
