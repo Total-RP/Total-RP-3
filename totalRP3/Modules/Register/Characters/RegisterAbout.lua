@@ -104,17 +104,13 @@ getDefaultProfile().player.about = {
 
 local draftData;
 
-local function setBkg(frame, bkg)
-	TRP3_API.ui.frame.setBackdropToBackground(frame, bkg);
-end
-
 local function setConsultBkg(bkg)
-	setBkg(TRP3_RegisterAbout, bkg);
+	TRP3_API.ui.frame.setBackdropToBackground(TRP3_RegisterAbout, bkg);
 end
 
 local function setEditBkg(bkg)
 	draftData.BK = bkg;
-	setBkg(TRP3_RegisterAbout, bkg);
+	TRP3_API.ui.frame.setBackdropToBackground(TRP3_RegisterAbout, bkg);
 end
 
 local function selectMusic(music)
@@ -266,7 +262,7 @@ local template2EditFrames = {};
 local function setTemplate2EditBkg(bkg, frame)
 	frame = frame:GetParent();
 	assert(frame.frameData, "No frameData in the frame ...");
-	setBkg(frame, bkg);
+	TRP3_API.ui.frame.setBackdropToBackground(frame, bkg);
 	frame.frameData.BK = bkg;
 end
 
@@ -383,6 +379,8 @@ function refreshTemplate2EditDisplay()
 			_G[frame:GetName().."Down"]:Show();
 		end
 
+		TRP3_API.ui.frame.setBackdropToBackground(frame, frameData.BK);
+
 		frame:Show();
 		previous = frame;
 	end
@@ -418,17 +416,17 @@ local TEMPLATE3_ICON_HISTORY = TRP3_InterfaceIcons.HistorySection;
 
 local function setTemplate3PhysBkg(bkg)
 	draftData.T3.PH.BK = bkg;
-	setBkg(TRP3_RegisterAbout_Edit_Template3_Phys, bkg);
+	TRP3_API.ui.frame.setBackdropToBackground(TRP3_RegisterAbout_Edit_Template3_Phys, bkg);
 end
 
 local function setTemplate3PsyBkg(bkg)
 	draftData.T3.PS.BK = bkg;
-	setBkg(TRP3_RegisterAbout_Edit_Template3_Psy, bkg);
+	TRP3_API.ui.frame.setBackdropToBackground(TRP3_RegisterAbout_Edit_Template3_Psy, bkg);
 end
 
 local function setTemplate3HistBkg(bkg)
 	draftData.T3.HI.BK = bkg;
-	setBkg(TRP3_RegisterAbout_Edit_Template3_Hist, bkg);
+	TRP3_API.ui.frame.setBackdropToBackground(TRP3_RegisterAbout_Edit_Template3_Hist, bkg);
 end
 
 local function onPhisIconSelected(icon)
@@ -505,7 +503,7 @@ local function showTemplate3(dataTab)
 			text.html = Utils.str.toHTML(data.TX or "")
 			text:SetText(text.html);
 
-			setBkg(frame, data.BK);
+			TRP3_API.ui.frame.setBackdropToBackground(frame, data.BK);
 			frame:Show();
 		else
 			frame:Hide();
