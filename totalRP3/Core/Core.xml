@@ -16,6 +16,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Objects\CallbackGroup.lua"/>
 	<Include file="Objects\CallbackGroupCollection.lua"/>
 	<Include file="Objects\CallbackRegistry.lua"/>
+	<Include file="Objects\Player.lua"/>
 	<Include file="Events.lua"/>
 	<Include file="Color.lua"/>
 	<Include file="ColorData.lua"/>
