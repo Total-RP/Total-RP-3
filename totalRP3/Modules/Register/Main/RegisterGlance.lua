@@ -734,7 +734,7 @@ local draggingGlance = false;
 local function onGlanceDragStart(button)
 	if button.isCurrentMine and button.data then
 		draggingGlance = true;
-		SetCursor("Interface\\ICONS\\" .. (button.data.IC or TRP3_InterfaceIcons.Default));
+		SetCursor(GetFileIDFromPath("Interface\\ICONS\\" .. (button.data.IC or TRP3_InterfaceIcons.Default)));
 	end
 end
 TRP3_API.register.glance.onGlanceDragStart = onGlanceDragStart;
