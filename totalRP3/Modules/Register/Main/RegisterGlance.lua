@@ -446,6 +446,19 @@ local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 	TRP3_AtFirstGlanceEditorName:SetFocus();
 	TRP3_AtFirstGlanceEditorName:HighlightText();
 
+	TRP3_AtFirstGlanceEditor:SetScript("OnKeyDown", function(_, key)
+		-- Do not steal input if we're in combat.
+		if InCombatLockdown() then return; end
+
+		if key == "ESCAPE" then
+			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			TRP3_AtFirstGlanceEditor:SetPropagateKeyboardInput(false);
+			TRP3_AtFirstGlanceEditor:Hide();
+		else
+			TRP3_AtFirstGlanceEditor:SetPropagateKeyboardInput(true);
+		end
+	end);
+
 	TRP3_AtFirstGlanceEditorIcon.isExternal = external;
 	setTooltipForSameFrame(TRP3_AtFirstGlanceEditorIcon, "LEFT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	TRP3_AtFirstGlanceEditorIcon:SetScript("onMouseDown", function(self, button)
