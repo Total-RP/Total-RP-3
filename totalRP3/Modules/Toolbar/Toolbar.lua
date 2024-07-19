@@ -11,6 +11,10 @@ local CONFIG_CONTENT_PREFIX = "toolbar_content_";
 local CONFIG_HIDE_TITLE = "toolbar_hide_title";
 local CONFIG_TOOLBAR_VISIBILITY = "toolbar_visibility";
 
+local CONFIG_TOOLBAR_POS_X = "CONFIG_TOOLBAR_POS_X";
+local CONFIG_TOOLBAR_POS_Y = "CONFIG_TOOLBAR_POS_Y";
+local CONFIG_TOOLBAR_POS_A = "CONFIG_TOOLBAR_POS_A";
+
 TRP3_ToolbarVisibilityOption = {
 	AlwaysShow = 1,
 	OnlyShowInCharacter = 2,
@@ -179,7 +183,7 @@ local function onStart()
 					end
 				end);
 				if buttonStructure.tooltip then
-					setTooltipForFrame(uiButton, uiButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+					TRP3_API.toolbar.updateToolbarButtonTooltip(uiButton, buttonStructure);
 				end
 				uiButton:SetWidth(buttonSize);
 				uiButton:SetHeight(buttonSize);
@@ -279,6 +283,18 @@ local function onStart()
 	end
 	TRP3_API.toolbar.toolbarAddButton = toolbarAddButton;
 
+	local function updateToolbarButtonTooltip(toolbarButton, buttonStructure)
+		-- Refreshing the tooltip
+		local tooltipAnchor = "TOP";
+		local anchorMargin = 5;
+		if getConfigValue(CONFIG_TOOLBAR_POS_A):find("TOP") then
+			tooltipAnchor = "BOTTOM";
+			anchorMargin = -5;
+		end
+		setTooltipForFrame(toolbarButton, toolbarButton, tooltipAnchor, 0, anchorMargin, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+	end
+	TRP3_API.toolbar.updateToolbarButtonTooltip = updateToolbarButtonTooltip;
+
 	--- Will refresh the UI of a given button (icon, tooltip) using the data provided in the buttonStructure
 	-- @param toolbarButton UI button to refresh
 	-- @param buttonStructure Button structure containing the icon and tooltip text
@@ -287,8 +303,7 @@ local function onStart()
 		-- Setting the textures
 		toolbarButton:SetIconTexture(buttonStructure.icon);
 
-		-- Refreshing the tooltip
-		setTooltipForFrame(toolbarButton, toolbarButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+		updateToolbarButtonTooltip(toolbarButton, buttonStructure);
 	end
 	TRP3_API.toolbar.updateToolbarButton = updateToolbarButton;
 
@@ -315,15 +330,11 @@ local function onStart()
 	-- Position
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local CONFIG_TOOLBAR_POS_X = "CONFIG_TOOLBAR_POS_X";
-	local CONFIG_TOOLBAR_POS_Y = "CONFIG_TOOLBAR_POS_Y";
-	local CONFIG_TOOLBAR_POS_A = "CONFIG_TOOLBAR_POS_A";
-
 	registerConfigKey(CONFIG_TOOLBAR_POS_A, "TOP");
 	registerConfigKey(CONFIG_TOOLBAR_POS_X, 0);
 	registerConfigKey(CONFIG_TOOLBAR_POS_Y, -30);
-	toolbar:SetPoint(getConfigValue("CONFIG_TOOLBAR_POS_A"), UIParent, getConfigValue("CONFIG_TOOLBAR_POS_A"),
-	getConfigValue("CONFIG_TOOLBAR_POS_X"), getConfigValue("CONFIG_TOOLBAR_POS_Y"));
+	toolbar:SetPoint(getConfigValue(CONFIG_TOOLBAR_POS_A), UIParent, getConfigValue(CONFIG_TOOLBAR_POS_A),
+	getConfigValue(CONFIG_TOOLBAR_POS_X), getConfigValue(CONFIG_TOOLBAR_POS_Y));
 
 	toolbar:RegisterForDrag("LeftButton");
 	toolbar:SetMovable(true);
@@ -336,6 +347,11 @@ local function onStart()
 		setConfigValue(CONFIG_TOOLBAR_POS_A, anchor);
 		setConfigValue(CONFIG_TOOLBAR_POS_X, x);
 		setConfigValue(CONFIG_TOOLBAR_POS_Y, y);
+
+		-- Update tooltip anchors
+		for _,uiButton in pairs(uiButtons) do
+			TRP3_API.toolbar.updateToolbarButtonTooltip(uiButton, buttonStructures[uiButton.buttonId]);
+		end
 	end);
 
 	function TRP3_API.toolbar.reset()
