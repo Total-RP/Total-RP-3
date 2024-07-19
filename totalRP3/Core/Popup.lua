@@ -770,20 +770,20 @@ function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback,
 	ui_CompanionBrowserContent.onSelectCallback = onSelectCallback;
 	ui_CompanionBrowserContent.onCancelCallback = onCancelCallback;
 
-	-- Do not steal input if we're in combat.
-	if not InCombatLockdown() then
-		local frame = TRP3_CompanionBrowser;
-		frame:SetScript("OnKeyDown", function(_, key)
-			if key == "ESCAPE" then
-				PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-				frame:SetPropagateKeyboardInput(false);
-				-- Hiding frames & Cancel callback is handled within.
-				onCompanionClose();
-			else
-				frame:SetPropagateKeyboardInput(true);
-			end
-		end);
-	end
+	local frame = TRP3_CompanionBrowser;
+	frame:SetScript("OnKeyDown", function(_, key)
+		-- Do not steal input if we're in combat.
+		if InCombatLockdown() then return; end
+
+		if key == "ESCAPE" then
+			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			frame:SetPropagateKeyboardInput(false);
+			-- Hiding frames & Cancel callback is handled within.
+			onCompanionClose();
+		else
+			frame:SetPropagateKeyboardInput(true);
+		end
+	end);
 
 	TRP3_CompanionBrowserFilterBox:SetText("");
 	filteredCompanionBrowser();
@@ -800,21 +800,21 @@ function TRP3_API.popup.showPetBrowser(profileID, onSelectCallback, onCancelCall
 	onSelectCallback = onSelectCallback or nop;
 	onCancelCallback = onCancelCallback or nop;
 
-	-- Do not steal input if we're in combat.
-	if not InCombatLockdown() then
-		frame:SetScript("OnKeyDown", function(_, key)
-			if key == "ESCAPE" then
-				PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-				frame:SetPropagateKeyboardInput(false);
-				frame:Hide();
-				hidePopups();
-				-- Handle cancel callback through function.
-				onCancelCallback();
-			else
-				frame:SetPropagateKeyboardInput(true);
-			end
-		end);
-	end
+	frame:SetScript("OnKeyDown", function(_, key)
+		-- Do not steal input if we're in combat.
+		if InCombatLockdown() then return; end
+
+		if key == "ESCAPE" then
+			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			frame:SetPropagateKeyboardInput(false);
+			frame:Hide();
+			hidePopups();
+			-- Handle cancel callback through function.
+			onCancelCallback();
+		else
+			frame:SetPropagateKeyboardInput(true);
+		end
+	end);
 
 	frame:SetDialogProfileID(profileID);
 	frame:SetDialogCallback(function(result, ...)
@@ -1282,18 +1282,18 @@ function TRP3_API.popup.showPopup(popupID, popupPosition, popupArgs)
 
 	popup.frame:ClearAllPoints();
 
-	-- Do not steal input if we're in combat.
-	if not InCombatLockdown() then
-		popup.frame:SetScript("OnKeyDown", function(_, key)
-			if key == "ESCAPE" then
-				PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-				popup.frame:SetPropagateKeyboardInput(false);
-				hidePopups();
-			else
-				popup.frame:SetPropagateKeyboardInput(true);
-			end
-		end);
-	end
+	popup.frame:SetScript("OnKeyDown", function(_, key)
+		-- Do not steal input if we're in combat.
+		if InCombatLockdown() then return; end
+		
+		if key == "ESCAPE" then
+			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			popup.frame:SetPropagateKeyboardInput(false);
+			hidePopups();
+		else
+			popup.frame:SetPropagateKeyboardInput(true);
+		end
+	end);
 
 	if popupPosition and popupPosition.parent then
 		popup.frame:SetParent(popupPosition.parent);
