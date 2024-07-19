@@ -98,7 +98,7 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 
 	TRP3_API.configuration.registerConfigurationPage({
 		id = "main_config_nameplates",
-		menuText = L.NAMEPLATES_CONFIG_MENU_TITLE,
+		menuText = L.NAMEPLATES_NAME,
 		pageText = L.NAMEPLATES_CONFIG_PAGE_TEXT,
 		elements = {
 			{
@@ -138,9 +138,9 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_NON_ROLEPLAY_UNITS,
 				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_NON_ROLEPLAY_UNITS_HELP,
 				listContent = {
-					{ L.NAMEPLATES_CONFIG_UNIT_STATE_SHOW, TRP3_NamePlateUnitCustomizationState.Show, L.NAMEPLATES_CONFIG_UNIT_STATE_SHOW_HELP },
-					{ L.NAMEPLATES_CONFIG_UNIT_STATE_HIDE, TRP3_NamePlateUnitCustomizationState.Hide, L.NAMEPLATES_CONFIG_UNIT_STATE_HIDE_HELP },
+					{ L.CM_DO_NOT_SHOW, TRP3_NamePlateUnitCustomizationState.Hide, L.NAMEPLATES_CONFIG_UNIT_STATE_HIDE_HELP },
 					{ L.NAMEPLATES_CONFIG_UNIT_STATE_DISABLE, TRP3_NamePlateUnitCustomizationState.Disable, L.NAMEPLATES_CONFIG_UNIT_STATE_DISABLE_HELP },
+					{ L.NAMEPLATES_CONFIG_UNIT_STATE_SHOW, TRP3_NamePlateUnitCustomizationState.Show, L.NAMEPLATES_CONFIG_UNIT_STATE_SHOW_HELP },
 				},
 				configKey = MapSettingToConfigKey("CustomizeNonRoleplayUnits"),
 				listWidth = nil,
@@ -151,9 +151,9 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_OOC_UNITS,
 				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_OOC_UNITS_HELP,
 				listContent = {
-					{ L.NAMEPLATES_CONFIG_UNIT_STATE_SHOW, TRP3_NamePlateUnitCustomizationState.Show, L.NAMEPLATES_CONFIG_UNIT_STATE_SHOW_HELP },
-					{ L.NAMEPLATES_CONFIG_UNIT_STATE_HIDE, TRP3_NamePlateUnitCustomizationState.Hide, L.NAMEPLATES_CONFIG_UNIT_STATE_HIDE_HELP },
+					{ L.CM_DO_NOT_SHOW, TRP3_NamePlateUnitCustomizationState.Hide, L.NAMEPLATES_CONFIG_UNIT_STATE_HIDE_HELP },
 					{ L.NAMEPLATES_CONFIG_UNIT_STATE_DISABLE, TRP3_NamePlateUnitCustomizationState.Disable, L.NAMEPLATES_CONFIG_UNIT_STATE_DISABLE_HELP },
+					{ L.NAMEPLATES_CONFIG_UNIT_STATE_SHOW, TRP3_NamePlateUnitCustomizationState.Show, L.NAMEPLATES_CONFIG_UNIT_STATE_SHOW_HELP },
 				},
 				configKey = MapSettingToConfigKey("CustomizeOOCUnits"),
 				listWidth = nil,
@@ -164,9 +164,9 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_NPC_UNITS,
 				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_NPC_UNITS_HELP,
 				listContent = {
-					{ L.NAMEPLATES_CONFIG_UNIT_STATE_SHOW, TRP3_NamePlateUnitCustomizationState.Show, L.NAMEPLATES_CONFIG_UNIT_STATE_SHOW_HELP },
-					{ L.NAMEPLATES_CONFIG_UNIT_STATE_HIDE, TRP3_NamePlateUnitCustomizationState.Hide, L.NAMEPLATES_CONFIG_UNIT_STATE_HIDE_HELP },
+					{ L.CM_DO_NOT_SHOW, TRP3_NamePlateUnitCustomizationState.Hide, L.NAMEPLATES_CONFIG_UNIT_STATE_HIDE_HELP },
 					{ L.NAMEPLATES_CONFIG_UNIT_STATE_DISABLE, TRP3_NamePlateUnitCustomizationState.Disable, L.NAMEPLATES_CONFIG_UNIT_STATE_DISABLE_HELP },
+					{ L.NAMEPLATES_CONFIG_UNIT_STATE_SHOW, TRP3_NamePlateUnitCustomizationState.Show, L.NAMEPLATES_CONFIG_UNIT_STATE_SHOW_HELP },
 				},
 				configKey = MapSettingToConfigKey("CustomizeNPCUnits"),
 				listWidth = nil,
@@ -181,9 +181,9 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_NAMES,
 				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_NAMES_HELP,
 				listContent = {
-					{ L.NAMEPLATES_CONFIG_UNIT_NAME_FULL, TRP3_NamePlateUnitNameDisplayMode.FullName, L.NAMEPLATES_CONFIG_UNIT_NAME_FULL_HELP },
-					{ L.NAMEPLATES_CONFIG_UNIT_NAME_FIRST, TRP3_NamePlateUnitNameDisplayMode.FirstName, L.NAMEPLATES_CONFIG_UNIT_NAME_FIRST_HELP },
 					{ L.NAMEPLATES_CONFIG_UNIT_NAME_ORIGINAL, TRP3_NamePlateUnitNameDisplayMode.OriginalName, L.NAMEPLATES_CONFIG_UNIT_NAME_ORIGINAL_HELP },
+					{ L.NAMEPLATES_CONFIG_UNIT_NAME_FIRST, TRP3_NamePlateUnitNameDisplayMode.FirstName, L.NAMEPLATES_CONFIG_UNIT_NAME_FIRST_HELP },
+					{ L.NAMEPLATES_CONFIG_UNIT_NAME_FULL, TRP3_NamePlateUnitNameDisplayMode.FullName, L.NAMEPLATES_CONFIG_UNIT_NAME_FULL_HELP },
 				},
 				configKey = MapSettingToConfigKey("CustomizeNames"),
 				listWidth = nil,

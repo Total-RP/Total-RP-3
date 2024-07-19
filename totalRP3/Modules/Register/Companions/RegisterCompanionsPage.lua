@@ -446,7 +446,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_CompanionsPageInformationEdit_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
 	TRP3_CompanionsPageInformationEdit_About:SetTitleText(loc.REG_PLAYER_ABOUT);
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameFieldText:SetText(loc.REG_COMPANION_NAME);
-	TRP3_CompanionsPageInformationEdit_NamePanel_TitleFieldText:SetText(loc.REG_COMPANION_TITLE);
+	TRP3_CompanionsPageInformationEdit_NamePanel_TitleFieldText:SetText(loc.REG_TITLE);
 	TRP3_CompanionsPageInformationEdit_NamePanel_CancelButton:SetText(loc.CM_CANCEL);
 	TRP3_CompanionsPageInformationEdit_NamePanel_SaveButton:SetText(loc.CM_SAVE);
 

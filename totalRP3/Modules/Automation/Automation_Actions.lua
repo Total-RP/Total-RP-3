@@ -119,7 +119,7 @@ TRP3_AutomationUtil.RegisterAction({
 
 TRP3_AutomationUtil.RegisterAction({
 	id = "trp3:nameplates:enable",
-	category = L.AUTOMATION_CATEGORY_NAMEPLATES,
+	category = L.NAMEPLATES_NAME,
 	name = L.AUTOMATION_ACTION_NAMEPLATES_ENABLE,
 	description = L.AUTOMATION_ACTION_NAMEPLATES_ENABLE_DESCRIPTION,
 	help = TRP3_AutomationUtil.FormatOptionHelp(TRP3_AutomationUtil.BOOLEAN_OPTIONS),
@@ -153,7 +153,7 @@ TRP3_AutomationUtil.RegisterAction({
 
 TRP3_AutomationUtil.RegisterAction({
 	id = "trp3:nameplates:showfriends",
-	category = L.AUTOMATION_CATEGORY_NAMEPLATES,
+	category = L.NAMEPLATES_NAME,
 	name = L.AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS,
 	description = L.AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS_DESCRIPTION,
 	help = TRP3_AutomationUtil.FormatOptionHelp(TRP3_AutomationUtil.BOOLEAN_OPTIONS),
@@ -190,7 +190,7 @@ TRP3_AutomationUtil.RegisterAction({
 
 TRP3_AutomationUtil.RegisterAction({
 	id = "trp3:nameplates:showfriendlynpcs",
-	category = L.AUTOMATION_CATEGORY_NAMEPLATES,
+	category = L.NAMEPLATES_NAME,
 	name = L.AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS,
 	description = L.AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS_DESCRIPTION,
 	help = TRP3_AutomationUtil.FormatOptionHelp(TRP3_AutomationUtil.BOOLEAN_OPTIONS),
@@ -227,7 +227,7 @@ TRP3_AutomationUtil.RegisterAction({
 
 TRP3_AutomationUtil.RegisterAction({
 	id = "trp3:equipset",
-	category = L.AUTOMATION_CATEGORY_CHARACTER,
+	category = L.REG_PLAYER,
 	name = L.AUTOMATION_ACTION_CHARACTER_EQUIPSET,
 	description = L.AUTOMATION_ACTION_CHARACTER_EQUIPSET_DESCRIPTION,
 	help = L.AUTOMATION_ACTION_CHARACTER_EQUIPSET_HELP,

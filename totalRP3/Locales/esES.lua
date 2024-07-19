@@ -124,6 +124,7 @@ Importar contenido de otra versión puede causar problemas en caso de incompatib
 	["CM_VALUE"] = "Valor",
 	["CM_WHITE"] = "Blanco",
 	["CM_YELLOW"] = "Amarillo",
+	["CM_DO_NOT_SHOW"] = "No mostrar",
 	["CO_ADVANCED_BROADCAST"] = "Comunicaciones del add-on",
 	["CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST"] = "Mantener el canal de emisión al final",
 	["CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST_TT"] = "Esta opción hará que el canal de emisión siempre sea el último en tu lista de canales.",
@@ -354,7 +355,6 @@ Clase: 50 caracteres|r]=],
 	["CO_TOOLTIP_GUILD"] = "Mostrar información de hermandad",
 	["CO_TOOLTIP_HEALTH"] = "Mostrar salud",
 	["CO_TOOLTIP_HEALTH_BOTH"] = "Número + Porcentaje",
-	["CO_TOOLTIP_HEALTH_DISABLED"] = "Desactivado",
 	["CO_TOOLTIP_HEALTH_NUMBER"] = "Número",
 	["CO_TOOLTIP_HEALTH_PERCENT"] = "Porcentaje",
 	["CO_TOOLTIP_HEALTH_TT"] = "Esto sólo se va a mostrar si el objetivo no tiene la vida completa",
@@ -535,10 +535,9 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	["NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP"] = "Si está activo, habilita el uso de los colores de clase para los nombres y las barras de vida de aquellas unidades que no tengan un color personalizado en sus perfiles.|n|nLas unidades que no tengan un perfil de rol no serán afectadas por esta opción.",
 	["NAMEPLATES_CONFIG_ICON_SIZE"] = "Tamaño de ícono",
 	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "Configura el tamaño de los íconos mostrados en la placa de nombres si la opción |cnGREEN_FONT_COLOR:Mostrar íconos|r está habilitada.",
-	["NAMEPLATES_CONFIG_MENU_TITLE"] = "Placa de nombres",
 	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "Configuraciones de placa de nombre",
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Configuraciones de visibilidad",
-	["NAMEPLATES_MODULE_NAME"] = "Placa de nombres",
+	["NAMEPLATES_NAME"] = "Placa de nombres",
 	["NEW_VERSION"] = [=[|cff00ff00Hay una nueva versión de Total RP 3 (v %s) disponible.
 
 |cffffff00Recomendamos encarecidamente mantenerlo actualizado.|r
@@ -713,7 +712,6 @@ Esta herramienta también permite insertar |cffffff00imágenes, iconos o enlaces
 	["REG_COMPANION_TF_PROFILE"] = "Perfil de compañero",
 	["REG_COMPANION_TF_PROFILE_MOUNT"] = "Perfil de montura",
 	["REG_COMPANION_TF_UNBOUND"] = "Desvincular del perfil",
-	["REG_COMPANION_TITLE"] = "Título",
 	["REG_COMPANION_UNBOUND"] = "Desvincular de...",
 	["REG_COMPANIONS"] = "Compañeros",
 	["REG_DELETE_WARNING"] = "¿Seguro que quieres eliminar el perfil %s?",
@@ -833,7 +831,6 @@ Debes reducirlo.]=],
 	["REG_PLAYER_BIRTHPLACE_TT"] = [=[Aquí puedes indicar el lugar de nacimiento tu personaje. Puede ser una región, zona o incluso un continente. Tú eres quien decide cuán preciso quieres que sea.
 
 |c00ffff00Puedes usar el botón de la derecha para seleccionar tu ubicación actual como lugar de nacimiento.]=],
-	["REG_PLAYER_CARACT"] = "Características",
 	["REG_PLAYER_CHANGE_CONFIRM"] = [=[Puede que tengas algunos cambios sin guardar.
 ¿Deseas cambiar la página de todos modos?
 |cffff9900Cualquier cambio se perderá.]=],
@@ -981,7 +978,6 @@ Tienes varias formas de hacerlo:|c0000ff00
 	["REG_PLAYER_RELATIONSHIP_STATUS_SINGLE"] = "Soltero",
 	["REG_PLAYER_RELATIONSHIP_STATUS_TAKEN"] = "En pareja",
 	["REG_PLAYER_RELATIONSHIP_STATUS_TT"] = "Indica el estado de relación de tu personaje. Selecciona \"No mostrar\" si quieres mantener esta información oculta.",
-	["REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN"] = "No mostrar",
 	["REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED"] = "Viudo",
 	["REG_PLAYER_RESIDENCE"] = "Residencia",
 	["REG_PLAYER_RESIDENCE_SHOW"] = "Coordenadas de residencia",
@@ -1004,12 +1000,11 @@ Si no quieres mostrar la personalidad del personaje mediante este método, mant�
 	["REG_PLAYER_STYLE_GUILD"] = "Miembro de hermandad",
 	["REG_PLAYER_STYLE_GUILD_IC"] = "Miembro ER",
 	["REG_PLAYER_STYLE_GUILD_OOC"] = "Miembro FdR",
-	["REG_PLAYER_STYLE_HIDE"] = "No mostrar",
 	["REG_PLAYER_STYLE_INJURY"] = "Aceptación de heridas",
 	["REG_PLAYER_STYLE_PERMI"] = "Con el permiso del jugador",
 	["REG_PLAYER_STYLE_ROMANCE"] = "Aceptación de romances",
 	["REG_PLAYER_STYLE_RPSTYLE"] = "Estilo de rol",
-	["REG_PLAYER_TITLE"] = "Título",
+	["REG_TITLE"] = "Título",
 	["REG_PLAYER_TITLE_TT"] = [=[El título de tu personaje es el título con el que tu personaje es llamado normalmente. Evita colocar títulos largos, para ello se ha de utilizar el título completo.
 
 Ejemplos de |c0000ff00títulos apropiados|r:

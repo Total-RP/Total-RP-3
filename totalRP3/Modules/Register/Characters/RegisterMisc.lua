@@ -39,7 +39,7 @@ local function buildStyleStructure()
 				{YES, 1},
 				{NO, 2},
 				{loc.REG_PLAYER_STYLE_PERMI, 3},
-				{loc.REG_PLAYER_STYLE_HIDE, 0},
+				{loc.CM_DO_NOT_SHOW, 0},
 			}
 		},
 		{
@@ -50,7 +50,7 @@ local function buildStyleStructure()
 				{YES, 1},
 				{NO, 2},
 				{loc.REG_PLAYER_STYLE_PERMI, 3},
-				{loc.REG_PLAYER_STYLE_HIDE, 0},
+				{loc.CM_DO_NOT_SHOW, 0},
 			}
 		},
 		{
@@ -61,7 +61,7 @@ local function buildStyleStructure()
 				{YES, 1},
 				{NO, 2},
 				{loc.REG_PLAYER_STYLE_PERMI, 3},
-				{loc.REG_PLAYER_STYLE_HIDE, 0},
+				{loc.CM_DO_NOT_SHOW, 0},
 			}
 		},
 		{
@@ -72,7 +72,7 @@ local function buildStyleStructure()
 				{YES, 1},
 				{NO, 2},
 				{loc.REG_PLAYER_STYLE_PERMI, 3},
-				{loc.REG_PLAYER_STYLE_HIDE, 0},
+				{loc.CM_DO_NOT_SHOW, 0},
 			}
 		},
 		{
@@ -83,7 +83,7 @@ local function buildStyleStructure()
 				{YES, 1},
 				{NO, 2},
 				{loc.REG_PLAYER_STYLE_PERMI, 3},
-				{loc.REG_PLAYER_STYLE_HIDE, 0},
+				{loc.CM_DO_NOT_SHOW, 0},
 			}
 		},
 		{
@@ -93,7 +93,7 @@ local function buildStyleStructure()
 			values = {
 				{loc.REG_PLAYER_STYLE_GUILD_IC, 1},
 				{loc.REG_PLAYER_STYLE_GUILD_OOC, 2},
-				{loc.REG_PLAYER_STYLE_HIDE, 0},
+				{loc.CM_DO_NOT_SHOW, 0},
 			}
 		},
 	};

@@ -102,6 +102,7 @@ L = {
 	["CM_VALUE"] = "值",
 	["CM_WHITE"] = "白色",
 	["CM_YELLOW"] = "黃色",
+	["CM_DO_NOT_SHOW"] = "不予顯示",
 	["CO_ADVANCED_SETTINGS"] = "進階設定",
 	["CO_ADVANCED_SETTINGS_RESET"] = "重設進階設定",
 	["CO_ADVANCED_SETTINGS_RESET_TT"] = "當調整後出現問題時，使用重設，回到默認設定。",
@@ -415,7 +416,6 @@ L = {
 	["REG_COMPANION_NAME_COLOR"] = "名稱顏色",
 	["REG_COMPANION_TF_CREATE"] = "創建新角色擋",
 	["REG_COMPANION_TF_OWNER"] = "擁有者：%s",
-	["REG_COMPANION_TITLE"] = "標題",
 	["REG_COMPANIONS"] = "夥伴",
 	["REG_DELETE_WARNING"] = [=[你確定你要刪除 %s 的角色檔？
 ]=],
@@ -465,7 +465,6 @@ L = {
 	["REG_PLAYER_BIRTHPLACE_TT"] = [=[這裡指的是您的角色的出生地。可以是區里鄉鎮市、也可以是一塊大陸或一個國家的名字，看您想怎麼使用。
 
 |c00ffff00您也可以點擊按鈕，直接在地圖上選擇您的出生地。]=],
-	["REG_PLAYER_CARACT"] = "特徵",
 	["REG_PLAYER_CHANGE_CONFIRM"] = [=[您似乎還沒儲存此檔案的變更，
 確定要切換頁面嗎？
 |cffff9900所做的變更將會遺失]=],
@@ -585,7 +584,6 @@ L = {
 	["REG_PLAYER_RELATIONSHIP_STATUS_SINGLE"] = "單身",
 	["REG_PLAYER_RELATIONSHIP_STATUS_TAKEN"] = "已有對象",
 	["REG_PLAYER_RELATIONSHIP_STATUS_TT"] = "標示角色現在的感情狀態，如果不想顯示，選擇「不顯示」就可以將此資訊欄隱藏。",
-	["REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN"] = "不顯示",
 	["REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED"] = "喪偶",
 	["REG_PLAYER_RESIDENCE"] = "居住地",
 	["REG_PLAYER_RESIDENCE_SHOW"] = "居住地地圖座標",
@@ -600,12 +598,11 @@ L = {
 	["REG_PLAYER_STYLE_GUILD"] = "公會成員",
 	["REG_PLAYER_STYLE_GUILD_IC"] = "成員皆為角色扮演玩家",
 	["REG_PLAYER_STYLE_GUILD_OOC"] = "成員皆為非角色扮演玩家",
-	["REG_PLAYER_STYLE_HIDE"] = "不予顯示",
 	["REG_PLAYER_STYLE_INJURY"] = "允許角色受到傷害的狀況",
 	["REG_PLAYER_STYLE_PERMI"] = "需要經過玩家許可",
 	["REG_PLAYER_STYLE_ROMANCE"] = "允許角色之間發展戀愛關係",
 	["REG_PLAYER_STYLE_RPSTYLE"] = "喜好遊戲方式",
-	["REG_PLAYER_TITLE"] = "稱號",
+	["REG_TITLE"] = "稱號",
 	["REG_PLAYER_TITLE_TT"] = [=[你的角色稱號代表他經常被稱呼的頭銜，避免使用過長的稱號，過長的稱號應該輸入在長稱號區而非此處。
 
 以下為範例的 |c0000ff00合適稱號|r :
