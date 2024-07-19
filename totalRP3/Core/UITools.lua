@@ -663,6 +663,7 @@ function TRP3_API.ui.tooltip.toast(text, duration)
 	TRP3_Toast:SetOwner(TRP3_MainFramePageContainer, "ANCHOR_BOTTOM", 0, 60);
 	GameTooltip_AddHighlightLine(TRP3_Toast, text, true);
 	TRP3_Toast:Show();
+	TRP3_Toast.isFading = false;
 	TRP3_Toast.delay = duration or 3;
 end
 
