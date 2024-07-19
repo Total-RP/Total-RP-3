@@ -1285,7 +1285,7 @@ function TRP3_API.popup.showPopup(popupID, popupPosition, popupArgs)
 	popup.frame:SetScript("OnKeyDown", function(_, key)
 		-- Do not steal input if we're in combat.
 		if InCombatLockdown() then return; end
-		
+
 		if key == "ESCAPE" then
 			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			popup.frame:SetPropagateKeyboardInput(false);
