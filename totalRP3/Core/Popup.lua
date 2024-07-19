@@ -766,6 +766,20 @@ function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback,
 	else
 		TRP3_CompanionBrowserTitle:SetText(loc.REG_COMPANION_BROWSER_MOUNT);
 	end
+	-- Do not steal input if we're in combat.
+	if not InCombatLockdown() then
+		local frame = TRP3_CompanionBrowser;
+		frame:SetScript("OnKeyDown", function(_, key)
+			if key == "ESCAPE" then
+				PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+				frame:SetPropagateKeyboardInput(false);
+				frame:Hide();
+				hidePopups();
+			else
+				frame:SetPropagateKeyboardInput(true);
+			end
+		end);
+	end
 	ui_CompanionBrowserContent.onSelectCallback = onSelectCallback;
 	ui_CompanionBrowserContent.onCancelCallback = onCancelCallback;
 	TRP3_CompanionBrowserFilterBox:SetText("");
@@ -778,6 +792,20 @@ function TRP3_API.popup.showPetBrowser(profileID, onSelectCallback, onCancelCall
 	local frame = AddOn_TotalRP3.Ui.GetPetBrowserFrame();
 	if not frame then
 		return;
+	end
+
+	-- Do not steal input if we're in combat.
+	if not InCombatLockdown() then
+		frame:SetScript("OnKeyDown", function(_, key)
+			if key == "ESCAPE" then
+				PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+				frame:SetPropagateKeyboardInput(false);
+				frame:Hide();
+				hidePopups();
+			else
+				frame:SetPropagateKeyboardInput(true);
+			end
+		end);
 	end
 
 	onSelectCallback = onSelectCallback or nop;
@@ -1248,6 +1276,19 @@ function TRP3_API.popup.showPopup(popupID, popupPosition, popupArgs)
 	local popup = POPUP_STRUCTURE[popupID];
 
 	popup.frame:ClearAllPoints();
+
+	-- Do not steal input if we're in combat.
+	if not InCombatLockdown() then
+		popup.frame:SetScript("OnKeyDown", function(_, key)
+			if key == "ESCAPE" then
+				PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+				popup.frame:SetPropagateKeyboardInput(false);
+				hidePopups();
+			else
+				popup.frame:SetPropagateKeyboardInput(true);
+			end
+		end);
+	end
 
 	if popupPosition and popupPosition.parent then
 		popup.frame:SetParent(popupPosition.parent);
