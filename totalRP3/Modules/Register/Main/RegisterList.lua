@@ -336,7 +336,7 @@ local function decorateCharacterLine(line, elementData)
 			end
 			local unitName, unitRealm = unitIDToInfo(unitID);
 			if isIDIgnored(unitID) then
-				leftTooltipText = leftTooltipText .. "\n - " .. unitName .. " ( " .. unitRealm .. " ) - " .. IGNORED_ICON .. " " .. loc.REG_LIST_IGNORE;
+				leftTooltipText = leftTooltipText .. "\n - " .. unitName .. " ( " .. unitRealm .. " ) - " .. IGNORED_ICON .. " " .. loc.REG_LIST_IGNORE_TITLE;
 				atLeastOneIgnored = true;
 			else
 				leftTooltipText = leftTooltipText .. "\n - " .. unitName .. " ( " .. unitRealm .. " )";
@@ -887,7 +887,7 @@ local function createTabBar()
 	{
 		{loc.REG_LIST_CHAR_TITLE, 1, 150},
 		{loc.REG_LIST_PETS_TITLE, 2, 150},
-		{loc.REG_LIST_IGNORE, 3, 150},
+		{loc.REG_LIST_IGNORE_TITLE, 3, 150},
 	},
 	changeMode
 	);
