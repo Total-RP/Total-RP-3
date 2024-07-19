@@ -766,8 +766,25 @@ function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback,
 	else
 		TRP3_CompanionBrowserTitle:SetText(loc.REG_COMPANION_BROWSER_MOUNT);
 	end
+
 	ui_CompanionBrowserContent.onSelectCallback = onSelectCallback;
 	ui_CompanionBrowserContent.onCancelCallback = onCancelCallback;
+
+	local frame = TRP3_CompanionBrowser;
+	frame:SetScript("OnKeyDown", function(_, key)
+		-- Do not steal input if we're in combat.
+		if InCombatLockdown() then return; end
+
+		if key == "ESCAPE" then
+			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			frame:SetPropagateKeyboardInput(false);
+			-- Hiding frames & Cancel callback is handled within.
+			onCompanionClose();
+		else
+			frame:SetPropagateKeyboardInput(true);
+		end
+	end);
+
 	TRP3_CompanionBrowserFilterBox:SetText("");
 	filteredCompanionBrowser();
 	showPopup(TRP3_CompanionBrowser);
@@ -782,6 +799,22 @@ function TRP3_API.popup.showPetBrowser(profileID, onSelectCallback, onCancelCall
 
 	onSelectCallback = onSelectCallback or nop;
 	onCancelCallback = onCancelCallback or nop;
+
+	frame:SetScript("OnKeyDown", function(_, key)
+		-- Do not steal input if we're in combat.
+		if InCombatLockdown() then return; end
+
+		if key == "ESCAPE" then
+			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			frame:SetPropagateKeyboardInput(false);
+			frame:Hide();
+			hidePopups();
+			-- Handle cancel callback through function.
+			onCancelCallback();
+		else
+			frame:SetPropagateKeyboardInput(true);
+		end
+	end);
 
 	frame:SetDialogProfileID(profileID);
 	frame:SetDialogCallback(function(result, ...)
@@ -1248,6 +1281,19 @@ function TRP3_API.popup.showPopup(popupID, popupPosition, popupArgs)
 	local popup = POPUP_STRUCTURE[popupID];
 
 	popup.frame:ClearAllPoints();
+
+	popup.frame:SetScript("OnKeyDown", function(_, key)
+		-- Do not steal input if we're in combat.
+		if InCombatLockdown() then return; end
+
+		if key == "ESCAPE" then
+			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			popup.frame:SetPropagateKeyboardInput(false);
+			hidePopups();
+		else
+			popup.frame:SetPropagateKeyboardInput(true);
+		end
+	end);
 
 	if popupPosition and popupPosition.parent then
 		popup.frame:SetParent(popupPosition.parent);

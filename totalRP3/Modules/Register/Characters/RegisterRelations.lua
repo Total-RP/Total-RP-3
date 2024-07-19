@@ -171,6 +171,20 @@ local function initRelationEditor(relationID)
 		end, nil, nil, draftRelationTexture});
 	end);
 
+	local frame = TRP3_RelationsList.Editor;
+	frame:SetScript("OnKeyDown", function(_, key)
+		-- Do not steal input if we're in combat.
+		if InCombatLockdown() then return; end
+
+		if key == "ESCAPE" then
+			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			frame:SetPropagateKeyboardInput(false);
+			frame:Hide();
+		else
+			frame:SetPropagateKeyboardInput(true);
+		end
+	end);
+
 	local nameText = relation.name;
 	if not nameText then
 		nameText = loc:GetText("REG_RELATION_" .. relation.id);
