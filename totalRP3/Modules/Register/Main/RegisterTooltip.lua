@@ -1610,7 +1610,7 @@ local function onModuleInit()
 	};
 
 	local HEALTH_FORMAT_TAB = {
-		{loc.CO_TOOLTIP_HEALTH_DISABLED, 0},
+		{loc.CM_DO_NOT_SHOW, 0},
 		{loc.CO_TOOLTIP_HEALTH_NUMBER, 1},
 		{loc.CO_TOOLTIP_HEALTH_PERCENT, 2},
 		{loc.CO_TOOLTIP_HEALTH_BOTH, 3},
@@ -1794,7 +1794,7 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigDropDown",
 				title = loc.CO_TOOLTIP_GUILD,
 				listContent = {
-					{ loc.CO_TOOLTIP_GUILD_HIDDEN, TooltipGuildDisplayOption.Hidden },
+					{ loc.CM_DO_NOT_SHOW, TooltipGuildDisplayOption.Hidden },
 					{ loc.CO_TOOLTIP_GUILD_SHOW_WITH_ORIGINAL, TooltipGuildDisplayOption.ShowWithOriginalGuild },
 					{ loc.CO_TOOLTIP_GUILD_SHOW_WITH_CUSTOM, TooltipGuildDisplayOption.ShowWithCustomGuild },
 					{ loc.CO_TOOLTIP_GUILD_SHOW_WITH_ALL, TooltipGuildDisplayOption.ShowWithAllGuilds },
@@ -1803,7 +1803,7 @@ local function onModuleInit()
 				help = (function()
 					local lines = {};
 					table.insert(lines, loc.CO_TOOLTIP_GUILD_TT);
-					table.insert(lines, string.format("|cnGREEN_FONT_COLOR:%s:|r %s", loc.CO_TOOLTIP_GUILD_HIDDEN, loc.CO_TOOLTIP_GUILD_TT_HIDDEN));
+					table.insert(lines, string.format("|cnGREEN_FONT_COLOR:%s:|r %s", loc.CM_DO_NOT_SHOW, loc.CO_TOOLTIP_GUILD_TT_HIDDEN));
 					table.insert(lines, string.format("|cnGREEN_FONT_COLOR:%s:|r %s", loc.CO_TOOLTIP_GUILD_SHOW_WITH_ORIGINAL, loc.CO_TOOLTIP_GUILD_TT_SHOW_WITH_ORIGINAL));
 					table.insert(lines, string.format("|cnGREEN_FONT_COLOR:%s:|r %s", loc.CO_TOOLTIP_GUILD_SHOW_WITH_CUSTOM, loc.CO_TOOLTIP_GUILD_TT_SHOW_WITH_CUSTOM));
 					table.insert(lines, string.format("|cnGREEN_FONT_COLOR:%s:|r %s", loc.CO_TOOLTIP_GUILD_SHOW_WITH_ALL, loc.CO_TOOLTIP_GUILD_TT_SHOW_WITH_ALL));
@@ -1817,7 +1817,7 @@ local function onModuleInit()
 				title = loc.CO_TOOLTIP_RELATION_LINE,
 				configKey = ConfigKeys.CHARACT_RELATION_LINE,
 				listContent = {
-					{ loc.CO_TOOLTIP_RELATION_LINE_HIDDEN, RelationLineOption.Hidden, loc.CO_TOOLTIP_RELATION_LINE_HIDDEN_TT },
+					{ loc.CM_DO_NOT_SHOW, RelationLineOption.Hidden, loc.CO_TOOLTIP_RELATION_LINE_HIDDEN_TT },
 					{ loc.CO_TOOLTIP_RELATION_LINE_SIMPLE, RelationLineOption.Simple, loc.CO_TOOLTIP_RELATION_LINE_SIMPLE_TT },
 					{ loc.CO_TOOLTIP_RELATION_LINE_FULL, RelationLineOption.Full, loc.CO_TOOLTIP_RELATION_LINE_FULL_TT },
 				}

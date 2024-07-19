@@ -1647,7 +1647,7 @@ local function initStructures()
 	};
 
 	RELATIONSHIP_STATUS_DROPDOWN = {
-		{loc.REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN},
+		{loc.CM_DO_NOT_SHOW, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN},
 		{loc.REG_PLAYER_RELATIONSHIP_STATUS_SINGLE, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.SINGLE},
 		{loc.REG_PLAYER_RELATIONSHIP_STATUS_TAKEN, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.TAKEN},
 		{loc.REG_PLAYER_RELATIONSHIP_STATUS_MARRIED, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.MARRIED},
@@ -1719,7 +1719,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "RIGHT", 0, 5, loc.REG_PLAYER_ICON, loc.REG_PLAYER_ICON_TT
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_TitleFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_TITLE, loc.REG_PLAYER_TITLE_TT);
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_TitleFieldHelp, "RIGHT", 0, 5, loc.REG_TITLE, loc.REG_PLAYER_TITLE_TT);
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_FirstFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_FIRSTNAME, loc.REG_PLAYER_FIRSTNAME_TT:format(Globals.player));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_LastFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_LASTNAME, loc.REG_PLAYER_LASTNAME_TT);
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_FullTitleFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_FULLTITLE, loc.REG_PLAYER_FULLTITLE_TT);
@@ -1772,7 +1772,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_NamePanel_Edit_CancelButton:SetText(loc.CM_CANCEL);
 	TRP3_RegisterCharact_NamePanel_Edit_SaveButton:SetText(loc.CM_SAVE);
 	TRP3_RegisterCharact_NamePanel_EditButton:SetText(loc.CM_EDIT);
-	TRP3_RegisterCharact_Edit_TitleFieldText:SetText(loc.REG_PLAYER_TITLE);
+	TRP3_RegisterCharact_Edit_TitleFieldText:SetText(loc.REG_TITLE);
 	TRP3_RegisterCharact_Edit_FirstFieldText:SetText(loc.REG_PLAYER_FIRSTNAME);
 	TRP3_RegisterCharact_Edit_LastFieldText:SetText(loc.REG_PLAYER_LASTNAME);
 	TRP3_RegisterCharact_Edit_FullTitleFieldText:SetText(loc.REG_PLAYER_FULLTITLE);
@@ -1800,7 +1800,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_ResidenceFieldText:SetText(loc.REG_PLAYER_RESIDENCE);
 	TRP3_RegisterCharact_Edit_BirthplaceFieldText:SetText(loc.REG_PLAYER_BIRTHPLACE);
 
-	setupListBox(TRP3_RegisterCharact_Dropdown_RelationshipField, RELATIONSHIP_STATUS_DROPDOWN, onRelationshipStatusSelection, loc.REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN, 200, false);
+	setupListBox(TRP3_RegisterCharact_Dropdown_RelationshipField, RELATIONSHIP_STATUS_DROPDOWN, onRelationshipStatusSelection, loc.CM_DO_NOT_SHOW, 200, false);
 	Ellyb.Tooltips.getTooltip(TRP3_RegisterCharact_Dropdown_RelationshipField)
 		:SetTitle(loc.REG_PLAYER_RELATIONSHIP_STATUS)
 		:AddLine(loc.REG_PLAYER_RELATIONSHIP_STATUS_TT);

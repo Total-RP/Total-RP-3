@@ -287,12 +287,8 @@ local function onStart()
 		setTooltipForFrame(
 		lineFrame, lineFrame, "RIGHT", 0, -30, -- Tooltip position
 		word, -- Tooltip title
-		("\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffff0000%s"):format( -- Tooltip content
-		loc.CM_L_CLICK,
-		loc.MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD,
-		loc.CM_R_CLICK,
-		loc.MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD
-		)
+		TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD)
+		.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD)
 		);
 		lineFrame.text:SetText(word);
 		lineFrame.value = word;

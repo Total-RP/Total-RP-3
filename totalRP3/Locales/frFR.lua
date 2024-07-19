@@ -50,9 +50,7 @@ L = {
 	["AUTOMATION_ACTION_ROLEPLAY_STATUS_CHANGED_OOC"] = "Le statut du personnage a été changé en HRP.",
 	["AUTOMATION_ACTION_ROLEPLAY_STATUS_DESCRIPTION"] = "Change votre statut de personnage actuel (RP ou HRP).",
 	["AUTOMATION_ACTION_ROLEPLAY_STATUS_ERROR"] = "Echec du changement de statut du personnage : %s",
-	["AUTOMATION_CATEGORY_CHARACTER"] = "Personnage",
 	["AUTOMATION_CATEGORY_MAP_SCANS"] = "Scans de carte",
-	["AUTOMATION_CATEGORY_NAMEPLATES"] = "Barres d'info",
 	["AUTOMATION_CATEGORY_PROFILE"] = "Profil",
 	["AUTOMATION_CONDITION_ROLEPLAY_STATUS_ERROR"] = "Echec de validation de la condition 'rpstatus' : %s",
 	["AUTOMATION_ERROR_INVALID_OPTION"] = "Option invalide '%1$s' (doit être l'une des options suivantes : %s)",
@@ -200,6 +198,7 @@ Importer du contenu créé avec une version différente peut poser des soucis en
 	["CM_VALUE"] = "Valeur",
 	["CM_WHITE"] = "Blanc",
 	["CM_YELLOW"] = "Jaune",
+	["CM_DO_NOT_SHOW"] = "Ne pas afficher",
 	["CO_ADVANCED_BROADCAST"] = "Communications d'addon",
 	["CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST"] = "Garder le canal de diffusion en dernier",
 	["CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST_TT"] = "Cette option s'assure que le canal de diffusion soit toujours en dernier dans la liste des canaux de discussion.",
@@ -464,7 +463,6 @@ Classe: 50 caractères|r]=],
 	["CO_TOOLTIP_CURRENT_SIZE"] = "Longueur maximale de l'information \"actuellement\"",
 	["CO_TOOLTIP_FT"] = "Afficher le titre complet",
 	["CO_TOOLTIP_GUILD"] = "Afficher l'information de la guilde",
-	["CO_TOOLTIP_GUILD_HIDDEN"] = "Cacher",
 	["CO_TOOLTIP_GUILD_SHOW_WITH_ALL"] = "Afficher toutes",
 	["CO_TOOLTIP_GUILD_SHOW_WITH_CUSTOM"] = "Afficher personnalisée",
 	["CO_TOOLTIP_GUILD_SHOW_WITH_ORIGINAL"] = "Afficher originale",
@@ -475,7 +473,6 @@ Classe: 50 caractères|r]=],
 	["CO_TOOLTIP_GUILD_TT_SHOW_WITH_ORIGINAL"] = "Affiche la guilde dans l'infobulle, mais ne remplace pas le nom et le rang si personnalisés dans le profil.",
 	["CO_TOOLTIP_HEALTH"] = "Afficher les PV",
 	["CO_TOOLTIP_HEALTH_BOTH"] = "Nombre + Pourcentage",
-	["CO_TOOLTIP_HEALTH_DISABLED"] = "Désactivé",
 	["CO_TOOLTIP_HEALTH_NUMBER"] = "Nombre",
 	["CO_TOOLTIP_HEALTH_PERCENT"] = "Pourcentage",
 	["CO_TOOLTIP_HEALTH_TT"] = "Ceci ne sera affiché que si la cible n'a pas tous ses PV.",
@@ -731,7 +728,6 @@ Ce module modifie les noms sur les barres de joueur et cible de Blizzard pour ut
 	["NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP"] = "Le nombre de caractères maximum à afficher dans les noms et les titres. Les noms dépassant cette longueur seront coupés.",
 	["NAMEPLATES_CONFIG_MAX_TITLE_CHARS"] = "Longueur de titre complet max",
 	["NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP"] = "Le nombre de caractères maximum à afficher dans les titres complets. Les titres dépassant cette longueur seront coupés.",
-	["NAMEPLATES_CONFIG_MENU_TITLE"] = "Barres d'info",
 	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Veuillez noter que seules les barres d'infos |cff449fe0Blizzard|r, |cff9966ffKui|r et |cffa8deffPlater|r sont actuellement supportées. Réferez-vous aux bulles d'aide de chaque paramètre ci-dessous pour plus d'information.",
 	["NAMEPLATES_CONFIG_PAGE_SETTINGS_MAY_REQUIRE_TOGGLE_HELP"] = "Vous devrez peut-être désactiver et réactiver vos barres d'info pour que les paramètres soient appliqués.",
 	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "Paramètres de barres d'info",
@@ -753,7 +749,7 @@ Ce module modifie les noms sur les barres de joueur et cible de Blizzard pour ut
 	["NAMEPLATES_MODULE_DESCRIPTION"] = "Active la personnalisation des barres d'info avec les informations contenues dans les profils RP.",
 	["NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY"] = "Ce module a été automatiquement désactivé dû à une dépendance manquante.",
 	["NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL"] = "Ce module a été automatiquement désactivé dû à un conflit avec un autre module ou addon.",
-	["NAMEPLATES_MODULE_NAME"] = "Barres d'info",
+	["NAMEPLATES_NAME"] = "Barres d'info",
 	["NEW_VERSION"] = [=[|cff00ff00Une nouvelle version de Total RP 3 (v %s) est disponible.
 
 |cffffff00Nous vous encourageons fortement à mettre à jour l'add-on pour profiter des dernières corrections de bugs.|r
@@ -934,7 +930,6 @@ Ces outils vous permettent aussi d'insérer |cffffff00 des images, des icônes o
 	["REG_COMPANION_TF_PROFILE"] = "Profil de compagnon",
 	["REG_COMPANION_TF_PROFILE_MOUNT"] = "Profil de monture",
 	["REG_COMPANION_TF_UNBOUND"] = "Délier le profil",
-	["REG_COMPANION_TITLE"] = "Titre",
 	["REG_COMPANION_UNBOUND"] = "Délier ...",
 	["REG_COMPANIONS"] = "Compagnons",
 	["REG_DELETE_WARNING"] = [=[Êtes-vous sûr de vouloir supprimer le profil de %s?
@@ -1055,7 +1050,6 @@ Vous devriez la réduire.]=],
 	["REG_PLAYER_BIRTHPLACE_TT"] = [=[Vous pouvez indiquer ici le lieu de naissance de votre personnage. Cela peut être une région, une zone, ou même un continent. C'est à vous de décider la précision avec laquelle vous souhaitez l'indiquer.
 
 |c00ffff00Vous pouvez utiliser le bouton à droite pour régler facilement votre position actuelle comme Lieu de naissance.]=],
-	["REG_PLAYER_CARACT"] = "Caractéristiques",
 	["REG_PLAYER_CHANGE_CONFIRM"] = [=[Il se peut que vous ayez effectué des changements non sauvegardés.
 Voulez-vous changer de page ?
 |cffff9900Tout changement non-sauvegardé sera perdu.]=],
@@ -1207,7 +1201,6 @@ Il y a plusieurs manières de l'indiquer:|c0000ff00
 	["REG_PLAYER_RELATIONSHIP_STATUS_SINGLE"] = "Célibataire",
 	["REG_PLAYER_RELATIONSHIP_STATUS_TAKEN"] = "En couple",
 	["REG_PLAYER_RELATIONSHIP_STATUS_TT"] = "Indique la situation amoureuse de votre personnage. Sélectionnez \"Ne pas afficher\" si vous désirez garder cette information confidentielle.",
-	["REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN"] = "Ne pas afficher",
 	["REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED"] = "Veuf/Veuve",
 	["REG_PLAYER_RESIDENCE"] = "Lieu de résidence",
 	["REG_PLAYER_RESIDENCE_SHOW"] = "Coordonnées de résidence",
@@ -1230,12 +1223,11 @@ Si vous ne voulez pas indiquer la personnalité de votre personnage ainsi, laiss
 	["REG_PLAYER_STYLE_GUILD"] = "Appartenance à la guilde",
 	["REG_PLAYER_STYLE_GUILD_IC"] = "Membre RP",
 	["REG_PLAYER_STYLE_GUILD_OOC"] = "Membre HRP",
-	["REG_PLAYER_STYLE_HIDE"] = "Ne pas afficher",
 	["REG_PLAYER_STYLE_INJURY"] = "Accepte les blessures",
 	["REG_PLAYER_STYLE_PERMI"] = "Avec permission du joueur",
 	["REG_PLAYER_STYLE_ROMANCE"] = "Accepte la romance",
 	["REG_PLAYER_STYLE_RPSTYLE"] = "Style de roleplay",
-	["REG_PLAYER_TITLE"] = "Titre",
+	["REG_TITLE"] = "Titre",
 	["REG_PLAYER_TITLE_TT"] = [=[Le titre de votre personnage est le titre par lequel votre personnage est habituellement appelé. Evitez les titres longs, l'attribut de Titre complet y est consacré.
 
 Exemple de |c0000ff00titres appropriés|r :

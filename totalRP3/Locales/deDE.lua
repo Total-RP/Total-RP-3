@@ -119,6 +119,7 @@ Das Importieren des Inhaltes einer anderen Version könnte aufgrund von Inkompat
 	["CM_VALUE"] = "Wert",
 	["CM_WHITE"] = "Weiß",
 	["CM_YELLOW"] = "Gelb",
+	["CM_DO_NOT_SHOW"] = "Nicht anzeigen",
 	["CO_ADVANCED_BROADCAST"] = "Add-on Kommunikationen",
 	["CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST"] = "Broadcast-Kanal as Ende setzen",
 	["CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST_TT"] = "Durch diese Option bleibt dieser Kanal immer der letzte in Eurer Kanalliste.",
@@ -629,7 +630,6 @@ Diese Tools erlauben dir auch das Einfügen von |cffffff00Bildern, Icons oder Li
 	["REG_COMPANION_TF_PROFILE"] = "Begleiterprofil",
 	["REG_COMPANION_TF_PROFILE_MOUNT"] = "Reittierprofil",
 	["REG_COMPANION_TF_UNBOUND"] = "Profil abwählen",
-	["REG_COMPANION_TITLE"] = "Titel",
 	["REG_COMPANION_UNBOUND"] = "Entbinden von ...",
 	["REG_COMPANIONS"] = "Begleiter",
 	["REG_DELETE_WARNING"] = [=[Bist du sicher, dass du das Profil "%s" löschen möchtest?
@@ -748,7 +748,6 @@ Du solltest versuchen, die Länge reduzieren.]=],
 	["REG_PLAYER_BIRTHPLACE_TT"] = [=[Hier kannst du den Geburtsort deines Charakters angeben. Das kann entweder ein Ort, eine Zone oder ein Kontinent sein. Es liegt ganz an dir, wie akkurat du es angeben möchtest.
 
 |c00ffff00Du kannst den Button rechts verwenden, um ganz einfach den aktuellen Ort als deinen Geburtsort festzulegen.]=],
-	["REG_PLAYER_CARACT"] = "Charakteristiken",
 	["REG_PLAYER_CHANGE_CONFIRM"] = [=[Du hast ungespeicherte Daten.
 Möchtest du die Seite dennoch wechseln?
 |cffff9900Alle änderungen gehen verloren.]=],
@@ -892,7 +891,6 @@ Hierfür gibt es mehrere Möglichkeiten:|c0000ff00
 	["REG_PLAYER_RELATIONSHIP_STATUS_SINGLE"] = "Ledig",
 	["REG_PLAYER_RELATIONSHIP_STATUS_TAKEN"] = "Vergeben",
 	["REG_PLAYER_RELATIONSHIP_STATUS_TT"] = "Zeigt den Beziehungsstatus deines Charakters. Benutze \"Nicht zeigen\" wenn diese Information geheim bleiben soll.",
-	["REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN"] = "Nicht zeigen",
 	["REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED"] = "Verwitwet",
 	["REG_PLAYER_RESIDENCE"] = "Heimat",
 	["REG_PLAYER_RESIDENCE_SHOW"] = "Wohnort Koordinaten",
@@ -915,12 +913,11 @@ Wenn du die Persönlichkeit deines Charakter auf diese Art nicht angeben möchte
 	["REG_PLAYER_STYLE_GUILD"] = "Gildenmitgliedschaft",
 	["REG_PLAYER_STYLE_GUILD_IC"] = "IC Mitglied",
 	["REG_PLAYER_STYLE_GUILD_OOC"] = "OOC Mitglied",
-	["REG_PLAYER_STYLE_HIDE"] = "Nicht anzeigen",
 	["REG_PLAYER_STYLE_INJURY"] = "Akzeptiere Charakterverletzungen",
 	["REG_PLAYER_STYLE_PERMI"] = "Mit Spielererlaubnis",
 	["REG_PLAYER_STYLE_ROMANCE"] = "Akzeptiere Charakterromanze",
 	["REG_PLAYER_STYLE_RPSTYLE"] = "Rollenspielstil",
-	["REG_PLAYER_TITLE"] = "Titel",
+	["REG_TITLE"] = "Titel",
 	["REG_PLAYER_TITLE_TT"] = [=[Der Titel deines Charakters ist der Titel, mit dem er angesprochen wird. Vermeide bitte lange Titel, für diesen Zweck kannst du das Feld "Kompletter Titel" verwenden.
 
 Beispiele |c0000ff00passender Titel|r :

@@ -98,6 +98,7 @@ L = {
 	["CM_VALUE"] = "Valor",
 	["CM_WHITE"] = "Blanco",
 	["CM_YELLOW"] = "Amarillo",
+	["CM_DO_NOT_SHOW"] = "No mostrar",
 	["CO_ADVANCED_LANGUAGES"] = "Lenguajes",
 	["CO_ADVANCED_LANGUAGES_REMEMBER"] = "Recordar el último lenguaje usado",
 	["CO_ADVANCED_LANGUAGES_REMEMBER_TT"] = "Total RP 3 recordará el lenguaje que usaste la última vez que iniciaste sesión y automáticamente seleccionará ese lenguaje cuando vuelvas a iniciar.",
@@ -231,7 +232,6 @@ L = {
 	["CO_TOOLTIP_GUILD"] = "Mostrar información de guild",
 	["CO_TOOLTIP_HEALTH"] = "Mostrar salud",
 	["CO_TOOLTIP_HEALTH_BOTH"] = "Número + Porcentaje",
-	["CO_TOOLTIP_HEALTH_DISABLED"] = "Desactivado",
 	["CO_TOOLTIP_HEALTH_NUMBER"] = "Número",
 	["CO_TOOLTIP_HEALTH_PERCENT"] = "Porcentaje",
 	["CO_TOOLTIP_HEALTH_TT"] = "Se mostrará si el objetivo no tiene la salud completa",
@@ -335,7 +335,6 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["REG_COMPANION_TF_PROFILE"] = "Perfil de compañero",
 	["REG_COMPANION_TF_PROFILE_MOUNT"] = "Perfil de montura",
 	["REG_COMPANION_TF_UNBOUND"] = "Desvincular del perfil",
-	["REG_COMPANION_TITLE"] = "Título",
 	["REG_COMPANIONS"] = "Compañeros",
 	["REG_DELETE_WARNING"] = "¿Seguro que quieres eliminar el perfil %s?",
 	["REG_IGNORE_TOAST"] = "Personaje ignorado",
@@ -442,7 +441,6 @@ Debes reducirlo.]=],
 	["REG_PLAYER_BIRTHPLACE_TT"] = [=[Aquí puedes indicar el lugar de nacimiento tu personaje. Puede ser una región, zona o incluso un continente. Tú eres quien decide cuán preciso quieres que sea.
 
 |c00ffff00Puedes usar el botón de la derecha para seleccionar tu ubicación actual como lugar de nacimiento.]=],
-	["REG_PLAYER_CARACT"] = "Características",
 	["REG_PLAYER_CHANGE_CONFIRM"] = [=[Puede que tengas algunos cambios sin guardar.
 ¿Deseas cambiar la página de todos modos?
 |cffff9900Cualquier cambio se perderá.]=],
@@ -568,12 +566,11 @@ Ten en cuenta que si tu personaje es un vagabundo, tendrás que cambiar la infor
 	["REG_PLAYER_STYLE_GUILD"] = "Miembro de hermandad",
 	["REG_PLAYER_STYLE_GUILD_IC"] = "Miembro ER",
 	["REG_PLAYER_STYLE_GUILD_OOC"] = "Miembro FdR",
-	["REG_PLAYER_STYLE_HIDE"] = "No mostrar",
 	["REG_PLAYER_STYLE_INJURY"] = "Aceptación de heridas",
 	["REG_PLAYER_STYLE_PERMI"] = "Con el permiso del jugador",
 	["REG_PLAYER_STYLE_ROMANCE"] = "Aceptación de romances",
 	["REG_PLAYER_STYLE_RPSTYLE"] = "Estilo de rol",
-	["REG_PLAYER_TITLE"] = "Título",
+	["REG_TITLE"] = "Título",
 	["REG_PLAYER_TITLE_TT"] = [=[El título de tu personaje es el título con el que tu personaje es llamado normalmente. Evita colocar títulos largos, para ello se ha de utilizar el título completo.
 
 Ejemplos de |c0000ff00títulos apropiados|r:

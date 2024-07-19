@@ -376,9 +376,9 @@ local function onStart()
 			title = loc.CO_TOOLBAR_VISIBILITY,
 			help = loc.CO_TOOLBAR_VISIBILITY_HELP,
 			listContent = {
-				{loc.CO_TOOLBAR_VISIBILITY_1, TRP3_ToolbarVisibilityOption.AlwaysShow},
+				{loc.CM_DO_NOT_SHOW, TRP3_ToolbarVisibilityOption.AlwaysHidden},
 				{loc.CO_TOOLBAR_VISIBILITY_2, TRP3_ToolbarVisibilityOption.OnlyShowInCharacter},
-				{loc.CO_TOOLBAR_VISIBILITY_3, TRP3_ToolbarVisibilityOption.AlwaysHidden}
+				{loc.CO_TOOLBAR_VISIBILITY_1, TRP3_ToolbarVisibilityOption.AlwaysShow}
 			},
 			configKey = CONFIG_TOOLBAR_VISIBILITY,
 			listCancel = true,

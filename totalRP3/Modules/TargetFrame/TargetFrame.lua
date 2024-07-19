@@ -331,9 +331,9 @@ local function onStart()
 			title = loc.CO_TARGETFRAME_USE,
 			help = loc.CO_TARGETFRAME_USE_TT,
 			listContent = {
-				{loc.CO_TOOLBAR_VISIBILITY_1, 1},
+				{loc.CM_DO_NOT_SHOW, 3},
 				{loc.CO_TOOLBAR_VISIBILITY_2, 2},
-				{loc.CO_TOOLBAR_VISIBILITY_3, 3}
+				{loc.CO_TOOLBAR_VISIBILITY_1, 1}
 			},
 			configKey = CONFIG_TARGET_USE,
 			listWidth = nil,
