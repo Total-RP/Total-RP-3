@@ -64,7 +64,7 @@ local function GetWalkupButtonText(selection)
 	local text = TRP3_MenuUtil.GetElementText(selection);
 
 	if status == AddOn_TotalRP3.Enums.WALKUP.YES then
-		text = string.join(" ", "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-walkup:16:16|t ", text);
+		text = string.join(" ", "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-walkup:16:16|t ", text);
 	end
 
 	return text;
@@ -95,7 +95,7 @@ local function GenerateWalkupMenu(_, rootDescription)
 	do  -- Walkup Yes
 		local walkup = AddOn_TotalRP3.Enums.WALKUP.YES;
 		local elementDescription = rootDescription:CreateRadio(L.CM_YES, IsWalkupFriendly, SetWalkup, walkup);
-		TRP3_MenuUtil.AttachTexture(elementDescription, [[Interface\AddOns\totalRP3\Resources\UI\ui-walkup.tga]]);
+		TRP3_MenuUtil.AttachTexture(elementDescription, [[Interface\AddOns\totalRP3\Resources\UI\ui-icon-walkup.tga]]);
 		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_WU_YES_TT);
 	end
 

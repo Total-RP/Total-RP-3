@@ -88,7 +88,7 @@ function TRP3_API.register.inits.notesInit()
 	end
 
 	TRP3_RegisterNotesViewContainer:SetTitleText(loc.REG_PLAYER_NOTES);
-	TRP3_RegisterNotesViewContainer.Notice:SetText(string.format(loc.REG_PLAYER_NOTES_NOTICE, "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:16:16|t"));
+	TRP3_RegisterNotesViewContainer.Notice:SetText(string.format(loc.REG_PLAYER_NOTES_NOTICE, "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-note:22:22|t"));
 
 	TRP3_RegisterNotesViewAccount.Title:SetText(loc.REG_PLAYER_NOTES_ACCOUNT);
 

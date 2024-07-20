@@ -226,10 +226,9 @@ local selectedIDs = {};
 local ICON_SIZE = 30;
 local currentMode = 1;
 local IGNORED_ICON = Utils.str.texture("Interface\\Buttons\\UI-GroupLoot-Pass-Down", 15);
-local NEW_ABOUT_ICON = "|A:QuestNormal:15:15|a";
-local PROFILE_NOTES_ICON = "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:15:15|t";
-local WALKUP_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-walkup:15:15|t";
-local WALKUP_ICON_OFFSET = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-walkup:15:15:5|t";
+local NEW_ABOUT_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread:15:15|t";
+local PROFILE_NOTES_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-note:15:15|t";
+local WALKUP_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-walkup:15:15|t";
 local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 15);
 
 local function onLineClicked(self, button)
@@ -386,7 +385,7 @@ local function decorateCharacterLine(line, elementData)
 		table.insert(rightTooltipTexts, PROFILE_NOTES_ICON .. " " .. loc.REG_NOTES_PROFILE);
 	end
 	if isWalkupFriendly then
-		table.insert(flags, WALKUP_ICON_OFFSET);
+		table.insert(flags, WALKUP_ICON);
 		table.insert(rightTooltipTexts, WALKUP_ICON .. " " .. loc.DB_STATUS_WU);
 	end
 	if profile.hasMatureContent then
@@ -1102,11 +1101,12 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				buttonStructure.tooltipSub = name .. "\n\n" ..  TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER);
 
 				if unitID ~= Globals.player_id and profile.about and not profile.about.read then
-					buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateAtlasMarkup("QuestNormal", { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r"  .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER);
+					local icon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay";
+					buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateFileMarkup(icon, { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r"  .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER);
 					buttonStructure.alert = true;
 				end
 			end,
-			alertIcon = "QuestNormal",
+			alertIcon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay",
 		});
 	end
 end);
