@@ -575,7 +575,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				end
 			end,
 			onMouseDown = companionProfileSelectionList,
-			alertIcon = "QuestNormal",
+			alertIcon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay",
 			adapter = function(buttonStructure, unitID)
 				-- Initialize the buttonStructure parts.
 				buttonStructure.alert = false;
@@ -597,7 +597,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					else
 						-- If pet data is unread, add alert.
 						if not profile.data.read then
-							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateAtlasMarkup("QuestNormal", { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "|r";
+							local icon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay";
+							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateFileMarkup(icon, { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "|r";
 							buttonStructure.alert = true;
 						else
 							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION);
@@ -650,7 +651,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				return profileID ~= nil;
 			end,
 			onMouseDown = companionProfileSelectionList,
-			alertIcon = "QuestNormal",
+			alertIcon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay",
 			adapter = function(buttonStructure, unitID)
 				-- Initialize the buttonStructure parts.
 				buttonStructure.alert = false;
@@ -678,7 +679,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					else
 						-- If mount data is unread, add alert.
 						if not profile.data.read then
-							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateAtlasMarkup("QuestNormal", { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT) .. "|r";
+							local icon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay";
+							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateFileMarkup(icon, { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT) .. "|r";
 							buttonStructure.alert = true;
 						else
 							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT);
