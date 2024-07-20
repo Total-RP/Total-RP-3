@@ -459,7 +459,7 @@ local function updateAboutTabIcon(context)
 	if not context.isPlayer and context.profile.about and not context.profile.about.read then
 		aboutUnread = true;
 	end
-	tabGroup.tabs[2].Unread:SetShown(aboutUnread);
+	tabGroup.tabs[2]:SetIcon(aboutUnread and "QuestNormal" or nil);
 end
 
 local function onInformationUpdated(profileID, infoType)
@@ -537,14 +537,6 @@ local function createTabBar()
 				callback();
 			end
 		end);
-
-	-- Adding unread flag
-	tabGroup.tabs[2].textMargin = 20;
-	local unreadFlag = tabGroup.tabs[2]:CreateTexture(nil, "ARTWORK");
-	unreadFlag:SetAtlas("QuestNormal");
-	unreadFlag:SetSize(15, 15);
-	unreadFlag:SetPoint("RIGHT", tabGroup.tabs[2].Text, "LEFT", 0, 0);
-	tabGroup.tabs[2].Unread = unreadFlag;
 
 	TRP3_API.register.player.tabGroup = tabGroup;
 end
