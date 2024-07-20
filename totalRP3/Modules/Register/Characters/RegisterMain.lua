@@ -459,7 +459,7 @@ local function updateAboutTabIcon(context)
 	if not context.isPlayer and context.profile.about and not context.profile.about.read then
 		aboutUnread = true;
 	end
-	tabGroup.tabs[2]:SetIcon(aboutUnread and "QuestNormal" or nil);
+	tabGroup.tabs[2]:SetIcon(aboutUnread and "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread" or nil);
 end
 
 local function onInformationUpdated(profileID, infoType)
