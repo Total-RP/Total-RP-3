@@ -11,6 +11,10 @@ local CONFIG_CONTENT_PREFIX = "toolbar_content_";
 local CONFIG_HIDE_TITLE = "toolbar_hide_title";
 local CONFIG_TOOLBAR_VISIBILITY = "toolbar_visibility";
 
+local CONFIG_TOOLBAR_POS_X = "CONFIG_TOOLBAR_POS_X";
+local CONFIG_TOOLBAR_POS_Y = "CONFIG_TOOLBAR_POS_Y";
+local CONFIG_TOOLBAR_POS_A = "CONFIG_TOOLBAR_POS_A";
+
 TRP3_ToolbarVisibilityOption = {
 	AlwaysShow = 1,
 	OnlyShowInCharacter = 2,
@@ -85,7 +89,7 @@ local function onStart()
 	-- imports
 	local toolbarContainer, mainTooltip = TRP3_ToolbarContainer, TRP3_MainTooltip;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
-	local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForFrame;
+	local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 	local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -105,6 +109,16 @@ local function onStart()
 		return TRP3_MarkupUtil.GenerateIconMarkup(buttonStructure.icon, { size = 32 }) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
 	end
 
+	local function updateToolbarButtonTooltip(toolbarButton)
+		-- Refreshing the tooltip
+		local tooltipAnchor = "TOP";
+		local anchorMargin = 5;
+		if getConfigValue(CONFIG_TOOLBAR_POS_A):find("TOP") then
+			tooltipAnchor = "BOTTOM";
+			anchorMargin = -5;
+		end
+		TRP3_API.ui.tooltip.setTooltipAnchorForFrame(toolbarButton, tooltipAnchor, 0, anchorMargin);
+	end
 
 	local function buildToolbar()
 		local maxButtonPerLine = getConfigValue(CONFIG_ICON_MAX_PER_LINE);
@@ -179,7 +193,8 @@ local function onStart()
 					end
 				end);
 				if buttonStructure.tooltip then
-					setTooltipForFrame(uiButton, uiButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+					setTooltipForSameFrame(uiButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+					updateToolbarButtonTooltip(uiButton);
 				end
 				uiButton:SetWidth(buttonSize);
 				uiButton:SetHeight(buttonSize);
@@ -287,8 +302,8 @@ local function onStart()
 		-- Setting the textures
 		toolbarButton:SetIconTexture(buttonStructure.icon);
 
-		-- Refreshing the tooltip
-		setTooltipForFrame(toolbarButton, toolbarButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+		setTooltipForSameFrame(toolbarButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+		updateToolbarButtonTooltip(toolbarButton);
 	end
 	TRP3_API.toolbar.updateToolbarButton = updateToolbarButton;
 
@@ -315,15 +330,11 @@ local function onStart()
 	-- Position
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local CONFIG_TOOLBAR_POS_X = "CONFIG_TOOLBAR_POS_X";
-	local CONFIG_TOOLBAR_POS_Y = "CONFIG_TOOLBAR_POS_Y";
-	local CONFIG_TOOLBAR_POS_A = "CONFIG_TOOLBAR_POS_A";
-
 	registerConfigKey(CONFIG_TOOLBAR_POS_A, "TOP");
 	registerConfigKey(CONFIG_TOOLBAR_POS_X, 0);
 	registerConfigKey(CONFIG_TOOLBAR_POS_Y, -30);
-	toolbar:SetPoint(getConfigValue("CONFIG_TOOLBAR_POS_A"), UIParent, getConfigValue("CONFIG_TOOLBAR_POS_A"),
-	getConfigValue("CONFIG_TOOLBAR_POS_X"), getConfigValue("CONFIG_TOOLBAR_POS_Y"));
+	toolbar:SetPoint(getConfigValue(CONFIG_TOOLBAR_POS_A), UIParent, getConfigValue(CONFIG_TOOLBAR_POS_A),
+	getConfigValue(CONFIG_TOOLBAR_POS_X), getConfigValue(CONFIG_TOOLBAR_POS_Y));
 
 	toolbar:RegisterForDrag("LeftButton");
 	toolbar:SetMovable(true);
@@ -336,6 +347,11 @@ local function onStart()
 		setConfigValue(CONFIG_TOOLBAR_POS_A, anchor);
 		setConfigValue(CONFIG_TOOLBAR_POS_X, x);
 		setConfigValue(CONFIG_TOOLBAR_POS_Y, y);
+
+		-- Update tooltip anchors
+		for _,uiButton in pairs(uiButtons) do
+			updateToolbarButtonTooltip(uiButton);
+		end
 	end);
 
 	function TRP3_API.toolbar.reset()

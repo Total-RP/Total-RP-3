@@ -499,6 +499,15 @@ local isIDIgnored = TRP3_API.register.isIDIgnored;
 
 local ui_GlanceBar;
 
+local CONFIG_GLANCE_PARENT = "CONFIG_GLANCE_PARENT";
+local CONFIG_GLANCE_LOCK = "CONFIG_GLANCE_LOCK";
+local CONFIG_GLANCE_ANCHOR_X = "CONFIG_GLANCE_ANCHOR_X";
+local CONFIG_GLANCE_ANCHOR_Y = "CONFIG_GLANCE_ANCHOR_Y";
+
+local function getParentFrame()
+	return _G[getConfigValue(CONFIG_GLANCE_PARENT)] or TargetFrame;
+end
+
 -- Always build UI on init. Because maybe other modules would like to anchor it on start.
 local function onInit()
 	ui_GlanceBar = CreateFrame("Frame", "TRP3_GlanceBar", UIParent, "TRP3_GlanceBarTemplate");
@@ -684,6 +693,26 @@ function TRP3_API.register.glance.addClickHandlers(text)
 	return text;
 end
 
+local function updateGlanceButtonsTooltips()
+	-- We check the parent's anchor to know where the glance bar probably is.
+	-- This will not always work, but should is the vast majority of cases.
+	local anchorToTest = getParentFrame():GetPoint(1);
+	if not anchorToTest then return; end
+
+	local tooltipAnchor = "TOP";
+	local anchorMargin = 5;
+	if anchorToTest:find("TOP") then
+		tooltipAnchor = "BOTTOM";
+		anchorMargin = -5;
+	end
+
+	-- Refreshing each glance button tooltip
+	for i=1,5,1 do
+		local button = _G["TRP3_GlanceBarSlot"..i];
+		TRP3_API.ui.tooltip.setTooltipAnchorForFrame(button, tooltipAnchor, 0, anchorMargin);
+	end
+end
+
 local function displayGlanceSlots()
 	local glanceTab = getGlanceTab();
 
@@ -712,6 +741,7 @@ local function displayGlanceSlots()
 					TTText = TRP3_API.register.glance.addClickHandlers(TTText);
 				end
 				setTooltipForSameFrame(button, "TOP", 0, 5, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
+				updateGlanceButtonsTooltips();
 			else
 				button:SetAlpha(0.25);
 				if isCurrentMine then
@@ -728,6 +758,7 @@ local function displayGlanceSlots()
 						TTText = TRP3_API.register.glance.addClickHandlers(TTText);
 					end
 					setTooltipForSameFrame(button, "TOP", 0, 5, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
+					updateGlanceButtonsTooltips();
 				else
 					setTooltipForSameFrame(button);
 				end
@@ -816,17 +847,7 @@ local function onStart()
 	-- Config - Position
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local UIParent, GetCursorPosition, TargetFrame = UIParent, GetCursorPosition, TargetFrame;
 	unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
-
-	local CONFIG_GLANCE_PARENT = "CONFIG_GLANCE_PARENT";
-	local CONFIG_GLANCE_LOCK = "CONFIG_GLANCE_LOCK";
-	local CONFIG_GLANCE_ANCHOR_X = "CONFIG_GLANCE_ANCHOR_X";
-	local CONFIG_GLANCE_ANCHOR_Y = "CONFIG_GLANCE_ANCHOR_Y";
-
-	local function getParentFrame()
-		return _G[getConfigValue(CONFIG_GLANCE_PARENT)] or TargetFrame;
-	end
 
 	local function replaceBar()
 		local parentFrame = getParentFrame();
@@ -852,6 +873,9 @@ local function onStart()
 			setConfigValue(CONFIG_GLANCE_ANCHOR_Y, ypos);
 
 			replaceBar();
+		end
+		if ui_GlanceBar:IsVisible() then
+			updateGlanceButtonsTooltips();
 		end
 	end
 

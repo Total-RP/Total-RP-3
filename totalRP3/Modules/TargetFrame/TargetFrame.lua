@@ -3,6 +3,10 @@
 
 local ui_TargetFrame;
 
+local CONFIG_TARGET_POS_X = "CONFIG_TARGET_POS_X";
+local CONFIG_TARGET_POS_Y = "CONFIG_TARGET_POS_Y";
+local CONFIG_TARGET_POS_A = "CONFIG_TARGET_POS_A";
+
 -- Always build UI on init. Because maybe other modules would like to anchor it on start.
 local function onInit()
 	ui_TargetFrame = CreateFrame("Frame", "TRP3_TargetFrame", UIParent, "TRP3_TargetFrameTemplate");
@@ -54,6 +58,17 @@ local function onStart()
 			icon = TRP3_MarkupUtil.GenerateFileMarkup(buttonStructure.iconFile, { size = 32 }) .. " ";
 		end
 		return icon .. (buttonStructure.tooltip or buttonStructure.configText);
+	end
+
+	local function updateTargetFrameButtonTooltip(targetButton)
+		-- Refreshing the tooltip
+		local tooltipAnchor = "TOP";
+		local anchorMargin = 5;
+		if getConfigValue(CONFIG_TARGET_POS_A):find("TOP") then
+			tooltipAnchor = "BOTTOM";
+			anchorMargin = -5;
+		end
+		TRP3_API.ui.tooltip.setTooltipAnchorForFrame(targetButton, tooltipAnchor, 0, anchorMargin);
 	end
 
 	local function createButton(index)
@@ -138,6 +153,7 @@ local function onStart()
 			uiButton.targetType = currentTargetType;
 			if buttonStructure.tooltip then
 				setTooltipForSameFrame(uiButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+				updateTargetFrameButtonTooltip(uiButton);
 			else
 				setTooltipForSameFrame(uiButton);
 			end
@@ -265,17 +281,13 @@ local function onStart()
 	-- Position
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local CONFIG_TARGET_POS_X = "CONFIG_TARGET_POS_X";
-	local CONFIG_TARGET_POS_Y = "CONFIG_TARGET_POS_Y";
-	local CONFIG_TARGET_POS_A = "CONFIG_TARGET_POS_A";
-
 	registerConfigKey(CONFIG_TARGET_POS_A, "BOTTOM");
 	registerConfigKey(CONFIG_TARGET_POS_X, 0);
 	registerConfigKey(CONFIG_TARGET_POS_Y, 200);
 
 	local function reposition()
-		ui_TargetFrame:SetPoint(getConfigValue("CONFIG_TARGET_POS_A"), UIParent, getConfigValue("CONFIG_TARGET_POS_A"),
-			getConfigValue("CONFIG_TARGET_POS_X"), getConfigValue("CONFIG_TARGET_POS_Y"));
+		ui_TargetFrame:SetPoint(getConfigValue(CONFIG_TARGET_POS_A), UIParent, getConfigValue(CONFIG_TARGET_POS_A),
+			getConfigValue(CONFIG_TARGET_POS_X), getConfigValue(CONFIG_TARGET_POS_Y));
 	end
 	reposition();
 
@@ -296,6 +308,11 @@ local function onStart()
 		setConfigValue(CONFIG_TARGET_POS_A, anchor);
 		setConfigValue(CONFIG_TARGET_POS_X, x);
 		setConfigValue(CONFIG_TARGET_POS_Y, y);
+
+		-- Update tooltip anchors
+		for _,uiButton in pairs(uiButtons) do
+			updateTargetFrameButtonTooltip(uiButton);
+		end
 	end);
 
 	ui_TargetFrame.Header:ClearAllPoints();
