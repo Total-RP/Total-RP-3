@@ -847,7 +847,6 @@ local function onStart()
 	-- Config - Position
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local UIParent, GetCursorPosition, TargetFrame = UIParent, GetCursorPosition, TargetFrame;
 	unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 
 	local function replaceBar()
