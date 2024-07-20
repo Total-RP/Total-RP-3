@@ -962,7 +962,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 			if notifText == "" then
 				notifText = " "; -- Prevent bad right line height
 			end
-			tooltipBuilder:AddDoubleLine(notifText, clientText, colors.MAIN, colors.MAIN, getSmallLineFontSize());
+			tooltipBuilder:AddDoubleLine(notifText, clientText, colors.MAIN, colors.MAIN, 10);
 		end
 
 		SetProgressSpinnerShown(TRP3_CharacterTooltip, TRP3_API.register.HasActiveRequest(targetID));
