@@ -36,10 +36,10 @@ local function buildStyleStructure()
 			name = loc.REG_PLAYER_STYLE_INJURY,
 			tooltipText = loc.REG_PLAYER_STYLE_INJURY_TT,
 			values = {
-				{YES, 1},
+				{loc.CM_DO_NOT_SHOW, 0},
 				{NO, 2},
 				{loc.REG_PLAYER_STYLE_PERMI, 3},
-				{loc.CM_DO_NOT_SHOW, 0},
+				{YES, 1},
 			}
 		},
 		{
@@ -47,10 +47,10 @@ local function buildStyleStructure()
 			name = loc.REG_PLAYER_STYLE_DEATH,
 			tooltipText = loc.REG_PLAYER_STYLE_DEATH_TT,
 			values = {
-				{YES, 1},
+				{loc.CM_DO_NOT_SHOW, 0},
 				{NO, 2},
 				{loc.REG_PLAYER_STYLE_PERMI, 3},
-				{loc.CM_DO_NOT_SHOW, 0},
+				{YES, 1},
 			}
 		},
 		{
@@ -58,10 +58,10 @@ local function buildStyleStructure()
 			name = loc.REG_PLAYER_STYLE_ROMANCE,
 			tooltipText = loc.REG_PLAYER_STYLE_ROMANCE_TT,
 			values = {
-				{YES, 1},
+				{loc.CM_DO_NOT_SHOW, 0},
 				{NO, 2},
 				{loc.REG_PLAYER_STYLE_PERMI, 3},
-				{loc.CM_DO_NOT_SHOW, 0},
+				{YES, 1},
 			}
 		},
 		{
@@ -69,10 +69,10 @@ local function buildStyleStructure()
 			name = loc.REG_PLAYER_STYLE_CRIME,
 			tooltipText = loc.REG_PLAYER_STYLE_CRIME_TT,
 			values = {
-				{YES, 1},
+				{loc.CM_DO_NOT_SHOW, 0},
 				{NO, 2},
 				{loc.REG_PLAYER_STYLE_PERMI, 3},
-				{loc.CM_DO_NOT_SHOW, 0},
+				{YES, 1},
 			}
 		},
 		{
@@ -80,10 +80,10 @@ local function buildStyleStructure()
 			name = loc.REG_PLAYER_STYLE_LOSSOFCONTROL,
 			tooltipText = loc.REG_PLAYER_STYLE_LOSSOFCONTROL_TT,
 			values = {
-				{YES, 1},
+				{loc.CM_DO_NOT_SHOW, 0},
 				{NO, 2},
 				{loc.REG_PLAYER_STYLE_PERMI, 3},
-				{loc.CM_DO_NOT_SHOW, 0},
+				{YES, 1},
 			}
 		},
 		{
@@ -91,9 +91,9 @@ local function buildStyleStructure()
 			name = loc.REG_PLAYER_STYLE_GUILD,
 			tooltipText = loc.REG_PLAYER_STYLE_GUILD_TT,
 			values = {
-				{loc.REG_PLAYER_STYLE_GUILD_IC, 1},
-				{loc.REG_PLAYER_STYLE_GUILD_OOC, 2},
 				{loc.CM_DO_NOT_SHOW, 0},
+				{loc.REG_PLAYER_STYLE_GUILD_OOC, 2},
+				{loc.REG_PLAYER_STYLE_GUILD_IC, 1},
 			}
 		},
 	};

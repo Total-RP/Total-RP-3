@@ -76,33 +76,33 @@ local function SetWalkup(walkup)
 end
 
 local function GenerateRPStatusMenu(_, rootDescription)
-	do  -- In character
-		local status = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
-		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_RP_IC, IsRoleplayStatus, SetRoleplayStatus, status);
-		TRP3_MenuUtil.AttachTexture(elementDescription, [[Interface\COMMON\Indicator-Green]]);
-		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_RP_IC_TT);
-	end
-
 	do  -- Out of character
 		local status = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
 		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_RP_OOC, IsRoleplayStatus, SetRoleplayStatus, status);
 		TRP3_MenuUtil.AttachTexture(elementDescription, [[Interface\COMMON\Indicator-Red]]);
 		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_RP_OOC_TT);
 	end
+
+	do  -- In character
+		local status = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
+		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_RP_IC, IsRoleplayStatus, SetRoleplayStatus, status);
+		TRP3_MenuUtil.AttachTexture(elementDescription, [[Interface\COMMON\Indicator-Green]]);
+		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_RP_IC_TT);
+	end
 end
 
 local function GenerateWalkupMenu(_, rootDescription)
+	do  -- Walkup No
+		local walkup = AddOn_TotalRP3.Enums.WALKUP.NO;
+		local elementDescription = rootDescription:CreateRadio(L.CM_DO_NOT_SHOW, IsWalkupFriendly, SetWalkup, walkup);
+		TRP3_MenuUtil.AttachTexture(elementDescription);
+	end
+
 	do  -- Walkup Yes
 		local walkup = AddOn_TotalRP3.Enums.WALKUP.YES;
 		local elementDescription = rootDescription:CreateRadio(L.CM_YES, IsWalkupFriendly, SetWalkup, walkup);
 		TRP3_MenuUtil.AttachTexture(elementDescription, [[Interface\AddOns\totalRP3\Resources\UI\ui-icon-walkup.tga]]);
 		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_WU_YES_TT);
-	end
-
-	do  -- Walkup No
-		local walkup = AddOn_TotalRP3.Enums.WALKUP.NO;
-		local elementDescription = rootDescription:CreateRadio(L.CM_DO_NOT_SHOW, IsWalkupFriendly, SetWalkup, walkup);
-		TRP3_MenuUtil.AttachTexture(elementDescription);
 	end
 end
 
