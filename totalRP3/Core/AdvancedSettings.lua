@@ -80,8 +80,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		tinsert(localeTab, { locale:GetName(), locale:GetCode() });
 	end
 
-	-- Sort locales alphabetically (somewhat).
-	table.sort(localeTab, function(a,b) return a[2] < b[2] end);
+	-- Sort locales alphabetically.
+	table.sort(localeTab, function(a,b) return a[1] < b[1] end);
 
 	-- Localization settings
 	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
