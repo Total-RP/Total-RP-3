@@ -724,10 +724,10 @@ local function tabBar_onSelect(tabGroup, index)
 	for i=1, #tabGroup.tabs do
 		local widget = tabGroup.tabs[i];
 		if i == index then
-			widget:SetTabSelected(true);
+			widget:SetTabState("SELECTED");
 			tabGroup.current = index;
 		else
-			widget:SetTabSelected(false);
+			widget:SetTabState("NORMAL");
 		end
 	end
 end

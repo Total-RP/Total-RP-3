@@ -454,6 +454,14 @@ local function onMouseOver()
 	end
 end
 
+local function updateAboutTabIcon(context)
+	local aboutUnread = false;
+	if not context.isPlayer and context.profile.about and not context.profile.about.read then
+		aboutUnread = true;
+	end
+	tabGroup.tabs[2]:SetIcon(aboutUnread and "QuestNormal" or nil);
+end
+
 local function onInformationUpdated(profileID, infoType)
 	if getCurrentPageID() == "player_main" then
 		local context = getCurrentContext();
@@ -461,6 +469,7 @@ local function onInformationUpdated(profileID, infoType)
 		if not context.isPlayer and profileID == context.profileID then
 			if infoType == registerInfoTypes.ABOUT and tabGroup.current == 2 then
 				showAboutTab();
+				updateAboutTabIcon(context);
 			elseif (infoType == registerInfoTypes.CHARACTERISTICS or infoType == registerInfoTypes.CHARACTER) and tabGroup.current == 1 then
 				showCharacteristicsTab();
 			elseif infoType == registerInfoTypes.MISC and tabGroup.current == 3 then
@@ -509,6 +518,7 @@ local function createTabBar()
 				showCharacteristicsTab();
 			elseif value == 2 then
 				showAboutTab();
+				updateAboutTabIcon(getCurrentContext());
 			elseif value == 3 then
 				showMiscTab();
 			elseif value == 4 then
@@ -527,6 +537,7 @@ local function createTabBar()
 				callback();
 			end
 		end);
+
 	TRP3_API.register.player.tabGroup = tabGroup;
 end
 
@@ -550,6 +561,7 @@ local function showTabs()
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	if not context.isPlayer or getPlayerCurrentProfileID() ~= getConfigValue("default_profile_id") then
+		updateAboutTabIcon(context);
 		tabGroup:SetAllTabsVisible(true);
 		tabGroup:SelectTab(1);
 	else
