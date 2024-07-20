@@ -89,7 +89,7 @@ local function onStart()
 	-- imports
 	local toolbarContainer, mainTooltip = TRP3_ToolbarContainer, TRP3_MainTooltip;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
-	local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForFrame;
+	local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 	local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -109,6 +109,16 @@ local function onStart()
 		return TRP3_MarkupUtil.GenerateIconMarkup(buttonStructure.icon, { size = 32 }) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
 	end
 
+	local function updateToolbarButtonTooltip(toolbarButton, buttonStructure)
+		-- Refreshing the tooltip
+		local tooltipAnchor = "TOP";
+		local anchorMargin = 5;
+		if getConfigValue(CONFIG_TOOLBAR_POS_A):find("TOP") then
+			tooltipAnchor = "BOTTOM";
+			anchorMargin = -5;
+		end
+		setTooltipForSameFrame(toolbarButton, tooltipAnchor, 0, anchorMargin, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+	end
 
 	local function buildToolbar()
 		local maxButtonPerLine = getConfigValue(CONFIG_ICON_MAX_PER_LINE);
@@ -183,7 +193,7 @@ local function onStart()
 					end
 				end);
 				if buttonStructure.tooltip then
-					TRP3_API.toolbar.updateToolbarButtonTooltip(uiButton, buttonStructure);
+					updateToolbarButtonTooltip(uiButton, buttonStructure);
 				end
 				uiButton:SetWidth(buttonSize);
 				uiButton:SetHeight(buttonSize);
@@ -283,18 +293,6 @@ local function onStart()
 	end
 	TRP3_API.toolbar.toolbarAddButton = toolbarAddButton;
 
-	local function updateToolbarButtonTooltip(toolbarButton, buttonStructure)
-		-- Refreshing the tooltip
-		local tooltipAnchor = "TOP";
-		local anchorMargin = 5;
-		if getConfigValue(CONFIG_TOOLBAR_POS_A):find("TOP") then
-			tooltipAnchor = "BOTTOM";
-			anchorMargin = -5;
-		end
-		setTooltipForFrame(toolbarButton, toolbarButton, tooltipAnchor, 0, anchorMargin, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
-	end
-	TRP3_API.toolbar.updateToolbarButtonTooltip = updateToolbarButtonTooltip;
-
 	--- Will refresh the UI of a given button (icon, tooltip) using the data provided in the buttonStructure
 	-- @param toolbarButton UI button to refresh
 	-- @param buttonStructure Button structure containing the icon and tooltip text
@@ -350,7 +348,7 @@ local function onStart()
 
 		-- Update tooltip anchors
 		for _,uiButton in pairs(uiButtons) do
-			TRP3_API.toolbar.updateToolbarButtonTooltip(uiButton, buttonStructures[uiButton.buttonId]);
+			updateToolbarButtonTooltip(uiButton, buttonStructures[uiButton.buttonId]);
 		end
 	end);
 
