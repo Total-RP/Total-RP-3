@@ -126,11 +126,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 								</Anchors>
 							</Button>
-							<Button parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
+							<Button parentKey="Icon" inherits="TRP3_BorderedIconButtonTemplate">
 								<Size x="55" y="55"/>
-								<HighlightTexture parentKey="HighlightBorder" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-glow" alphaMode="ADD">
-									<Color r="0.92" g="0.68" b="0"/>
-								</HighlightTexture>
 								<Anchors>
 									<Anchor point="LEFT" x="20" y="-10"/>
 								</Anchors>
