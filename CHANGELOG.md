@@ -14,9 +14,12 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
 - Added a target frame button for your own companion to auto-fill the speech window with its name in brackets.
   - This will apply RP name customization to its speech lines.
 - Added a dropdown to set whether you are open to other players walking up to your character.
-  - This will show as an icon on your tooltip.
+  - This will show as an icon on your tooltip and in your profile characteristics.
   - Existing tooltip bottom icons have also been changed for clarity.
-    - **TODO: INSERT IMAGE**
+    ![image](https://github.com/user-attachments/assets/2ed353da-588a-45c4-b7af-fc8dfa7b9c74)
+    - Book: Profile has an unread description.
+    - Note: You have notes on this profile.
+    - Three people: Walkup friendly.
 - Added a tooltip setting to hide the addon version text and trial indicator separately from the bottom icons.
 - Added the ability to drag and drop personality traits to reorder them
   - Additional info now uses the same button style rather than drag and dropping the icon itself.
