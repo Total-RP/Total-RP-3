@@ -875,7 +875,9 @@ local function onStart()
 
 			replaceBar();
 		end
-		updateGlanceButtonsTooltips();
+		if ui_GlanceBar:IsVisible() then
+			updateGlanceButtonsTooltips();
+		end
 	end
 
 	registerConfigKey(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
