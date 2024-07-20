@@ -509,6 +509,7 @@ Class: 50 characters|r]],
 	CO_RELATIONS_NEW_COLOR_TT = "This will determine the relation color.",
 	CO_RELATIONS_MENU_EDIT = "Edit relation",
 	CO_RELATIONS_MENU_DELETE = "Delete relation",
+	CO_RELATIONS_MENU_DELETE_DISABLED_TT = "You cannot delete relations that are currently associated with a profile.",
 	CO_CURSOR_TITLE = "Cursor interactions",
 	CO_CURSOR_RIGHT_CLICK = "Right-click to open profile",
 	CO_CURSOR_RIGHT_CLICK_TT = [[Right-click on a player in the 3D world to open their profile, if they have one.
