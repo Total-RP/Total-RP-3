@@ -16,7 +16,6 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
 - Added a dropdown to set whether you are open to other players walking up to your character.
   - This will show as an icon on your tooltip and in your profile characteristics.
   - Existing tooltip bottom icons have also been changed for clarity.
-    ![image](https://github.com/user-attachments/assets/2ed353da-588a-45c4-b7af-fc8dfa7b9c74)
     - Book: Profile has an unread description.
     - Note: You have notes on this profile.
     - Three people: Walkup friendly.
