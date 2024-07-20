@@ -55,6 +55,7 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
   - The map scan button settings have been moved to the Directory category.
 - Tooltip texts across the addon were reworked to follow a more consistent format and add clarity when needed.
 - Chat links can now be closed with Escape, and profile chat link tooltips have received minor display improvements.
+- The Icon browser now displays icons in a larger size both on the grid and in tooltips.
 
 ## Fixed
 - Fixed some causes of lingering tooltips.
