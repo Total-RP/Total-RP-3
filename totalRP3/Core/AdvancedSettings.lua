@@ -80,6 +80,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		tinsert(localeTab, { locale:GetName(), locale:GetCode() });
 	end
 
+	-- Sort locales alphabetically (somewhat).
+	table.sort(localeTab, function(a,b) return a[2] < b[2] end);
+
 	-- Localization settings
 	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
@@ -96,8 +99,11 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				return;
 			end
 
-			Configuration.setValue("AddonLocale", newLocaleCode);
-			TRP3_API.popup.showConfirmPopup(loc.CO_GENERAL_CHANGELOCALE_ALERT:format(TRP3_API.Colors.Green(loc:GetLocale(newLocaleCode):GetName())), ReloadUI);
+			-- Only change `AddonLocale` config when user accepts.
+			TRP3_API.popup.showConfirmPopup(loc.CO_GENERAL_CHANGELOCALE_ALERT:format(TRP3_API.Colors.Green(loc:GetLocale(newLocaleCode):GetName())), function()
+				Configuration.setValue("AddonLocale", newLocaleCode);
+				ReloadUI();
+			end);
 		end,
 		listDefault = loc:GetActiveLocale():GetName(),
 		listCancel = true,
