@@ -509,7 +509,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</ScrollFrame>
 				</Frames>
 			</Frame>
-			<Button name="TRP3_RegisterCharact_ActionButton" inherits="TRP3_BorderedIconTemplate">
+			<Button name="TRP3_RegisterCharact_ActionButton" inherits="TRP3_BorderedIconButtonTemplate">
 				<Size x="45" y="45" />
 				<HighlightTexture parentKey="HighlightBorder" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-glow" alphaMode="ADD">
 					<Color r="0.92" g="0.68" b="0"/>
