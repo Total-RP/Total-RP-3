@@ -36,10 +36,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<Anchor point="LEFT" x="8" y="-2"/>
 								</Anchors>
 							</Frame>
-							<Button name="$parent_EditButton" inherits="TRP3_CommonButton">
-								<Size x="75" y="22"/>
+							<Button name="$parent_EditButton" inherits="TRP3_RedButtonEditArtTemplate">
+								<Size x="48" y="48"/>
 								<Anchors>
-									<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" y="-5"/>
+									<Anchor point="LEFT" relativePoint="RIGHT" x="15"/>
 								</Anchors>
 							</Button>
 							<Button name="$parent_ActionButton" inherits="TRP3_IconButton">

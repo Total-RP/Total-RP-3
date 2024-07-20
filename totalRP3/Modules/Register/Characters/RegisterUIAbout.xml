@@ -488,8 +488,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							</Frame>
 						</ScrollChild>
 						<Frames>
-							<Button name="TRP3_RegisterAbout_AboutPanel_EditButton" inherits="TRP3_CommonButton">
-								<Size x="70" y="22"/>
+							<Button name="TRP3_RegisterAbout_AboutPanel_EditButton" inherits="TRP3_RedButtonEditArtTemplate">
+								<Size x="48" y="48"/>
 								<Anchors>
 									<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 								</Anchors>

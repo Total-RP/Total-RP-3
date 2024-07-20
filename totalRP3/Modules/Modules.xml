@@ -44,7 +44,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="TOPLEFT" x="12" y="-8"/>
 				</Anchors>
 			</Button>
-			<Button parentKey="Action" inherits="TRP3_RedButtonMenuArtTemplate">
+			<Button parentKey="Action" inherits="TRP3_ActionButton">
 				<Size x="24" y="24"/>
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-8" y="-8"/>

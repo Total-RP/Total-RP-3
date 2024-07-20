@@ -44,14 +44,26 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Texture>
 
 	<Button name="TRP3_RedButtonMenuArtTemplate" virtual="true">
-		<NormalTexture file="Interface\AddOns\totalRP3\Resources\UI\ui-red-buttons">
-			<TexCoords left="0.5" bottom="0.5"/>
+		<NormalTexture file="Interface\AddOns\totalRP3\Resources\UI\ui-red-buttons" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.5" bottom="0.125"/>
 		</NormalTexture>
-		<PushedTexture file="Interface\AddOns\totalRP3\Resources\UI\ui-red-buttons">
-			<TexCoords left="0.5" top="0.5"/>
+		<PushedTexture file="Interface\AddOns\totalRP3\Resources\UI\ui-red-buttons" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.5" top="0.125" bottom="0.25"/>
 		</PushedTexture>
 		<HighlightTexture file="Interface\AddOns\totalRP3\Resources\UI\ui-red-buttons" alphaMode="ADD">
-			<TexCoords right="0.5" top="0.5"/>
+			<TexCoords right="0.5" top="0.125" bottom="0.25"/>
+		</HighlightTexture>
+	</Button>
+
+	<Button name="TRP3_RedButtonEditArtTemplate" virtual="true">
+		<NormalTexture file="Interface\AddOns\totalRP3\Resources\UI\ui-red-buttons" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords top="0.25" bottom="0.5"/>
+		</NormalTexture>
+		<PushedTexture file="Interface\AddOns\totalRP3\Resources\UI\ui-red-buttons" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords top="0.5" bottom="0.75"/>
+		</PushedTexture>
+		<HighlightTexture file="Interface\AddOns\totalRP3\Resources\UI\ui-red-buttons" alphaMode="ADD">
+			<TexCoords right="0.5" top="0.125" bottom="0.25"/>
 		</HighlightTexture>
 	</Button>
 </Ui>
