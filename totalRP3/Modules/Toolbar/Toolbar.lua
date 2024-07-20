@@ -109,7 +109,7 @@ local function onStart()
 		return TRP3_MarkupUtil.GenerateIconMarkup(buttonStructure.icon, { size = 32 }) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
 	end
 
-	local function updateToolbarButtonTooltip(toolbarButton, buttonStructure)
+	local function updateToolbarButtonTooltip(toolbarButton)
 		-- Refreshing the tooltip
 		local tooltipAnchor = "TOP";
 		local anchorMargin = 5;
@@ -117,7 +117,7 @@ local function onStart()
 			tooltipAnchor = "BOTTOM";
 			anchorMargin = -5;
 		end
-		setTooltipForSameFrame(toolbarButton, tooltipAnchor, 0, anchorMargin, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+		TRP3_API.ui.tooltip.setTooltipAnchorForFrame(toolbarButton, tooltipAnchor, 0, anchorMargin);
 	end
 
 	local function buildToolbar()
@@ -193,7 +193,8 @@ local function onStart()
 					end
 				end);
 				if buttonStructure.tooltip then
-					updateToolbarButtonTooltip(uiButton, buttonStructure);
+					setTooltipForSameFrame(uiButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+					updateToolbarButtonTooltip(uiButton);
 				end
 				uiButton:SetWidth(buttonSize);
 				uiButton:SetHeight(buttonSize);
@@ -301,7 +302,8 @@ local function onStart()
 		-- Setting the textures
 		toolbarButton:SetIconTexture(buttonStructure.icon);
 
-		updateToolbarButtonTooltip(toolbarButton, buttonStructure);
+		setTooltipForSameFrame(toolbarButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+		updateToolbarButtonTooltip(toolbarButton);
 	end
 	TRP3_API.toolbar.updateToolbarButton = updateToolbarButton;
 
@@ -348,7 +350,7 @@ local function onStart()
 
 		-- Update tooltip anchors
 		for _,uiButton in pairs(uiButtons) do
-			updateToolbarButtonTooltip(uiButton, buttonStructures[uiButton.buttonId]);
+			updateToolbarButtonTooltip(uiButton);
 		end
 	end);
 

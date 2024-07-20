@@ -60,7 +60,7 @@ local function onStart()
 		return icon .. (buttonStructure.tooltip or buttonStructure.configText);
 	end
 
-	local function updateTargetFrameButtonTooltip(targetButton, buttonStructure)
+	local function updateTargetFrameButtonTooltip(targetButton)
 		-- Refreshing the tooltip
 		local tooltipAnchor = "TOP";
 		local anchorMargin = 5;
@@ -68,7 +68,7 @@ local function onStart()
 			tooltipAnchor = "BOTTOM";
 			anchorMargin = -5;
 		end
-		setTooltipForSameFrame(targetButton, tooltipAnchor, 0, anchorMargin, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+		TRP3_API.ui.tooltip.setTooltipAnchorForFrame(targetButton, tooltipAnchor, 0, anchorMargin);
 	end
 
 	local function createButton(index)
@@ -152,7 +152,8 @@ local function onStart()
 			uiButton.unitID = currentTargetID;
 			uiButton.targetType = currentTargetType;
 			if buttonStructure.tooltip then
-				updateTargetFrameButtonTooltip(uiButton, buttonStructure);
+				setTooltipForSameFrame(uiButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
+				updateTargetFrameButtonTooltip(uiButton);
 			else
 				setTooltipForSameFrame(uiButton);
 			end
@@ -310,7 +311,7 @@ local function onStart()
 
 		-- Update tooltip anchors
 		for _,uiButton in pairs(uiButtons) do
-			updateTargetFrameButtonTooltip(uiButton, targetButtons[uiButton.buttonId]);
+			updateTargetFrameButtonTooltip(uiButton);
 		end
 	end);
 

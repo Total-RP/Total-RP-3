@@ -436,6 +436,18 @@ TRP3_API.ui.tooltip.setTooltipForSameFrame = function(Frame, GenFrameAnch, GenFr
 	setTooltipForFrame(Frame, Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText);
 end
 
+TRP3_API.ui.tooltip.setTooltipAnchorForFrame = function(Frame, GenFrameAnch, GenFrameX, GenFrameY)
+	if Frame then
+		Frame.GenFrameX = GenFrameX;
+		Frame.GenFrameY = GenFrameY;
+		if GenFrameAnch then
+			Frame.GenFrameAnch = "ANCHOR_"..GenFrameAnch;
+		else
+			Frame.GenFrameAnch = "ANCHOR_RIGHT";
+		end
+	end
+end
+
 -- Setup the frame tooltip and add the Enter and Leave scripts
 TRP3_API.ui.tooltip.setTooltipAll = function(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
 	Frame:SetScript("OnEnter", tooltipSimpleOnEnter);
