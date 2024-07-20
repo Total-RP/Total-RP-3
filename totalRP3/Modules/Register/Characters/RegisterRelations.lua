@@ -273,7 +273,7 @@ function updateRelationsList()
 				description:CreateButton(loc.CO_RELATIONS_MENU_EDIT, onActionSelected, ACTIONS.EDIT..relation.id);
 				checkRelationUse();
 				if not relation.inUse then
-					description:CreateButton(loc.CO_RELATIONS_MENU_DELETE, onActionSelected, ACTIONS.DELETE..relation.id);
+					description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CO_RELATIONS_MENU_DELETE .. "|r", onActionSelected, ACTIONS.DELETE..relation.id);
 				end
 			end);
 		end);
