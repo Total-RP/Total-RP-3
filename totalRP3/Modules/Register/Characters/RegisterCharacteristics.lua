@@ -1537,6 +1537,7 @@ local function onEdit()
 	end
 	getCurrentContext().isEditMode = true;
 	refreshDisplay();
+	TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 end
 
 local function onSave()
@@ -1771,7 +1772,6 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_PsychoAdd:SetText(loc.REG_PLAYER_PSYCHO_ADD);
 	TRP3_RegisterCharact_NamePanel_Edit_CancelButton:SetText(loc.CM_CANCEL);
 	TRP3_RegisterCharact_NamePanel_Edit_SaveButton:SetText(loc.CM_SAVE);
-	TRP3_RegisterCharact_NamePanel_EditButton:SetText(loc.CM_EDIT);
 	TRP3_RegisterCharact_Edit_TitleFieldText:SetText(loc.REG_TITLE);
 	TRP3_RegisterCharact_Edit_FirstFieldText:SetText(loc.REG_PLAYER_FIRSTNAME);
 	TRP3_RegisterCharact_Edit_LastFieldText:SetText(loc.REG_PLAYER_LASTNAME);
