@@ -25,7 +25,7 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
   - Preset additional info lines appearing on the tooltip will no longer appear if converted to custom.
 - Added indicators on additional info presets which will appear on tooltips by default.
 - Added the ability to right-click an icon button to copy/paste icons between buttons or copy the name of the selected icon.
-- Added a new background browser, as well as 32 new background options for the "About" section (and Extended documents).
+- Added a new background browser, as well as 33 new background options for the "About" section (and Extended documents).
 - The toolbar will now be skinned while using ElvUI.
 - Added X icons, X images and X musics from patch 11.0.
 
