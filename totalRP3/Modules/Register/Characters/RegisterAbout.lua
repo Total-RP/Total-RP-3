@@ -1053,7 +1053,6 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_Edit_Template3_PsyTitle:SetText(loc.REG_PLAYER_PSYCHO);
 	TRP3_RegisterAbout_Edit_Template3_HistTitle:SetText(loc.REG_PLAYER_HISTORY);
 	TRP3_RegisterAbout_Edit_Template2_Add:SetText(loc.REG_PLAYER_ABOUT_ADD_FRAME);
-	setTooltipAll(TRP3_RegisterAbout_AboutPanel_EditButton, "RIGHT", 0, 5, loc.CM_EDIT);
 	TRP3_RegisterAbout_Edit_SaveButton:SetText(loc.CM_SAVE);
 	TRP3_RegisterAbout_Edit_CancelButton:SetText(loc.CM_CANCEL);
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetText(loc.CM_PLAY);
