@@ -742,6 +742,7 @@ local function onEdit()
 	end
 	getCurrentContext().isEditMode = true;
 	refreshDisplay();
+	TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 end
 
 function TRP3_API.register.ui.shouldShowAboutTab(profile)

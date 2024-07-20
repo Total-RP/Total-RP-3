@@ -314,6 +314,7 @@ local function toEditMode()
 	draftData = nil;
 	getCurrentContext().isEditMode = true;
 	refresh();
+	TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 end
 
 local function createTabBar()
