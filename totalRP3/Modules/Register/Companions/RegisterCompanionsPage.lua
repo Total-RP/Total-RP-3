@@ -442,7 +442,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationEdit_NamePanel_NameColor, "RIGHT", 0, 5, loc.REG_COMPANION_NAME_COLOR, loc.REG_COMPANION_NAME_COLOR_TT
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 	TRP3_CompanionsPageInformationEdit_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
 	TRP3_CompanionsPageInformationEdit_About:SetTitleText(loc.REG_PLAYER_ABOUT);
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameFieldText:SetText(loc.REG_COMPANION_NAME);

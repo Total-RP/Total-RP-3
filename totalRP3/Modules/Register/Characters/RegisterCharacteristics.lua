@@ -1242,11 +1242,11 @@ function setEditDisplay()
 			setTooltipForSameFrame(frame.CustomLeftColor, "RIGHT", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT
 			.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
 			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
-			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 			setTooltipForSameFrame(frame.CustomRightColor, "RIGHT", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT
 			.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
 			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
-			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 
 			-- Only need to set up the closure for color pickers once, as it
 			-- just needs a reference to the frame itself.
@@ -1700,11 +1700,11 @@ function TRP3_API.register.inits.characteristicsInit()
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeButton, "RIGHT", 0, 5, loc.REG_PLAYER_EYE, loc.REG_PLAYER_EYE_TT
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassButton, "RIGHT", 0, 5, loc.REG_PLAYER_COLOR_CLASS, loc.REG_PLAYER_COLOR_CLASS_TT
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 
 	TRP3_RegisterCharact_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
 	TRP3_RegisterCharact_Edit_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
