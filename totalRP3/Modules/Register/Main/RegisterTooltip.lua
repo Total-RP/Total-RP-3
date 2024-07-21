@@ -525,8 +525,8 @@ local function writeTooltipForCharacter(targetID, targetType)
 	local FIELDS_TO_CROP = {
 		TITLE = 100,
 		NAME = 50,
-		RACE = 50,
-		CLASS = 50,
+		RACE = 30,
+		CLASS = 30,
 		PRONOUNS = 30,
 		GUILD_NAME = 30,
 		GUILD_RANK = 30,
