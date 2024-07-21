@@ -461,11 +461,11 @@ local function updateAboutTabIcon(context)
 		aboutUnread = true;
 	end
 
-	local function OnTooltipShow(button, description)
-		local unreadMarkup = TRP3_MarkupUtil.GenerateFileMarkup(unreadIcon, { size = 16 });
+	local function OnTooltipShow(_, description)
+		local unreadMarkup = TRP3_MarkupUtil.GenerateFileMarkup(unreadIcon, { size = 24 });
 
-		description:AddTitleLine(button:GetText());
-		description:AddNormalLine(string.join(" ", unreadMarkup, loc.REG_TT_NOTIF_TT));
+		description:AddTitleLine(string.join(" ", unreadMarkup, loc.REG_TT_NOTIF));
+		description:AddNormalLine(loc.REG_TT_NOTIF_TT);
 	end
 
 	tabGroup.tabs[2]:SetIcon(aboutUnread and unreadIcon or nil);
