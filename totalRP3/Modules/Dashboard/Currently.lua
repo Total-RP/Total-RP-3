@@ -9,7 +9,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	-- Called whenever the OnTextChanged event fires for the currentlyText scrollbox,
 	-- which checks if it was triggered by userInput before changing the "Currently" text.
-	local updateCurrentlyText = TRP3_FunctionUtil.Debounce(0.25, function()
+	local updateCurrentlyText = TRP3_FunctionUtil.Debounce(0.5, function()
 		local editBox = frame.CurrentlyText.scroll.text;
 		local multiLine = true;
 		local text = TRP3_API.utils.str.sanitize(editBox:GetText(), multiLine);

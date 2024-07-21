@@ -494,11 +494,11 @@ function TRP3_API.register.inits.miscInit()
 
 	TRP3_RegisterMiscViewCurrentlyIC.Title:SetText(loc.DB_STATUS_CURRENTLY);
 	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyIC.HelpButton, "RIGHT", 0, 5, loc.DB_STATUS_CURRENTLY, loc.DB_STATUS_CURRENTLY_TT);
-	TRP3_RegisterMiscViewCurrentlyIC:RegisterCallback("OnTextChanged", TRP3_FunctionUtil.Debounce(0.25, onCurrentlyChanged), {});
+	TRP3_RegisterMiscViewCurrentlyIC:RegisterCallback("OnTextChanged", TRP3_FunctionUtil.Debounce(0.5, onCurrentlyChanged), {});
 
 	TRP3_RegisterMiscViewCurrentlyOOC.Title:SetText(loc.DB_STATUS_CURRENTLY_OOC);
 	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC.HelpButton, "RIGHT", 0, 5, loc.DB_STATUS_CURRENTLY_OOC, loc.DB_STATUS_CURRENTLY_OOC_TT);
-	TRP3_RegisterMiscViewCurrentlyOOC:RegisterCallback("OnTextChanged", TRP3_FunctionUtil.Debounce(0.25, onOOCInfoChanged), {});
+	TRP3_RegisterMiscViewCurrentlyOOC:RegisterCallback("OnTextChanged", TRP3_FunctionUtil.Debounce(0.5, onOOCInfoChanged), {});
 
 	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT)
