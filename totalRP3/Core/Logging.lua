@@ -8,12 +8,7 @@ local TRP3_API = select(2, ...);
 -- Log messages can be written via the 'Log' and 'Logf' functions and will be
 -- pushed to whatever sinks are appropriate for the current environment.
 
-local LogBuffer = CreateCircularBuffer(1024);
 local LogChatFrame;
-
-local function WriteToLogBuffer(entry)
-	LogBuffer:PushFront(entry);
-end
 
 local function WriteToDebugLogAddon(entry)
 	if DLAPI then
@@ -44,7 +39,6 @@ local function ProcessLogMessage(message)
 	local timestamp = GetTimePreciseSec();
 	local entry = { message = message, timestamp = timestamp };
 
-	WriteToLogBuffer(entry);
 	WriteToLogChatFrame(entry);
 	WriteToDebugLogAddon(entry);
 end
@@ -69,24 +63,4 @@ end
 
 function TRP3_API.Logf(format, ...)
 	securecallfunction(LogFormattedMessage, format, ...);
-end
-
-function TRP3_API.EnumerateLogEntries()
-	-- Log entries are enumerated in order of newest to oldest.
-	return LogBuffer:EnumerateIndexedEntries();
-end
-
--- Soft errors will submit a message to the default error handler forcing the
--- current call to terminate. The use of securecallfunction here is to put the
--- client in a state whereby the error handler can use the debuglocals API to
--- provide additional context.
-
-function TRP3_API.SoftError(message, level)
-	securecallfunction(error, message, (level or 1) + 2);
-end
-
-function TRP3_API.SoftAssert(result, message, level)
-	if not result then
-		securecallfunction(error, message, (level or 1) + 2);
-	end
 end
