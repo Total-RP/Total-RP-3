@@ -287,7 +287,7 @@ function TRP3_LauncherClickBindingButtonMixin:GetTooltipFrame()
 end
 
 function TRP3_LauncherClickBindingButtonMixin:IsTooltipShown()
-	return self.tooltipFrame:IsOwned(self);
+	return TRP3_TooltipUtil.IsOwned(self.tooltipFrame, self);
 end
 
 function TRP3_LauncherClickBindingButtonMixin:SetTooltipShown(shown)

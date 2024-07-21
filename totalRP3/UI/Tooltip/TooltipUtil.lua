@@ -98,7 +98,7 @@ end
 function TRP3_TooltipUtil.HideTooltip(owner)
 	local tooltip = TRP3_MainTooltip;
 
-	if tooltip:IsOwned(owner) then
+	if TRP3_TooltipUtil.IsOwned(tooltip, owner) then
 		tooltip:Hide();
 	end
 end
@@ -107,6 +107,13 @@ function TRP3_TooltipUtil.ShowTooltip(owner, generator, ...)
 	local description = TRP3_Tooltip.CreateTooltipDescription(owner);
 	TRP3_Tooltip.PopulateTooltipDescription(generator, owner, description, ...);
 	TRP3_Tooltip.ProcessTooltipDescription(TRP3_MainTooltip, description);
+end
+
+function TRP3_TooltipUtil.IsOwned(tooltip, owner)
+	-- GameTooltip:IsOwned(owner) cannot be used if the owner is a
+	-- non-frame region; as such we need to obtain the owner and test
+	-- manually.
+	return tooltip:GetOwner() == owner;
 end
 
 ---@class TRP3_TooltipUtil.LineOptions
