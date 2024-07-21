@@ -448,8 +448,14 @@ function TRP3_Tooltip.ProcessTooltipDescription(tooltip, description)
 		ProcessLineDescription(tooltip, lineDescription);
 	end
 
-	tooltip:SetCustomLineSpacing(description:GetLineSpacing());
-	tooltip:SetCustomWordWrapMinWidth(description:GetMinimumWordWrapWidth());
+	if tooltip.SetCustomLineSpacing then
+		tooltip:SetCustomLineSpacing(description:GetLineSpacing());
+	end
+
+	if tooltip.SetCustomWordWrapMinWidth then
+		tooltip:SetCustomWordWrapMinWidth(description:GetMinimumWordWrapWidth());
+	end
+
 	tooltip:SetPadding(UnpackTooltipPadding(description:GetPadding()));
 	description:ExecutePostTooltipCallbacks(tooltip);
 	tooltip:Show();
