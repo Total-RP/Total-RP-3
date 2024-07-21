@@ -338,6 +338,7 @@ function TRP3_Menu.OpenContextMenu(ownerRegion, menuGenerator)
 	local anchorName = "cursor";
 	TRP3_ContextMenuParent:SetParent(ownerRegion);
 	TRP3_Menu.SetMenuInitializer(TRP3_ContextMenuParent, menuDescription);
+	PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 	return OpenMenuInternal(TRP3_ContextMenuParent, anchorName);
 end
 

@@ -1703,7 +1703,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_ClassButton.onSelection = onClassColorSelected;
 	TRP3_RegisterCharact_Edit_EyeButton.onSelection = onEyeColorSelected;
 
-	TRP3_RegisterCharact_Edit_PsychoAdd:SetScript("OnMouseDown", function(button)
+	TRP3_RegisterCharact_Edit_PsychoAdd:SetScript("OnClick", function(button)
 		TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 			for _, preset in pairs(PSYCHO_PRESETS_DROPDOWN) do
 				-- If there is no index or action, it is a title
