@@ -172,7 +172,7 @@ WorldMapButton:SetScript("OnMouseDown", function(self)
 		tinsert(structure, {loc.MAP_BUTTON_NO_SCAN, nil});
 	end
 
-	TRP3_MenuUtil.CreateContextMenu(TRP3_RegisterCharact_Edit_MiscAdd, function(_, description)
+	TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 		for _, scan in pairs(structure) do
 			description:CreateButton(scan[1], TRP3_API.MapScannersManager.launch, scan[2]);
 		end
