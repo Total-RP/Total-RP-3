@@ -840,8 +840,6 @@ Debes reducirlo.]=],
 
 |cff00ff00Por ejemplo :|r
 Caballero, pirotécnico, nigromante, arcanista...]=],
-	["REG_PLAYER_COLOR_ALWAYS_DEFAULT_TT"] = [=[|cffffff00Clic:|r Selecciona un color
-|cffffff00Clic derecho:|r Descarta un color]=],
 	["REG_PLAYER_COLOR_CLASS"] = "Color de clase",
 	["REG_PLAYER_COLOR_CLASS_TT"] = [=[Esto determina el color en que se visualizará la clase.
 ]=],

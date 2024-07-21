@@ -757,8 +757,6 @@ Möchtest du die Seite dennoch wechseln?
 
 |cff00ff00Zum Beispiel :|r
 Ritter, Pyromane, Nekromant, Eliteschütze, Arkanwirker, Magd ...]=],
-	["REG_PLAYER_COLOR_ALWAYS_DEFAULT_TT"] = [=[|cffffff00Linksklick:|r Wähle eine Farbe
-|cffffff00Rechtsklick:|r Wähle Farbe ab]=],
 	["REG_PLAYER_COLOR_CLASS"] = "Klassenfarbe",
 	["REG_PLAYER_COLOR_CLASS_TT"] = "Dies bestimmt ebenfalls die Farbe des Charakternamens.",
 	["REG_PLAYER_COLOR_TT_DEFAULTPICKER"] = "Die Standard Farbauswahl zu nutzen",

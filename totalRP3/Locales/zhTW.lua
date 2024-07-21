@@ -477,8 +477,6 @@ L = {
 
 |cff00ff00範例 :|r
 騎士、乳酪商、礦工、軍人、奧術師…]=],
-	["REG_PLAYER_COLOR_ALWAYS_DEFAULT_TT"] = [=[|cffffff00Click:|r 選擇顏色
-|cffffff00Right-click:|r 放棄顏色]=],
 	["REG_PLAYER_COLOR_CLASS"] = "職業欄顏色",
 	["REG_PLAYER_COLOR_CLASS_TT"] = "此選項同時將會更改名字的顏色。",
 	["REG_PLAYER_COLOR_TT_DEFAULTPICKER"] = "直接使用調色盤",

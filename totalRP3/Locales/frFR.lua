@@ -1059,8 +1059,6 @@ Voulez-vous changer de page ?
 
 |cff00ff00Par exemple :|r
 Chevalier, Pyrotechnicien, Nécromant, Tireur d'élite, Arcaniste ...]=],
-	["REG_PLAYER_COLOR_ALWAYS_DEFAULT_TT"] = [=[|cffffff00Clic:|r Choisir une couleur
-|cffffff00Clic-droit:|r Supprimer la couleur]=],
 	["REG_PLAYER_COLOR_CLASS"] = "Couleur de classe",
 	["REG_PLAYER_COLOR_CLASS_TT"] = [=[Cela déterminera aussi la couleur de votre nom.
 
