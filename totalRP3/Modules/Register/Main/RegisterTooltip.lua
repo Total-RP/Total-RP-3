@@ -523,8 +523,8 @@ local function writeTooltipForCharacter(targetID, targetType)
 	local profileID = player:GetProfileID();
 
 	local FIELDS_TO_CROP = {
-		TITLE = 150,
-		NAME = 100,
+		TITLE = 100,
+		NAME = 50,
 		RACE = 50,
 		CLASS = 50,
 		PRONOUNS = 30,
@@ -1028,8 +1028,8 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 	local colors = getTooltipTextColors();
 
 	local FIELDS_TO_CROP = {
-		TITLE = 150,
-		NAME  = 100,
+		TITLE = 100,
+		NAME  = 50,
 	}
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1209,8 +1209,8 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 
 
 	local FIELDS_TO_CROP = {
-		TITLE = 150,
-		NAME  = 100
+		TITLE = 100,
+		NAME  = 50
 	}
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
