@@ -11,7 +11,10 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	-- which checks if it was triggered by userInput before changing the "Currently" text.
 	local updateCurrentlyText = TRP3_FunctionUtil.Debounce(0.25, function()
 		local editBox = frame.CurrentlyText.scroll.text;
-		AddOn_TotalRP3.Player.GetCurrentUser():SetCurrentlyText(editBox:GetText());
+		local multiLine = true;
+		local text = TRP3_API.utils.str.sanitize(editBox:GetText(), multiLine);
+
+		AddOn_TotalRP3.Player.GetCurrentUser():SetCurrentlyText(text);
 	end);
 
 	local function onCurrentlyChanged(_, userInput)
