@@ -7,6 +7,7 @@ local getProfile = TRP3_API.register.getProfile;
 local hasProfile = TRP3_API.register.hasProfile;
 local getUnitID = TRP3_API.utils.str.getUnitID;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll
+local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 
 TRP3_API.register.relation = {};
 
@@ -162,13 +163,22 @@ local function initRelationEditor(relationID)
 	end
 	draftRelationTexture = relation.texture or TRP3_InterfaceIcons.ProfileDefault;
 	-- set icon, name, description, color
-	TRP3_API.ui.frame.setupIconButton(TRP3_RelationsList.Editor.Content.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
+	setupIconButton(TRP3_RelationsList.Editor.Content.Icon, draftRelationTexture);
 	setTooltipAll(TRP3_RelationsList.Editor.Content.Icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-	TRP3_RelationsList.Editor.Content.Icon:SetScript("OnClick", function()
-		TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {function(icon)
-			draftRelationTexture = icon;
-			TRP3_API.ui.frame.setupIconButton(TRP3_RelationsList.Editor.Content.Icon, icon or TRP3_InterfaceIcons.Default);
-		end, nil, nil, draftRelationTexture});
+	TRP3_RelationsList.Editor.Content.Icon:SetScript("onMouseDown", function(self, button)
+		if button == "LeftButton" then
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {function(icon)
+				draftRelationTexture = icon;
+				setupIconButton(TRP3_RelationsList.Editor.Content.Icon, icon or TRP3_InterfaceIcons.ProfileDefault);
+			end, nil, nil, draftRelationTexture});
+		elseif button == "RightButton" then
+			draftRelationTexture = relation.texture or TRP3_InterfaceIcons.ProfileDefault;
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, draftRelationTexture);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftRelationTexture}); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() setupIconButton(TRP3_RelationsList.Editor.Content.Icon, TRP3_API.GetLastCopiedIcon()); end);
+			end);
+		end
 	end);
 
 	local frame = TRP3_RelationsList.Editor;
@@ -265,7 +275,7 @@ function updateRelationsList()
 		end
 		widget.Title:SetText((getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_"..relation.id)));
 		widget.Text:SetText(loc:GetText(relation.description or "REG_RELATION_" .. relation.id .. "_TT"):format("%p", "%t"));
-		TRP3_API.ui.frame.setupIconButton(widget.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
+		setupIconButton(widget.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
 
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(widget.Actions, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 		widget.Actions:SetScript("OnMouseDown", function(button)
