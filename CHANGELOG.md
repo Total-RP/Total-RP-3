@@ -61,6 +61,7 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
 - Tooltip texts across the addon were reworked to follow a more consistent format and add clarity when needed.
 - Chat links can now be closed with Escape, and profile chat link tooltips have received minor display improvements.
 - The Icon browser now displays icons in a larger size both on the grid and in tooltips.
+- Names and titles maximum length in tooltips has been reduced.
 - The size of the version number line on the tooltip is no longer tied to the tertiary font size, and is instead locked to the current default size of 10.
 
 ## Fixed
