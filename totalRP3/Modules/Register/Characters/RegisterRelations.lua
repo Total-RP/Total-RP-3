@@ -165,7 +165,7 @@ local function initRelationEditor(relationID)
 	-- set icon, name, description, color
 	setupIconButton(TRP3_RelationsList.Editor.Content.Icon, draftRelationTexture);
 	setTooltipAll(TRP3_RelationsList.Editor.Content.Icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-	TRP3_RelationsList.Editor.Content.Icon:SetScript("onMouseDown", function(self, button)
+	TRP3_RelationsList.Editor.Content.Icon:SetScript("OnMouseDown", function(self, button)
 		if button == "LeftButton" then
 			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {function(icon)
 				draftRelationTexture = icon;
