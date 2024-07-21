@@ -374,6 +374,10 @@ local function displayCurrently(context)
 end
 
 local function onCurrentlyChanged()
+	if not getCurrentContext().isPlayer then
+		return;
+	end
+
 	local multiLine = true;
 	local text = Utils.str.sanitize(TRP3_RegisterMiscViewCurrentlyIC:GetInputText(), multiLine);
 
@@ -382,6 +386,10 @@ local function onCurrentlyChanged()
 end
 
 local function onOOCInfoChanged()
+	if not getCurrentContext().isPlayer then
+		return;
+	end
+
 	local multiLine = true;
 	local text = Utils.str.sanitize(TRP3_RegisterMiscViewCurrentlyOOC:GetInputText(), multiLine);
 
