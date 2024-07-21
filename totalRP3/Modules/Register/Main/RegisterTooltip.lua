@@ -1167,7 +1167,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 			notifText = notifText .. " " .. NEW_ABOUT_ICON;
 		end
 		if notifText and notifText ~= "" then
-			tooltipBuilder:AddLine(notifText, colors.MAIN, getSmallLineFontSize());
+			tooltipBuilder:AddLine(notifText, colors.MAIN, 10);
 		end
 	end
 
@@ -1271,7 +1271,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 			notifText = notifText .. " " .. NEW_ABOUT_ICON;
 		end
 		if notifText and notifText ~= "" then
-			tooltipCompanionBuilder:AddLine(notifText, colors.MAIN, getSmallLineFontSize());
+			tooltipCompanionBuilder:AddLine(notifText, colors.MAIN, 10);
 		end
 	end
 
