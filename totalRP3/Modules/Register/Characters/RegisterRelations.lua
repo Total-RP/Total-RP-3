@@ -210,7 +210,7 @@ local function initRelationEditor(relationID)
 	setTooltipAll(TRP3_RelationsList.Editor.Content.Color, "RIGHT", 0, 5, loc.CO_RELATIONS_NEW_COLOR, loc.CO_RELATIONS_NEW_COLOR_TT
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 	if relation.color then
 		TRP3_RelationsList.Editor.Content.Color.setColor(TRP3_API.CreateColorFromHexString(relation.color):GetRGBAsBytes());
 	else
