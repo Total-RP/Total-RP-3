@@ -187,7 +187,7 @@ local function initRelationEditor(relationID)
 		if InCombatLockdown() then return; end
 
 		if key == "ESCAPE" then
-			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			PlaySound(TRP3_InterfaceSounds.PopupClose);
 			frame:SetPropagateKeyboardInput(false);
 			frame:Hide();
 		else
@@ -407,7 +407,7 @@ TRP3_API.register.inits.relationsInit = function()
 		TRP3_RelationsList.Title:SetText(loc.CO_RELATIONS);
 		TRP3_RelationsList.CreateNew:SetText(loc.CO_RELATIONS_NEW);
 		TRP3_RelationsList.Editor.Content.CloseButton:SetScript("OnClick", function()
-			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			PlaySound(TRP3_InterfaceSounds.PopupClose);
 			TRP3_RelationsList.Editor:Hide();
 			TRP3_API.popup.hidePopups();
 		end);

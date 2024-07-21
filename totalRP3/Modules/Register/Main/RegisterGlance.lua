@@ -451,7 +451,7 @@ local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 		if InCombatLockdown() then return; end
 
 		if key == "ESCAPE" then
-			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			PlaySound(TRP3_InterfaceSounds.PopupClose);
 			TRP3_AtFirstGlanceEditor:SetPropagateKeyboardInput(false);
 			TRP3_AtFirstGlanceEditor:Hide();
 		else
@@ -779,6 +779,7 @@ local function onGlanceDragStart(button)
 	if button.isCurrentMine and button.data then
 		draggingGlance = true;
 		SetCursor(GetFileIDFromPath("Interface\\ICONS\\" .. (button.data.IC or TRP3_InterfaceIcons.Default)));
+		PlaySound(TRP3_InterfaceSounds.DragPickup);
 	end
 end
 TRP3_API.register.glance.onGlanceDragStart = onGlanceDragStart;
@@ -803,6 +804,7 @@ end
 
 local function onGlanceDragStop(button)
 	ResetCursor();
+	PlaySound(TRP3_InterfaceSounds.DragDrop);
 	if draggingGlance and button.isCurrentMine and button and button.slot then
 		draggingGlance = false;
 		local from, to = button.slot;

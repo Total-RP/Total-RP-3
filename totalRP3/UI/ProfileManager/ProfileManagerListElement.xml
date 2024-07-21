@@ -35,11 +35,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
 				</Anchors>
-				<Scripts>
-					<PostClick>
-						TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-					</PostClick>
-				</Scripts>
 			</Button>
 			<Button parentKey="MenuButton" inherits="TRP3_ActionButton">
 				<Anchors>

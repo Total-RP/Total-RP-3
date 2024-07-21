@@ -22,7 +22,6 @@ local getCompanionProfile, getCompanionProfileID = TRP3_API.companions.player.ge
 local getCompanionProfiles = TRP3_API.companions.player.getProfiles;
 local getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
 local companionIDToInfo = Utils.str.companionIDToInfo;
-local playUISound = TRP3_API.ui.misc.playUISound;
 local isTargetTypeACompanion, companionHasProfile = TRP3_API.ui.misc.isTargetTypeACompanion, TRP3_API.companions.register.companionHasProfile;
 local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
 local getCurrentMountSpellID, getCurrentMountProfile = TRP3_API.companions.player.getCurrentMountSpellID, TRP3_API.companions.player.getCurrentMountProfile;
@@ -516,7 +515,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 			end);
 		else
 			onOpenProfile(button);
-			playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			PlaySound(TRP3_InterfaceSounds.ButtonClick);
 		end
 	end
 

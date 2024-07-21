@@ -565,12 +565,12 @@ function TRP3_IconBrowserMixin:OnShow()
 	self.SearchBox:SetText("");
 	self.SearchBox:SetFocus(true);
 	self.Content.ScrollBox:ScrollToBegin();
-	PlaySound(SOUNDKIT.IG_ABILITY_OPEN);
+	PlaySound(TRP3_InterfaceSounds.BrowserOpen);
 	self.callbacks:Fire("OnOpened");
 end
 
 function TRP3_IconBrowserMixin:OnHide()
-	PlaySound(SOUNDKIT.IG_ABILITY_CLOSE);
+	PlaySound(TRP3_InterfaceSounds.BrowserClose);
 	self.callbacks:Fire("OnClosed");
 end
 
@@ -590,7 +590,7 @@ end
 function TRP3_IconBrowserMixin:OnIconButtonClicked(button)
 	local iconInfo = button:GetElementData();
 	self.callbacks:Fire("OnIconSelected", iconInfo);
-	PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+	PlaySound(TRP3_InterfaceSounds.PopupClose);
 	self:Hide();
 end
 

@@ -321,6 +321,7 @@ local function onStart()
 	--
 	local function onDictionaryLineClicked(lineFrame, mousebutton)
 		-- LeftButton -> Edit the word
+		PlaySound(TRP3_InterfaceSounds.ButtonClick);
 		if mousebutton == "LeftButton" then
 			if dictionaryEditor.editPopup:IsVisible() and dictionaryEditor.editPopup.currentLine == lineFrame then
 				hideWordEditorPopup();

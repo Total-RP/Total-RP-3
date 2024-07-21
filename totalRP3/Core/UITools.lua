@@ -182,9 +182,7 @@ function TRP3_API.ui.listbox.displayDropDown(ownerRegion, rootMenuItems, onClick
 		GenerateMenuDescription(rootMenuItems, rootDescription);
 	end
 
-	if TRP3_MenuUtil.CreateContextMenu(ownerRegion, GenerateRootMenuDescription) then
-		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-	end
+	TRP3_MenuUtil.CreateContextMenu(ownerRegion, GenerateRootMenuDescription);
 end
 
 --- Setup a drop down menu for a clickable (Button ...)
@@ -814,7 +812,7 @@ function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback, confirmCallbac
 			else
 				confirmCallback(function() clickFunction() end);
 			end
-			TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
+			PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
 		end);
 		tinsert(tabGroup.tabs, tabWidget);
 		tabBar_index = tabBar_index + 1;
