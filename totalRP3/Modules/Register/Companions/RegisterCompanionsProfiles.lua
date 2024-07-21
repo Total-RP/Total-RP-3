@@ -588,20 +588,17 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 				-- Check if the pet has a profile first.
 				if profile and profile.data then
-					-- Retrieve profile name.
-					local name = profile.data.NA or "";
-
 					-- Handle if player is the owner of this pet.
 					if ownerID == Globals.player_id then
-						buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TF_OPEN_COMPANION) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TF_MORE_OPTIONS);
+						buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TF_OPEN_COMPANION) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TF_MORE_OPTIONS);
 					else
 						-- If pet data is unread, add alert.
 						if not profile.data.read then
 							local icon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay";
-							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateFileMarkup(icon, { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "|r";
+							buttonStructure.tooltipSub = TRP3_MarkupUtil.GenerateFileMarkup(icon, { size = 16 }) .. loc.REG_TT_NOTIF_LONG_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "|r";
 							buttonStructure.alert = true;
 						else
-							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION);
+							buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION);
 						end
 					end
 				else
@@ -680,7 +677,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 						-- If mount data is unread, add alert.
 						if not profile.data.read then
 							local icon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay";
-							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateFileMarkup(icon, { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT) .. "|r";
+							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateFileMarkup(icon, { size = 16 }) .. loc.REG_TT_NOTIF_LONG_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT) .. "|r";
 							buttonStructure.alert = true;
 						else
 							buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_MOUNT);

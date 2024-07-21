@@ -245,6 +245,7 @@ These slots will also be visible on the target frame's |cnGREEN_FONT_COLOR:"At f
 	REG_TT_ZONE = "Zone",
 	REG_TT_NOTIF = "Unread description",
 	REG_TT_NOTIF_TT = "The content of this section changed since your last visit.",
+	REG_TT_NOTIF_LONG_TT = "The content of this profile's description has changed since your last visit.",
 	REG_TT_IGNORED = "< Character is ignored >",
 	REG_TT_IGNORED_OWNER = "< Owner is ignored >",
 	REG_LIST_CHAR_TITLE = "Characters",

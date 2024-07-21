@@ -1097,14 +1097,16 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					profile = getUnitIDProfile(unitID);
 				end
 
-				local name = getCompleteName(profile.characteristics or {}, "", true);
-				buttonStructure.tooltipSub = name .. "\n\n" ..  TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER);
+				local tooltipLines = {};
 
 				if unitID ~= Globals.player_id and profile.about and not profile.about.read then
 					local icon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay";
-					buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_MarkupUtil.GenerateFileMarkup(icon, { size = 16 }) .. "|cnGREEN_FONT_COLOR:" .. loc.REG_TT_NOTIF .. "|r"  .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER);
+					table.insert(tooltipLines, TRP3_MarkupUtil.GenerateFileMarkup(icon, { size = 16 }) .. loc.REG_TT_NOTIF_LONG_TT);
 					buttonStructure.alert = true;
 				end
+
+				table.insert(tooltipLines, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER));
+				buttonStructure.tooltipSub = table.concat(tooltipLines, "|n|n");
 			end,
 			alertIcon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay",
 		});
