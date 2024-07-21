@@ -204,7 +204,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		local status3Text = loc.TB_STATUS..": "..color("g")..loc.TB_NORMAL_MODE;
 		local status3SubText = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_GO_TO_MODE:format(loc.TB_AFK_MODE)) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_GO_TO_MODE:format(loc.TB_DND_MODE));
 		local Button_Status = {
-			id = "aa_trp3_c",
+			id = "aa_trp3_d",
 			icon = TRP3_InterfaceIcons.ModeNormal,
 			configText = loc.CO_TOOLBAR_CONTENT_STATUS,
 			onUpdate = function(Uibutton, buttonStructure)
@@ -360,7 +360,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			local capeText2 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_CAPE_1);
 			local capeText3 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_CAPE_2);
 			local Button_Cape = {
-				id = "aa_trp3_a",
+				id = "aa_trp3_c",
 				icon = cloakOnIcon:GetFileName(),
 				configText = loc.CO_TOOLBAR_CONTENT_CAPE,
 				onEnter = function() end,
