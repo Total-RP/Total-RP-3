@@ -1079,11 +1079,15 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 	local parentFrame = resizeButton.resizableFrame;
 	resizeButton:RegisterForDrag("LeftButton");
 	resizeButton:SetScript("OnMouseDown", function(self)
-		self.CursorFrame:Show();
+		if self.CursorFrame then
+			self.CursorFrame:Show();
+		end
 		SetCursor("Interface\\CURSOR\\UI-Cursor-Size");
 	end);
 	resizeButton:SetScript("OnMouseUp", function(self)
-		self.CursorFrame:Hide();
+		if self.CursorFrame then
+			self.CursorFrame:Hide();
+		end
 		ResetCursor();
 	end);
 	resizeButton:SetScript("OnDragStart", function(self)
@@ -1101,7 +1105,9 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 	end);
 	resizeButton:SetScript("OnDragStop", function(self)
 		if parentFrame.isSizing then
-			self.CursorFrame:Hide();
+			if self.CursorFrame then
+				self.CursorFrame:Hide();
+			end
 			ResetCursor();
 			resizeShadowFrame:StopMovingOrSizing();
 			parentFrame.isSizing = false;
