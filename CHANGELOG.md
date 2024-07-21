@@ -56,7 +56,7 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
 - Clicking the target frame button for companion profiles now directly opens the profile.
   - The options menu to unbind/select a new profile can still be accessed with a right-click.
 - The companion/mount profile buttons no longer change icon based on the selected profile.
-- "Frames settings" has been split into Tooltip and Target frame categories.
+- "Frames settings" has been split into Toolbar and Target frame categories.
   - The map scan button settings have been moved to the Directory category.
 - Tooltip texts across the addon were reworked to follow a more consistent format and add clarity when needed.
 - Chat links can now be closed with Escape, and profile chat link tooltips have received minor display improvements.
