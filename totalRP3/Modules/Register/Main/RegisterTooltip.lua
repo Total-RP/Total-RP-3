@@ -1258,7 +1258,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showCompanionWoWInfo() then
-		tooltipCompanionBuilder:AddLine(loc.PR_CO_MOUNT .. " " .. mountCustomColor:WrapTextInColorCode(mountName), colors.MAIN, getSubLineFontSize());
+		tooltipCompanionBuilder:AddLine(loc.PR_CO_MOUNT .. ": " .. mountCustomColor:WrapTextInColorCode(mountName), colors.MAIN, getSubLineFontSize());
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
