@@ -528,7 +528,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 		button.BindButton:SetText(loc.REG_COMPANION_BOUNDS);
 		button.BindButton:Show();
-		button.BindButton:SetScript("OnMouseDown", onBoundClicked);
+		button.BindButton:SetScript("OnClick", onBoundClicked);
 
 		decorateProfileList(button, profileID);
 	end
