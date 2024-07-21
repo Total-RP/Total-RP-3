@@ -182,6 +182,10 @@ end
 
 TRP3_RedButtonMixin = {};
 
+function TRP3_RedButtonMixin:OnShow()
+	self:UpdateVisualState();
+end
+
 function TRP3_RedButtonMixin:OnDisable()
 	self:UpdateVisualState();
 end
@@ -214,9 +218,22 @@ function TRP3_RedButtonMixin:UpdateVisualState(overrideState)
 	end
 
 	local useAtlasSize = false;
-	self.EdgeLeft:SetAtlas("128-RedButton-Left" .. suffix, useAtlasSize);
-	self.EdgeRight:SetAtlas("128-RedButton-Right" .. suffix, useAtlasSize);
-	self.Center:SetAtlas("_128-RedButton-Center" .. suffix, useAtlasSize);
+
+	if C_Texture.GetAtlasInfo("_128-RedButton-Center" .. suffix) then
+		-- Retail atlases.
+		self.EdgeLeft:SetAtlas("128-RedButton-Left" .. suffix, useAtlasSize);
+		self.EdgeLeft:SetWidth(26);
+		self.EdgeRight:SetAtlas("128-RedButton-Right" .. suffix, useAtlasSize);
+		self.EdgeRight:SetWidth(68);
+		self.Center:SetAtlas("_128-RedButton-Center" .. suffix, useAtlasSize);
+	else
+		-- Classic atlases.
+		self.EdgeLeft:SetAtlas("128-RedButton-LeftCorner" .. suffix, useAtlasSize);
+		self.EdgeLeft:SetWidth(68);
+		self.EdgeRight:SetAtlas("128-RedButton-RightCorner" .. suffix, useAtlasSize);
+		self.EdgeRight:SetWidth(26);
+		self.Center:SetAtlas("_128-RedButton-Tile" .. suffix, useAtlasSize);
+	end
 end
 
 

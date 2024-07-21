@@ -4,8 +4,6 @@
 ---@type TRP3_API
 local _, TRP3_API = ...;
 
-local Ellyb = TRP3_API.Ellyb;
-
 TRP3_API.dashboard = {
 	NOTIF_CONFIG_PREFIX = "notification_"
 };
@@ -204,7 +202,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		local status3Text = loc.TB_STATUS..": "..color("g")..loc.TB_NORMAL_MODE;
 		local status3SubText = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_GO_TO_MODE:format(loc.TB_AFK_MODE)) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_GO_TO_MODE:format(loc.TB_DND_MODE));
 		local Button_Status = {
-			id = "aa_trp3_c",
+			id = "aa_trp3_d",
 			icon = TRP3_InterfaceIcons.ModeNormal,
 			configText = loc.CO_TOOLBAR_CONTENT_STATUS,
 			onUpdate = function(Uibutton, buttonStructure)
@@ -307,8 +305,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 		if not TRP3_ClientFeatures.Transmogrification then
 			-- Show / hide helmet
-			local helmetOffIcon = Ellyb.Icon(TRP3_InterfaceIcons.ToolbarHelmetOff);
-			local helmetOnIcon = Ellyb.Icon(TRP3_InterfaceIcons.ToolbarHelmetOn);
+			local helmetOffIcon = TRP3_InterfaceIcons.ToolbarHelmetOff;
+			local helmetOnIcon = TRP3_InterfaceIcons.ToolbarHelmetOn;
 			local helmTextOn = loc.TB_SWITCH_HELM_ON;
 			local helmTextOff = loc.TB_SWITCH_HELM_OFF;
 			local helmText2 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_HELM_1);
@@ -316,7 +314,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 			local Button_Helmet = {
 				id = "aa_trp3_b",
-				icon = helmetOnIcon:GetFileName(),
+				icon = helmetOnIcon,
 				configText = loc.CO_TOOLBAR_CONTENT_HELMET,
 				onEnter = function() end,
 				onModelUpdate = function(buttonStructure)
@@ -324,7 +322,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 						buttonStructure.tooltip  = helmTextOn;
 						buttonStructure.tooltipSub = helmText3;
 						local currentHelmetTexture = GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("HeadSlot")));
-						buttonStructure.icon = currentHelmetTexture and Ellyb.Icon(currentHelmetTexture) or helmetOnIcon;
+						buttonStructure.icon = currentHelmetTexture and currentHelmetTexture or helmetOnIcon;
 					else
 						buttonStructure.tooltip  = helmTextOff;
 						buttonStructure.tooltipSub  = helmText2;
@@ -353,15 +351,15 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			TRP3_API.toolbar.toolbarAddButton(Button_Helmet);
 
 			-- Show/hide cloak
-			local cloakOnIcon = Ellyb.Icon(TRP3_InterfaceIcons.ToolbarCloakOff);
-			local cloakOffIcon = Ellyb.Icon(TRP3_InterfaceIcons.ToolbarCloakOn);
+			local cloakOnIcon = TRP3_InterfaceIcons.ToolbarCloakOff;
+			local cloakOffIcon = TRP3_InterfaceIcons.ToolbarCloakOn;
 			local capeTextOn =  loc.TB_SWITCH_CAPE_ON;
 			local capeTextOff = loc.TB_SWITCH_CAPE_OFF;
 			local capeText2 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_CAPE_1);
 			local capeText3 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_CAPE_2);
 			local Button_Cape = {
-				id = "aa_trp3_a",
-				icon = cloakOnIcon:GetFileName(),
+				id = "aa_trp3_c",
+				icon = cloakOnIcon,
 				configText = loc.CO_TOOLBAR_CONTENT_CAPE,
 				onEnter = function() end,
 				onModelUpdate = function(buttonStructure)
@@ -369,7 +367,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 						buttonStructure.tooltip  = capeTextOn;
 						buttonStructure.tooltipSub = capeText3;
 						local currentCloakTexture = GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("BackSlot")));
-						buttonStructure.icon = currentCloakTexture and Ellyb.Icon(currentCloakTexture) or cloakOnIcon;
+						buttonStructure.icon = currentCloakTexture and currentCloakTexture or cloakOnIcon;
 					else
 						buttonStructure.tooltip  = capeTextOff;
 						buttonStructure.tooltipSub  = capeText2;
