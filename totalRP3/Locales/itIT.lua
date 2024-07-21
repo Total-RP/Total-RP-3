@@ -313,8 +313,6 @@ Max: 20 kB]=],
 	["REG_LIST_CHAR_TT_RELATION"] = [=[Relazione:
 |cff00ff00%s|r]=],
 	["REG_LIST_FILTERS"] = "Filtri",
-	["REG_LIST_FILTERS_TT"] = [=[|cffffff00Click:|r Applica filtri
-|cffffff00Right-Click:|r Pulisci filtri]=],
 	["REG_LIST_FLAGS"] = "Bandiere",
 	["REG_LIST_GUILD"] = "Personaggi della gilda",
 	["REG_LIST_IGNORE_EMPTY"] = "Nessun personaggio ignorato",

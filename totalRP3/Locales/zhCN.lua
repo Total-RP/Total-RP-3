@@ -859,8 +859,6 @@ This module modifies Blizzard player and target frames to use RP name and color,
 
 |cff00ff00比如 :|r
 骑士, 烟火生产者, 死灵法师, 游侠, 秘术师 ...]=],
-	["REG_PLAYER_COLOR_ALWAYS_DEFAULT_TT"] = [=[|cffffff00左键:|r 选择一个颜色
-|cffffff00右键:|r 放弃颜色]=],
 	["REG_PLAYER_COLOR_CLASS"] = "职业颜色ABOUT_TITLE",
 	["REG_PLAYER_COLOR_CLASS_TT"] = [=[这也决定了名字的颜色.
 

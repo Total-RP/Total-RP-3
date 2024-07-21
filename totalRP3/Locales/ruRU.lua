@@ -882,8 +882,6 @@ Link it anyway ?]=],
 
 |cff00ff00Например:|r
 Рыцарь, Пиротехник, Некромант, Элитный стрелок, Чародей, ...]=],
-	["REG_PLAYER_COLOR_ALWAYS_DEFAULT_TT"] = [=[|cffffff00ЛКМ:|r Выбрать цвет
-|cffffff00ПКМ:|r Сбросить цвет]=],
 	["REG_PLAYER_COLOR_CLASS"] = "Цвет класса",
 	["REG_PLAYER_COLOR_CLASS_TT"] = "Он так же определит цвет имени.",
 	["REG_PLAYER_COLOR_TT_DEFAULTPICKER"] = "Использовать стандартный выбор цвета",

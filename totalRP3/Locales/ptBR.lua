@@ -854,7 +854,6 @@ Você quer mudar de página assim mesmo ?
 
 |cff00ff00Por exemplo :|r
 Cavaleiro, Pirotecnista, Necromante, Atirador de elite, Arcanista ...]=],
-	["REG_PLAYER_COLOR_ALWAYS_DEFAULT_TT"] = "|cffffff00Clique:|r Selecionar uma cor |cffffff00Botão direito:|r Descartar a cor",
 	["REG_PLAYER_COLOR_CLASS"] = "Cor da classe",
 	["REG_PLAYER_COLOR_CLASS_TT"] = [=[Isso também determina a cor do nome.
 
