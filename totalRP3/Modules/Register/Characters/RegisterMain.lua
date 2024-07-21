@@ -460,6 +460,7 @@ local function updateAboutTabIcon(context)
 		aboutUnread = true;
 	end
 	tabGroup.tabs[2]:SetIcon(aboutUnread and "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread" or nil);
+	TRP3_API.ui.tooltip.setTooltipAll(tabGroup.tabs[2].Icon, "RIGHT", 0, 5, loc.REG_TT_NOTIF, loc.REG_TT_NOTIF_TT);
 end
 
 local function onInformationUpdated(profileID, infoType)
