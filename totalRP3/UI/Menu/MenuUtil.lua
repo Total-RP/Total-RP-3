@@ -136,7 +136,7 @@ function TRP3_MenuUtil.HideTooltip(owner)
 	else
 		local tooltip = TRP3_MainTooltip;
 
-		if tooltip:IsOwned(owner) then
+		if TRP3_TooltipUtil.IsOwned(tooltip, owner) then
 			tooltip:Hide();
 		end
 	end

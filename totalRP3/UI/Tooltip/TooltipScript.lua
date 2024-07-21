@@ -22,7 +22,7 @@ function TRP3_TooltipScriptMixin:OnTooltipShow(description)  -- luacheck: no unu
 end
 
 function TRP3_TooltipScriptMixin:IsTooltipShown()
-	return TRP3_MainTooltip:IsOwned(self);
+	return TRP3_TooltipUtil.IsOwned(TRP3_MainTooltip, self);
 end
 
 function TRP3_TooltipScriptMixin:ShowTooltip()
