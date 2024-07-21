@@ -44,7 +44,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							</Button>
 							<Button name="$parent_ActionButton" inherits="TRP3_IconButton">
 								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parent_EditButton" x="0" y="5"/>
+									<Anchor point="LEFT" relativePoint="RIGHT" x="30"/>
 								</Anchors>
 							</Button>
 						</Frames>
