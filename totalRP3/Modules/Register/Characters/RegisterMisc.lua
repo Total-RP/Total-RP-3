@@ -374,33 +374,19 @@ local function displayCurrently(context)
 end
 
 local function onCurrentlyChanged()
-	if getCurrentContext().isPlayer then
-		local character = get("player/character");
-		local old = character.CU;
-		character.CU = TRP3_RegisterMiscViewCurrentlyIC:GetInputText();
+	local multiLine = true;
+	local text = Utils.str.sanitize(TRP3_RegisterMiscViewCurrentlyIC:GetInputText(), multiLine);
 
-		character.CU = Utils.str.sanitize(character.CU, true);
-
-		if old ~= character.CU then
-			character.v = Utils.math.incrementNumber(character.v or 1, 2);
-			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "character");
-		end
-	end
+	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+	player:SetCurrentlyText(text);
 end
 
 local function onOOCInfoChanged()
-	if getCurrentContext().isPlayer then
-		local character = get("player/character");
-		local old = character.CO;
-		character.CO = TRP3_RegisterMiscViewCurrentlyOOC:GetInputText();
+	local multiLine = true;
+	local text = Utils.str.sanitize(TRP3_RegisterMiscViewCurrentlyOOC:GetInputText(), multiLine);
 
-		character.CO = Utils.str.sanitize(character.CO, true);
-
-		if old ~= character.CO then
-			character.v = Utils.math.incrementNumber(character.v or 1, 2);
-			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "character");
-		end
-	end
+	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+	player:SetOutOfCharacterInfo(text);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -508,11 +494,11 @@ function TRP3_API.register.inits.miscInit()
 
 	TRP3_RegisterMiscViewCurrentlyIC.Title:SetText(loc.DB_STATUS_CURRENTLY);
 	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyIC.HelpButton, "RIGHT", 0, 5, loc.DB_STATUS_CURRENTLY, loc.DB_STATUS_CURRENTLY_TT);
-	TRP3_RegisterMiscViewCurrentlyIC:RegisterCallback("OnTextChanged", onCurrentlyChanged, {});
+	TRP3_RegisterMiscViewCurrentlyIC:RegisterCallback("OnTextChanged", TRP3_FunctionUtil.Debounce(0.25, onCurrentlyChanged), {});
 
 	TRP3_RegisterMiscViewCurrentlyOOC.Title:SetText(loc.DB_STATUS_CURRENTLY_OOC);
 	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC.HelpButton, "RIGHT", 0, 5, loc.DB_STATUS_CURRENTLY_OOC, loc.DB_STATUS_CURRENTLY_OOC_TT);
-	TRP3_RegisterMiscViewCurrentlyOOC:RegisterCallback("OnTextChanged", onOOCInfoChanged, {});
+	TRP3_RegisterMiscViewCurrentlyOOC:RegisterCallback("OnTextChanged", TRP3_FunctionUtil.Debounce(0.25, onOOCInfoChanged), {});
 
 	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT)
