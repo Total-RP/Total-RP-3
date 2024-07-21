@@ -12,4 +12,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<OnLeave method="OnLeave"/>
 		</Scripts>
 	</Frame>
+
+	<FontString name="TRP3_TruncatedFontStringTooltipTemplate" mixin="TRP3_TruncatedFontStringTooltipMixin" virtual="true">
+		<Scripts>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</FontString>
 </Ui>

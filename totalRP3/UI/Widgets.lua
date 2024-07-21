@@ -138,11 +138,7 @@ end
 
 function TRP3_CategoryButtonMixin:OnEnter()
 	if self.Text:IsTruncated() then
-		local function Initializer(_, tooltip)
-			tooltip:AddTitleLine(self:GetText());
-		end
-
-		TRP3_TooltipUtil.ShowTooltip(self, Initializer);
+		TRP3_TooltipTemplates.ShowTruncationTooltip(self, self:GetText());
 	end
 end
 

@@ -8,18 +8,10 @@ function TRP3_TabButtonMixin:OnLoad()
 end
 
 function TRP3_TabButtonMixin:OnEnter()
-	local tooltipFunction = self.tooltipFunction;
-
-	if not tooltipFunction and self.Text:IsTruncated() then
-		local function ShowTruncatedTooltip(_, description)
-			description:AddTitleLine(self:GetText());
-		end
-
-		tooltipFunction = ShowTruncatedTooltip;
-	end
-
-	if tooltipFunction then
-		TRP3_TooltipUtil.ShowTooltip(self, tooltipFunction);
+	if self.tooltipFunction then
+		TRP3_TooltipUtil.ShowTooltip(self, self.tooltipFunction);
+	elseif self.Text:IsTruncated() then
+		TRP3_TooltipTemplates.ShowTruncationTooltip(self, self.Text:GetText());
 	end
 end
 
