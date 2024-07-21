@@ -4,6 +4,8 @@ This version adds support for patch 11.0.
 
 Thanks to Raenore for the help on some of these features, and keyboardturner for the new silhouette logo.
 
+**For a visual guide to the major changes of this version, please see [this article](https://github.com/Total-RP/Total-RP-3/wiki/Guide-to-version-3.0) on our wiki.**
+
 ## Added
 - Added a new Relations menu located in the Customization section, alongside the moved Automation settings.
   - This menu lets you edit the preset relations you can have with other players, as well as create new ones.
@@ -19,6 +21,7 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
     - Book: Profile has an unread description.
     - Note: You have notes on this profile.
     - Three people: Walkup friendly.
+- Added the new unread description icon to the About tab when relevant.
 - Added a tooltip setting to hide the addon version text and trial indicator separately from the bottom icons.
 - Added the ability to drag and drop personality traits to reorder them
   - Additional info now uses the same button style rather than drag and dropping the icon itself.
@@ -34,7 +37,7 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
 ## Changed
 - The UI has received an extensive makeover, including smoother scrolling in profiles list and directory.
 - The toolbar and target frame buttons have had their icons updated to make their actions clearer.
-  - **TODO: INSERT IMAGE**
+- The toolbar and target frame tooltips now adjust which side of the button they appear on based on their position on the screen.
 - The roleplay styles options at the bottom of the Miscellaneous section have been revised.
   - Removed "in-character frequence" and "battle resolution".
   - Added more settings to indicate what RP types your character is open to: "criminal activity" (theft, mugging) and "loss of control" (getting imprisoned or mind controlled).
@@ -58,6 +61,7 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
 - Tooltip texts across the addon were reworked to follow a more consistent format and add clarity when needed.
 - Chat links can now be closed with Escape, and profile chat link tooltips have received minor display improvements.
 - The Icon browser now displays icons in a larger size both on the grid and in tooltips.
+- The size of the version number line on the tooltip is no longer tied to the tertiary font size, and is instead locked to the current default size of 10.
 
 ## Fixed
 - Fixed some causes of lingering tooltips.
@@ -74,6 +78,7 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
 - Fixed an issue where the class text would appear slightly indented on tooltips if no race was set.
 - Fixed an issue where toast notifications (like the one being shown when linking a profile to a companion) could get stuck instead of fading properly.
 - Fixed currently summoned pet not being remembered on Classic Era.
+- Fixed an issue where the locale would still be changed when canceling the prompt appearing after selecting a language in the dropdown.
 - Fixed an issue when trying to change language from Traditional Chinese.
 
 ## Removed
