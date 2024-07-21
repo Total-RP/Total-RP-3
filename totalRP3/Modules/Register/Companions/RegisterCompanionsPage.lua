@@ -461,7 +461,11 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 	TRP3_API.ui.text.setupToolbar(TRP3_CompanionsPageInformationEdit_About_Toolbar, TRP3_CompanionsPageInformationEdit_About_TextScrollText);
 
-	setTooltipForSameFrame(TRP3_CompanionsPageInformationConsult_GlanceHelp, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG);
+	setTooltipForSameFrame(TRP3_CompanionsPageInformationConsult_GlanceHelp, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG
+	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("DCLICK", loc.REG_PLAYER_GLANCE_CONFIG_TOGGLE)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_GLANCE_CONFIG_PRESETS)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("DRAGDROP", loc.REG_PLAYER_GLANCE_CONFIG_REORDER));
 
 	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetFontObject("p", GameFontNormal);
 	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetFontObject("h1", GameFontNormalHuge3);
