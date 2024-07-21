@@ -82,22 +82,19 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture parentKey="EdgeLeft" atlas="128-RedButton-Left" useAtlasSize="false">
-					<Size x="26"/>
+				<Texture parentKey="EdgeLeft" useAtlasSize="false">
 					<Anchors>
 						<Anchor point="TOPLEFT"/>
 						<Anchor point="BOTTOMLEFT"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="EdgeRight" atlas="128-RedButton-Right" useAtlasSize="false">
-					<Size x="68"/>
+				<Texture parentKey="EdgeRight" useAtlasSize="false">
 					<Anchors>
 						<Anchor point="TOPRIGHT"/>
 						<Anchor point="BOTTOMRIGHT"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="Center" atlas="_128-RedButton-Center" horizTile="true" useAtlasSize="false">
-					<Size x="26"/>
+				<Texture parentKey="Center" horizTile="true" useAtlasSize="false">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeKey="$parent.EdgeLeft" relativePoint="TOPRIGHT"/>
 						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.EdgeRight" relativePoint="BOTTOMLEFT"/>
@@ -110,6 +107,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<HighlightFont style="GameFontHighlight"/>
 		<DisabledFont style="GameFontDisable"/>
 		<Scripts>
+			<OnShow method="OnShow"/>
 			<OnDisable method="OnDisable"/>
 			<OnEnable method="OnEnable"/>
 			<OnMouseDown method="OnMouseDown"/>
