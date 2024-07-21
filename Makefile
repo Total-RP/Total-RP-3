@@ -25,7 +25,7 @@ check: schema
 	pre-commit run --all-files
 
 dist:
-	curl -s $(PACKAGER_URL) | bash -s -- -dS
+	curl -s $(PACKAGER_URL) | bash -s -- -d
 
 libs:
 	curl -s $(PACKAGER_URL) | bash -s -- -cdlz
