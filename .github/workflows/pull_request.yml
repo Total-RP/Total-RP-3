@@ -28,7 +28,7 @@ jobs:
       - name: Create Package
         uses: BigWigsMods/packager@v2
         with:
-          args: -d -S -z
+          args: -dz
 
       - uses: actions/upload-artifact@v2
         with:
