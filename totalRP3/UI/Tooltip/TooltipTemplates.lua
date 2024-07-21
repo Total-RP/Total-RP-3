@@ -112,3 +112,11 @@ function TRP3_TooltipTemplates.ShowInstructionTooltip(owner, title, text, instru
 
 	TRP3_TooltipUtil.ShowTooltip(owner, GenerateInstructionTooltip);
 end
+
+function TRP3_TooltipTemplates.ShowTruncationTooltip(owner, text)
+	local function GenerateTruncationTooltip(_, description)
+		description:AddTitleLine(text, NORMAL_FONT_COLOR);
+	end
+
+	TRP3_TooltipUtil.ShowTooltip(owner, GenerateTruncationTooltip);
+end

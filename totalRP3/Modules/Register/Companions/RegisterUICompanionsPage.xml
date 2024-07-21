@@ -50,15 +50,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Frames>
 						<Layers>
 							<Layer level="OVERLAY">
-								<FontString name="$parent_Name" text="[Name and titles]" inherits="GameFontNormalLarge" justifyH="LEFT">
+								<FontString name="$parent_Name" text="[Name and titles]" font="GameFontHighlightLarge" inherits="TRP3_TruncatedFontStringTooltipTemplate" justifyH="LEFT">
 									<Size x="0" y="15"/>
 									<Anchors>
 										<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="10" relativeKey="$parent.Icon"/>
 										<Anchor point="RIGHT" x="-10" y="0"/>
 									</Anchors>
-									<Color b="0.95" r="0.95" g="0.95"/>
 								</FontString>
-								<FontString name="$parent_Title" text="[Complete subtitle]" inherits="GameFontNormal" justifyH="LEFT">
+								<FontString name="$parent_Title" text="[Complete subtitle]" font="GameFontNormal" inherits="TRP3_TruncatedFontStringTooltipTemplate" justifyH="LEFT">
 									<Size x="0" y="15"/>
 									<Anchors>
 										<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="0" y="-5" relativeTo="$parent_Name"/>
