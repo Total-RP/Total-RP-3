@@ -15,7 +15,7 @@ local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 local getProfiles = TRP3_API.profile.getProfiles;
-local Utils, Events, Globals = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.globals;
+local Utils = TRP3_API.utils;
 local color = Utils.str.color;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local refreshTooltip = TRP3_API.ui.tooltip.refresh;
@@ -37,36 +37,24 @@ getDefaultProfile().player.character = {
 	WU = TRP3_Enums.WALKUP.NO,
 }
 
-local function incrementCharacterVernum()
-	local character = get("player/character");
-	character.v = Utils.math.incrementNumber(character.v or 1, 2);
-	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "character");
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- STATUS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onStatusChange(status)
-	local character = get("player/character");
-	local old = character.RP;
-	character.RP = status;
-	if old ~= status then
-		incrementCharacterVernum();
-	end
-end
+function TRP3_API.dashboard.switchStatus()
+	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+	local status = player:GetRoleplayStatus();
 
-local function switchStatus()
-	if get("player/character/RP") == TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER then
-		onStatusChange(TRP3_Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER);
+	if status == TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER then
+		player:SetRoleplayStatus(TRP3_Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER);
 	else
-		onStatusChange(TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER);
+		player:SetRoleplayStatus(TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER);
 	end
 end
-TRP3_API.dashboard.switchStatus = switchStatus;
 
 function TRP3_API.dashboard.isPlayerIC()
-	return get("player/character/RP") == 1;
+	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+	return player:IsInCharacter();
 end
 
 function TRP3_API.dashboard.getCharacterExchangeData()
@@ -167,15 +155,11 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
 
 			if subcommand == "ic" then
-				if not currentUser:IsInCharacter() then
-					switchStatus();
-				end
+				currentUser:SetRoleplayStatus(TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER);
 			elseif subcommand == "ooc" then
-				if currentUser:IsInCharacter() then
-					switchStatus();
-				end
+				currentUser:SetRoleplayStatus(TRP3_Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER);
 			elseif subcommand == "toggle" then
-				switchStatus();
+				TRP3_API.dashboard.switchStatus();
 			else
 				TRP3_API.utils.message.displayMessage(loc.SLASH_CMD_STATUS_HELP);
 			end
@@ -274,7 +258,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					buttonStructure.icon = OOC_ICON;
 				end
 			end,
-			onMouseDown = function(Uibutton, _, button)
+			onClick = function(Uibutton, _, button)
 
 				if button == "RightButton" then
 					local currentProfileID = getPlayerCurrentProfileID();
@@ -294,7 +278,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 						end
 					end);
 				else
-					switchStatus();
+					TRP3_API.dashboard.switchStatus();
 					playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 				end
 			end,
