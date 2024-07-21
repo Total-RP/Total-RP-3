@@ -806,29 +806,7 @@ local MISC_DRAG_UPDATE_PERIOD = 0.01;
 --- re-checked every time the update period elapses.
 local MISC_DRAG_SCROLL_DELTA = 1;
 
---- reorderInfoTestRectangleCoord takes a bounding rectangle of a widget in
---- (x1, y1)(x2, y2) coordinate pairs, and a (cx, cy) coordinate pair, and
---- tests if the bounding rectangle contains the point or not.
----
---- If the point is within the rectangle, 0 is returned. If the point is
---- above, -1 is returned, and if the point is below then 1 is returned.
----
---- If the point is not within the X coordinate boundaries, nil is returned.
----
---- The parameters assume that the coordinates passed match the convention
---- used by the API, such that (0, 0) represents the bottom-left of the screen.
----@param x1 number Bottom-left corner X coordinate of the rectangle.
----@param y1 number Bottom-left corner Y coordinate of the rectangle.
----@param x2 number Top-right corner X coordinate of the rectangle.
----@param y2 number Top-right corner Y coordinate of the rectangle.
----@param cx number X coordinate to test.
----@param cy number Y coordinate to test.
-local function reorderInfoTestRectangleCoord(x1, y1, x2, y2, cx, cy)
-	-- Skip if the given coords aren't within the width of the rectangle.
-	if cx < x1 or cx > x2 then
-		return;
-	end
-
+local function reorderInfoTestRectangleCoord(y1, y2, cy)
 	if cy >= y2 then
 		return 1;
 	elseif cy <= y1 then
@@ -852,7 +830,7 @@ end
 local function reorderInfoQueryCursorIndexPosition(data, editCharFrame)
 	-- Grab the cursor position early on, since we don't need to keep
 	-- asking for it in one update.
-	local mouseX, mouseY = GetCursorPosition();
+	local _, mouseY = GetCursorPosition();
 
 	-- We need to know the total number of characteristics for a bit later.
 	local lastItemIndex = 0;
@@ -866,30 +844,14 @@ local function reorderInfoQueryCursorIndexPosition(data, editCharFrame)
 	for i = 1, lastItemIndex do
 		local frame = editCharFrame[i];
 
-		-- We can work out the actual bounding coordinates now. The
-		-- coords we'll get are the bottom and left of the frame, and as
-		-- the width and height are always positive we can just add them
-		-- to get the other corners.
-		--
-		-- The (x1, y1) point refers to the bottom-left corner, as is standard
-		-- with the API.
-		local left, bottom, width, height = frame:GetRect();
-		local x1, y1 = left, bottom;
-		local x2, y2 = left + width, bottom + height;
+		local _, bottom, _, height = frame:GetRect();
+		local y1 = bottom;
+		local y2 = bottom + height;
 
-		-- Now grab our mouse position and fix it according to the scale
-		-- of the target frame.
 		local frameScale = frame:GetEffectiveScale();
-		local mx, my = mouseX / frameScale, mouseY / frameScale;
+		local my = mouseY / frameScale;
 
-		-- So, why not use IsMouseOver to test if this node is of any interest?
-		-- Because you've got the problem of the first and last items. If you
-		-- drag your cursor above or below them you'd expect the one you're
-		-- moving to go to the first or last position.
-		--
-		-- So we'll roll our own bounds checker that tells us if you're
-		-- on an item, or above/below one.
-		local relativeMousePosition = reorderInfoTestRectangleCoord(x1, y1, x2, y2, mx, my);
+		local relativeMousePosition = reorderInfoTestRectangleCoord(y1, y2, my);
 		if relativeMousePosition then
 			if relativeMousePosition == 0 then
 				-- You're directly over this item.
@@ -915,15 +877,15 @@ local function reorderInfoScrollParentTowardCursor()
 	local frame = TRP3_RegisterCharact_Edit_CharactPanel_Scroll;
 
 	-- Work out our mouse position, calculate to effective scale of the frame.
-	local mx, my = GetCursorPosition();
+	local _, my = GetCursorPosition();
 	local scale = frame:GetEffectiveScale();
-	mx, my = mx / scale, my / scale;
+	my = my / scale;
 
 	-- Only adjust positioning if the mouse is outside of the frame bounds
 	-- from a vertical perspective.
-	local x1, y1, width, height = frame:GetRect();
-	local x2, y2 = x1 + width, y1 + height;
-	local relativeMousePosition = reorderInfoTestRectangleCoord(x1, y1, x2, y2, mx, my);
+	local _, y1, _, height = frame:GetRect();
+	local y2 = y1 + height;
+	local relativeMousePosition = reorderInfoTestRectangleCoord(y1, y2, my);
 	if not relativeMousePosition or relativeMousePosition == 0 then
 		-- Either you're not within the bounds from an X coordinate perspective
 		-- or you're mousing over the frame.
