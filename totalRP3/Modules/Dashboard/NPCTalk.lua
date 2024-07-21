@@ -125,6 +125,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	---@param name string Given NPC name that will be used for the speech.
 	local function toggleNPCTalkFrame(name)
 		if frame:IsShown() then
+			PlaySound(SOUNDKIT.IG_MAINMENU_CLOSE);
 			frame:Hide();
 			return;
 		end
@@ -139,6 +140,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		-- We always rebuild the dropdown on show as some of the colors can change during the session
 		buildChannelDropdown();
 		frame:Show();
+		PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
 
 		if name then
 			frame.MessageText.scroll.text:SetFocus();
