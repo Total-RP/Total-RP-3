@@ -424,7 +424,7 @@ local function setConsultDisplay(context)
 			local frame = miscCharFrame[frameIndex];
 			if frame == nil then
 				frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscInfoLine" .. frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_RegisterInfoLine");
-				frame:SetHeight(32);
+				frame:SetHeight(34);
 				scaleField(frame, TRP3_RegisterCharact_CharactPanel_Container:GetWidth());
 				tinsert(miscCharFrame, frame);
 			end
