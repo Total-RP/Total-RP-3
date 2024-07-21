@@ -15,6 +15,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Frames>
 			<Cooldown parentKey="Cooldown" setAllPoints="true" inherits="CooldownFrameTemplate" />
 		</Frames>
+		<Scripts>
+			<PostClick/>
+		</Scripts>
 	</Button>
 
 	<Frame name="TRP3_ScanLoaderFrame" parent="UIParent" hidden="true">
