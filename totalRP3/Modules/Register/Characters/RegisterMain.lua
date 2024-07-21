@@ -455,11 +455,21 @@ local function onMouseOver()
 end
 
 local function updateAboutTabIcon(context)
+	local unreadIcon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread";
 	local aboutUnread = false;
 	if not context.isPlayer and context.profile.about and not context.profile.about.read then
 		aboutUnread = true;
 	end
-	tabGroup.tabs[2]:SetIcon(aboutUnread and "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread" or nil);
+
+	local function OnTooltipShow(_, description)
+		local unreadMarkup = TRP3_MarkupUtil.GenerateFileMarkup(unreadIcon, { size = 24 });
+
+		description:AddTitleLine(string.join(" ", unreadMarkup, loc.REG_TT_NOTIF));
+		description:AddNormalLine(loc.REG_TT_NOTIF_TT);
+	end
+
+	tabGroup.tabs[2]:SetIcon(aboutUnread and unreadIcon or nil);
+	tabGroup.tabs[2]:SetTooltip(aboutUnread and OnTooltipShow or nil);
 end
 
 local function onInformationUpdated(profileID, infoType)
