@@ -371,10 +371,6 @@ local function onStart()
 					local value = data[field];
 					if value then
 						value = emptyToNil(strtrim(value));
-						-- Preserve empty class field.
-						if not value and CHARACTERISTICS_FIELDS[field] == "CL" then
-							value = " ";
-						end
 					end
 					if CHARACTERISTICS_FIELDS[field] then
 						-- NA/RC color escaping
