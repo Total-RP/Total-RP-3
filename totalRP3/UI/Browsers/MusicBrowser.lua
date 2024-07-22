@@ -5,24 +5,13 @@ local L = TRP3_API.loc;
 
 local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 
-local function GenerateSearchableString(str)
-	return string.utf8lower(string.trim((string.gsub(str, "%p+", " "))));
-end
-
-local SearchableStringCache = setmetatable({}, {
-	__index = function(t, k)
-		t[k] = GenerateSearchableString(k);
-		return rawget(t, k);
-	end,
-});
-
 local function GenerateFilteredMusicList(query)
 	local results = {};
 
-	query = GenerateSearchableString(query);
+	query = TRP3_StringUtil.GenerateSearchableString(query);
 
 	local function CheckStringMatch(musicName)
-		local searchName = SearchableStringCache[musicName];
+		local searchName = TRP3_StringUtil.GenerateSearchableString(musicName);
 		local offset = 1;
 		local plain = true;
 

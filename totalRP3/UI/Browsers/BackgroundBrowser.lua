@@ -3,10 +3,6 @@
 
 local L = TRP3_API.loc;
 
-local function GenerateSearchableString(str)
-	return string.utf8lower(string.trim((string.gsub(str, "%p+", " "))));
-end
-
 -- Background Browser Data Models
 ------------------------------------------------------------------------------
 
@@ -126,7 +122,7 @@ function BackgroundBrowserFilterModel:HasSearchQuery()
 end
 
 function BackgroundBrowserFilterModel:SetSearchQuery(query)
-	query = GenerateSearchableString(query);
+	query = TRP3_StringUtil.GenerateSearchableString(query);
 
 	if self.searchQuery ~= query then
 		self.searchQuery = query;
@@ -150,7 +146,7 @@ function BackgroundBrowserFilterModel:RebuildModel()
 	local results = {};
 
 	for sourceIndex = 1, self.source:GetImageCount() do
-		local backgroundName = GenerateSearchableString(self.source:GetImageName(sourceIndex));
+		local backgroundName = TRP3_StringUtil.GenerateSearchableString(self.source:GetImageName(sourceIndex));
 		local offset = 1;
 		local plain = true;
 

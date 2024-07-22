@@ -27,10 +27,22 @@ function TRP3_StringUtil.SortCompareStrings(a, b)
 	return strcmputf8i(a, b) < 0;
 end
 
-local function CanonicalizeSearchString(str)
-	str = string.gsub(str, "[%p%c%s]", "-");
-	str = string.utf8lower(str);
+local function GenerateSearchableString(str)
+	str = string.gsub(str, "[%p%c%s]+", "");
+	str = string.lower(str);
+	str = string.trim(str);
 	return str;
+end
+
+local SearchableStringCache = setmetatable({}, {
+	__index = function(tbl, str)
+		tbl[str] = GenerateSearchableString(str);
+		return rawget(tbl, str);
+	end,
+});
+
+function TRP3_StringUtil.GenerateSearchableString(str)
+	return SearchableStringCache[str];
 end
 
 function TRP3_StringUtil.CalculateSearchScore(searchText, candidateText)
@@ -60,8 +72,8 @@ function TRP3_StringUtil.IsExactOrSubstringMatch(searchText, candidateText)
 	searchText, requireExactMatch = TRP3_StringUtil.DequoteString(searchText);
 
 	if not requireExactMatch then
-		searchText = CanonicalizeSearchString(searchText);
-		candidateText = CanonicalizeSearchString(candidateText);
+		searchText = TRP3_StringUtil.GenerateSearchableString(searchText);
+		candidateText = TRP3_StringUtil.GenerateSearchableString(candidateText);
 	end
 
 	if requireExactMatch then
@@ -76,7 +88,7 @@ function TRP3_StringUtil.FindClosestMatch(searchText, candidateList)
 	searchText, requireExactMatch = TRP3_StringUtil.DequoteString(searchText);
 
 	if not requireExactMatch then
-		searchText = CanonicalizeSearchString(searchText);
+		searchText = TRP3_StringUtil.GenerateSearchableString(searchText);
 	end
 
 	local matchedScore = math.huge;
@@ -88,7 +100,7 @@ function TRP3_StringUtil.FindClosestMatch(searchText, candidateList)
 		if requireExactMatch then
 			score = (strcmputf8i(searchText, candidateText) == 0) and -math.huge or math.huge
 		else
-			score = TRP3_StringUtil.CalculateSearchScore(searchText, CanonicalizeSearchString(candidateText));
+			score = TRP3_StringUtil.CalculateSearchScore(searchText, TRP3_StringUtil.GenerateSearchableString(candidateText));
 		end
 
 		if score < matchedScore then
