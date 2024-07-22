@@ -16,8 +16,6 @@ local UITooltip = TRP3_API.ui.tooltip;
 local loc = TRP3_API.loc;
 local strhtml = TRP3_API.utils.str.toHTML;
 
--- luacheck: push ignore
--- luacheck: pop
 local CHANGELOG_TEXT = [[
 # Changelog version 3.0.0
 
