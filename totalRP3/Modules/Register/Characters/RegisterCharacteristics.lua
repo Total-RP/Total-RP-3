@@ -1631,7 +1631,7 @@ function TRP3_API.register.inits.characteristicsInit()
 			local icon = draftData.IC or TRP3_InterfaceIcons.ProfileDefault;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, TRP3_API.popup.showCopyDropdownPopup, {icon});
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
 				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(TRP3_API.GetLastCopiedIcon()); end);
 			end);
 		end
