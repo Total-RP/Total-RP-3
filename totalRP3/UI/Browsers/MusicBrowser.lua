@@ -108,7 +108,7 @@ function TRP3_MusicBrowserMixin:OnLoad()
 	ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
 	ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, scrollBoxAnchorsWithBar, scrollBoxAnchorsWithoutBar);
 
-	self.Filter.SearchBox:HookScript("OnTextChanged", function() self:Update(); end);
+	self.Filter.SearchBox:HookScript("OnTextChanged", TRP3_FunctionUtil.Debounce(0.25, function() self:Update(); end));
 	self.Filter.StopButton:SetScript("OnClick", function() self:OnStopButtonClick() end);
 	self.CloseButton:SetScript("OnClick", function() self:OnCloseButtonClick(); end);
 end
