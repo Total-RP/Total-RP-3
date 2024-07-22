@@ -16,8 +16,8 @@ local UITooltip = TRP3_API.ui.tooltip;
 local loc = TRP3_API.loc;
 local strhtml = TRP3_API.utils.str.toHTML;
 
---- List of "What's new" segments to concatenate and display together when
----  this view is activated.
+-- luacheck: push ignore
+-- luacheck: pop
 local CHANGELOG_TEXT = [[
 # Changelog version 3.0.0
 
@@ -33,26 +33,26 @@ Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and 
 
 
 - Added a new Relations menu located in the Customization section, alongside the moved Automation settings.
-  - This menu lets you edit the preset relations you can have with other players, as well as create new ones.
-  - Those relations are still only personal, and not shared with other players.
-  - The relation will now be shown as a line on the tooltip in addition to the border color. This can be changed to show the relation description, or disabled in Tooltip settings.
+  - This menu lets you edit the preset relations you can have with other players, as well as create new ones.
+  - Those relations are still only personal, and not shared with other players.
+  - The relation will now be shown as a line on the tooltip in addition to the border color. This can be changed to show the relation description, or disabled in Tooltip settings.
 - Added a "Currently" toolbar button letting you open a frame to quickly modify your Currently info.
 - Added a toolbar button to open/close the main Total RP 3 window.
 - Added a target frame button for your own companion to auto-fill the speech window with its name in brackets.
-  - This will apply RP name customization to its speech lines.
+  - This will apply RP name customization to its speech lines.
 - Added a dropdown to set whether you are open to other players walking up to your character.
-  - This will show as an icon on your tooltip and in your profile characteristics.
-  - Existing tooltip bottom icons have also been changed for clarity.
-    - Book: Profile has an unread description.
-    - Note: You have notes on this profile.
-    - Three people: Walkup friendly.
+  - This will show as an icon on your tooltip and in your profile characteristics.
+  - Existing tooltip bottom icons have also been changed for clarity.
+    - Book: Profile has an unread description.
+    - Note: You have notes on this profile.
+    - Three people: Walkup friendly.
 - Added the new unread description icon to the About tab when relevant.
 - Added a tooltip setting to hide the addon version text and trial indicator separately from the bottom icons.
 - Added the ability to drag and drop personality traits to reorder them
-  - Additional info now uses the same button style rather than drag and dropping the icon itself.
+  - Additional info now uses the same button style rather than drag and dropping the icon itself.
 - Added the ability to duplicate a personality trait or additional info line, as well as convert preset lines into custom.
-  - These are located within the new Options button at the end of the line, alongside deletion of the line.
-  - Preset additional info lines appearing on the tooltip will no longer appear if converted to custom.
+  - These are located within the new Options button at the end of the line, alongside deletion of the line.
+  - Preset additional info lines appearing on the tooltip will no longer appear if converted to custom.
 - Added indicators on additional info presets which will appear on tooltips by default.
 - Added the ability to right-click an icon button to copy/paste icons between buttons or copy the name of the selected icon.
 - Added a new background browser, as well as 33 new background options for the "About" section (and Extended documents).
@@ -67,25 +67,25 @@ Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and 
 - The toolbar and target frame buttons have had their icons updated to make their actions clearer.
 - The toolbar and target frame tooltips now adjust which side of the button they appear on based on their position on the screen.
 - The roleplay styles options at the bottom of the Miscellaneous section have been revised.
-  - Removed "in-character frequence" and "battle resolution".
-  - Added more settings to indicate what RP types your character is open to: "criminal activity" (theft, mugging) and "loss of control" (getting imprisoned or mind controlled).
+  - Removed "in-character frequence" and "battle resolution".
+  - Added more settings to indicate what RP types your character is open to: "criminal activity" (theft, mugging) and "loss of control" (getting imprisoned or mind controlled).
 - New profiles (and the default profile) now default to OOC when created.
 - RP proficiency is now an account-wide setting rather than per profile, and has been adjusted to add an option between Beginner and Experienced.
-  - Beginner/Guide icons have been updated on Retail.
-  - As part of this change, the setting has been reset and should be set again.
+  - Beginner/Guide icons have been updated on Retail.
+  - As part of this change, the setting has been reset and should be set again.
 - Pressing Escape while a popup is displayed (such as browsers) will no longer close the entire main window, but only the popup.
 - Other players default profiles will no longer appear in your directory or be used for chat/nameplate customization.
 - Character names are now customized in the TRP dice roll output.
 - Glances with empty names will now show as such instead of replacing it with "...".
 - Glances from your character still show their icons on your profile and target frame while disabled.
-  - These will still not be sent to other players.
+  - These will still not be sent to other players.
 - Dragging a glance to reorder it will now display its icon on the cursor.
 - Toolbar button and slash command for the NPC speech window now closes it if already shown.
 - Clicking the target frame button for companion profiles now directly opens the profile.
-  - The options menu to unbind/select a new profile can still be accessed with a right-click.
+  - The options menu to unbind/select a new profile can still be accessed with a right-click.
 - The companion/mount profile buttons no longer change icon based on the selected profile.
 - "Frames settings" has been split into Toolbar and Target frame categories.
-  - The map scan button settings have been moved to the Directory category.
+  - The map scan button settings have been moved to the Directory category.
 - Tooltip texts across the addon were reworked to follow a more consistent format and add clarity when needed.
 - Chat links can now be closed with Escape, and profile chat link tooltips have received minor display improvements.
 - The Icon browser now displays icons in a larger size both on the grid and in tooltips.
@@ -98,7 +98,7 @@ Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and 
 
 
 - Fixed some causes of lingering tooltips.
-  - Soft target support has been disabled by default with this update, as some issues remain. It can still be reenabled in Tooltip settings.
+  - Soft target support has been disabled by default with this update, as some issues remain. It can still be reenabled in Tooltip settings.
 - Fixed an issue where disabling the KuiNameplates module would break KuiNameplates itself.
 - Fixed an issue when disabling Extended while a launcher action was set to an Extended action.
 - Fixed profiles being marked as unread when the About section is empty.
@@ -123,7 +123,7 @@ Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and 
 - Removed the setting to change the tooltip anchor for glances on the target frame.
 - Removed the ability to copy glances from other players.
 - Removed the ability to fully disable the directory purge to reduce risks of losing the entire directory data.
-  - Profiles with notes or relations are still exempt from the purge.
+  - Profiles with notes or relations are still exempt from the purge.
 - Removed advanced comms settings.
 ]];
 
