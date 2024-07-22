@@ -8,7 +8,7 @@ TRP3_API.Locale = Locale;
 
 function Locale.init()
 	TRP3_API.configuration.registerConfigKey("AddonLocale", GetLocale());
-	TRP3_API.loc:SetCurrentLocale(TRP3_API.configuration.getValue("AddonLocale"), true);
+	TRP3_API.loc:SetCurrentLocale(TRP3_API.utils.GetPreferredLocale(), true);
 
 	BINDING_NAME_TRP3_TOGGLE = TRP3_API.loc.BINDING_NAME_TRP3_TOGGLE;
 	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = TRP3_API.loc.BINDING_NAME_TRP3_TOOLBAR_TOGGLE;
