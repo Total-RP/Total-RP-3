@@ -379,7 +379,7 @@ local function onActionClicked(_, button)
 
 		description:CreateTitle(loc.PR_EXPORT_IMPORT_TITLE);
 		if currentProfileId ~= profileID then
-			description:CreateButton(loc.PR_IMPORT_PROFILE, function() onActionSelected(PROFILEMANAGER_ACTIONS.EXPORT, button); end);
+			description:CreateButton(loc.PR_IMPORT_PROFILE, function() onActionSelected(PROFILEMANAGER_ACTIONS.IMPORT, button); end);
 		else
 			description:CreateButton(loc.PR_IMPORT_PROFILE):SetEnabled(false);
 		end
