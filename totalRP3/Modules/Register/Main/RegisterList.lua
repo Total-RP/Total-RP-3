@@ -38,6 +38,18 @@ local profileIDISFilteredForMatureContent = TRP3_API.register.profileIDISFiltere
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local ProfilePageMenuManager = { registeredMenus = {}, maxRegisteredMenus = 5 };
+
+function ProfilePageMenuManager:RegisterMenuEntry(menuInfo)
+	while #self.registeredMenus >= self.maxRegisteredMenus do
+		local menuID = table.remove(self.registeredMenus, 1);
+		TRP3_API.navigation.menu.unregisterMenu(menuID);
+	end
+
+	table.insert(self.registeredMenus, menuInfo.id);
+	TRP3_API.navigation.menu.registerMenu(menuInfo);
+end
+
 local REGISTER_LIST_PAGEID = "register_list";
 local playerMenu = "main_10_player";
 local currentlyOpenedProfilePrefix = TRP3_API.register.MENU_LIST_ID_TAB;
@@ -70,7 +82,7 @@ local function openPage(profileID, unitID)
 			unitID            = unitID,
 			openingWithUnitID = unitID ~= nil
 		}
-		registerMenu({
+		ProfilePageMenuManager:RegisterMenuEntry({
 			id = menuID,
 			text = tabText,
 			onSelected = function() setPage("player_main", pageContext ) end,
@@ -105,7 +117,7 @@ local function openCompanionPage(profileID)
 		if profile.data and profile.data.NA then
 			tabText = profile.data.NA;
 		end
-		registerMenu({
+		ProfilePageMenuManager:RegisterMenuEntry({
 			id = currentlyOpenedProfilePrefix .. profileID,
 			text = tabText,
 			onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PAGE, {profile = profile, profileID = profileID, isPlayer = false}) end,
