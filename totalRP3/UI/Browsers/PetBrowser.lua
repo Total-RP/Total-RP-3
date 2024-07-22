@@ -528,7 +528,7 @@ function TRP3_PetBrowserMixin:OnEvent(event)
 end
 
 function TRP3_PetBrowserMixin:OnShow()
-	PlaySound(SOUNDKIT.IG_ABILITY_OPEN);
+	PlaySound(TRP3_InterfaceSounds.BrowserOpen);
 
 	self:RegisterEvent("PET_INFO_UPDATE");
 	self:RegisterEvent("PET_STABLE_SHOW");
@@ -540,7 +540,7 @@ function TRP3_PetBrowserMixin:OnShow()
 end
 
 function TRP3_PetBrowserMixin:OnHide()
-	PlaySound(SOUNDKIT.IG_ABILITY_CLOSE);
+	PlaySound(TRP3_InterfaceSounds.BrowserClose);
 
 	self:Cancel();
 	self:SetCurrentPage(1);
@@ -549,7 +549,7 @@ function TRP3_PetBrowserMixin:OnHide()
 end
 
 function TRP3_PetBrowserMixin:OnMouseWheel(delta)
-	PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN);
+	PlaySound(TRP3_InterfaceSounds.PageChange);
 	self:AdvancePage(-delta);
 end
 
@@ -563,12 +563,12 @@ function TRP3_PetBrowserMixin:OnMouseUp()
 end
 
 function TRP3_PetBrowserMixin:OnPrevPageButtonClicked()
-	PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN);
+	PlaySound(TRP3_InterfaceSounds.PageChange);
 	self:PrevPage();
 end
 
 function TRP3_PetBrowserMixin:OnNextPageButtonClicked()
-	PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN);
+	PlaySound(TRP3_InterfaceSounds.PageChange);
 	self:NextPage();
 end
 
@@ -578,6 +578,6 @@ function TRP3_PetBrowserMixin:OnIconButtonClicked(iconButton, slotIndex)
 	-- clicks the same slot repeatedly.
 	iconButton:SetChecked(true);
 
-	PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+	PlaySound(TRP3_InterfaceSounds.ButtonClick);
 	self:SetSelectedSlot(slotIndex);
 end

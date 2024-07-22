@@ -25,7 +25,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+						PlaySound(TRP3_InterfaceSounds.PopupClose);
 						TRP3_ImageBrowser:Hide();
 						TRP3_API.popup.hidePopups();
 					</OnClick>

@@ -28,7 +28,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	-- Prepares to show frame, gets player's "currently" and writes it to the scrollbox.
 	local function toggleCurrentlyFrame()
 		if frame:IsShown() then
-			PlaySound(SOUNDKIT.IG_MAINMENU_CLOSE);
+			PlaySound(TRP3_InterfaceSounds.WindowClose);
 			frame:Hide();
 			return;
 		end
@@ -36,7 +36,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		frame.CurrentlyText.scroll.text:SetText(AddOn_TotalRP3.Player.GetCurrentUser():GetCurrentlyText());
 
 		frame:Show();
-		PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
+		PlaySound(TRP3_InterfaceSounds.WindowOpen);
 		frame.CurrentlyText.scroll.text:SetFocus();
 	end
 	TRP3_API.r.toggleCurrentlyFrame = toggleCurrentlyFrame;

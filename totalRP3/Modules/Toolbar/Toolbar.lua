@@ -50,9 +50,9 @@ function ToolbarMixin:Toggle()
 	self.forcedVisibility = nil;
 
 	if self:IsShown() then
-		TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPEN);
+		PlaySound(SOUNDKIT.IG_MAINMENU_OPEN);
 	else
-		TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_CLOSE);
+		PlaySound(SOUNDKIT.IG_MAINMENU_CLOSE);
 	end
 end
 

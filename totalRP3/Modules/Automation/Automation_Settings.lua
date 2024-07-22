@@ -233,7 +233,7 @@ function TRP3_AutomationSettingsMixin:OnSaveButtonClicked()
 	local expression = self:GetEditorInputText();
 
 	TRP3_AutomationUtil.SetActionExpression(actionID, expression);
-	PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+	PlaySound(TRP3_InterfaceSounds.ButtonClick);
 end
 
 function TRP3_AutomationSettingsMixin:OnTestButtonClicked()
@@ -242,7 +242,7 @@ function TRP3_AutomationSettingsMixin:OnTestButtonClicked()
 
 	TRP3_Automation:ResetMessageCooldowns();
 	TRP3_Addon:Printf(L.AUTOMATION_TEST_OUTPUT, string.format("|cff33ff99%s|r", result));
-	PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+	PlaySound(TRP3_InterfaceSounds.ButtonClick);
 end
 
 function TRP3_AutomationSettingsMixin:GetSelectedAction()

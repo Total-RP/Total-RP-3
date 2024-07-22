@@ -2,7 +2,7 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 -- imports
-local Globals, Utils, Events, UI, Ellyb = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Events, TRP3_API.ui, TRP3_API.Ellyb;
+local Globals, Utils, Events, Ellyb = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Events, TRP3_API.Ellyb;
 local stEtN = Utils.str.emptyToNil;
 local get = TRP3_API.profile.getData;
 local getProfile = TRP3_API.register.getProfile;
@@ -1000,44 +1000,32 @@ end
 ---@param editTitle Frame The character edit title.
 ---@param addBtn Button The add more button.
 local function onInfoDragStart(handle, data, editCharFrame, editTitle, addBtn)
-	-- In theory it'll be impossible to have a ticker (you'd need this
-	-- handler to be called twice), but let's be safe. Would rather not
-	-- assert since there's no real harm otherwise.
 	if handle.infoTicker then
 		handle.infoTicker:Cancel();
 	end
 
-	-- Keep a reference to the handle on the ticker that we create.
 	local ticker = C_Timer.NewTicker(MISC_DRAG_UPDATE_PERIOD, function(ticker) onInfoDragUpdate(ticker, data, editCharFrame, editTitle, addBtn) end);
 
 	ticker.handle = handle;
 	handle.infoTicker = ticker;
 
-	-- Change the cursor icon once something is being dragged.
 	SetCursor("Interface\\CURSOR\\UI-Cursor-Move");
-
-	-- For some reason there's no constant for the pickup sound effect
-	-- used by ability icons. Logically this'd be present as
-	-- IG_ABILITY_ICON_PICKUP.
-	UI.misc.playUISound(837);
+	PlaySound(TRP3_InterfaceSounds.DragPickup);
 end
 
 --- onInfoDragStop is called when a handle is no longer being dragged.
 --- This is responsible for stopping the drag/drop operation ticker.
 ---@param handle table The handle being dragged by the user.
 local function onInfoDragStop(handle)
-	-- Expect a ticker. We won't assert since there's no harm in not having one.
 	if not handle.infoTicker then
 		return;
 	end
 
-	-- Kill the ticker as we no longer need it.
 	handle.infoTicker:Cancel();
 	handle.infoTicker = nil;
 
-	-- Kill the icon following the cursor.
 	SetCursor(nil);
-	UI.misc.playUISound(SOUNDKIT.IG_ABILITY_ICON_DROP);
+	PlaySound(TRP3_InterfaceSounds.DragDrop);
 end
 
 --- setInfoReorderable installs the necessary script handlers to enable
@@ -1499,7 +1487,7 @@ local function onEdit()
 	end
 	getCurrentContext().isEditMode = true;
 	refreshDisplay();
-	TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+	PlaySound(TRP3_InterfaceSounds.ButtonClick);
 end
 
 local function onSave()

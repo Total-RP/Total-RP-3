@@ -159,7 +159,7 @@ CopyTextPopup.CopyText:HookScript("OnKeyDown", function(_, key)
 	if key == "C" and IsControlKeyDown() then
 		local systemInfo = ChatTypeInfo["SYSTEM"];
 		UIErrorsFrame:AddMessage(loc.COPY_SYSTEM_MESSAGE, systemInfo.r, systemInfo.g, systemInfo.b);
-		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+		PlaySound(TRP3_InterfaceSounds.PopupClose);
 		CopyTextPopup:Hide();
 	end
 end);
@@ -330,6 +330,7 @@ end
 
 local function onMusicClick(lineFrame, mousebutton)
 	if mousebutton == "LeftButton" then
+		PlaySound(TRP3_InterfaceSounds.PopupClose);
 		hidePopups();
 		TRP3_MusicBrowser:Hide();
 		if TRP3_MusicBrowserContent.callback then
@@ -776,7 +777,7 @@ function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback,
 		if InCombatLockdown() then return; end
 
 		if key == "ESCAPE" then
-			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			PlaySound(TRP3_InterfaceSounds.PopupClose);
 			frame:SetPropagateKeyboardInput(false);
 			-- Hiding frames & Cancel callback is handled within.
 			onCompanionClose();
@@ -805,7 +806,7 @@ function TRP3_API.popup.showPetBrowser(profileID, onSelectCallback, onCancelCall
 		if InCombatLockdown() then return; end
 
 		if key == "ESCAPE" then
-			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			PlaySound(TRP3_InterfaceSounds.PopupClose);
 			frame:SetPropagateKeyboardInput(false);
 			frame:Hide();
 			hidePopups();
@@ -1072,7 +1073,7 @@ local function initColorBrowser()
 		end
 	end);
 
-	TRP3_ColorBrowserPresets:SetScript("OnMouseDown", colorPresetsDropDown);
+	TRP3_ColorBrowserPresets:SetScript("OnClick", colorPresetsDropDown);
 end
 
 local function showColorBrowser(callback, red, green, blue)
@@ -1287,7 +1288,7 @@ function TRP3_API.popup.showPopup(popupID, popupPosition, popupArgs)
 		if InCombatLockdown() then return; end
 
 		if key == "ESCAPE" then
-			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			PlaySound(TRP3_InterfaceSounds.PopupClose);
 			popup.frame:SetPropagateKeyboardInput(false);
 			hidePopups();
 		else

@@ -12,7 +12,6 @@ local loc = TRP3_API.loc;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local initList = TRP3_API.ui.list.initList;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local playUISound = TRP3_API.ui.misc.playUISound;
 local isProfileNameAvailable = TRP3_API.profile.isProfileNameAvailable;
 local tsize, tcopy = TRP3_API.utils.table.size, TRP3_API.utils.table.copy;
 local duplicateProfile = TRP3_API.profile.duplicateProfile;
@@ -74,7 +73,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		for profileID, addOn in pairs(profiles) do
 			importProfile(addOn, profileID);
 		end
-		playUISound("Sound\\Interface\\Ui_Pet_Levelup_01.wav", true);
+		PlaySoundFile(642841);  -- sound/interface/ui_pet_levelup_01.ogg
 	end
 
 	local function initProfiles()
@@ -102,7 +101,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 	local function onImportButtonClicked(button)
 		importProfile(button:GetParent().addOn, button:GetParent().profileID);
-		playUISound("Sound\\Interface\\Ui_Pet_Levelup_01.wav", true);
+		PlaySoundFile(642841);  -- sound/interface/ui_pet_levelup_01.ogg
 	end
 
 	local function decorateProfileList(widget, id)

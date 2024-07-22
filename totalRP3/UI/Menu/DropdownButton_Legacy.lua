@@ -119,10 +119,10 @@ function TRP3_DropdownButtonMixin:OnMouseDown()
 		self.Button:SetButtonState("PUSHED");
 
 		if self:IsMenuOpen() then
-			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF);
+			PlaySound(TRP3_InterfaceSounds.MenuClose);
 			self:CloseMenu();
 		else
-			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+			PlaySound(TRP3_InterfaceSounds.MenuOpen);
 			self:OpenMenu();
 		end
 	end

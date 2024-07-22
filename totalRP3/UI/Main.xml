@@ -313,7 +313,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</HighlightTexture>
 						<Scripts>
 							<PostClick>
-								TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+								PlaySound(TRP3_InterfaceSounds.ButtonClick);
 							</PostClick>
 						</Scripts>
 					</Button>

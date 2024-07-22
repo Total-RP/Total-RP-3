@@ -15,7 +15,6 @@ local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 local getProfiles = TRP3_API.profile.getProfiles;
 local Utils = TRP3_API.utils;
 local color = Utils.str.color;
-local playUISound = TRP3_API.ui.misc.playUISound;
 local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 local registerMenu, registerPage = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.page.registerPage;
 local setPage = TRP3_API.navigation.page.setPage;
@@ -222,7 +221,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 						SendChatMessage("","DND");
 					end
 				end
-				playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+				PlaySound(TRP3_InterfaceSounds.ButtonClick);
 			end,
 		};
 		TRP3_API.toolbar.toolbarAddButton(Button_Status);
@@ -277,7 +276,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					end);
 				else
 					TRP3_API.dashboard.switchStatus();
-					playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+					PlaySound(TRP3_InterfaceSounds.ButtonClick);
 				end
 			end,
 			onLeave = function()
@@ -322,10 +321,10 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				onClick = function()
 					if ShowingHelm() then
 						ShowHelm(false);
-						playUISound(1202); -- Putdowncloth_Leather01
+						PlaySound(1202); -- Putdowncloth_Leather01
 					else
 						ShowHelm(true);
-						playUISound(1185); -- Pickupcloth_Leather01
+						PlaySound(1185); -- Pickupcloth_Leather01
 					end
 				end,
 				onLeave = function()
@@ -367,10 +366,10 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				onClick = function(_)
 					if ShowingCloak() then
 						ShowCloak(false);
-						playUISound(1202); -- Putdowncloth_Leather01
+						PlaySound(1202); -- Putdowncloth_Leather01
 					else
 						ShowCloak(true);
-						playUISound(1185); -- Pickupcloth_Leather01
+						PlaySound(1185); -- Pickupcloth_Leather01
 					end
 				end,
 				onLeave = function()

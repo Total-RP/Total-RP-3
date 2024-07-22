@@ -346,12 +346,12 @@ function TRP3_BackgroundBrowserMixin:OnShow()
 	self.SearchBox:SetText("");
 	self.SearchBox:SetFocus(true);
 	self.Content.ScrollBox:ScrollToBegin();
-	PlaySound(SOUNDKIT.IG_ABILITY_OPEN);
+	PlaySound(TRP3_InterfaceSounds.BrowserOpen);
 	self.callbacks:Fire("OnOpened");
 end
 
 function TRP3_BackgroundBrowserMixin:OnHide()
-	PlaySound(SOUNDKIT.IG_ABILITY_CLOSE);
+	PlaySound(TRP3_InterfaceSounds.BrowserClose);
 	self.callbacks:Fire("OnClosed");
 end
 
@@ -371,7 +371,7 @@ end
 function TRP3_BackgroundBrowserMixin:OnImageButtonClicked(button)
 	local imageInfo = button:GetElementData();
 	self.callbacks:Fire("OnImageSelected", imageInfo);
-	PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+	PlaySound(TRP3_InterfaceSounds.PopupClose);
 	self:Hide();
 end
 

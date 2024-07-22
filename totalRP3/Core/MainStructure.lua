@@ -15,7 +15,6 @@ TRP3_API.navigation = {
 
 -- imports
 local loc = TRP3_API.loc;
-local playUISound = TRP3_API.ui.misc.playUISound;
 local selectMenu, unregisterMenu;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -235,7 +234,7 @@ local function setPage(pageId, context)
 	end
 
 	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_TUTORIAL_REFRESH, pageId);
-	playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+	PlaySound(TRP3_InterfaceSounds.ButtonClick);
 
 	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.PAGE_OPENED, pageId, context);
 end
@@ -260,13 +259,13 @@ TRP3_API.navigation.openMainFrame = function()
 		TRP3_PartyTimeRight:Hide();
 	end
 
-	TRP3_API.ui.misc.playUISound((WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE) and SOUNDKIT.IG_CHARACTER_INFO_TAB or SOUNDKIT.ACHIEVEMENT_MENU_OPEN);
+	PlaySound(TRP3_InterfaceSounds.MainWindowOpen);
 end
 
 local function switchMainFrame()
 	if TRP3_MainFrame:IsVisible() then
 		TRP3_MainFrame:Hide();
-		TRP3_API.ui.misc.playUISound((WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE) and SOUNDKIT.IG_MAINMENU_CLOSE or SOUNDKIT.ACHIEVEMENT_MENU_CLOSE);
+		PlaySound(TRP3_InterfaceSounds.MainWindowClose);
 	else
 		TRP3_API.navigation.openMainFrame();
 	end

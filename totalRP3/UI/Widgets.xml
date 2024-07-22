@@ -54,7 +54,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+				PlaySound(TRP3_InterfaceSounds.ButtonClick);
 			</PostClick>
 		</Scripts>
 	</Button>
@@ -70,7 +70,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+				PlaySound(TRP3_InterfaceSounds.ButtonClick);
 			</PostClick>
 		</Scripts>
 	</Button>
@@ -150,7 +150,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+				PlaySound(TRP3_InterfaceSounds.ButtonClick);
 			</PostClick>
 		</Scripts>
 	</Button>
@@ -349,7 +349,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<OnEnter function="TRP3_RefreshTooltipForFrame"/>
 			<OnLeave function="TRP3_HideTooltipForFrame"/>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+				PlaySound(TRP3_InterfaceSounds.ButtonClick);
 			</PostClick>
 		</Scripts>
 	</CheckButton>
@@ -484,7 +484,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+				PlaySound(TRP3_InterfaceSounds.ButtonClick);
 			</PostClick>
 		</Scripts>
 	</Button>
@@ -675,7 +675,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						local slider = self:GetParent();
 						if slider:IsEnabled() then
 							slider:SetValue(slider:GetValue() - 1);
-							TRP3_API.ui.misc.playUISound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
+							PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
 						else
 							self:Disable();
 						end
@@ -691,7 +691,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						local slider = self:GetParent();
 						if slider:IsEnabled() then
 							slider:SetValue(slider:GetValue() + 1);
-							TRP3_API.ui.misc.playUISound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
+							PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
 						else
 							self:Disable();
 						end

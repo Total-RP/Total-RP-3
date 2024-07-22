@@ -27,7 +27,7 @@ URLPopup.Url:HookScript("OnKeyDown", function(_, key)
 	if key == "C" and IsControlKeyDown() then
 		local systemInfo = ChatTypeInfo["SYSTEM"];
 		UIErrorsFrame:AddMessage(URLPopup.alertMessage, systemInfo.r, systemInfo.g, systemInfo.b);
-		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+		PlaySound(TRP3_InterfaceSounds.PopupClose);
 		dismissPopup();
 	end
 end);

@@ -506,7 +506,7 @@ function TRP3_API.profile.init()
 		else
 			if currentProfileId ~= button.profileID then
 				onProfileSelected(button);
-				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+				PlaySound(TRP3_InterfaceSounds.ButtonClick);
 			end
 		end
 	end

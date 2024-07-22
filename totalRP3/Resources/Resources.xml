@@ -9,6 +9,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="ImageListClassic.lua"/>
 	<Include file="InterfaceIcons.lua"/>
 	<Include file="InterfaceAtlases.lua"/>
+	<Include file="InterfaceSounds.lua"/>
 	<Include file="CompanionData.lua"/>
 	<Include file="UI\Templates.xml"/>
 </Ui>

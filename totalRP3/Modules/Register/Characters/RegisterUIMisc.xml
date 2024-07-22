@@ -55,7 +55,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+				PlaySound(TRP3_InterfaceSounds.ButtonClick);
 			</PostClick>
 		</Scripts>
 	</Button>
@@ -296,7 +296,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						self:GetParent():Hide();
 					</OnClick>
 					<PostClick>
-						TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+						PlaySound(TRP3_InterfaceSounds.PopupClose);
 					</PostClick>
 				</Scripts>
 			</Button>
