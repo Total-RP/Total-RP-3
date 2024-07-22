@@ -26,6 +26,7 @@ end
 function TRP3_TooltipTemplates.CreateTitleLine(text, color, wrap, leftOffset)
 	local line = TRP3_TooltipTemplates.CreateLine(text, color or HIGHLIGHT_FONT_COLOR, wrap, leftOffset);
 	line:SetFontObject(GameTooltipHeaderText);
+	line:SetWordWrap(wrap);
 	return line;
 end
 

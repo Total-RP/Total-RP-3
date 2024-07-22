@@ -561,6 +561,8 @@ stds.wow = {
 		"ScrollingEdit_OnCursorChanged",
 		"ScrollingEdit_OnLoad",
 		"ScrollingEdit_OnTextChanged",
+		"SecondsFormatter",
+		"SecondsFormatterMixin",
 		"SearchBoxTemplate_OnTextChanged",
 		"securecall",
 		"securecallfunction",

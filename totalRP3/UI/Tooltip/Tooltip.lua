@@ -212,6 +212,11 @@ function TooltipDescription:AddInstructionLine(binding, instruction, shortcutTyp
 	return self:InsertLine(lineDescription);
 end
 
+function TooltipDescription:AddDelimitedLine(title, text, wrap, leftOffset)
+	local lineDescription = TRP3_TooltipTemplates.CreateDelimitedLine(title, text, wrap, leftOffset);
+	return self:InsertLine(lineDescription);
+end
+
 function TooltipDescription:AddBlankLine()
 	local lineDescription = TRP3_TooltipTemplates.CreateBlankLine();
 	return self:InsertLine(lineDescription);

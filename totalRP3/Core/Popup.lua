@@ -6,12 +6,11 @@ TRP3_API.popup = {};
 
 -- imports
 local Ellyb = TRP3_API.Ellyb;
-local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 local initList = TRP3_API.ui.list.initList;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
-local setTooltipForFrame, setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local getImageList, getImageListSize, getMusicList, getMusicListSize;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local getImageList, getImageListSize;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -302,88 +301,6 @@ local function hidePopups()
 	TRP3_PopupsFrame:Hide();
 end
 TRP3_API.popup.hidePopups = hidePopups;
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Music browser
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-local TRP3_MusicBrowser = TRP3_MusicBrowser;
-local musicWidgetTab = {};
-local filteredMusicList;
-
-local function decorateMusic(lineFrame, musicID)
-	local musicName = filteredMusicList[musicID][1];
-	local musicFile = filteredMusicList[musicID][2];
-	local musicDuration = filteredMusicList[musicID][3];
-
-	local musicDefaultName = Utils.music.getTitle(musicFile);
-	local tooltipContent;
-
-	tooltipContent = loc.UI_MUSIC_DURATION .. ": " .. floor(musicDuration + 0.5) .."s"
-	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_ABOUT_MUSIC_SELECT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_ABOUT_MUSIC_LISTEN);
-
-	setTooltipForFrame(lineFrame, lineFrame, "RIGHT", 0, 5, musicDefaultName, tooltipContent);
-	_G[lineFrame:GetName().."Text"]:SetText(musicName);
-
-	lineFrame.musicURL = musicFile;
-end
-
-local function onMusicClick(lineFrame, mousebutton)
-	if mousebutton == "LeftButton" then
-		PlaySound(TRP3_InterfaceSounds.PopupClose);
-		hidePopups();
-		TRP3_MusicBrowser:Hide();
-		if TRP3_MusicBrowserContent.callback then
-			TRP3_MusicBrowserContent.callback(lineFrame.musicURL);
-		end
-	elseif lineFrame.musicURL then
-		Utils.music.playMusic(lineFrame.musicURL);
-	end
-end
-
-local function filteredMusicBrowser()
-	local filter = TRP3_MusicBrowserFilterBox:GetText();
-	if filteredMusicList and filteredMusicList ~= getMusicList() then  -- Remove previous filtering if is not full list
-		wipe(filteredMusicList);
-		filteredMusicList = nil;
-	end
-	filteredMusicList = getMusicList(filter); -- Music tab is unfiltered
-
-	TRP3_MusicBrowserTotal:SetText(string.format(GENERIC_FRACTION_STRING, #filteredMusicList, getMusicListSize()));
-	initList(
-		{
-			widgetTab = musicWidgetTab,
-			decorate = decorateMusic
-		},
-		filteredMusicList,
-		TRP3_MusicBrowserContentSlider
-	);
-end
-
-local function initMusicBrowser()
-	handleMouseWheel(TRP3_MusicBrowserContent, TRP3_MusicBrowserContentSlider);
-	TRP3_MusicBrowserContentSlider:SetValue(0);
-	-- Create lines
-	for line = 0, 8 do
-		local lineFrame = CreateFrame("Button", "TRP3_MusicBrowserButton_"..line, TRP3_MusicBrowserContent, "TRP3_MusicBrowserLine");
-		lineFrame:SetPoint("TOP", TRP3_MusicBrowserContent, "TOP", 0, -10 + (line * (-31)));
-		lineFrame:SetScript("OnClick", onMusicClick);
-		tinsert(musicWidgetTab, lineFrame);
-	end
-
-	TRP3_MusicBrowserFilterBox:SetScript("OnTextChanged", filteredMusicBrowser);
-
-	TRP3_MusicBrowserTitle:SetText(loc.UI_MUSIC_BROWSER);
-	TRP3_MusicBrowserFilterBoxText:SetText(loc.UI_FILTER);
-	TRP3_MusicBrowserFilterStop:SetText(loc.REG_PLAYER_ABOUT_MUSIC_STOP);
-	filteredMusicBrowser();
-end
-
-local function showMusicBrowser(callback)
-	TRP3_MusicBrowserContent.callback = callback;
-	TRP3_MusicBrowserFilterBox:SetText("");
-	TRP3_MusicBrowserFilterBox:SetFocus();
-end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Icon browser
@@ -1220,10 +1137,8 @@ end
 
 function TRP3_API.popup.init()
 	getImageList, getImageListSize = TRP3_API.utils.resources.getImageList, TRP3_API.utils.resources.getImageListSize;
-	getMusicList, getMusicListSize = TRP3_API.utils.resources.getMusicList, TRP3_API.utils.resources.getMusicListSize;
 
 	initCompanionBrowser();
-	initMusicBrowser();
 	initColorBrowser();
 	initImageBrowser();
 end
@@ -1257,7 +1172,7 @@ local POPUP_STRUCTURE = {
 	},
 	[TRP3_API.popup.MUSICS] = {
 		frame = TRP3_MusicBrowser,
-		showMethod = showMusicBrowser,
+		showMethod = function(callback) TRP3_MusicBrowser:Open(callback) end,
 	},
 	[TRP3_API.popup.COMPANIONS] = {
 		frame = TRP3_CompanionBrowser,
