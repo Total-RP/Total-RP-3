@@ -406,7 +406,7 @@ local function createTutorialStructure()
 	TUTORIAL_STRUCTURE = {
 		{
 			box = {
-				allPoints = TRP3_ProfileManagerList
+				allPoints = TRP3_ProfileManager.list
 			},
 			button = {
 				x = 0, y = -110, anchor = "CENTER",
