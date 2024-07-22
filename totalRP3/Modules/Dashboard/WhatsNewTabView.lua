@@ -74,6 +74,7 @@ Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and 
 - Pressing Escape while a popup is displayed (such as browsers) will no longer close the entire main window, but only the popup.
 - Other players default profiles will no longer appear in your directory or be used for chat/nameplate customization.
 - Character names are now customized in the TRP dice roll output.
+- The music browser now formats the duration with minutes and seconds, and the search now ignores punctuation in the name (as currently supported in the icon browser).
 - Glances with empty names will now show as such instead of replacing it with "...".
 - Glances from your character still show their icons on your profile and target frame while disabled.
   - These will still not be sent to other players.
@@ -104,6 +105,7 @@ Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and 
 - Fixed mount titles not wrapping properly on their tooltip.
 - Fixed the directory tutorial not properly scaling with the window and reworked its content.
 - Fixed an issue where the glance editor would sometimes overlap with other elements in the UI (like the target frame).
+- Fixed an issue where MRP/XRP profiles with empty classes would not display the game class as fallback in their tooltips.
 - Fixed an issue with non-Latin alphabets displaying incorrectly or causing a different font to linger in some cases.
 - Fixed cases where the TRP tooltip would fail to display in the correct position while using ElvUI.
 - Fixed an issue where the class text would appear slightly indented on tooltips if no race was set.
