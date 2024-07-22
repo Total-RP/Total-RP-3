@@ -32,7 +32,7 @@ local function GenerateFilteredMusicList(query)
 	local predicate = (query ~= "" and CheckStringMatch or "");
 
 	for musicResult in LRPM12:FindMusic(predicate, { reuseTable = {} }) do
-		local musicInfo = { file = musicResult.file, duration = musicResult.duration };
+		local musicInfo = { name = musicResult.matchingName, file = musicResult.file, duration = musicResult.duration };
 		table.insert(results, musicInfo);
 	end
 
@@ -74,7 +74,7 @@ end
 
 function TRP3_MusicBrowserListElementMixin:OnTooltipShow(description)
 	local musicInfo = self:GetElementData();
-	local musicTitle = TRP3_API.utils.music.getTitle(musicInfo.file);
+	local musicTitle = musicInfo.name;
 	local musicDuration = MusicDurationFormatter:Format(floor(musicInfo.duration + 0.5));
 
 	description:AddTitleLine(musicTitle);
@@ -85,8 +85,7 @@ function TRP3_MusicBrowserListElementMixin:OnTooltipShow(description)
 end
 
 function TRP3_MusicBrowserListElementMixin:Init(musicInfo)
-	local musicTitle = TRP3_API.utils.music.getTitle(musicInfo.file);
-	self:SetText(musicTitle);
+	self:SetText(musicInfo.name);
 end
 
 TRP3_MusicBrowserMixin = {};
