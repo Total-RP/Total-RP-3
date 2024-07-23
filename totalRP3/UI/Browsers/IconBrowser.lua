@@ -3,10 +3,6 @@
 
 local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
 
-local function GenerateSearchableString(str)
-	return string.utf8lower(string.trim((string.gsub(str, "%p+", " "))));
-end
-
 -- Icon Browser Search Task
 ------------------------------------------------------------------------------
 
@@ -98,7 +94,7 @@ function IconBrowserSearchTask:OnUpdate()
 	local j = math.min(self.searched + self.step, self.total);
 
 	for iconIndex = i, j do
-		local iconName = GenerateSearchableString(model:GetIconName(iconIndex));
+		local iconName = TRP3_StringUtil.GenerateSearchableString(model:GetIconName(iconIndex));
 		local offset = 1;
 		local plain = true;
 
@@ -309,7 +305,7 @@ end
 
 ---@param query string
 function IconBrowserFilterModel:SetSearchQuery(query)
-	query = GenerateSearchableString(query);  ---@cast query string
+	query = TRP3_StringUtil.GenerateSearchableString(query);  ---@cast query string
 
 	if self.searchQuery ~= query then
 		self.searchQuery = query;
