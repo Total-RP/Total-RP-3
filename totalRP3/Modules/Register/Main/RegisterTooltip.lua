@@ -629,6 +629,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 
 		if fullTitle and fullTitle ~= "" then
 			if getConfigValue(ConfigKeys.CROP_TEXT) then
+				fullTitle = string.gsub(fullTitle, "%s+", " ");
 				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
 			end
 
@@ -1076,6 +1077,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 		if fullTitle and fullTitle ~= "" then
 
 			if getConfigValue(ConfigKeys.CROP_TEXT) then
+				fullTitle = string.gsub(fullTitle, "%s+", " ");
 				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
 			end
 			tooltipBuilder:AddLine(fullTitle, colors.TITLE, getSubLineFontSize(), true);
@@ -1245,6 +1247,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 		end
 		if fullTitle and fullTitle ~= "" then
 			if getConfigValue(ConfigKeys.CROP_TEXT) then
+				fullTitle = string.gsub(fullTitle, "%s+", " ");
 				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
 			end
 			tooltipCompanionBuilder:AddLine(fullTitle, colors.TITLE, getSubLineFontSize(), true);
