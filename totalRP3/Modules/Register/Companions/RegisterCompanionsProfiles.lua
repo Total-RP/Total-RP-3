@@ -448,7 +448,7 @@ local function constructTutorialStructure()
 	TUTORIAL_STRUCTURE = {
 		{
 			box = {
-				allPoints = TRP3_CompanionsProfilesList
+				allPoints = TRP3_CompanionsProfiles.list
 			},
 			button = {
 				x = 0, y = -100, anchor = "CENTER",
