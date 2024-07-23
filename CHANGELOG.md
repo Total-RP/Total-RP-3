@@ -22,7 +22,6 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
     - Note: You have notes on this profile.
     - Three people: Walkup friendly.
 - Added the new unread description icon to the About tab when relevant.
-- Added a tooltip setting to hide the addon version text and trial indicator separately from the bottom icons.
 - Added the ability to drag and drop personality traits to reorder them
   - Additional info now uses the same button style rather than drag and dropping the icon itself.
 - Added the ability to duplicate a personality trait or additional info line, as well as convert preset lines into custom.
@@ -31,6 +30,7 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
 - Added indicators on additional info presets which will appear on tooltips by default.
 - Added the ability to right-click an icon button to copy/paste icons between buttons or copy the name of the selected icon.
 - Added a new background browser, as well as 33 new background options for the "About" section (and Extended documents).
+- Added a tooltip setting to hide the addon version text and trial indicator separately from the bottom icons.
 - The toolbar will now be skinned while using ElvUI.
 - Added 1526 icons and 6 musics from patch 11.0.0.
 
