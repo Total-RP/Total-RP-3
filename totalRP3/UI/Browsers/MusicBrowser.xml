@@ -1,0 +1,123 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Include file="MusicBrowser.lua"/>
+
+	<Button name="TRP3_MusicBrowserListElementTemplate" mixin="TRP3_MusicBrowserListElementMixin" registerForClicks="LeftButtonUp, RightButtonUp" virtual="true">
+		<Size y="32"/>
+		<Anchors>
+			<Anchor point="LEFT" x="8" y="0"/>
+			<Anchor point="RIGHT" x="-25" y="0"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background" inherits="TRP3_UIFrameSmallFillTextureTemplate"/>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture parentKey="Border" inherits="TRP3_UIFrameSmallEdgeTextureTemplate"/>
+			</Layer>
+			<Layer level="HIGHLIGHT">
+				<Texture parentKey="Highlight" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-glow" alphaMode="ADD">
+					<TextureSliceMargins left="32" top="32" right="32" bottom="32"/>
+					<TextureSliceMode mode="Tiled"/>
+					<Color r="0.92" g="0.68" b="0"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<ButtonText parentKey="Text" justifyH="LEFT" wordwrap="false">
+			<Anchors>
+				<Anchor point="TOPLEFT" x="15"/>
+				<Anchor point="BOTTOMRIGHT" x="-15"/>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="GameFontNormal"/>
+		<HighlightFont style="GameFontHighlight"/>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnClick method="OnClick"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_MusicBrowser" mixin="TRP3_MusicBrowserMixin" parent="TRP3_PopupsFrame" inherits="TRP3_BrowserDialogBackdropTemplate" hidden="true">
+		<Size x="420" y="400"/>
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+		</KeyValues>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Title" inherits="GameFontHighlightLarge" wordwrap="false">
+					<Anchors>
+						<Anchor point="TOPLEFT" y="-15"/>
+						<Anchor point="TOPRIGHT" y="-15"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey="ScrollBox" inherits="WowScrollBoxList"/>
+			<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-15" y="-35"/>
+					<Anchor point="BOTTOMRIGHT" x="-15" y="78"/>
+				</Anchors>
+			</EventFrame>
+			<Frame parentKey="Filter" inherits="TRP3_TooltipBackdropTemplate">
+				<Size y="60"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" x="10" y="10"/>
+					<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="TotalText" inherits="GameFontHighlight" wordwrap="false">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="0" y="-12"/>
+								<Anchor point="TOPRIGHT" x="0" y="-12"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" autoFocus="false">
+						<Size x="150" y="22"/>
+						<Anchors>
+							<Anchor point="BOTTOM" y="10"/>
+						</Anchors>
+					</EditBox>
+					<Button parentKey="StopButton" inherits="TRP3_CommonButton">
+						<Size x="110" y="22"/>
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT" x="-10" y="11"/>
+						</Anchors>
+					</Button>
+				</Frames>
+			</Frame>
+			<Button parentKey="CloseButton" inherits="TRP3_StyledButtonTemplate">
+				<Size x="24" y="24"/>
+				<KeyValues>
+					<KeyValue key="styleName" value="CloseButton" type="string"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+		</Scripts>
+	</Frame>
+
+</Ui>
