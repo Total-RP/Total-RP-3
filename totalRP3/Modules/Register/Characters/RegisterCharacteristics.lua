@@ -308,7 +308,7 @@ local function setConsultDisplay(context)
 	-- Icon, complete name and titles
 	local completeName = getCompleteName(dataTab, UNKNOWN);
 	TRP3_RegisterCharact_NamePanel_Name:SetText("|cff" .. (dataTab.CH or "ffffff") .. completeName);
-	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.FT or "");
+	TRP3_RegisterCharact_NamePanel_Title:SetText((string.gsub(dataTab.FT or "", "%s+", " ")));
 	TRP3_RegisterCharact_NamePanel.Icon:SetIconTexture(dataTab.IC);
 
 	setBkg(dataTab.bkg or 1);

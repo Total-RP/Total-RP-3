@@ -12,7 +12,9 @@ function TRP3_NamePlatesUtil.GenerateCroppedNameText(name)
 end
 
 function TRP3_NamePlatesUtil.GenerateCroppedTitleText(fullTitle)
-	return TRP3_API.utils.str.crop(fullTitle, TRP3_NamePlatesSettings.MaximumTitleLength);
+	fullTitle = string.gsub(fullTitle, "%s+", " ");
+	fullTitle = TRP3_API.utils.str.crop(fullTitle, TRP3_NamePlatesSettings.MaximumTitleLength);
+	return fullTitle;
 end
 
 function TRP3_NamePlatesUtil.GenerateCroppedGuildName(guildName)
