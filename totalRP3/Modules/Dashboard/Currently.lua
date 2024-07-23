@@ -33,7 +33,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			return;
 		end
 
-		frame.CurrentlyText.scroll.text:SetText(AddOn_TotalRP3.Player.GetCurrentUser():GetCurrentlyText());
+		frame.CurrentlyText.scroll.text:SetText(AddOn_TotalRP3.Player.GetCurrentUser():GetCurrentlyText() or "");
 
 		frame:Show();
 		PlaySound(TRP3_InterfaceSounds.WindowOpen);
