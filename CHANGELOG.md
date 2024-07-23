@@ -32,7 +32,7 @@ Thanks to Raenore for the help on some of these features, and keyboardturner for
 - Added the ability to right-click an icon button to copy/paste icons between buttons or copy the name of the selected icon.
 - Added a new background browser, as well as 33 new background options for the "About" section (and Extended documents).
 - The toolbar will now be skinned while using ElvUI.
-- Added X icons, X images and X musics from patch 11.0.
+- Added 1526 icons and 6 musics from patch 11.0.0.
 
 ## Changed
 - The UI has received an extensive makeover, including smoother scrolling in profiles list and directory.
