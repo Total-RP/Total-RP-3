@@ -53,7 +53,7 @@ local CreditsData =
 	{
 		{
 			name  = [[{twitter*Solanya_*Solanya}]],
-			roles = { CreditRole.ProjectLead, CreditRole.CommunityManager },
+			roles = { CreditRole.CommunityManager },
 		},
 		{
 			name  = [[Daniel "{twitter*Meorawr*Meorawr}" Yates]],
@@ -65,7 +65,7 @@ local CreditsData =
 		},
 		{
 			name  = [[{twitter*Raenore*Raenore}]],
-			roles = { CreditRole.Developer },
+			roles = { CreditRole.ProjectLead },
 		},
 	},
 
