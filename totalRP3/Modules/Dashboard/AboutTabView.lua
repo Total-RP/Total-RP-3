@@ -63,6 +63,10 @@ local CreditsData =
 			name  = [[Connor "{twitter*Saelorable*Sælorable}" Macleod]],
 			roles = { CreditRole.Developer },
 		},
+		{
+			name  = [[{twitter*Raenore*Raenore}]],
+			roles = { CreditRole.Developer },
+		},
 	},
 
 	[CreditCategory.QA] =
@@ -162,9 +166,6 @@ local CreditsData =
 		},
 		{
 			name = "Naeraa",
-		},
-		{
-			name = "Raenore",
 		},
 		{
 			name = "Trinity",
