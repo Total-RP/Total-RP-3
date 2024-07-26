@@ -1317,7 +1317,7 @@ Si vous ne voulez pas indiquer la personnalité de votre personnage ainsi, laiss
 	["REG_PLAYER_STYLE_INJURY"] = "Accepte les blessures",
 	["REG_PLAYER_STYLE_INJURY_TT"] = "Indique si ce joueur est comfortable pour que |cnGREEN_FONT_COLOR:leur personnage soit blessé|r.",
 	["REG_PLAYER_STYLE_LOSSOFCONTROL"] = "Accepte la perte de contrôle",
-	["REG_PLAYER_STYLE_LOSSOFCONTROL_TT"] = "Indique si ce joueur est comfortable pour que |cnGREEN_FONT_COLOR:leur personnage soit soumis à une perte de contrôle|r, telle que des situations où leur personnage est temporairement emprisonné ou contrôlé mentalement.",
+	["REG_PLAYER_STYLE_LOSSOFCONTROL_TT"] = "Indique si ce joueur est comfortable pour que |cnGREEN_FONT_COLOR:leur personnage soit soumis à une perte de contrôle|r, telle que des situations où leur personnage est |cnGREEN_FONT_COLOR:temporairement emprisonné ou contrôlé mentalement.|r",
 	["REG_PLAYER_STYLE_PERMI"] = "Avec permission du joueur",
 	["REG_PLAYER_STYLE_ROMANCE"] = "Accepte la romance",
 	["REG_PLAYER_STYLE_ROMANCE_TT"] = "Indique si ce joueur est comfortable pour que |cnGREEN_FONT_COLOR:leur personnage soit courtisé|r.",
