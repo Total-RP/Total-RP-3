@@ -264,6 +264,14 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					TRP3_MenuUtil.CreateContextMenu(Uibutton, function(_, description)
 						description:CreateTitle(loc.TB_SWITCH_PROFILE);
 
+						-- Make the dropdown list have a scrollbar on mainline.
+						if description.SetScrollMode then
+							local optionHeight = 20; -- 20 is the default height.
+							local maxLines = 20;
+							local maxScrollExtent = optionHeight * maxLines;
+							description:SetScrollMode(maxScrollExtent);
+						end
+
 						for _, profile in ipairs(profileList) do
 							-- Current profile has nil profileID (profile[3])
 							local icon = profile[2] or TRP3_InterfaceIcons.ProfileDefault;

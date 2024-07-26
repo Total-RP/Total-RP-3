@@ -415,6 +415,15 @@ local function companionProfileSelectionList(unitID, targetType, buttonClick, bu
 				description:CreateButton("|cnGREEN_FONT_COLOR:" .. loc.REG_COMPANION_TF_CREATE .. "|r", function() onCompanionProfileSelection(2, companionID, targetType); end);
 				local profileList = getPlayerCompanionProfilesAsList(companionID);
 				local profileButton = description:CreateButton( loc.REG_COMPANION_TF_BOUND_TO);
+
+				-- Make the dropdown list have a scrollbar on mainline.
+				if profileButton.SetScrollMode then
+					local optionHeight = 20; -- 20 is the default height.
+					local maxLines = 20;
+					local maxScrollExtent = optionHeight * maxLines;
+					profileButton:SetScrollMode(maxScrollExtent);
+				end
+
 				for _, profile in ipairs(profileList) do
 					-- Current profile has nil profileID (profile[2])
 					if profile[2] then
