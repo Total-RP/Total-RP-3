@@ -737,9 +737,6 @@ local function displayGlanceSlots()
 					TTText = crop(TTText, GLANCE_TOOLTIP_CROP);
 					glanceTitle = crop(glanceTitle, GLANCE_TITLE_CROP);
 				end
-				if isCurrentMine then
-					TTText = TRP3_API.register.glance.addClickHandlers(TTText);
-				end
 				setTooltipForSameFrame(button, "TOP", 0, 5, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
 				updateGlanceButtonsTooltips();
 			else
@@ -753,9 +750,6 @@ local function displayGlanceSlots()
 						end
 						TTText = glance.TX;
 						glanceTitle = glance.TI or loc.REG_PLAYER_GLANCE_UNUSED;
-					end
-					if isCurrentMine then
-						TTText = TRP3_API.register.glance.addClickHandlers(TTText);
 					end
 					setTooltipForSameFrame(button, "TOP", 0, 5, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
 					updateGlanceButtonsTooltips();

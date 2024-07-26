@@ -224,11 +224,6 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 	button:Enable();
 	button.isCurrentMine = isMine;
 
-	-- Add our click handlers
-	if isMine then
-		text = TRP3_API.register.glance.addClickHandlers(text);
-	end
-
 	if active then
 		button:SetAlpha(1);
 		button:SetIconTexture(icon or GLANCE_NOT_USED_ICON);
@@ -508,11 +503,7 @@ function TRP3_API.register.inits.miscInit()
 	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC.HelpButton, "RIGHT", 0, 5, loc.DB_STATUS_CURRENTLY_OOC, loc.DB_STATUS_CURRENTLY_OOC_TT);
 	TRP3_RegisterMiscViewCurrentlyOOC:RegisterCallback("OnTextChanged", TRP3_FunctionUtil.Debounce(0.5, onOOCInfoChanged), {});
 
-	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG
-	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("DCLICK", loc.REG_PLAYER_GLANCE_CONFIG_TOGGLE)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_GLANCE_CONFIG_PRESETS)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("DRAGDROP", loc.REG_PLAYER_GLANCE_CONFIG_REORDER));
+	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE, TRP3_API.register.glance.addClickHandlers(loc.REG_PLAYER_GLANCE_CONFIG));
 
 	for index=1,5,1 do
 		-- DISPLAY
