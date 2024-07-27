@@ -50,11 +50,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Layers>
 
 		<Frames>
-			<Button parentKey="Close" inherits="TRP3_StyledButtonTemplate">
+			<Button parentKey="Close" inherits="TRP3_RedButtonCloseArtTemplate">
 				<Size x="24" y="24"/>
-				<KeyValues>
-					<KeyValue key="styleName" value="CloseButton" type="string"/>
-				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 				</Anchors>
@@ -109,11 +106,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Layers>
 
 		<Frames>
-			<Button parentKey="Close" inherits="TRP3_StyledButtonTemplate">
+			<Button parentKey="Close" inherits="TRP3_RedButtonCloseArtTemplate">
 				<Size x="24" y="24"/>
-				<KeyValues>
-					<KeyValue key="styleName" value="CloseButton" type="string"/>
-				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 				</Anchors>

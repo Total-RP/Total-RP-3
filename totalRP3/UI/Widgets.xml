@@ -9,7 +9,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="LocalizedText.xml"/>
 	<Include file="ScrollingEditBox.xml"/>
 	<Include file="FocusRegion.xml"/>
-	<Include file="StyledButton.xml"/>
 	<Include file="GroupBox.xml"/>
 	<Include file="TabSystem.xml"/>
 	<Include file="RegionResizeTemplate.xml"/>
@@ -615,11 +614,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<!-- Resize button -->
-	<Button name="TRP3_ResizeButton" inherits="TRP3_StyledButtonTemplate" virtual="true">
+	<Button name="TRP3_ResizeButton" inherits="TRP3_RedButtonResizeArtTemplate" virtual="true">
 		<Size x="24" y="24"/>
-		<KeyValues>
-			<KeyValue key="styleName" value="ResizeButton" type="string"/>
-		</KeyValues>
 		<Scripts>
 			<OnLoad inherit="prepend">
 				TRP3_API.ui.frame.initResize(self);
@@ -778,11 +774,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button parentKey="CloseButton" inherits="TRP3_StyledButtonTemplate">
+			<Button parentKey="CloseButton" inherits="TRP3_RedButtonCloseArtTemplate">
 				<Size x="24" y="24"/>
-				<KeyValues>
-					<KeyValue key="styleName" value="CloseButton" type="string"/>
-				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 				</Anchors>

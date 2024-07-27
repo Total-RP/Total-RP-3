@@ -66,4 +66,79 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<TexCoords right="0.5" top="0.125" bottom="0.25"/>
 		</HighlightTexture>
 	</Button>
+
+	<Button name="TRP3_RedButtonCondenseArtTemplate" virtual="true">
+		<NormalTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.00390625" right="0.14453125" top="0.0078125" bottom="0.3046875"/>
+		</NormalTexture>
+		<PushedTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.00390625" right="0.14453125" top="0.6328125" bottom="0.9296875"/>
+		</PushedTexture>
+		<DisabledTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.00390625" right="0.14453125" top="0.3203125" bottom="0.6171875"/>
+		</DisabledTexture>
+		<HighlightTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" alphaMode="ADD">
+			<TexCoords left="0.44921875" right="0.58984375" top="0.0078125" bottom="0.3046875"/>
+		</HighlightTexture>
+	</Button>
+
+	<Button name="TRP3_RedButtonExpandArtTemplate" virtual="true">
+		<NormalTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.30078125" right="0.44140625" top="0.0078125" bottom="0.3046875"/>
+		</NormalTexture>
+		<PushedTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.30078125" right="0.44140625" top="0.6328125" bottom="0.9296875"/>
+		</PushedTexture>
+		<DisabledTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.30078125" right="0.44140625" top="0.3203125" bottom="0.6171875"/>
+		</DisabledTexture>
+		<HighlightTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" alphaMode="ADD">
+			<TexCoords left="0.44921875" right="0.58984375" top="0.0078125" bottom="0.3046875"/>
+		</HighlightTexture>
+	</Button>
+
+	<Button name="TRP3_RedButtonCloseArtTemplate" virtual="true">
+		<NormalTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.15234375" right="0.29296875" top="0.0078125" bottom="0.3046875"/>
+		</NormalTexture>
+		<PushedTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.15234375" right="0.29296875" top="0.6328125" bottom="0.9296875"/>
+		</PushedTexture>
+		<DisabledTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.15234375" right="0.29296875" top="0.3203125" bottom="0.6171875"/>
+		</DisabledTexture>
+		<HighlightTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" alphaMode="ADD">
+			<TexCoords left="0.44921875" right="0.58984375" top="0.0078125" bottom="0.3046875"/>
+		</HighlightTexture>
+	</Button>
+
+	<Button name="TRP3_RedButtonMiniCondenseArtTemplate" virtual="true">
+		<NormalTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.44921875" right="0.58984375" top="0.3203125" bottom="0.6171875"/>
+		</NormalTexture>
+		<PushedTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.59765625" right="0.73828125" top="0.0078125" bottom="0.3046875"/>
+		</PushedTexture>
+		<DisabledTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.44921875" right="0.58984375" top="0.6328125" bottom="0.9296875"/>
+		</DisabledTexture>
+		<HighlightTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" alphaMode="ADD">
+			<TexCoords left="0.44921875" right="0.58984375" top="0.0078125" bottom="0.3046875"/>
+		</HighlightTexture>
+	</Button>
+
+	<Button name="TRP3_RedButtonResizeArtTemplate" virtual="true">
+		<NormalTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.14453125" right="0.00390625" top="0.0078125" bottom="0.3046875"/>
+		</NormalTexture>
+		<PushedTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.14453125" right="0.00390625" top="0.6328125" bottom="0.9296875"/>
+		</PushedTexture>
+		<DisabledTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" texelSnappingBias="0.0" snapToPixelGrid="false">
+			<TexCoords left="0.14453125" right="0.00390625" top="0.3203125" bottom="0.6171875"/>
+		</DisabledTexture>
+		<HighlightTexture file="Interface\AddOns\totalRP3\Resources\UI\blz-redbutton2x" alphaMode="ADD">
+			<TexCoords left="0.44921875" right="0.58984375" top="0.0078125" bottom="0.3046875"/>
+		</HighlightTexture>
+	</Button>
 </Ui>
