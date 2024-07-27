@@ -3,65 +3,74 @@
 
 local LibWindow = LibStub:GetLibrary("LibWindow-1.1");
 
-local DEFAULT_WINDOW_WIDTH = 840;
-local DEFAULT_WINDOW_HEIGHT = 600;
-
 TRP3_MainFrameMixin = {};
 
 function TRP3_MainFrameMixin:OnLoad()
 	tinsert(UISpecialFrames, self:GetName());
-	TRP3_API.ui.frame.initResize(self.Resize);
-end
-
-function TRP3_MainFrameMixin:OnSizeChanged()
-	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetSize());
-end
-
-function TRP3_MainFrameMixin:RestoreWindow()
-	self:SetSize(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
-end
-
-function TRP3_MainFrameMixin:ResizeWindow(width, height)
-	self:SetSize(width, height);
-end
-
-TRP3_MainFrameLayoutMixin = CreateFromMixins(TRP3_MainFrameMixin);
-
-function TRP3_MainFrameLayoutMixin:OnLoad()
-	TRP3_MainFrameMixin.OnLoad(self);
 	self.windowLayout = nil;  -- Aliases configuration table; set during addon load.
+
+	self.CloseButton:SetScript("OnClick", function() TRP3_API.navigation.switchMainFrame() end);
+	self.ResizeButton.minWidth, self.ResizeButton.minHeight = self:GetMinimumSize();
+	self.ResizeButton.onResizeStop = function(width, height) self:ResizeWindow(width, height); end;
+	TRP3_API.ui.frame.initResize(self.ResizeButton);
+
 	TRP3_Addon.RegisterCallback(self, "WORKFLOW_ON_FINISH", "OnLayoutLoaded");
 end
 
-function TRP3_MainFrameLayoutMixin:OnLayoutLoaded()
+function TRP3_MainFrameMixin:OnSizeChanged()
+	if self:IsLayoutLoaded() then
+		self:SaveLayout();
+	end
+
+	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetSize());
+end
+
+function TRP3_MainFrameMixin:OnLayoutLoaded()
 	self.windowLayout = TRP3_API.configuration.getValue("window_layout");
 	LibWindow.RegisterConfig(self, self.windowLayout);
 	LibWindow.MakeDraggable(self);
 	self:RestoreLayout();
 end
 
-function TRP3_MainFrameLayoutMixin:OnSizeChanged(...)
-	if self:IsLayoutLoaded() then
-		self:SaveLayout();
-	end
-
-	TRP3_MainFrameMixin.OnSizeChanged(self, ...);
+function TRP3_MainFrameMixin:GetDefaultSize()
+	return 840, 600;
 end
 
-function TRP3_MainFrameLayoutMixin:IsLayoutLoaded()
+function TRP3_MainFrameMixin:GetMinimumSize()
+	return self:GetDefaultSize();
+end
+
+function TRP3_MainFrameMixin:GetMaximumSize()
+	return math.huge, math.huge;
+end
+
+function TRP3_MainFrameMixin:ResizeWindowToDefault()
+	self:ResizeWindow(self:GetDefaultSize());
+end
+
+function TRP3_MainFrameMixin:ResizeWindow(width, height)
+	self:SetSize(width, height);
+end
+
+function TRP3_MainFrameMixin:IsLayoutLoaded()
 	return self.windowLayout ~= nil;
 end
 
-function TRP3_MainFrameLayoutMixin:RestoreLayout()
+function TRP3_MainFrameMixin:RestoreLayout()
 	assert(self:IsLayoutLoaded(), "attempted to restore window layout before layout has been loaded");
 
-	local width = math.max(self.windowLayout.w or DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_WIDTH);
-	local height = math.max(self.windowLayout.h or DEFAULT_WINDOW_HEIGHT, DEFAULT_WINDOW_HEIGHT);
+	local defaultWidth, defaultHeight = self:GetDefaultSize();
+	local minimumWidth, minimumHeight = self:GetMinimumSize();
+	local maximumWidth, maximumHeight = self:GetMaximumSize();
+
+	local width = Clamp(self.windowLayout.w or defaultWidth, minimumWidth, maximumWidth);
+	local height = Clamp(self.windowLayout.h or defaultHeight, minimumHeight, maximumHeight);
+
 	self:SetSize(width, height);
 	LibWindow.RestorePosition(self);
 end
 
-function TRP3_MainFrameLayoutMixin:SaveLayout()
+function TRP3_MainFrameMixin:SaveLayout()
 	assert(self:IsLayoutLoaded(), "attempted to save window layout before layout has been loaded");
 
 	local width, height = self:GetSize();

@@ -53,11 +53,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		end
 	});
 
-	-- Resizing
-	TRP3_MainFrame.Resize.onResizeStop = function(width, height)
-		TRP3_MainFrame:ResizeWindow(width, height);
-	end;
-
 	-- Update frame
 	TRP3_UpdateFrame.popup.title:SetText(L.NEW_VERSION_TITLE);
 end);

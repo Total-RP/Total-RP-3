@@ -99,8 +99,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_MainFrameTemplate" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" virtual="true">
-		<Size x="840" y="600"/>
+	<Frame name="TRP3_MainFrameArtTemplate" virtual="true">
 		<Frames>
 			<Frame parentKey="Backdrop" inherits="TooltipBorderBackdropTemplate" setAllPoints="true">
 				<KeyValues>
@@ -149,43 +148,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Layer>
 				</Layers>
 			</Frame>
-			<!-- CLOSE MAIN FRAME -->
-			<Button parentKey="Close" inherits="TRP3_StyledButtonTemplate">
-				<Size x="24" y="24"/>
-				<KeyValues>
-					<KeyValue key="styleName" value="CloseButton" type="string"/>
-				</KeyValues>
-				<Anchors>
-					<Anchor point="TOPRIGHT" x="-1" y="-1"/>
-				</Anchors>
-			</Button>
-
-			<!-- RESIZING BUTTON -->
-			<Button parentKey="Resize" inherits="TRP3_StyledButtonTemplate">
-				<Size x="24" y="24"/>
-				<KeyValues>
-					<KeyValue key="minWidth" value="840" type="number"/>
-					<KeyValue key="minHeight" value="600" type="number"/>
-					<KeyValue key="styleName" value="ResizeButton" type="string"/>
-				</KeyValues>
-				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="-1" y="1"/>
-				</Anchors>
-				<Frames>
-					<Frame parentKey="CursorFrame" hidden="true" enableMouse="true">
-						<Size x="50" y="50"/>
-						<Anchors>
-							<Anchor point="CENTER" relativePoint="BOTTOMRIGHT" />
-						</Anchors>
-					</Frame>
-				</Frames>
-			</Button>
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameTemplate" mixin="TRP3_MainFrameLayoutMixin" hidden="true" movable="true" dontSavePosition="true">
+	<Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameArtTemplate" mixin="TRP3_MainFrameMixin" parent="UIParent" hidden="true" movable="true" resizable="true" dontSavePosition="true" toplevel="true" enableMouse="true" clampedToScreen="true">
+		<Size x="840" y="600"/>
 		<Anchors>
-			<Anchor point="CENTER" x="0" y="0"/>
+			<Anchor point="CENTER"/>
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -341,11 +310,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							</Layer>
 						</Layers>
 						<Frames>
-							<Button parentKey="Close" inherits="TRP3_StyledButtonTemplate">
+							<Button parentKey="Close" inherits="TRP3_RedButtonCloseArtTemplate">
 								<Size x="24" y="24"/>
-								<KeyValues>
-									<KeyValue key="styleName" value="CloseButton" type="string"/>
-								</KeyValues>
 								<Anchors>
 									<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 								</Anchors>
@@ -370,9 +336,22 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</Frame>
 
+			<Button parentKey="CloseButton" inherits="TRP3_RedButtonCloseArtTemplate">
+				<Size x="24" y="24"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-1" y="-1"/>
+				</Anchors>
+			</Button>
+
+			<Button parentKey="ResizeButton" inherits="TRP3_RedButtonResizeArtTemplate">
+				<Size x="24" y="24"/>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="-1" y="1"/>
+				</Anchors>
+			</Button>
 		</Frames>
 		<Scripts>
-			<OnLoad method="OnLoad" inherit="prepend"/>
+			<OnLoad method="OnLoad"/>
 			<OnSizeChanged method="OnSizeChanged"/>
 		</Scripts>
 	</Frame>
