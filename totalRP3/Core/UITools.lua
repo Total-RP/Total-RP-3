@@ -1075,20 +1075,7 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 	assert(resizeButton.minWidth, "minWidth key is not set.");
 	assert(resizeButton.minHeight, "minHeight key is not set.");
 	local parentFrame = resizeButton.resizableFrame;
-	resizeButton:RegisterForDrag("LeftButton");
 	resizeButton:SetScript("OnMouseDown", function(self)
-		if self.CursorFrame then
-			self.CursorFrame:Show();
-		end
-		SetCursor("Interface\\CURSOR\\UI-Cursor-Size");
-	end);
-	resizeButton:SetScript("OnMouseUp", function(self)
-		if self.CursorFrame then
-			self.CursorFrame:Hide();
-		end
-		ResetCursor();
-	end);
-	resizeButton:SetScript("OnDragStart", function(self)
 		if not self.onResizeStart or not self.onResizeStart() then
 			resizeShadowFrame.minWidth = self.minWidth;
 			resizeShadowFrame.minHeight = self.minHeight;
@@ -1099,9 +1086,10 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 			resizeShadowFrame:Show();
 			resizeShadowFrame:StartSizing();
 			parentFrame.isSizing = true;
+			SetCursor("Interface\\CURSOR\\UI-Cursor-Size");
 		end
 	end);
-	resizeButton:SetScript("OnDragStop", function(self)
+	resizeButton:SetScript("OnMouseUp", function(self)
 		if parentFrame.isSizing then
 			if self.CursorFrame then
 				self.CursorFrame:Hide();
@@ -1123,6 +1111,7 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 					self.onResizeStop(width, height);
 				end);
 			end
+			ResetCursor();
 		end
 	end);
 end
