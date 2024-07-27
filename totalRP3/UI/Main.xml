@@ -151,7 +151,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameArtTemplate" mixin="TRP3_MainFrameMixin" parent="UIParent" hidden="true" movable="true" resizable="true" dontSavePosition="true" toplevel="true" enableMouse="true" clampedToScreen="true">
+	<Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameArtTemplate" mixin="TRP3_MainFrameMixin" parent="UIParent" hidden="true" movable="true" dontSavePosition="true" toplevel="true" enableMouse="true" clampedToScreen="true">
 		<Size x="840" y="600"/>
 		<Anchors>
 			<Anchor point="CENTER"/>
