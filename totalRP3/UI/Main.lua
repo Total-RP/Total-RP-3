@@ -3,6 +3,15 @@
 
 local LibWindow = LibStub:GetLibrary("LibWindow-1.1");
 
+local function ResetWindowPoint(frame)
+	local parent = frame:GetParent() or UIParent;
+	local offsetX = frame:GetLeft();
+	local offsetY = -(parent:GetTop() - frame:GetTop());
+
+	frame:ClearAllPoints();
+	frame:SetPoint("TOPLEFT", offsetX, offsetY);
+end
+
 TRP3_MainFrameMixin = {};
 
 function TRP3_MainFrameMixin:OnLoad()
@@ -11,7 +20,8 @@ function TRP3_MainFrameMixin:OnLoad()
 
 	self.CloseButton:SetScript("OnClick", function() TRP3_API.navigation.switchMainFrame() end);
 	self.ResizeButton.minWidth, self.ResizeButton.minHeight = self:GetMinimumSize();
-	self.ResizeButton.onResizeStop = function(width, height) self:ResizeWindow(width, height); end;
+	self.ResizeButton.onResizeStart = function() self:OnResizeStart(); end;
+	self.ResizeButton.onResizeStop = function(width, height) self:OnResizeStop(width, height); end;
 	TRP3_API.ui.frame.initResize(self.ResizeButton);
 
 	TRP3_Addon.RegisterCallback(self, "WORKFLOW_ON_FINISH", "OnLayoutLoaded");
@@ -32,6 +42,14 @@ function TRP3_MainFrameMixin:OnLayoutLoaded()
 	self:RestoreLayout();
 end
 
+function TRP3_MainFrameMixin:OnResizeStart()
+	ResetWindowPoint(self);
+end
+
+function TRP3_MainFrameMixin:OnResizeStop(width, height)
+	self:ResizeWindow(width, height);
+end
+
 function TRP3_MainFrameMixin:GetDefaultSize()
 	return 840, 600;
 end
@@ -49,6 +67,7 @@ function TRP3_MainFrameMixin:ResizeWindowToDefault()
 end
 
 function TRP3_MainFrameMixin:ResizeWindow(width, height)
+	ResetWindowPoint(self);
 	self:SetSize(width, height);
 end
 
@@ -68,6 +87,7 @@ function TRP3_MainFrameMixin:RestoreLayout()
 
 	self:SetSize(width, height);
 	LibWindow.RestorePosition(self);
+	ResetWindowPoint(self);
 end
 
 function TRP3_MainFrameMixin:SaveLayout()
