@@ -160,28 +160,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</Button>
 
-			<!-- MaxiButton -->
-			<Button parentKey="Maximize" inherits="TRP3_StyledButtonTemplate">
-				<Size x="24" y="24"/>
-				<KeyValues>
-					<KeyValue key="styleName" value="MaximizeButton" type="string"/>
-				</KeyValues>
-				<Anchors>
-					<Anchor point="RIGHT" relativeKey="$parent.Close" relativePoint="LEFT"/>
-				</Anchors>
-			</Button>
-
-			<!-- MiniButton -->
-			<Button parentKey="Minimize" inherits="TRP3_StyledButtonTemplate" hidden="true">
-				<Size x="24" y="24"/>
-				<KeyValues>
-					<KeyValue key="styleName" value="MinimizeButton" type="string"/>
-				</KeyValues>
-				<Anchors>
-					<Anchor point="RIGHT" relativeKey="$parent.Close" relativePoint="LEFT"/>
-				</Anchors>
-			</Button>
-
 			<!-- RESIZING BUTTON -->
 			<Button parentKey="Resize" inherits="TRP3_StyledButtonTemplate">
 				<Size x="24" y="24"/>
@@ -395,7 +373,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 		<Scripts>
 			<OnLoad method="OnLoad" inherit="prepend"/>
-			<OnShow method="OnShow"/>
 			<OnSizeChanged method="OnSizeChanged"/>
 		</Scripts>
 	</Frame>

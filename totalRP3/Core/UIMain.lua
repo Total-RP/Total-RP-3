@@ -58,16 +58,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		TRP3_MainFrame:ResizeWindow(width, height);
 	end;
 
-	TRP3_MainFrame.Maximize:SetScript("OnClick", function()
-		TRP3_MainFrame:MaximizeWindow();
-		TRP3_API.navigation.delayedRefresh();
-	end);
-
-	TRP3_MainFrame.Minimize:SetScript("OnClick", function()
-		TRP3_MainFrame:RestoreWindow();
-		TRP3_API.navigation.delayedRefresh();
-	end);
-
 	-- Update frame
 	TRP3_UpdateFrame.popup.title:SetText(L.NEW_VERSION_TITLE);
 end);
