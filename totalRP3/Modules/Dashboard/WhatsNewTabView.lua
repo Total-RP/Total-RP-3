@@ -17,15 +17,34 @@ local loc = TRP3_API.loc;
 local strhtml = TRP3_API.utils.str.toHTML;
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.0.1
+
+
+### {col:FFD200}For a visual guide to the major changes of version 3.0, please see [this article](https://github.com/Total-RP/Total-RP-3/wiki/Guide-to-version-3.0) on our wiki.{/col}
+
+
+## Added
+
+
+- Profile dropdowns (characters on the toolbar, companions on the target frame) are now capped in height and scrollable on Retail.
+
+## Changed
+
+
+- Glance slots click instructions have been removed from their tooltips and moved to the help button in the "At first glance" section of the Miscellaneous tab.
+
+## Fixed
+
+
+- Fixed icon button right-click actions not working properly in the relation editor.
+- Fixed an error when disabling the tooltip module.
+
 # Changelog version 3.0.0
 
 
 This version adds support for patch 11.0.
 
 Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and {col:00ff00}keyboardturner{/col} for the new silhouette logo.
-
-### {col:FFD200}For a visual guide to the major changes of this version, please see [this article](https://github.com/Total-RP/Total-RP-3/wiki/Guide-to-version-3.0) on our wiki.{/col}
-
 
 ## Added
 
@@ -56,7 +75,6 @@ Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and 
 - Added a tooltip setting to hide the addon version text and trial indicator separately from the bottom icons.
 - The toolbar will now be skinned while using ElvUI.
 - Added 1526 icons and 6 musics from patch 11.0.0.
-
 
 ## Changed
 
@@ -93,7 +111,6 @@ Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and 
 - Truncated profile fields can now be hovered to see the full text.
 - The size of the version number line on the tooltip is no longer tied to the tertiary font size, and is instead locked to the current default size of 10.
 
-
 ## Fixed
 
 
@@ -114,7 +131,6 @@ Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and 
 - Fixed currently summoned pet not being remembered on Classic Era.
 - Fixed an issue where the locale would still be changed when canceling the prompt appearing after selecting a language in the dropdown.
 - Fixed an issue when trying to change language from Traditional Chinese.
-
 
 ## Removed
 

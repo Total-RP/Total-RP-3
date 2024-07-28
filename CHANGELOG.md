@@ -1,3 +1,18 @@
+# Changelog version 3.0.1
+
+## Added
+
+- Profile dropdowns (characters on the toolbar, companions on the target frame) are now capped in height and scrollable on Retail.
+
+## Changed
+
+- Glance slots click instructions have been removed from their tooltips and moved to the help button in the "At first glance" section of the Miscellaneous tab.
+
+## Fixed
+
+- Fixed icon button right-click actions not working properly in the relation editor.
+- Fixed an error when disabling the tooltip module.
+
 # Changelog version 3.0.0
 
 This version adds support for patch 11.0.
