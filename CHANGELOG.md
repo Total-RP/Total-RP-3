@@ -2,7 +2,8 @@
 
 ## Added
 
-- Profile dropdowns (characters on the toolbar, companions on the target frame) are now capped in height and scrollable on Retail.
+- The character profile dropdown on the toolbar is now capped in height and scrollable on Retail.
+  - The companion profile dropdown on the target frame will also receive this change as soon as available in patch 11.0.2.
 
 ## Changed
 
