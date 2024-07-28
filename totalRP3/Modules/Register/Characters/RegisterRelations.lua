@@ -93,7 +93,6 @@ local function getRelationText(profileID, ignoreNone)
 end
 TRP3_API.register.relation.getRelationText = getRelationText;
 
-
 local function getRelationTooltipText(profileID, profile)
 	local description = getRelation(profileID).description or loc:GetText("REG_RELATION_" .. getRelation(profileID).id .. "_TT");
 	local player = TRP3_API.register.getPlayerCompleteName(true);
@@ -123,6 +122,16 @@ local function getColor(relation)
 end
 TRP3_API.register.relation.getColor = getColor;
 
+local draftRelationTexture;
+
+--- pasteCopiedIcon handles receiving an icon from the right-click menu.
+---@param frame Frame The frame the icon belongs to.
+local function pasteCopiedIcon(frame)
+	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIcons.ProfileDefault;
+	draftRelationTexture = icon;
+	setupIconButton(frame, icon);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -143,8 +152,6 @@ local function checkRelationUse()
 		end
 	end
 end
-
-local draftRelationTexture;
 
 -- Init the relation popup
 local function initRelationEditor(relationID)
@@ -172,11 +179,11 @@ local function initRelationEditor(relationID)
 				setupIconButton(TRP3_RelationsList.Editor.Content.Icon, icon or TRP3_InterfaceIcons.ProfileDefault);
 			end, nil, nil, draftRelationTexture});
 		elseif button == "RightButton" then
-			draftRelationTexture = relation.texture or TRP3_InterfaceIcons.ProfileDefault;
+			draftRelationTexture = draftRelationTexture or relation.texture or TRP3_InterfaceIcons.ProfileDefault;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, draftRelationTexture);
 				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftRelationTexture}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() setupIconButton(TRP3_RelationsList.Editor.Content.Icon, TRP3_API.GetLastCopiedIcon()); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(TRP3_RelationsList.Editor.Content.Icon); end);
 			end);
 		end
 	end);
