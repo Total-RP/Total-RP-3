@@ -212,7 +212,7 @@ local function fadeOutEnabled()
 end
 
 local function showWorldCursor()
-	return getConfigValue(ConfigKeys.SHOW_WORLD_CURSOR);
+	return registerTooltipModuleIsEnabled and getConfigValue(ConfigKeys.SHOW_WORLD_CURSOR);
 end
 
 local function getCurrentMaxLines()
