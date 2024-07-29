@@ -1069,14 +1069,16 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			id = "aa_player_a_page",
 			configText = loc.TF_OPEN_CHARACTER,
 			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
-			condition = function(_, unitID)
-				return unitID == Globals.player_id or (isUnitIDKnown(unitID) and hasProfile(unitID));
+			condition = function(_, characterID)
+				return characterID == Globals.player_id or (isUnitIDKnown(characterID) and hasProfile(characterID));
 			end,
-			onClick = function(unitID)
+			onClick = function(characterID)
 				openMainFrame();
-				openPageByUnitID(unitID);
+				TRP3_API.r.sendQuery(characterID);
+				TRP3_API.r.sendMSPQuery(characterID);
+				openPageByUnitID(characterID);
 			end,
-			adapter = function(buttonStructure, unitID)
+			adapter = function(buttonStructure, characterID)
 				-- Initialize the buttonStructure parts.
 				buttonStructure.alert = false;
 				local factionTag = UnitFactionGroup("target");
@@ -1091,15 +1093,15 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 				-- Retrieve the character's profile.
 				local profile;
-				if unitID == Globals.player_id then
+				if characterID == Globals.player_id then
 					profile = TRP3_API.profile.getData("player");
 				else
-					profile = getUnitIDProfile(unitID);
+					profile = getUnitIDProfile(characterID);
 				end
 
 				local tooltipLines = {};
 
-				if unitID ~= Globals.player_id and profile.about and not profile.about.read then
+				if characterID ~= Globals.player_id and profile.about and not profile.about.read then
 					local icon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay";
 					table.insert(tooltipLines, TRP3_MarkupUtil.GenerateFileMarkup(icon, { size = 16 }) .. loc.REG_TT_NOTIF_LONG_TT);
 					buttonStructure.alert = true;

@@ -380,18 +380,18 @@ local function getCompanionInfo(owner, companionID, companionFullID)
 	return profile;
 end
 
-local function companionProfileSelectionList(unitID, targetType, buttonClick, button)
+local function companionProfileSelectionList(characterID, targetType, buttonClick, button)
 	local ownerID, companionID, companionFullID;
 
 	if targetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
-		ownerID = unitID;
+		ownerID = characterID;
 		if ownerID == Globals.player_id then
 			companionID = tostring(getCurrentMountSpellID());
 		else
-			companionFullID = TRP3_API.companions.register.getUnitMount(unitID, "target");
+			companionFullID = TRP3_API.companions.register.getUnitMount(characterID, "target");
 		end
 	else
-		companionFullID = unitID;
+		companionFullID = characterID;
 		ownerID, companionID = companionIDToInfo(companionFullID);
 	end
 
@@ -436,6 +436,7 @@ local function companionProfileSelectionList(unitID, targetType, buttonClick, bu
 		end
 	else
 		if companionHasProfile(companionFullID) then
+			TRP3_API.r.sendQuery(ownerID);
 			TRP3_API.companions.register.openPage(companionHasProfile(companionFullID));
 			openMainFrame();
 		end
@@ -576,23 +577,23 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		TRP3_API.target.registerButton({
 			id = "bb_companion_profile",
 			configText = loc.REG_COMPANION_TF_PROFILE,
-			condition = function(targetType, unitID)
+			condition = function(targetType, characterID)
 				if isTargetTypeACompanion(targetType) then
-					local ownerID = companionIDToInfo(unitID);
-					return ownerID == Globals.player_id or companionHasProfile(unitID);
+					local ownerID = companionIDToInfo(characterID);
+					return ownerID == Globals.player_id or companionHasProfile(characterID);
 				end
 			end,
-			onMouseDown = companionProfileSelectionList,
+			onClick = companionProfileSelectionList,
 			alertIcon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay",
-			adapter = function(buttonStructure, unitID)
+			adapter = function(buttonStructure, characterID)
 				-- Initialize the buttonStructure parts.
 				buttonStructure.alert = false;
 				buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenCompanion;
 				buttonStructure.tooltip = loc.REG_COMPANION;
 				buttonStructure.tooltipSub = loc.REG_COMPANION_TF_NO;
 
-				local ownerID, companionID = companionIDToInfo(unitID);
-				local profile = getCompanionInfo(ownerID, companionID, unitID);
+				local ownerID, companionID = companionIDToInfo(characterID);
+				local profile = getCompanionInfo(ownerID, companionID, characterID);
 
 				-- Check if the pet has a profile first.
 				if profile and profile.data then
@@ -622,17 +623,17 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			id = "bb_companion_profile_speech",
 			configText = loc.REG_COMPANION_TF_PROFILE_SPEECH,
 			icon = TRP3_InterfaceIcons.ToolbarNPCTalk;
-			condition = function(targetType, unitID)
+			condition = function(targetType, characterID)
 				if isTargetTypeACompanion(targetType) then
-					local ownerID, companionID = companionIDToInfo(unitID);
-					return ownerID == Globals.player_id and getCompanionInfo(ownerID, companionID, unitID);
+					local ownerID, companionID = companionIDToInfo(characterID);
+					return ownerID == Globals.player_id and getCompanionInfo(ownerID, companionID, characterID);
 				end
 			end,
 			tooltip = loc.REG_COMPANION_TF_PROFILE_SPEECH,
 			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_COMPANION_TF_PROFILE_SPEECH_TT),
-			onMouseDown = function(unitID)
-				local ownerID, companionID = companionIDToInfo(unitID);
-				local profile = getCompanionInfo(ownerID, companionID, unitID);
+			onMouseDown = function(characterID)
+				local ownerID, companionID = companionIDToInfo(characterID);
+				local profile = getCompanionInfo(ownerID, companionID, characterID);
 
 				-- Check if the pet has a profile first (always true here).
 				if profile and profile.data then
@@ -648,16 +649,16 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			id = "bb_companion_profile_mount",
 			configText = loc.REG_COMPANION_TF_PROFILE_MOUNT,
 			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
-			condition = function(_, unitID)
-				if unitID == Globals.player_id then
+			condition = function(_, characterID)
+				if characterID == Globals.player_id then
 					return getCurrentMountSpellID() ~= nil;
 				end
-				local _, profileID = TRP3_API.companions.register.getUnitMount(unitID, "target");
+				local _, profileID = TRP3_API.companions.register.getUnitMount(characterID, "target");
 				return profileID ~= nil;
 			end,
-			onMouseDown = companionProfileSelectionList,
+			onClick = companionProfileSelectionList,
 			alertIcon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay",
-			adapter = function(buttonStructure, unitID)
+			adapter = function(buttonStructure, characterID)
 				-- Initialize the buttonStructure parts.
 				buttonStructure.alert = false;
 				buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenMount;
@@ -666,10 +667,10 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 				-- Retrieve the mount profile first.
 				local profile;
-				if unitID == Globals.player_id then
+				if characterID == Globals.player_id then
 					profile = getCurrentMountProfile();
 				else
-					local companionFullID = TRP3_API.companions.register.getUnitMount(unitID, "target");
+					local companionFullID = TRP3_API.companions.register.getUnitMount(characterID, "target");
 					profile = getCompanionRegisterProfile(companionFullID);
 				end
 
@@ -679,7 +680,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					local name = profile.data.NA or "";
 
 					-- Handle if player is the owner of this mount.
-					if unitID == Globals.player_id then
+					if characterID == Globals.player_id then
 						buttonStructure.tooltipSub = name .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TF_OPEN_MOUNT) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TF_MORE_OPTIONS);
 					else
 						-- If mount data is unread, add alert.
@@ -693,7 +694,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					end
 				else
 					-- Handle if player is the owner of this mount.
-					if unitID == Globals.player_id then
+					if characterID == Globals.player_id then
 						buttonStructure.tooltipSub = buttonStructure.tooltipSub .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_COMPANION_TF_CREATE) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TF_MORE_OPTIONS);
 					end
 				end
