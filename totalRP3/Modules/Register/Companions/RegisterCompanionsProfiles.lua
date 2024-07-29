@@ -631,7 +631,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			end,
 			tooltip = loc.REG_COMPANION_TF_PROFILE_SPEECH,
 			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_COMPANION_TF_PROFILE_SPEECH_TT),
-			onMouseDown = function(characterID)
+			onClick = function(characterID)
 				local ownerID, companionID = companionIDToInfo(characterID);
 				local profile = getCompanionInfo(ownerID, companionID, characterID);
 
