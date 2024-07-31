@@ -245,8 +245,8 @@ local function onStart()
 			});
 		end
 
-		BuildToolbar();
 		TRP3_Toolbar:Init();
+		BuildToolbar();
 	end);
 
 	function TRP3_API.toolbar.switch()
