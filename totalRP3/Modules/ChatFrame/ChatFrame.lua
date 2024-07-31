@@ -801,12 +801,20 @@ function hooking()
 		if text and send == 1 then
 			textBeforeParse = text;
 			parsedEditBox = editBox;
-			text = text:gsub("%%xtf", getUnitRPFirstName("target") or TARGET_TOKEN_NOT_FOUND);
-			text = text:gsub("%%xtl", getUnitRPLastName("target") or TARGET_TOKEN_NOT_FOUND);
-			text = text:gsub("%%xff", getUnitRPFirstName("focus") or FOCUS_TOKEN_NOT_FOUND);
-			text = text:gsub("%%xfl", getUnitRPLastName("focus") or FOCUS_TOKEN_NOT_FOUND);
-			text = text:gsub("%%xt", getUnitRPName("target") or TARGET_TOKEN_NOT_FOUND);
-			text = text:gsub("%%xf", getUnitRPName("focus") or FOCUS_TOKEN_NOT_FOUND);
+			local player = AddOn_TotalRP3.Player.GetCurrentUser();
+			local tokens = {
+				["%xtf"] = getUnitRPFirstName("target") or TARGET_TOKEN_NOT_FOUND,
+				["%xtl"] = getUnitRPLastName("target") or TARGET_TOKEN_NOT_FOUND,
+				["%xff"] = getUnitRPFirstName("focus") or FOCUS_TOKEN_NOT_FOUND,
+				["%xfl"] = getUnitRPLastName("focus") or FOCUS_TOKEN_NOT_FOUND,
+				["%xpf"] = player:GetFirstName() or "",
+				["%xpl"] = player:GetLastName() or "",
+				["%xt"] = getUnitRPName("target") or TARGET_TOKEN_NOT_FOUND,
+				["%xf"] = getUnitRPName("focus") or FOCUS_TOKEN_NOT_FOUND,
+				["%xp"] = player:GetFullName() or "",
+			};
+
+			text = string.gsub(text, "%%x.[fl]?", tokens);
 			editBox:SetText(text);
 		end
 	end);
