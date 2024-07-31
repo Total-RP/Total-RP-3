@@ -63,7 +63,7 @@ TRP3_API.module.registerModule({
 
 		local SKINNABLE_TOOLBAR_FRAMES = {
 			"TRP3_Toolbar",
-			"TRP3_Toolbar.Container",
+			"TRP3_Toolbar.Container.Backdrop",
 			"TRP3_Toolbar.Title",
 		}
 
