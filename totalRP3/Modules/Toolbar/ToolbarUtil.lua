@@ -18,3 +18,10 @@ function TRP3_ToolbarUtil.GetToolbarAnchor()
 
 	return AnchorUtil.CreateAnchor(point, relativeTo, relativePoint, offsetX, offsetY);
 end
+
+function TRP3_ToolbarUtil.GetToolbarButtonExtent()
+	local configuredExtent = TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.ButtonExtent);
+	local extraExtent = TRP3_ToolbarConstants.ButtonExtraExtent;
+
+	return configuredExtent + extraExtent;
+end

@@ -1,75 +1,15 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
+local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 local color = Utils.str.color;
 
 local CONFIG_CONTENT_PREFIX = "toolbar_content_";
 
-TRP3_ToolbarVisibilityOption = {
-	AlwaysShow = 1,
-	OnlyShowInCharacter = 2,
-	AlwaysHidden = 3,
-};
-
-local ToolbarMixin = {};
-
-function ToolbarMixin:OnLoad()
-	TRP3_API.RegisterCallback(TRP3_Addon, "CONFIGURATION_CHANGED", self.OnConfigurationChanged, self);
-	TRP3_API.RegisterCallback(TRP3_Addon, "ROLEPLAY_STATUS_CHANGED", self.OnRoleplayStatusChanged, self);
-
-	self:UpdateVisibility();
-end
-
-function ToolbarMixin:OnRoleplayStatusChanged()
-	local configuredVisibility = TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.Visibility);
-
-	if configuredVisibility == TRP3_ToolbarVisibilityOption.OnlyShowInCharacter then
-		self:UpdateVisibility();
-	end
-end
-
-function ToolbarMixin:OnConfigurationChanged(key)
-	if key == TRP3_ToolbarConfigKeys.Visibility then
-		self:UpdateVisibility();
-	end
-end
-
-function ToolbarMixin:Toggle()
-	self.forcedVisibility = not self:IsShown();
-	self:UpdateVisibility();
-	self.forcedVisibility = nil;
-
-	if self:IsShown() then
-		PlaySound(SOUNDKIT.IG_MAINMENU_OPEN);
-	else
-		PlaySound(SOUNDKIT.IG_MAINMENU_CLOSE);
-	end
-end
-
-function ToolbarMixin:UpdateVisibility()
-	local configuredVisibility = TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.Visibility);
-	local shouldShow;
-
-	if self.forcedVisibility ~= nil then
-		shouldShow = self.forcedVisibility;
-	elseif configuredVisibility == TRP3_ToolbarVisibilityOption.AlwaysHidden then
-		shouldShow = false;
-	elseif configuredVisibility == TRP3_ToolbarVisibilityOption.OnlyShowInCharacter then
-		shouldShow = AddOn_TotalRP3.Player.GetCurrentUser():IsInCharacter();
-	else
-		shouldShow = true;
-	end
-
-	self:SetShown(shouldShow);
-end
-
-local toolbar;
-
 -- Always build UI on init. Because maybe other modules would like to anchor it on start.
 local function onInit()
-	toolbar = Mixin(CreateFrame("Frame", "TRP3_Toolbar", UIParent, "TRP3_ToolbarTemplate"), ToolbarMixin);
+	CreateFrame("Frame", "TRP3_Toolbar", UIParent, "TRP3_ToolbarFrameTemplate");
 end
 
 local function onStart()
@@ -85,67 +25,25 @@ local function onStart()
 	-- Toolbar Logic
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local ToolbarButtonPool = CreateFramePool("Button", TRP3_ToolbarContainer, "TRP3_ToolbarButtonTemplate");
-
 	local buttonStructures = {};
-	local marginLeft = 7;
-	local marginTop = 7;
 
-	local function buildToolbar()
-		local maxButtonPerLine = getConfigValue(TRP3_ToolbarConfigKeys.RowSize);
-		local buttonSize = getConfigValue(TRP3_ToolbarConfigKeys.ButtonSize) + 8; -- Adding 8 to offset the borders making the icon look smaller
+	local function SortToolbarButtons(a, b)
+		return a.id < b.id;  -- Keeping old logic for now, bleh.
+	end
 
-		-- Toggle the visibility of the toolbar title as needed.
-		TRP3_ToolbarTopFrame:SetShown(not getConfigValue(TRP3_ToolbarConfigKeys.HideTitle));
+	local function BuildToolbar()
+		local elements = {};
 
-		local ids = {};
-		for id, buttonStructure in pairs(buttonStructures) do
+		for _, buttonStructure in pairs(buttonStructures) do
 			if buttonStructure.visible then
-				tinsert(ids, id);
+				tinsert(elements, buttonStructure);
 			end
 		end
-		table.sort(ids);
 
-		ToolbarButtonPool:ReleaseAll();
+		table.sort(elements, SortToolbarButtons);
 
-		if #ids == 0 then
-			TRP3_ToolbarContainer:Hide();
-		else
-			TRP3_ToolbarContainer:Show();
-			local index = 0;
-			local x = marginLeft;
-			local y = -marginTop;
-			local numLines = 1;
-			for _, id in pairs(ids) do
-				local buttonStructure = buttonStructures[id];
-				local toolbarButton = ToolbarButtonPool:Acquire();
-				toolbarButton:SetElementData(buttonStructure);
-				toolbarButton:SetPoint("TOPLEFT", x, y);
-				toolbarButton:SetWidth(buttonSize);
-				toolbarButton:SetHeight(buttonSize);
-				toolbarButton:Show();
-
-				index = index + 1;
-
-				if math.fmod(index, maxButtonPerLine) == 0 then
-					y = y - buttonSize;
-					x = marginLeft;
-					if index < #ids then
-						numLines = numLines + 1;
-					end
-				else
-					x = x + buttonSize - 4;
-				end
-			end
-			if index <= maxButtonPerLine then
-				TRP3_ToolbarContainer:SetWidth(index*buttonSize - 6);
-			else
-				TRP3_ToolbarContainer:SetWidth(maxButtonPerLine*buttonSize - 6);
-			end
-			TRP3_ToolbarContainer:SetHeight(14 + numLines*buttonSize);
-			toolbar:SetHeight(34 + numLines*buttonSize);
-			toolbar:SetWidth(TRP3_ToolbarContainer:GetWidth() + 10);
-		end
+		local provider = CreateDataProvider(elements);
+		TRP3_Toolbar:SetDataProvider(provider);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -239,9 +137,7 @@ local function onStart()
 			end
 		end
 
-		for toolbarButton in ToolbarButtonPool:EnumerateActive() do
-			toolbarButton:MarkDirty();
-		end
+		TRP3_Toolbar:RefreshButtons();
 	end
 
 	-- Holding off on making toolbutton updates more flexible for now in favour
@@ -258,30 +154,12 @@ local function onStart()
 	registerConfigKey(TRP3_ToolbarConfigKeys.AnchorOffsetX, 0);
 	registerConfigKey(TRP3_ToolbarConfigKeys.AnchorOffsetY, -30);
 
-	do  -- Set initial anchor for toolbar.
-		local anchor = TRP3_ToolbarUtil.GetToolbarAnchor();
-		local clearAllPoints = true;
-		anchor:SetPoint(toolbar, clearAllPoints);
-	end
-
-	toolbar:RegisterForDrag("LeftButton");
-	toolbar:SetMovable(true);
-	toolbar:SetScript("OnDragStart", function(self)
-		self:StartMoving();
-	end);
-	toolbar:SetScript("OnDragStop", function(self)
-		self:StopMovingOrSizing();
-		local anchor, _, _, x, y = toolbar:GetPoint(1);
-		setConfigValue(TRP3_ToolbarConfigKeys.AnchorPoint, anchor);
-		setConfigValue(TRP3_ToolbarConfigKeys.AnchorOffsetX, x);
-		setConfigValue(TRP3_ToolbarConfigKeys.AnchorOffsetY, y);
-	end);
-
 	function TRP3_API.toolbar.reset()
 		setConfigValue(TRP3_ToolbarConfigKeys.AnchorPoint, "TOP");
 		setConfigValue(TRP3_ToolbarConfigKeys.AnchorOffsetX, 0);
 		setConfigValue(TRP3_ToolbarConfigKeys.AnchorOffsetY, -30);
 		setConfigValue(TRP3_ToolbarConfigKeys.Visibility, TRP3_ToolbarVisibilityOption.AlwaysShow);
+		TRP3_Toolbar:LoadPosition();
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -291,18 +169,16 @@ local function onStart()
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 		loaded = true;
 
-		TRP3_ToolbarTopFrameText:SetText(Globals.addon_name);
-
 		registerConfigKey(TRP3_ToolbarConfigKeys.Visibility, TRP3_ToolbarVisibilityOption.AlwaysShow);
-		registerConfigKey(TRP3_ToolbarConfigKeys.ButtonSize, 25);
-		registerConfigKey(TRP3_ToolbarConfigKeys.RowSize, 7);
+		registerConfigKey(TRP3_ToolbarConfigKeys.ButtonExtent, 25);
+		registerConfigKey(TRP3_ToolbarConfigKeys.ButtonStride, 7);
 		registerConfigKey(TRP3_ToolbarConfigKeys.HideTitle, false);
 
 		registerConfigHandler({
-			TRP3_ToolbarConfigKeys.ButtonSize,
-			TRP3_ToolbarConfigKeys.RowSize,
+			TRP3_ToolbarConfigKeys.ButtonExtent,
+			TRP3_ToolbarConfigKeys.ButtonStride,
 			TRP3_ToolbarConfigKeys.HideTitle,
-		}, buildToolbar);
+		}, BuildToolbar);
 
 		-- Build configuration page
 		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
@@ -325,7 +201,7 @@ local function onStart()
 		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
 			title = loc.CO_TOOLBAR_ICON_SIZE,
-			configKey = TRP3_ToolbarConfigKeys.ButtonSize,
+			configKey = TRP3_ToolbarConfigKeys.ButtonExtent,
 			min = 15,
 			max = 50,
 			step = 1,
@@ -335,7 +211,7 @@ local function onStart()
 			inherit = "TRP3_ConfigSlider",
 			title = loc.CO_TOOLBAR_MAX,
 			help = loc.CO_TOOLBAR_MAX_TT,
-			configKey = TRP3_ToolbarConfigKeys.RowSize,
+			configKey = TRP3_ToolbarConfigKeys.ButtonStride,
 			min = 1,
 			max = 25,
 			step = 1,
@@ -359,7 +235,7 @@ local function onStart()
 			registerConfigKey(configKey, true);
 			registerConfigHandler(configKey, function()
 				button.visible = getConfigValue(configKey);
-				buildToolbar();
+				BuildToolbar();
 			end);
 			button.visible = getConfigValue(configKey);
 			tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
@@ -369,12 +245,12 @@ local function onStart()
 			});
 		end
 
-		buildToolbar();
-		toolbar:OnLoad();
+		BuildToolbar();
+		TRP3_Toolbar:Init();
 	end);
 
 	function TRP3_API.toolbar.switch()
-		toolbar:Toggle();
+		TRP3_Toolbar:Toggle();
 	end
 end
 

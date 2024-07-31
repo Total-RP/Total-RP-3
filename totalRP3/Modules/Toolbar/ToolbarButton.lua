@@ -78,7 +78,6 @@ function TRP3_ToolbarButtonMixin:OnUpdate(elapsed)
 		securecallfunction(elementData.onUpdate, self, elementData);
 	end
 
-	self:MarkClean();
 	self:UpdateImmediately();
 end
 
@@ -121,6 +120,8 @@ function TRP3_ToolbarButtonMixin:SetElementData(elementData)
 end
 
 function TRP3_ToolbarButtonMixin:UpdateImmediately()
+	self:MarkClean();
+
 	local elementData = self:GetElementData();
 
 	if not elementData then

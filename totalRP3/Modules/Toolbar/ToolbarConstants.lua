@@ -5,8 +5,19 @@ TRP3_ToolbarConfigKeys = {
 	AnchorOffsetX = "CONFIG_TOOLBAR_POS_X",
 	AnchorOffsetY = "CONFIG_TOOLBAR_POS_Y",
 	AnchorPoint = "CONFIG_TOOLBAR_POS_A",
-	ButtonSize = "toolbar_icon_size",
+	ButtonExtent = "toolbar_icon_size",
+	ButtonStride = "toolbar_max_per_line",
 	HideTitle = "toolbar_hide_title",
-	RowSize = "toolbar_max_per_line",
 	Visibility = "toolbar_visibility",
+};
+
+TRP3_ToolbarVisibilityOption = {
+	AlwaysShow = 1,
+	OnlyShowInCharacter = 2,
+	AlwaysHidden = 3,
+};
+
+TRP3_ToolbarConstants = {
+	-- Additional internal padding added to each button to accomodate borders.
+	ButtonExtraExtent = 8,
 };

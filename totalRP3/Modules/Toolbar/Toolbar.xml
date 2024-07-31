@@ -6,41 +6,7 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="ToolbarConstants.lua"/>
 	<Include file="ToolbarButton.xml"/>
+	<Include file="ToolbarFrame.xml"/>
 	<Include file="ToolbarUtil.lua"/>
-
-	<Frame name="TRP3_ToolbarTemplate" frameStrata="MEDIUM" toplevel="true" parent="UIParent" enableMouse="true" virtual="true">
-		<Size x="190" y="60" />
-		<Scripts>
-			<OnLoad>
-				self:SetClampedToScreen(true);
-			</OnLoad>
-		</Scripts>
-		<Frames>
-			<Frame name="$parentContainer" inherits="TRP3_ThinDialogBackdropTemplate">
-				<Anchors>
-					<Anchor point="TOP" x="0" y="-18" />
-				</Anchors>
-			</Frame>
-			<!-- Cadre Titre -->
-			<Frame name="$parentTopFrame" inherits="TRP3_ThinDialogBackdropTemplate">
-				<Size x="80" y="25" />
-				<Anchors>
-					<Anchor point="TOP" x="0" y="0" />
-				</Anchors>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString name="$parentText" inherits="GameFontNormalSmall" justifyH="CENTER">
-							<Anchors>
-								<Anchor point="CENTER" x="0" y="0" />
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95" />
-						</FontString>
-					</Layer>
-				</Layers>
-			</Frame>
-		</Frames>
-	</Frame>
-
 	<Include file="Toolbar.lua"/>
-
 </Ui>
