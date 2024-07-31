@@ -11,7 +11,6 @@ local hasProfile = TRP3_API.register.hasProfile;
 local openMainFrame = TRP3_API.navigation.openMainFrame;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local stEtN = TRP3_API.utils.str.emptyToNil;
 
 local GetCurrentUser = AddOn_TotalRP3.Player.GetCurrentUser;
 local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
@@ -57,7 +56,10 @@ local function onProfileNotesChanged()
 		profile.notes = {};
 	end
 
-	profile.notes[profileID] = stEtN(TRP3_RegisterNotesViewProfile:GetInputText());
+	local text = TRP3_RegisterNotesViewProfile:GetInputText();
+	text = string.trim(text);
+	text = text ~= "" and text or nil;
+	profile.notes[profileID] = text;
 end
 
 local function onAccountNotesChanged()
@@ -67,7 +69,10 @@ local function onAccountNotesChanged()
 		profileID = getPlayerCurrentProfileID();
 	end
 
-	TRP3_Notes[profileID] = stEtN(TRP3_RegisterNotesViewAccount:GetInputText());
+	local text = TRP3_RegisterNotesViewAccount:GetInputText();
+	text = string.trim(text);
+	text = text ~= "" and text or nil;
+	TRP3_Notes[profileID] = text;
 end
 
 local function showNotesTab()
