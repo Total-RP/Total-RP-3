@@ -15,11 +15,135 @@ local CONFIG_TOOLBAR_POS_X = "CONFIG_TOOLBAR_POS_X";
 local CONFIG_TOOLBAR_POS_Y = "CONFIG_TOOLBAR_POS_Y";
 local CONFIG_TOOLBAR_POS_A = "CONFIG_TOOLBAR_POS_A";
 
+local function GetFormattedTooltipTitle(elementData)
+	local icon = TRP3_MarkupUtil.GenerateIconMarkup(elementData.icon, { size = 32 });
+	local text = elementData.tooltip or elementData.configText;
+	return string.trim(string.join(" ", icon, text));
+end
+
 TRP3_ToolbarVisibilityOption = {
 	AlwaysShow = 1,
 	OnlyShowInCharacter = 2,
 	AlwaysHidden = 3,
 };
+
+TRP3_ToolbarButtonMixin = CreateFromMixins(TRP3_TooltipScriptMixin);
+
+function TRP3_ToolbarButtonMixin:OnLoad()
+	self.timeSinceLastUpdate = math.huge;
+end
+
+function TRP3_ToolbarButtonMixin:OnShow()
+	self:MarkDirty();
+end
+
+function TRP3_ToolbarButtonMixin:OnHide()
+	self:SetElementData(nil);
+end
+
+function TRP3_ToolbarButtonMixin:OnClick(mouseButtonName)
+	local elementData = self:GetElementData();
+
+	if elementData and elementData.onClick then
+		securecallfunction(elementData.onClick, self, elementData, mouseButtonName);
+	end
+
+	-- Optimistically force an update on click as some actions change state.
+	self:MarkDirty();
+end
+
+function TRP3_ToolbarButtonMixin:OnEnter()
+	local elementData = self:GetElementData();
+
+	if elementData and elementData.onEnter then
+		securecallfunction(elementData.onEnter, self, elementData);
+	else
+		TRP3_TooltipScriptMixin.OnEnter(self);
+	end
+end
+
+function TRP3_ToolbarButtonMixin:OnLeave()
+	local elementData = self:GetElementData();
+
+	if elementData and elementData.onLeave then
+		securecallfunction(elementData.onLeave, self, elementData);
+	else
+		TRP3_TooltipScriptMixin.OnLeave(self);
+	end
+end
+
+function TRP3_ToolbarButtonMixin:OnUpdate(elapsed)
+	self.timeSinceLastUpdate = self.timeSinceLastUpdate + elapsed;
+
+	if self.timeSinceLastUpdate < 0.2 then
+		return;
+	end
+
+	local elementData = self:GetElementData();
+
+	if elementData and elementData.onUpdate then
+		securecallfunction(elementData.onUpdate, self, elementData);
+	end
+
+	self:MarkClean();
+	self:UpdateImmediately();
+end
+
+function TRP3_ToolbarButtonMixin:OnTooltipShow(description)
+	local elementData = self:GetElementData();
+
+	if not elementData then
+		return;
+	end
+
+	local title = GetFormattedTooltipTitle(elementData);
+	local text = elementData.tooltipSub;
+	local instructions = elementData.tooltipInstructions;
+
+	TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
+
+	-- Tooltip anchoring is special as we want to dodge screen edges without
+	-- overlapping the bar.
+
+	local anchor = "TOP";
+	local offsetX = 0;
+	local offsetY = 5;
+
+	if string.find(TRP3_API.configuration.getValue(CONFIG_TOOLBAR_POS_A), "^TOP") then
+		anchor = "BOTTOM";
+		offsetY = -offsetY;
+	end
+
+	description:SetAnchorWithOffset(anchor, offsetX, offsetY);
+end
+
+function TRP3_ToolbarButtonMixin:GetElementData()
+	return self.elementData;
+end
+
+function TRP3_ToolbarButtonMixin:SetElementData(elementData)
+	self.elementData = elementData;
+	self:MarkDirty();
+end
+
+function TRP3_ToolbarButtonMixin:UpdateImmediately()
+	local elementData = self:GetElementData();
+
+	if not elementData then
+		return;
+	end
+
+	self:SetIconTexture(elementData.icon);
+	self:RefreshTooltip();
+end
+
+function TRP3_ToolbarButtonMixin:MarkDirty()
+	self.timeSinceLastUpdate = math.huge;
+end
+
+function TRP3_ToolbarButtonMixin:MarkClean()
+	self.timeSinceLastUpdate = 0;
+end
 
 local ToolbarMixin = {};
 
@@ -87,38 +211,17 @@ local function onStart()
 	local LDBObjects = {};
 
 	-- imports
-	local toolbarContainer, mainTooltip = TRP3_ToolbarContainer, TRP3_MainTooltip;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
-	local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-	local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Toolbar Logic
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+	local ToolbarButtonPool = CreateFramePool("Button", TRP3_ToolbarContainer, "TRP3_ToolbarButtonTemplate");
+
 	local buttonStructures = {};
-	local uiButtons = {};
 	local marginLeft = 7;
 	local marginTop = 7;
-
-
-	--- Small tool function to create a title string with the icon of the button in front of it, for the tooltip
-	--- @param buttonStructure {icon: string|Icon, tooltip: string, configText: string}
-	--- @return string
-	local function getTooltipTitleWithIcon(buttonStructure)
-		return TRP3_MarkupUtil.GenerateIconMarkup(buttonStructure.icon, { size = 32 }) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
-	end
-
-	local function updateToolbarButtonTooltip(toolbarButton)
-		-- Refreshing the tooltip
-		local tooltipAnchor = "TOP";
-		local anchorMargin = 5;
-		if getConfigValue(CONFIG_TOOLBAR_POS_A):find("TOP") then
-			tooltipAnchor = "BOTTOM";
-			anchorMargin = -5;
-		end
-		TRP3_API.ui.tooltip.setTooltipAnchorForFrame(toolbarButton, tooltipAnchor, 0, anchorMargin);
-	end
 
 	local function buildToolbar()
 		local maxButtonPerLine = getConfigValue(CONFIG_ICON_MAX_PER_LINE);
@@ -134,72 +237,25 @@ local function onStart()
 			end
 		end
 		table.sort(ids);
-		--Hide all
-		for _,uiButton in pairs(uiButtons) do
-			uiButton:Hide();
-		end
+
+		ToolbarButtonPool:ReleaseAll();
 
 		if #ids == 0 then
-			toolbarContainer:Hide();
+			TRP3_ToolbarContainer:Hide();
 		else
-			toolbarContainer:Show();
+			TRP3_ToolbarContainer:Show();
 			local index = 0;
 			local x = marginLeft;
 			local y = -marginTop;
 			local numLines = 1;
 			for _, id in pairs(ids) do
 				local buttonStructure = buttonStructures[id];
-				local uiButton = uiButtons[index+1];
-				if uiButton == nil then -- Create the button
-					uiButton = CreateFrame("Button", "TRP3_ToolbarButton"..index, toolbarContainer, "TRP3_ToolbarButtonTemplate");
-					uiButton:ClearAllPoints();
-					uiButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-					tinsert(uiButtons, uiButton);
-				end
-				uiButton:SetIconTexture(buttonStructure.icon or TRP3_InterfaceIcons.Default);
-				uiButton:SetPoint("TOPLEFT", x, y);
-				uiButton:SetScript("OnClick", function(self, button)
-					if buttonStructure.onClick then
-						buttonStructure.onClick(self, buttonStructure, button);
-					end
-				end);
-				uiButton:SetScript("OnMouseDown", function(self, button)
-					if buttonStructure.onMouseDown then
-						buttonStructure.onMouseDown(self, buttonStructure, button);
-					end
-				end);
-				uiButton:SetScript("OnEnter", function(self)
-					if buttonStructure.onEnter then
-						buttonStructure.onEnter(self, buttonStructure);
-					else
-						refreshTooltip(self);
-					end
-				end);
-				uiButton:SetScript("OnLeave", function(self)
-					if buttonStructure.onLeave then
-						buttonStructure.onLeave(self, buttonStructure);
-					else
-						mainTooltip:Hide();
-					end
-				end);
-				uiButton.TimeSinceLastUpdate = 10;
-				uiButton:SetScript("OnUpdate", function(self, elapsed)
-					self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
-					if (self.TimeSinceLastUpdate > 0.2) then
-						self.TimeSinceLastUpdate = 0;
-						if buttonStructure.onUpdate then
-							buttonStructure.onUpdate(self, buttonStructure);
-						end
-					end
-				end);
-				if buttonStructure.tooltip then
-					setTooltipForSameFrame(uiButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
-					updateToolbarButtonTooltip(uiButton);
-				end
-				uiButton:SetWidth(buttonSize);
-				uiButton:SetHeight(buttonSize);
-				uiButton:Show();
-				uiButton.buttonId = id;
+				local toolbarButton = ToolbarButtonPool:Acquire();
+				toolbarButton:SetElementData(buttonStructure);
+				toolbarButton:SetPoint("TOPLEFT", x, y);
+				toolbarButton:SetWidth(buttonSize);
+				toolbarButton:SetHeight(buttonSize);
+				toolbarButton:Show();
 
 				index = index + 1;
 
@@ -214,13 +270,13 @@ local function onStart()
 				end
 			end
 			if index <= maxButtonPerLine then
-				toolbarContainer:SetWidth(index*buttonSize - 6);
+				TRP3_ToolbarContainer:SetWidth(index*buttonSize - 6);
 			else
-				toolbarContainer:SetWidth(maxButtonPerLine*buttonSize - 6);
+				TRP3_ToolbarContainer:SetWidth(maxButtonPerLine*buttonSize - 6);
 			end
-			toolbarContainer:SetHeight(14 + numLines*buttonSize);
+			TRP3_ToolbarContainer:SetHeight(14 + numLines*buttonSize);
 			toolbar:SetHeight(34 + numLines*buttonSize);
-			toolbar:SetWidth(toolbarContainer:GetWidth() + 10);
+			toolbar:SetWidth(TRP3_ToolbarContainer:GetWidth() + 10);
 		end
 	end
 
@@ -245,12 +301,7 @@ local function onStart()
 						buttonStructure.onClick(Uibutton, buttonStructure, button);
 					end
 				end,
-				OnMouseDown = function(Uibutton, button)
-					if buttonStructure.onMouseDown then
-						buttonStructure.onMouseDown(Uibutton, buttonStructure, button);
-					end
-				end,
-				tooltipTitle = getTooltipTitleWithIcon(buttonStructure),
+				tooltipTitle = GetFormattedTooltipTitle(buttonStructure),
 				tooltipSub = buttonStructure.tooltipSub,
 				OnTooltipShow = function(tooltip)
 					local LDBButton = LDBObjects[buttonStructure.id];
@@ -272,7 +323,7 @@ local function onStart()
 
 		LDBButton.icon = Utils.getIconTexture(buttonStructure.icon);
 
-		LDBButton.tooltipTitle = getTooltipTitleWithIcon(buttonStructure);
+		LDBButton.tooltipTitle = GetFormattedTooltipTitle(buttonStructure);
 		LDBButton.tooltipSub = buttonStructure.tooltipSub;
 
 	end
@@ -299,24 +350,20 @@ local function onStart()
 	-- @param buttonStructure Button structure containing the icon and tooltip text
 	--
 	local function updateToolbarButton(toolbarButton, buttonStructure)
-		-- Setting the textures
-		toolbarButton:SetIconTexture(buttonStructure.icon);
-
-		setTooltipForSameFrame(toolbarButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
-		updateToolbarButtonTooltip(toolbarButton);
+		toolbarButton:SetElementData(buttonStructure);
 	end
 	TRP3_API.toolbar.updateToolbarButton = updateToolbarButton;
 
 	local function RefreshToolbarButtons()
 		for _, buttonStructure in pairs(buttonStructures) do
 			if buttonStructure.onModelUpdate then
-				buttonStructure:onModelUpdate();
+				securecallfunction(buttonStructure.onModelUpdate, buttonStructure);
 				refreshLDBPLugin(buttonStructure);
 			end
 		end
 
-		for _, uiButton in pairs(uiButtons) do
-			uiButton.TimeSinceLastUpdate = math.huge;
+		for toolbarButton in ToolbarButtonPool:EnumerateActive() do
+			toolbarButton:MarkDirty();
 		end
 	end
 
@@ -347,11 +394,6 @@ local function onStart()
 		setConfigValue(CONFIG_TOOLBAR_POS_A, anchor);
 		setConfigValue(CONFIG_TOOLBAR_POS_X, x);
 		setConfigValue(CONFIG_TOOLBAR_POS_Y, y);
-
-		-- Update tooltip anchors
-		for _,uiButton in pairs(uiButtons) do
-			updateToolbarButtonTooltip(uiButton);
-		end
 	end);
 
 	function TRP3_API.toolbar.reset()

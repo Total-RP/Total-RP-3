@@ -10,7 +10,6 @@ AddOn_TotalRP3.Languages = Languages;
 local _, TRP3_API = ...;
 
 -- Imports
-local refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.refresh, TRP3_MainTooltip;
 local loc = TRP3_API.loc;
 local Globals = TRP3_API.globals;
 local GetNumLanguages, GetLanguageByIndex, GetDefaultLanguage = GetNumLanguages, GetLanguageByIndex, GetDefaultLanguage;
@@ -98,9 +97,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		id = "ww_trp3_languages",
 		icon = TRP3_InterfaceIcons.ToolbarLanguage,
 		configText = loc.TB_LANGUAGE,
-		onEnter = function(Uibutton)
-			refreshTooltip(Uibutton);
-		end,
 		onUpdate = function(Uibutton, buttonStructure)
 			TRP3_API.toolbar.updateToolbarButton(Uibutton, buttonStructure);
 		end,
@@ -114,7 +110,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or TRP3_InterfaceIcons.ToolbarLanguage;
 			end
 		end,
-		onMouseDown = function(Uibutton)
+		onClick = function(Uibutton)
 			TRP3_MenuUtil.CreateContextMenu(Uibutton, function(_, description)
 				description:CreateTitle(loc.TB_LANGUAGE);
 				for _, language in ipairs(Languages.getAvailableLanguages()) do
@@ -125,9 +121,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					end
 				end
 			end);
-		end,
-		onLeave = function()
-			mainTooltip:Hide();
 		end,
 	};
 	TRP3_API.toolbar.toolbarAddButton(languagesButton);
