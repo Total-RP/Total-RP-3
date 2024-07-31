@@ -307,6 +307,15 @@ local function onStart()
 					local LDBButton = LDBObjects[buttonStructure.id];
 					tooltip:AddLine(color("w") .. LDBButton.tooltipTitle);
 					tooltip:AddLine(LDBButton.tooltipSub, nil, nil, nil, true);
+
+					if buttonStructure.tooltipInstructions then
+						tooltip:AddLine(" ");
+
+						for _, instruction in ipairs(buttonStructure.tooltipInstructions) do
+							local text = TRP3_API.FormatShortcutWithInstruction(instruction[1], instruction[2]);
+							tooltip:AddLine(text);
+						end
+					end
 				end
 			});
 		LDBObjects[buttonStructure.id] = LDBObject;
