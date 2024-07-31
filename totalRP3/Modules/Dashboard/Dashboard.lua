@@ -209,7 +209,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					buttonStructure.icon = TRP3_InterfaceIcons.ModeNormal;
 				end
 			end,
-			onClick = function(_, buttonStructure, button)
+			onClick = function(_, _, button)
 				if UnitIsAFK("player") then
 					SendChatMessage("","AFK");
 				elseif UnitIsDND("player") then
@@ -222,7 +222,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					end
 				end
 				PlaySound(TRP3_InterfaceSounds.ButtonClick);
-				buttonStructure:onModelUpdate();
 			end,
 		};
 		TRP3_API.toolbar.toolbarAddButton(Button_Status);
@@ -255,7 +254,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					buttonStructure.icon = OOC_ICON;
 				end
 			end,
-			onClick = function(Uibutton, buttonStructure, button)
+			onClick = function(Uibutton, _, button)
 
 				if button == "RightButton" then
 					local currentProfileID = getPlayerCurrentProfileID();
@@ -286,8 +285,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					TRP3_API.dashboard.switchStatus();
 					PlaySound(TRP3_InterfaceSounds.ButtonClick);
 				end
-
-				buttonStructure:onModelUpdate();
 			end,
 			onLeave = function()
 				TRP3_MainTooltip:Hide();
@@ -327,7 +324,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 						refreshTooltip(Uibutton);
 					end
 				end,
-				onClick = function(_, buttonStructure)
+				onClick = function()
 					if ShowingHelm() then
 						ShowHelm(false);
 						PlaySound(1202); -- Putdowncloth_Leather01
@@ -335,7 +332,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 						ShowHelm(true);
 						PlaySound(1185); -- Pickupcloth_Leather01
 					end
-					buttonStructure:onModelUpdate();
 				end,
 				onLeave = function()
 					TRP3_MainTooltip:Hide();

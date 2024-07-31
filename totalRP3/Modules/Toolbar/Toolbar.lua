@@ -5,145 +5,13 @@ local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local loc = TRP3_API.loc;
 local color = Utils.str.color;
 
-local CONFIG_ICON_SIZE = "toolbar_icon_size";
-local CONFIG_ICON_MAX_PER_LINE = "toolbar_max_per_line";
 local CONFIG_CONTENT_PREFIX = "toolbar_content_";
-local CONFIG_HIDE_TITLE = "toolbar_hide_title";
-local CONFIG_TOOLBAR_VISIBILITY = "toolbar_visibility";
-
-local CONFIG_TOOLBAR_POS_X = "CONFIG_TOOLBAR_POS_X";
-local CONFIG_TOOLBAR_POS_Y = "CONFIG_TOOLBAR_POS_Y";
-local CONFIG_TOOLBAR_POS_A = "CONFIG_TOOLBAR_POS_A";
-
-local function GetFormattedTooltipTitle(elementData)
-	local icon = TRP3_MarkupUtil.GenerateIconMarkup(elementData.icon, { size = 32 });
-	local text = elementData.tooltip or elementData.configText;
-	return string.trim(string.join(" ", icon, text));
-end
 
 TRP3_ToolbarVisibilityOption = {
 	AlwaysShow = 1,
 	OnlyShowInCharacter = 2,
 	AlwaysHidden = 3,
 };
-
-TRP3_ToolbarButtonMixin = CreateFromMixins(TRP3_TooltipScriptMixin);
-
-function TRP3_ToolbarButtonMixin:OnLoad()
-	self.timeSinceLastUpdate = math.huge;
-end
-
-function TRP3_ToolbarButtonMixin:OnShow()
-	self:MarkDirty();
-end
-
-function TRP3_ToolbarButtonMixin:OnHide()
-	self:SetElementData(nil);
-end
-
-function TRP3_ToolbarButtonMixin:OnClick(mouseButtonName)
-	local elementData = self:GetElementData();
-
-	if elementData and elementData.onClick then
-		securecallfunction(elementData.onClick, self, elementData, mouseButtonName);
-	end
-
-	-- Optimistically force an update on click as some actions change state.
-	self:MarkDirty();
-end
-
-function TRP3_ToolbarButtonMixin:OnEnter()
-	local elementData = self:GetElementData();
-
-	if elementData and elementData.onEnter then
-		securecallfunction(elementData.onEnter, self, elementData);
-	else
-		TRP3_TooltipScriptMixin.OnEnter(self);
-	end
-end
-
-function TRP3_ToolbarButtonMixin:OnLeave()
-	local elementData = self:GetElementData();
-
-	if elementData and elementData.onLeave then
-		securecallfunction(elementData.onLeave, self, elementData);
-	else
-		TRP3_TooltipScriptMixin.OnLeave(self);
-	end
-end
-
-function TRP3_ToolbarButtonMixin:OnUpdate(elapsed)
-	self.timeSinceLastUpdate = self.timeSinceLastUpdate + elapsed;
-
-	if self.timeSinceLastUpdate < 0.2 then
-		return;
-	end
-
-	local elementData = self:GetElementData();
-
-	if elementData and elementData.onUpdate then
-		securecallfunction(elementData.onUpdate, self, elementData);
-	end
-
-	self:MarkClean();
-	self:UpdateImmediately();
-end
-
-function TRP3_ToolbarButtonMixin:OnTooltipShow(description)
-	local elementData = self:GetElementData();
-
-	if not elementData then
-		return;
-	end
-
-	local title = GetFormattedTooltipTitle(elementData);
-	local text = elementData.tooltipSub;
-	local instructions = elementData.tooltipInstructions;
-
-	TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
-
-	-- Tooltip anchoring is special as we want to dodge screen edges without
-	-- overlapping the bar.
-
-	local anchor = "TOP";
-	local offsetX = 0;
-	local offsetY = 5;
-
-	if string.find(TRP3_API.configuration.getValue(CONFIG_TOOLBAR_POS_A), "^TOP") then
-		anchor = "BOTTOM";
-		offsetY = -offsetY;
-	end
-
-	description:SetAnchorWithOffset(anchor, offsetX, offsetY);
-end
-
-function TRP3_ToolbarButtonMixin:GetElementData()
-	return self.elementData;
-end
-
-function TRP3_ToolbarButtonMixin:SetElementData(elementData)
-	self.elementData = elementData;
-	self:MarkDirty();
-end
-
-function TRP3_ToolbarButtonMixin:UpdateImmediately()
-	local elementData = self:GetElementData();
-
-	if not elementData then
-		return;
-	end
-
-	self:SetIconTexture(elementData.icon);
-	self:RefreshTooltip();
-end
-
-function TRP3_ToolbarButtonMixin:MarkDirty()
-	self.timeSinceLastUpdate = math.huge;
-end
-
-function TRP3_ToolbarButtonMixin:MarkClean()
-	self.timeSinceLastUpdate = 0;
-end
 
 local ToolbarMixin = {};
 
@@ -155,7 +23,7 @@ function ToolbarMixin:OnLoad()
 end
 
 function ToolbarMixin:OnRoleplayStatusChanged()
-	local configuredVisibility = TRP3_API.configuration.getValue(CONFIG_TOOLBAR_VISIBILITY);
+	local configuredVisibility = TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.Visibility);
 
 	if configuredVisibility == TRP3_ToolbarVisibilityOption.OnlyShowInCharacter then
 		self:UpdateVisibility();
@@ -163,7 +31,7 @@ function ToolbarMixin:OnRoleplayStatusChanged()
 end
 
 function ToolbarMixin:OnConfigurationChanged(key)
-	if key == CONFIG_TOOLBAR_VISIBILITY then
+	if key == TRP3_ToolbarConfigKeys.Visibility then
 		self:UpdateVisibility();
 	end
 end
@@ -181,7 +49,7 @@ function ToolbarMixin:Toggle()
 end
 
 function ToolbarMixin:UpdateVisibility()
-	local configuredVisibility = TRP3_API.configuration.getValue(CONFIG_TOOLBAR_VISIBILITY);
+	local configuredVisibility = TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.Visibility);
 	local shouldShow;
 
 	if self.forcedVisibility ~= nil then
@@ -224,11 +92,11 @@ local function onStart()
 	local marginTop = 7;
 
 	local function buildToolbar()
-		local maxButtonPerLine = getConfigValue(CONFIG_ICON_MAX_PER_LINE);
-		local buttonSize = getConfigValue(CONFIG_ICON_SIZE) + 8; -- Adding 8 to offset the borders making the icon look smaller
+		local maxButtonPerLine = getConfigValue(TRP3_ToolbarConfigKeys.RowSize);
+		local buttonSize = getConfigValue(TRP3_ToolbarConfigKeys.ButtonSize) + 8; -- Adding 8 to offset the borders making the icon look smaller
 
 		-- Toggle the visibility of the toolbar title as needed.
-		TRP3_ToolbarTopFrame:SetShown(not getConfigValue(CONFIG_HIDE_TITLE));
+		TRP3_ToolbarTopFrame:SetShown(not getConfigValue(TRP3_ToolbarConfigKeys.HideTitle));
 
 		local ids = {};
 		for id, buttonStructure in pairs(buttonStructures) do
@@ -301,7 +169,7 @@ local function onStart()
 						buttonStructure.onClick(Uibutton, buttonStructure, button);
 					end
 				end,
-				tooltipTitle = GetFormattedTooltipTitle(buttonStructure),
+				tooltipTitle = TRP3_ToolbarUtil.GetFormattedTooltipTitle(buttonStructure),
 				tooltipSub = buttonStructure.tooltipSub,
 				OnTooltipShow = function(tooltip)
 					local LDBButton = LDBObjects[buttonStructure.id];
@@ -332,7 +200,7 @@ local function onStart()
 
 		LDBButton.icon = Utils.getIconTexture(buttonStructure.icon);
 
-		LDBButton.tooltipTitle = GetFormattedTooltipTitle(buttonStructure);
+		LDBButton.tooltipTitle = TRP3_ToolbarUtil.GetFormattedTooltipTitle(buttonStructure);
 		LDBButton.tooltipSub = buttonStructure.tooltipSub;
 
 	end
@@ -386,11 +254,15 @@ local function onStart()
 	-- Position
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	registerConfigKey(CONFIG_TOOLBAR_POS_A, "TOP");
-	registerConfigKey(CONFIG_TOOLBAR_POS_X, 0);
-	registerConfigKey(CONFIG_TOOLBAR_POS_Y, -30);
-	toolbar:SetPoint(getConfigValue(CONFIG_TOOLBAR_POS_A), UIParent, getConfigValue(CONFIG_TOOLBAR_POS_A),
-	getConfigValue(CONFIG_TOOLBAR_POS_X), getConfigValue(CONFIG_TOOLBAR_POS_Y));
+	registerConfigKey(TRP3_ToolbarConfigKeys.AnchorPoint, "TOP");
+	registerConfigKey(TRP3_ToolbarConfigKeys.AnchorOffsetX, 0);
+	registerConfigKey(TRP3_ToolbarConfigKeys.AnchorOffsetY, -30);
+
+	do  -- Set initial anchor for toolbar.
+		local anchor = TRP3_ToolbarUtil.GetToolbarAnchor();
+		local clearAllPoints = true;
+		anchor:SetPoint(toolbar, clearAllPoints);
+	end
 
 	toolbar:RegisterForDrag("LeftButton");
 	toolbar:SetMovable(true);
@@ -400,16 +272,16 @@ local function onStart()
 	toolbar:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing();
 		local anchor, _, _, x, y = toolbar:GetPoint(1);
-		setConfigValue(CONFIG_TOOLBAR_POS_A, anchor);
-		setConfigValue(CONFIG_TOOLBAR_POS_X, x);
-		setConfigValue(CONFIG_TOOLBAR_POS_Y, y);
+		setConfigValue(TRP3_ToolbarConfigKeys.AnchorPoint, anchor);
+		setConfigValue(TRP3_ToolbarConfigKeys.AnchorOffsetX, x);
+		setConfigValue(TRP3_ToolbarConfigKeys.AnchorOffsetY, y);
 	end);
 
 	function TRP3_API.toolbar.reset()
-		setConfigValue(CONFIG_TOOLBAR_POS_A, "TOP");
-		setConfigValue(CONFIG_TOOLBAR_POS_X, 0);
-		setConfigValue(CONFIG_TOOLBAR_POS_Y, -30);
-		setConfigValue(CONFIG_TOOLBAR_VISIBILITY, TRP3_ToolbarVisibilityOption.AlwaysShow);
+		setConfigValue(TRP3_ToolbarConfigKeys.AnchorPoint, "TOP");
+		setConfigValue(TRP3_ToolbarConfigKeys.AnchorOffsetX, 0);
+		setConfigValue(TRP3_ToolbarConfigKeys.AnchorOffsetY, -30);
+		setConfigValue(TRP3_ToolbarConfigKeys.Visibility, TRP3_ToolbarVisibilityOption.AlwaysShow);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -421,15 +293,15 @@ local function onStart()
 
 		TRP3_ToolbarTopFrameText:SetText(Globals.addon_name);
 
-		registerConfigKey(CONFIG_TOOLBAR_VISIBILITY, TRP3_ToolbarVisibilityOption.AlwaysShow);
-		registerConfigKey(CONFIG_ICON_SIZE, 25);
-		registerConfigKey(CONFIG_ICON_MAX_PER_LINE, 7);
-		registerConfigKey(CONFIG_HIDE_TITLE, false);
+		registerConfigKey(TRP3_ToolbarConfigKeys.Visibility, TRP3_ToolbarVisibilityOption.AlwaysShow);
+		registerConfigKey(TRP3_ToolbarConfigKeys.ButtonSize, 25);
+		registerConfigKey(TRP3_ToolbarConfigKeys.RowSize, 7);
+		registerConfigKey(TRP3_ToolbarConfigKeys.HideTitle, false);
 
 		registerConfigHandler({
-			CONFIG_ICON_SIZE,
-			CONFIG_ICON_MAX_PER_LINE,
-			CONFIG_HIDE_TITLE,
+			TRP3_ToolbarConfigKeys.ButtonSize,
+			TRP3_ToolbarConfigKeys.RowSize,
+			TRP3_ToolbarConfigKeys.HideTitle,
 		}, buildToolbar);
 
 		-- Build configuration page
@@ -447,13 +319,13 @@ local function onStart()
 				{loc.CO_TOOLBAR_VISIBILITY_2, TRP3_ToolbarVisibilityOption.OnlyShowInCharacter},
 				{loc.CO_TOOLBAR_VISIBILITY_1, TRP3_ToolbarVisibilityOption.AlwaysShow}
 			},
-			configKey = CONFIG_TOOLBAR_VISIBILITY,
+			configKey = TRP3_ToolbarConfigKeys.Visibility,
 			listCancel = true,
 		});
 		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
 			title = loc.CO_TOOLBAR_ICON_SIZE,
-			configKey = CONFIG_ICON_SIZE,
+			configKey = TRP3_ToolbarConfigKeys.ButtonSize,
 			min = 15,
 			max = 50,
 			step = 1,
@@ -463,7 +335,7 @@ local function onStart()
 			inherit = "TRP3_ConfigSlider",
 			title = loc.CO_TOOLBAR_MAX,
 			help = loc.CO_TOOLBAR_MAX_TT,
-			configKey = CONFIG_ICON_MAX_PER_LINE,
+			configKey = TRP3_ToolbarConfigKeys.RowSize,
 			min = 1,
 			max = 25,
 			step = 1,
@@ -473,7 +345,7 @@ local function onStart()
 			inherit = "TRP3_ConfigCheck",
 			title = loc.CO_TOOLBAR_HIDE_TITLE,
 			help = loc.CO_TOOLBAR_HIDE_TITLE_HELP,
-			configKey = CONFIG_HIDE_TITLE,
+			configKey = TRP3_ToolbarConfigKeys.HideTitle,
 		});
 
 		local ids = {};
