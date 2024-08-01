@@ -485,7 +485,5 @@ end);
 AddOn_TotalRP3.Configuration = {}
 
 function TRP3_API.configuration.constructConfigPage()
-	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE);
-	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE);
 	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL);
 end

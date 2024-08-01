@@ -5,6 +5,16 @@
 local _, TRP3_API = ...;
 local loc = TRP3_API.loc;
 
+local function ResolveFrame(tbl, name, ...)
+	local frame = tbl[name];
+
+	if frame and ... then
+		return ResolveFrame(frame, ...);
+	else
+		return frame;
+	end
+end
+
 TRP3_API.module.registerModule({
 	["name"] = "ElvUI",
 	["id"] = "trp3_elvui",
@@ -52,9 +62,9 @@ TRP3_API.module.registerModule({
 		}
 
 		local SKINNABLE_TOOLBAR_FRAMES = {
-			"TRP3_Toolbar",
-			"TRP3_ToolbarContainer",
-			"TRP3_ToolbarTopFrame",
+			"TRP3_ToolbarFrame",
+			"TRP3_ToolbarFrame.Container.Backdrop",
+			"TRP3_ToolbarFrame.TitleBar",
 		}
 
 		TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
@@ -140,16 +150,14 @@ TRP3_API.module.registerModule({
 
 			function skinFrame(skinnableFrames)
 				-- Go through each skinnable frames from our table
-				for _, frame in pairs(skinnableFrames) do
-					local parentKey;
-					frame, parentKey = string.split(".", frame, 2);
+				for _, frameName in pairs(skinnableFrames) do
+					local frame = ResolveFrame(_G, string.split(".", frameName));
 
-					if _G[frame] then
-						-- If parentKey is not nil, check if a frame exists with said parentKey within this frame
-						if parentKey ~= nil and _G[frame][parentKey] then
-							TT:SecureHookScript(_G[frame][parentKey], 'OnShow', SetStyleForFrame);
-						elseif parentKey == nil then
-							TT:SecureHookScript(_G[frame], 'OnShow', SetStyleForFrame);
+					if frame then
+						TT:SecureHookScript(frame, 'OnShow', SetStyleForFrame);
+
+						if frame:IsShown() then
+							SetStyleForFrame(frame);
 						end
 					end
 				end
@@ -170,11 +178,6 @@ TRP3_API.module.registerModule({
 			end
 			if TRP3_API.configuration.getValue(CONFIG.SKIN_TOOLBAR_FRAME) then
 				skinFrame(SKINNABLE_TOOLBAR_FRAMES);
-
-				if TRP3_Toolbar:IsShown() then
-					TRP3_Toolbar:Hide();
-					TRP3_Toolbar:Show();
-				end
 			end
 
 			-- Adjusting the default border color to be black for ElvUI tooltips

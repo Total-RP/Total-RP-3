@@ -324,13 +324,14 @@ function TooltipDescription:SetAnchor(anchor)
 	self.anchor = anchor or "ANCHOR_RIGHT";
 end
 
-function TooltipDescription:GetAnchorOffset()
-	return self.anchorOffsetX, self.anchorOffsetY;
-end
-
-function TooltipDescription:GetAnchorOffset(offsetX, offsetY)
+function TooltipDescription:SetAnchorWithOffset(anchor, offsetX, offsetY)
+	self.anchor = anchor or "ANCHOR_RIGHT";
 	self.anchorOffsetX = tonumber(offsetX or 0);
 	self.anchorOffsetY = tonumber(offsetY or 0);
+end
+
+function TooltipDescription:GetAnchorOffset()
+	return self.anchorOffsetX, self.anchorOffsetY;
 end
 
 function TooltipDescription:AddPreTooltipCallback(callback)

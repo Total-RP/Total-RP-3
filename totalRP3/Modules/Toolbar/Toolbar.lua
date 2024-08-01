@@ -1,84 +1,11 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
+local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 local color = Utils.str.color;
 
-local CONFIG_ICON_SIZE = "toolbar_icon_size";
-local CONFIG_ICON_MAX_PER_LINE = "toolbar_max_per_line";
 local CONFIG_CONTENT_PREFIX = "toolbar_content_";
-local CONFIG_HIDE_TITLE = "toolbar_hide_title";
-local CONFIG_TOOLBAR_VISIBILITY = "toolbar_visibility";
-
-local CONFIG_TOOLBAR_POS_X = "CONFIG_TOOLBAR_POS_X";
-local CONFIG_TOOLBAR_POS_Y = "CONFIG_TOOLBAR_POS_Y";
-local CONFIG_TOOLBAR_POS_A = "CONFIG_TOOLBAR_POS_A";
-
-TRP3_ToolbarVisibilityOption = {
-	AlwaysShow = 1,
-	OnlyShowInCharacter = 2,
-	AlwaysHidden = 3,
-};
-
-local ToolbarMixin = {};
-
-function ToolbarMixin:OnLoad()
-	TRP3_API.RegisterCallback(TRP3_Addon, "CONFIGURATION_CHANGED", self.OnConfigurationChanged, self);
-	TRP3_API.RegisterCallback(TRP3_Addon, "ROLEPLAY_STATUS_CHANGED", self.OnRoleplayStatusChanged, self);
-
-	self:UpdateVisibility();
-end
-
-function ToolbarMixin:OnRoleplayStatusChanged()
-	local configuredVisibility = TRP3_API.configuration.getValue(CONFIG_TOOLBAR_VISIBILITY);
-
-	if configuredVisibility == TRP3_ToolbarVisibilityOption.OnlyShowInCharacter then
-		self:UpdateVisibility();
-	end
-end
-
-function ToolbarMixin:OnConfigurationChanged(key)
-	if key == CONFIG_TOOLBAR_VISIBILITY then
-		self:UpdateVisibility();
-	end
-end
-
-function ToolbarMixin:Toggle()
-	self.forcedVisibility = not self:IsShown();
-	self:UpdateVisibility();
-	self.forcedVisibility = nil;
-
-	if self:IsShown() then
-		PlaySound(SOUNDKIT.IG_MAINMENU_OPEN);
-	else
-		PlaySound(SOUNDKIT.IG_MAINMENU_CLOSE);
-	end
-end
-
-function ToolbarMixin:UpdateVisibility()
-	local configuredVisibility = TRP3_API.configuration.getValue(CONFIG_TOOLBAR_VISIBILITY);
-	local shouldShow;
-
-	if self.forcedVisibility ~= nil then
-		shouldShow = self.forcedVisibility;
-	elseif configuredVisibility == TRP3_ToolbarVisibilityOption.AlwaysHidden then
-		shouldShow = false;
-	elseif configuredVisibility == TRP3_ToolbarVisibilityOption.OnlyShowInCharacter then
-		shouldShow = AddOn_TotalRP3.Player.GetCurrentUser():IsInCharacter();
-	else
-		shouldShow = true;
-	end
-
-	self:SetShown(shouldShow);
-end
-
-local toolbar;
-
--- Always build UI on init. Because maybe other modules would like to anchor it on start.
-local function onInit()
-	toolbar = Mixin(CreateFrame("Frame", "TRP3_Toolbar", UIParent, "TRP3_ToolbarTemplate"), ToolbarMixin);
-end
 
 local function onStart()
 	-- Public accessor
@@ -87,141 +14,31 @@ local function onStart()
 	local LDBObjects = {};
 
 	-- imports
-	local toolbarContainer, mainTooltip = TRP3_ToolbarContainer, TRP3_MainTooltip;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
-	local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-	local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Toolbar Logic
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	local buttonStructures = {};
-	local uiButtons = {};
-	local marginLeft = 7;
-	local marginTop = 7;
 
-
-	--- Small tool function to create a title string with the icon of the button in front of it, for the tooltip
-	--- @param buttonStructure {icon: string|Icon, tooltip: string, configText: string}
-	--- @return string
-	local function getTooltipTitleWithIcon(buttonStructure)
-		return TRP3_MarkupUtil.GenerateIconMarkup(buttonStructure.icon, { size = 32 }) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
+	local function SortToolbarButtons(a, b)
+		return a.id < b.id;  -- Keeping old logic for now, bleh.
 	end
 
-	local function updateToolbarButtonTooltip(toolbarButton)
-		-- Refreshing the tooltip
-		local tooltipAnchor = "TOP";
-		local anchorMargin = 5;
-		if getConfigValue(CONFIG_TOOLBAR_POS_A):find("TOP") then
-			tooltipAnchor = "BOTTOM";
-			anchorMargin = -5;
-		end
-		TRP3_API.ui.tooltip.setTooltipAnchorForFrame(toolbarButton, tooltipAnchor, 0, anchorMargin);
-	end
+	local function BuildToolbar()
+		local elements = {};
 
-	local function buildToolbar()
-		local maxButtonPerLine = getConfigValue(CONFIG_ICON_MAX_PER_LINE);
-		local buttonSize = getConfigValue(CONFIG_ICON_SIZE) + 8; -- Adding 8 to offset the borders making the icon look smaller
-
-		-- Toggle the visibility of the toolbar title as needed.
-		TRP3_ToolbarTopFrame:SetShown(not getConfigValue(CONFIG_HIDE_TITLE));
-
-		local ids = {};
-		for id, buttonStructure in pairs(buttonStructures) do
+		for _, buttonStructure in pairs(buttonStructures) do
 			if buttonStructure.visible then
-				tinsert(ids, id);
+				tinsert(elements, buttonStructure);
 			end
 		end
-		table.sort(ids);
-		--Hide all
-		for _,uiButton in pairs(uiButtons) do
-			uiButton:Hide();
-		end
 
-		if #ids == 0 then
-			toolbarContainer:Hide();
-		else
-			toolbarContainer:Show();
-			local index = 0;
-			local x = marginLeft;
-			local y = -marginTop;
-			local numLines = 1;
-			for _, id in pairs(ids) do
-				local buttonStructure = buttonStructures[id];
-				local uiButton = uiButtons[index+1];
-				if uiButton == nil then -- Create the button
-					uiButton = CreateFrame("Button", "TRP3_ToolbarButton"..index, toolbarContainer, "TRP3_ToolbarButtonTemplate");
-					uiButton:ClearAllPoints();
-					uiButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-					tinsert(uiButtons, uiButton);
-				end
-				uiButton:SetIconTexture(buttonStructure.icon or TRP3_InterfaceIcons.Default);
-				uiButton:SetPoint("TOPLEFT", x, y);
-				uiButton:SetScript("OnClick", function(self, button)
-					if buttonStructure.onClick then
-						buttonStructure.onClick(self, buttonStructure, button);
-					end
-				end);
-				uiButton:SetScript("OnMouseDown", function(self, button)
-					if buttonStructure.onMouseDown then
-						buttonStructure.onMouseDown(self, buttonStructure, button);
-					end
-				end);
-				uiButton:SetScript("OnEnter", function(self)
-					if buttonStructure.onEnter then
-						buttonStructure.onEnter(self, buttonStructure);
-					else
-						refreshTooltip(self);
-					end
-				end);
-				uiButton:SetScript("OnLeave", function(self)
-					if buttonStructure.onLeave then
-						buttonStructure.onLeave(self, buttonStructure);
-					else
-						mainTooltip:Hide();
-					end
-				end);
-				uiButton.TimeSinceLastUpdate = 10;
-				uiButton:SetScript("OnUpdate", function(self, elapsed)
-					self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
-					if (self.TimeSinceLastUpdate > 0.2) then
-						self.TimeSinceLastUpdate = 0;
-						if buttonStructure.onUpdate then
-							buttonStructure.onUpdate(self, buttonStructure);
-						end
-					end
-				end);
-				if buttonStructure.tooltip then
-					setTooltipForSameFrame(uiButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
-					updateToolbarButtonTooltip(uiButton);
-				end
-				uiButton:SetWidth(buttonSize);
-				uiButton:SetHeight(buttonSize);
-				uiButton:Show();
-				uiButton.buttonId = id;
+		table.sort(elements, SortToolbarButtons);
 
-				index = index + 1;
-
-				if math.fmod(index, maxButtonPerLine) == 0 then
-					y = y - buttonSize;
-					x = marginLeft;
-					if index < #ids then
-						numLines = numLines + 1;
-					end
-				else
-					x = x + buttonSize - 4;
-				end
-			end
-			if index <= maxButtonPerLine then
-				toolbarContainer:SetWidth(index*buttonSize - 6);
-			else
-				toolbarContainer:SetWidth(maxButtonPerLine*buttonSize - 6);
-			end
-			toolbarContainer:SetHeight(14 + numLines*buttonSize);
-			toolbar:SetHeight(34 + numLines*buttonSize);
-			toolbar:SetWidth(toolbarContainer:GetWidth() + 10);
-		end
+		local provider = CreateDataProvider(elements);
+		TRP3_ToolbarFrame:SetDataProvider(provider);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -245,17 +62,21 @@ local function onStart()
 						buttonStructure.onClick(Uibutton, buttonStructure, button);
 					end
 				end,
-				OnMouseDown = function(Uibutton, button)
-					if buttonStructure.onMouseDown then
-						buttonStructure.onMouseDown(Uibutton, buttonStructure, button);
-					end
-				end,
-				tooltipTitle = getTooltipTitleWithIcon(buttonStructure),
+				tooltipTitle = TRP3_ToolbarUtil.GetFormattedTooltipTitle(buttonStructure),
 				tooltipSub = buttonStructure.tooltipSub,
 				OnTooltipShow = function(tooltip)
 					local LDBButton = LDBObjects[buttonStructure.id];
 					tooltip:AddLine(color("w") .. LDBButton.tooltipTitle);
 					tooltip:AddLine(LDBButton.tooltipSub, nil, nil, nil, true);
+
+					if buttonStructure.tooltipInstructions then
+						tooltip:AddLine(" ");
+
+						for _, instruction in ipairs(buttonStructure.tooltipInstructions) do
+							local text = TRP3_API.FormatShortcutWithInstruction(instruction[1], instruction[2]);
+							tooltip:AddLine(text);
+						end
+					end
 				end
 			});
 		LDBObjects[buttonStructure.id] = LDBObject;
@@ -272,7 +93,7 @@ local function onStart()
 
 		LDBButton.icon = Utils.getIconTexture(buttonStructure.icon);
 
-		LDBButton.tooltipTitle = getTooltipTitleWithIcon(buttonStructure);
+		LDBButton.tooltipTitle = TRP3_ToolbarUtil.GetFormattedTooltipTitle(buttonStructure);
 		LDBButton.tooltipSub = buttonStructure.tooltipSub;
 
 	end
@@ -285,39 +106,28 @@ local function onStart()
 
 	-- Add a new button to the toolbar. The toolbar layout is automatically handled.
 	-- Button structure :
-	local function toolbarAddButton(buttonStructure)
+	function TRP3_API.toolbar.toolbarAddButton(buttonStructure)
 		assert(not loaded, "All button must be registered on addon load. You're too late !");
 		assert(buttonStructure and buttonStructure.id, "Usage: button structure containing 'id' field");
 		assert(not buttonStructures[buttonStructure.id], "The toolbar button with id "..buttonStructure.id.." already exists.");
 		buttonStructures[buttonStructure.id] = buttonStructure;
 		registerDatabrokerButton(buttonStructure);
 	end
-	TRP3_API.toolbar.toolbarAddButton = toolbarAddButton;
 
-	--- Will refresh the UI of a given button (icon, tooltip) using the data provided in the buttonStructure
-	-- @param toolbarButton UI button to refresh
-	-- @param buttonStructure Button structure containing the icon and tooltip text
-	--
-	local function updateToolbarButton(toolbarButton, buttonStructure)
-		-- Setting the textures
-		toolbarButton:SetIconTexture(buttonStructure.icon);
-
-		setTooltipForSameFrame(toolbarButton, "TOP", 0, 5, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
-		updateToolbarButtonTooltip(toolbarButton);
+	function TRP3_API.toolbar.updateToolbarButton(button, buttonStructure)  -- luacheck: no unused
+		button:Update();
 	end
-	TRP3_API.toolbar.updateToolbarButton = updateToolbarButton;
+
 
 	local function RefreshToolbarButtons()
 		for _, buttonStructure in pairs(buttonStructures) do
 			if buttonStructure.onModelUpdate then
-				buttonStructure:onModelUpdate();
+				securecallfunction(buttonStructure.onModelUpdate, buttonStructure);
 				refreshLDBPLugin(buttonStructure);
 			end
 		end
 
-		for _, uiButton in pairs(uiButtons) do
-			uiButton.TimeSinceLastUpdate = math.huge;
-		end
+		TRP3_ToolbarFrame:RefreshButtons();
 	end
 
 	-- Holding off on making toolbutton updates more flexible for now in favour
@@ -330,35 +140,16 @@ local function onStart()
 	-- Position
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	registerConfigKey(CONFIG_TOOLBAR_POS_A, "TOP");
-	registerConfigKey(CONFIG_TOOLBAR_POS_X, 0);
-	registerConfigKey(CONFIG_TOOLBAR_POS_Y, -30);
-	toolbar:SetPoint(getConfigValue(CONFIG_TOOLBAR_POS_A), UIParent, getConfigValue(CONFIG_TOOLBAR_POS_A),
-	getConfigValue(CONFIG_TOOLBAR_POS_X), getConfigValue(CONFIG_TOOLBAR_POS_Y));
-
-	toolbar:RegisterForDrag("LeftButton");
-	toolbar:SetMovable(true);
-	toolbar:SetScript("OnDragStart", function(self)
-		self:StartMoving();
-	end);
-	toolbar:SetScript("OnDragStop", function(self)
-		self:StopMovingOrSizing();
-		local anchor, _, _, x, y = toolbar:GetPoint(1);
-		setConfigValue(CONFIG_TOOLBAR_POS_A, anchor);
-		setConfigValue(CONFIG_TOOLBAR_POS_X, x);
-		setConfigValue(CONFIG_TOOLBAR_POS_Y, y);
-
-		-- Update tooltip anchors
-		for _,uiButton in pairs(uiButtons) do
-			updateToolbarButtonTooltip(uiButton);
-		end
-	end);
+	registerConfigKey(TRP3_ToolbarConfigKeys.AnchorPoint, "TOP");
+	registerConfigKey(TRP3_ToolbarConfigKeys.AnchorOffsetX, 0);
+	registerConfigKey(TRP3_ToolbarConfigKeys.AnchorOffsetY, -30);
 
 	function TRP3_API.toolbar.reset()
-		setConfigValue(CONFIG_TOOLBAR_POS_A, "TOP");
-		setConfigValue(CONFIG_TOOLBAR_POS_X, 0);
-		setConfigValue(CONFIG_TOOLBAR_POS_Y, -30);
-		setConfigValue(CONFIG_TOOLBAR_VISIBILITY, TRP3_ToolbarVisibilityOption.AlwaysShow);
+		setConfigValue(TRP3_ToolbarConfigKeys.AnchorPoint, "TOP");
+		setConfigValue(TRP3_ToolbarConfigKeys.AnchorOffsetX, 0);
+		setConfigValue(TRP3_ToolbarConfigKeys.AnchorOffsetY, -30);
+		setConfigValue(TRP3_ToolbarConfigKeys.Visibility, TRP3_ToolbarVisibilityOption.AlwaysShow);
+		TRP3_ToolbarFrame:LoadPosition();
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -368,18 +159,16 @@ local function onStart()
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 		loaded = true;
 
-		TRP3_ToolbarTopFrameText:SetText(Globals.addon_name);
-
-		registerConfigKey(CONFIG_TOOLBAR_VISIBILITY, TRP3_ToolbarVisibilityOption.AlwaysShow);
-		registerConfigKey(CONFIG_ICON_SIZE, 25);
-		registerConfigKey(CONFIG_ICON_MAX_PER_LINE, 7);
-		registerConfigKey(CONFIG_HIDE_TITLE, false);
+		registerConfigKey(TRP3_ToolbarConfigKeys.Visibility, TRP3_ToolbarVisibilityOption.AlwaysShow);
+		registerConfigKey(TRP3_ToolbarConfigKeys.ButtonExtent, 25);
+		registerConfigKey(TRP3_ToolbarConfigKeys.ButtonStride, 7);
+		registerConfigKey(TRP3_ToolbarConfigKeys.HideTitle, false);
 
 		registerConfigHandler({
-			CONFIG_ICON_SIZE,
-			CONFIG_ICON_MAX_PER_LINE,
-			CONFIG_HIDE_TITLE,
-		}, buildToolbar);
+			TRP3_ToolbarConfigKeys.ButtonExtent,
+			TRP3_ToolbarConfigKeys.ButtonStride,
+			TRP3_ToolbarConfigKeys.HideTitle,
+		}, BuildToolbar);
 
 		-- Build configuration page
 		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
@@ -396,13 +185,13 @@ local function onStart()
 				{loc.CO_TOOLBAR_VISIBILITY_2, TRP3_ToolbarVisibilityOption.OnlyShowInCharacter},
 				{loc.CO_TOOLBAR_VISIBILITY_1, TRP3_ToolbarVisibilityOption.AlwaysShow}
 			},
-			configKey = CONFIG_TOOLBAR_VISIBILITY,
+			configKey = TRP3_ToolbarConfigKeys.Visibility,
 			listCancel = true,
 		});
 		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
 			title = loc.CO_TOOLBAR_ICON_SIZE,
-			configKey = CONFIG_ICON_SIZE,
+			configKey = TRP3_ToolbarConfigKeys.ButtonExtent,
 			min = 15,
 			max = 50,
 			step = 1,
@@ -412,7 +201,7 @@ local function onStart()
 			inherit = "TRP3_ConfigSlider",
 			title = loc.CO_TOOLBAR_MAX,
 			help = loc.CO_TOOLBAR_MAX_TT,
-			configKey = CONFIG_ICON_MAX_PER_LINE,
+			configKey = TRP3_ToolbarConfigKeys.ButtonStride,
 			min = 1,
 			max = 25,
 			step = 1,
@@ -422,7 +211,7 @@ local function onStart()
 			inherit = "TRP3_ConfigCheck",
 			title = loc.CO_TOOLBAR_HIDE_TITLE,
 			help = loc.CO_TOOLBAR_HIDE_TITLE_HELP,
-			configKey = CONFIG_HIDE_TITLE,
+			configKey = TRP3_ToolbarConfigKeys.HideTitle,
 		});
 
 		local ids = {};
@@ -436,7 +225,7 @@ local function onStart()
 			registerConfigKey(configKey, true);
 			registerConfigHandler(configKey, function()
 				button.visible = getConfigValue(configKey);
-				buildToolbar();
+				BuildToolbar();
 			end);
 			button.visible = getConfigValue(configKey);
 			tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
@@ -446,12 +235,14 @@ local function onStart()
 			});
 		end
 
-		buildToolbar();
-		toolbar:OnLoad();
+		TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE);
+
+		TRP3_ToolbarFrame:Init();
+		BuildToolbar();
 	end);
 
 	function TRP3_API.toolbar.switch()
-		toolbar:Toggle();
+		TRP3_ToolbarFrame:Toggle();
 	end
 end
 
@@ -461,7 +252,6 @@ local MODULE_STRUCTURE = {
 	["version"] = 1.000,
 	["id"] = "trp3_tool_bar",
 	["onStart"] = onStart,
-	["onInit"] = onInit,
 	["minVersion"] = 3,
 };
 

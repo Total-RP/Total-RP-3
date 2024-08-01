@@ -378,6 +378,8 @@ local function onStart()
 			end,
 		});
 
+		TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE);
+
 		local ids = {};
 		for buttonID, _ in pairs(targetButtons) do
 			tinsert(ids, buttonID);

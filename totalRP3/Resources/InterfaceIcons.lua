@@ -50,8 +50,8 @@ TRP3_InterfaceIcons = {
 	--
 
 	ToolbarNPCTalk    = { "ability_warrior_commandingshout" },
-	ToolbarStatusIC   = { "Inv_collections_armor_hood_b_01_green", "spell_shadow_charm" },
-	ToolbarStatusOOC  = { "Inv_collections_armor_hood_b_01_red", "achievement_guildperk_everybodysfriend" },
+	ToolbarStatusIC   = { "Inv_collections_armor_hood_b_01_white", "spell_shadow_charm" },
+	ToolbarStatusOOC  = { "Inv_collections_armor_hood_b_01_black", "achievement_guildperk_everybodysfriend" },
 	ToolbarCloakOn    = { "inv_misc_cape_18" },
 	ToolbarCloakOff   = { "inv_misc_cape_20" },
 	ToolbarHelmetOn   = { "inv_helmet_13" },
