@@ -7,11 +7,6 @@ local color = Utils.str.color;
 
 local CONFIG_CONTENT_PREFIX = "toolbar_content_";
 
--- Always build UI on init. Because maybe other modules would like to anchor it on start.
-local function onInit()
-	CreateFrame("Frame", "TRP3_Toolbar", UIParent, "TRP3_ToolbarFrameTemplate");
-end
-
 local function onStart()
 	-- Public accessor
 	TRP3_API.toolbar = {};
@@ -43,7 +38,7 @@ local function onStart()
 		table.sort(elements, SortToolbarButtons);
 
 		local provider = CreateDataProvider(elements);
-		TRP3_Toolbar:SetDataProvider(provider);
+		TRP3_ToolbarFrame:SetDataProvider(provider);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -132,7 +127,7 @@ local function onStart()
 			end
 		end
 
-		TRP3_Toolbar:RefreshButtons();
+		TRP3_ToolbarFrame:RefreshButtons();
 	end
 
 	-- Holding off on making toolbutton updates more flexible for now in favour
@@ -154,7 +149,7 @@ local function onStart()
 		setConfigValue(TRP3_ToolbarConfigKeys.AnchorOffsetX, 0);
 		setConfigValue(TRP3_ToolbarConfigKeys.AnchorOffsetY, -30);
 		setConfigValue(TRP3_ToolbarConfigKeys.Visibility, TRP3_ToolbarVisibilityOption.AlwaysShow);
-		TRP3_Toolbar:LoadPosition();
+		TRP3_ToolbarFrame:LoadPosition();
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -240,12 +235,12 @@ local function onStart()
 			});
 		end
 
-		TRP3_Toolbar:Init();
+		TRP3_ToolbarFrame:Init();
 		BuildToolbar();
 	end);
 
 	function TRP3_API.toolbar.switch()
-		TRP3_Toolbar:Toggle();
+		TRP3_ToolbarFrame:Toggle();
 	end
 end
 
@@ -255,7 +250,6 @@ local MODULE_STRUCTURE = {
 	["version"] = 1.000,
 	["id"] = "trp3_tool_bar",
 	["onStart"] = onStart,
-	["onInit"] = onInit,
 	["minVersion"] = 3,
 };
 

@@ -62,9 +62,9 @@ TRP3_API.module.registerModule({
 		}
 
 		local SKINNABLE_TOOLBAR_FRAMES = {
-			"TRP3_Toolbar",
-			"TRP3_Toolbar.Container.Backdrop",
-			"TRP3_Toolbar.Title",
+			"TRP3_ToolbarFrame",
+			"TRP3_ToolbarFrame.Container.Backdrop",
+			"TRP3_ToolbarFrame.Title",
 		}
 
 		TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
@@ -155,6 +155,10 @@ TRP3_API.module.registerModule({
 
 					if frame then
 						TT:SecureHookScript(frame, 'OnShow', SetStyleForFrame);
+
+						if frame:IsShown() then
+							SetStyleForFrame(frame);
+						end
 					end
 				end
 			end
@@ -174,11 +178,6 @@ TRP3_API.module.registerModule({
 			end
 			if TRP3_API.configuration.getValue(CONFIG.SKIN_TOOLBAR_FRAME) then
 				skinFrame(SKINNABLE_TOOLBAR_FRAMES);
-
-				if TRP3_Toolbar:IsShown() then
-					TRP3_Toolbar:Hide();
-					TRP3_Toolbar:Show();
-				end
 			end
 
 			-- Adjusting the default border color to be black for ElvUI tooltips
