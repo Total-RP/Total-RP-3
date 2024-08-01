@@ -321,13 +321,7 @@ Möglicher Status:
 	["CO_TOOLTIP_CONTRAST"] = "Farbkontraste erhöhen",
 	["CO_TOOLTIP_CONTRAST_TT"] = "Schalte diese Option ein um Total RP 3 zu erlauben die benutzerdefinierten Farben zu verändern, so dass Text in zu dunklen Farben leichter lesbar ist.",
 	["CO_TOOLTIP_CROP_TEXT"] = "Ungerechtfertigt lange Texte kürzen",
-	["CO_TOOLTIP_CROP_TEXT_TT"] = [=[Begrenze die Zeichenanzahl die im Tooltip für jedes Feld angezeigt werden kann um ungerechtfertigt lange Texte und mögliche Layoutprobleme zu verhindern.
-
-|cnGREEN_FONT_COLOR:Limit Details:
-Name: 100 Zeichen
-Titel: 150 Zeichen
-Volk: 50 Zeichen
-Klasse: 50 Zeichen|r]=],
+	["CO_TOOLTIP_CROP_TEXT_TT"] = "Begrenze die Zeichenanzahl die im Tooltip für jedes Feld angezeigt werden kann um ungerechtfertigt lange Texte und mögliche Layoutprobleme zu verhindern.",
 	["CO_TOOLTIP_CURRENT"] = "Zeige \"aktuelle\" Informationen",
 	["CO_TOOLTIP_CURRENT_LINES"] = "Maximale Zeilen unter \"Aktuelles\"",
 	["CO_TOOLTIP_CURRENT_SIZE"] = "Maximale Länge von \"aktuellen\" Informationen",
