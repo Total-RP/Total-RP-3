@@ -93,7 +93,7 @@ TRP3_TooltipCroppingConstants = {
 	GuildName = 30,
 	GuildRank = 30,
 	VoiceReference = 30,
-}
+};
 
 local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 20);
 local registerTooltipModuleIsEnabled = false;
