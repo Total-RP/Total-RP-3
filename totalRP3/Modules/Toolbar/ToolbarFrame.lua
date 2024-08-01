@@ -9,7 +9,7 @@ function TRP3_ToolbarFrameMixin:Init()
 
 	self:LoadPosition();
 	self:UpdateFrameVisibility();
-	self:UpdateTitleVisibility();
+	self:UpdateTitleBar();
 end
 
 function TRP3_ToolbarFrameMixin:OnLoad()
@@ -46,7 +46,7 @@ function TRP3_ToolbarFrameMixin:OnConfigurationChanged(_, key)
 	if key == TRP3_ToolbarConfigKeys.Visibility then
 		self:UpdateFrameVisibility();
 	elseif key == TRP3_ToolbarConfigKeys.HideTitle then
-		self:UpdateTitleVisibility();
+		self:UpdateTitleBar();
 	end
 end
 
@@ -81,16 +81,23 @@ function TRP3_ToolbarFrameMixin:UpdateButtons()
 		table.insert(buttons, button);
 	end
 
-	local direction = GridLayoutMixin.Direction.TopLeftToBottomRight;
-	local stride = TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.ButtonStride);
-	local spacingX = 0;
-	local spacingY = 0;
+	if #buttons > 0 then
+		local direction = GridLayoutMixin.Direction.TopLeftToBottomRight;
+		local stride = TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.ButtonStride);
+		local spacingX = 0;
+		local spacingY = 0;
 
-	local initialAnchor = AnchorUtil.CreateAnchor("TOPLEFT", self.Container, "TOPLEFT", 8, -8);
-	local layout = AnchorUtil.CreateGridLayout(direction, stride, spacingX, spacingY);
+		local initialAnchor = AnchorUtil.CreateAnchor("TOPLEFT", self.Container, "TOPLEFT", 8, -8);
+		local layout = AnchorUtil.CreateGridLayout(direction, stride, spacingX, spacingY);
 
-	AnchorUtil.GridLayout(buttons, initialAnchor, layout);
-	self.Container:Layout();
+		AnchorUtil.GridLayout(buttons, initialAnchor, layout);
+		self.Container:Layout();
+		self.Container:Show();
+	else
+		self.Container:Hide();
+	end
+
+	self:Layout();
 end
 
 function TRP3_ToolbarFrameMixin:GetDataProvider()
@@ -140,9 +147,9 @@ function TRP3_ToolbarFrameMixin:UpdateFrameVisibility(forcedVisibility)
 	self:SetShown(shouldShow);
 end
 
-function TRP3_ToolbarFrameMixin:UpdateTitleVisibility()
-	self.Title.Text:SetText(TRP3_API.globals.addon_name);
-	self.Title:SetShown(TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.HideTitle));
+function TRP3_ToolbarFrameMixin:UpdateTitleBar()
+	self.TitleBar.Text:SetText(TRP3_API.globals.addon_name);
+	self.TitleBar:SetShown(TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.HideTitle));
 end
 
 function TRP3_ToolbarFrameMixin:LoadPosition()
@@ -157,4 +164,21 @@ function TRP3_ToolbarFrameMixin:SavePosition()
 	TRP3_API.configuration.setValue(TRP3_ToolbarConfigKeys.AnchorPoint, anchor);
 	TRP3_API.configuration.setValue(TRP3_ToolbarConfigKeys.AnchorOffsetX, x);
 	TRP3_API.configuration.setValue(TRP3_ToolbarConfigKeys.AnchorOffsetY, y);
+end
+
+function TRP3_ToolbarFrameMixin:Layout()
+	local width = 0;
+	local height = 0;
+
+	if self.TitleBar:IsShown() then
+		width = math.max(width, self.TitleBar:GetWidth());
+		height = height + self.TitleBar:GetHeight();
+	end
+
+	if self.Container:IsShown() then
+		width = math.max(width, self.Container:GetWidth());
+		height = height + self.Container:GetHeight();
+	end
+
+	self:SetSize(width, height);
 end

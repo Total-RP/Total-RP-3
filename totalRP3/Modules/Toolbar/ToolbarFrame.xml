@@ -9,7 +9,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Frame name="TRP3_ToolbarFrame" mixin="TRP3_ToolbarFrameMixin" parent="UIParent" toplevel="true" enableMouse="true" clampedToScreen="true" registerForDrag="LeftButton" movable="true" dontSavePosition="true" hidden="true">
 		<Size x="190" y="60"/>
 		<Frames>
-			<Frame parentKey="Title" inherits="TRP3_ThinDialogBackdropTemplate">
+			<Frame parentKey="TitleBar" inherits="TRP3_ThinDialogBackdropTemplate">
 				<Size x="80" y="25"/>
 				<Anchors>
 					<Anchor point="TOP"/>
