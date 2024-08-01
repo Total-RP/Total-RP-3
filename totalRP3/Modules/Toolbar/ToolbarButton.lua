@@ -119,6 +119,10 @@ function TRP3_ToolbarButtonMixin:SetElementData(elementData)
 	self:MarkDirty();
 end
 
+function TRP3_ToolbarButtonMixin:Update()
+	self:MarkDirty();
+end
+
 function TRP3_ToolbarButtonMixin:UpdateImmediately()
 	self:MarkClean();
 

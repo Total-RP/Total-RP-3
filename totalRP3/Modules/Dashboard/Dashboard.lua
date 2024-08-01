@@ -15,7 +15,6 @@ local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 local getProfiles = TRP3_API.profile.getProfiles;
 local Utils = TRP3_API.utils;
 local color = Utils.str.color;
-local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 local registerMenu, registerPage = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.page.registerPage;
 local setPage = TRP3_API.navigation.page.setPage;
 
@@ -176,7 +175,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		}
 		TRP3_API.toolbar.toolbarAddButton(Button_TRP3_Open);
 
-		local updateToolbarButton = TRP3_API.toolbar.updateToolbarButton;
 		-- away/dnd
 		local status1Text = loc.TB_STATUS..": "..color("r")..loc.TB_DND_MODE;
 		local status1SubText = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_GO_TO_MODE:format(loc.TB_NORMAL_MODE));
@@ -188,12 +186,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			id = "aa_trp3_d",
 			icon = TRP3_InterfaceIcons.ModeNormal,
 			configText = loc.CO_TOOLBAR_CONTENT_STATUS,
-			onUpdate = function(Uibutton, buttonStructure)
-				updateToolbarButton(Uibutton, buttonStructure);
-				if Uibutton:IsMouseMotionFocus() then
-					refreshTooltip(Uibutton);
-				end
-			end,
 			onModelUpdate = function(buttonStructure)
 				if UnitIsDND("player") then
 					buttonStructure.tooltip  = status1Text;
@@ -237,12 +229,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			id = "aa_trp3_rpstatus",
 			icon = OOC_ICON,
 			configText = loc.CO_TOOLBAR_CONTENT_RPSTATUS,
-			onUpdate = function(Uibutton, buttonStructure)
-				updateToolbarButton(Uibutton, buttonStructure);
-				if Uibutton:IsMouseMotionFocus() then
-					refreshTooltip(Uibutton);
-				end
-			end,
 			onModelUpdate = function(buttonStructure)
 				if AddOn_TotalRP3.Player.GetCurrentUser():IsInCharacter() then
 					buttonStructure.tooltip  = rpTextOn;
@@ -318,12 +304,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 						buttonStructure.icon = helmetOffIcon;
 					end
 				end,
-				onUpdate = function(Uibutton, buttonStructure)
-					updateToolbarButton(Uibutton, buttonStructure);
-					if Uibutton:IsMouseMotionFocus() then
-						refreshTooltip(Uibutton);
-					end
-				end,
 				onClick = function()
 					if ShowingHelm() then
 						ShowHelm(false);
@@ -360,12 +340,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 						buttonStructure.tooltip  = capeTextOff;
 						buttonStructure.tooltipSub  = capeText2;
 						buttonStructure.icon = cloakOffIcon;
-					end
-				end,
-				onUpdate = function(Uibutton, buttonStructure)
-					updateToolbarButton(Uibutton, buttonStructure);
-					if Uibutton:IsMouseMotionFocus() then
-						refreshTooltip(Uibutton);
 					end
 				end,
 				onClick = function(_)

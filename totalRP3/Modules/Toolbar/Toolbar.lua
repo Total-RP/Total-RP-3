@@ -111,23 +111,18 @@ local function onStart()
 
 	-- Add a new button to the toolbar. The toolbar layout is automatically handled.
 	-- Button structure :
-	local function toolbarAddButton(buttonStructure)
+	function TRP3_API.toolbar.toolbarAddButton(buttonStructure)
 		assert(not loaded, "All button must be registered on addon load. You're too late !");
 		assert(buttonStructure and buttonStructure.id, "Usage: button structure containing 'id' field");
 		assert(not buttonStructures[buttonStructure.id], "The toolbar button with id "..buttonStructure.id.." already exists.");
 		buttonStructures[buttonStructure.id] = buttonStructure;
 		registerDatabrokerButton(buttonStructure);
 	end
-	TRP3_API.toolbar.toolbarAddButton = toolbarAddButton;
 
-	--- Will refresh the UI of a given button (icon, tooltip) using the data provided in the buttonStructure
-	-- @param toolbarButton UI button to refresh
-	-- @param buttonStructure Button structure containing the icon and tooltip text
-	--
-	local function updateToolbarButton(toolbarButton, buttonStructure)
-		toolbarButton:SetElementData(buttonStructure);
+	function TRP3_API.toolbar.updateToolbarButton(button, buttonStructure)  -- luacheck: no unused
+		button:Update();
 	end
-	TRP3_API.toolbar.updateToolbarButton = updateToolbarButton;
+
 
 	local function RefreshToolbarButtons()
 		for _, buttonStructure in pairs(buttonStructures) do

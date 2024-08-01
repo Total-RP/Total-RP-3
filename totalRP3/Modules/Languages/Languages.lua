@@ -97,9 +97,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		id = "ww_trp3_languages",
 		icon = TRP3_InterfaceIcons.ToolbarLanguage,
 		configText = loc.TB_LANGUAGE,
-		onUpdate = function(Uibutton, buttonStructure)
-			TRP3_API.toolbar.updateToolbarButton(Uibutton, buttonStructure);
-		end,
 		onModelUpdate = function(buttonStructure)
 			if buttonStructure.currentLanguageID ~= ChatFrame1EditBox.languageID then
 				buttonStructure.currentLanguageID = ChatFrame1EditBox.languageID
