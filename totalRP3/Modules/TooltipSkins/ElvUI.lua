@@ -151,7 +151,7 @@ TRP3_API.module.registerModule({
 			function skinFrame(skinnableFrames)
 				-- Go through each skinnable frames from our table
 				for _, frameName in pairs(skinnableFrames) do
-					local frame = ResolveFrame(_G, string.split(frameName, "."));
+					local frame = ResolveFrame(_G, string.split(".", frameName));
 
 					if frame then
 						TT:SecureHookScript(frame, 'OnShow', SetStyleForFrame);
