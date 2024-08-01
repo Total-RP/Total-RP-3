@@ -265,17 +265,7 @@ L = {
 	["CO_TOOLTIP_CONTRAST"] = "增加顏色對比",
 	["CO_TOOLTIP_CONTRAST_TT"] = "當你使用自訂顏色時，增加顏色對比可以避免選擇了太暗的顏色。",
 	["CO_TOOLTIP_CROP_TEXT"] = "剪裁不合理的過長文本",
-	["CO_TOOLTIP_CROP_TEXT_TT"] = [=[角色卡提示欄中各欄位的字數有限，避免產生過長的情況。
-
-|cnGREEN_FONT_COLOR:各欄位限制：
-職業: 30單位
-名稱: 50單位
-Guild name: 30單位
-Guild rank: 30單位
-Pronouns: 30單位
-種族: 30單位
-稱號: 100單位
-Voice reference: 30單位|r]=],
+	["CO_TOOLTIP_CROP_TEXT_TT"] = "角色卡提示欄中各欄位的字數有限，避免產生過長的情況。",
 	["CO_TOOLTIP_CURRENT"] = "顯示其他資訊",
 	["CO_TOOLTIP_CURRENT_SIZE"] = "其他資訊的最大長度",
 	["CO_TOOLTIP_FT"] = "顯示完整稱號",

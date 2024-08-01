@@ -337,17 +337,7 @@ L = {
 	["CO_TOOLTIP_CONTRAST"] = "增加颜色对比",
 	["CO_TOOLTIP_CONTRAST_TT"] = "启用这个选项允许Total RP 3自动修改自定义颜色，使文本在颜色太暗时更易读。",
 	["CO_TOOLTIP_CROP_TEXT"] = "裁剪不合理的长文本",
-	["CO_TOOLTIP_CROP_TEXT_TT"] = [=[限制框架中每个字段可以显示的字符数量，以防止不合理的长文本和可能的布局问题。
-
-|cnGREEN_FONT_COLOR:限制细节:
-职业: 30 字符
-名字: 50 字符
-Guild name: 30 字符
-Guild rank: 30 字符
-人称代词: 30 字符
-种族: 30 字符
-标题: 100 字符
-Voice reference: 30 字符|r]=],
+	["CO_TOOLTIP_CROP_TEXT_TT"] = "限制框架中每个字段可以显示的字符数量，以防止不合理的长文本和可能的布局问题。",
 	["CO_TOOLTIP_CURRENT"] = "显示“当前”的信息",
 	["CO_TOOLTIP_CURRENT_LINES"] = "“当前”信息的最大行数",
 	["CO_TOOLTIP_CURRENT_SIZE"] = "“当前”信息的最大长度",

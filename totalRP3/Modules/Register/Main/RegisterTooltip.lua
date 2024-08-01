@@ -84,6 +84,17 @@ local ConfigKeys = {
 	PETS_INFO = "tooltip_pets_info",
 };
 
+TRP3_TooltipCroppingConstants = {
+	Title = 100,
+	Name = 50,
+	Race = 30,
+	Class = 30,
+	Pronouns = 30,
+	GuildName = 30,
+	GuildRank = 30,
+	VoiceReference = 30,
+}
+
 local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 20);
 local registerTooltipModuleIsEnabled = false;
 
@@ -522,17 +533,6 @@ local function writeTooltipForCharacter(targetID, targetType)
 	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(targetID);
 	local profileID = player:GetProfileID();
 
-	local FIELDS_TO_CROP = {
-		TITLE = 100,
-		NAME = 50,
-		RACE = 30,
-		CLASS = 30,
-		PRONOUNS = 30,
-		GUILD_NAME = 30,
-		GUILD_RANK = 30,
-		VOICE_REFERENCE = 30,
-	}
-
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- BLOCKED
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -567,7 +567,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 	local completeName = getCompleteName(info.characteristics or {}, targetName, not showTitle());
 
 	if getConfigValue(ConfigKeys.CROP_TEXT) then
-		completeName = crop(completeName, FIELDS_TO_CROP.NAME);
+		completeName = crop(completeName, TRP3_TooltipCroppingConstants.Name);
 	end
 
 	completeName = color:WrapTextInColorCode(completeName);
@@ -630,7 +630,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 		if fullTitle and fullTitle ~= "" then
 			if getConfigValue(ConfigKeys.CROP_TEXT) then
 				fullTitle = string.gsub(fullTitle, "%s+", " ");
-				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
+				fullTitle = crop(fullTitle, TRP3_TooltipCroppingConstants.Title);
 			end
 
 			tooltipBuilder:AddLine(strconcat("< ", fullTitle, " >"), colors.TITLE, getSubLineFontSize(), true);
@@ -655,8 +655,8 @@ local function writeTooltipForCharacter(targetID, targetType)
 			class = info.characteristics.CL;
 		end
 		if getConfigValue(ConfigKeys.CROP_TEXT) then
-			race = crop(race, FIELDS_TO_CROP.RACE);
-			class = crop(class, FIELDS_TO_CROP.CLASS);
+			race = crop(race, TRP3_TooltipCroppingConstants.Race);
+			class = crop(class, TRP3_TooltipCroppingConstants.Class);
 		end
 		lineLeft = string.trim(strconcat(race, " ", color:WrapTextInColorCode(class)));
 		lineRight = loc.REG_TT_LEVEL:format(getLevelIconOrText(targetType), getFactionIcon(targetType));
@@ -691,8 +691,8 @@ local function writeTooltipForCharacter(targetID, targetType)
 		local originalGuildName, originalGuildRank = GetGuildInfo(targetType);
 
 		if ShouldDisplayOriginalGuild(guildDisplayOption, originalGuildName, customGuildName) then
-			local displayName = crop(originalGuildName, FIELDS_TO_CROP.GUILD_NAME);
-			local displayRank = crop(originalGuildRank or loc.DEFAULT_GUILD_RANK, FIELDS_TO_CROP.GUILD_RANK);
+			local displayName = crop(originalGuildName, TRP3_TooltipCroppingConstants.GuildName);
+			local displayRank = crop(originalGuildRank or loc.DEFAULT_GUILD_RANK, TRP3_TooltipCroppingConstants.GuildRank);
 			local displayText = string.format(loc.REG_TT_GUILD, displayRank, colors.SECONDARY:WrapTextInColorCode(displayName));
 			local displayMembership = "";
 
@@ -708,8 +708,8 @@ local function writeTooltipForCharacter(targetID, targetType)
 		end
 
 		if ShouldDisplayCustomGuild(guildDisplayOption, customGuildName) then
-			local displayName = crop(customGuildName, FIELDS_TO_CROP.GUILD_NAME);
-			local displayRank = crop(customGuildRank or loc.DEFAULT_GUILD_RANK, FIELDS_TO_CROP.GUILD_RANK);
+			local displayName = crop(customGuildName, TRP3_TooltipCroppingConstants.GuildName);
+			local displayRank = crop(customGuildRank or loc.DEFAULT_GUILD_RANK, TRP3_TooltipCroppingConstants.GuildRank);
 			local displayText = string.format(loc.REG_TT_GUILD, displayRank, colors.SECONDARY:WrapTextInColorCode(displayName));
 			local displayMembership = " |cnBATTLENET_FONT_COLOR:(" .. loc.REG_TT_GUILD_CUSTOM .. ")";
 
@@ -787,7 +787,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 
 		if pronouns then
 			local leftText = loc.REG_PLAYER_MISC_PRESET_PRONOUNS;
-			local rightText = crop(pronouns, FIELDS_TO_CROP.PRONOUNS);
+			local rightText = crop(pronouns, TRP3_TooltipCroppingConstants.Pronouns);
 			local lineText = string.format("%1$s: %2$s", leftText, colors.SECONDARY:WrapTextInColorCode(rightText));
 
 			tooltipBuilder:AddLine(lineText, colors.MAIN, getSubLineFontSize(), true);
@@ -803,7 +803,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 
 		if pronouns then
 			local leftText = loc.REG_PLAYER_MISC_PRESET_VOICE_REFERENCE;
-			local rightText = crop(pronouns, FIELDS_TO_CROP.VOICE_REFERENCE);
+			local rightText = crop(pronouns, TRP3_TooltipCroppingConstants.VoiceReference);
 			local lineText = string.format("%1$s: %2$s", leftText, colors.SECONDARY:WrapTextInColorCode(rightText));
 
 			tooltipBuilder:AddLine(lineText, colors.MAIN, getSubLineFontSize(), true);
@@ -855,7 +855,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 			end
 
 			if getConfigValue(ConfigKeys.CROP_TEXT) then
-				name = crop(name, FIELDS_TO_CROP.NAME);
+				name = crop(name, TRP3_TooltipCroppingConstants.Name);
 			end
 
 			name = targetClassColor:WrapTextInColorCode(name);
@@ -1028,11 +1028,6 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 	local targetName = UnitName(targetType);
 	local colors = getTooltipTextColors();
 
-	local FIELDS_TO_CROP = {
-		TITLE = 100,
-		NAME  = 50,
-	}
-
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- BLOCKED
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1051,7 +1046,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 	local petName = info.NA or targetName or UNKNOWN;
 
 	if getConfigValue(ConfigKeys.CROP_TEXT) then
-		petName = crop(petName, FIELDS_TO_CROP.NAME);
+		petName = crop(petName, TRP3_TooltipCroppingConstants.Name);
 	end
 
 	local companionCustomColor = info.NH and TRP3_API.CreateColorFromHexString(info.NH) or TRP3_API.Colors.White
@@ -1078,7 +1073,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 
 			if getConfigValue(ConfigKeys.CROP_TEXT) then
 				fullTitle = string.gsub(fullTitle, "%s+", " ");
-				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
+				fullTitle = crop(fullTitle, TRP3_TooltipCroppingConstants.Title);
 			end
 			tooltipBuilder:AddLine(fullTitle, colors.TITLE, getSubLineFontSize(), true);
 		end
@@ -1099,7 +1094,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 				ownerFinalName = getCompleteName(ownerInfo.characteristics, ownerFinalName, true);
 
 				if getConfigValue(ConfigKeys.CROP_TEXT) then
-					ownerFinalName = crop(ownerFinalName, FIELDS_TO_CROP.NAME);
+					ownerFinalName = crop(ownerFinalName, TRP3_TooltipCroppingConstants.Name);
 				end
 
 				if getConfigValue(ConfigKeys.CHARACT_COLOR) and ownerInfo.characteristics.CH then
@@ -1209,12 +1204,6 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	local info = profile.data or EMPTY;
 	local colors = getTooltipTextColors();
 
-
-	local FIELDS_TO_CROP = {
-		TITLE = 100,
-		NAME  = 50
-	}
-
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Icon and name
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1222,7 +1211,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	local mountCustomName = info.NA
 
 	if getConfigValue(ConfigKeys.CROP_TEXT) then
-		mountCustomName = crop(mountCustomName, FIELDS_TO_CROP.NAME);
+		mountCustomName = crop(mountCustomName, TRP3_TooltipCroppingConstants.Name);
 	end
 
 	local mountCustomColor = info.NH and TRP3_API.CreateColorFromHexString(info.NH) or TRP3_API.Colors.White
@@ -1248,7 +1237,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 		if fullTitle and fullTitle ~= "" then
 			if getConfigValue(ConfigKeys.CROP_TEXT) then
 				fullTitle = string.gsub(fullTitle, "%s+", " ");
-				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
+				fullTitle = crop(fullTitle, TRP3_TooltipCroppingConstants.Title);
 			end
 			tooltipCompanionBuilder:AddLine(fullTitle, colors.TITLE, getSubLineFontSize(), true);
 		end

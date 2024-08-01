@@ -341,17 +341,7 @@ Posibles estados:
 	["CO_TOOLTIP_CONTRAST"] = "Aumentar el contraste de color",
 	["CO_TOOLTIP_CONTRAST_TT"] = "Habilitar esta opción permitirá a Total RP 3 modificar los colores personalizados para hacer el texto más legible si el color es demasiado oscuro.",
 	["CO_TOOLTIP_CROP_TEXT"] = "Trunca textos excesivamente largos",
-	["CO_TOOLTIP_CROP_TEXT_TT"] = [=[Limita el número de caracteres que pueden ser expuestos por cada campo en información para prevenir textos excesivamente largos y posibles problemas en el diseño.
-
-|cnGREEN_FONT_COLOR:Detalles de límites:
-Clase: 30 caracteres
-Nombre: 50 caracteres
-Guild name: 30 caracteres
-Guild rank: 30 caracteres
-Pronombres: 30 caracteres
-Raza: 30 caracteres
-Título: 100 caracteres
-Voice reference: 30 caracteres|r]=],
+	["CO_TOOLTIP_CROP_TEXT_TT"] = "Limita el número de caracteres que pueden ser expuestos por cada campo en información para prevenir textos excesivamente largos y posibles problemas en el diseño.",
 	["CO_TOOLTIP_CURRENT"] = "Mostrar información \"actual\"",
 	["CO_TOOLTIP_CURRENT_LINES"] = "Saltos de línea máximos en información \"Actualmente\"",
 	["CO_TOOLTIP_CURRENT_SIZE"] = "Longitud máxima de información \"actual\"",

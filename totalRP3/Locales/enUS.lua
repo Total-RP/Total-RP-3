@@ -412,17 +412,7 @@ The description doesn't have to be limited to |cnGREEN_FONT_COLOR:physical descr
 	CO_TOOLTIP_CONTRAST = "Increase color contrast",
 	CO_TOOLTIP_CONTRAST_TT = "Enable this option to allow Total RP 3 to modify the custom colors to make the text more readable if the color is too dark.",
 	CO_TOOLTIP_CROP_TEXT = "Crop unreasonably long texts",
-	CO_TOOLTIP_CROP_TEXT_TT = [[Limit the number of characters that can be displayed by each field in the tooltip to prevent unreasonably long texts and possible layout issues.
-
-|cnGREEN_FONT_COLOR:Limit details:
-Class: 30 characters
-Name: 50 characters
-Guild name: 30 characters
-Guild rank: 30 characters
-Pronouns: 30 characters
-Race: 30 characters
-Title: 100 characters
-Voice reference: 30 characters|r]],
+	CO_TOOLTIP_CROP_TEXT_TT = "Limit the number of characters that can be displayed by each field in the tooltip to prevent unreasonably long texts and possible layout issues.",
 	CO_TOOLTIP_CHARACTER = "Characters tooltip",
 	CO_TOOLTIP_ANCHORED = "Anchored frame",
 	CO_TOOLTIP_ANCHOR = "Anchor point",
