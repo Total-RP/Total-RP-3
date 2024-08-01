@@ -149,7 +149,7 @@ end
 
 function TRP3_ToolbarFrameMixin:UpdateTitleBar()
 	self.TitleBar.Text:SetText(TRP3_API.globals.addon_name);
-	self.TitleBar:SetShown(TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.HideTitle));
+	self.TitleBar:SetShown(not TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.HideTitle));
 end
 
 function TRP3_ToolbarFrameMixin:LoadPosition()
