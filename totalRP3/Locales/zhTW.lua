@@ -268,10 +268,14 @@ L = {
 	["CO_TOOLTIP_CROP_TEXT_TT"] = [=[角色卡提示欄中各欄位的字數有限，避免產生過長的情況。
 
 |cnGREEN_FONT_COLOR:各欄位限制：
-名稱：100單位
-稱號：150單位
-種族：50單位
-職業：50單位|r]=],
+職業: 30單位
+名稱: 50單位
+Guild name: 30單位
+Guild rank: 30單位
+Pronouns: 30單位
+種族: 30單位
+稱號: 100單位
+Voice reference: 30單位|r]=],
 	["CO_TOOLTIP_CURRENT"] = "顯示其他資訊",
 	["CO_TOOLTIP_CURRENT_SIZE"] = "其他資訊的最大長度",
 	["CO_TOOLTIP_FT"] = "顯示完整稱號",

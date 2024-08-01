@@ -324,10 +324,14 @@ Möglicher Status:
 	["CO_TOOLTIP_CROP_TEXT_TT"] = [=[Begrenze die Zeichenanzahl die im Tooltip für jedes Feld angezeigt werden kann um ungerechtfertigt lange Texte und mögliche Layoutprobleme zu verhindern.
 
 |cnGREEN_FONT_COLOR:Limit Details:
-Name: 100 Zeichen
-Titel: 150 Zeichen
-Volk: 50 Zeichen
-Klasse: 50 Zeichen|r]=],
+Klasse: 30 Zeichen
+Name: 50 Zeichen
+Guild name: 30 Zeichen
+Guild rank: 30 Zeichen
+Pronouns: 30 Zeichen
+Volk: 30 Zeichen
+Titel: 100 Zeichen
+Voice reference: 30 Zeichen|r]=],
 	["CO_TOOLTIP_CURRENT"] = "Zeige \"aktuelle\" Informationen",
 	["CO_TOOLTIP_CURRENT_LINES"] = "Maximale Zeilen unter \"Aktuelles\"",
 	["CO_TOOLTIP_CURRENT_SIZE"] = "Maximale Länge von \"aktuellen\" Informationen",

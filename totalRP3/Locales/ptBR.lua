@@ -336,10 +336,14 @@ Status possíveis:
 	["CO_TOOLTIP_CROP_TEXT_TT"] = [=[Limite o número de caracteres que podem ser exibidos por cada campo na Tooltip para evitar textos excessivamente longos e possíveis problemas de exibição.
 
 |cnGREEN_FONT_COLOR:Detalhes dos limites:
-Nome: 100 caracteres
-Título: 150 caracteres
-Raça: 50 caracteres
-Classe: 50 caracteres|r]=],
+Classe: 30 caracteres
+Nome: 50 caracteres
+Guild name: 30 caracteres
+Guild rank: 30 caracteres
+Pronomes: 30 caracteres
+Raça: 30 caracteres
+Título: 100 caracteres
+Voice reference: 30 caracteres|r]=],
 	["CO_TOOLTIP_CURRENT"] = "Mostrar informação \"atual\"",
 	["CO_TOOLTIP_CURRENT_LINES"] = "Máxima \"Atuais\" quebras de linhas ",
 	["CO_TOOLTIP_CURRENT_SIZE"] = "Tamanho da informação \"atual\"",

@@ -415,10 +415,14 @@ The description doesn't have to be limited to |cnGREEN_FONT_COLOR:physical descr
 	CO_TOOLTIP_CROP_TEXT_TT = [[Limit the number of characters that can be displayed by each field in the tooltip to prevent unreasonably long texts and possible layout issues.
 
 |cnGREEN_FONT_COLOR:Limit details:
-Name: 100 characters
-Title: 150 characters
-Race: 50 characters
-Class: 50 characters|r]],
+Class: 30 characters
+Name: 50 characters
+Guild name: 30 characters
+Guild rank: 30 characters
+Pronouns: 30 characters
+Race: 30 characters
+Title: 100 characters
+Voice reference: 30 characters|r]],
 	CO_TOOLTIP_CHARACTER = "Characters tooltip",
 	CO_TOOLTIP_ANCHORED = "Anchored frame",
 	CO_TOOLTIP_ANCHOR = "Anchor point",

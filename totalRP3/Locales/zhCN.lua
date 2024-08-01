@@ -340,10 +340,14 @@ L = {
 	["CO_TOOLTIP_CROP_TEXT_TT"] = [=[限制框架中每个字段可以显示的字符数量，以防止不合理的长文本和可能的布局问题。
 
 |cnGREEN_FONT_COLOR:限制细节:
-名字: 100 字符
-标题: 150 字符
-种族:  50 字符
-职业:  50 字符|r]=],
+职业: 30 字符
+名字: 50 字符
+Guild name: 30 字符
+Guild rank: 30 字符
+人称代词: 30 字符
+种族: 30 字符
+标题: 100 字符
+Voice reference: 30 字符|r]=],
 	["CO_TOOLTIP_CURRENT"] = "显示“当前”的信息",
 	["CO_TOOLTIP_CURRENT_LINES"] = "“当前”信息的最大行数",
 	["CO_TOOLTIP_CURRENT_SIZE"] = "“当前”信息的最大长度",
