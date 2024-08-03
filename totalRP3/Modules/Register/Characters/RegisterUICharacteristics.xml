@@ -102,20 +102,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<StatusBar name="TRP3_RegisterCharact_PsychoInfoLineBar" virtual="true">
-		<Size x="105" y="14"/>
+		<Size x="105" y="16"/>
 		<Anchors>
 			<Anchor point="CENTER"/>
 		</Anchors>
 		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture parentKey="Background">
-					<Anchors>
-						<Anchor point="TOPLEFT"/>
-						<Anchor point="BOTTOMRIGHT"/>
-					</Anchors>
-					<Color r="0" g="0" b="0" a=".4"/>
-				</Texture>
-			</Layer>
 			<Layer level="ARTWORK">
 				<Texture parentKey="BorderLeft" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
 					<Size x="16" y="0"/>
@@ -143,7 +134,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 			<Layer level="BORDER" textureSubLevel="-1">
-				<Texture parentKey="OppositeFill" file="Interface\TargetingFrame\UI-StatusBar" hWrapMode="REPEAT">
+				<Texture parentKey="OppositeFill" atlas="nameplates-bar-fill" hWrapMode="REPEAT">
+				<!-- <Texture parentKey="OppositeFill" file="Interface\TargetingFrame\UI-StatusBar" hWrapMode="REPEAT"> -->
 					<Anchors>
 						<Anchor point="TOPLEFT"/>
 						<Anchor point="BOTTOMRIGHT"/>
@@ -151,18 +143,25 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Color r="1" g="0" b="0"/>
 				</Texture>
 			</Layer>
+			<Layer level="OVERLAY">
+				<Texture parentKey="Thumb" atlas="honorsystem-bar-frame-exhaustiontick">
+					<Size x="12" y="26"/>
+				</Texture>
+			</Layer>
 		</Layers>
+		<!-- <BarTexture parentKey="Fill" file="Interface\TargetingFrame\UI-StatusBar"/> -->
+		<BarTexture parentKey="Fill" atlas="nameplates-bar-fill" hWrapMode="REPEAT"/>
 		<Scripts>
 			<OnLoad>
-				local barTexture = self:GetStatusBarTexture();
-				barTexture:SetDrawLayer("BORDER", 1);
+				self.Fill:SetDrawLayer("BORDER", 1);
+				self.Thumb:ClearAllPoints();
+				self.Thumb:SetPoint("CENTER", self.Fill, "RIGHT", 0, 2);
 			</OnLoad>
 		</Scripts>
-		<BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
 	</StatusBar>
 
 	<!-- Register characteristics psycho display line -->
-	<Frame name="TRP3_RegisterCharact_PsychoInfoDisplayLine" virtual="true">
+	<Frame name="TRP3_RegisterCharact_PsychoInfoDisplayLine" mixin="TRP3_RegisterTraitLineMixin" virtual="true">
 		<Size x="0" y="40"/>
 		<Frames>
 			<StatusBar name="$parentBar" parentKey="Bar" inherits="TRP3_RegisterCharact_PsychoInfoLineBar">
@@ -191,29 +190,38 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="$parentLeftText" parentKey="LeftText" text="[left text]" font="GameFontNormal" inherits="TRP3_TruncatedFontStringTooltipTemplate" justifyH="RIGHT">
-					<Size x="0" y="10"/>
+				<FontString parentKey="LeftText" inherits="GameFontNormal" mixin="TRP3_ReadableTextMixin, TRP3_TruncatedTextMixin" justifyH="RIGHT" wordwrap="false">
+					<KeyValues>
+						<KeyValue key="readableTextBackgroundColor" value="TRP3_PARCHMENT_BACKGROUND_COLOR" type="global"/>
+					</KeyValues>
 					<Anchors>
-						<Anchor point="RIGHT" relativePoint="LEFT" x="-5" y="0" relativeKey="$parent.LeftIcon"/>
-						<Anchor point="LEFT" x="0" y="0"/>
+						<Anchor point="RIGHT"  relativeKey="$parent.LeftIcon" relativePoint="LEFT" x="-5"/>
+						<Anchor point="LEFT"/>
 					</Anchors>
-					<Color r="1" g="1" b="0.4"/>
 					<KeyValues>
 						<KeyValue key="HideOnCustom" value="true" type="boolean"/>
 					</KeyValues>
+					<Scripts>
+						<OnEnter method="OnEnter"/>
+						<OnLeave method="OnLeave"/>
+					</Scripts>
 				</FontString>
-				<FontString name="$parentRightText" parentKey="RightText" text="[right text]" font="GameFontNormal" inherits="TRP3_TruncatedFontStringTooltipTemplate" justifyH="LEFT">
-					<Size x="0" y="10"/>
+				<FontString parentKey="RightText" inherits="GameFontNormal" mixin="TRP3_ReadableTextMixin, TRP3_TruncatedTextMixin" justifyH="LEFT" wordwrap="false">
+					<KeyValues>
+						<KeyValue key="readableTextBackgroundColor" value="TRP3_PARCHMENT_BACKGROUND_COLOR" type="global"/>
+					</KeyValues>
 					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0" relativeKey="$parent.RightIcon"/>
-						<Anchor point="RIGHT" x="-8" y="0"/>
+						<Anchor point="LEFT" relativeKey="$parent.RightIcon" relativePoint="RIGHT" x="5"/>
+						<Anchor point="RIGHT" x="-8"/>
 					</Anchors>
-					<Color r="0.55" g="0.55" b="0.95"/>
 					<KeyValues>
 						<KeyValue key="HideOnCustom" value="true" type="boolean"/>
 					</KeyValues>
+					<Scripts>
+						<OnEnter method="OnEnter"/>
+						<OnLeave method="OnLeave"/>
+					</Scripts>
 				</FontString>
-
 				<FontString inherits="NumberFontNormal" parentKey="LeftCount" hidden="true">
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.LeftIcon" x="-1" y="1"/>
@@ -365,28 +373,84 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="LEFT" x="15"/>
 				</Anchors>
 			</Frame>
-			<Frame parentKey="Name" inherits="TRP3_TruncatedTextTemplate">
-				<Size x="135"/>
-				<KeyValues>
-					<KeyValue key="fontStringTemplate" value="GameFontNormal"/>
-					<KeyValue key="fontStringJustifyH" value="LEFT"/>
-				</KeyValues>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Name" font="GameFontNormal" inherits="GameFontNormal" mixin="TRP3_TruncatedTextMixin" justifyH="LEFT">
+					<Size x="135"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="5"/>
+					</Anchors>
+					<Scripts>
+						<OnEnter method="OnEnter"/>
+						<OnLeave method="OnLeave"/>
+					</Scripts>
+				</FontString>
+				<FontString parentKey="Value" font="GameFontHighlight" inherits="GameFontHighlight" mixin="TRP3_ReadableTextMixin, TRP3_TruncatedTextMixin" justifyH="LEFT" wordwrap="false">
+					<KeyValues>
+						<KeyValue key="readableTextBackgroundColor" value="TRP3_PARCHMENT_BACKGROUND_COLOR" type="global"/>
+					</KeyValues>
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent.Name" relativePoint="RIGHT" x="15"/>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+					<Scripts>
+						<OnEnter method="OnEnter"/>
+						<OnLeave method="OnLeave"/>
+					</Scripts>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Frame name="TRP3_RegisterCharact_RegisterInfoECLine" virtual="true">
+		<Size y="26"/>
+		<Frames>
+			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
+				<Size x="32" y="32"/>
 				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="5"/>
-				</Anchors>
-			</Frame>
-			<Frame parentKey="Value" inherits="TRP3_TruncatedTextTemplate">
-				<KeyValues>
-					<KeyValue key="fontStringTemplate" value="GameFontHighlight"/>
-					<KeyValue key="fontStringJustifyH" value="LEFT"/>
-				</KeyValues>
-				<Size x="0" y="10"/>
-				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.Name" relativePoint="RIGHT" x="15"/>
-					<Anchor point="RIGHT"/>
+					<Anchor point="LEFT" x="15"/>
 				</Anchors>
 			</Frame>
 		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Name" font="GameFontNormal" inherits="GameFontNormal" mixin="TRP3_TruncatedTextMixin" justifyH="LEFT">
+					<Size x="135"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="5"/>
+					</Anchors>
+					<Scripts>
+						<OnEnter method="OnEnter"/>
+						<OnLeave method="OnLeave"/>
+					</Scripts>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey="Swatch" mixin="TRP3_RegisterColorSwatchMixin" inherits="TRP3_ColorSwatchTemplate, TRP3_TooltipScriptTemplate">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.Name" relativePoint="RIGHT" x="15"/>
+				</Anchors>
+			</Frame>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Value" font="GameFontHighlight" inherits="GameFontHighlight" mixin="TRP3_ReadableTextMixin, TRP3_TruncatedTextMixin" justifyH="LEFT" wordwrap="false">
+					<KeyValues>
+						<KeyValue key="readableTextBackgroundColor" value="TRP3_PARCHMENT_BACKGROUND_COLOR" type="global"/>
+					</KeyValues>
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent.Swatch" relativePoint="RIGHT" x="5"/>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+					<Scripts>
+						<OnEnter method="OnEnter"/>
+						<OnLeave method="OnLeave"/>
+					</Scripts>
+				</FontString>
+			</Layer>
+		</Layers>
 	</Frame>
 
 	<!-- Register characteristics panel -->
@@ -428,20 +492,31 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Frames>
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString name="TRP3_RegisterCharact_NamePanel_Name" text="[Name and titles]" font="GameFontHighlightLarge" inherits="TRP3_TruncatedFontStringTooltipTemplate" justifyH="LEFT">
+						<FontString name="TRP3_RegisterCharact_NamePanel_Name" text="[Name and titles]" inherits="GameFontHighlightLarge" mixin="TRP3_ReadableTextMixin, TRP3_TruncatedTextMixin" justifyH="LEFT">
 							<Size x="0" y="15"/>
+							<KeyValues>
+								<KeyValue key="readableTextBackgroundColor" value="TRP3_PARCHMENT_BACKGROUND_COLOR" type="global"/>
+							</KeyValues>
 							<Anchors>
 								<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="10" relativeKey="$parent.Icon"/>
 								<Anchor point="RIGHT" x="-35" y="0"/>
 							</Anchors>
+							<Scripts>
+								<OnEnter method="OnEnter"/>
+								<OnLeave method="OnLeave"/>
+							</Scripts>
 						</FontString>
-						<FontString name="TRP3_RegisterCharact_NamePanel_Title" text="[Complete subtitle]" font="GameFontNormal" inherits="TRP3_TruncatedFontStringTooltipTemplate" justifyH="LEFT">
+						<FontString name="TRP3_RegisterCharact_NamePanel_Title" text="[Complete subtitle]" inherits="GameFontNormal" mixin="TRP3_TruncatedTextMixin" justifyH="LEFT">
 							<Size x="0" y="15"/>
 							<Anchors>
 								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="0" y="-5" relativeTo="TRP3_RegisterCharact_NamePanel_Name"/>
 								<Anchor point="RIGHT" x="-10" y="0"/>
 							</Anchors>
 							<Color b="0.1" r="0.95" g="0.60"/>
+							<Scripts>
+								<OnEnter method="OnEnter"/>
+								<OnLeave method="OnLeave"/>
+							</Scripts>
 						</FontString>
 					</Layer>
 				</Layers>

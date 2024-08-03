@@ -9,7 +9,6 @@ local Ellyb = TRP3_API.Ellyb;
 local loc = TRP3_API.loc;
 local initList = TRP3_API.ui.list.initList;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getImageList, getImageListSize;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
@@ -752,250 +751,18 @@ end
 -- Color browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TRP3_ColorBrowser, TRP3_ColorBrowserColor = TRP3_ColorBrowser, TRP3_ColorBrowserColor;
-local toast = TRP3_API.ui.tooltip.toast;
-
-local COLOR_PRESETS_BASIC = {
-	{ CO = TRP3_API.Colors.Red, TX = loc.CM_RED},
-	{ CO = TRP3_API.Colors.Orange, TX = loc.CM_ORANGE},
-	{ CO = TRP3_API.Colors.Yellow, TX = loc.CM_YELLOW},
-	{ CO = TRP3_API.Colors.Green, TX = loc.CM_GREEN},
-	{ CO = TRP3_API.Colors.Cyan, TX = loc.CM_CYAN},
-	{ CO = TRP3_API.Colors.Blue, TX = loc.CM_BLUE},
-	{ CO = TRP3_API.Colors.Purple, TX = loc.CM_PURPLE},
-	{ CO = TRP3_API.Colors.Pink, TX = loc.CM_PINK},
-	{ CO = TRP3_API.Colors.White, TX = loc.CM_WHITE},
-	{ CO = TRP3_API.Colors.Grey, TX = loc.CM_GREY},
-	{ CO = TRP3_API.Colors.Black, TX = loc.CM_BLACK},
-}
-
-local COLOR_PRESETS_CLASS = {
-	{ CO = TRP3_API.ClassColors.HUNTER, TX = LOCALIZED_CLASS_NAMES_MALE.HUNTER or loc.CM_CLASS_HUNTER },
-	{ CO = TRP3_API.ClassColors.WARLOCK, TX = LOCALIZED_CLASS_NAMES_MALE.WARLOCK or loc.CM_CLASS_WARLOCK },
-	{ CO = TRP3_API.ClassColors.PRIEST, TX = LOCALIZED_CLASS_NAMES_MALE.PRIEST or loc.CM_CLASS_PRIEST },
-	{ CO = TRP3_API.ClassColors.PALADIN, TX = LOCALIZED_CLASS_NAMES_MALE.PALADIN or loc.CM_CLASS_PALADIN },
-	{ CO = TRP3_API.ClassColors.MAGE, TX = LOCALIZED_CLASS_NAMES_MALE.MAGE or loc.CM_CLASS_MAGE },
-	{ CO = TRP3_API.ClassColors.ROGUE, TX = LOCALIZED_CLASS_NAMES_MALE.ROGUE or loc.CM_CLASS_ROGUE },
-	{ CO = TRP3_API.ClassColors.DRUID, TX = LOCALIZED_CLASS_NAMES_MALE.DRUID or loc.CM_CLASS_DRUID },
-	{ CO = TRP3_API.ClassColors.SHAMAN, TX = LOCALIZED_CLASS_NAMES_MALE.SHAMAN or loc.CM_CLASS_SHAMAN },
-	{ CO = TRP3_API.ClassColors.WARRIOR, TX = LOCALIZED_CLASS_NAMES_MALE.WARRIOR or loc.CM_CLASS_WARRIOR },
-	{ CO = TRP3_API.ClassColors.DEATHKNIGHT, TX = LOCALIZED_CLASS_NAMES_MALE.DEATHKNIGHT or loc.CM_CLASS_DEATHKNIGHT },
-	{ CO = TRP3_API.ClassColors.MONK, TX = LOCALIZED_CLASS_NAMES_MALE.MONK or loc.CM_CLASS_MONK },
-	{ CO = TRP3_API.ClassColors.DEMONHUNTER, TX = LOCALIZED_CLASS_NAMES_MALE.DEMONHUNTER or loc.CM_CLASS_DEMONHUNTER },
-	{ CO = TRP3_API.ClassColors.EVOKER, TX = LOCALIZED_CLASS_NAMES_MALE.EVOKER or loc.CM_CLASS_EVOKER },
-}
-table.sort(COLOR_PRESETS_CLASS, function(a,b) return a.TX<b.TX end)
-
-local COLOR_PRESETS_RESOURCES = {
-	{ CO = TRP3_API.PowerTypeColors.Mana, TX = POWER_TYPE_MANA },
-	{ CO = TRP3_API.PowerTypeColors.Rage, TX = RAGE },
-	{ CO = TRP3_API.PowerTypeColors.Focus, TX = POWER_TYPE_FOCUS },
-	{ CO = TRP3_API.PowerTypeColors.Energy, TX = POWER_TYPE_ENERGY },
-	{ CO = TRP3_API.PowerTypeColors.ComboPoints, TX = COMBO_POINTS },
-	{ CO = TRP3_API.PowerTypeColors.Runes, TX = RUNES },
-	{ CO = TRP3_API.PowerTypeColors.RunicPower, TX = POWER_TYPE_RUNIC_POWER or RUNIC_POWER },
-	{ CO = TRP3_API.PowerTypeColors.SoulShards, TX = SOUL_SHARDS },
-	{ CO = TRP3_API.PowerTypeColors.LunarPower, TX = POWER_TYPE_LUNAR_POWER },
-	{ CO = TRP3_API.PowerTypeColors.HolyPower, TX = HOLY_POWER },
-	{ CO = TRP3_API.PowerTypeColors.Maelstrom, TX = POWER_TYPE_MAELSTROM },
-	{ CO = TRP3_API.PowerTypeColors.Insanity, TX = POWER_TYPE_INSANITY },
-	{ CO = TRP3_API.PowerTypeColors.Chi, TX = CHI },
-	{ CO = TRP3_API.PowerTypeColors.ArcaneCharges, TX = POWER_TYPE_ARCANE_CHARGES },
-	{ CO = TRP3_API.PowerTypeColors.Fury, TX = POWER_TYPE_FURY },
-	{ CO = TRP3_API.PowerTypeColors.Pain, TX = POWER_TYPE_PAIN },
-	{ CO = TRP3_API.PowerTypeColors.AmmoSlot, TX = AMMOSLOT },
-	{ CO = TRP3_API.PowerTypeColors.Fuel, TX = POWER_TYPE_FUEL },
-}
-
-table.sort(COLOR_PRESETS_RESOURCES, function(a,b) return a.TX<b.TX end)
-
-local COLOR_PRESETS_ITEMS = {
-	{ CO = TRP3_API.ItemQualityColors.Poor, TX = ITEM_QUALITY0_DESC},
-	{ CO = TRP3_API.ItemQualityColors.Common, TX = ITEM_QUALITY1_DESC},
-	{ CO = TRP3_API.ItemQualityColors.Uncommon, TX = ITEM_QUALITY2_DESC},
-	{ CO = TRP3_API.ItemQualityColors.Rare, TX = ITEM_QUALITY3_DESC},
-	{ CO = TRP3_API.ItemQualityColors.Epic, TX = ITEM_QUALITY4_DESC},
-	{ CO = TRP3_API.ItemQualityColors.Legendary, TX = ITEM_QUALITY5_DESC},
-	{ CO = TRP3_API.ItemQualityColors.Artifact, TX = ITEM_QUALITY6_DESC},
-	{ CO = TRP3_API.ItemQualityColors.Heirloom, TX = ITEM_QUALITY7_DESC},
-	{ CO = TRP3_API.ItemQualityColors.WoWToken, TX = ITEM_QUALITY8_DESC},
-}
-
----@param color Color
-local function getPresetForColor(color)
-	local hexa = "#" .. color:GenerateHexColorOpaque();
-	for k, colorPreset in pairs(TRP3_Colors) do
-		if colorPreset.CO == hexa then
-			return colorPreset, k;
-		end
-	end
-	return false;
-end
-
-local function CompareSortColors(a, b)
-	local h1, s1, l1 = a:GetHSL();
-	local h2, s2, l2 = b:GetHSL();
-
-	if h1 ~= h2 then
-		return h1 < h2;
-	elseif s1 ~= s2 then
-		return s1 < s2;
-	else
-		return l1 < l2;
-	end
-end
-
-
-local function saveCustomColor(color, name, indexToUpdate)
-	TRP3_ColorBrowserEditBox:ClearFocus();
-
-	local hexaColorCode = "#" .. color:GenerateHexColorOpaque();
-	if (name == "") then
-		name = hexaColorCode;
+local function ShowColorBrowser(callback, r8, g8, b8)
+	local function OnAccept(color)
+		TRP3_API.popup.hidePopups();
+		callback(color:GetRGBAsBytes());
 	end
 
-	if not indexToUpdate then
-		for index, preset in pairs(TRP3_Colors) do
-			if (TRP3_API.CreateColorFromHexString(preset.CO):IsEqualTo(color)) then
-				indexToUpdate = index;
-				break
-			end
-		end
+	local function OnCancel()
+		TRP3_API.popup.hidePopups();
 	end
 
-	if (indexToUpdate) then
-		TRP3_Colors[indexToUpdate].TX = name;
-	else
-		tinsert(TRP3_Colors, { CO = hexaColorCode, TX = name });
-		table.sort(TRP3_Colors, function(a, b)
-			return CompareSortColors(TRP3_API.CreateColorFromHexString(a.CO), TRP3_API.CreateColorFromHexString(b.CO))
-		end)
-	end
-end
-
-local function deleteCustomColorAtIndex(indexToDelete)
-	if (indexToDelete) then
-		tremove(TRP3_Colors, indexToDelete);
-	end
-end
-
-local function colorPresetsDropDownSelection(hexValue)
-	if hexValue == "SAVE" then
-		TRP3_API.popup.showTextInputPopup(loc.BW_CUSTOM_NAME .. "\n\n" .. loc.BW_CUSTOM_NAME_TT, function(text)
-			saveCustomColor(TRP3_API.CreateColor(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue), text);
-		end);
-	elseif hexValue == "RENAME" then
-		local existingPreset, index = getPresetForColor(TRP3_API.CreateColor(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue));
-		TRP3_API.popup.showTextInputPopup(loc.BW_CUSTOM_NAME .. "\n\n" .. loc.BW_CUSTOM_NAME_TT, function(text)
-			saveCustomColor(TRP3_API.CreateColor(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue), text, index);
-		end, nil, existingPreset.TX);
-	elseif hexValue == "DELETE" then
-		local _, index = getPresetForColor(TRP3_API.CreateColor(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue));
-		deleteCustomColorAtIndex(index)
-	else
-		local r, g, b = TRP3_API.CreateColorFromHexString(hexValue):GetRGB();
-		TRP3_ColorBrowser.red = r;
-		TRP3_ColorBrowser.green = g;
-		TRP3_ColorBrowser.blue = b;
-		TRP3_ColorBrowserColor:SetColorRGB(r, g, b);
-		TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
-	end
-end
-
-local function colorPresetsDropDown()
-	TRP3_MenuUtil.CreateContextMenu(TRP3_ColorBrowserPresets, function(_, description)
-		description:CreateTitle(loc.BW_COLOR_PRESET_TITLE);
-
-		local existingPreset = getPresetForColor(TRP3_API.CreateColor(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue));
-		if existingPreset then
-			local coloredText = TRP3_API.CreateColorFromHexString(existingPreset.CO):WrapTextInColorCode(existingPreset.TX);
-			description:CreateButton(loc.BW_COLOR_PRESET_RENAME:format(coloredText), colorPresetsDropDownSelection, "RENAME");
-			description:CreateButton("|cnRED_FONT_COLOR:" .. loc.BW_COLOR_PRESET_DELETE:format(coloredText) .. "|r", colorPresetsDropDownSelection, "DELETE");
-		else
-			description:CreateButton(loc.BW_COLOR_PRESET_SAVE, colorPresetsDropDownSelection, "SAVE");
-		end
-		description:CreateDivider();
-
-		local values_basic = description:CreateButton(loc.UI_COLOR_BROWSER_PRESETS_BASIC);
-		for _, preset in pairs(COLOR_PRESETS_BASIC) do
-			values_basic:CreateButton(preset.CO:WrapTextInColorCode(preset.TX), colorPresetsDropDownSelection, preset.CO:GenerateHexColorOpaque());
-		end
-
-		local values_classes = description:CreateButton(loc.UI_COLOR_BROWSER_PRESETS_CLASSES);
-		for _, preset in pairs(COLOR_PRESETS_CLASS) do
-			values_classes:CreateButton(preset.CO:WrapTextInColorCode(preset.TX), colorPresetsDropDownSelection, preset.CO:GenerateHexColorOpaque());
-		end
-
-		local values_resources = description:CreateButton(loc.UI_COLOR_BROWSER_PRESETS_RESOURCES);
-		for _, preset in pairs(COLOR_PRESETS_RESOURCES) do
-			values_resources:CreateButton(preset.CO:WrapTextInColorCode(preset.TX), colorPresetsDropDownSelection, preset.CO:GenerateHexColorOpaque());
-		end
-
-		local values_items = description:CreateButton(loc.UI_COLOR_BROWSER_PRESETS_ITEMS);
-		for _, preset in pairs(COLOR_PRESETS_ITEMS) do
-			values_items:CreateButton(preset.CO:WrapTextInColorCode(preset.TX), colorPresetsDropDownSelection, preset.CO:GenerateHexColorOpaque());
-		end
-
-		local values_custom = description:CreateButton(loc.UI_COLOR_BROWSER_PRESETS_CUSTOM);
-		for _, preset in pairs(TRP3_Colors) do
-			values_custom:CreateButton(TRP3_API.CreateColorFromHexString(preset.CO):WrapTextInColorCode(preset.TX), colorPresetsDropDownSelection, preset.CO);
-		end
-	end);
-end
-
-local function initColorBrowser()
-	TRP3_ColorBrowserSelect:SetText(loc.UI_COLOR_BROWSER_SELECT);
-	TRP3_ColorBrowserTitle:SetText(loc.UI_COLOR_BROWSER);
-	TRP3_ColorBrowserPresets:SetText(loc.UI_COLOR_BROWSER_PRESETS);
-
-	if not TRP3_Colors then
-		TRP3_Colors = {};
-	end
-
-	TRP3_ColorBrowserEditBoxText:SetText("Code");
-	setTooltipForSameFrame(TRP3_ColorBrowserEditBoxHelp, "RIGHT", 0, 5, loc.BW_COLOR_CODE, loc.BW_COLOR_CODE_TT);
-
-	TRP3_ColorBrowserEditBox:SetScript("OnEnterPressed", function(self)
-		local input = string.trim(self:GetText());
-		local color = TRP3_API.ParseColorFromHexString(input);
-
-		if color then
-			local r, g, b = color:GetRGB();
-			TRP3_ColorBrowser.red = r;
-			TRP3_ColorBrowser.green = g;
-			TRP3_ColorBrowser.blue = b;
-			TRP3_ColorBrowserColor:SetColorRGB(r, g, b);
-			TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
-			self:ClearFocus();
-		else
-			toast(loc.BW_COLOR_CODE_ALERT, 1);
-		end
-	end);
-
-	TRP3_ColorBrowserColor:SetScript("OnColorSelect", function(_, r, g, b)
-		TRP3_ColorBrowserEditBox:ClearFocus();
-
-		TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
-		TRP3_ColorBrowser.red = r;
-		TRP3_ColorBrowser.green = g;
-		TRP3_ColorBrowser.blue = b;
-		TRP3_ColorBrowserEditBox:SetText(("#%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255):upper());
-	end);
-
-	TRP3_ColorBrowserSelect:SetScript("OnClick", function()
-		hidePopups();
-		TRP3_ColorBrowser:Hide();
-		if TRP3_ColorBrowser.callback ~= nil then
-			TRP3_ColorBrowser.callback((TRP3_ColorBrowser.red or 1) * 255, (TRP3_ColorBrowser.green or 1) * 255, (TRP3_ColorBrowser.blue or 1) * 255);
-		end
-	end);
-
-	TRP3_ColorBrowserPresets:SetScript("OnClick", colorPresetsDropDown);
-end
-
-local function showColorBrowser(callback, red, green, blue)
-	TRP3_ColorBrowserColor:SetColorRGB((red or 255) / 255, (green or 255) / 255, (blue or 255) / 255);
-	TRP3_ColorBrowser.callback = callback;
+	local initialColor = TRP3_API.CreateColorFromBytes(r8 or 255, g8 or 255, b8 or 255);
+	TRP3_ColorBrowser:Open(initialColor, OnAccept, OnCancel);
 end
 
 function TRP3_ColorButtonLoad(self)
@@ -1139,7 +906,6 @@ function TRP3_API.popup.init()
 	getImageList, getImageListSize = TRP3_API.utils.resources.getImageList, TRP3_API.utils.resources.getImageListSize;
 
 	initCompanionBrowser();
-	initColorBrowser();
 	initImageBrowser();
 end
 
@@ -1164,7 +930,8 @@ local POPUP_STRUCTURE = {
 	},
 	[TRP3_API.popup.COLORS] = {
 		frame = TRP3_ColorBrowser,
-		showMethod = showColorBrowser,
+		disableCloseOnEscape = true,  -- Handled by the browser itself.
+		showMethod = ShowColorBrowser,
 	},
 	[TRP3_API.popup.ICONS] = {
 		frame = TRP3_IconBrowserFrame,
@@ -1198,18 +965,20 @@ function TRP3_API.popup.showPopup(popupID, popupPosition, popupArgs)
 
 	popup.frame:ClearAllPoints();
 
-	popup.frame:SetScript("OnKeyDown", function(_, key)
-		-- Do not steal input if we're in combat.
-		if InCombatLockdown() then return; end
+	if not popup.disableCloseOnEscape then
+		popup.frame:HookScript("OnKeyDown", function(_, key)
+			-- Do not steal input if we're in combat.
+			if InCombatLockdown() then return; end
 
-		if key == "ESCAPE" then
-			PlaySound(TRP3_InterfaceSounds.PopupClose);
-			popup.frame:SetPropagateKeyboardInput(false);
-			hidePopups();
-		else
-			popup.frame:SetPropagateKeyboardInput(true);
-		end
-	end);
+			if key == "ESCAPE" then
+				PlaySound(TRP3_InterfaceSounds.PopupClose);
+				popup.frame:SetPropagateKeyboardInput(false);
+				hidePopups();
+			else
+				popup.frame:SetPropagateKeyboardInput(true);
+			end
+		end);
+	end
 
 	if popupPosition and popupPosition.parent then
 		popup.frame:SetParent(popupPosition.parent);

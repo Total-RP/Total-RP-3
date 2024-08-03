@@ -14,6 +14,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="TabSystem.xml"/>
 	<Include file="RegionResizeTemplate.xml"/>
 	<Include file="FontUtil.lua"/>
+	<Include file="TextUtil.lua"/>
+	<Include file="ColorSwatch.xml"/>
 	<Include file="Tooltip\Tooltip.xml"/>
 	<Include file="Widgets.lua"/>
 	<Include file="Menu\Menu.xml"/>
@@ -22,27 +24,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="ProfileManager\ProfileManager.xml"/>
 
 	<GameTooltip name="TRP3_TooltipTemplate" mixin="TRP3_TooltipMixin" inherits="GameTooltipTemplate" virtual="true"/>
-
-	<!--
-		TRP3_TruncatedTextTemplate
-
-		Fontable frame template that displays a tooltip for its contents if
-		they would be truncated.
-	-->
-
-	<Frame name="TRP3_TruncatedTextTemplate" virtual="true" inherits="TruncatedTooltipScriptTemplate" mixin="TRP3_TruncatedTextMixin">
-		<KeyValues>
-			<KeyValue key="fontStringLayer" value="OVERLAY"/>
-			<KeyValue key="fontStringTemplate" value="GameFontNormal"/>
-			<KeyValue key="fontStringSublayer" value="0" type="number"/>
-			<!-- <KeyValue key="fontStringColor" value="NORMAL_FONT_COLOR" type="global"/> -->
-			<!-- <KeyValue key="fontStringJustifyH" value="CENTER"/> -->
-			<!-- <KeyValue key="fontStringJustifyV" value="MIDDLE"/> -->
-		</KeyValues>
-		<Scripts>
-			<OnLoad method="OnLoad" inherit="prepend"/>
-		</Scripts>
-	</Frame>
 
 	<!-- Common close button  -->
 	<Button name="TRP3_CloseButton" inherits="UIPanelCloseButton" virtual="true">

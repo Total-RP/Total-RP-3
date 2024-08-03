@@ -119,3 +119,28 @@ function TRP3_MenuTemplates.CreateDivider()
 	local elementDescription = CreateDividerDescription();
 	return elementDescription;
 end
+
+function TRP3_MenuTemplates.CreateColorSelectionButton(text, color, callback, data)
+	local elementDescription = TRP3_MenuUtil.CreateButton(text, callback, data);
+
+	if TRP3_USE_MODERN_MENUS then
+		local function ColorSwatchInitializer(frame)
+			frame.colorSwatch = frame:AttachTemplate("TRP3_ColorSwatchTemplate");
+			frame.colorSwatch:SetPoint("LEFT");
+			frame.colorSwatch:SetSize(16, 16);
+			frame.colorSwatch:SetColor(color);
+
+			frame.fontString:SetPoint("LEFT", frame.colorSwatch, "RIGHT", 5, 0);
+		end
+
+		elementDescription:AddInitializer(ColorSwatchInitializer);
+	else
+		local function TextColorInitializer(info)
+			info.text = color:WrapTextInColorCode(info.text or "");
+		end
+
+		elementDescription:AddInitializer(TextColorInitializer);
+	end
+
+	return elementDescription;
+end
