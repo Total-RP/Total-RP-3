@@ -51,6 +51,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<Layers>
 							<Layer level="OVERLAY">
 								<FontString name="$parent_Name" text="[Name and titles]" inherits="GameFontHighlightLarge" mixin="TRP3_ReadableTextMixin, TRP3_TruncatedTextMixin" justifyH="LEFT">
+									<KeyValues>
+										<KeyValue key="readableTextBackgroundColor" value="TRP3_PARCHMENT_BACKGROUND_COLOR" type="global"/>
+									</KeyValues>
 									<Size x="0" y="15"/>
 									<Anchors>
 										<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="10" relativeKey="$parent.Icon"/>

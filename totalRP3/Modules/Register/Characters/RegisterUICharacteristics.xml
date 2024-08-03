@@ -65,27 +65,27 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="LEFT" x="-5"/>
 				</Anchors>
 			</Button>
-			<Button name="$parentIcon" parentKey="Icon" inherits="TRP3_IconButton">
+			<Button parentKey="Icon" inherits="TRP3_IconButton">
 				<Anchors>
-					<Anchor point="LEFT" x="30" y="0"/>
+					<Anchor point="LEFT" x="30"/>
 				</Anchors>
 			</Button>
-			<EditBox name="$parentNameField" inherits="TRP3_TitledHelpEditBox">
+			<EditBox parentKey="NameField" inherits="TRP3_TitledHelpEditBox">
 				<Size x="100" y="18"/>
 				<Anchors>
-					<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentIcon"/>
+					<Anchor point="LEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="15"/>
 				</Anchors>
 			</EditBox>
-			<EditBox name="$parentValueField" inherits="TRP3_TitledHelpEditBox">
-				<Size x="0" y="18"/>
+			<EditBox parentKey="ValueField" inherits="TRP3_TitledHelpEditBox">
+				<Size y="18"/>
 				<Anchors>
-					<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentNameField"/>
-					<Anchor point="RIGHT" x="-40" y="0"/>
+					<Anchor point="LEFT" relativeKey="$parent.NameField" relativePoint="RIGHT" x="15"/>
+					<Anchor point="RIGHT" x="-40"/>
 				</Anchors>
 			</EditBox>
-			<Button name="$parentAction" inherits="TRP3_ActionButton">
+			<Button parentKey="Action" inherits="TRP3_ActionButton">
 				<Anchors>
-					<Anchor point="RIGHT" relativeKey="$parent" x="20"/>
+					<Anchor point="RIGHT" x="20"/>
 				</Anchors>
 			</Button>
 		</Frames>
@@ -94,7 +94,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<FontString parentKey="PresetName" text="[preset]" inherits="GameFontHighlight" justifyH="LEFT">
 					<Size x="100" y="18"/>
 					<Anchors>
-						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentIcon"/>
+						<Anchor point="LEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="15"/>
 					</Anchors>
 				</FontString>
 			</Layer>
@@ -109,7 +109,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Layers>
 			<Layer level="ARTWORK">
 				<Texture parentKey="BorderLeft" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
-					<Size x="16" y="0"/>
+					<Size x="16"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" x="-6" y="5"/>
 						<Anchor point="BOTTOMLEFT" x="-6" y="-5"/>
@@ -117,7 +117,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<TexCoords left="0" right="0.0625" top="0" bottom="0.75"/>
 				</Texture>
 				<Texture parentKey="BorderRight" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
-					<Size x="16" y="0"/>
+					<Size x="16"/>
 					<Anchors>
 						<Anchor point="TOPRIGHT" x="6" y="5"/>
 						<Anchor point="BOTTOMRIGHT" x="6" y="-5"/>
@@ -162,17 +162,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<!-- Register characteristics psycho display line -->
 	<Frame name="TRP3_RegisterCharact_PsychoInfoDisplayLine" mixin="TRP3_RegisterTraitLineMixin" virtual="true">
-		<Size x="0" y="40"/>
+		<Size y="40"/>
 		<Frames>
-			<StatusBar name="$parentBar" parentKey="Bar" inherits="TRP3_RegisterCharact_PsychoInfoLineBar">
+			<StatusBar parentKey="Bar" inherits="TRP3_RegisterCharact_PsychoInfoLineBar" minValue="0" maxValue="20" defaultValue="10">
 				<Anchors>
-					<Anchor point="CENTER" x="0" y="0"/>
+					<Anchor point="CENTER"/>
 				</Anchors>
 			</StatusBar>
 			<Frame parentKey="LeftIcon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
 				<Size x="38" y="38"/>
 				<Anchors>
-					<Anchor point="RIGHT" relativePoint="LEFT" x="-7" y="0" relativeKey="$parent.Bar"/>
+					<Anchor point="RIGHT" relativePoint="LEFT" x="-7" relativeKey="$parent.Bar"/>
 				</Anchors>
 				<KeyValues>
 					<KeyValue key="HideOnCustom" value="true" type="boolean"/>
@@ -181,7 +181,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Frame parentKey="RightIcon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
 				<Size x="38" y="38"/>
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" x="7" y="0" relativeKey="$parent.Bar"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" x="7" relativeKey="$parent.Bar"/>
 				</Anchors>
 				<KeyValues>
 					<KeyValue key="HideOnCustom" value="true" type="boolean"/>
@@ -241,25 +241,21 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Scripts>
-			<OnEnter>
-				TRP3_API.register.togglePsychoCountText(self, true);
-			</OnEnter>
-			<OnLeave>
-				TRP3_API.register.togglePsychoCountText(self, false);
-			</OnLeave>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
 		</Scripts>
 	</Frame>
 
 	<!-- Register characteristics psycho edit line -->
 	<Frame name="TRP3_RegisterCharact_PsychoInfoEditLine" inherits="TRP3_RegisterCharact_PsychoInfoDisplayLine" virtual="true">
-		<Size x="0" y="40"/>
+		<Size y="40"/>
 		<Frames>
-			<Slider name="$parentBarSlider" parentKey="Slider" orientation="HORIZONTAL" enableMouse="true" valueStep="1" obeyStepOnDrag="true">
+			<Slider parentKey="Slider" orientation="HORIZONTAL" enableMouse="true" minValue="0" maxValue="20" defaultValue="10" valueStep="1" obeyStepOnDrag="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeKey="$parent.Bar" x="-16"/>
 					<Anchor point="BOTTOMRIGHT" relativeKey="$parent.Bar" x="16"/>
 				</Anchors>
-				<HitRectInsets left="12" right="12" top="0" bottom="0" />
+				<HitRectInsets left="12" right="12"/>
 				<ThumbTexture parentKey="Thumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
 					<Size x="32" y="32"/>
 				</ThumbTexture>
@@ -282,9 +278,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</Button>
 
-			<Button name="$parentLeftIcon" parentKey="CustomLeftIcon" inherits="TRP3_IconButton">
+			<Button parentKey="CustomLeftIcon" inherits="TRP3_IconButton">
 				<Anchors>
-					<Anchor point="RIGHT" relativeKey="$parent.LeftIcon" x="-6" />
+					<Anchor point="RIGHT" relativeKey="$parent.LeftIcon" x="-6"/>
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
@@ -299,9 +295,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<KeyValue key="HideOnPreset" value="true" type="boolean"/>
 				</KeyValues>
 			</Button>
-			<Button name="$parentRightIcon" parentKey="CustomRightIcon" inherits="TRP3_IconButton">
+			<Button parentKey="CustomRightIcon" inherits="TRP3_IconButton">
 				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.RightIcon" x="6" />
+					<Anchor point="LEFT" relativeKey="$parent.RightIcon" x="6"/>
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
@@ -317,54 +313,54 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</KeyValues>
 			</Button>
 
-			<Button name="$parentCustomLeftColor" parentKey="CustomLeftColor" inherits="TRP3_ColorPickerButton">
+			<Button parentKey="CustomLeftColor" inherits="TRP3_ColorPickerButton">
 				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent" relativePoint="LEFT" x="22" y="0" />
+					<Anchor point="LEFT" x="22"/>
 				</Anchors>
 				<KeyValues>
 					<KeyValue key="HideOnPreset" value="true" type="boolean"/>
 				</KeyValues>
 			</Button>
-			<Button name="$parentCustomRightColor" parentKey="CustomRightColor" inherits="TRP3_ColorPickerButton">
+			<Button parentKey="CustomRightColor" inherits="TRP3_ColorPickerButton">
 				<Anchors>
-					<Anchor point="RIGHT" relativeKey="$parent" relativePoint="RIGHT" x="-22" y="0" />
+					<Anchor point="RIGHT" relativePoint="RIGHT" x="-22"/>
 				</Anchors>
 				<KeyValues>
 					<KeyValue key="HideOnPreset" value="true" type="boolean"/>
 				</KeyValues>
 			</Button>
 
-			<EditBox name="$parentLeftField" parentKey="CustomLeftField" inherits="TRP3_TitledEditBox">
-				<Size x="0" y="20"/>
+			<EditBox parentKey="CustomLeftField" inherits="TRP3_TitledEditBox">
+				<Size y="20"/>
 				<Anchors>
-					<Anchor point="RIGHT" relativeKey="$parent.CustomLeftIcon" relativePoint="LEFT" x="-12" y="0"/>
-					<Anchor point="LEFT" relativeKey="$parent.CustomLeftColor" relativePoint="RIGHT" x="12" y="0"/>
+					<Anchor point="RIGHT" relativeKey="$parent.CustomLeftIcon" relativePoint="LEFT" x="-12"/>
+					<Anchor point="LEFT" relativeKey="$parent.CustomLeftColor" relativePoint="RIGHT" x="12"/>
 				</Anchors>
 				<KeyValues>
 					<KeyValue key="HideOnPreset" value="true" type="boolean"/>
 				</KeyValues>
 			</EditBox>
-			<EditBox name="$parentRightField" parentKey="CustomRightField" inherits="TRP3_TitledEditBox">
-				<Size x="0" y="20"/>
+			<EditBox parentKey="CustomRightField" inherits="TRP3_TitledEditBox">
+				<Size y="20"/>
 				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.CustomRightIcon" relativePoint="RIGHT" x="12" y="0"/>
-					<Anchor point="RIGHT" relativeKey="$parent.CustomRightColor" relativePoint="LEFT" x="-12" y="0"/>
+					<Anchor point="LEFT" relativeKey="$parent.CustomRightIcon" relativePoint="RIGHT" x="12"/>
+					<Anchor point="RIGHT" relativeKey="$parent.CustomRightColor" relativePoint="LEFT" x="-12"/>
 				</Anchors>
 				<KeyValues>
 					<KeyValue key="HideOnPreset" value="true" type="boolean"/>
 				</KeyValues>
 			</EditBox>
 
-			<Button name="$parentAction" parentKey="ActionButton" inherits="TRP3_ActionButton">
+			<Button parentKey="ActionButton" inherits="TRP3_ActionButton">
 				<Anchors>
-					<Anchor point="RIGHT" relativeKey="$parent" relativePoint="RIGHT" x="10" y="0"/>
+					<Anchor point="RIGHT" x="10"/>
 				</Anchors>
 			</Button>
 		</Frames>
 	</Frame>
 
 	<!-- Register characteristics register line -->
-	<Frame name="TRP3_RegisterCharact_RegisterInfoLine" virtual="true">
+	<Frame name="TRP3_RegisterCharact_RegisterInfoLine" mixin="TRP3_RegisterInfoLineMixin" virtual="true">
 		<Size y="26"/>
 		<Frames>
 			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
@@ -376,7 +372,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Name" font="GameFontNormal" inherits="GameFontNormal" mixin="TRP3_TruncatedTextMixin" justifyH="LEFT">
+				<FontString parentKey="Title" font="GameFontNormal" inherits="GameFontNormal" mixin="TRP3_TruncatedTextMixin" justifyH="LEFT">
 					<Size x="135"/>
 					<Anchors>
 						<Anchor point="LEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="5"/>
@@ -391,7 +387,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<KeyValue key="readableTextBackgroundColor" value="TRP3_PARCHMENT_BACKGROUND_COLOR" type="global"/>
 					</KeyValues>
 					<Anchors>
-						<Anchor point="LEFT" relativeKey="$parent.Name" relativePoint="RIGHT" x="15"/>
+						<Anchor point="LEFT" relativeKey="$parent.Title" relativePoint="RIGHT" x="15"/>
 						<Anchor point="RIGHT"/>
 					</Anchors>
 					<Scripts>
@@ -401,9 +397,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</FontString>
 			</Layer>
 		</Layers>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnSizeChanged method="OnSizeChanged"/>
+		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_RegisterCharact_RegisterInfoECLine" virtual="true">
+	<Frame name="TRP3_RegisterCharact_RegisterInfoSwatchLine" mixin="TRP3_RegisterInfoSwatchLineMixin" virtual="true">
 		<Size y="26"/>
 		<Frames>
 			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
@@ -415,7 +415,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Name" font="GameFontNormal" inherits="GameFontNormal" mixin="TRP3_TruncatedTextMixin" justifyH="LEFT">
+				<FontString parentKey="Title" font="GameFontNormal" inherits="GameFontNormal" mixin="TRP3_TruncatedTextMixin" justifyH="LEFT">
 					<Size x="135"/>
 					<Anchors>
 						<Anchor point="LEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="5"/>
@@ -430,7 +430,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Frames>
 			<Frame parentKey="Swatch" mixin="TRP3_RegisterColorSwatchMixin" inherits="TRP3_ColorSwatchTemplate, TRP3_TooltipScriptTemplate">
 				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.Name" relativePoint="RIGHT" x="15"/>
+					<Anchor point="LEFT" relativeKey="$parent.Title" relativePoint="RIGHT" x="15"/>
 				</Anchors>
 			</Frame>
 		</Frames>
@@ -451,6 +451,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</FontString>
 			</Layer>
 		</Layers>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnSizeChanged method="OnSizeChanged"/>
+		</Scripts>
 	</Frame>
 
 	<!-- Register characteristics panel -->
@@ -467,14 +471,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Frame>
 			<!-- CONSULT MODE -->
 			<Frame name="TRP3_RegisterCharact_NamePanel" inherits="TRP3_GroupBoxTemplate">
-				<Size x="0" y="70"/>
+				<Size y="70"/>
 				<KeyValues>
 					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-20"/>
-					<Anchor point="LEFT" x="10" y="0"/>
-					<Anchor point="RIGHT" x="-95" y="0"/>
+					<Anchor point="TOP" y="-20"/>
+					<Anchor point="LEFT" x="10"/>
+					<Anchor point="RIGHT" x="-95"/>
 				</Anchors>
 				<Frames>
 					<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate" useParentLevel="true">
@@ -493,13 +497,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Layers>
 					<Layer level="OVERLAY">
 						<FontString name="TRP3_RegisterCharact_NamePanel_Name" text="[Name and titles]" inherits="GameFontHighlightLarge" mixin="TRP3_ReadableTextMixin, TRP3_TruncatedTextMixin" justifyH="LEFT">
-							<Size x="0" y="15"/>
+							<Size y="15"/>
 							<KeyValues>
 								<KeyValue key="readableTextBackgroundColor" value="TRP3_PARCHMENT_BACKGROUND_COLOR" type="global"/>
 							</KeyValues>
 							<Anchors>
 								<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="10" relativeKey="$parent.Icon"/>
-								<Anchor point="RIGHT" x="-35" y="0"/>
+								<Anchor point="RIGHT" x="-35"/>
 							</Anchors>
 							<Scripts>
 								<OnEnter method="OnEnter"/>
@@ -507,10 +511,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							</Scripts>
 						</FontString>
 						<FontString name="TRP3_RegisterCharact_NamePanel_Title" text="[Complete subtitle]" inherits="GameFontNormal" mixin="TRP3_TruncatedTextMixin" justifyH="LEFT">
-							<Size x="0" y="15"/>
+							<Size y="15"/>
 							<Anchors>
-								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="0" y="-5" relativeTo="TRP3_RegisterCharact_NamePanel_Name"/>
-								<Anchor point="RIGHT" x="-10" y="0"/>
+								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" y="-5" relativeTo="TRP3_RegisterCharact_NamePanel_Name"/>
+								<Anchor point="RIGHT" x="-10"/>
 							</Anchors>
 							<Color b="0.1" r="0.95" g="0.60"/>
 							<Scripts>
@@ -539,9 +543,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Layers>
 					<Layer level="OVERLAY">
 						<FontString name="TRP3_RegisterCharact_CharactPanel_Empty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
-							<Size x="0" y="10"/>
+							<Size y="10"/>
 							<Anchors>
-								<Anchor point="CENTER" x="0" y="0"/>
+								<Anchor point="CENTER"/>
 							</Anchors>
 							<Color r="0.95" g="0.95" b="0.95"/>
 						</FontString>
@@ -584,25 +588,25 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Frames>
 			</Frame>
 			<Button name="TRP3_RegisterCharact_ActionButton" inherits="TRP3_BorderedIconButtonTemplate">
-				<Size x="45" y="45" />
+				<Size x="45" y="45"/>
 				<HighlightTexture parentKey="HighlightBorder" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-sm-glow" alphaMode="ADD">
 					<Color r="0.92" g="0.68" b="0"/>
 				</HighlightTexture>
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_NamePanel" x="20" y="0"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_NamePanel" x="20"/>
 				</Anchors>
 			</Button>
 
 			<!-- EDIT MODE -->
 			<Frame name="TRP3_RegisterCharact_Edit_NamePanel" inherits="TRP3_GroupBoxTemplate">
-				<Size x="0" y="70"/>
+				<Size y="70"/>
 				<KeyValues>
 					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-20"/>
-					<Anchor point="LEFT" x="10" y="0"/>
-					<Anchor point="RIGHT" x="-95" y="0"/>
+					<Anchor point="TOP" y="-20"/>
+					<Anchor point="LEFT" x="10"/>
+					<Anchor point="RIGHT" x="-95"/>
 				</Anchors>
 				<Frames>
 					<Button name="TRP3_RegisterCharact_Edit_NamePanel_Icon" inherits="TRP3_IconButton">
@@ -619,7 +623,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Button name="TRP3_RegisterCharact_NamePanel_Edit_CancelButton" inherits="TRP3_CommonButton">
 						<Size x="75" y="22"/>
 						<Anchors>
-							<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_NamePanel_Edit_SaveButton"/>
+							<Anchor point="TOP" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_NamePanel_Edit_SaveButton"/>
 						</Anchors>
 					</Button>
 					<EditBox name="TRP3_RegisterCharact_Edit_FirstField" inherits="TRP3_TitledHelpEditBox">
@@ -629,27 +633,27 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</EditBox>
 					<EditBox name="TRP3_RegisterCharact_Edit_TitleField" inherits="TRP3_TitledHelpEditBox">
 						<Anchors>
-							<Anchor point="TOP" x="0" y="-18"/>
-							<Anchor point="LEFT" x="20" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_NamePanel_Icon"/>
-							<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_Edit_FirstField" x="-14" y="0"/>
+							<Anchor point="TOP" y="-18"/>
+							<Anchor point="LEFT" x="20" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_NamePanel_Icon"/>
+							<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_Edit_FirstField" x="-14"/>
 						</Anchors>
 					</EditBox>
 					<EditBox name="TRP3_RegisterCharact_Edit_LastField" inherits="TRP3_TitledHelpEditBox">
 						<Anchors>
-							<Anchor point="LEFT" x="14" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_FirstField"/>
-							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="LEFT" x="14" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_FirstField"/>
+							<Anchor point="RIGHT" x="-20"/>
 						</Anchors>
 					</EditBox>
 					<EditBox name="TRP3_RegisterCharact_Edit_FullTitleField" inherits="TRP3_TitledHelpEditBox">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_TitleField"/>
-							<Anchor point="RIGHT" x="-20" y="0"/>
+							<Anchor point="TOPLEFT" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_TitleField"/>
+							<Anchor point="RIGHT" x="-20"/>
 						</Anchors>
 					</EditBox>
 				</Frames>
 			</Frame>
 			<Frame name="TRP3_RegisterCharact_Edit_CharactPanel" inherits="TRP3_GroupBoxTemplate">
-				<Size x="0" y="70"/>
+				<Size y="70"/>
 				<KeyValues>
 					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 				</KeyValues>
@@ -693,52 +697,52 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<Frame name="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint">
 										<Size x="10" y="10"/>
 										<Anchors>
-											<Anchor point="CENTER" x="0" y="0"/>
+											<Anchor point="CENTER"/>
 										</Anchors>
 									</Frame>
 									<EditBox name="TRP3_RegisterCharact_Edit_RaceField" inherits="TRP3_TitledHelpEditBox">
-										<Size x="0" y="18"/>
+										<Size y="18"/>
 										<Anchors>
 											<Anchor point="TOPLEFT" x="10" y="-5" relativePoint="BOTTOMLEFT" relativeKey="$parent.RegisterTitle"/>
-											<Anchor point="RIGHT" x="0" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
+											<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
 										</Anchors>
 									</EditBox>
 									<EditBox name="TRP3_RegisterCharact_Edit_ClassField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="170" y="18"/>
 										<Anchors>
-											<Anchor point="LEFT" x="25" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_RaceField"/>
-											<Anchor point="RIGHT" x="-40" y="0"/>
+											<Anchor point="LEFT" x="25" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_RaceField"/>
+											<Anchor point="RIGHT" x="-40"/>
 										</Anchors>
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_ClassButton" inherits="TRP3_ColorPickerButton">
 										<Anchors>
-											<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_ClassField"/>
+											<Anchor point="LEFT" x="10" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_ClassField"/>
 										</Anchors>
 									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_AgeField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="200" y="18"/>
 										<Anchors>
-											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_RaceField"/>
-											<Anchor point="RIGHT" x="0" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
+											<Anchor point="TOPLEFT" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_RaceField"/>
+											<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
 										</Anchors>
 									</EditBox>
 									<EditBox name="TRP3_RegisterCharact_Edit_EyeField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="170" y="18"/>
 										<Anchors>
-											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_AgeField"/>
-											<Anchor point="RIGHT" x="-30" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
+											<Anchor point="TOPLEFT" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_AgeField"/>
+											<Anchor point="RIGHT" x="-30" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
 										</Anchors>
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_EyeButton" inherits="TRP3_ColorPickerButton">
 										<Anchors>
-											<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_EyeField"/>
+											<Anchor point="LEFT" x="10" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_EyeField"/>
 										</Anchors>
 									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_HeightField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="200" y="18"/>
 										<Anchors>
-											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_EyeField"/>
-											<Anchor point="RIGHT" x="0" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
+											<Anchor point="TOPLEFT" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_EyeField"/>
+											<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
 										</Anchors>
 									</EditBox>
 									<Frame name="TRP3_RegisterCharact_Dropdown_RelationshipField" inherits="TRP3_TitledDropdown">
@@ -750,32 +754,32 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<EditBox name="TRP3_RegisterCharact_Edit_ResidenceField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="170" y="18"/>
 										<Anchors>
-											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_ClassField"/>
-											<Anchor point="RIGHT" x="-40" y="0"/>
+											<Anchor point="TOPLEFT" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_ClassField"/>
+											<Anchor point="RIGHT" x="-40"/>
 										</Anchors>
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_ResidenceButton" inherits="TRP3_MapHereButton">
 										<Anchors>
-											<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_ResidenceField"/>
+											<Anchor point="LEFT" x="10" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_ResidenceField"/>
 										</Anchors>
 									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_BirthplaceField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="170" y="18"/>
 										<Anchors>
-											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_ResidenceField"/>
-											<Anchor point="RIGHT" x="-40" y="0"/>
+											<Anchor point="TOPLEFT" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_ResidenceField"/>
+											<Anchor point="RIGHT" x="-40"/>
 										</Anchors>
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_BirthplaceButton" inherits="TRP3_MapHereButton">
 										<Anchors>
-											<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_BirthplaceField"/>
+											<Anchor point="LEFT" x="10" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_BirthplaceField"/>
 										</Anchors>
 									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_WeightField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="200" y="18"/>
 										<Anchors>
-											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_BirthplaceField"/>
-											<Anchor point="RIGHT" x="-10" y="0"/>
+											<Anchor point="TOPLEFT" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_BirthplaceField"/>
+											<Anchor point="RIGHT" x="-10"/>
 										</Anchors>
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_MiscAdd" inherits="TRP3_CommonButton">
