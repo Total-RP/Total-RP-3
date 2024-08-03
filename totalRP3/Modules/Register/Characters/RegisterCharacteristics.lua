@@ -165,17 +165,16 @@ end
 TRP3_API.register.getPlayerCompleteName = getPlayerCompleteName;
 
 local function getPsychoStructureValue(psychoStructure)
-	-- If this structure has a V2 field already then yield that, otherwise
-	-- upscale the VA field.
 	if psychoStructure.V2 then
 		return psychoStructure.V2;
 	elseif psychoStructure.VA then
+		-- VA field was deprecated in ~2018, however support for rendering it
+		-- is retained in case someone imports an old profile.
 		local scale = Globals.PSYCHO_MAX_VALUE_V2 / Globals.PSYCHO_MAX_VALUE_V1;
 		return math.floor((psychoStructure.VA * scale) + 0.5);
+	else
+		return Globals.PSYCHO_DEFAULT_VALUE_V2;
 	end
-
-	-- In really broken cases we'll return the default.
-	return Globals.PSYCHO_DEFAULT_VALUE_V2;
 end
 
 local function refreshPsycho(psychoLine, value)
@@ -549,12 +548,18 @@ local function saveInDraft()
 
 			local lc = psychoLine.LC;
 			if lc then
-				psychoStructure.LC = lc:GetRGBTable();
+				local r = RoundToSignificantDigits(lc.r, 2);
+				local g = RoundToSignificantDigits(lc.g, 2);
+				local b = RoundToSignificantDigits(lc.b, 2);
+				psychoStructure.LC = { r = r, g = g, b = b };
 			end
 
 			local rc = psychoLine.RC;
 			if rc then
-				psychoStructure.RC = rc:GetRGBTable();
+				local r = RoundToSignificantDigits(rc.r, 2);
+				local g = RoundToSignificantDigits(rc.g, 2);
+				local b = RoundToSignificantDigits(rc.b, 2);
+				psychoStructure.RC = { r = r, g = g, b = b };
 			end
 		else
 			-- Don't save preset data !
@@ -565,13 +570,6 @@ local function saveInDraft()
 			psychoStructure.LC = nil;
 			psychoStructure.RC = nil;
 		end
-
-		-- We'll also update the VA field so that changes made in newer versions
-		-- can, to some degree, be shown to older clients.
-		--
-		-- Floating point numbers get rounded to nearest integers.
-		local downscale = Globals.PSYCHO_MAX_VALUE_V1 / Globals.PSYCHO_MAX_VALUE_V2;
-		psychoStructure.VA = math.floor((psychoStructure.V2 * downscale) + 0.5);
 	end
 	-- Save Misc
 	for index, miscStructure in pairs(draftData.MI) do
@@ -729,13 +727,11 @@ local function psychoAdd(presetID)
 			LI = "INV_Misc_QuestionMark",
 			RT = loc.REG_PLAYER_RIGHTTRAIT,
 			RI = "INV_Misc_QuestionMark",
-			VA = Globals.PSYCHO_DEFAULT_VALUE_V1,
 			V2 = Globals.PSYCHO_DEFAULT_VALUE_V2,
 		});
 	else
 		tinsert(draftData.PS, {
 			ID = presetID,
-			VA = Globals.PSYCHO_DEFAULT_VALUE_V1,
 			V2 = Globals.PSYCHO_DEFAULT_VALUE_V2,
 		});
 	end

@@ -139,17 +139,11 @@ local PS_CUSTOM_FORMAT = "[trait value=\"%.2f\""
 module.TryRegisterField("PS", {
 	Serialize = function(traits)
 		local out = {};
-		for i = 1, #traits do
-			-- Start writing out this trait.
-			local trait = traits[i];
-
-			-- Support both old and new range values. Default if not
-			-- present to something sensible.
+		for _, trait in ipairs(traits) do
 			local value = (Globals.PSYCHO_DEFAULT_VALUE_V2 / Globals.PSYCHO_MAX_VALUE_V2);
+
 			if trait.V2 then
 				value = trait.V2 / Globals.PSYCHO_MAX_VALUE_V2;
-			elseif trait.VA then
-				value = trait.VA / Globals.PSYCHO_MAX_VALUE_V1;
 			end
 
 			-- If there's an ID it's a built-in trait, otherwise it's custom
@@ -209,7 +203,6 @@ module.TryRegisterField("PS", {
 				if key == "id" then
 					struct.ID = tonumber(value);
 				elseif key == "value" then
-					struct.VA = math.floor(tonumber(value) * Globals.PSYCHO_MAX_VALUE_V1);
 					struct.V2 = math.floor(tonumber(value) * Globals.PSYCHO_MAX_VALUE_V2);
 				elseif key == "left-name" then
 					struct.LT = value;
