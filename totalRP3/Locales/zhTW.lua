@@ -22,9 +22,6 @@ L = {
 |cff00ff00你可以在一般設定中關閉或修改廣播頻道。]=],
 	["BROADCAST_PASSWORDED"] = [=[|cffff0000玩家|r %s |cffff0000剛剛修改了廣播頻道的密碼 (%s).
 |cffff9900如果你不知道密碼，你將無法使用顯示地圖上玩家的功能。]=],
-	["BW_COLOR_CODE"] = "顏色代碼",
-	["BW_COLOR_CODE_ALERT"] = "十六進制碼錯誤",
-	["BW_COLOR_CODE_TT"] = "您可以在這裡貼上6位數的十六進制顏色代碼，然後按Enter。",
 	["BW_COLOR_PRESET_SAVE"] = "儲存目前顏色",
 	["BW_COLOR_PRESET_TITLE"] = "顏色預覽",
 	["BW_CUSTOM_NAME"] = "設計名稱的顏色",

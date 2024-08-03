@@ -11,54 +11,53 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ConfigH1" virtual="true">
 		<Size y="35"/>
-		<Frames>
-			<Frame parentKey="Title" inherits="TRP3_TruncatedTextTemplate">
-				<Size y="10"/>
-				<Anchors>
-					<Anchor point="LEFT"/>
-					<Anchor point="RIGHT"/>
-				</Anchors>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString parentKey="Text" inherits="GameFontHighlightLarge" setAllPoints="true" justifyH="LEFT" wordwrap="true"/>
-					</Layer>
-				</Layers>
-			</Frame>
-		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Title" inherits="GameFontHighlightLarge" mixin="TRP3_TruncatedTextMixin" wordwrap="false" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="LEFT"/>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+					<Scripts>
+						<OnEnter method="OnEnter"/>
+						<OnLeave method="OnLeave"/>
+					</Scripts>
+				</FontString>
+			</Layer>
+		</Layers>
 	</Frame>
 
 	<Frame name="TRP3_ConfigParagraph" virtual="true">
 		<Size y="65"/>
-		<Frames>
-			<Frame parentKey="Title" inherits="TRP3_TruncatedTextTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT"/>
-					<Anchor point="BOTTOMRIGHT"/>
-				</Anchors>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString parentKey="Text" inherits="GameFontHighlightSmall" setAllPoints="true" justifyH="LEFT" wordwrap="true"/>
-					</Layer>
-				</Layers>
-			</Frame>
-		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Title" inherits="GameFontHighlightSmall" mixin="TRP3_TruncatedTextMixin" setAllPoints="true" wordwrap="true" justifyH="LEFT">
+					<Scripts>
+						<OnEnter method="OnEnter"/>
+						<OnLeave method="OnLeave"/>
+					</Scripts>
+				</FontString>
+			</Layer>
+		</Layers>
 	</Frame>
 
 	<Frame name="TRP3_ConfigNote" virtual="true">
 		<Size y="35"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Title" inherits="GameFontHighlight" mixin="TRP3_TruncatedTextMixin" wordwrap="false" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="LEFT" x="25"/>
+						<Anchor point="RIGHT" x="-200"/>
+					</Anchors>
+					<Scripts>
+						<OnEnter method="OnEnter"/>
+						<OnLeave method="OnLeave"/>
+					</Scripts>
+				</FontString>
+			</Layer>
+		</Layers>
 		<Frames>
-			<Frame parentKey="Title" inherits="TRP3_TruncatedTextTemplate">
-				<Size y="10"/>
-				<Anchors>
-					<Anchor point="LEFT" x="25"/>
-					<Anchor point="RIGHT" x="-200"/>
-				</Anchors>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString parentKey="Text" inherits="GameFontHighlight" setAllPoints="true" justifyH="LEFT"/>
-					</Layer>
-				</Layers>
-			</Frame>
 			<Button parentKey="Help" inherits="TRP3_HelpButton">
 				<Size x="14" y="14"/>
 				<Anchors>
@@ -70,7 +69,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ConfigColorPicker" inherits="TRP3_ConfigNote" virtual="true">
 		<Frames>
-			<Button name="$parentColorPicker" parentKey="ColorSwatch" inherits="TRP3_ColorPickerButton">
+			<Button parentKey="ColorPicker" inherits="TRP3_ColorPickerButton">
 				<Anchors>
 					<Anchor point="RIGHT" x="-14"/>
 				</Anchors>

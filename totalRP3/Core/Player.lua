@@ -139,7 +139,7 @@ end
 function Player:GetCustomColorForDisplay()
 	local color = self:GetCustomColor()
 	if color then
-		color = TRP3_API.GenerateReadableColor(color, TRP3_ReadabilityOptions.TextOnBlackBackground);
+		color = TRP3_API.GenerateReadableColor(color, TRP3_API.Colors.Black);
 	end
 	return color
 end

@@ -189,7 +189,9 @@ end
 function displayConsult(context)
 	local dataTab = context.profile.data or Globals.empty;
 
-	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetText("|cff" .. (dataTab.NH or "ffffff") .. (dataTab.NA or UNKNOWN));
+	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetText(dataTab.NA or UNKNOWN);
+	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetReadableTextColor(TRP3_API.CreateColorFromHexString(dataTab.NH or "ffffff"));
+	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetFixedColor(true);
 	TRP3_CompanionsPageInformationConsult_NamePanel_Title:SetText((string.gsub(dataTab.TI or "", "%s+", " ")));
 	TRP3_CompanionsPageInformationConsult_NamePanel.Icon:SetIconTexture(dataTab.IC or TRP3_InterfaceIcons.ProfileDefault);
 

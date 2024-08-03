@@ -114,8 +114,8 @@ TRP3_API.MiscColors =
 	Transmogrify = TRP3_API.CreateColorFromTable(TRANSMOGRIFY_FONT_COLOR),
 	Warning = TRP3_API.CreateColorFromTable(WARNING_FONT_COLOR or { r = 1, g = 0.28, b = 0 }),
 
-	PersonalityTraitColorLeft = TRP3_API.CreateColorFromBytes(255, 140, 26),
-	PersonalityTraitColorRight = TRP3_API.CreateColorFromBytes(32, 208, 249),
+	PersonalityTraitColorLeft = TRP3_API.CreateColor(1, 0.76, 0.42),
+	PersonalityTraitColorRight = TRP3_API.CreateColor(0.42, 0.65, 1),
 };
 
 -- Mapping of named colors. Colors in this table are available to markup and

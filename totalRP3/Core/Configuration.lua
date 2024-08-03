@@ -157,9 +157,9 @@ local function buildConfigurationPage(structure)
 		end
 
 		-- Specific for Color picker
-		if widget.ColorSwatch then
+		if widget.ColorPicker then
 			if element.configKey then
-				local button = widget.ColorSwatch;
+				local button = widget.ColorPicker;
 				element.controller = button;
 				button.setColor(TRP3_API.CreateColorFromHexString(getValue(element.configKey)):GetRGBAsBytes());
 				button.onSelection = function(red, green, blue)
@@ -390,7 +390,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	registerConfigKey("hide_maximize_button", false);
 	registerConfigKey("window_layout", {});  -- Contents managed by TRP3_MainFrameMixin.
 	registerConfigKey("default_color_picker", false);
-	registerConfigKey("color_contrast_level", TRP3_API.ColorContrastOption.Default);
+	registerConfigKey("color_contrast_level", TRP3_ColorContrastOption.Default);
 	registerConfigKey("date_format", "");
 
 	-- Build widgets
@@ -427,13 +427,13 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				configKey = "color_contrast_level",
 				help = loc.CO_GENERAL_CONTRAST_LEVEL_HELP,
 				listContent = {
-					{ loc.CO_GENERAL_CONTRAST_LEVEL_NONE, TRP3_API.ColorContrastOption.None },
-					{ loc.CO_GENERAL_CONTRAST_LEVEL_VERY_LOW, TRP3_API.ColorContrastOption.VeryLow },
-					{ loc.CO_GENERAL_CONTRAST_LEVEL_LOW, TRP3_API.ColorContrastOption.Low },
-					{ loc.CO_GENERAL_CONTRAST_LEVEL_MEDIUM_LOW, TRP3_API.ColorContrastOption.MediumLow },
-					{ loc.CO_GENERAL_CONTRAST_LEVEL_MEDIUM_HIGH, TRP3_API.ColorContrastOption.MediumHigh },
-					{ loc.CO_GENERAL_CONTRAST_LEVEL_HIGH, TRP3_API.ColorContrastOption.High },
-					{ loc.CO_GENERAL_CONTRAST_LEVEL_VERY_HIGH, TRP3_API.ColorContrastOption.VeryHigh },
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_NONE, TRP3_ColorContrastOption.None },
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_VERY_LOW, TRP3_ColorContrastOption.VeryLow },
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_LOW, TRP3_ColorContrastOption.Low },
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_MEDIUM_LOW, TRP3_ColorContrastOption.MediumLow },
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_MEDIUM_HIGH, TRP3_ColorContrastOption.MediumHigh },
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_HIGH, TRP3_ColorContrastOption.High },
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_VERY_HIGH, TRP3_ColorContrastOption.VeryHigh },
 				},
 				listCancel = true,
 			},

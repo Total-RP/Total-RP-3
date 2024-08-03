@@ -835,7 +835,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 				if profile and profile.data then
 					if getConfigValue(ConfigKeys.CHARACT_COLOR) then
 						targetClassColor = profile.data.NH and TRP3_API.CreateColorFromHexString(profile.data.NH) or targetClassColor;
-						targetClassColor = TRP3_API.GenerateReadableColor(targetClassColor, TRP3_ReadabilityOptions.TextOnBlackBackground);
+						targetClassColor = TRP3_API.GenerateReadableColor(targetClassColor, TRP3_API.Colors.Black);
 					end
 
 					name = profile.data.NA;
@@ -1055,7 +1055,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 	end
 
 	local companionCustomColor = info.NH and TRP3_API.CreateColorFromHexString(info.NH) or TRP3_API.Colors.White
-	companionCustomColor = TRP3_API.GenerateReadableColor(companionCustomColor, TRP3_ReadabilityOptions.TextOnBlackBackground);
+	companionCustomColor = TRP3_API.GenerateReadableColor(companionCustomColor, TRP3_API.Colors.Black);
 	tooltipBuilder:AddLine(companionCustomColor:WrapTextInColorCode((petName or companionID)), colors.MAIN, getMainLineFontSize());
 
 	if showCompanionIcons() then
@@ -1104,7 +1104,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 
 				if getConfigValue(ConfigKeys.CHARACT_COLOR) and ownerInfo.characteristics.CH then
 					local customColor = TRP3_API.CreateColorFromHexString(ownerInfo.characteristics.CH);
-					customColor = TRP3_API.GenerateReadableColor(customColor, TRP3_ReadabilityOptions.TextOnBlackBackground);
+					customColor = TRP3_API.GenerateReadableColor(customColor, TRP3_API.Colors.Black);
 					ownerColor = customColor or ownerColor;
 				end
 			end
@@ -1226,7 +1226,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	end
 
 	local mountCustomColor = info.NH and TRP3_API.CreateColorFromHexString(info.NH) or TRP3_API.Colors.White
-	mountCustomColor = TRP3_API.GenerateReadableColor(mountCustomColor, TRP3_ReadabilityOptions.TextOnBlackBackground);
+	mountCustomColor = TRP3_API.GenerateReadableColor(mountCustomColor, TRP3_API.Colors.Black);
 	tooltipCompanionBuilder:AddLine(mountCustomColor:WrapTextInColorCode((mountCustomName or mountName)), colors.MAIN, getMainLineFontSize());
 
 	if showCompanionIcons() then

@@ -416,6 +416,13 @@ stds.wow = {
 			},
 		},
 
+		PixelUtil = {
+			fields = {
+				"SetPoint",
+				"SetSize",
+			},
+		},
+
 		ScrollBoxConstants = {
 			fields = {
 				"RetainScrollPosition",
@@ -460,6 +467,7 @@ stds.wow = {
 		"CreateFont",
 		"CreateFrame",
 		"CreateFramePool",
+		"CreateFramePoolCollection",
 		"CreateFromMixins",
 		"CreateIndexRangeDataProvider",
 		"CreateMinimalSliderFormatter",
@@ -763,6 +771,7 @@ stds.wow = {
 		"LIST_DELIMITER",
 		"LOCALE_enGB",
 		"LOCALIZED_CLASS_NAMES_MALE",
+		"LOWER_RIGHT_VERTEX",
 		"LUNAR_POWER",
 		"MAELSTROM",
 		"MANA",
@@ -816,6 +825,7 @@ stds.wow = {
 		"UNKNOWN",
 		"UNKNOWNOBJECT",
 		"UNLOCK",
+		"UPPER_LEFT_VERTEX",
 		"VIDEO_QUALITY_LABEL6",
 		"WARNING_FONT_COLOR",
 		"WHITE_FONT_COLOR",

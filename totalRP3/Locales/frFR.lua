@@ -95,15 +95,9 @@ L = {
 	["BROADCAST_PASSWORDED"] = [=[|cffff0000L'utilisateur|r %s |cffff0000vient de mettre un mot de passe sur le canal de diffusion (%s).
 |cffff9900Si vous ne connaissez pas ce mot de passe vous ne serez pas en mesure d'utiliser certaines fonctionnalités, comme l'emplacement des autres utilisateurs sur la carte.
 ]=],
-	["BW_COLOR_CODE"] = "Code couleur",
-	["BW_COLOR_CODE_ALERT"] = "Mauvais code hexadécimal !",
-	["BW_COLOR_CODE_TT"] = "Vous pouvez coller ici un code couleur hexadécimal à 6 caractères et appuyer sur Entrée pour valider.",
-	["BW_COLOR_PRESET_DELETE"] = "Supprimer la couleur %s",
-	["BW_COLOR_PRESET_RENAME"] = "Renommer la couleur %s",
 	["BW_COLOR_PRESET_SAVE"] = "Enregistrer cette couleur",
 	["BW_COLOR_PRESET_TITLE"] = "Couleurs enregistrées",
 	["BW_CUSTOM_NAME"] = "Nom personnalisé",
-	["BW_CUSTOM_NAME_TITLE"] = "Nom (optionnel)",
 	["BW_CUSTOM_NAME_TT"] = "Vous pouvez indiquer un nom pour la couleur personnalisée que vous souhaitez enregistrer. Si le champ est laissé vide, le nom sera le code hexadécimal de la couleur.",
 	["CL_COMPANION_PROFILE"] = "Profil de companion",
 	["CL_CONTENT_SIZE"] = "Taille: %s",

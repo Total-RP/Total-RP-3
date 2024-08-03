@@ -14,6 +14,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="TabSystem.xml"/>
 	<Include file="RegionResizeTemplate.xml"/>
 	<Include file="FontUtil.lua"/>
+	<Include file="TextUtil.lua"/>
+	<Include file="ColorSwatch.xml"/>
 	<Include file="Tooltip\Tooltip.xml"/>
 	<Include file="Widgets.lua"/>
 	<Include file="Menu\Menu.xml"/>
@@ -22,27 +24,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="ProfileManager\ProfileManager.xml"/>
 
 	<GameTooltip name="TRP3_TooltipTemplate" mixin="TRP3_TooltipMixin" inherits="GameTooltipTemplate" virtual="true"/>
-
-	<!--
-		TRP3_TruncatedTextTemplate
-
-		Fontable frame template that displays a tooltip for its contents if
-		they would be truncated.
-	-->
-
-	<Frame name="TRP3_TruncatedTextTemplate" virtual="true" inherits="TruncatedTooltipScriptTemplate" mixin="TRP3_TruncatedTextMixin">
-		<KeyValues>
-			<KeyValue key="fontStringLayer" value="OVERLAY"/>
-			<KeyValue key="fontStringTemplate" value="GameFontNormal"/>
-			<KeyValue key="fontStringSublayer" value="0" type="number"/>
-			<!-- <KeyValue key="fontStringColor" value="NORMAL_FONT_COLOR" type="global"/> -->
-			<!-- <KeyValue key="fontStringJustifyH" value="CENTER"/> -->
-			<!-- <KeyValue key="fontStringJustifyV" value="MIDDLE"/> -->
-		</KeyValues>
-		<Scripts>
-			<OnLoad method="OnLoad" inherit="prepend"/>
-		</Scripts>
-	</Frame>
 
 	<!-- Common close button  -->
 	<Button name="TRP3_CloseButton" inherits="UIPanelCloseButton" virtual="true">
@@ -416,7 +397,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<OnLoad>
 				self:SetScale(0.8);
 				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-				_G[self:GetName() .. "Icon"]:SetTexture("Interface\\MINIMAP\\TRACKING\\None");
+				self.Icon:SetTexture("Interface\\MINIMAP\\TRACKING\\None");
 			</OnLoad>
 		</Scripts>
 	</Button>
@@ -424,43 +405,42 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<!-- Color picker button -->
 	<Button name="TRP3_ColorPickerButton" virtual="true">
 		<Size x="16" y="16"/>
-		<HighlightTexture alphaMode="ADD" name="$parentSwatchBgHighlight" file="Interface\SpellActivationOverlay\IconAlert">
+		<HighlightTexture parentKey="SwatchBgHighlight" alphaMode="ADD" file="Interface\SpellActivationOverlay\IconAlert">
 			<Size x="71" y="68"/>
 			<Anchors>
-				<Anchor x="-11" y="11" point="TOPLEFT"/>
+				<Anchor point="TOPLEFT" x="-11" y="11"/>
 			</Anchors>
-			<TexCoords left="0" right="1" top="0.53" bottom="1"/>
-			<Color r="1.0" g="1.0" b="1.0" a="0.40"/>
+			<TexCoords right="1" top="0.53" bottom="1"/>
+			<Color r="1" g="1" b="1" a="0.4"/>
 		</HighlightTexture>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="$parentSwatchBg">
-					<Color r="1.0" g="1.0" b="1.0"/>
+				<Texture parentKey="SwatchBg">
+					<Color r="1" g="1" b="1"/>
 				</Texture>
 			</Layer>
 			<Layer level="BORDER">
-				<Texture file="Interface\ACHIEVEMENTFRAME\UI-Achievement-IconFrame">
+				<Texture parentKey="Border" file="Interface\ACHIEVEMENTFRAME\UI-Achievement-IconFrame">
 					<Size x="45" y="45"/>
 					<Anchors>
-						<Anchor x="-5" y="5" point="TOPLEFT"/>
+						<Anchor point="TOPLEFT" x="-5" y="5"/>
 					</Anchors>
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<Texture file="Interface\Cooldown\star4" name="$parentBlink" alpha="0.0" alphaMode="ADD">
+				<Texture parentKey="Blink" file="Interface\Cooldown\star4" alpha="0" alphaMode="ADD">
+					<Size x="40" y="40"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
 					<Animations>
-						<AnimationGroup name="$parentAnimate" looping="NONE">
+						<AnimationGroup parentKey="Animate" looping="NONE">
 							<Alpha duration="0.4" toAlpha="1" fromAlpha="0" smoothing="IN" order="1"/>
 							<Rotation degrees="-45" duration="0.4" smoothing="IN" order="1"/>
 							<Alpha duration="0.4" toAlpha="0" fromAlpha="1" smoothing="OUT" startDelay="0.4" order="1"/>
 							<Rotation degrees="-45" duration="0.4" smoothing="OUT" startDelay="0.4" order="1"/>
-
 						</AnimationGroup>
 					</Animations>
-					<Size x="40" y="40"/>
-					<Anchors>
-						<Anchor x="0" y="0" point="CENTER"/>
-					</Anchors>
 				</Texture>
 			</Layer>
 		</Layers>

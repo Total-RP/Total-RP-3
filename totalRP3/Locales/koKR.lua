@@ -10,8 +10,6 @@ local L;
 
 L = {
 	["ABOUT_TITLE"] = "약",
-	["BW_COLOR_CODE"] = "색상 코드",
-	["BW_COLOR_CODE_ALERT"] = "잘못된 16 진수 코드!",
 	["BW_COLOR_PRESET_SAVE"] = "현재 색상 저장",
 	["BW_COLOR_PRESET_TITLE"] = "색상 사전 설정",
 	["CL_EXPIRED"] = "이 링크가 만료되었습니다.",

@@ -466,7 +466,7 @@ end
 --       black is almost always wrong. Outlines are consistent and are far more
 --       correct, and don't effectively destroy the custom color.
 
-TRP3_API.ColorContrastOption =
+TRP3_ColorContrastOption =
 {
 	None = 1,
 	VeryLow = 2,
@@ -483,12 +483,12 @@ TRP3_API.ColorContrastOption =
 
 local ColorContrastLevels =
 {
-	[TRP3_API.ColorContrastOption.VeryLow] = 15,
-	[TRP3_API.ColorContrastOption.Low] = 30,
-	[TRP3_API.ColorContrastOption.MediumLow] = 45,
-	[TRP3_API.ColorContrastOption.MediumHigh] = 60,
-	[TRP3_API.ColorContrastOption.High] = 75,
-	[TRP3_API.ColorContrastOption.VeryHigh] = 90,
+	[TRP3_ColorContrastOption.VeryLow] = 15,
+	[TRP3_ColorContrastOption.Low] = 30,
+	[TRP3_ColorContrastOption.MediumLow] = 45,
+	[TRP3_ColorContrastOption.MediumHigh] = 60,
+	[TRP3_ColorContrastOption.High] = 75,
+	[TRP3_ColorContrastOption.VeryHigh] = 90,
 };
 
 local function CalculateLuminance(r, g, b)
@@ -575,7 +575,7 @@ function ReadableColorCache:Set(targetContrast, backgroundColor, foregroundColor
 end
 
 local function ProcessTargetContrastOption(targetContrast)
-	if targetContrast == TRP3_API.ColorContrastOption.UseConfiguredLevel then
+	if targetContrast == TRP3_ColorContrastOption.UseConfiguredLevel then
 		local targetLevel = TRP3_API.configuration.getValue("color_contrast_level");
 		targetContrast = ColorContrastLevels[targetLevel];
 	end
@@ -583,19 +583,13 @@ local function ProcessTargetContrastOption(targetContrast)
 	return targetContrast or 0;
 end
 
-TRP3_ReadabilityOptions = {
-	TextOnBlackBackground = { backgroundColor = TRP3_API.CreateColor(0, 0, 0), targetContrast = TRP3_API.ColorContrastOption.UseConfiguredLevel },
-	TextOnWhiteBackground = { backgroundColor = TRP3_API.CreateColor(1, 1, 1), targetContrast = TRP3_API.ColorContrastOption.UseConfiguredLevel },
-};
-
-function TRP3_API.GenerateReadableColor(foregroundColor, options)
-	local targetContrast = ProcessTargetContrastOption(options.targetContrast);
+function TRP3_API.GenerateReadableColor(foregroundColor, backgroundColor, targetContrast)
+	targetContrast = ProcessTargetContrastOption(targetContrast);
 
 	if targetContrast == 0 then
 		return foregroundColor;
 	end
 
-	local backgroundColor = options.backgroundColor;
 	local readableColor = ReadableColorCache:Get(targetContrast, backgroundColor, foregroundColor);
 
 	if readableColor then
@@ -650,14 +644,13 @@ function TRP3_API.GenerateReadableColor(foregroundColor, options)
 	return readableColor;
 end
 
-function TRP3_API.IsColorReadable(foregroundColor, options)
-	local targetContrast = ProcessTargetContrastOption(options.targetContrast);
+function TRP3_API.IsColorReadable(foregroundColor, backgroundColor, targetContrast)
+	targetContrast = ProcessTargetContrastOption(targetContrast);
 
 	if targetContrast == 0 then
 		return true;
 	end
 
-	local backgroundColor = options.backgroundColor;
 	local BgYs = CalculateLuminance(backgroundColor:GetRGB());
 	local FgYs = CalculateLuminance(TRP3_API.GenerateBlendedColor(foregroundColor, backgroundColor):GetRGB());
 	local FgLc = CalculateLightnessContrast(FgYs, BgYs);
