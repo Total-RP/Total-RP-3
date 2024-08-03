@@ -772,17 +772,17 @@ function TRP3_ColorButtonLoad(self)
 		self.green = green;
 		self.blue = blue;
 		if red and green and blue then
-			_G[self:GetName() .. "SwatchBg"]:SetColorTexture(red / 255, green / 255, blue / 255);
-			_G[self:GetName() .. "SwatchBgHighlight"]:SetVertexColor(red / 255, green / 255, blue / 255);
+			self.SwatchBg:SetColorTexture(red / 255, green / 255, blue / 255);
+			self.SwatchBgHighlight:SetVertexColor(red / 255, green / 255, blue / 255);
 		else
-			_G[self:GetName() .. "SwatchBg"]:SetTexture([[interface\icons\]] .. TRP3_InterfaceIcons.Gears);
-			_G[self:GetName() .. "SwatchBgHighlight"]:SetVertexColor(1.0, 1.0, 1.0);
+			self.SwatchBg:SetTexture([[interface\icons\]] .. TRP3_InterfaceIcons.Gears);
+			self.SwatchBgHighlight:SetVertexColor(1.0, 1.0, 1.0);
 		end
 		if self.onSelection then
 			self.onSelection(red, green, blue);
 		end
-		_G[self:GetName() .. "BlinkAnimate"]:Play();
-		_G[self:GetName() .. "BlinkAnimate"]:Finish();
+		self.Blink.Animate:Play();
+		self.Blink.Animate:Finish();
 	end
 	self.setColor();
 end

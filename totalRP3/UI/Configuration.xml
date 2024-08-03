@@ -69,7 +69,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ConfigColorPicker" inherits="TRP3_ConfigNote" virtual="true">
 		<Frames>
-			<Button name="$parentColorPicker" parentKey="ColorSwatch" inherits="TRP3_ColorPickerButton">
+			<Button parentKey="ColorPicker" inherits="TRP3_ColorPickerButton">
 				<Anchors>
 					<Anchor point="RIGHT" x="-14"/>
 				</Anchors>

@@ -157,9 +157,9 @@ local function buildConfigurationPage(structure)
 		end
 
 		-- Specific for Color picker
-		if widget.ColorSwatch then
+		if widget.ColorPicker then
 			if element.configKey then
-				local button = widget.ColorSwatch;
+				local button = widget.ColorPicker;
 				element.controller = button;
 				button.setColor(TRP3_API.CreateColorFromHexString(getValue(element.configKey)):GetRGBAsBytes());
 				button.onSelection = function(red, green, blue)
