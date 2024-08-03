@@ -134,8 +134,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 			<Layer level="BORDER" textureSubLevel="-1">
-				<Texture parentKey="OppositeFill" atlas="nameplates-bar-fill" hWrapMode="REPEAT">
-				<!-- <Texture parentKey="OppositeFill" file="Interface\TargetingFrame\UI-StatusBar" hWrapMode="REPEAT"> -->
+				<Texture parentKey="OppositeFill">
 					<Anchors>
 						<Anchor point="TOPLEFT"/>
 						<Anchor point="BOTTOMRIGHT"/>
@@ -149,13 +148,20 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 		</Layers>
-		<!-- <BarTexture parentKey="Fill" file="Interface\TargetingFrame\UI-StatusBar"/> -->
-		<BarTexture parentKey="Fill" atlas="nameplates-bar-fill" hWrapMode="REPEAT"/>
+		<BarTexture parentKey="Fill"/>
 		<Scripts>
 			<OnLoad>
 				self.Fill:SetDrawLayer("BORDER", 1);
 				self.Thumb:ClearAllPoints();
 				self.Thumb:SetPoint("CENTER", self.Fill, "RIGHT", 0, 2);
+
+				if C_Texture.GetAtlasInfo("nameplates-bar-fill") then
+					self.Fill:SetAtlas("nameplates-bar-fill");
+					self.OppositeFill:SetAtlas("nameplates-bar-fill");
+				else
+					self.Fill:SetTexture("Interface\\TargetingFrame\\UI-StatusBar", "REPEAT");
+					self.OppositeFill:SetTexture("Interface\\TargetingFrame\\UI-StatusBar", "REPEAT");
+				end
 			</OnLoad>
 		</Scripts>
 	</StatusBar>
