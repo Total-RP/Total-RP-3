@@ -422,8 +422,12 @@ function TRP3_NamePlates:OnUnitNameUpdate(unitToken)
 end
 
 function TRP3_NamePlates:OnCombatStatusChanged()
-	isInCombat = InCombatLockdown();
-	self:UpdateAllNamePlates();
+	local function OnTick()
+		isInCombat = InCombatLockdown();
+		self:UpdateAllNamePlates();
+	end
+
+	C_Timer.After(0, OnTick);
 end
 
 function TRP3_NamePlates:OnPlayerEnteringWorld()
