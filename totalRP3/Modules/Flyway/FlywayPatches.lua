@@ -416,8 +416,7 @@ TRP3_API.flyway.patches["21"] = function()
 end
 
 TRP3_API.flyway.patches["22"] = function()
-	-- v22 kills off support for the PS VA field on transmission. The
-	-- rendering code will still handle it if set, but we won't send it.
+	-- v22 kills off support for the PS VA field on transmission.
 
 	if not TRP3_Profiles then
 		return;

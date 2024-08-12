@@ -167,11 +167,6 @@ TRP3_API.register.getPlayerCompleteName = getPlayerCompleteName;
 local function getPsychoStructureValue(psychoStructure)
 	if psychoStructure.V2 then
 		return psychoStructure.V2;
-	elseif psychoStructure.VA then
-		-- VA field was deprecated in ~2018, however support for rendering it
-		-- is retained in case someone imports an old profile.
-		local scale = Globals.PSYCHO_MAX_VALUE_V2 / Globals.PSYCHO_MAX_VALUE_V1;
-		return math.floor((psychoStructure.VA * scale) + 0.5);
 	else
 		return Globals.PSYCHO_DEFAULT_VALUE_V2;
 	end
