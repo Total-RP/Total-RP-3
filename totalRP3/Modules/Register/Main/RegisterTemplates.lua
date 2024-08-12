@@ -34,7 +34,7 @@ function TRP3_RegisterTraitLineMixin:SetRightText(text)
 end
 
 function TRP3_RegisterTraitLineMixin:SetLeftIcon(icon)
-	self.RightIcon:SetIconTexture(icon);
+	self.LeftIcon:SetIconTexture(icon);
 end
 
 function TRP3_RegisterTraitLineMixin:SetRightIcon(icon)
