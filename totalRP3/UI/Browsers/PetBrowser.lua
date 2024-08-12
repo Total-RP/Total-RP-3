@@ -37,7 +37,9 @@ local function GetPetCompanionProfile(petName)
 end
 
 local function GetNumPetSlots()
-	return Constants.PetConsts.NUM_PET_SLOTS;
+	-- Blizzard can't decide on a consistent or sane naming scheme that lasts
+	-- more than a single patch.
+	return 200;
 end
 
 local function IsValidPetSlot(slotIndex)
