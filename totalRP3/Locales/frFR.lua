@@ -475,13 +475,7 @@ Statuts possibles:
 	["CO_TOOLTIP_CONTRAST"] = "Améliorer le contraste des couleurs",
 	["CO_TOOLTIP_CONTRAST_TT"] = "Activez cette option pour que Total RP 3 modifie dynamiquement les couleurs utilisées dans l'infobulle pour que le texte soit plus facile à lire sur un fond sombre.",
 	["CO_TOOLTIP_CROP_TEXT"] = "Couper les textes trop longs",
-	["CO_TOOLTIP_CROP_TEXT_TT"] = [=[Limiter le nombre de caractères pouvant être utilisés pour les champs de l'infobulle, pour éviter des soucis d'affichage avec des textes trop longs.
-
-|cnGREEN_FONT_COLOR:Détails de la limitation:
-Nom: 100 caractères
-Titre: 150 caractères
-Race: 50 caractères
-Classe: 50 caractères|r]=],
+	["CO_TOOLTIP_CROP_TEXT_TT"] = "Limiter le nombre de caractères pouvant être utilisés pour les champs de l'infobulle, pour éviter des soucis d'affichage avec des textes trop longs.",
 	["CO_TOOLTIP_CURRENT"] = "Afficher l'information \"actuellement\"",
 	["CO_TOOLTIP_CURRENT_LINES"] = "Sauts de ligne max pour \"Actuellement\"",
 	["CO_TOOLTIP_CURRENT_SIZE"] = "Longueur maximale de l'information \"actuellement\"",
