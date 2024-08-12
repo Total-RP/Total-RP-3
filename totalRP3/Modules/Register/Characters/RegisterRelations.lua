@@ -393,7 +393,7 @@ TRP3_API.register.inits.relationsInit = function()
 			condition = function(_, unitID)
 				return UnitIsPlayer("target") and unitID ~= TRP3_API.globals.player_id and hasProfile(unitID);
 			end,
-			onMouseDown = onTargetButtonClicked,
+			onClick = onTargetButtonClicked,
 			adapter = function(buttonStructure, unitID)
 				local profileID = hasProfile(unitID);
 				local relationColoredName = getRelationText(profileID);

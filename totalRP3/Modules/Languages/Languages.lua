@@ -114,7 +114,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or TRP3_InterfaceIcons.ToolbarLanguage;
 			end
 		end,
-		onMouseDown = function(Uibutton)
+		onClick = function(Uibutton)
 			TRP3_MenuUtil.CreateContextMenu(Uibutton, function(_, description)
 				description:CreateTitle(loc.TB_LANGUAGE);
 				for _, language in ipairs(Languages.getAvailableLanguages()) do
