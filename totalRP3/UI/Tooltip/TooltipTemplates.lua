@@ -93,8 +93,10 @@ function TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text
 		description:QueueBlankLine();
 	end
 
-	for _, instruction in ipairs(instructions) do
-		description:AddInstructionLine(instruction[1], instruction[2]);
+	if instructions then
+		for _, instruction in ipairs(instructions) do
+			description:AddInstructionLine(instruction[1], instruction[2]);
+		end
 	end
 end
 
