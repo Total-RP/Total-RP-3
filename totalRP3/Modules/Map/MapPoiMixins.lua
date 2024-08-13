@@ -203,6 +203,13 @@ end
 
 end
 
+function BasePinMixin:SetPassThroughButtons(...)
+	if not InCombatLockdown() then
+		local metatable = GetFrameMetatable();
+		metatable.__index.SetPassThroughButtons(self, ...);
+	end
+end
+
 function BasePinMixin:OnAcquired(poiInfo)
 	-- TODO Check all the results to make sure they contain expected data
 	-- Get display data

@@ -495,6 +495,7 @@ stds.wow = {
 		"GetCVar",
 		"GetDefaultLanguage",
 		"GetFileIDFromPath",
+		"GetFrameMetatable",
 		"GetGuildInfo",
 		"GetInventoryItemTexture",
 		"GetInventorySlotInfo",
