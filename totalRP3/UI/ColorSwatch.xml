@@ -30,7 +30,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Layer level="BACKGROUND">
 				<Texture parentKey="Color" texelSnappingBias="0.0" snapToPixelGrid="false">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="1" y="-1"/>
+						<Anchor point="TOPLEFT" x="2" y="-2"/>
 						<Anchor point="BOTTOMRIGHT" x="-2" y="2"/>
 					</Anchors>
 					<Color color="HIGHLIGHT_FONT_COLOR"/>
