@@ -1,0 +1,30 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="HTMLFrame.lua"/>
+
+	<SimpleHTML name="TRP3_HTMLFrameTemplate" mixin="TRP3_HTMLFrameMixin" inherits="TRP3_LinkHandlerTemplate" virtual="true">
+		<KeyValues>
+			<KeyValue key="registerStandardLinkHandlers" value="true" type="boolean"/>
+		</KeyValues>
+		<FontString inherits="GameFontHighlight" spacing="4"/>
+		<FontStringHeader1 inherits="GameFontNormalHuge" spacing="8"/>
+		<FontStringHeader2 inherits="GameFontNormalLarge" spacing="8"/>
+		<FontStringHeader3 inherits="GameFontHighlightLarge" spacing="8"/>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+			<OnSizeChanged method="OnSizeChanged"/>
+		</Scripts>
+	</SimpleHTML>
+
+	<SimpleHTML name="TRP3_HTMLFrameCompactTemplate" inherits="TRP3_HTMLFrameTemplate" virtual="true">
+		<FontString inherits="GameFontHighlight"/>
+		<FontStringHeader1 inherits="GameFontNormalHuge"/>
+		<FontStringHeader2 inherits="GameFontNormalLarge"/>
+		<FontStringHeader3 inherits="GameFontHighlightLarge"/>
+	</SimpleHTML>
+</Ui>

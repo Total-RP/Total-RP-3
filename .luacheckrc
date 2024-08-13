@@ -433,6 +433,7 @@ stds.wow = {
 			fields = {
 				"AddManagedScrollBarVisibilityBehavior",
 				"InitScrollBoxListWithScrollBar",
+				"InitScrollBoxWithScrollBar",
 				"RegisterScrollBoxWithScrollBar",
 			},
 		},
@@ -471,6 +472,7 @@ stds.wow = {
 		"CreateFromMixins",
 		"CreateIndexRangeDataProvider",
 		"CreateMinimalSliderFormatter",
+		"CreateScrollBoxLinearView",
 		"CreateScrollBoxListGridView",
 		"CreateScrollBoxListLinearView",
 		"CreateTextureMarkup",
@@ -835,6 +837,7 @@ stds.wow = {
 		"WOW_PROJECT_CLASSIC",
 		"WOW_PROJECT_ID",
 		"WOW_PROJECT_MAINLINE",
+		"YELLOW_FONT_COLOR",
 		"YES",
 	},
 };

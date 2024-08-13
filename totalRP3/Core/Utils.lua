@@ -574,7 +574,7 @@ local IMAGE_PATTERN = [[{img%:([^:]+)%:([^:]+)%:([^:}]+)%:?([^:}]*)%}]];
 ---@language HTML
 local IMAGE_TAG = [[</P><img src="%s" width="%s" height="%s" align="%s"/><P>]];
 
-local function GenerateLinkFormatter(line, defaultLinkColor, includeBraces, isMarkdown)
+local function GenerateLinkFormatter(line, defaultLinkColor, includeBraces, isMarkdown, linkType)
 	local function FormatLink(position, url, text)
 		-- If a link is preceeded by a "{col}" tag then we won't insert any
 		-- coloring for this link to allow users to customize things more.
@@ -601,6 +601,10 @@ local function GenerateLinkFormatter(line, defaultLinkColor, includeBraces, isMa
 			text = "[" .. text .. "]";
 		end
 
+		if linkType then
+			url = TRP3_LinkUtil.CreateLinkString(linkType, url);
+		end
+
 		if linkColor then
 			text = WrapTextInColorCode(text, "ff" .. linkColor);
 		end
@@ -612,7 +616,7 @@ local function GenerateLinkFormatter(line, defaultLinkColor, includeBraces, isMa
 end
 
 -- Convert the given text by his HTML representation
-Utils.str.toHTML = function(text, noColor, noBrackets)
+Utils.str.toHTML = function(text, noColor, noBrackets, defaultLinkType)
 
 	local linkColor = "00ff00";
 	if noColor then
@@ -741,7 +745,7 @@ Utils.str.toHTML = function(text, noColor, noBrackets)
 		do  -- Markdown Links
 			local includeBraces = true;
 			local isMarkdown    = true;
-			local formatter     = GenerateLinkFormatter(line, linkColor, includeBraces, isMarkdown);
+			local formatter     = GenerateLinkFormatter(line, linkColor, includeBraces, isMarkdown, defaultLinkType);
 
 			line = line:gsub("()%[(.-)%]%((.-)%)", formatter);
 		end
@@ -749,7 +753,7 @@ Utils.str.toHTML = function(text, noColor, noBrackets)
 		do  -- Link tags with embedded icons
 			local includeBraces = false;
 			local isMarkdown    = false;
-			local formatter     = GenerateLinkFormatter(line, linkColor, includeBraces, isMarkdown);
+			local formatter     = GenerateLinkFormatter(line, linkColor, includeBraces, isMarkdown, defaultLinkType);
 
 			line = line:gsub("(){link%*([^*]+)%*({icon:[^}]+})}", formatter);
 		end
@@ -757,12 +761,12 @@ Utils.str.toHTML = function(text, noColor, noBrackets)
 		do  -- Link tags
 			local includeBraces = not noBrackets;
 			local isMarkdown    = false;
-			local formatter     = GenerateLinkFormatter(line, linkColor, includeBraces, isMarkdown);
+			local formatter     = GenerateLinkFormatter(line, linkColor, includeBraces, isMarkdown, defaultLinkType);
 
 			line = line:gsub("(){link%*([^*]+)%*([^}]+)}", formatter);
 		end
 
-		line = line:gsub("{twitter%*(.-)%*(.-)}", "<a href=\"twitter%1\">|cff61AAEE%2|r</a>");
+		line = line:gsub("{twitter%*(.-)%*(.-)}", "<a href=\"twitter:%1\">|cff61AAEE%2|r</a>");
 
 		finalText = finalText .. line;
 	end
