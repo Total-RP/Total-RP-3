@@ -378,7 +378,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Title" font="GameFontNormal" inherits="GameFontNormal" mixin="TRP3_TruncatedTextMixin" justifyH="LEFT">
+				<FontString parentKey="Title" inherits="GameFontNormal" mixin="TRP3_TruncatedTextMixin" justifyH="LEFT">
 					<Size x="135"/>
 					<Anchors>
 						<Anchor point="LEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="5"/>
@@ -388,7 +388,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<OnLeave method="OnLeave"/>
 					</Scripts>
 				</FontString>
-				<FontString parentKey="Value" font="GameFontHighlight" inherits="GameFontHighlight" mixin="TRP3_ReadableTextMixin, TRP3_TruncatedTextMixin" justifyH="LEFT" wordwrap="false">
+				<FontString parentKey="Value" inherits="GameFontHighlight" mixin="TRP3_ReadableTextMixin, TRP3_TruncatedTextMixin" justifyH="LEFT" wordwrap="false">
 					<KeyValues>
 						<KeyValue key="readableTextBackgroundColor" value="TRP3_PARCHMENT_BACKGROUND_COLOR" type="global"/>
 					</KeyValues>
@@ -421,7 +421,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Title" font="GameFontNormal" inherits="GameFontNormal" mixin="TRP3_TruncatedTextMixin" justifyH="LEFT">
+				<FontString parentKey="Title" inherits="GameFontNormal" mixin="TRP3_TruncatedTextMixin" justifyH="LEFT">
 					<Size x="135"/>
 					<Anchors>
 						<Anchor point="LEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="5"/>
@@ -442,7 +442,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Value" font="GameFontHighlight" inherits="GameFontHighlight" mixin="TRP3_ReadableTextMixin, TRP3_TruncatedTextMixin" justifyH="LEFT" wordwrap="false">
+				<FontString parentKey="Value" inherits="GameFontHighlight" mixin="TRP3_ReadableTextMixin, TRP3_TruncatedTextMixin" justifyH="LEFT" wordwrap="false">
 					<KeyValues>
 						<KeyValue key="readableTextBackgroundColor" value="TRP3_PARCHMENT_BACKGROUND_COLOR" type="global"/>
 					</KeyValues>
