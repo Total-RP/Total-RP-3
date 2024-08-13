@@ -456,7 +456,7 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 
 		if customColor then
 			customColor = TRP3_API.CreateColorFromHexString(customColor);
-			customColor = TRP3_API.GenerateReadableColor(customColor, TRP3_ReadabilityOptions.TextOnBlackBackground);
+			customColor = TRP3_API.GenerateReadableColor(customColor, TRP3_API.Colors.Black);
 			nameColor = customColor;
 		end
 	end

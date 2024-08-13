@@ -142,7 +142,7 @@ local function GetCompanionColorForDisplay(colorHexString)
 	end
 
 	local color = TRP3_API.CreateColorFromHexString(colorHexString);
-	color = TRP3_API.GenerateReadableColor(color, TRP3_ReadabilityOptions.TextOnBlackBackground);
+	color = TRP3_API.GenerateReadableColor(color, TRP3_API.Colors.Black);
 	return color;
 end
 

@@ -46,15 +46,3 @@ function TRP3_TooltipScriptMixin:SetTooltipShown(shown)
 		self:HideTooltip();
 	end
 end
-
-TRP3_TruncatedFontStringTooltipMixin = {};
-
-function TRP3_TruncatedFontStringTooltipMixin:OnEnter()
-	if self:IsTruncated() then
-		TRP3_TooltipTemplates.ShowTruncationTooltip(self, self:GetText());
-	end
-end
-
-function TRP3_TruncatedFontStringTooltipMixin:OnLeave()
-	TRP3_TooltipUtil.HideTooltip(self);
-end

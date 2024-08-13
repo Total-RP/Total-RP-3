@@ -36,6 +36,8 @@ local PSYCHO_PRESETS_DROPDOWN;
 
 local RELATIONSHIP_STATUS_DROPDOWN;
 
+TRP3_PARCHMENT_BACKGROUND_COLOR = TRP3_API.CreateColor(0.29, 0.23, 0.16);
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -125,7 +127,6 @@ end
 -- CHARACTERISTICS - CONSULT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local registerCharFrame = {};
 local registerCharLocals = {
 	RA = "REG_PLAYER_RACE",
 	CL = "REG_PLAYER_CLASS",
@@ -137,8 +138,6 @@ local registerCharLocals = {
 	RE = "REG_PLAYER_RESIDENCE",
 	RS = "REG_PLAYER_RELATIONSHIP_STATUS"
 };
-local miscCharFrame = {};
-local psychoCharFrame = {};
 
 local function getCompleteName(characteristicsTab, name, hideTitle)
 	if not characteristicsTab then
@@ -223,21 +222,9 @@ end
 --  @param color The color to be applied. Must be an instance of Ellyb.Color,
 --               or nil if resetting the color to a default.
 local function refreshPsychoColor(psychoLine, psychoColorField, color)
-	-- Store the coloring on the line item itself for persistence later.
-	if color then
-		psychoLine[psychoColorField] = color;
-	else
-		psychoLine[psychoColorField] = nil;
-	end
-
-	-- Grab the now-updated color objects for both ends and update the UI.
-	local lc = psychoLine.LC or TRP3_API.MiscColors.PersonalityTraitColorLeft;
-	local rc = psychoLine.RC or TRP3_API.MiscColors.PersonalityTraitColorRight;
-
-	if psychoLine.Bar then
-		psychoLine.Bar:SetStatusBarColor(lc:GetRGBA());
-		psychoLine.Bar.OppositeFill:SetVertexColor(rc:GetRGBA());
-	end
+	psychoLine[psychoColorField] = color;
+	psychoLine:SetLeftColor(psychoLine.LC or TRP3_API.MiscColors.PersonalityTraitColorLeft);
+	psychoLine:SetRightColor(psychoLine.RC or TRP3_API.MiscColors.PersonalityTraitColorRight);
 end
 
 local function setBkg(backgroundIndex)
@@ -247,16 +234,8 @@ end
 local CHAR_KEYS = { "RA", "CL", "AG", "EC", "HE", "WE", "BP", "RE", "RS" };
 local FIELD_TITLE_SCALE = 0.3;
 
-local function scaleField(field, containerSize, fieldName)
-	local widget;
-
-	if fieldName then
-		widget = _G[field:GetName() .. fieldName];
-	else
-		widget = field.Name;
-	end
-
-	widget:SetSize(containerSize * FIELD_TITLE_SCALE, 18);
+local function scaleField(field, containerSize)
+	field.NameField:SetWidth(containerSize * FIELD_TITLE_SCALE);
 end
 
 -- Create the pin template, above group members
@@ -295,22 +274,27 @@ function TRP3_PlayerHousePinMixin:Decorate(displayData)
 	end
 end
 
+local ConsultFramePools = CreateFramePoolCollection();
+ConsultFramePools:CreatePool("Frame", TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_RegisterInfoLine");
+ConsultFramePools:CreatePool("Frame", TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_RegisterInfoSwatchLine");
+ConsultFramePools:CreatePool("Frame", TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_PsychoInfoDisplayLine");
+
 local function setConsultDisplay(context)
 	local dataTab = context.profile.characteristics or Globals.empty;
 	local hasCharac, hasPsycho, hasMisc, margin;
 	assert(type(dataTab) == "table", "Error: Nil characteristics data or not a table.");
 	-- Icon, complete name and titles
 	local completeName = getCompleteName(dataTab, UNKNOWN);
-	TRP3_RegisterCharact_NamePanel_Name:SetText("|cff" .. (dataTab.CH or "ffffff") .. completeName);
+	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
+	TRP3_RegisterCharact_NamePanel_Name:SetReadableTextColor(TRP3_API.CreateColorFromHexString(dataTab.CH or "ffffff"));
+	TRP3_RegisterCharact_NamePanel_Name:SetFixedColor(true);
 	TRP3_RegisterCharact_NamePanel_Title:SetText((string.gsub(dataTab.FT or "", "%s+", " ")));
 	TRP3_RegisterCharact_NamePanel.Icon:SetIconTexture(dataTab.IC);
 
 	setBkg(dataTab.bkg or 1);
 
 	-- hide all
-	for _, regCharFrame in pairs(registerCharFrame) do
-		regCharFrame:Hide();
-	end
+	ConsultFramePools:ReleaseAll();
 	TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle:Hide();
 	TRP3_RegisterCharact_CharactPanel_Container.MiscTitle:Hide();
 	TRP3_RegisterCharact_CharactPanel_ResidenceButton:Hide();
@@ -351,27 +335,28 @@ local function setConsultDisplay(context)
 	end
 
 	-- Show directory chars values
-	for frameIndex, charName in pairs(shownCharacteristics) do
-		local frame = registerCharFrame[frameIndex];
-		if frame == nil then
-			frame = CreateFrame("Frame", "TRP3_RegisterCharact_RegisterInfoLine" .. frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_RegisterInfoLine");
-			scaleField(frame, TRP3_RegisterCharact_CharactPanel_Container:GetWidth());
-			tinsert(registerCharFrame, frame);
+	for _, charName in pairs(shownCharacteristics) do
+		local frame;
+
+		if charName == "EC" or charName == "CL" then
+			frame = ConsultFramePools:Acquire("TRP3_RegisterCharact_RegisterInfoSwatchLine");
+		else
+			frame = ConsultFramePools:Acquire("TRP3_RegisterCharact_RegisterInfoLine");
 		end
-		frame:ClearAllPoints();
+
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 5);
 		frame:SetPoint("RIGHT", 0, 0);
-		frame.Icon:Hide();
-		frame.Name:SetText(loc:GetText(registerCharLocals[charName]));
+		frame:SetIconShown(false);
+		frame:SetTitleText(loc:GetText(registerCharLocals[charName]));
+		frame:SetValueText(shownValues[charName]);
+		frame:Show();
+
 		if charName == "EC" then
-			local hexa = dataTab.EH or "ffffff"
-			frame.Value:SetText("|cff" .. hexa .. shownValues[charName] .. "|r");
+			frame:SetValueColorFromHexString(dataTab.EH);
 		elseif charName == "CL" then
-			local hexa = dataTab.CH or "ffffff";
-			frame.Value:SetText("|cff" .. hexa .. shownValues[charName] .. "|r");
-		else
-			frame.Value:SetText(shownValues[charName]);
+			frame:SetValueColorFromHexString(dataTab.CH);
 		end
+
 		if charName == "RE" and dataTab.RC and # dataTab.RC >= 4 then
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:Show();
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:ClearAllPoints();
@@ -400,7 +385,6 @@ local function setConsultDisplay(context)
 				AddOn_TotalRP3.Map.placeSingleMarker(dataTab.RC[2], dataTab.RC[3], { characterID = characterID, profileID = profileID }, TRP3_PlayerHousePinMixin.TEMPLATE_NAME)
 			end);
 		end
-		frame:Show();
 		previous = frame;
 	end
 
@@ -415,23 +399,13 @@ local function setConsultDisplay(context)
 
 		for frameIndex, miscStructure in ipairs(dataTab.MI) do
 			local field = TRP3_API.GetMiscFieldFromData(miscStructure);
-			local frame = miscCharFrame[frameIndex];
-			if frame == nil then
-				frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscInfoLine" .. frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_RegisterInfoLine");
-				frame:SetHeight(34);
-				scaleField(frame, TRP3_RegisterCharact_CharactPanel_Container:GetWidth());
-				tinsert(miscCharFrame, frame);
-			end
-			frame:ClearAllPoints();
-			if frameIndex == 1 then
-				frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, -5);
-			else
-				frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
-			end
+			local frame = ConsultFramePools:Acquire("TRP3_RegisterCharact_RegisterInfoLine");
+			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, frameIndex == 1 and -5 or 0);
 			frame:SetPoint("RIGHT", 0, 0);
-			frame.Icon:SetIconTexture(field.icon);
-			frame.Name:SetText(field.localizedName or "");
-			frame.Value:SetText(field.value or "");
+			frame:SetIcon(field.icon);
+			frame:SetIconShown(true);
+			frame:SetTitleText(field.localizedName);
+			frame:SetValueText(field.value);
 			frame:Show();
 			previous = frame;
 		end
@@ -446,13 +420,9 @@ local function setConsultDisplay(context)
 		TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle:SetPoint("RIGHT", -10, 0);
 		previous = TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle;
 
-		for frameIndex, psychoStructure in ipairs(dataTab.PS) do
-			local frame = psychoCharFrame[frameIndex];
+		for _, psychoStructure in ipairs(dataTab.PS) do
+			local frame = ConsultFramePools:Acquire("TRP3_RegisterCharact_PsychoInfoDisplayLine");
 			local value = getPsychoStructureValue(psychoStructure);
-			if frame == nil then
-				frame = CreateFrame("Frame", "TRP3_RegisterCharact_PsychoInfoLine" .. frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_PsychoInfoDisplayLine");
-				tinsert(psychoCharFrame, frame);
-			end
 
 			-- Preset pointer
 			if psychoStructure.ID then
@@ -463,25 +433,11 @@ local function setConsultDisplay(context)
 			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 			frame:SetPoint("RIGHT", 0, 0);
 
-			-- Applying custom colors to attribute names (with contrast adjustment for readability)
-			local leftText = psychoStructure.LT or "";
-			if psychoStructure.LC then
-				local leftTextColor = TRP3_API.CreateColorFromTable(psychoStructure.LC);
-				leftTextColor = TRP3_API.GenerateReadableColor(leftTextColor, TRP3_ReadabilityOptions.TextOnBlackBackground);
-				leftText = leftTextColor:WrapTextInColorCode(leftText);
-			end
-			local rightText = psychoStructure.RT or "";
-			if psychoStructure.RC then
-				local rightTextColor = TRP3_API.CreateColorFromTable(psychoStructure.RC);
-				rightTextColor = TRP3_API.GenerateReadableColor(rightTextColor, TRP3_ReadabilityOptions.TextOnBlackBackground);
-				rightText = rightTextColor:WrapTextInColorCode(rightText);
-			end
-
-			frame.LeftText:SetText(leftText);
-			frame.RightText:SetText(rightText);
-
-			frame.LeftIcon:SetIconTexture(psychoStructure.LI);
-			frame.RightIcon:SetIconTexture(psychoStructure.RI);
+			-- Applying custom colors to attribute names.
+			frame:SetLeftText(psychoStructure.LT);
+			frame:SetRightText(psychoStructure.RT);
+			frame:SetLeftIcon(psychoStructure.LI);
+			frame:SetRightIcon(psychoStructure.RI);
 
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 
@@ -568,8 +524,8 @@ local function saveInDraft()
 	end
 	-- Save Misc
 	for index, miscStructure in pairs(draftData.MI) do
-		miscStructure.VA = stEtN(_G[miscEditCharFrame[index]:GetName() .. "ValueField"]:GetText()) or loc.CM_VALUE;
-		miscStructure.NA = stEtN(_G[miscEditCharFrame[index]:GetName() .. "NameField"]:GetText()) or loc.CM_NAME;
+		miscStructure.VA = stEtN(miscEditCharFrame[index].ValueField:GetText()) or loc.CM_VALUE;
+		miscStructure.NA = stEtN(miscEditCharFrame[index].NameField:GetText()) or loc.CM_NAME;
 	end
 
 end
@@ -1120,9 +1076,9 @@ function setEditDisplay()
 		local frame = miscEditCharFrame[frameIndex];
 		if frame == nil then
 			frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscEditLine" .. frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_MiscEditLine");
-			_G[frame:GetName() .. "NameFieldText"]:SetText(loc.CM_NAME);
-			_G[frame:GetName() .. "ValueFieldText"]:SetText(loc.CM_VALUE);
-			setTooltipForSameFrame(_G[frame:GetName() .. "Action"], "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+			frame.NameField:SetText(loc.CM_NAME);
+			frame.ValueField:SetText(loc.CM_VALUE);
+			setTooltipForSameFrame(frame.Action, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 			scaleField(frame, TRP3_RegisterCharact_Edit_CharactPanel_Container:GetWidth(), "NameField");
 
 			-- Register the drag/drop handlers for reordering. Use the
@@ -1133,7 +1089,7 @@ function setEditDisplay()
 			tinsert(miscEditCharFrame, frame);
 		end
 
-		_G[frame:GetName() .. "Action"]:SetScript("OnMouseDown", function(self)
+		frame.Action:SetScript("OnMouseDown", function(self)
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 				-- If not custom, allow convert to custom.
 				if miscStructure.ID ~= TRP3_API.MiscInfoType.Custom then
@@ -1147,36 +1103,36 @@ function setEditDisplay()
 			end);
 		end);
 
-		_G[frame:GetName() .. "Icon"]:SetScript("onMouseDown", function(self, button)
+		frame.Icon:SetScript("OnMouseDown", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(icon)
 					miscStructure.IC = icon;
-					setupIconButton(_G[frame:GetName() .. "Icon"], icon or TRP3_InterfaceIcons.Default);
+					setupIconButton(frame.Icon, icon or TRP3_InterfaceIcons.Default);
 				end, miscStructure.IC);
 			elseif button == "RightButton" then
 				local icon = miscStructure.IC or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
 					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(_G[frame:GetName() .. "Icon"], "misc", miscStructure); end);
+					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.Icon, "misc", miscStructure); end);
 				end);
 			end
 		end);
 
 		frame.frameIndex = frameIndex;
-		_G[frame:GetName() .. "Icon"].IC = miscStructure.IC or TRP3_InterfaceIcons.Default;
-		_G[frame:GetName() .. "NameField"]:SetText(miscStructure.NA or loc.CM_NAME);
+		frame.Icon.IC = miscStructure.IC or TRP3_InterfaceIcons.Default;
+		frame.NameField:SetText(miscStructure.NA or loc.CM_NAME);
 		-- Disable name editing on presets
 		if miscStructure.ID == TRP3_API.MiscInfoType.Custom then
-			_G[frame:GetName() .. "NameField"]:Show();
+			frame.NameField:Show();
 			frame.PresetName:Hide();
 		else
-			_G[frame:GetName() .. "NameField"]:Hide();
+			frame.NameField:Hide();
 			frame.PresetName:Show();
 			frame.PresetName:SetText(miscStructure.NA or loc.CM_NAME);
 		end
-		_G[frame:GetName() .. "ValueField"]:SetText(miscStructure.VA or loc.CM_VALUE);
-		refreshEditIcon(_G[frame:GetName() .. "Icon"]);
+		frame.ValueField:SetText(miscStructure.VA or loc.CM_VALUE);
+		refreshEditIcon(frame.Icon);
 		frame:ClearAllPoints();
 		frame:SetPoint("TOP", previous, "BOTTOM", 0, 0);
 		frame:SetPoint("LEFT", 10, 0);
@@ -1210,6 +1166,7 @@ function setEditDisplay()
 			frame.RightCount:Show();
 
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
+			frame.Bar.Thumb:Hide();
 
 			frame.Slider:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 			frame.Slider:SetScript("OnValueChanged", onPsychoValueChanged);
@@ -1334,6 +1291,8 @@ function setEditDisplay()
 		end
 
 		frame.frameIndex = frameIndex;
+		frame:SetLeftColor(psychoStructure.LC and TRP3_API.CreateColorFromTable(psychoStructure.LC) or TRP3_API.MiscColors.PersonalityTraitColorLeft);
+		frame:SetRightColor(psychoStructure.RC and TRP3_API.CreateColorFromTable(psychoStructure.RC) or TRP3_API.MiscColors.PersonalityTraitColorRight);
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 		frame:SetPoint("RIGHT", 0, 0);
@@ -1386,9 +1345,7 @@ local function refreshDisplay()
 	TRP3_RegisterCharact_CharactPanel_Empty:Hide();
 	TRP3_RegisterCharact_Edit_NamePanel:Hide();
 	TRP3_RegisterCharact_Edit_CharactPanel:Hide();
-	for _, frame in pairs(registerCharFrame) do frame:Hide(); end
-	for _, frame in pairs(psychoCharFrame) do frame:Hide(); end
-	for _, frame in pairs(miscCharFrame) do frame:Hide(); end
+	ConsultFramePools:ReleaseAll();
 
 	-- IsSelf ?
 	TRP3_RegisterCharact_NamePanel_EditButton:Hide();
@@ -1752,12 +1709,6 @@ function TRP3_API.register.inits.characteristicsInit()
 		local finalContainerWidth = containerWidth - 70;
 		TRP3_RegisterCharact_CharactPanel_Container:SetSize(finalContainerWidth, 50);
 		TRP3_RegisterCharact_Edit_CharactPanel_Container:SetSize(finalContainerWidth, 50);
-		for _, frame in pairs(registerCharFrame) do
-			scaleField(frame, finalContainerWidth);
-		end
-		for _, frame in pairs(miscCharFrame) do
-			scaleField(frame, finalContainerWidth);
-		end
 		for _, frame in pairs(miscEditCharFrame) do
 			scaleField(frame, finalContainerWidth, "NameField");
 		end

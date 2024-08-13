@@ -991,12 +991,17 @@ Total RP is not responsible for links leading to harmful content.|r]],
 	-- Browsers
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	BW_COLOR_CODE = "Color code",
-	BW_COLOR_CODE_TT = "You can paste a 6 figures hexadecimal color code here and press Enter.",
-	BW_COLOR_CODE_ALERT = "Invalid hexadecimal color code!",
+	BW_COLOR_CODE_HEX = "Hex code",
 	BW_CUSTOM_NAME = "Custom color name",
-	BW_CUSTOM_NAME_TITLE = "Name (Optional)",
 	BW_CUSTOM_NAME_TT = "You can set a name for the custom color you're saving. If left empty, it will use the hexadecimal color code.",
+	BW_COLOR_PRESET_TITLE = "Color presets",
+	BW_COLOR_PRESET_SAVE = "Save current color",
+	BW_COLOR_PRESET_RENAME = "Rename color",
+	BW_COLOR_PRESET_DELETE = "Delete color",
+	BW_COLOR_PRESET_SELECT = "Select color",
+	BW_COLOR_UNREADABLE = "Readability Warning",
+	BW_COLOR_UNREADABLE_TT = "This color may be |cnWARNING_FONT_COLOR:automatically adjusted|r when displayed as it can be difficult to read against dark backgrounds, such as in tooltips.|n|nAn |cnGREEN_FONT_COLOR:alternative recommended color|r is displayed at the bottom-right of the preview.",
+	BW_COLOR_UNREADABLE_CLICK = "Use recommended color",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Databroker
@@ -1321,10 +1326,6 @@ If you are planning on copying the text below inside a document, please use simp
 	PR_EXPORT_WARNING_MAC = [[Please note that some advanced text editing tools like Text Edit or Discord will reformat special characters like quotes, altering the content of the data.
 
 If you are planning on copying the text below inside a document, please use simpler text editing tools that do not automatically change characters (in Text Edit go to Format > Make Plain Text before pasting)]],
-	BW_COLOR_PRESET_TITLE = "Color presets",
-	BW_COLOR_PRESET_SAVE = "Save current color",
-	BW_COLOR_PRESET_RENAME = "Rename %s preset",
-	BW_COLOR_PRESET_DELETE = "Delete %s preset",
 	CL_DIRECTORY_PLAYER_PROFILE = "Directory player profile",
 	CL_DIRECTORY_COMPANION_PROFILE = "Directory companion profile",
 	CL_CONTENT_SIZE = [[Size: %s]],
@@ -1417,6 +1418,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	UI_PET_BROWSER_BOUND_WARNING = "|cffff0000Warning:|r This pet is currently linked to the profile |cff00ff00%1$s|r. Linking a profile to this pet will replace the current profile.",
 	UI_PET_BROWSER_NAME_WARNING = "|cffff0000Warning:|r This pet has not been renamed. We recommend renaming the pet to prevent showing this profile on other pets you own with the same name.",
 	REG_PLAYER_MISC_PRESET_PRONOUNS = "Pronouns",
+	REG_COLOR_SWATCH_WARNING = "The |cnWARNING_FONT_COLOR:text color has been adjusted|r to improve contrast automatically against the page background.|n|nThis |cnGREEN_FONT_COLOR:swatch shows the intended color|r chosen by the profile author without adjustments.",
 
 	COPY_DROPDOWN_POPUP_TEXT = "Copy with %1$s. Paste with %2$s.\nThis frame will close upon copy.",
 	COPY_SYSTEM_MESSAGE = "Copied to clipboard.",
