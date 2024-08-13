@@ -17,6 +17,44 @@ local loc = TRP3_API.loc;
 local strhtml = TRP3_API.utils.str.toHTML;
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.0.2
+
+
+## Added
+
+
+- Added a chat token for the current character roleplay name.
+  - %xp for the full name.
+  - %xpf for the first name.
+  - %xpl for the last name.
+- Added color swatches to display the non-corrected color for class/eye color on characters and name color on companions.
+- Added a swatch in the color browser to warn if the color you're selecting will be readable on the tooltip.
+  - The swatch can be clicked to swap to the corrected color.
+- Added 28 icons, 28 images and 357 musics from patch 10.0.2.
+
+## Changed
+
+
+- The IC/OOC toolbar icons have been replaced to be more readable by colorblind players.
+  - IC Green/OOC Red -> IC White/OOC Black
+- Classes, class resources and custom preset colors are now sorted alphabetically.
+  - The color now shows in a box instead of modifying the text itself for readability. (Retail only)
+  - Renaming and deleting a custom preset can now be done without needing to select the preset first.
+- Spaces at the beginning/end of notes will now be removed (in order not to display the icon notes on spaces-only notes).
+
+## Fixed
+
+
+- Fixed "Toggle nameplates customization in combat" setting not working properly.
+- The toolbar now correctly updates its size based on the amount of icons toggled.
+- Fixed an error when trying to use a map scan while in combat.
+- Fixed a rare issue where opening another player's profile could copy their Currently/OOC content into your own profile.
+
+## Removed
+
+
+- Removed support for pre-BfA personality traits. When importing a profile from Legion or before, the personality traits values will have to be set again.
+
 # Changelog version 3.0.1
 
 
