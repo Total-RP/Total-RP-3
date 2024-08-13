@@ -106,7 +106,6 @@ function TRP3_ColorPresetManager.SaveCustomPreset(name, color)
 
 	if preset then
 		preset.CO = colorString;
-
 	else
 		table.insert(TRP3_Colors, { TX = name, CO = colorString; });
 	end
