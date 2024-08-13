@@ -61,7 +61,9 @@ TRP3_API.flyway.patches["6"] = function()
 	--
 	-- If for some reason there's already a V2 present, we leave it alone
 	-- and don't migrate the value over.
-	local scale = Globals.PSYCHO_MAX_VALUE_V2 / Globals.PSYCHO_MAX_VALUE_V1;
+	local PSYCHO_DEFAULT_VALUE_V1 = 3;
+	local PSYCHO_MAX_VALUE_V1 = 6;
+	local scale = Globals.PSYCHO_MAX_VALUE_V2 / PSYCHO_MAX_VALUE_V1;
 	for _, profile in pairs(TRP3_Profiles) do
 		if profile.player then
 			local characteristics = profile.player.characteristics;
@@ -70,7 +72,7 @@ TRP3_API.flyway.patches["6"] = function()
 			if psycho then
 				for i = 1, #psycho do
 					local trait = psycho[i];
-					local value = trait.VA or Globals.PSYCHO_DEFAULT_VALUE_V1;
+					local value = trait.VA or PSYCHO_DEFAULT_VALUE_V1;
 
 					trait.V2 = trait.V2 or math.floor((value * scale) + 0.5);
 				end
