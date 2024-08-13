@@ -719,16 +719,16 @@ Ce profil a été marqué comme contenant du contenu mature.
 	["MO_CHAT_CUSTOMIZATIONS_DESCRIPTION"] = "Ajoute la compatibilité avec l'add-on %s, pour que les messages et les noms des joueurs soient modifiés par Total RP 3 dans cet add-on.",
 	["MO_SCRIPT_ERROR"] = "Ce module a rencontré une erreur de script fatale.",
 	["MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION"] = "Ajoute la compatibilité avec l'add-on %s, pour que les préférences d'infobulle de l'add-on soient également appliquées aux infobulles de Total RP 3.",
-	["MORE_MODULES_2"] = [=[{h2:c}Modules complémentaires{/h2}
-{h3}Total RP 3: Extended{/h3}
+	["MORE_MODULES_2"] = [=[{h1:c}Modules complémentaires{/h1}
+{h2}Total RP 3: Extended{/h2}
 |cff9999ffTotal RP 3: Extended|r ajoute la création de campagnes avec des quêtes et des dialogues, des objets, des documents (livres, affiches, contrats) et encore bien plus!
 {link*https://www.curseforge.com/wow/addons/total-rp-3-extended*Télécharger sur CurseForge}
 
-{h3}TRP3 Location Toggle{/h3}
+{h2}TRP3 Location Toggle{/h2}
 Ajoute un bouton à votre barre d'outils pour activer ou désactiver votre affichage sur le scan de la carte.
 {link*https://www.curseforge.com/wow/addons/trp3-location-toggle*Télécharger sur CurseForge}
 
-{h3}Total RP 3: Unit Frames{/h3}
+{h2}Total RP 3: Unit Frames{/h2}
 Ce module modifie les noms sur les barres de joueur et cible de Blizzard pour utiliser le nom et la couleur du profil, et leur ajoute un bouton pour ouvrir le profil.
 {col:f2bf1a}{link*https://www.curseforge.com/wow/addons/total-rp-3-unit-frames*Télécharger sur CurseForge}{/col}]=],
 	["NAMEPLATES_CONFIG_ACTIVE_QUERY"] = "Récupérer automatiquement les profils",

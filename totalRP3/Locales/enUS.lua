@@ -877,6 +877,9 @@ Use the |cnGREEN_FONT_COLOR:Import profile|r option to paste data from a previou
 	UI_FILTER = "Filter",
 	UI_FILTER_NO_RESULTS_FOUND_TITLE = "No results found.",
 	UI_FILTER_NO_RESULTS_FOUND_TEXT = "Try adjusting your search criteria.",
+	URL_COPY_TITLE = "Copy Link",
+	URL_COPY_INSTRUCTIONS = "Press |cnGREEN_FONT_COLOR:%1$s|r to copy the highlighted link, and then paste it into a web browser with |cnGREEN_FONT_COLOR:%2$s|r.",
+	URL_COPY_WARNING = "|cnWARNING_FONT_COLOR:Total RP is not responsible for externally linked content.|r",
 	UI_LINK_URL = "http://your.url.here",
 	UI_LINK_TEXT = "Your text here",
 	UI_LINK_SAFE = [[Here's the link URL.]],
@@ -963,6 +966,7 @@ Total RP is not responsible for links leading to harmful content.|r]],
 	CM_OPTIONS_ADDITIONAL = "Additional options",
 	CM_ACTIVATE = "Activate",
 	CM_DO_NOT_SHOW = "Do not show",
+	CM_COPY_URL = "Copy link",
 
 	CM_ORANGE = "Orange",
 	CM_WHITE = "White",
@@ -1273,16 +1277,16 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 	OPTION_ENABLED_TOAST = "Option enabled",
 	OPTION_DISABLED_TOAST = "Option disabled",
-	MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
-{h3}Total RP 3: Extended{/h3}
+	MORE_MODULES_2 = [[{h1:c}Optional modules{/h1}
+{h2}Total RP 3: Extended{/h2}
 |cff9999ffTotal RP 3: Extended|r add the possibility to create new content in WoW: campaigns with quests and dialogues, items, documents (books, signs, contracts, …) and many more!
 {col:f2bf1a}{link*https://www.curseforge.com/wow/addons/total-rp-3-extended*Download on CurseForge}{/col}
 
-{h3}TRP3 Location Toggle{/h3}
+{h2}TRP3 Location Toggle{/h2}
 Adds a simple button to the toolbar to toggle on and off the map scan location feature.
 {col:f2bf1a}{link*https://www.curseforge.com/wow/addons/trp3-location-toggle*Download on CurseForge}{/col}
 
-{h3}Total RP 3: Unit Frames{/h3}
+{h2}Total RP 3: Unit Frames{/h2}
 This module modifies Blizzard player and target frames to use RP name and color, and add a button to open profile.
 {col:f2bf1a}{link*https://www.curseforge.com/wow/addons/total-rp-3-unit-frames*Download on CurseForge}{/col}
 ]],
