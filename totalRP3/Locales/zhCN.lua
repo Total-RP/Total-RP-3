@@ -704,17 +704,17 @@ L = {
 	["MO_CHAT_CUSTOMIZATIONS_DESCRIPTION"] = "为%s插件添加自定义兼容性，以便Total rp3可以修改那个插件产生的聊天信息和玩家姓名。",
 	["MO_SCRIPT_ERROR"] = "这个模块遇到了一个致命脚本错误。",
 	["MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION"] = "为%s加载项添加自定义兼容性，以便您的工具提示首选项应用于Total rp3的工具提示。",
-	["MORE_MODULES_2"] = [=[{h2:c}Optional modules{/h2}
-{h3}Total RP 3: Extended{/h3}
+	["MORE_MODULES_2"] = [=[{h1:c}Optional modules{/h1}
+{h2}Total RP 3: Extended{/h2}
 |cff9999ffTotal RP 3: Extended|r 让你在魔兽世界当中可以自定义内容: 包含任务和对话的剧情，物品，文件 (书本，标志，协议…)以及更多！
 Total RP3扩展包 包括任务 对话 物品 文档等
 {col:f2bf1a}{link*https://www.curseforge.com/wow/addons/total-rp-3-extended*Download on CurseForge}{/col}
 
-{h3}TRP3 Location Toggle{/h3}
+{hh2}TRP3 Location Toggle{/h2}
 Adds a simple button to the toolbar to toggle on and off the map scan location feature.
 {col:f2bf1a}{link*https://www.curseforge.com/wow/addons/trp3-location-toggle*Download on CurseForge}{/col}
 
-{h3}Total RP 3: Unit Frames{/h3}
+{h2}Total RP 3: Unit Frames{/h2}
 This module modifies Blizzard player and target frames to use RP name and color, and add a button to open profile.
 {col:f2bf1a}{link*https://www.curseforge.com/wow/addons/total-rp-3-unit-frames*Download on CurseForge}{/col}]=],
 	["NAMEPLATES_CONFIG_ACTIVE_QUERY"] = "自动获取人物卡",

@@ -598,16 +598,16 @@ Bist du sicher, dass du dir das Profil ansehen willst?]=],
 	["MO_ADDON_NOT_INSTALLED"] = "Das Addon %s ist nicht installiert, eigene Total RP 3 Integration deaktiviert.",
 	["MO_CHAT_CUSTOMIZATIONS_DESCRIPTION"] = "Fügt angepasste Kompatibilität zu dem Addon %s, damit deine Chat Nachrichten und Spielernamen durch Total RP 3 angepasst werden können.",
 	["MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION"] = "Fügt angepasste Kompatibilität zu dem Addon %s, damit deine Tooltipeinstellungen für Total RP 3 übernommen werden.",
-	["MORE_MODULES_2"] = [=[{h2:c}Optionale Module{/h2}
-{h3}Total RP 3: Extended |cffF87431|r{/h3}
+	["MORE_MODULES_2"] = [=[{h1:c}Optionale Module{/h1}
+{h2}Total RP 3: Extended |cffF87431|r{/h2}
 |cff9999ffTotal RP 3: Extended|r fügt die Möglichkeit hinzu neuen Inhalt in WoW zu erstellen. Kampagnen mit Aufträgen und Dialogen, Gegenstände, Dokumente (Bücher, Schilder, Kontrakte, ...) und vieles mehr!
 {link*https://www.curseforge.com/wow/addons/total-rp-3-extended*Laden auf CurseForge}
 
-{h3}TRP3 Location Toggle{/h3}
+{h2}TRP3 Location Toggle{/h2}
 Adds a simple button to the toolbar to toggle on and off the map scan location feature.
 {link*https://www.curseforge.com/wow/addons/trp3-location-toggle*Laden auf CurseForge}
 
-{h3}Total RP 3: Unit Frames{/h3}
+{h2}Total RP 3: Unit Frames{/h2}
 Dieses Modul modifiziert die Blizzard Spieler- und Zielfenster, um den RP-Namen und die Farbe zu verwenden, und fügt eine Schaltfläche zum Öffnen des Profils hinzu.
 {col:f2bf1a}{link*https://www.curseforge.com/wow/addons/total-rp-3-unit-frames*Laden auf CurseForge}{/col}]=],
 	["NEW_VERSION"] = [=[|cff00ff00Eine neue Version von Total RP 3 (v %s) ist verfügbar.
