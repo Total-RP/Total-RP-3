@@ -1,0 +1,33 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="HTMLScrollFrame.lua"/>
+
+	<Frame name="TRP3_HTMLScrollFrameTemplate" mixin="TRP3_HTMLScrollFrameMixin" virtual="true">
+		<KeyValues>
+			<KeyValue key="initialPaddingTop" value="10" type="number"/>
+			<KeyValue key="initialPaddingBottom" value="10" type="number"/>
+			<KeyValue key="initialPaddingLeft" value="10" type="number"/>
+			<KeyValue key="initialPaddingRight" value="10" type="number"/>
+			<KeyValue key="canInterpolateScroll" value="false" type="boolean"/>
+			<KeyValue key="panExtentMultiplier" value="2.5" type="number"/>
+			<KeyValue key="scrollChildTemplate" value="TRP3_HTMLFrameTemplate"/>
+		</KeyValues>
+		<Frames>
+			<Frame parentKey="ScrollBox" mixin="TRP3_InterpolatedScrollBoxMixin" inherits="WowScrollBox"/>
+			<EventFrame parentKey="ScrollBar" mixin="TRP3_InterpolatedScrollBarMixin" inherits="MinimalScrollBar">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-10" y="-6"/>
+					<Anchor point="BOTTOMRIGHT" x="-10" y="6"/>
+				</Anchors>
+			</EventFrame>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+		</Scripts>
+	</Frame>
+</Ui>
