@@ -3,12 +3,13 @@
 ## Added
 
 - Added a chat token for the current character roleplay name.
-  - %xp for the full name
-  - %xpf for the first name
-  - %xpl for the last name
+  - %xp for the full name.
+  - %xpf for the first name.
+  - %xpl for the last name.
 - Added color swatches to display the non-corrected color for class/eye color on characters and name color on companions.
 - Added a swatch in the color browser to warn if the color you're selecting will be readable on the tooltip.
   - The swatch can be clicked to swap to the corrected color.
+- Added 28 icons, X images and 357 musics from patch 10.0.2.
 
 ## Changed
 

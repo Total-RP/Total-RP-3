@@ -443,6 +443,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_DelvesStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_DraenorCupEnd",
 		width = 128,
 		height = 128
@@ -514,6 +519,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_MoonkinFestival",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_NerubarPalaceStart",
 		width = 128,
 		height = 128
 	},
@@ -593,6 +603,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_TheWarWithin",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_TimerunningStart",
 		width = 128,
 		height = 128
@@ -644,6 +659,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_WeekendShadowlandsStart",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_WeekendTheWarWithinStart",
 		width = 128,
 		height = 128
 	},
@@ -746,6 +766,11 @@ local IMAGES = {
 		width = 512,
 		height = 256
 	},
+	{
+		url = "Interface\\Credits\\CreditsScreenKeyArt10TheWarWithin",
+		width = 512,
+		height = 256
+	},
 	--endregion
 	--region DressUpFrame
 	{
@@ -780,6 +805,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\DRESSUPFRAME\\DRESSUPBACKGROUND-GNOME1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Earthen1",
 		width = 256,
 		height = 256
 	},
@@ -1439,6 +1469,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-ArakaraCityOfEchoes",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-ArcaneVaults",
 		width = 256,
 		height = 256
@@ -1559,11 +1593,23 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-CinderbrewMeadery",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-CityOfThreads",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-CourtofStars",
 		width = 256,
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-CrucibleOfStorms",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-DarkflameCleft",
 		width = 256,
 		height = 256
 	}, {
@@ -1715,6 +1761,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-KhazAlgar",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-KingsRest",
 		width = 256,
 		height = 256
@@ -1767,6 +1817,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-NerubarPalace",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-NetherBattlegrounds",
 		width = 256,
 		height = 256
@@ -1812,6 +1866,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Plaguefall",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-PrioryOfTheSacredFlames",
 		width = 256,
 		height = 256
 	}, {
@@ -1931,6 +1989,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheDawnbreaker",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-TheDreadApproach",
 		width = 256,
 		height = 256
@@ -1984,6 +2046,14 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-TheOtherSide",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheRookery",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheStoneVault",
 		width = 256,
 		height = 256
 	}, {
@@ -2174,6 +2244,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-ArakaraCityOfEchoes",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Ashran",
 		width = 256,
 		height = 128
@@ -2302,6 +2376,14 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-CinderbrewMeadery",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-CityOfThreads",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-CourtofStars",
 		width = 256,
 		height = 128
@@ -2319,6 +2401,10 @@ local IMAGES = {
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DRAKTHARON",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DarkflameCleft",
 		width = 256,
 		height = 128
 	}, {
@@ -2590,6 +2676,22 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-NerubarPalace",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-NerubarPalaceWing1Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-NerubarPalaceWing2Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-NerubarPalaceWing3Q",
+		width = 512,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-NightmareofShekzeer",
 		width = 256,
 		height = 128
@@ -2627,6 +2729,10 @@ local IMAGES = {
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-PITOFSARON",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-PrioryOfTheSacredFlames",
 		width = 256,
 		height = 128
 	}, {
@@ -2790,6 +2896,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-TheDawnbreaker",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-THEFORGEOFSOULS",
 		width = 256,
 		height = 128
@@ -2866,7 +2976,15 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-TheRookery",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-TheStonecore",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-TheStoneVault",
 		width = 256,
 		height = 128
 	}, {
