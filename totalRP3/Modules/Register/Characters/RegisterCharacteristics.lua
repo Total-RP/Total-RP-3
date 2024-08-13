@@ -1112,7 +1112,7 @@ function setEditDisplay()
 			end);
 		end);
 
-		frame.Icon:SetScript("onMouseDown", function(self, button)
+		frame.Icon:SetScript("OnMouseDown", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(icon)
 					miscStructure.IC = icon;
