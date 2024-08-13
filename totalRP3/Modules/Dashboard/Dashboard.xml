@@ -6,14 +6,10 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="NPCTalk.lua"/>
 	<Include file="Dashboard.lua"/>
-
-	<Include file="TabView.lua"/>
-	<Include file="WhatsNewTabView.lua"/>
-	<Include file="AboutTabView.lua"/>
-	<Include file="ModulesTabView.lua"/>
-
-	<Include file="HTMLContent.xml"/>
-	<Include file="TabFrame.xml"/>
+	<Include file="DashboardUtil.lua"/>
+	<Include file="DashboardCredits.lua"/>
+	<Include file="DashboardChangelog.lua"/>
+	<Include file="DashboardTabFrame.xml"/>
 	<Include file="StatusPanel.xml"/>
 	<Include file="Currently.xml"/>
 
@@ -106,19 +102,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.StatusPanel" x="0" y="-35"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
-				<Scripts>
-					<OnLoad>
-						-- Define the tabs to display on this frame prior to
-						-- actually invoking its native OnLoad handler.
-						self.TabClasses = {
-							TRP3_API.dashboard.WhatsNewTabView,
-							TRP3_API.dashboard.AboutTabView,
-							TRP3_API.dashboard.ModulesTabView,
-						};
-
-						self:OnLoad(self);
-					</OnLoad>
-				</Scripts>
 			</Frame>
 		</Frames>
 	</Frame>
