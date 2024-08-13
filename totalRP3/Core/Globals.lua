@@ -65,8 +65,6 @@ TRP3_API.globals = {
 	serious_day = currentDate.month == 4 and currentDate.day == 1,
 
 	-- Profile Constants
-	PSYCHO_DEFAULT_VALUE_V1 = 3,
-	PSYCHO_MAX_VALUE_V1 = 6,
 	PSYCHO_DEFAULT_VALUE_V2 = 10,
 	PSYCHO_MAX_VALUE_V2 = 20,
 };
