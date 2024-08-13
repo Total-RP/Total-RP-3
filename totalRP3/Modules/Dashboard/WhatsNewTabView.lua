@@ -30,7 +30,7 @@ local CHANGELOG_TEXT = [[
 - Added color swatches to display the non-corrected color for class/eye color on characters and name color on companions.
 - Added a swatch in the color browser to warn if the color you're selecting will be readable on the tooltip.
   - The swatch can be clicked to swap to the corrected color.
-- Added 28 icons, 28 images and 357 musics from patch 10.0.2.
+- Added 28 icons, 64 images and 357 musics from patch 10.0.2.
 
 ## Changed
 

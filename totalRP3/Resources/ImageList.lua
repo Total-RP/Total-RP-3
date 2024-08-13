@@ -3161,6 +3161,11 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_ArakaraDungeon",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_ArcaneVaultsDungeon",
 		width = 512,
 		height = 288
@@ -3191,6 +3196,21 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_CinderbrewMeaderyDungeon",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_CityOfThreadsDungeon",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_DarkflameCleftDungeon",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_DarkmaulCitadel",
 		width = 512,
 		height = 288
@@ -3206,6 +3226,11 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_EarthenBattleground",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_EmeraldDreamZone",
 		width = 512,
 		height = 288
@@ -3216,12 +3241,22 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Hallowfall",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_HallsOfAtonement",
 		width = 512,
 		height = 288
 	},
 	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_HallsOfInfusion",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_KhazAlgarContinent",
 		width = 512,
 		height = 288
 	},
@@ -3276,6 +3311,11 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_NerubianRaid",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_NewPlayerExperience",
 		width = 512,
 		height = 288
@@ -3297,6 +3337,16 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_PlagueFallDungeon",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_PrioryOfTheSacredFlameDungeon",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_RookeryDungeon",
 		width = 512,
 		height = 288
 	},
@@ -3336,12 +3386,22 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_TheDawnbreakerDungeon",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_TheOtherSide",
 		width = 512,
 		height = 288
 	},
 	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_TheaterOfPain",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_TheStoneVaultDungeon",
 		width = 512,
 		height = 288
 	},
@@ -4705,6 +4765,126 @@ local IMAGES = {
 	},
 	--endregion
 	--region QuestionFrame
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_AwakeningMachine-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_AwakeningMachine",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Dng_Cinderbrew",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Dng_CityOfEchoes",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Dng_CityOfThreads",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Dng_DarkflameCleft",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Dng_Dawnbreaker",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Dng_NerubarPalace",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Dng_Rookery",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Dng_SacredFlame",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Dng_StoneVault",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Gnawbles",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Huberta",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Keyflame",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Notoriety_Trio",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_WorldBoss",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_WorldQuests",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Zone5_Anubazal",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Zone5_ExecutorNizrek",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-1100_Zone5_WidowAraknai",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-ManyRadiantEchoes",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-RadiantDiscord",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-RadiantEcho",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Wax-large",
+		width = 512,
+		height = 256
+	},
 	{
 		url = "Interface\\QuestionFrame\\answer-AlchemyCauldron01-large",
 		width = 512,
