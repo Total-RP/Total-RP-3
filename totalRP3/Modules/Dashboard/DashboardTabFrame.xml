@@ -1,0 +1,34 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="DashboardTabFrame.lua"/>
+
+	<Frame name="TRP3_DashboardTabFrame" mixin="TRP3_DashboardTabFrameMixin" virtual="true" inherits="TRP3_TooltipBackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+		</KeyValues>
+		<Frames>
+			<Frame parentKey="TabBar" frameLevel="1">
+				<Size x="400" y="30"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="17" y="30"/>
+				</Anchors>
+			</Frame>
+			<Frame parentKey="Content" inherits="TRP3_HTMLScrollFrameTemplate">
+				<KeyValues>
+					<KeyValue key="canInterpolateScroll" value="true" type="boolean"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="5" y="-5"/>
+					<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
+				</Anchors>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
+	</Frame>
+</Ui>

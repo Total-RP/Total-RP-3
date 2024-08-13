@@ -1,32 +1,14 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local TRP3_API = select(2, ...);
-local Ellyb = TRP3_API.Ellyb;
-
--- Ellyb imports
-local Class = Ellyb.Class;
-
--- Total RP 3 imports
-local Configuration = TRP3_API.configuration;
-local Dashboard = TRP3_API.dashboard;
-local Navigation = TRP3_API.navigation;
-local UITooltip = TRP3_API.ui.tooltip;
-local loc = TRP3_API.loc;
-local strhtml = TRP3_API.utils.str.toHTML;
-
 local CHANGELOG_TEXT = [[
 # Changelog version 3.0.3
 
-
 ## Added
-
 
 - Added a monochrome contrast option to turn colored text white or black depending on background.
 
 ## Changed
-
 
 - The new color swatches for class and eye color have been moved to the left to let the text be aligned again, and their size has been slightly reduced.
 - Opening the color browser now automatically focuses on the hex color field to allow a hex code to be pasted immediately.
@@ -34,17 +16,13 @@ local CHANGELOG_TEXT = [[
 
 ## Fixed
 
-
 - Fixed an issue where right-clicking on a map scan pin would zoom out the map.
 - Fixed an issue which could cause icons and full titles to linger on unrelated nameplates when using KuiNameplates.
 - Modules disabled because of a missing dependency will no longer display an error.
 
-
 # Changelog version 3.0.2
 
-
 ## Added
-
 
 - Added a chat token for the current character roleplay name.
   - %xp for the full name.
@@ -57,7 +35,6 @@ local CHANGELOG_TEXT = [[
 
 ## Changed
 
-
 - The IC/OOC toolbar icons have been replaced to be more readable by colorblind players.
   - IC Green/OOC Red -> IC White/OOC Black
 - Classes, class resources and custom preset colors are now sorted alphabetically.
@@ -67,7 +44,6 @@ local CHANGELOG_TEXT = [[
 
 ## Fixed
 
-
 - Fixed "Toggle nameplates customization in combat" setting not working properly.
 - The toolbar now correctly updates its size based on the amount of icons toggled.
 - Fixed an error when trying to use a map scan while in combat.
@@ -75,41 +51,33 @@ local CHANGELOG_TEXT = [[
 
 ## Removed
 
-
 - Removed support for pre-BfA personality traits. When importing a profile from Legion or before, the personality traits values will have to be set again.
 
 # Changelog version 3.0.1
 
-
-### {col:FFD200}For a visual guide to the major changes of version 3.0, please see [this article](https://github.com/Total-RP/Total-RP-3/wiki/Guide-to-version-3.0) on our wiki.{/col}
-
+For a visual guide to the major changes of version 3.0, please see [this article](https://github.com/Total-RP/Total-RP-3/wiki/Guide-to-version-3.0) on our wiki.
 
 ## Added
-
 
 - The character profile dropdown on the toolbar is now capped in height and scrollable on Retail.
   - The companion profile dropdown on the target frame will also receive this change in patch 11.0.2.
 
 ## Changed
 
-
 - Glance slots click instructions have been removed from their tooltips and moved to the help button in the "At first glance" section of the Miscellaneous tab.
 
 ## Fixed
-
 
 - Fixed icon button right-click actions not working properly in the relation editor.
 - Fixed an error when disabling the tooltip module.
 
 # Changelog version 3.0.0
 
-
 This version adds support for patch 11.0.
 
 Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and {col:00ff00}keyboardturner{/col} for the new silhouette logo.
 
 ## Added
-
 
 - Added a new Relations menu located in the Customization section, alongside the moved Automation settings.
   - This menu lets you edit the preset relations you can have with other players, as well as create new ones.
@@ -139,7 +107,6 @@ Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and 
 - Added 1526 icons and 6 musics from patch 11.0.0.
 
 ## Changed
-
 
 - The UI has received an extensive makeover, including smoother scrolling in profiles list and directory.
 - The toolbar and target frame buttons have had their icons updated to make their actions clearer.
@@ -175,7 +142,6 @@ Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and 
 
 ## Fixed
 
-
 - Fixed some causes of lingering tooltips.
   - Soft target support has been disabled by default with this update, as some issues remain. It can still be reenabled in Tooltip settings.
 - Fixed an issue where disabling the KuiNameplates module would break KuiNameplates itself.
@@ -196,7 +162,6 @@ Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and 
 
 ## Removed
 
-
 - Removed UI sound and animation settings.
 - Removed Info tooltip size setting. (The game should already auto-adjust font size on high resolutions)
 - Removed the setting to change the tooltip anchor for glances on the target frame.
@@ -206,67 +171,8 @@ Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and 
 - Removed advanced comms settings.
 ]];
 
---- Returns the fully formatted localized text for this view.
-local function getLocalizedText()
-	return strhtml(CHANGELOG_TEXT);
-end
-
---- Toggles a setting and displays a UI toast.
----  @param setting The setting to be toggled.
-local function toggleSetting(setting)
-	if Configuration.getValue(setting) then
-		Configuration.setValue(setting, false);
-		UITooltip.toast(loc.OPTION_DISABLED_TOAST, 3);
-	else
-		Configuration.setValue(setting, true);
-		UITooltip.toast(loc.OPTION_ENABLED_TOAST, 3);
-	end
-end
-
---- Mapping of URL handlers to register and unregister with this view.
-local URL_HANDLERS = {
-	right_click_profile = GenerateClosure(toggleSetting, "CONFIG_RIGHT_CLICK_OPEN_PROFILE"),
-	companion_speech = GenerateClosure(toggleSetting, "chat_npcspeech_replacement"),
-	default_color_picker = GenerateClosure(toggleSetting, "default_color_picker"),
-	disable_chat_ooc = GenerateClosure(toggleSetting, "chat_disable_ooc"),
-	open_mature_filter_settings = function()
-		Navigation.menu.selectMenu("main_91_config_main_config_register");
-	end,
-};
-
---- Tab view class that displays our changelog, and points out the awesome
----  new features that we've spent far too much time working on.
-local WhatsNewTabView = Class("TRP3_DashboardWhatsNewTabView", Dashboard.TabView);
-Dashboard.WhatsNewTabView = WhatsNewTabView;
-
-function WhatsNewTabView.static.getTabTitle()
-	return loc.DB_NEW;
-end
-
-function WhatsNewTabView:initialize(dashboard)
-	self.class.super.initialize(self, dashboard);
-
-	self.body = getLocalizedText();
-end
-
-function WhatsNewTabView:Hide()
-	self.class.super.Hide(self);
-
-	-- Unregister the hyperlink handlers.
-	for url in pairs(URL_HANDLERS) do
-		self.dashboard:UnregisterHyperlink(url);
-	end
-end
-
-function WhatsNewTabView:Show()
-	self.class.super.Show(self);
-
-	self.dashboard:SetHTML(getLocalizedText());
-
-	-- Register all the URL strings that allow people to toggle settings
-	-- from the view directly. Whoever thought of this feature was a genius,
-	-- by the way.
-	for url, handler in pairs(URL_HANDLERS) do
-		self.dashboard:RegisterHyperlink(url, handler);
-	end
+function TRP3_DashboardUtil.GenerateChangelog()
+	local text = CHANGELOG_TEXT;
+	text = TRP3_DashboardUtil.GenerateListMarkup(text);
+	return text;
 end
