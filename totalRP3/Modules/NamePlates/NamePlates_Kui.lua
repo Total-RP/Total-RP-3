@@ -195,7 +195,7 @@ function TRP3_KuiNamePlates:OnNamePlateCreate(nameplate)
 end
 
 function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
-	if not self:CanCustomizeNamePlate(nameplate) then
+	if not self:ShouldCustomizeNamePlate(nameplate) then
 		return;
 	end
 
@@ -237,7 +237,7 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlateHealthBar(nameplate)
-	if not self:CanCustomizeNamePlate(nameplate) then
+	if not self:ShouldCustomizeNamePlate(nameplate) then
 		return;
 	end
 
@@ -251,6 +251,10 @@ function TRP3_KuiNamePlates:UpdateNamePlateHealthBar(nameplate)
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlateIcon(nameplate)
+	if not self:CanCustomizeNamePlate(nameplate) then
+		return;
+	end
+
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
 	local displayIcon = displayInfo and displayInfo.icon or nil;
 	local shouldHide = displayInfo and displayInfo.shouldHide or false;
@@ -259,7 +263,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateIcon(nameplate)
 	-- Only enable this if we're permitted to customize this nameplate, and
 	-- if we've not been requested to hide it.
 
-	if not self:CanCustomizeNamePlate(nameplate) or not ShouldShowName(unitframe) or shouldHide then
+	if not self:ShouldCustomizeNamePlate(nameplate) or not ShouldShowName(unitframe) or shouldHide then
 		displayIcon = nil;
 	end
 
@@ -281,6 +285,10 @@ function TRP3_KuiNamePlates:UpdateNamePlateIcon(nameplate)
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
+	if not self:CanCustomizeNamePlate(nameplate) then
+		return;
+	end
+
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
 	local displayText = displayInfo and displayInfo.fullTitle or nil;
 	local displayFont = nameplate.GuildText:GetFont();
@@ -289,7 +297,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 	-- Only enable this widget in name-only mode if we're permitted to
 	-- customize this nameplate, and if we've not been requested to hide it.
 
-	if not self:CanCustomizeNamePlate(nameplate) or not IsNamePlateInNameOnlyMode(nameplate) or shouldHide then
+	if not self:ShouldCustomizeNamePlate(nameplate) or not IsNamePlateInNameOnlyMode(nameplate) or shouldHide then
 		displayText = nil;
 		displayFont = nil;
 	end
@@ -318,7 +326,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlateNameText(nameplate)
-	if not self:CanCustomizeNamePlate(nameplate) then
+	if not self:ShouldCustomizeNamePlate(nameplate) then
 		return;
 	end
 
@@ -330,7 +338,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateNameText(nameplate)
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlateGuildText(nameplate)
-	if not self:CanCustomizeNamePlate(nameplate) then
+	if not self:ShouldCustomizeNamePlate(nameplate) then
 		return;
 	end
 
@@ -350,7 +358,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateGuildText(nameplate)
 end
 
 function TRP3_KuiNamePlates:EvaluateNamePlateVisibility(nameplate)
-	if not self:CanCustomizeNamePlate(nameplate) then
+	if not self:ShouldCustomizeNamePlate(nameplate) then
 		return;
 	end
 
@@ -370,18 +378,23 @@ function TRP3_KuiNamePlates:UpdateNamePlateVisibility(nameplate)
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlate(nameplate)
-	if not self:CanCustomizeNamePlate(nameplate) then
-		return;
+	if self:ShouldCustomizeNamePlate(nameplate) then
+		-- Some customizations are managed by posthooks on nameplate frames,
+		-- including icons and full titles which are updated in response to
+		-- the name text being updated.
+
+		self:UpdateNamePlateNameText(nameplate);
+		self:UpdateNamePlateGuildText(nameplate);
+		self:UpdateNamePlateHealthBar(nameplate);
+		self:UpdateNamePlateVisibility(nameplate);
+	else
+		-- For nameplates that we shouldn't customize, we need to force the
+		-- full text and icons to update in order to hide them properly so
+		-- that they don't hang around on recycled nameplates.
+
+		self:UpdateNamePlateFullTitle(nameplate);
+		self:UpdateNamePlateIcon(nameplate);
 	end
-
-	-- Some customizations are managed by posthooks on nameplate frames,
-	-- including icons and full titles which are updated in response to
-	-- the name text being updated.
-
-	self:UpdateNamePlateNameText(nameplate);
-	self:UpdateNamePlateGuildText(nameplate);
-	self:UpdateNamePlateHealthBar(nameplate);
-	self:UpdateNamePlateVisibility(nameplate);
 end
 
 function TRP3_KuiNamePlates:UpdateAllNamePlates()
@@ -395,12 +408,20 @@ function TRP3_KuiNamePlates:CanCustomizeNamePlate(nameplate)
 
 	if not self.initialized or not self.initialized[nameplateKey] then
 		return false;  -- Reject uninitialized nameplates.
-	elseif nameplate.state.personal or not nameplate.state.reaction then
-		return false;  -- Reject personal and invalid nameplates.
 	elseif not nameplate.parent or not nameplate.parent.UnitFrame then
 		return false;  -- Nameplate doesn't have a unitframe (retail-specific).
 	elseif not nameplate.unit then
 		return false;  -- Nameplate doesn't have an associated unit.
+	else
+		return true;
+	end
+end
+
+function TRP3_KuiNamePlates:ShouldCustomizeNamePlate(nameplate)
+	if not self:CanCustomizeNamePlate(nameplate) then
+		return false;  -- Reject invalid nameplates.
+	elseif nameplate.state.personal or not nameplate.state.reaction then
+		return false;  -- Reject personal and invalid nameplates.
 	else
 		return true;
 	end
