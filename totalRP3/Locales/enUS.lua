@@ -527,6 +527,7 @@ The description doesn't have to be limited to |cnGREEN_FONT_COLOR:physical descr
 	CO_MODULES_STATUS_3 = "Total RP 3 update required",
 	CO_MODULES_STATUS_4 = "Error on initialization",
 	CO_MODULES_STATUS_5 = "Error on startup",
+	CO_MODULES_STATUS_6 = "Disabled due to conflict",
 	CO_MODULES_TT_NONE = "No dependencies";
 	CO_MODULES_TT_DEPS = "Dependencies";
 	CO_MODULES_TT_TRP = "%sFor Total RP 3 build %s minimum.|r",

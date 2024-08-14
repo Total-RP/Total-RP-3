@@ -22,7 +22,8 @@ TRP3_API.module.status = {
 	ERROR_ON_INIT = 2,
 	ERROR_ON_LOAD = 3,
 	DISABLED = 4,
-	OK = 5
+	OK = 5,
+	CONFLICTED = 6,
 };
 local MODULE_STATUS = TRP3_API.module.status;
 
@@ -139,12 +140,6 @@ end
 --- Invokes a given module function with any additional given parameters,
 --  capturing error information and returning it as if via pcall or xpcall.
 --
---  In release builds, error information is not reported via the global
---  error handler (as if it were called via pcall).
---
---  In debug builds, error information is forwarded to the global error
---  handler, and is additionally returned.
---
 --  If a function does not fail with an error but returns an explicit false,
 --  the function is treated as failed and any additional message is returned.
 --
@@ -154,14 +149,23 @@ end
 --
 --  @return true if no error occurred, false and an error message if not.
 local function callModuleFunction(module, funcName, ...)
-	local ok, message = false, nil;
-	securecallfunction(function(...) ok, message = module[funcName](...); end, ...);
+	local called = false;
+	local ok, message;
 
-	if ok == nil then
-		ok = true;
-		message = nil;
-	elseif ok == false and message == nil then
+	local function InvokeFunction(...)
+		ok, message = module[funcName](...);
+		called = true;
+	end
+
+	securecallfunction(InvokeFunction, ...);
+
+	if not called then
+		-- Execution of the function didn't complete, assume a script error.
+		ok = false;
 		message = loc.MO_SCRIPT_ERROR;
+	elseif called and ok == nil and message == nil then
+		-- The invoked function returned no values; assume success.
+		ok = true;
 	end
 
 	return ok, message;
@@ -192,7 +196,11 @@ function initModule(module)
 
 	-- Call the lifecycle function and update the module status on failure.
 	local ok, err = callModuleFunction(module, "onInit");
-	if not ok then
+
+	if type(ok) ~= "boolean" then
+		module.error = err;
+		module.status = ok;
+	elseif not ok then
 		module.error = err;
 		module.status = MODULE_STATUS.ERROR_ON_INIT;
 	end
@@ -223,7 +231,11 @@ function startModule(module)
 
 	-- Call the lifecycle function and update the module status on failure.
 	local ok, err = callModuleFunction(module, "onStart");
-	if not ok then
+
+	if type(ok) ~= "boolean" then
+		module.error = err;
+		module.status = ok;
+	elseif not ok then
 		module.error = err;
 		module.status = MODULE_STATUS.ERROR_ON_LOAD;
 	end
@@ -249,7 +261,11 @@ local function disableModule(module)
 
 	-- Call the lifecycle function and update the module status on failure.
 	local ok, err = callModuleFunction(module, "onDisable");
-	if not ok then
+
+	if type(ok) ~= "boolean" then
+		module.error = err;
+		module.status = ok;
+	elseif not ok then
 		module.error = err;
 		module.status = MODULE_STATUS.ERROR_ON_LOAD;
 	end
@@ -274,6 +290,8 @@ local function moduleStatusText(statusCode)
 		return "|cffff0000" .. loc.CO_MODULES_STATUS_5;
 	elseif statusCode == MODULE_STATUS.MISSING_DEPENDENCY then
 		return "|cff999999" .. loc.CO_MODULES_STATUS_0;
+	elseif statusCode == MODULE_STATUS.CONFLICTED then
+		return "|cff999999" .. loc.CO_MODULES_STATUS_6;
 	end
 	error("Unknown status code");
 end
@@ -335,6 +353,7 @@ local function GetSuggestedBorderColor(status)
 		[MODULE_STATUS.ERROR_ON_LOAD] = RED_BORDER_COLOR,
 		[MODULE_STATUS.DISABLED] = GREY_BORDER_COLOR,
 		[MODULE_STATUS.OK] = GREEN_BORDER_COLOR,
+		[MODULE_STATUS.CONFLICTED] = GREY_BORDER_COLOR,
 	};
 
 	return STATUS_BORDER_COLORS[status] or GOLD_BORDER_COLOR;
