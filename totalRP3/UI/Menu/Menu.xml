@@ -9,5 +9,4 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="MenuTemplates.lua"/>
 	<Include file="MenuUtil.lua"/>
 	<Include file="DropdownButton.xml"/>
-	<Include file="MenuTest.lua"/>
 </Ui>
