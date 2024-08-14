@@ -425,6 +425,8 @@ stds.wow = {
 
 		ScrollBoxConstants = {
 			fields = {
+				"DiscardScrollPosition",
+				"NoScrollInterpolation",
 				"RetainScrollPosition",
 			},
 		},

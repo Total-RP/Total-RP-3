@@ -58,20 +58,33 @@ function TRP3_HTMLScrollFrameMixin:ClearText()
 	self.ScrollChild:ClearText();
 end
 
-function TRP3_HTMLScrollFrameMixin:SetHTML(html)
+local function ResetScrollPosition(self, retainScrollPosition)
+	if retainScrollPosition then
+		return;
+	end
+
+	local noInterpolation = ScrollBoxConstants.NoScrollInterpolation;
+	self.ScrollBox:ScrollToBegin(noInterpolation);
+end
+
+function TRP3_HTMLScrollFrameMixin:SetHTML(html, retainScrollPosition)
 	self.ScrollChild:SetHTML(html);
+	ResetScrollPosition(self, retainScrollPosition);
 end
 
-function TRP3_HTMLScrollFrameMixin:SetPlainText(text)
+function TRP3_HTMLScrollFrameMixin:SetPlainText(text, retainScrollPosition)
 	self.ScrollChild:SetPlainText(text);
+	ResetScrollPosition(self, retainScrollPosition);
 end
 
-function TRP3_HTMLScrollFrameMixin:SetRichText(text, options)
+function TRP3_HTMLScrollFrameMixin:SetRichText(text, options, retainScrollPosition)
 	self.ScrollChild:SetRichText(text, options);
+	ResetScrollPosition(self, retainScrollPosition);
 end
 
-function TRP3_HTMLScrollFrameMixin:SetText(text, ignoreMarkup)
+function TRP3_HTMLScrollFrameMixin:SetText(text, ignoreMarkup, retainScrollPosition)
 	self.ScrollChild:SetText(text, ignoreMarkup);
+	ResetScrollPosition(self, retainScrollPosition);
 end
 
 function TRP3_HTMLScrollFrameMixin:GetJustifyH(textType)
@@ -202,16 +215,16 @@ function TRP3_HTMLScrollFrameMixin:SetPanExtentMultiplier(multiplier)
 	self:UpdatePanExtent();
 end
 
-function TRP3_HTMLScrollFrameMixin:ScrollToBegin()
-	self.ScrollBox:ScrollToBegin();
+function TRP3_HTMLScrollFrameMixin:ScrollToBegin(noInterpolation)
+	self.ScrollBox:ScrollToBegin(noInterpolation);
 end
 
-function TRP3_HTMLScrollFrameMixin:ScrollToEnd()
-	self.ScrollBox:ScrollToEnd();
+function TRP3_HTMLScrollFrameMixin:ScrollToEnd(noInterpolation)
+	self.ScrollBox:ScrollToEnd(noInterpolation);
 end
 
-function TRP3_HTMLScrollFrameMixin:ScrollToOffset(offset)
-	self.ScrollBox:ScrollToOffset(offset);
+function TRP3_HTMLScrollFrameMixin:ScrollToOffset(offset, noInterpolation)
+	self.ScrollBox:ScrollToOffset(offset, noInterpolation);
 end
 
 function TRP3_HTMLScrollFrameMixin:UpdatePanExtent()
