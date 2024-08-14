@@ -154,3 +154,9 @@ function TRP3_PlayerMapPinMixin:OnTooltipAboutToShow(tooltip)
 	tooltip:AddTempLine([[|TInterface\Common\UI-TooltipDivider-Transparent:8:128:0:0:8:8:0:128:0:8:255:255:255|t]]);
 	tooltip:AddTempLine(TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.CL_OPEN_PROFILE), WHITE_FONT_COLOR);
 end
+
+function TRP3_PlayerMapPinMixin:CheckMouseButtonPassthrough()
+	-- Intentional no-op; this is called by Blizzard *after* pin acquisition
+	-- logic and would reset explicit configuration of our button passthrough
+	-- in the OnAcquire handler.
+end
