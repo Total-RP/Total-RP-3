@@ -26,7 +26,7 @@ function TRP3_HTMLScrollFrameMixin:OnLoad()
 
 	local child = CreateFrame("SimpleHTML", nil, self, self.scrollChildTemplate);
 	self:SetScrollChild(child);
-	self:SetPadding(self.initialPaddingTop, self.initialPaddingBottom, self.initialPaddingLeft, self.initialPaddingRight);
+	self:SetPadding(self.paddingTop, self.paddingBottom, self.paddingLeft, self.paddingRight);
 end
 
 function TRP3_HTMLScrollFrameMixin:OnShow()
