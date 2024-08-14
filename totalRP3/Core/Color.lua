@@ -475,6 +475,7 @@ TRP3_ColorContrastOption =
 	MediumHigh = 5,
 	High = 6,
 	VeryHigh = 7,
+	Monochromatic = 8,
 
 	-- Aliases and other magical values.
 	Default = 3,
@@ -489,6 +490,7 @@ local ColorContrastLevels =
 	[TRP3_ColorContrastOption.MediumHigh] = 60,
 	[TRP3_ColorContrastOption.High] = 75,
 	[TRP3_ColorContrastOption.VeryHigh] = 90,
+	[TRP3_ColorContrastOption.Monochromatic] = math.huge,
 };
 
 local function CalculateLuminance(r, g, b)
@@ -604,7 +606,7 @@ function TRP3_API.GenerateReadableColor(foregroundColor, backgroundColor, target
 	local FgYs = CalculateLuminance(FgR, FgG, FgB);
 	local FgLc = CalculateLightnessContrast(FgYs, BgYs);
 
-	if math.abs(FgLc) < targetContrast then
+	if math.abs(FgLc) < targetContrast and targetContrast ~= math.huge then
 		local MiCd = math.huge;
 		local L = 0;
 		local R = 100;
