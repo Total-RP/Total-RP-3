@@ -431,23 +431,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<OnLeave method="OnLeave"/>
 					</Scripts>
 				</FontString>
-			</Layer>
-		</Layers>
-		<Frames>
-			<Frame parentKey="Swatch" mixin="TRP3_RegisterColorSwatchMixin" inherits="TRP3_ColorSwatchTemplate, TRP3_TooltipScriptTemplate">
-				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.Title" relativePoint="RIGHT" x="15"/>
-				</Anchors>
-			</Frame>
-		</Frames>
-		<Layers>
-			<Layer level="OVERLAY">
 				<FontString parentKey="Value" inherits="GameFontHighlight" mixin="TRP3_ReadableTextMixin, TRP3_TruncatedTextMixin" justifyH="LEFT" wordwrap="false">
 					<KeyValues>
 						<KeyValue key="readableTextBackgroundColor" value="TRP3_PARCHMENT_BACKGROUND_COLOR" type="global"/>
 					</KeyValues>
 					<Anchors>
-						<Anchor point="LEFT" relativeKey="$parent.Swatch" relativePoint="RIGHT" x="5"/>
+						<Anchor point="LEFT" relativeKey="$parent.Title" relativePoint="RIGHT" x="15"/>
 						<Anchor point="RIGHT"/>
 					</Anchors>
 					<Scripts>
@@ -457,6 +446,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</FontString>
 			</Layer>
 		</Layers>
+		<Frames>
+			<Frame parentKey="Swatch" mixin="TRP3_RegisterColorSwatchMixin" inherits="TRP3_ColorSwatchTemplate, TRP3_TooltipScriptTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" relativeKey="$parent.Value" relativePoint="LEFT" x="-5"/>
+				</Anchors>
+			</Frame>
+		</Frames>
 		<Scripts>
 			<OnLoad method="OnLoad"/>
 			<OnSizeChanged method="OnSizeChanged"/>
