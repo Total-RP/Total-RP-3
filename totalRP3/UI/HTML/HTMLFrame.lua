@@ -67,6 +67,12 @@ function TRP3_HTMLFrameMixin:SetText(text, ignoreMarkup)
 	self:MarkDirty();
 end
 
+function TRP3_HTMLFrameMixin:UpdateText()
+	if self.updateText then
+		securecallfunction(self.updateText, self);
+	end
+end
+
 function TRP3_HTMLFrameMixin:MarkDirty()
 	self:SetScript("OnUpdate", self.OnUpdate);
 end
@@ -85,6 +91,6 @@ function TRP3_HTMLFrameMixin:Layout()
 	-- Querying the content height requires a refresh of the text to process
 	-- any changes to the width of this frame.
 
-	securecallfunction(self.updateText, self);
+	self:UpdateText();
 	self:SetHeight(self:GetContentHeight());
 end
