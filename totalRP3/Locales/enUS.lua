@@ -1431,7 +1431,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	UNIT_POPUPS_CHARACTER_STATUS = "Character Status",
 	UNIT_POPUPS_CONFIG_MENU_TITLE = "Unit menus",
 	UNIT_POPUPS_CONFIG_PAGE_TEXT = "Unit menus",
-	UNIT_POPUPS_CONFIG_PAGE_HELP = "The unit popups module adds additional entries to the right-click menus found on unit frames and names in the chat frame.",
+	UNIT_POPUPS_CONFIG_PAGE_HELP = "The unit menus module adds additional entries to the right-click menus found on unit frames and names in the chat frame.",
 	UNIT_POPUPS_CONFIG_ENABLE_MODULE = "Module |cff00ff00enabled|r",
 	UNIT_POPUPS_MODULE_DISABLE_WARNING = "A user interface reload is required to disable the unit popups module.|n|n|cffff0000Warning:|r Once disabled, this module can only be re-enabled from the |cffffcc00Modules status|r page.|n|nAre you sure you want to disable this module?",
 	UNIT_POPUPS_CONFIG_ENTRIES_HEADER = "Menu entries",
