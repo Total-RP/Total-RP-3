@@ -13,7 +13,7 @@ TRP3_API.module.registerModule({
 
 		-- Check if the add-on TinyTooltip is installed
 		if not TinyTooltip then
-			return false,  loc.MO_ADDON_NOT_INSTALLED:format("TinyTooltip");
+			return TRP3_API.module.status.MISSING_DEPENDENCY,  loc.MO_ADDON_NOT_INSTALLED:format("TinyTooltip");
 		end
 
 		-- List of the tooltips we want to be customized by TinyTooltips

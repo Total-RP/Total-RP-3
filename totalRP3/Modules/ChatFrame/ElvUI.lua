@@ -9,18 +9,18 @@ local loc = TRP3_API.loc;
 local function onStart()
 	-- Stop right here if ElvUI is not installed
 	if not ElvUI then
-		return false, loc.MO_ADDON_NOT_INSTALLED:format("ElvUI");
+		return TRP3_API.module.status.MISSING_DEPENDENCY, loc.MO_ADDON_NOT_INSTALLED:format("ElvUI");
 	end
 
 	local ElvUI = ElvUI[1];
 	local ElvUIChatModule = ElvUI:GetModule("Chat", true);
 	if not ElvUIChatModule then
-		return false, "Your version of ElvUI doesn't need this module to function.";
+		return TRP3_API.module.status.MISSING_DEPENDENCY, "Your version of ElvUI doesn't need this module to function.";
 	end
 	local ElvUIGetColoredName = ElvUIChatModule.GetColoredName;
 
 	if not ElvUIGetColoredName then
-		return false, "Your version of ElvUI doesn't need this module to function.";
+		return TRP3_API.module.status.MISSING_DEPENDENCY, "Your version of ElvUI doesn't need this module to function.";
 	end
 
 	-- Build the fallback, using ElvUI's function
@@ -36,7 +36,7 @@ end
 
 -- Register a Total RP 3 module that can be disabled in the settings
 TRP3_API.module.registerModule({
-	["name"] = "ElvUI",
+	["name"] = "ElvUI Chat",
 	["description"] = loc.MO_CHAT_CUSTOMIZATIONS_DESCRIPTION:format("ElvUI"),
 	["version"] = 1.0,
 	["id"] = "trp3_elvui_chat",

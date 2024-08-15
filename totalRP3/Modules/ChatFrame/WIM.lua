@@ -9,7 +9,7 @@ local loc = TRP3_API.loc;
 local function onStart()
 	-- Stop right here if WIM is not installed
 	if not WIM then
-		return false, loc.MO_ADDON_NOT_INSTALLED:format("WIM");
+		return TRP3_API.module.status.MISSING_DEPENDENCY, loc.MO_ADDON_NOT_INSTALLED:format("WIM");
 	end
 
 	-- Import Total RP 3 functions

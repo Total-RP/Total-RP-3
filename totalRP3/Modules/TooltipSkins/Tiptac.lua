@@ -13,7 +13,7 @@ TRP3_API.module.registerModule({
 
 		-- Stop right here if TipTac is not installed
 		if not TipTac then
-			return false, loc.MO_ADDON_NOT_INSTALLED:format("TipTac");
+			return TRP3_API.module.status.MISSING_DEPENDENCY, loc.MO_ADDON_NOT_INSTALLED:format("TipTac");
 		end
 
 		-- List of the tooltips we want to be customized by TipTac
