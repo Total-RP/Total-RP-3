@@ -17,6 +17,27 @@ local loc = TRP3_API.loc;
 local strhtml = TRP3_API.utils.str.toHTML;
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.0.3
+
+
+## Added
+
+
+- Added a monochrome contrast option to turn colored text white or black depending on background.
+
+## Changed
+
+
+- The new color swatches for class and eye color have been moved to the left to let the text be aligned again, and their size has been slightly reduced.
+- "Menu settings" has been renamed to "Unit menus" to be consistent with all other renamed settings categories.
+
+## Fixed
+
+
+- Fixed an issue where right-clicking on a map scan pin would zoom out the map.
+- Modules disabled because of a missing dependency will no longer display an error.
+
+
 # Changelog version 3.0.2
 
 
