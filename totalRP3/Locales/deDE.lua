@@ -10,7 +10,7 @@ local L;
 
 L = {
 	["ABOUT_TITLE"] = "Über",
-	["AUTOMATION_ACTION_ROLEPLAY_STATUS_CHANGED_OOC"] = "Rollenspiel wurde zu 'OOC' geändert.",
+	["AUTOMATION_ACTION_ROLEPLAY_STATUS_CHANGED_OOC"] = "Rollenspielstatus wurde zu 'OOC' geändert.",
 	["AUTOMATION_ACTION_ROLEPLAY_STATUS_ERROR"] = "Änderung des Rollenspielstatus fehlgeschlagen: %s",
 	["AUTOMATION_CATEGORY_PROFILE"] = "Profil",
 	["AUTOMATION_PROFILE_COPY"] = "Profil kopieren",
