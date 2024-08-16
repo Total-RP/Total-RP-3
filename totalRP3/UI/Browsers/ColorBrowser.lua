@@ -286,6 +286,12 @@ function TRP3_ColorBrowserMixin:Open(initialColor, acceptCallback, cancelCallbac
 	self.initialColor = initialColor;
 	self.selectedColor = initialColor;
 	self:Update();
+
+	-- Focusing and highlighting the input field should occur after the
+	-- initial update which assigns the text contents.
+
+	self.Content.HexInput:SetFocus();
+	self.Content.HexInput:HighlightText();
 end
 
 function TRP3_ColorBrowserMixin:Accept()
