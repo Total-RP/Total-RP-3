@@ -95,6 +95,8 @@ L = {
 	["BROADCAST_PASSWORDED"] = [=[|cffff0000L'utilisateur|r %s |cffff0000vient de mettre un mot de passe sur le canal de diffusion (%s).
 |cffff9900Si vous ne connaissez pas ce mot de passe vous ne serez pas en mesure d'utiliser certaines fonctionnalités, comme l'emplacement des autres utilisateurs sur la carte.
 ]=],
+	["BW_COLOR_PRESET_DELETE"] = "Supprimer la couleur",
+	["BW_COLOR_PRESET_RENAME"] = "Renommer la couleur",
 	["BW_COLOR_PRESET_SAVE"] = "Enregistrer cette couleur",
 	["BW_COLOR_PRESET_TITLE"] = "Couleurs enregistrées",
 	["BW_CUSTOM_NAME"] = "Nom personnalisé",
