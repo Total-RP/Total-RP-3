@@ -1,0 +1,84 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="ProfileAboutFrame.lua"/>
+
+	<Frame name="TRP3_ProfileAboutFrameTemplate" mixin="TRP3_ProfileAboutFrameMixin" virtual="true">
+		<KeyValues>
+			<KeyValue key="paddingTop" value="10" type="number"/>
+			<KeyValue key="paddingBottom" value="10" type="number"/>
+			<KeyValue key="paddingLeft" value="10" type="number"/>
+			<KeyValue key="paddingRight" value="10" type="number"/>
+			<KeyValue key="spacing" value="10" type="number"/>
+			<KeyValue key="canInterpolateScroll" value="true" type="boolean"/>
+			<KeyValue key="panExtentMultiplier" value="2.5" type="number"/>
+		</KeyValues>
+		<Frames>
+			<Frame parentKey="ScrollBox" mixin="TRP3_InterpolatedScrollBoxMixin" inherits="WowScrollBoxList"/>
+			<EventFrame parentKey="ScrollBar" mixin="TRP3_InterpolatedScrollBarMixin" inherits="MinimalScrollBar">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-10" y="-6"/>
+					<Anchor point="BOTTOMRIGHT" x="-10" y="6"/>
+				</Anchors>
+			</EventFrame>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
+	</Frame>
+
+	<Frame name="TRP3_ProfileAboutSectionTextTemplate" mixin="TRP3_ProfileAboutSectionTextMixin" inherits="ResizeLayoutFrame" virtual="true">
+	</Frame>
+
+	<Frame name="TRP3_ProfileAboutSectionTextWithTitleTemplate" mixin="TRP3_ProfileAboutSectionTextWithTitleMixin" inherits="ResizeLayoutFrame" virtual="true">
+		<Frames>
+			<Frame parentKey="Backdrop" inherits="TRP3_TooltipBackdropEdgeTemplate" setAllPoints="true" useParentLevel="true">
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+					<KeyValue key="ignoreInLayout" value="true" type="boolean"/>
+				</KeyValues>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_ProfileAboutSectionTextWithIconTemplate" mixin="TRP3_ProfileAboutSectionTextWithIconMixin" inherits="ResizeLayoutFrame" virtual="true">
+		<KeyValues>
+			<KeyValue key="heightPadding" value="-20" type="number"/>
+			<KeyValue key="minimumHeight" value="78" type="number"/>
+		</KeyValues>
+		<Frames>
+			<Frame parentKey="Backdrop" inherits="TRP3_TooltipBackdropEdgeTemplate" setAllPoints="true" useParentLevel="true">
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+					<KeyValue key="ignoreInLayout" value="true" type="boolean"/>
+				</KeyValues>
+			</Frame>
+			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
+				<Size x="58" y="58"/>
+			</Frame>
+			<SimpleHTML parentKey="Text" inherits="TRP3_HTMLFrameCompactTemplate"/>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_ProfileAboutFrame" inherits="TRP3_ProfileAboutFrameTemplate" parent="UIParent" toplevel="true" enableMouse="true" resizable="true" dontSavePosition="true" movable="true">
+		<Size x="400" y="400"/>
+		<Anchors>
+			<Anchor point="LEFT"/>
+		</Anchors>
+		<Frames>
+			<Button parentKey="ResizeButton" inherits="PanelResizeButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+				</Anchors>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad inherit="prepend">
+				self.ResizeButton:Init(self, 100, 100);
+			</OnLoad>
+		</Scripts>
+	</Frame>
+</Ui>

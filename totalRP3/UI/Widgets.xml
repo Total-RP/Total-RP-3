@@ -23,6 +23,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Sidebar\Sidebar.xml"/>
 	<Include file="HTML\HTML.xml"/>
 	<Include file="Scroll\Scroll.xml"/>
+	<Include file="Profile\Profile.xml"/>
 	<Include file="ProfileManager\ProfileManager.xml"/>
 
 	<GameTooltip name="TRP3_TooltipTemplate" mixin="TRP3_TooltipMixin" inherits="GameTooltipTemplate" virtual="true"/>

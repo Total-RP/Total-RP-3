@@ -7,7 +7,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Init.lua"/>
 	<Include file="Locales\Locales.xml"/>
 	<Include file="Resources\Resources.xml"/>
-	<Include file="Tools\Tools.xml"/>
 	<Include file="Core\Core.xml"/>
 	<Include file="totalRP3.lua"/>
 	<Include file="Modules\Modules.xml"/>

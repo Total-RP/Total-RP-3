@@ -153,7 +153,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<Frame>
 										<Size x="10" y="10"/>
 										<Frames>
-											<SimpleHTML name="$parentText" inherits="TRP3_HyperLinkedScripts">
+											<SimpleHTML name="$parentText">
 												<Size x="462" y="5"/>
 												<Anchors>
 													<Anchor point="TOPLEFT" x="5" y="-5"/>

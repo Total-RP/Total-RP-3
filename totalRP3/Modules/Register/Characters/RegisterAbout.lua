@@ -619,6 +619,7 @@ local function refreshConsultDisplay(context)
 	TRP3_RegisterAbout_AboutPanel:Show();
 	-- Putting the right templates
 	templatesFunction[template](dataTab);
+	TRP3_ProfileAboutFrame:Render(dataTab);
 	-- Putting the righ background
 	setConsultBkg(dataTab.BK);
 	ResizeTemplateViews();

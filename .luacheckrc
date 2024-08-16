@@ -359,6 +359,12 @@ stds.wow = {
 			},
 		},
 
+		C_XMLUtil = {
+			fields = {
+				"GetTemplateInfo",
+			},
+		},
+
 		Enum = {
 			fields = {
 				TooltipDataLineType = {

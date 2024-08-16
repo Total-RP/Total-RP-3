@@ -122,7 +122,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
 				<Size x="58" y="58"/>
 			</Frame>
-			<SimpleHTML parentKey="Text" inherits="TRP3_HyperLinkedScripts">
+			<SimpleHTML parentKey="Text">
 				<Size x="380" y="0"/>
 				<FontString inherits="GameFontNormalSmall"/>
 			</SimpleHTML>
@@ -360,7 +360,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<ScrollChild>
 							<Frame name="TRP3_RegisterAbout_AboutPanel_Container">
 								<Frames>
-									<SimpleHTML name="TRP3_RegisterAbout_AboutPanel_Template1" inherits="TRP3_HyperLinkedScripts">
+									<SimpleHTML name="TRP3_RegisterAbout_AboutPanel_Template1">
 										<Anchors>
 											<Anchor point="TOPLEFT" x="5" y="-5"/>
 										</Anchors>
@@ -411,7 +411,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 													</Layer>
 												</Layers>
 												<Frames>
-													<SimpleHTML name="TRP3_RegisterAbout_AboutPanel_Template3_1_Text" inherits="TRP3_HyperLinkedScripts">
+													<SimpleHTML name="TRP3_RegisterAbout_AboutPanel_Template3_1_Text">
 														<Anchors>
 																<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_1_Title"/>
 																<Anchor point="LEFT" x="15" y="0"/>
@@ -441,7 +441,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 													</Layer>
 												</Layers>
 												<Frames>
-													<SimpleHTML name="TRP3_RegisterAbout_AboutPanel_Template3_2_Text" inherits="TRP3_HyperLinkedScripts">
+													<SimpleHTML name="TRP3_RegisterAbout_AboutPanel_Template3_2_Text">
 														<Anchors>
 																<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_2_Title"/>
 																<Anchor point="LEFT" x="15" y="0"/>
@@ -471,7 +471,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 													</Layer>
 												</Layers>
 												<Frames>
-													<SimpleHTML name="TRP3_RegisterAbout_AboutPanel_Template3_3_Text" inherits="TRP3_HyperLinkedScripts">
+													<SimpleHTML name="TRP3_RegisterAbout_AboutPanel_Template3_3_Text">
 														<Anchors>
 																<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_3_Title"/>
 																<Anchor point="LEFT" x="15" y="0"/>
