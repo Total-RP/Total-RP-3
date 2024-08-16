@@ -29,12 +29,14 @@ local CHANGELOG_TEXT = [[
 
 
 - The new color swatches for class and eye color have been moved to the left to let the text be aligned again, and their size has been slightly reduced.
+- Opening the color browser now automatically focuses on the hex color field to allow a hex code to be pasted immediately.
 - "Menu settings" has been renamed to "Unit menus" to be consistent with all other renamed settings categories.
 
 ## Fixed
 
 
 - Fixed an issue where right-clicking on a map scan pin would zoom out the map.
+- Fixed an issue which could cause icons and full titles to linger on unrelated nameplates when using KuiNameplates.
 - Modules disabled because of a missing dependency will no longer display an error.
 
 
