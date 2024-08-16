@@ -110,13 +110,11 @@ end
 function TRP3_RegisterInfoSwatchLineMixin:SetValueColor(color)
 	if color then
 		self.Value:SetReadableTextColor(color);
-		self.Value:SetPoint("LEFT", self.Swatch, "RIGHT", 5, 0);
 		self.Swatch:SetColor(color);
 		self.Swatch:SetShowContrastTooltip(not TRP3_API.IsColorReadable(color, TRP3_PARCHMENT_BACKGROUND_COLOR));
 		self.Swatch:Show();
 	else
 		self.Value:SetTextColor(HIGHLIGHT_FONT_COLOR:GetRGB());
-		self.Value:SetPoint("LEFT", self.Title, "RIGHT", 15, 0);
 		self.Swatch:Hide();
 	end
 end

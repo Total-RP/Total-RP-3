@@ -7,7 +7,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="ColorSwatch.lua"/>
 
 	<Frame name="TRP3_ColorSwatchTemplate" mixin="TRP3_ColorSwatchMixin" virtual="true">
-		<Size x="16" y="16"/>
+		<Size x="14" y="14"/>
 		<Layers>
 			<Layer level="BACKGROUND" textureSubLevel="-2">
 				<Texture parentKey="OuterBorder" texelSnappingBias="0.0" snapToPixelGrid="false">
