@@ -16,7 +16,7 @@ local function ResolveFrame(tbl, name, ...)
 end
 
 TRP3_API.module.registerModule({
-	["name"] = "ElvUI",
+	["name"] = "ElvUI Tooltips",
 	["id"] = "trp3_elvui",
 	["description"] = loc.MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION:format("ElvUI"),
 	["requiredDeps"] = {
@@ -28,7 +28,7 @@ TRP3_API.module.registerModule({
 
 		-- Stop right here if ElvUI is not installed
 		if not ElvUI then
-			return false, loc.MO_ADDON_NOT_INSTALLED:format("ElvUI");
+			return TRP3_API.module.status.MISSING_DEPENDENCY, loc.MO_ADDON_NOT_INSTALLED:format("ElvUI");
 		end
 
 		local skinFrame, skinTooltips;

@@ -85,7 +85,7 @@ local TRP3_BlizzardNamePlates = {};
 
 function TRP3_BlizzardNamePlates:OnModuleInitialize()
 	if not C_AddOns.IsAddOnLoaded("Blizzard_NamePlates") then
-		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
+		return TRP3_API.module.status.MISSING_DEPENDENCY, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	end
 
 	-- Quick hack to make these nameplates "cowardly"; if any of the below
@@ -101,7 +101,7 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 
 	for _, addon in ipairs(addons) do
 		if TRP3_API.utils.IsAddOnEnabled(addon) then
-			return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
+			return TRP3_API.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 		end
 	end
 
@@ -111,7 +111,7 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 	if ElvUI then
 		local E = ElvUI[1];
 		if E and E.NamePlates and E.NamePlates.Initialized then
-			return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
+			return TRP3_API.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 		end
 	end
 end
@@ -454,6 +454,7 @@ TRP3_API.module.registerModule({
 	description = L.BLIZZARD_NAMEPLATES_MODULE_DESCRIPTION,
 	version = 1,
 	minVersion = 92,
+	requiredDeps = { {"Blizzard_NamePlates", "external"} },
 	onInit = function() return TRP3_BlizzardNamePlates:OnModuleInitialize(); end,
 	onStart = function() return TRP3_BlizzardNamePlates:OnModuleEnable(); end,
 });
