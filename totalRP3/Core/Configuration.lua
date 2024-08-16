@@ -434,6 +434,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 					{ loc.CO_GENERAL_CONTRAST_LEVEL_MEDIUM_HIGH, TRP3_ColorContrastOption.MediumHigh },
 					{ loc.CO_GENERAL_CONTRAST_LEVEL_HIGH, TRP3_ColorContrastOption.High },
 					{ loc.CO_GENERAL_CONTRAST_LEVEL_VERY_HIGH, TRP3_ColorContrastOption.VeryHigh },
+					{ loc.CO_GENERAL_CONTRAST_LEVEL_MONOCHROMATIC, TRP3_ColorContrastOption.Monochromatic },
 				},
 				listCancel = true,
 			},

@@ -403,6 +403,7 @@ The description doesn't have to be limited to |cnGREEN_FONT_COLOR:physical descr
 	CO_GENERAL_CONTRAST_LEVEL_MEDIUM_HIGH = "Medium high",
 	CO_GENERAL_CONTRAST_LEVEL_HIGH = "High",
 	CO_GENERAL_CONTRAST_LEVEL_VERY_HIGH = "Very high",
+	CO_GENERAL_CONTRAST_LEVEL_MONOCHROMATIC = "Monochrome",
 	CO_GENERAL_HIDE_MAXIMIZE_BUTTON = "Hide maximize button",
 	CO_GENERAL_HIDE_MAXIMIZE_BUTTON_HELP = "Hides the minimize and maximize buttons on the Total RP 3 window.",
 	CO_TOOLTIP = "Tooltip",
