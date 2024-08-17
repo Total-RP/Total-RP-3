@@ -205,7 +205,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameTemplate" mixin="TRP3_MainFrameLayoutMixin" hidden="true" movable="true" dontSavePosition="true">
+	<Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameTemplate" mixin="TRP3_MainFrameLayoutMixin" hidden="true" movable="true" dontSavePosition="true" frameBuffer="true">
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -248,6 +248,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Layer level="BACKGROUND">
 						<Texture parentKey="Background" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-neutral-background" horizTile="true" vertTile="true">
 							<Color r="0.6" g="0.6" b="0.6"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="-8" y="8"/>
+								<Anchor point="BOTTOMRIGHT" x="8" y="-8"/>
+							</Anchors>
 						</Texture>
 					</Layer>
 					<Layer level="BORDER" textureSubLevel="-3">
