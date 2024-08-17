@@ -1446,9 +1446,15 @@ end
 local function GetCurrentTooltipUnit()
 	local unitToken;
 
-	if UnitExists("mouseover") then
+	if GameTooltip:IsShown() then
+		unitToken = (select(2, GameTooltip:GetUnit())) or "none";
+	end
+
+	if not unitToken and UnitExists("mouseover") then
 		unitToken = "mouseover";
-	elseif showWorldCursor() and getAnchoredPosition() ~= "ANCHOR_CURSOR" then
+	end
+
+	if not unitToken and showWorldCursor() and getAnchoredPosition() ~= "ANCHOR_CURSOR" then
 		-- World cursor units are not consulted if the tooltip is set to
 		-- anchor to the cursor itself, as it looks a bit silly.
 		unitToken = GetWorldCursorUnit();
