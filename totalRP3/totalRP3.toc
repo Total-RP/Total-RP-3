@@ -4,7 +4,7 @@
 ## Version: @project-version@
 ## Notes: The best roleplaying addon for World of Warcraft.|n|n|cffffd200Version:|r @project-version@
 ## IconTexture: Interface\AddOns\totalRP3\Resources\trp3minimap
-## OptionalDeps: !ClassColors, Kui_Nameplates, Kui_Nameplates_Core, Prat-3.0, WagoAnalytics
+## OptionalDeps: !ClassColors, _DebugLog, Kui_Nameplates, Kui_Nameplates_Core, Prat-3.0, WagoAnalytics
 ## RequiredDeps: totalRP3_Data
 ## SavedVariables: TRP3_Profiles, TRP3_Characters, TRP3_Configuration, TRP3_Flyway, TRP3_Presets, TRP3_Companions, TRP3_MatureFilter, TRP3_Colors, TRP3_Notes, TRP3_SavedAutomation
 
@@ -39,8 +39,3 @@ Libs\UTF8\lib.xml
 
 totalRP3.xml
 Deprecated.xml
-
-#@do-not-package@
-## OptionalDeps: _DebugLog, WoWUnit
-Tests\Tests.xml
-#@end-do-not-package@
