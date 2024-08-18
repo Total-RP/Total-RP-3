@@ -1,109 +1,158 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
--- TODO: Font object support; should be supplied with the initializers.
--- TODO: The entire about frame API.
+local L = TRP3_API.loc;
+
 -- TODO: Backgrounds
 -- TODO: Cleanup DP code
--- TODO: T1 & T3
 
-local SectionFactoryInitializer = {};
+local AboutElementInitializer = {};
 
-function SectionFactoryInitializer:GetTemplate()
+function AboutElementInitializer:GetTemplate()
 	-- Override to return an XML template name for your section.
 	return assert(self.templateName);
 end
 
-function SectionFactoryInitializer:GetExtent()
+function AboutElementInitializer:GetExtent()
 	-- Optional; override if the section has a dynamic extent that cannot be
 	-- inferred from the size defined in the template.
 	return nil;
 end
 
-function SectionFactoryInitializer:Factory(factory, initializeCallback)
+function AboutElementInitializer:Factory(factory, initializeCallback)
 	factory(self:GetTemplate(), initializeCallback);
 end
 
-function SectionFactoryInitializer:InitFrame(frame)
+function AboutElementInitializer:InitFrame(frame)
 	if frame.Init then
-		frame:Init(self);
+		securecallfunction(frame.Init, frame, self);
 	end
 end
 
-function SectionFactoryInitializer:Resetter(frame)
+function AboutElementInitializer:Resetter(frame)
 	if frame.Release then
-		frame:Release(self);
+		securecallfunction(frame.Release, frame, self);
 	end
 end
 
-local SectionTextInitializer = CreateFromMixins(SectionFactoryInitializer);
+TRP3_AboutHTMLElementMixin = {};
 
-function SectionTextInitializer:GetTemplate()
-	return "TRP3_ProfileAboutSectionTextTemplate";
+function TRP3_AboutHTMLElementMixin:Init(initializer)
+	self.Text:SetRichText(initializer:GetText());
+	self:Layout();
 end
 
-function SectionTextInitializer:GetText()
+function TRP3_AboutHTMLElementMixin:Reset()
+	self.Text:ClearText();
+end
+
+local AboutHTMLInitializer = CreateFromMixins(AboutElementInitializer);
+
+function AboutHTMLInitializer:GetTemplate()
+	return "TRP3_AboutHTMLElementTemplate";
+end
+
+function AboutHTMLInitializer:GetText()
 	return self.text;
 end
 
-function SectionTextInitializer:SetText(text)
+function AboutHTMLInitializer:SetText(text)
 	self.text = text;
 end
 
-local function CreateSectionTextInitializer(text)
-	local initializer = TRP3_API.CreateObject(SectionTextInitializer, text);
+local function CreateAboutHTMLInitializer(text)
+	local initializer = TRP3_API.CreateObject(AboutHTMLInitializer);
 	initializer:SetText(text);
 	return initializer;
 end
 
-local SectionTextWithTitleInitializer = CreateFromMixins(SectionTextInitializer);
+TRP3_AboutHTMLWithIconElementMixin = {};
 
-function SectionTextWithTitleInitializer:GetTemplate()
-	return "TRP3_ProfileAboutSectionTextWithTitleTemplate";
+function TRP3_AboutHTMLWithIconElementMixin:Init(initializer)
+	self.Text:SetRichText(initializer:GetText());
+	self.Icon:SetIconTexture(initializer:GetIcon());
+
+	self.Icon:ClearAllPoints();
+	self.Text:ClearAllPoints();
+
+	if self:GetOrderIndex() % 2 == 1 then
+		self.Icon:SetPoint("LEFT", 15, 0);
+		self.Text:SetPoint("LEFT", self.Icon, "RIGHT", 10, 0);
+		self.Text:SetPoint("TOPRIGHT", -20, -10);
+	else
+		self.Icon:SetPoint("RIGHT", -15, 0);
+		self.Text:SetPoint("RIGHT", self.Icon, "LEFT", -10, 0);
+		self.Text:SetPoint("TOPLEFT", 20, -10);
+	end
+
+	self:Layout();
 end
 
-function SectionTextWithTitleInitializer:GetTitleText()
-	return self.titleText;
+function TRP3_AboutHTMLWithIconElementMixin:Reset()
+	self.Text:ClearText();
 end
 
-function SectionTextWithTitleInitializer:SetTitleText(titleText)
-	self.titleText = titleText;
+local AboutHTMLWithIconInitializer = CreateFromMixins(AboutHTMLInitializer);
+
+function AboutHTMLWithIconInitializer:GetTemplate()
+	return "TRP3_AboutHTMLWithIconElementTemplate";
 end
 
-function SectionTextWithTitleInitializer:GetTitleIcon()
-	return self.titleIcon;
-end
-
-function SectionTextWithTitleInitializer:SetTitleIcon(titleIcon)
-	self.titleIcon = titleIcon;
-end
-
-local function CreateSectionTextWithTitleInitializer(text, title, icon)
-	local initializer = TRP3_API.CreateObject(SectionTextWithTitleInitializer, text, title, icon);
-	initializer:SetText(text);
-	initializer:SetTitleText(title);
-	initializer:SetTitleIcon(icon);
-	return initializer;
-end
-
-local SectionTextWithIconInitializer = CreateFromMixins(SectionTextInitializer);
-
-function SectionTextWithIconInitializer:GetTemplate()
-	return "TRP3_ProfileAboutSectionTextWithIconTemplate";
-end
-
-function SectionTextWithIconInitializer:GetIcon()
+function AboutHTMLWithIconInitializer:GetIcon()
 	return self.icon;
 end
 
-function SectionTextWithIconInitializer:SetIcon(icon)
+function AboutHTMLWithIconInitializer:SetIcon(icon)
 	self.icon = icon;
 end
 
-local function CreateSectionTextWithIconInitializer(text, icon)
-	local initializer = TRP3_API.CreateObject(SectionTextWithIconInitializer, text, icon);
+local function CreateAboutHTMLWithIconInitializer(text, icon)
+	local initializer = TRP3_API.CreateObject(AboutHTMLWithIconInitializer);
 	initializer:SetText(text);
 	initializer:SetIcon(icon);
+	return initializer;
+end
+
+TRP3_AboutHTMLWithTitleElementMixin = {};
+
+function TRP3_AboutHTMLWithTitleElementMixin:Init(initializer)
+	local iconMarkup = TRP3_MarkupUtil.GenerateIconMarkup(initializer:GetTitleIcon(), { size = 25 });
+	self.Title:SetFormattedText("%1$s    %2$s    %1$s", iconMarkup, initializer:GetTitleText());
+	self.Text:SetRichText(initializer:GetText());
+	self:Layout();
+end
+
+function TRP3_AboutHTMLWithTitleElementMixin:Reset()
+	self.Text:ClearText();
+end
+
+local AboutHTMLWithTitleInitializer = CreateFromMixins(AboutHTMLInitializer);
+
+function AboutHTMLWithTitleInitializer:GetTemplate()
+	return "TRP3_AboutHTMLWithTitleElementTemplate";
+end
+
+function AboutHTMLWithTitleInitializer:GetTitleText()
+	return self.titleText;
+end
+
+function AboutHTMLWithTitleInitializer:SetTitleText(titleText)
+	self.titleText = titleText;
+end
+
+function AboutHTMLWithTitleInitializer:GetTitleIcon()
+	return self.titleIcon;
+end
+
+function AboutHTMLWithTitleInitializer:SetTitleIcon(titleIcon)
+	self.titleIcon = titleIcon;
+end
+
+local function CreateAboutHTMLWithTitleInitializer(text, title, icon)
+	local initializer = TRP3_API.CreateObject(AboutHTMLWithTitleInitializer);
+	initializer:SetText(text);
+	initializer:SetTitleText(title);
+	initializer:SetTitleIcon(icon);
 	return initializer;
 end
 
@@ -115,7 +164,7 @@ local function CreateAboutTemplate1DataProvider(data)
 	local elements = {};
 
 	if IsValidAboutSection(data) then
-		local element = CreateSectionTextInitializer(data.TX);
+		local element = CreateAboutHTMLInitializer(data.TX);
 		table.insert(elements, element);
 	end
 
@@ -127,7 +176,7 @@ local function CreateAboutTemplate2DataProvider(data)
 
 	for _, section in ipairs(data) do
 		if IsValidAboutSection(section) then
-			local element = CreateSectionTextWithIconInitializer(section.TX, section.IC);
+			local element = CreateAboutHTMLWithIconInitializer(section.TX, section.IC);
 			table.insert(elements, element);
 		end
 	end
@@ -140,19 +189,25 @@ local function CreateAboutTemplate3DataProvider(data)
 
 	if IsValidAboutSection(data.PH) then
 		local section = data.PH;
-		local element = CreateSectionTextWithTitleInitializer(section.TX, section.TI, section.IC);
+		local title = L.REG_PLAYER_PHYSICAL;
+		local icon = section.IC or TRP3_InterfaceIcons.PhysicalSection;
+		local element = CreateAboutHTMLWithTitleInitializer(section.TX, title, icon);
 		table.insert(elements, element);
 	end
 
 	if IsValidAboutSection(data.PS) then
 		local section = data.PS;
-		local element = CreateSectionTextWithTitleInitializer(section.TX, section.TI, section.IC);
+		local title = L.REG_PLAYER_PSYCHO;
+		local icon = section.IC or TRP3_InterfaceIcons.TraitSection;
+		local element = CreateAboutHTMLWithTitleInitializer(section.TX, title, icon);
 		table.insert(elements, element);
 	end
 
 	if IsValidAboutSection(data.HI) then
 		local section = data.HI;
-		local element = CreateSectionTextWithTitleInitializer(section.TX, section.TI, section.IC);
+		local title = L.REG_PLAYER_HISTORY;
+		local icon = section.IC or TRP3_InterfaceIcons.HistorySection;
+		local element = CreateAboutHTMLWithTitleInitializer(section.TX, title, icon);
 		table.insert(elements, element);
 	end
 
@@ -180,15 +235,35 @@ local function InitSectionExtentCalculator(scrollBoxView)
 		return pool;
 	end
 
-	local function CalculateExtent(_, initializer)
+	local function CalculateExtent(dataIndex, initializer)
 		local extent = initializer:GetExtent();
 
 		if not extent then
+			-- Extent calculation based off the frame extent requires us to
+			-- basically set the frame up identically to how scrollview
+			-- internally prepares the frame.
+
 			local pool = GetOrCreatePool(initializer:GetTemplate());
 			local frame = pool:Acquire();
+
+			scrollBoxView:AssignAccessors(frame, initializer);
+			frame:SetOrderIndex(dataIndex);
+			frame:Show();
+
+			scrollBoxView:GetLayoutFunction()(dataIndex, frame, 0);
+
 			initializer:InitFrame(frame);
 			extent = scrollBoxView:GetFrameExtent(frame);
+
+			if not scrollBoxView:GetScrollTarget():IsRectValid() then
+				-- FIXME: Gosh heckin' darn it. Probably just bite the bullet
+				--        and devirtualize + use a VLF with a linear view.
+				AnchorUtil.PrintAnchorGraph(frame)
+			end
+
 			initializer:Resetter(frame);
+
+			scrollBoxView:UnassignAccessors(frame);
 			pool:Release(frame);
 		end
 
@@ -243,41 +318,4 @@ function TRP3_ProfileAboutFrameMixin:Render(data)
 
 	-- TODO: Pan extent should be derived from font sizes.
 	self.ScrollBox:SetPanExtent(2.5*15);
-end
-
-TRP3_ProfileAboutSectionTextMixin = {};
-
-function TRP3_ProfileAboutSectionTextMixin:Init(initializer)
-	print("SectionText.Init");
-	self:Layout();
-end
-
-TRP3_ProfileAboutSectionTextWithTitleMixin = {};
-
-function TRP3_ProfileAboutSectionTextWithTitleMixin:Init(initializer)
-	print("SectionTextWithTitle.Init");
-	self:Layout();
-end
-
-TRP3_ProfileAboutSectionTextWithIconMixin = {};
-
-function TRP3_ProfileAboutSectionTextWithIconMixin:Init(initializer)
-	-- print("SectionTextWithIcon.Init");
-
-	self.Text:SetRichText(initializer:GetText());
-	self.Icon:SetIconTexture(initializer:GetIcon());
-
-	if self.GetOrderIndex and self:GetOrderIndex() % 2 == 1 then
-		self.Icon:SetPoint("LEFT", 15, 0);
-		self.Text:SetPoint("LEFT", self.Icon, "RIGHT", 10, 0);
-		self.Text:SetPoint("TOPRIGHT", -20, -10);
-	else
-		self.Icon:SetPoint("RIGHT", -15, 0);
-		self.Text:SetPoint("RIGHT", self.Icon, "LEFT", -10, 0);
-		self.Text:SetPoint("TOPLEFT", 20, -10);
-	end
-
-	self.Text:Layout();
-	self:Layout();
-	self:Show();
 end

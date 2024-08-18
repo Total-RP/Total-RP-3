@@ -6,6 +6,91 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="ProfileAboutFrame.lua"/>
 
+	<Font name="TRP3_AboutHTMLParagraphFont" inherits="SystemFont_Shadow_Med1">
+		<Color r="1" g="1" b="1"/>
+	</Font>
+
+	<Font name="TRP3_AboutHTMLHeader1Font" inherits="SystemFont_Shadow_Huge3">
+		<Color r="1" g="1" b="1"/>
+	</Font>
+
+	<Font name="TRP3_AboutHTMLHeader2Font" inherits="SystemFont_Shadow_Huge1">
+		<Color r="1" g="1" b="1"/>
+	</Font>
+
+	<Font name="TRP3_AboutHTMLHeader3Font" inherits="SystemFont_Shadow_Large">
+		<Color r="1" g="1" b="1"/>
+	</Font>
+
+	<SimpleHTML name="TRP3_AboutHTMLFrameTemplate" inherits="TRP3_HTMLFrameTemplate" virtual="true">
+		<FontString inherits="TRP3_AboutHTMLParagraphFont"/>
+		<FontStringHeader1 inherits="TRP3_AboutHTMLHeader1Font"/>
+		<FontStringHeader2 inherits="TRP3_AboutHTMLHeader2Font"/>
+		<FontStringHeader3 inherits="TRP3_AboutHTMLHeader3Font"/>
+	</SimpleHTML>
+
+	<Frame name="TRP3_AboutHTMLElementTemplate" mixin="TRP3_AboutHTMLElementMixin" inherits="ResizeLayoutFrame" virtual="true">
+		<Frames>
+			<SimpleHTML parentKey="Text" inherits="TRP3_AboutHTMLFrameTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="TOPRIGHT"/>
+				</Anchors>
+			</SimpleHTML>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_AboutHTMLWithTitleElementTemplate" mixin="TRP3_AboutHTMLWithTitleElementMixin" inherits="ResizeLayoutFrame" virtual="true">
+		<KeyValues>
+			<KeyValue key="heightPadding" value="20" type="number"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Title" inherits="GameFontNormalLarge" wordwrap="false">
+					<Anchors>
+						<Anchor point="TOP" y="-10"/>
+						<Anchor point="LEFT" x="10"/>
+						<Anchor point="RIGHT" x="-10"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey="Backdrop" inherits="TRP3_TooltipBackdropEdgeTemplate" setAllPoints="true" useParentLevel="true">
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+					<KeyValue key="ignoreInLayout" value="true" type="boolean"/>
+				</KeyValues>
+			</Frame>
+			<SimpleHTML parentKey="Text" inherits="TRP3_AboutHTMLFrameTemplate">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.Title" relativePoint="BOTTOM" y="-5"/>
+					<Anchor point="LEFT" x="15"/>
+					<Anchor point="RIGHT" x="-15"/>
+				</Anchors>
+			</SimpleHTML>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_AboutHTMLWithIconElementTemplate" mixin="TRP3_AboutHTMLWithIconElementMixin" inherits="ResizeLayoutFrame" virtual="true">
+		<KeyValues>
+			<KeyValue key="heightPadding" value="-20" type="number"/>
+			<KeyValue key="minimumHeight" value="78" type="number"/>
+		</KeyValues>
+		<Frames>
+			<Frame parentKey="Backdrop" inherits="TRP3_TooltipBackdropEdgeTemplate" setAllPoints="true" useParentLevel="true">
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+					<KeyValue key="ignoreInLayout" value="true" type="boolean"/>
+				</KeyValues>
+			</Frame>
+			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
+				<Size x="58" y="58"/>
+			</Frame>
+			<SimpleHTML parentKey="Text" inherits="TRP3_AboutHTMLFrameTemplate"/>
+		</Frames>
+	</Frame>
+
 	<Frame name="TRP3_ProfileAboutFrameTemplate" mixin="TRP3_ProfileAboutFrameMixin" virtual="true">
 		<KeyValues>
 			<KeyValue key="paddingTop" value="10" type="number"/>
@@ -30,39 +115,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_ProfileAboutSectionTextTemplate" mixin="TRP3_ProfileAboutSectionTextMixin" inherits="ResizeLayoutFrame" virtual="true">
-	</Frame>
-
-	<Frame name="TRP3_ProfileAboutSectionTextWithTitleTemplate" mixin="TRP3_ProfileAboutSectionTextWithTitleMixin" inherits="ResizeLayoutFrame" virtual="true">
-		<Frames>
-			<Frame parentKey="Backdrop" inherits="TRP3_TooltipBackdropEdgeTemplate" setAllPoints="true" useParentLevel="true">
-				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
-					<KeyValue key="ignoreInLayout" value="true" type="boolean"/>
-				</KeyValues>
-			</Frame>
-		</Frames>
-	</Frame>
-
-	<Frame name="TRP3_ProfileAboutSectionTextWithIconTemplate" mixin="TRP3_ProfileAboutSectionTextWithIconMixin" inherits="ResizeLayoutFrame" virtual="true">
-		<KeyValues>
-			<KeyValue key="heightPadding" value="-20" type="number"/>
-			<KeyValue key="minimumHeight" value="78" type="number"/>
-		</KeyValues>
-		<Frames>
-			<Frame parentKey="Backdrop" inherits="TRP3_TooltipBackdropEdgeTemplate" setAllPoints="true" useParentLevel="true">
-				<KeyValues>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
-					<KeyValue key="ignoreInLayout" value="true" type="boolean"/>
-				</KeyValues>
-			</Frame>
-			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
-				<Size x="58" y="58"/>
-			</Frame>
-			<SimpleHTML parentKey="Text" inherits="TRP3_HTMLFrameCompactTemplate"/>
-		</Frames>
-	</Frame>
-
 	<Frame name="TRP3_ProfileAboutFrame" inherits="TRP3_ProfileAboutFrameTemplate" parent="UIParent" toplevel="true" enableMouse="true" resizable="true" dontSavePosition="true" movable="true">
 		<Size x="400" y="400"/>
 		<Anchors>
@@ -71,7 +123,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Frames>
 			<Button parentKey="ResizeButton" inherits="PanelResizeButtonTemplate">
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMRIGHT"/>
 				</Anchors>
 			</Button>
 		</Frames>

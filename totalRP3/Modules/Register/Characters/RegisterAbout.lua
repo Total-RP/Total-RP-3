@@ -37,30 +37,18 @@ local showIconBrowser = function(callback, selectedIcon)
 	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback, nil, nil, selectedIcon});
 end;
 
-local function CreateFontFamily(fontName, inherits)
-	-- Note that 'inherits' needs to be an XML FontFamily object, not a Font.
-	local fontFamily = CreateFont(fontName);
-	fontFamily:CopyFontObject(inherits);
-	return fontFamily;
-end
-
-CreateFontFamily("TRP3_AboutParagraphFont", SystemFont_Shadow_Med1);
-CreateFontFamily("TRP3_AboutHeader1Font", SystemFont_Shadow_Huge3);
-CreateFontFamily("TRP3_AboutHeader2Font", SystemFont_Shadow_Huge1);
-CreateFontFamily("TRP3_AboutHeader3Font", SystemFont_Shadow_Large);
-
 local function updateAllAboutTemplateFonts()
-	TRP3_FontUtil.SetFontOptions(TRP3_AboutParagraphFont, getConfigValue(CONFIG_REGISTER_ABOUT_P_SIZE));
-	TRP3_FontUtil.SetFontOptions(TRP3_AboutHeader1Font, getConfigValue(CONFIG_REGISTER_ABOUT_H1_SIZE));
-	TRP3_FontUtil.SetFontOptions(TRP3_AboutHeader2Font, getConfigValue(CONFIG_REGISTER_ABOUT_H2_SIZE));
-	TRP3_FontUtil.SetFontOptions(TRP3_AboutHeader3Font, getConfigValue(CONFIG_REGISTER_ABOUT_H3_SIZE));
+	TRP3_FontUtil.SetFontOptions(TRP3_AboutHTMLParagraphFont, getConfigValue(CONFIG_REGISTER_ABOUT_P_SIZE));
+	TRP3_FontUtil.SetFontOptions(TRP3_AboutHTMLHeader1Font, getConfigValue(CONFIG_REGISTER_ABOUT_H1_SIZE));
+	TRP3_FontUtil.SetFontOptions(TRP3_AboutHTMLHeader2Font, getConfigValue(CONFIG_REGISTER_ABOUT_H2_SIZE));
+	TRP3_FontUtil.SetFontOptions(TRP3_AboutHTMLHeader3Font, getConfigValue(CONFIG_REGISTER_ABOUT_H3_SIZE));
 end
 
 local function setupHTMLFonts(frame)
-	frame:SetFontObject("p", TRP3_AboutParagraphFont);
-	frame:SetFontObject("h1", TRP3_AboutHeader1Font);
-	frame:SetFontObject("h2", TRP3_AboutHeader2Font);
-	frame:SetFontObject("h3", TRP3_AboutHeader3Font);
+	frame:SetFontObject("p", TRP3_AboutHTMLParagraphFont);
+	frame:SetFontObject("h1", TRP3_AboutHTMLHeader1Font);
+	frame:SetFontObject("h2", TRP3_AboutHTMLHeader2Font);
+	frame:SetFontObject("h3", TRP3_AboutHTMLHeader3Font);
 
 	frame:SetTextColor("h1", 1, 1, 1);
 	frame:SetTextColor("h2", 1, 1, 1);
