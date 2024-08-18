@@ -82,10 +82,6 @@ function TRP3_HTMLFrameMixin:MarkClean()
 end
 
 function TRP3_HTMLFrameMixin:Layout()
-	if not self:IsShown() then
-		return;
-	end
-
 	self:MarkClean();
 
 	-- Querying the content height requires a refresh of the text to process
@@ -93,4 +89,16 @@ function TRP3_HTMLFrameMixin:Layout()
 
 	self:UpdateText();
 	self:SetHeight(self:GetContentHeight());
+end
+
+-- Following methods make it possible to integrate HTMLFrames into layout
+-- templates with automatic `HTMLFrame:Layout()` calls being made whenever
+-- the parent requires it.
+
+function TRP3_HTMLFrameMixin:IsLayoutFrame()
+	return true;
+end
+
+function TRP3_HTMLFrameMixin:IgnoreLayoutIndex()
+	return true;
 end
