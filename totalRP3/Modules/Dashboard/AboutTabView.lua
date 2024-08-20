@@ -241,7 +241,7 @@ local function GenerateCreditsString(credits)
 	-- Acknowledgements
 
 	do  -- Logo Author
-		local LOGO_AUTHOR_LINK = string.format("{twitter*%1$s*%1$s}", "Kelandiir");
+		local LOGO_AUTHOR_LINK = string.format("{link*%1$s*%2$s}", "https://apheliondusk.tumblr.com", "AphelionDusk");
 		local SIDEBAR_DICE_AUTHOR_LINK = string.format("{twitter*%1$s*%2$s}", "keyboardturn", "keyboardturner");
 		local ICON_MARKUP = string.format("{icon:%1$s:20}", TRP3_InterfaceIcons.CreditsOthers);
 
