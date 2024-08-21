@@ -447,7 +447,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame parentKey="Swatch" mixin="TRP3_RegisterColorSwatchMixin" inherits="TRP3_ColorSwatchTemplate, TRP3_TooltipScriptTemplate">
+			<Frame parentKey="Swatch" inherits="TRP3_RegisterColorSwatchTemplate">
 				<Anchors>
 					<Anchor point="RIGHT" relativeKey="$parent.Value" relativePoint="LEFT" x="-5"/>
 				</Anchors>

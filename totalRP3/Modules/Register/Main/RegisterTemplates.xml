@@ -27,4 +27,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 	</Frame>
+
+	<Frame name="TRP3_RegisterColorSwatchTemplate" mixin="TRP3_RegisterColorSwatchMixin" inherits="TRP3_ColorSwatchTemplate, TRP3_TooltipScriptTemplate" virtual="true">
+		<Scripts>
+			<OnMouseDown method="OnMouseDown"/>
+		</Scripts>
+	</Frame>
 </Ui>
