@@ -260,6 +260,19 @@ end
 
 local widgetsList = {};
 
+local function GenerateEditDescription(description)
+	-- The "edit" description is a formatted version of the description text
+	-- with its raw format tokens ("$1$s"/"%2$s") converted to the "%p" or
+	-- "%t" tokens.
+
+	local replacements = {
+		["%1$s"] = "%p",
+		["%2$s"] = "%t",
+	};
+
+	return string.gsub(description, "%%[12]$s", replacements);
+end
+
 function updateRelationsList()
 	local relations = getRelationList(true);
 
@@ -281,7 +294,7 @@ function updateRelationsList()
 			widgetsList[widgetCount] = widget;
 		end
 		widget.Title:SetText((getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_"..relation.id)));
-		widget.Text:SetText(loc:GetText(relation.description or "REG_RELATION_" .. relation.id .. "_TT"):format("%p", "%t"));
+		widget.Text:SetText(GenerateEditDescription(relation.description or loc:GetText("REG_RELATION_" .. relation.id .. "_TT")));
 		setupIconButton(widget.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
 
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(widget.Actions, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
