@@ -57,6 +57,7 @@ end
 function TRP3_MainFrameMixin:ResizeWindow(width, height)
 	ResetWindowPoint(self);
 	self:SetSize(width, height);
+	self:SetWindowState(WindowState.Normal);
 end
 
 function TRP3_MainFrameMixin:OnWindowStateChanged(oldState, newState)  -- luacheck: no unused
@@ -70,11 +71,6 @@ end
 
 function TRP3_MainFrameMixin:RestoreWindow()
 	self:SetSize(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
-	self:SetWindowState(WindowState.Normal);
-end
-
-function TRP3_MainFrameMixin:ResizeWindow(width, height)
-	self:SetSize(width, height);
 	self:SetWindowState(WindowState.Normal);
 end
 
