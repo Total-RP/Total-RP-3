@@ -1075,8 +1075,6 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 	local parentFrame = resizeButton.resizableFrame;
 	resizeButton:SetScript("OnMouseDown", function(self)
 		if not self.onResizeStart or not self.onResizeStart() then
-			TRP3_ResizeShadowFrame.minWidth = self.minWidth;
-			TRP3_ResizeShadowFrame.minHeight = self.minHeight;
 			TRP3_ResizeShadowFrame:ClearAllPoints();
 			TRP3_ResizeShadowFrame:SetPoint("CENTER", self.resizableFrame, "CENTER", 0, 0);
 			TRP3_ResizeShadowFrame:SetWidth(parentFrame:GetWidth());
