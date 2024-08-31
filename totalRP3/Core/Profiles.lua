@@ -353,7 +353,7 @@ local function onActionSelected(value, button)
 			TRP3_ProfileExport:Show();
 			TRP3_ProfileExport.content.scroll.text:SetFocus();
 		else
-			Utils.message.displayMessage(loc.PR_EXPORT_TOO_LARGE:format(serial:len() / 1024), 2);
+			Utils.message.displayMessage(loc.PR_EXPORT_TOO_LARGE:format(serial:len() / 1000), 2);
 		end
 	elseif value == PROFILEMANAGER_ACTIONS.IMPORT then
 		TRP3_ProfileImport.profileID = profileID;
