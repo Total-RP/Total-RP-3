@@ -150,45 +150,35 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Layers>
 			</Frame>
 			<!-- CLOSE MAIN FRAME -->
-			<Button parentKey="Close" inherits="TRP3_StyledButtonTemplate">
+			<Button parentKey="Close" inherits="TRP3_RedButtonCloseArtTemplate">
 				<Size x="24" y="24"/>
-				<KeyValues>
-					<KeyValue key="styleName" value="CloseButton" type="string"/>
-				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-1" y="-1"/>
 				</Anchors>
 			</Button>
 
 			<!-- MaxiButton -->
-			<Button parentKey="Maximize" inherits="TRP3_StyledButtonTemplate">
+			<Button parentKey="Maximize" inherits="TRP3_RedButtonExpandArtTemplate">
 				<Size x="24" y="24"/>
-				<KeyValues>
-					<KeyValue key="styleName" value="MaximizeButton" type="string"/>
-				</KeyValues>
 				<Anchors>
 					<Anchor point="RIGHT" relativeKey="$parent.Close" relativePoint="LEFT"/>
 				</Anchors>
 			</Button>
 
 			<!-- MiniButton -->
-			<Button parentKey="Minimize" inherits="TRP3_StyledButtonTemplate" hidden="true">
+			<Button parentKey="Minimize" inherits="TRP3_RedButtonCondenseArtTemplate" hidden="true">
 				<Size x="24" y="24"/>
-				<KeyValues>
-					<KeyValue key="styleName" value="MinimizeButton" type="string"/>
-				</KeyValues>
 				<Anchors>
 					<Anchor point="RIGHT" relativeKey="$parent.Close" relativePoint="LEFT"/>
 				</Anchors>
 			</Button>
 
 			<!-- RESIZING BUTTON -->
-			<Button parentKey="Resize" inherits="TRP3_StyledButtonTemplate">
+			<Button parentKey="Resize" inherits="TRP3_RedButtonResizeArtTemplate">
 				<Size x="24" y="24"/>
 				<KeyValues>
 					<KeyValue key="minWidth" value="840" type="number"/>
 					<KeyValue key="minHeight" value="600" type="number"/>
-					<KeyValue key="styleName" value="ResizeButton" type="string"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT" x="-1" y="1"/>
@@ -367,11 +357,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							</Layer>
 						</Layers>
 						<Frames>
-							<Button parentKey="Close" inherits="TRP3_StyledButtonTemplate">
+							<Button parentKey="Close" inherits="TRP3_RedButtonCloseArtTemplate">
 								<Size x="24" y="24"/>
-								<KeyValues>
-									<KeyValue key="styleName" value="CloseButton" type="string"/>
-								</KeyValues>
 								<Anchors>
 									<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 								</Anchors>
