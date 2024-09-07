@@ -2,6 +2,27 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.0.4
+
+## Added
+
+- Right-clicking on a color swatch now allows you to copy the color code or save the color as a preset.
+- Added 29 icons and 10 musics from recent patches.
+
+## Changed
+
+- The dashboard tabs formatting has been improved to be more readable.
+- Resizing TRP windows no longer lets the shadow get smaller than the minimum window size.
+
+## Fixed
+
+- The Customization menu and relations system no longer break when putting a lone % in a relation description.
+- Hovering on a party/raid unit frame will now properly display their TRP tooltip if their profile is known.
+- The current profile size displayed on the quick export warning should no longer appear lower than the maximum size allowed.
+- Adjusted the looks of the close, maximize, minimize and resize buttons on Classic to be consistent with Retail.
+- Adjusted the background color used for contrast adjustment in the characteristics panel.
+- Clicking on "No scan available" when all map scans are disabled no longer throws an error.
+
 # Changelog version 3.0.3
 
 ## Added
