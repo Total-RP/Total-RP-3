@@ -349,11 +349,11 @@ local function onActionSelected(value, button)
 		local serial = Utils.serial.serialize({Globals.version, profileID, profile });
 		if serial:len() < 20000 then
 			TRP3_ProfileExport.content.scroll.text:SetText(serial);
-			TRP3_ProfileExport.content.title:SetText(loc.PR_EXPORT_NAME:format(profile.profileName, serial:len() / 1024));
+			TRP3_ProfileExport.content.title:SetText(loc.PR_EXPORT_NAME:format(profile.profileName, serial:len() / 1000));
 			TRP3_ProfileExport:Show();
 			TRP3_ProfileExport.content.scroll.text:SetFocus();
 		else
-			Utils.message.displayMessage(loc.PR_EXPORT_TOO_LARGE:format(serial:len() / 1024), 2);
+			Utils.message.displayMessage(loc.PR_EXPORT_TOO_LARGE:format(serial:len() / 1000), 2);
 		end
 	elseif value == PROFILEMANAGER_ACTIONS.IMPORT then
 		TRP3_ProfileImport.profileID = profileID;
