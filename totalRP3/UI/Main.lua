@@ -11,6 +11,15 @@ local WindowState = {
 	Maximized = 2,
 };
 
+local function ResetWindowPoint(frame)
+	local parent = frame:GetParent() or UIParent;
+	local offsetX = frame:GetLeft();
+	local offsetY = -(parent:GetTop() - frame:GetTop());
+
+	frame:ClearAllPoints();
+	frame:SetPoint("TOPLEFT", offsetX, offsetY);
+end
+
 TRP3_MainFrameMixin = {};
 
 function TRP3_MainFrameMixin:OnLoad()
@@ -18,6 +27,8 @@ function TRP3_MainFrameMixin:OnLoad()
 
 	tinsert(UISpecialFrames, self:GetName());
 	TRP3_Addon.RegisterCallback(self, "CONFIGURATION_CHANGED", "OnConfigurationChanged");
+	self.Resize.onResizeStart = function() self:OnResizeStart(); end;
+	self.Resize.onResizeStop = function(width, height) self:OnResizeStop(width, height); end;
 	TRP3_API.ui.frame.initResize(self.Resize);
 end
 
@@ -35,6 +46,20 @@ function TRP3_MainFrameMixin:OnSizeChanged()
 	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetSize());
 end
 
+function TRP3_MainFrameMixin:OnResizeStart()
+	ResetWindowPoint(self);
+end
+
+function TRP3_MainFrameMixin:OnResizeStop(width, height)
+	self:ResizeWindow(width, height);
+end
+
+function TRP3_MainFrameMixin:ResizeWindow(width, height)
+	ResetWindowPoint(self);
+	self:SetSize(width, height);
+	self:SetWindowState(WindowState.Normal);
+end
+
 function TRP3_MainFrameMixin:OnWindowStateChanged(oldState, newState)  -- luacheck: no unused
 	self:UpdateWindowStateButtons();
 end
@@ -46,11 +71,6 @@ end
 
 function TRP3_MainFrameMixin:RestoreWindow()
 	self:SetSize(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
-	self:SetWindowState(WindowState.Normal);
-end
-
-function TRP3_MainFrameMixin:ResizeWindow(width, height)
-	self:SetSize(width, height);
 	self:SetWindowState(WindowState.Normal);
 end
 
@@ -117,6 +137,7 @@ function TRP3_MainFrameLayoutMixin:RestoreLayout()
 	local height = math.max(self.windowLayout.h or DEFAULT_WINDOW_HEIGHT, DEFAULT_WINDOW_HEIGHT);
 	self:SetSize(width, height);
 	LibWindow.RestorePosition(self);
+	ResetWindowPoint(self);
 end
 
 function TRP3_MainFrameLayoutMixin:SaveLayout()

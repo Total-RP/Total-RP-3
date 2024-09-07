@@ -1068,77 +1068,46 @@ end
 -- Resize button
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local resizeShadowFrame = TRP3_ResizeShadowFrame;
-
 function TRP3_API.ui.frame.initResize(resizeButton)
 	resizeButton.resizableFrame = resizeButton.resizableFrame or resizeButton:GetParent();
 	assert(resizeButton.minWidth, "minWidth key is not set.");
 	assert(resizeButton.minHeight, "minHeight key is not set.");
 	local parentFrame = resizeButton.resizableFrame;
-	resizeButton:RegisterForDrag("LeftButton");
 	resizeButton:SetScript("OnMouseDown", function(self)
-		if self.CursorFrame then
-			self.CursorFrame:Show();
+		if not self.onResizeStart or not self.onResizeStart() then
+			TRP3_ResizeShadowFrame:ClearAllPoints();
+			TRP3_ResizeShadowFrame:SetPoint("CENTER", self.resizableFrame, "CENTER", 0, 0);
+			TRP3_ResizeShadowFrame:SetWidth(parentFrame:GetWidth());
+			TRP3_ResizeShadowFrame:SetHeight(parentFrame:GetHeight());
+			TRP3_ResizeShadowFrame:SetResizeBounds(resizeButton.minWidth, resizeButton.minHeight, resizeButton.maxWidth, resizeButton.maxHeight);
+			TRP3_ResizeShadowFrame:Show();
+			TRP3_ResizeShadowFrame:StartSizing();
+			parentFrame.isSizing = true;
+			SetCursor("Interface\\CURSOR\\UI-Cursor-Size");
 		end
-		SetCursor("Interface\\CURSOR\\UI-Cursor-Size");
 	end);
 	resizeButton:SetScript("OnMouseUp", function(self)
-		if self.CursorFrame then
-			self.CursorFrame:Hide();
-		end
-		ResetCursor();
-	end);
-	resizeButton:SetScript("OnDragStart", function(self)
-		if not self.onResizeStart or not self.onResizeStart() then
-			resizeShadowFrame.minWidth = self.minWidth;
-			resizeShadowFrame.minHeight = self.minHeight;
-			resizeShadowFrame:ClearAllPoints();
-			resizeShadowFrame:SetPoint("CENTER", self.resizableFrame, "CENTER", 0, 0);
-			resizeShadowFrame:SetWidth(parentFrame:GetWidth());
-			resizeShadowFrame:SetHeight(parentFrame:GetHeight());
-			resizeShadowFrame:Show();
-			resizeShadowFrame:StartSizing();
-			parentFrame.isSizing = true;
-		end
-	end);
-	resizeButton:SetScript("OnDragStop", function(self)
 		if parentFrame.isSizing then
-			if self.CursorFrame then
-				self.CursorFrame:Hide();
-			end
 			ResetCursor();
-			resizeShadowFrame:StopMovingOrSizing();
+			TRP3_ResizeShadowFrame:StopMovingOrSizing();
 			parentFrame.isSizing = false;
-			local height, width = resizeShadowFrame:GetHeight(), resizeShadowFrame:GetWidth()
-			resizeShadowFrame:Hide();
-			if height < self.minHeight then
-				height = self.minHeight;
-			end
-			if width < self.minWidth then
-				width = self.minWidth;
-			end
+			local height, width = TRP3_ResizeShadowFrame:GetHeight(), TRP3_ResizeShadowFrame:GetWidth();
+			width = Clamp(width, self.minWidth, self.maxWidth or math.huge);
+			height = Clamp(height, self.minHeight, self.maxHeight or math.huge);
+			TRP3_ResizeShadowFrame:Hide();
 			parentFrame:SetSize(width, height);
 			if self.onResizeStop then
 				C_Timer.After(0.1, function()
 					self.onResizeStop(width, height);
 				end);
 			end
+			ResetCursor();
 		end
 	end);
 end
 
-local VALID_SIZE_COLOR = TRP3_API.Colors.Green;
-local INVALID_SIZE_COLOR = TRP3_API.Colors.Red;
-resizeShadowFrame:SetScript("OnUpdate", function(self)
-	local height, width = math.ceil(self:GetHeight()), math.ceil(self:GetWidth());
-	local heightColor, widthColor = VALID_SIZE_COLOR, VALID_SIZE_COLOR;
-	if height < self.minHeight then
-		heightColor = INVALID_SIZE_COLOR;
-	end
-	if width < self.minWidth then
-		widthColor = INVALID_SIZE_COLOR;
-	end
-	resizeShadowFrame.text:SetText(widthColor(width) .. " x " .. heightColor(height));
+TRP3_ResizeShadowFrame:SetScript("OnUpdate", function(self)
+	TRP3_ResizeShadowFrame.text:SetText(string.format("|cnGREEN_FONT_COLOR:%d x %d|r", self:GetSize()));
 end);
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
