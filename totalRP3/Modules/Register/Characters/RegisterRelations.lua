@@ -15,6 +15,25 @@ TRP3_API.register.relation = {};
 -- Relation
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function GenerateFormattedDescription(description, player, target)
+	-- Players may enter arbitrary '%' signs into descriptions, and as such
+	-- we should avoid using string.format as it may blow up catastrophically.
+	--
+	-- As such - we just gsub the two exact format string tokens that we're
+	-- looking for with the intended replacements.
+
+	local replacements = {
+		["%1$s"] = player,
+		["%2$s"] = target,
+	};
+
+	return (string.gsub(description, "%%[12]$s", replacements));
+end
+
+local function GenerateEditDescription(description)
+	return GenerateFormattedDescription(description, "%p", "%t");
+end
+
 local DEFAULT_RELATIONS = {
 	NONE = { id = "NONE", order = 0, texture = TRP3_InterfaceIcons.RelationNone },
 	UNFRIENDLY = { id = "UNFRIENDLY", order = 1, texture = TRP3_InterfaceIcons.RelationUnfriendly, color = TRP3_API.Colors.Red:GenerateHexColorOpaque() },
@@ -97,7 +116,7 @@ local function getRelationTooltipText(profileID, profile)
 	local description = getRelation(profileID).description or loc:GetText("REG_RELATION_" .. getRelation(profileID).id .. "_TT");
 	local player = TRP3_API.register.getPlayerCompleteName(true);
 	local target = TRP3_API.register.getCompleteName(profile.characteristics or EMPTY, UNKNOWN, true);
-	return description:format(player, target);
+	return GenerateFormattedDescription(description, player, target);
 end
 TRP3_API.register.relation.getRelationTooltipText = getRelationTooltipText;
 
@@ -212,7 +231,7 @@ local function initRelationEditor(relationID)
 	if not descriptionText then
 		descriptionText = loc:GetText("REG_RELATION_" .. relation.id .. "_TT");
 	end
-	TRP3_RelationsList.Editor.Content.Description:SetText(descriptionText:gsub("%%.$s", { ["%1$s"] = "%p", ["%2$s"] = "%t" }));
+	TRP3_RelationsList.Editor.Content.Description:SetText(GenerateEditDescription(descriptionText));
 
 	setTooltipAll(TRP3_RelationsList.Editor.Content.Color, "RIGHT", 0, 5, loc.CO_RELATIONS_NEW_COLOR, loc.CO_RELATIONS_NEW_COLOR_TT
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
@@ -281,7 +300,7 @@ function updateRelationsList()
 			widgetsList[widgetCount] = widget;
 		end
 		widget.Title:SetText((getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_"..relation.id)));
-		widget.Text:SetText(loc:GetText(relation.description or "REG_RELATION_" .. relation.id .. "_TT"):format("%p", "%t"));
+		widget.Text:SetText(GenerateEditDescription(relation.description or loc:GetText("REG_RELATION_" .. relation.id .. "_TT")));
 		setupIconButton(widget.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
 
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(widget.Actions, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
