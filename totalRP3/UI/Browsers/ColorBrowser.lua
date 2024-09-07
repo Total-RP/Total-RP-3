@@ -131,6 +131,10 @@ function TRP3_ColorPresetManager.DeleteCustomPreset(name)
 	end
 end
 
+function TRP3_ColorPresetManager.GenerateDefaultPresetName(color)
+	return "#" .. color:GenerateHexColorOpaque();
+end
+
 TRP3_ColorBrowserMixin = {};
 
 function TRP3_ColorBrowserMixin:OnLoad()
@@ -190,14 +194,10 @@ function TRP3_ColorBrowserMixin:OnPresetButtonClick()
 		self:SetSelectedColor(color);
 	end
 
-	local function GenerateDefaultPresetName(color)
-		return "#" .. color:GenerateHexColorOpaque();
-	end
-
 	local function OnPresetSaveClicked(color)
 		local function OnPopupResponse(name)
 			if name == "" then
-				name = GenerateDefaultPresetName(color);
+				name = TRP3_ColorPresetManager.GenerateDefaultPresetName(color);
 			end
 
 			TRP3_ColorPresetManager.SaveCustomPreset(name, color);
@@ -210,7 +210,7 @@ function TRP3_ColorBrowserMixin:OnPresetButtonClick()
 	local function OnPresetRenameClicked(preset)
 		local function OnPopupResponse(name)
 			if name == "" then
-				name = GenerateDefaultPresetName(preset.CO);
+				name = TRP3_ColorPresetManager.GenerateDefaultPresetName(preset.CO);
 			end
 
 			TRP3_ColorPresetManager.RenameCustomPreset(preset.TX, name);

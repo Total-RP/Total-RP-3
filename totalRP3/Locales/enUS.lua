@@ -963,6 +963,7 @@ Total RP is not responsible for links leading to harmful content.|r]],
 	CM_OPTIONS_ADDITIONAL = "Additional options",
 	CM_ACTIVATE = "Activate",
 	CM_DO_NOT_SHOW = "Do not show",
+	CM_COPY_TO_CLIPBOARD = "Copy to clipboard",
 
 	CM_ORANGE = "Orange",
 	CM_WHITE = "White",
@@ -1004,6 +1005,7 @@ Total RP is not responsible for links leading to harmful content.|r]],
 	BW_COLOR_UNREADABLE = "Readability Warning",
 	BW_COLOR_UNREADABLE_TT = "This color may be |cnWARNING_FONT_COLOR:automatically adjusted|r when displayed as it can be difficult to read against dark backgrounds, such as in tooltips.|n|nAn |cnGREEN_FONT_COLOR:alternative recommended color|r is displayed at the bottom-right of the preview.",
 	BW_COLOR_UNREADABLE_CLICK = "Use recommended color",
+	BW_COLOR_PRESET_SAVE_AS_CUSTOM = "Save as custom color preset",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Databroker

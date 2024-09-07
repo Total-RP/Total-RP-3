@@ -12,6 +12,14 @@ function TRP3_ColorSwatchMixin:OnShow()
 	PixelUtil.SetPoint(self.Color, "BOTTOMRIGHT", self, "BOTTOMRIGHT", -2, 2);
 end
 
+function TRP3_ColorSwatchMixin:GetColor()
+	return TRP3_API.CreateColor(self.Color:GetVertexColor());
+end
+
+function TRP3_ColorSwatchMixin:GetColorRGB()
+	return self.Color:GetVertexColor();
+end
+
 function TRP3_ColorSwatchMixin:SetColor(color)
 	self.Color:SetVertexColor(color:GetRGB());
 end

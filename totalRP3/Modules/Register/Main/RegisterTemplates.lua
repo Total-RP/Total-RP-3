@@ -55,6 +55,39 @@ end
 
 TRP3_RegisterColorSwatchMixin = {};
 
+function TRP3_RegisterColorSwatchMixin:OnMouseDown(mouseButtonName)
+	if mouseButtonName ~= "RightButton" then
+		return;
+	end
+
+	local color = self:GetColor();
+
+	local function OnCopyColorClicked()
+		local code = "#" .. color:GenerateHexColorOpaque();
+		TRP3_API.popup.showCopyDropdownPopup({ code });
+	end
+
+	local function OnSaveColorClicked()
+		local function OnPopupResponse(name)
+			if name == "" then
+				name = TRP3_ColorPresetManager.GenerateDefaultPresetName(color);
+			end
+
+			TRP3_ColorPresetManager.SaveCustomPreset(name, color);
+		end
+
+		local prompt = string.join("|n|n", L.BW_CUSTOM_NAME, L.BW_CUSTOM_NAME_TT);
+		TRP3_API.popup.showTextInputPopup(prompt, OnPopupResponse);
+	end
+
+	local function GenerateMenu(_, rootDescription)
+		rootDescription:CreateButton(L.CM_COPY_TO_CLIPBOARD, OnCopyColorClicked);
+		rootDescription:CreateButton(L.BW_COLOR_PRESET_SAVE_AS_CUSTOM, OnSaveColorClicked);
+	end
+
+	TRP3_MenuUtil.CreateContextMenu(self, GenerateMenu);
+end
+
 function TRP3_RegisterColorSwatchMixin:OnTooltipShow(description)
 	if self.showContrastTooltip then
 		description:AddNormalLine(L.REG_COLOR_SWATCH_WARNING);
