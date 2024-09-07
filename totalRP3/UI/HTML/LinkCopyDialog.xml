@@ -1,0 +1,67 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="LinkCopyDialog.lua"/>
+
+	<Frame name="TRP3_LinkCopyDialog" mixin="TRP3_LinkCopyDialogMixin" inherits="VerticalLayoutFrame" parent="UIParent" enableMouse="true" frameStrata="FULLSCREEN_DIALOG" hidden="true" toplevel="true">
+		<KeyValues>
+			<KeyValue key="topPadding" value="40" type="number"/>
+			<KeyValue key="bottomPadding" value="30" type="number"/>
+			<KeyValue key="leftPadding" value="20" type="number"/>
+			<KeyValue key="rightPadding" value="20" type="number"/>
+			<KeyValue key="spacing" value="20" type="number"/>
+		</KeyValues>
+		<Anchors>
+			<Anchor point="CENTER" y="30"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="InstructionText" inherits="GameFontNormal" justifyH="CENTER">
+					<Size x="360"/>
+					<KeyValues>
+						<KeyValue key="align" value="center" type="string"/>
+						<KeyValue key="layoutIndex" value="1" type="number"/>
+					</KeyValues>
+				</FontString>
+				<FontString parentKey="WarningText" inherits="GameFontNormal" justifyH="CENTER">
+					<Size x="360"/>
+					<KeyValues>
+						<KeyValue key="align" value="center" type="string"/>
+						<KeyValue key="layoutIndex" value="2" type="number"/>
+					</KeyValues>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey="Border" inherits="DialogBorderTemplate"/>
+			<EditBox parentKey="EditBox" mixin="TRP3_LinkCopyDialogEditBoxMixin" inherits="InputBoxTemplate" autoFocus="false">
+				<Size x="320" y="20"/>
+				<KeyValues>
+					<KeyValue key="align" value="center" type="string"/>
+					<KeyValue key="layoutIndex" value="3" type="number"/>
+				</KeyValues>
+				<Scripts>
+					<OnLoad method="OnLoad"/>
+					<OnChar method="OnChar"/>
+					<OnKeyDown method="OnKeyDown"/>
+				</Scripts>
+			</EditBox>
+			<Button parentKey="CloseButton" inherits="UIPanelCloseButtonDefaultAnchors"/>
+			<EventButton parentKey="CancelButton" inherits="UIPanelButtonTemplate" text="CANCEL">
+				<Size x="150" y="22"/>
+				<KeyValues>
+					<KeyValue key="align" value="center" type="string"/>
+					<KeyValue key="layoutIndex" value="4" type="number"/>
+				</KeyValues>
+			</EventButton>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+			<OnHide method="OnHide"/>
+		</Scripts>
+	</Frame>
+</Ui>
