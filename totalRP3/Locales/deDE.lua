@@ -1236,7 +1236,7 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 
 {h2}{icon:THUMBUP:20} Danksagungen{/h2}
 {col:ffffff}Logo and minimap button icon:{/col}
-- {link*https://twitter.com/Kelandiir*@Kelandiir}
+- {link*https://apheliondusk.tumblr.com*AphelionDusk}
 
 {col:ffffff}Unser Pre-Alpha QA Team:{/col}
 - Saelora

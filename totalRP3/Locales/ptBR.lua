@@ -1143,7 +1143,7 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 
 {h2}{icon:THUMBUP:20} Reconhecimentos{/h2}
 {col:ffffff}Logo and minimap button icon:{/col}
-- {link*https://twitter.com/Kelandiir*@Kelandiir}
+- {link*https://apheliondusk.tumblr.com*AphelionDusk}
 
 {col:ffffff}Nossa equipe de QA do pré-alpha:{/col}
 - Saelora

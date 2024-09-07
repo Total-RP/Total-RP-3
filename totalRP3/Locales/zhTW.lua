@@ -710,7 +710,7 @@ L = {
 
 {h2}{icon:THUMBUP:20} 感謝{/h2}
 {col:ffffff}Logo 與小地圖按鈕:{/col}
-- {link*https://twitter.com/Kelandiir*@Kelandiir}
+- {link*https://apheliondusk.tumblr.com*AphelionDusk}
 
 {col:ffffff}準預覽版本測試團隊：{/col}
 %TESTERS$s

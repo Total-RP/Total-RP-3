@@ -1491,7 +1491,7 @@ Change le statut de votre personnage en fonction de l'option spécifiée:
 
 {h2}{icon:THUMBUP:20} Remerciements{/h2}
 {col:ffffff}Les logos et icône de la carte ont été réalisés par:{/col}
-- {link*https://twitter.com/Kelandiir*@Kelandiir}
+- {link*https://apheliondusk.tumblr.com*AphelionDusk}
 
 {col:ffffff}Notre équipe de test:{/col}
 - Erzan
