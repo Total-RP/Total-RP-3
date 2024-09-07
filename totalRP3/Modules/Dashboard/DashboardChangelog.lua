@@ -172,7 +172,5 @@ Thanks to {col:00ff00}Raenore{/col} for the help on some of these features, and 
 ]];
 
 function TRP3_DashboardUtil.GenerateChangelog()
-	local text = CHANGELOG_TEXT;
-	text = TRP3_DashboardUtil.GenerateListMarkup(text);
-	return text;
+	return TRP3_DashboardUtil.GenerateListMarkup(CHANGELOG_TEXT);
 end
