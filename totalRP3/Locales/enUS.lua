@@ -1640,4 +1640,4 @@ BINDING_HEADER_TRP3 = "Total RP 3";
 -- GAME_LOCALE global variable, or finally the default client locale.
 TRP3_API.loc = TRP3_API.Ellyb.Localization(L);
 TRP3_API.loc:RegisterNewLocale("enUS", "English", L);
-TRP3_API.loc:SetCurrentLocale(TRP3_AddonLocale, true);
+TRP3_API.loc:SetCurrentLocale(GAME_LOCALE or GetLocale(), true);
