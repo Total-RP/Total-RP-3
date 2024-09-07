@@ -3,7 +3,7 @@
 ## Added
 
 - Right-clicking on a color swatch now allows you to copy the color code or save the color as a preset.
-- Added 29 icons and 10 musics from recent patches.
+- Added 89 icons and 10 musics from recent patches.
 
 ## Changed
 
