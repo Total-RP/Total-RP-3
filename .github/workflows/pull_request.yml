@@ -30,10 +30,11 @@ jobs:
         with:
           args: -dz
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: totalRP3-PR-${{ github.event.number }}
           path: .release/
+          include-hidden-files: true
 
       - name: Send Webhook Notification
         if: failure()
