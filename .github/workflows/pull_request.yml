@@ -34,6 +34,7 @@ jobs:
         with:
           name: totalRP3-PR-${{ github.event.number }}
           path: .release/
+          include-hidden-files: true
 
       - name: Send Webhook Notification
         if: failure()
