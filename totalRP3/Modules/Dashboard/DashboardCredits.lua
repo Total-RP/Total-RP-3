@@ -33,11 +33,11 @@ local CreditsData =
 	[CreditCategory.Authors] =
 	{
 		{
-			name  = [[Morgane "{twitter*EllypseCelwe*Ellypse}" Parize]],
+			name  = [[Morgane "Ellypse" Parize]],
 			roles = { CreditRole.Author },
 		},
 		{
-			name  = [[Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement]],
+			name  = [[Sylvain "Telkostrasz" Cossement]],
 			roles = { CreditRole.Author },
 		},
 	},
