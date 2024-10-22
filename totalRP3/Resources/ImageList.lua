@@ -398,6 +398,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_20thAnniversaryStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_AberrusStart",
 		width = 128,
 		height = 128
@@ -654,6 +659,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_WeekendBlackTempleStart",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_WeekendClassicStart",
 		width = 128,
 		height = 128
 	},
