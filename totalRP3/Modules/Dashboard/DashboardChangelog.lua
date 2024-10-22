@@ -2,6 +2,12 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.0.5
+
+## Added
+
+- Added 101 icons, 2 images and 1 music from patch 10.0.5.
+
 # Changelog version 3.0.4
 
 ## Added
