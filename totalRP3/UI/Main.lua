@@ -43,6 +43,7 @@ function TRP3_MainFrameMixin:OnShow()
 end
 
 function TRP3_MainFrameMixin:OnSizeChanged()
+	self:UpdateClampRectInsets();
 	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetSize());
 end
 
@@ -101,6 +102,19 @@ function TRP3_MainFrameMixin:UpdateWindowStateButtons()
 
 	self.Minimize:SetShown(state == WindowState.Maximized and ShouldShowWindowStateButtons());
 	self.Maximize:SetShown(state == WindowState.Normal and ShouldShowWindowStateButtons());
+end
+
+function TRP3_MainFrameMixin:UpdateClampRectInsets()
+	local width, height = self:GetSize();
+	local ratio = width / height;
+	local padding = 300;
+
+	local left = width - padding;
+	local right = -left;
+	local bottom = height - (padding / ratio);
+	local top = -bottom;
+
+	self:SetClampRectInsets(left, right, top, bottom);
 end
 
 TRP3_MainFrameLayoutMixin = CreateFromMixins(TRP3_MainFrameMixin);
