@@ -6,7 +6,11 @@ local CHANGELOG_TEXT = [[
 
 ## Added
 
-- Added 101 icons, 2 images and 1 music from patch 10.0.5.
+- Added 101 icons, 2 images and 1 music from patch 11.0.5.
+
+## Changed
+
+- The main frame can now be moved partially off-screen.
 
 # Changelog version 3.0.4
 
