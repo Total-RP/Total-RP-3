@@ -40,6 +40,8 @@ L = {
 	["BROADCAST_PASSWORDED"] = [=[|cffff0000Der Benutzer|r %s|cffff0000 hat gerade ein Passwort für den Übertragungs-Channel (%s) festgelegt.
 |cffff9900Wenn du das Passwort nicht kennst, kannst du keine Funktionen nutzen, die in Zusammenhang mit dem Channel stehen, wie etwa der Standortbestimmung von Spielern auf der Karte.]=],
 	["BW_COLOR_CODE_HEX"] = "Hex-Code",
+	["BW_COLOR_PRESET_DELETE"] = "Farbe löschen",
+	["BW_COLOR_PRESET_RENAME"] = "Farbe umbenennen",
 	["BW_COLOR_PRESET_SAVE"] = "Aktuelle Farbe speichern",
 	["BW_COLOR_PRESET_SELECT"] = "Farbe wählen",
 	["BW_COLOR_PRESET_TITLE"] = "Farben Voreinstellungen",
