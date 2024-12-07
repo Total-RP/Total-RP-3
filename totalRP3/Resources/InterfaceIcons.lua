@@ -221,18 +221,18 @@ TRP3_InterfaceIcons = {
 --
 
 do
-	local function GetFirstValidTexturePath(candidates, root)
-		root = root or "";
+	local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 
-		for _, path in ipairs(candidates) do
-			if GetFileIDFromPath(root .. path) then
-				return path;
+	local function GetFirstValidIcon(candidates)
+		for _, name in ipairs(candidates) do
+			if LRPM12:ResolveIcon(name) then
+				return name;
 			end
 		end
 	end
 
 	for id, candidates in pairs(TRP3_InterfaceIcons) do
-		local name = GetFirstValidTexturePath(candidates, [[interface\icons\]]);
+		local name = GetFirstValidIcon(candidates);
 
 		if not name and TRP3_API.globals.DEBUG_MODE then
 			securecallfunction(error, string.format("Invalid interface icon %q: No valid texture file found", id));
