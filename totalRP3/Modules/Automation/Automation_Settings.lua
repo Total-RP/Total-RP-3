@@ -70,11 +70,11 @@ function TRP3_AutomationSettingsMixin:OnActionDropDownEnter()
 		end
 	end
 
-	TRP3_MenuUtil.ShowTooltip(self.Actions, OnTooltipShow);
+	MenuUtil.ShowTooltip(self.Actions, OnTooltipShow);
 end
 
 function TRP3_AutomationSettingsMixin:OnActionDropDownLeave()
-	TRP3_MenuUtil.HideTooltip(self.Actions);
+	MenuUtil.HideTooltip(self.Actions);
 end
 
 function TRP3_AutomationSettingsMixin:SetupActionDropdownMenu(menuDescription)
