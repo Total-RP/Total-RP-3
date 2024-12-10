@@ -24,7 +24,7 @@ end
 
 local function GetRoleplayExperienceButtonText(selection)
 	local status = selection:GetData();
-	local text = TRP3_MenuUtil.GetElementText(selection);
+	local text = MenuUtil.GetElementText(selection);
 
 	local icon = TRP3_API.GetRoleplayExperienceIcon(status);
 	if icon and C_Texture.GetAtlasInfo(icon) then
@@ -43,7 +43,7 @@ end
 
 local function GetRoleplayStatusButtonText(selection)
 	local status = selection:GetData();
-	local text = TRP3_MenuUtil.GetElementText(selection);
+	local text = MenuUtil.GetElementText(selection);
 
 	if status == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER then
 		text = string.join(" ", "|TInterface\\COMMON\\Indicator-Green:16:16|t ", text);
@@ -61,7 +61,7 @@ end
 
 local function GetWalkupButtonText(selection)
 	local status = selection:GetData();
-	local text = TRP3_MenuUtil.GetElementText(selection);
+	local text = MenuUtil.GetElementText(selection);
 
 	if status == AddOn_TotalRP3.Enums.WALKUP.YES then
 		text = string.join(" ", "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-walkup:16:16|t ", text);
