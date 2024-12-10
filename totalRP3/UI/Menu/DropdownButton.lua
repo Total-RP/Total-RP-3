@@ -1,6 +1,8 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+TRP3_DropdownButtonMixin = {};
+
 function TRP3_DropdownButtonMixin:OnLoad()
 	local anchor = AnchorUtil.CreateAnchor(self.menuPoint, self, self.menuRelativePoint, self.menuPointX, self.menuPointY);
 	self:SetMenuAnchor(anchor);
