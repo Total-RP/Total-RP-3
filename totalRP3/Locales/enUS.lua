@@ -10,7 +10,7 @@ L = {
 
 	GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s)! Have fun!",
 	GEN_VERSION = "Version: %s (Build %s)",
-	GEN_WARNING_CHAT_DISABLED = "Warning: Chat is disabled. Profiles cannot be exchanged with other players until it is enabled again.",
+	GEN_WARNING_CHAT_DISABLED = "Chat is disabled. Profiles cannot be exchanged with other players until it is enabled again.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- REGISTER
