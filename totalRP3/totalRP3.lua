@@ -86,14 +86,16 @@ local function loadingSequence()
 		TRP3_API.utils.message.displayMessage(loc.GEN_WELCOME_MESSAGE:format(Globals.version_display));
 	end
 
+	local CHAT_DISABLED_WARNING = "|cnWARNING_FONT_COLOR:" .. loc.GEN_WARNING_CHAT_DISABLED .. "|r";
+
 	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_DISABLED_CHANGED", function(_, disabled)
 		if disabled then
-			TRP3_API.utils.message.displayMessage(TRP3_API.Colors.Red(loc.GEN_WARNING_CHAT_DISABLED));
+			TRP3_API.utils.message.displayMessage(CHAT_DISABLED_WARNING);
 		end
 	end);
 
 	if C_SocialRestrictions.IsChatDisabled() then
-		TRP3_API.utils.message.displayMessage(TRP3_API.Colors.Red(loc.GEN_WARNING_CHAT_DISABLED));
+		TRP3_API.utils.message.displayMessage(CHAT_DISABLED_WARNING);
 	end
 
 	TRP3_API.Log("OnEnable() DONE");
