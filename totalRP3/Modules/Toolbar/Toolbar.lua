@@ -46,7 +46,7 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
-	local OBJECT_NAME_FORMAT = TRP3_API.globals.addon_name_short .. " — %s"; -- what is this dash character??
+	local OBJECT_NAME_FORMAT = TRP3_API.globals.addon_name_short .. " — %s";
 
 	---
 	-- Register a Databroker plugin using a button structure
@@ -94,7 +94,7 @@ local function onStart()
 		assert(LDBButton, "Could not find a registered LDB object for id " .. buttonStructure.id)
 
 		LDBButton.icon = Utils.getIconTexture(buttonStructure.icon);
-		LDBButton.text = buttonStructure.text; -- need to manually update each attribute here in order to correctly propagate object changes
+		LDBButton.text = buttonStructure.text;
 
 		LDBButton.tooltipTitle = TRP3_ToolbarUtil.GetFormattedTooltipTitle(buttonStructure);
 		LDBButton.tooltipSub = buttonStructure.tooltipSub;
