@@ -54,10 +54,17 @@ local function onStart()
 
 	local OBJECT_NAME_FORMAT = TRP3_API.globals.addon_name_short .. " — %s"; -- what is this dash character??
 
-	local function SignalLDBObjectUpdate(object)
+	local function SignalLDBObjectUpdate(object, attr)
 		local name = OBJECT_NAME_FORMAT:format(object.configText);
-		local callbackName = "LibDataBroker_AttributeChanged_" .. name;
-		LDB.callbacks:Fire(callbackName, name, nil, object.text, object);
+
+		-- have to fire both of these events because some addons only listen to one or the other - peak design
+		local callbackNames = {
+			"LibDataBroker_AttributeChanged_" .. name,
+			"LibDataBroker_AttributeChanged_" .. name .. "_" .. attr,
+		};
+		for _, callback in ipairs(callbackNames) do
+			LDB.callbacks:Fire(callback, name, attr, object[attr], object);
+		end
 	end
 	TRP3_API.toolbar.SignalLDBObjectUpdate = SignalLDBObjectUpdate;
 
@@ -96,7 +103,6 @@ local function onStart()
 				end
 			});
 		LDBObjects[buttonStructure.id] = LDBObject;
-
 	end
 
 	--- Refresh the UI of an databroker object corresponding to the given buttonStructure
