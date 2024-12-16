@@ -47,16 +47,32 @@ local function onStart()
 
 	local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
 
+	-- in order to turn a toolbar object into an LDBObject that can be used by other addons (ElvUI) to display information:
+	-- 	modify the object's 'text' attribute to the desired display text
+	-- 	call TRP3_API.toolbar.SignalLDBObjectUpdate, passing the object as the only arg
+	-- 	ensure the default 'text' attribute is a suitable placeholder, as it will be shown temporarily when the object is updated (at least in the case of ElvUI)
+
+	local OBJECT_NAME_FORMAT = TRP3_API.globals.addon_name_short .. " — %s"; -- what is this dash character??
+
+	local function SignalLDBObjectUpdate(object)
+		local name = OBJECT_NAME_FORMAT:format(object.configText);
+		local callbackName = "LibDataBroker_AttributeChanged_" .. name;
+		LDB.callbacks:Fire(callbackName, name, nil, object.text, object);
+	end
+	TRP3_API.toolbar.SignalLDBObjectUpdate = SignalLDBObjectUpdate;
+
 	---
 	-- Register a Databroker plugin using a button structure
 	-- @param buttonStructure
 	--
 	local function registerDatabrokerButton(buttonStructure)
+		local objectName = OBJECT_NAME_FORMAT:format(buttonStructure.configText);
 		local LDBObject = LDB:NewDataObject(
-			TRP3_API.globals.addon_name_short .. " — " .. buttonStructure.configText,
+			objectName,
 			{
-				type= "data source",
+				type = "data source",
 				icon = Utils.getIconTexture(buttonStructure.icon),
+				text = buttonStructure.text,
 				OnClick = function(Uibutton, button)
 					if buttonStructure.onClick then
 						buttonStructure.onClick(Uibutton, buttonStructure, button);

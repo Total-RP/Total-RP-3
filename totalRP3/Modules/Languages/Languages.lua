@@ -96,16 +96,19 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	local languagesButton = {
 		id = "ww_trp3_languages",
 		icon = TRP3_InterfaceIcons.ToolbarLanguage,
+		text = loc.TB_LANGUAGE,
 		configText = loc.TB_LANGUAGE,
 		onModelUpdate = function(buttonStructure)
 			if buttonStructure.currentLanguageID ~= ChatFrame1EditBox.languageID then
-				buttonStructure.currentLanguageID = ChatFrame1EditBox.languageID
-				local currentLanguage = Languages.getCurrentLanguage()
+				buttonStructure.currentLanguageID = ChatFrame1EditBox.languageID;
+				local currentLanguage = Languages.getCurrentLanguage();
 				buttonStructure.currentLanguageID = currentLanguage:GetID();
 				buttonStructure.tooltip = loc.TB_LANGUAGE .. ": " .. currentLanguage:GetName();
 				buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_LANGUAGES_TT);
 				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or TRP3_InterfaceIcons.ToolbarLanguage;
 			end
+			buttonStructure.text = buttonStructure.tooltip;
+			TRP3_API.toolbar.SignalLDBObjectUpdate(buttonStructure);
 		end,
 		onClick = function(Uibutton)
 			TRP3_MenuUtil.CreateContextMenu(Uibutton, function(_, description)
