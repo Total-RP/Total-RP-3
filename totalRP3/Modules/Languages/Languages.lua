@@ -108,7 +108,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or TRP3_InterfaceIcons.ToolbarLanguage;
 			end
 			buttonStructure.text = buttonStructure.tooltip;
-			TRP3_API.toolbar.SignalLDBObjectUpdate(buttonStructure, "text");
 		end,
 		onClick = function(Uibutton)
 			TRP3_MenuUtil.CreateContextMenu(Uibutton, function(_, description)

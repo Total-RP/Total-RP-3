@@ -202,7 +202,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					buttonStructure.icon = TRP3_InterfaceIcons.ModeNormal;
 				end
 				buttonStructure.text = buttonStructure.tooltip;
-				TRP3_API.toolbar.SignalLDBObjectUpdate(buttonStructure, "text");
 			end,
 			onClick = function(_, _, button)
 				if UnitIsAFK("player") then
@@ -244,7 +243,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					buttonStructure.icon = OOC_ICON;
 				end
 				buttonStructure.text = buttonStructure.tooltip;
-				TRP3_API.toolbar.SignalLDBObjectUpdate(buttonStructure, "text");
 			end,
 			onClick = function(Uibutton, _, button)
 

@@ -46,27 +46,7 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
-
-	-- in order to turn a toolbar object into an LDBObject that can be used by other addons (ElvUI) to display information:
-	-- 	modify the object's 'text' attribute to the desired display text
-	-- 	call TRP3_API.toolbar.SignalLDBObjectUpdate, passing the object as the only arg
-	-- 	ensure the default 'text' attribute is a suitable placeholder, as it will be shown temporarily when the object is updated (at least in the case of ElvUI)
-
 	local OBJECT_NAME_FORMAT = TRP3_API.globals.addon_name_short .. " — %s"; -- what is this dash character??
-
-	local function SignalLDBObjectUpdate(object, attr)
-		local name = OBJECT_NAME_FORMAT:format(object.configText);
-
-		-- have to fire both of these events because some addons only listen to one or the other - peak design
-		local callbackNames = {
-			"LibDataBroker_AttributeChanged_" .. name,
-			"LibDataBroker_AttributeChanged_" .. name .. "_" .. attr,
-		};
-		for _, callback in ipairs(callbackNames) do
-			LDB.callbacks:Fire(callback, name, attr, object[attr], object);
-		end
-	end
-	TRP3_API.toolbar.SignalLDBObjectUpdate = SignalLDBObjectUpdate;
 
 	---
 	-- Register a Databroker plugin using a button structure
@@ -114,6 +94,7 @@ local function onStart()
 		assert(LDBButton, "Could not find a registered LDB object for id " .. buttonStructure.id)
 
 		LDBButton.icon = Utils.getIconTexture(buttonStructure.icon);
+		LDBButton.text = buttonStructure.text; -- need to manually update each attribute here in order to correctly propagate object changes
 
 		LDBButton.tooltipTitle = TRP3_ToolbarUtil.GetFormattedTooltipTitle(buttonStructure);
 		LDBButton.tooltipSub = buttonStructure.tooltipSub;
