@@ -46,17 +46,20 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
+	local OBJECT_NAME_FORMAT = TRP3_API.globals.addon_name_short .. " — %s";
 
 	---
 	-- Register a Databroker plugin using a button structure
 	-- @param buttonStructure
 	--
 	local function registerDatabrokerButton(buttonStructure)
+		local objectName = OBJECT_NAME_FORMAT:format(buttonStructure.configText);
 		local LDBObject = LDB:NewDataObject(
-			TRP3_API.globals.addon_name_short .. " — " .. buttonStructure.configText,
+			objectName,
 			{
-				type= "data source",
+				type = "data source",
 				icon = Utils.getIconTexture(buttonStructure.icon),
+				text = buttonStructure.text,
 				OnClick = function(Uibutton, button)
 					if buttonStructure.onClick then
 						buttonStructure.onClick(Uibutton, buttonStructure, button);
@@ -80,7 +83,6 @@ local function onStart()
 				end
 			});
 		LDBObjects[buttonStructure.id] = LDBObject;
-
 	end
 
 	--- Refresh the UI of an databroker object corresponding to the given buttonStructure
@@ -92,6 +94,7 @@ local function onStart()
 		assert(LDBButton, "Could not find a registered LDB object for id " .. buttonStructure.id)
 
 		LDBButton.icon = Utils.getIconTexture(buttonStructure.icon);
+		LDBButton.text = buttonStructure.text;
 
 		LDBButton.tooltipTitle = TRP3_ToolbarUtil.GetFormattedTooltipTitle(buttonStructure);
 		LDBButton.tooltipSub = buttonStructure.tooltipSub;

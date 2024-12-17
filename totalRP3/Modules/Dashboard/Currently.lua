@@ -51,6 +51,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		TRP3_API.toolbar.toolbarAddButton({
 			id = "bb_trp3_currently",
 			icon = TRP3_InterfaceIcons.ToolbarCurrently,
+			text = loc.CURRENTLY_TITLE,
 			configText = loc.CURRENTLY_TITLE,
 			tooltip = loc.CURRENTLY_TITLE,
 			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CURRENTLY_BUTTON_TT),

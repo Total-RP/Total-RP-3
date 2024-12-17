@@ -185,6 +185,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		local Button_Status = {
 			id = "aa_trp3_d",
 			icon = TRP3_InterfaceIcons.ModeNormal,
+			text = status3Text,
 			configText = loc.CO_TOOLBAR_CONTENT_STATUS,
 			onModelUpdate = function(buttonStructure)
 				if UnitIsDND("player") then
@@ -200,6 +201,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					buttonStructure.tooltipSub  = status3SubText;
 					buttonStructure.icon = TRP3_InterfaceIcons.ModeNormal;
 				end
+				buttonStructure.text = buttonStructure.tooltip;
 			end,
 			onClick = function(_, _, button)
 				if UnitIsAFK("player") then
@@ -228,6 +230,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		local Button_RPStatus = {
 			id = "aa_trp3_rpstatus",
 			icon = OOC_ICON,
+			text = rpTextOn,
 			configText = loc.CO_TOOLBAR_CONTENT_RPSTATUS,
 			onModelUpdate = function(buttonStructure)
 				if AddOn_TotalRP3.Player.GetCurrentUser():IsInCharacter() then
@@ -239,6 +242,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					buttonStructure.tooltipSub  = rpText2;
 					buttonStructure.icon = OOC_ICON;
 				end
+				buttonStructure.text = buttonStructure.tooltip;
 			end,
 			onClick = function(Uibutton, _, button)
 
