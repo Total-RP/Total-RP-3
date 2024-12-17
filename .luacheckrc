@@ -312,6 +312,12 @@ stds.wow = {
 			},
 		},
 
+		C_SocialRestrictions = {
+			fields = {
+				"IsChatDisabled",
+			},
+		},
+
 		C_Spell = {
 			fields = {
 				"DoesSpellExist",
