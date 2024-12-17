@@ -2,6 +2,20 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.0.6
+
+## Added
+
+- Added 5 images from patch 11.0.7.
+- Added a warning that the addon will not exchange profiles when chat is disabled.
+
+## Fixed
+
+- Fixed description not displaying correctly when editing a relation in non-English languages.
+- Fixed addon locale setting not working properly.
+- Fixed toolbar buttons compatibility with addons like ElvUI or TitanPanel.
+- Fixed icon display issues when Retail icons are manually added to older clients.
+
 # Changelog version 3.0.5
 
 ## Added
