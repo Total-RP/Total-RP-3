@@ -568,6 +568,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_PlunderstormStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_RaidCrucibleOfStormsStart",
 		width = 128,
 		height = 128
@@ -3381,6 +3386,11 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_SirenIsle",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_SpiresofAscension",
 		width = 512,
 		height = 288
@@ -4939,6 +4949,21 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-Ashran",
 		width = 512,
 		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-CharacterEarthen",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-CharacterGoblin",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-CharacterHuman",
+		width = 256,
+		height = 128
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-Dreamsurge-large",
