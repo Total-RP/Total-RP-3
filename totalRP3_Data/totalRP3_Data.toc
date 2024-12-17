@@ -1,4 +1,4 @@
-## Interface: 110005, 40400, 11504
+## Interface: 110007, 40401, 11505
 ## Title: Total RP 3: Data
 ## Author: Telkostrasz & Ellypse
 ## Version: @project-version@
