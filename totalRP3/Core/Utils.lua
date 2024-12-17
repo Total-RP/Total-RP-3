@@ -1026,7 +1026,7 @@ function Utils.GetPreferredLocale()
 	--       and then change to a ptBR one it'd stay set to esMX. As such, the
 	--       default fallback will almost always never actually occur.
 
-	return Utils.GetDefaultLocale();
+	return TRP3_API.configuration.getValue("AddonLocale") or Utils.GetDefaultLocale();
 end
 
 -- Ref: <https://en.wikipedia.org/wiki/Date_format_by_country>
