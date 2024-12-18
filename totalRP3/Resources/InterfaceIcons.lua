@@ -225,7 +225,7 @@ do
 
 	local function GetFirstValidIcon(candidates)
 		for _, name in ipairs(candidates) do
-			if LRPM12:ResolveIcon(name) then
+			if LRPM12:GetIconInfoByName(name) then
 				return name;
 			end
 		end
