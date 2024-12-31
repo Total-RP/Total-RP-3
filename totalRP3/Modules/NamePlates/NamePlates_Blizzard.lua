@@ -95,7 +95,6 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 
 	local addons = {
 		"Kui_Nameplates",
-		"Plater",
 		"TidyPlates",
 	};
 
@@ -111,6 +110,13 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 	if ElvUI then
 		local E = ElvUI[1];
 		if E and E.NamePlates and E.NamePlates.Initialized then
+			return TRP3_API.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
+		end
+	end
+
+	-- Plater also has optional friendly nameplates - if they're enabled, we bail
+	if Plater then
+		if Plater.db.profile.plate_config.friendlyplayer.module_enabled then
 			return TRP3_API.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 		end
 	end
