@@ -65,7 +65,7 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 	-- Add the icon widget if it doesn't exist, if it does, update it
 	if displayInfo.icon and not plateFrame.TRP3Icon and not displayInfo.shouldHide then
 		do
-			local iconWidget = plateFrame:CreateTexture(nil, "ARTWORK")
+			local iconWidget = plateFrame:CreateTexture(nil, "ARTWORK");
 			iconWidget:ClearAllPoints();
 			iconWidget:SetPoint("RIGHT", plateFrame.CurrentUnitNameString, "LEFT", -4, 0);
 			iconWidget:Hide();
@@ -159,6 +159,11 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 	end
 
 	Plater = _G.Plater;
+
+	-- Check if the friendly nameplates module is enabled within Plater
+	if not Plater.db.profile.plate_config.friendlyplayer.module_enabled then
+		return TRP3_API.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
+	end
 
 	-- Check if the script exists and has the same revision before importing it, to avoid flooding the recycle bin
 	local scriptObject;
