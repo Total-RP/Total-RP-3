@@ -12,7 +12,7 @@
 ## Category-itIT: Gioco di ruolo
 ## Category-koKR: 롤플레이
 ## Category-ptBR: Jogo de papéis
-## Category-ruRU: Ролевой процесс
+## Category-ruRU: Ролевая игра
 ## Category-zhCN: 角色扮演
 ## Category-zhTW: 角色扮演
 ## Group: totalRP3
