@@ -9,8 +9,8 @@
 ## Category-esES: Juego de rol
 ## Category-esMX: Juego de rol
 ## Category-frFR: Jeu de rôle
-## Category-itIT: Gioco di ruolo
-## Category-koKR: 롤플레이
+## Category-itIT: Gioco di Ruolo
+## Category-koKR: 롤플레잉
 ## Category-ptBR: Interpretação de Papel
 ## Category-ruRU: Ролевая игра
 ## Category-zhCN: 角色扮演
