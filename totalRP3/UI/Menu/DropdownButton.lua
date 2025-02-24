@@ -1,16 +1,9 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-if not TRP3_USE_MODERN_MENUS then
-	return;
-end
+TRP3_DropdownButtonMixin = {};
 
 function TRP3_DropdownButtonMixin:OnLoad()
-	self.Button = CreateFrame("DropdownButton", nil, self, "WowStyle1DropdownTemplate");
-	self.Button:SetPoint("LEFT");
-	self.Button:SetPoint("RIGHT");
-	self.Button:SetPropagateMouseMotion(true);
-
 	local anchor = AnchorUtil.CreateAnchor(self.menuPoint, self, self.menuRelativePoint, self.menuPointX, self.menuPointY);
 	self:SetMenuAnchor(anchor);
 end
@@ -25,6 +18,18 @@ end
 
 function TRP3_DropdownButtonMixin:OpenMenu()
 	self.Button:OpenMenu();
+end
+
+function TRP3_DropdownButtonMixin:ToggleMenu()
+	self:SetMenuOpen(not self:IsMenuOpen());
+end
+
+function TRP3_DropdownButtonMixin:SetMenuOpen(open)
+	if open then
+		self:OpenMenu();
+	else
+		self:CloseMenu();
+	end
 end
 
 function TRP3_DropdownButtonMixin:SetMenuAnchor(anchor)
