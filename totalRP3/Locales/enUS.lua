@@ -442,7 +442,7 @@ The description doesn't have to be limited to |cnGREEN_FONT_COLOR:physical descr
 	CO_TOOLTIP_CLIENT = "Show client version",
 	CO_TOOLTIP_CLIENT_TT = "Toggles the client version part of the notification line.",
 	CO_TOOLTIP_NOTIF = "Show notifications",
-	CO_TOOLTIP_NOTIF_TT = "The notifications line is the line containing the client version, the unread description marker and the 'At first glance' marker.",
+	CO_TOOLTIP_NOTIF_TT = "The notifications line is the line containing the client version and the status icons (unread description, notes and walk-up friendly).",
 	CO_TOOLTIP_RELATION_LINE = "Show relation",
 	CO_TOOLTIP_RELATION_LINE_HIDDEN_TT = "Do not display any relation information on a line in the tooltip.",
 	CO_TOOLTIP_RELATION_LINE_SIMPLE = "Show name only",
