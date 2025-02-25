@@ -573,6 +573,16 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_QuestUnlockStart",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_RaidCasino",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_RaidCrucibleOfStormsStart",
 		width = 128,
 		height = 128
@@ -1576,6 +1586,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Casino",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-CastleNathria",
 		width = 256,
 		height = 256
@@ -2188,6 +2202,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Waterworks",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-WaycrestManor",
 		width = 256,
 		height = 256
@@ -2350,6 +2368,26 @@ local IMAGES = {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-BrokenIsles",
 		width = 256,
 		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Casino",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-CasinoWing1Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-CasinoWing2Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-CasinoWing3Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-CasinoWing4Q",
+		width = 512,
+		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-CAVERNSOFTIME",
 		width = 256,
@@ -3143,6 +3181,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Waterworks",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-WaycrestManor",
 		width = 256,
 		height = 128
@@ -3237,6 +3279,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_DragonIslesContinent",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Dungeon_Waterworks",
 		width = 512,
 		height = 288
 	},
@@ -3396,6 +3443,16 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Raid_Casino",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Raid_UndermineArena",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_TazaveshTheVeiledMarket",
 		width = 512,
 		height = 288
@@ -3447,6 +3504,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_ZerethMortis",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Zone_Undermine",
 		width = 512,
 		height = 288
 	},
@@ -4871,6 +4933,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-1110_WorldQuests",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-1100_Zone5_Anubazal",
 		width = 256,
 		height = 128
@@ -4966,9 +5033,29 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-Checklist-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-CruiseControl",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Delves",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-Dreamsurge-large",
 		width = 512,
 		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Dungeons",
+		width = 256,
+		height = 128
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-Frostfire-BloodmaulCompound",
@@ -5136,6 +5223,11 @@ local IMAGES = {
 		height = 256
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-TimeTrial",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-TradingPostAlliance",
 		width = 512,
 		height = 256
@@ -5154,6 +5246,26 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-TrainingPitHorde",
 		width = 512,
 		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-UndermineCartel-Bilgewater",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-UndermineCartel-Blackwater",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-UndermineCartel-Steamwheedle",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-UndermineCartel-Venture",
+		width = 256,
+		height = 128
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-WorkshopAlliance",
