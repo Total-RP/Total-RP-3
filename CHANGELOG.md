@@ -1,3 +1,16 @@
+# Changelog version 3.0.7
+
+## Added
+
+- Added 24 images from patch 11.1.0.
+  - Icons and musics will be added in a future release.
+- Added support for the new addon group feature in the addon list.
+
+## Fixed
+
+- Fixed nameplates not customizing properly if using Plater while disabling its friendly nameplates module.
+- Fixed missing UI icons on Classic.
+
 # Changelog version 3.0.6
 
 ## Added
