@@ -107,7 +107,7 @@ function TRP3_AutomationSettingsMixin:SetupActionDropdownMenu(menuDescription)
 		end
 
 		local displayText = action.name;
-		local displayIcon;
+		local displayIcon = "";
 		local tooltipText = string.join("|n|n", action.description, action.help);
 
 		if action.expression and action.expression ~= "" then

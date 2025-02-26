@@ -15,8 +15,6 @@ function TRP3_MenuUtil.SetElementTooltip(elementDescription, tooltipText)
 end
 
 function TRP3_MenuUtil.AttachTexture(elementDescription, icon)
-	if not icon then return end
-
 	local function Initializer(button)
 		local iconTexture = button:AttachTexture();
 		iconTexture:SetPoint("RIGHT");

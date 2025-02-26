@@ -115,7 +115,7 @@ local function GenerateXPStatusMenu(_, rootDescription)
 
 	for _, level in ipairs(levels) do
 		local text = TRP3_API.GetRoleplayExperienceText(level);
-		local icon = TRP3_API.GetRoleplayExperienceIcon(level);
+		local icon = TRP3_API.GetRoleplayExperienceIcon(level) or "";
 		local tooltipText = TRP3_API.GetRoleplayExperienceTooltipText(level);
 
 		local elementDescription = rootDescription:CreateRadio(text, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
