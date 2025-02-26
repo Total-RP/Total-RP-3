@@ -94,8 +94,7 @@ end
 local function GenerateWalkupMenu(_, rootDescription)
 	do  -- Walkup No
 		local walkup = AddOn_TotalRP3.Enums.WALKUP.NO;
-		local elementDescription = rootDescription:CreateRadio(L.CM_DO_NOT_SHOW, IsWalkupFriendly, SetWalkup, walkup);
-		TRP3_MenuUtil.AttachTexture(elementDescription);
+		rootDescription:CreateRadio(L.CM_DO_NOT_SHOW, IsWalkupFriendly, SetWalkup, walkup);
 	end
 
 	do  -- Walkup Yes
@@ -116,7 +115,7 @@ local function GenerateXPStatusMenu(_, rootDescription)
 
 	for _, level in ipairs(levels) do
 		local text = TRP3_API.GetRoleplayExperienceText(level);
-		local icon = TRP3_API.GetRoleplayExperienceIcon(level);
+		local icon = TRP3_API.GetRoleplayExperienceIcon(level) or "";
 		local tooltipText = TRP3_API.GetRoleplayExperienceTooltipText(level);
 
 		local elementDescription = rootDescription:CreateRadio(text, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
