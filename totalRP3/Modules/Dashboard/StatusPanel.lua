@@ -94,7 +94,7 @@ end
 local function GenerateWalkupMenu(_, rootDescription)
 	do  -- Walkup No
 		local walkup = AddOn_TotalRP3.Enums.WALKUP.NO;
-		local elementDescription = rootDescription:CreateRadio(L.CM_DO_NOT_SHOW, IsWalkupFriendly, SetWalkup, walkup);
+		rootDescription:CreateRadio(L.CM_DO_NOT_SHOW, IsWalkupFriendly, SetWalkup, walkup);
 	end
 
 	do  -- Walkup Yes
