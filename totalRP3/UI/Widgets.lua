@@ -201,3 +201,17 @@ end
 function TRP3_API.GetLastCopiedIcon()
 	return g_lastCopiedIcon;
 end
+
+local g_lastCopiedColor;
+
+--- TRP3_API.SetLastCopiedColor sets the last copied color.
+---@param color string|table Contains the color to be copied.
+function TRP3_API.SetLastCopiedColor(color)
+	g_lastCopiedColor = color;
+end
+
+--- TRP3_API.GetLastCopiedColor gets the last copied color.
+---@return string|table color Contains the last color that was copied.
+function TRP3_API.GetLastCopiedColor()
+	return g_lastCopiedColor;
+end

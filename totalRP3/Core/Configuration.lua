@@ -161,6 +161,37 @@ local function buildConfigurationPage(structure)
 			if element.configKey then
 				local button = widget.ColorPicker;
 				element.controller = button;
+
+				button:SetScript("OnMouseDown", function(self, btn)
+					if btn == "LeftButton" then
+						if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
+							TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
+						else
+							TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, nil, {self.setColor, self.red, self.green, self.blue});
+						end
+					elseif btn == "RightButton" then
+						local hexa = getValue(element.configKey) or defaultValues[element.configKey];
+						TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+							description:CreateButton(loc.REG_PLAYER_COLOR_TT_COPY, TRP3_API.SetLastCopiedColor, hexa);
+							description:CreateButton(loc.REG_PLAYER_COLOR_TT_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({"#" .. hexa}); end);
+							description:CreateButton(loc.REG_PLAYER_COLOR_TT_PASTE, function()
+								local color = TRP3_API.GetLastCopiedColor() or nil;
+
+								if not color then
+									button.setColor(TRP3_API.CreateColorFromHexString(defaultValues[element.configKey]):GetRGBAsBytes());
+								else
+									color = type(color) == "table" and TRP3_API.CreateColorFromTable(color):GenerateHexColorOpaque() or color;
+
+									setValue(element.configKey, color);
+									button.setColor(TRP3_API.CreateColorFromHexString(color):GetRGBAsBytes());
+								end
+							end);
+							-- Nil is handled by onSelection and will set default color.
+							description:CreateButton("|cnRED_FONT_COLOR:" .. loc.REG_PLAYER_COLOR_TT_DISCARD .. "|r", function() button.setColor(nil, nil, nil); end);
+						end);
+					end
+				end);
+
 				button.setColor(TRP3_API.CreateColorFromHexString(getValue(element.configKey)):GetRGBAsBytes());
 				button.onSelection = function(red, green, blue)
 					if red and green and blue then

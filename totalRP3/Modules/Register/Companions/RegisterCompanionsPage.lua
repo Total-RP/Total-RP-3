@@ -113,6 +113,19 @@ local function saveInDraft(profileName)
 	draftData.TX = stEtN(strtrim(TRP3_CompanionsPageInformationEdit_About_TextScrollText:GetText()));
 end
 
+--- pasteCopiedColor handles receiving a color from the right-click menu.
+---@param frame Frame The frame the icon belongs to.
+local function pasteCopiedColor(frame)
+	local color = TRP3_API.GetLastCopiedColor() or nil;
+
+	if not color then
+		frame.setColor(color);
+	else
+		local colorObject = type(color) == "table" and TRP3_API.CreateColorFromTable(color) or TRP3_API.CreateColorFromHexString(color);
+		frame.setColor(colorObject:GetRGBAsBytes());
+	end
+end
+
 local function onNameColorSelected(red, green, blue)
 	if red and green and blue then
 		local hexa = TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
@@ -431,6 +444,25 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		end
 	end);
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, "RIGHT", 0, 5, loc.REG_COMPANION_ICON, loc.REG_COMPANION_ICON_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+
+	TRP3_CompanionsPageInformationEdit_NamePanel_NameColor:SetScript("OnMouseDown", function(self, button)
+		if button == "LeftButton" then
+			if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
+				TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
+			else
+				TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, nil, {self.setColor, self.red, self.green, self.blue});
+			end
+		elseif button == "RightButton" then
+			local hexa = draftData.NH or nil;
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+				description:CreateButton(loc.REG_PLAYER_COLOR_TT_COPY, TRP3_API.SetLastCopiedColor, hexa);
+				description:CreateButton(loc.REG_PLAYER_COLOR_TT_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({"#" .. hexa}); end);
+				description:CreateButton(loc.REG_PLAYER_COLOR_TT_PASTE, function() pasteCopiedColor(TRP3_CompanionsPageInformationEdit_NamePanel_NameColor); end);
+				description:CreateButton("|cnRED_FONT_COLOR:" .. loc.REG_PLAYER_COLOR_TT_DISCARD .. "|r", function() self.setColor(nil, nil, nil); end);
+			end);
+		end
+	end);
+
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameColor.onSelection = onNameColorSelected;
 
 	TRP3_CompanionsPageInformationConsult_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
@@ -443,7 +475,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationEdit_NamePanel_NameColor, "RIGHT", 0, 5, loc.REG_COMPANION_NAME_COLOR, loc.REG_COMPANION_NAME_COLOR_TT
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TT_OPTIONS)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 	TRP3_CompanionsPageInformationEdit_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
 	TRP3_CompanionsPageInformationEdit_About:SetTitleText(loc.REG_PLAYER_ABOUT);

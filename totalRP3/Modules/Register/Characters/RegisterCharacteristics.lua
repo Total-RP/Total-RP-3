@@ -551,6 +551,31 @@ local function pasteCopiedIcon(frame, fields, structure)
 	setupIconButton(frame, icon);
 end
 
+--- pasteCopiedColor handles receiving a color from the right-click menu.
+---@param frame Frame The frame the color belongs to.
+---@param fields string To identify the required fields to modify.
+---@param structure Frame The draftData frame that holds all the info.
+local function pasteCopiedColor(frame, fields, structure)
+	local color = TRP3_API.GetLastCopiedColor() or nil;
+	local colorObject = type(color) == "table" and TRP3_API.CreateColorFromTable(color) or TRP3_API.CreateColorFromHexString(color);
+
+	if not color then
+		frame.setColor(color);
+	else
+		frame.setColor(colorObject:GetRGBAsBytes());
+	end
+
+	if fields == "eyecolor" then
+		structure.EH = color;
+	elseif fields == "classcolor" then
+		structure.CH = color;
+	elseif fields == "psychoLeft" then
+		structure.LC = colorObject:GetRGBTable();
+	elseif fields == "psychoRight" then
+		structure.RC = colorObject:GetRGBTable();
+	end
+end
+
 local function onEyeColorSelected(red, green, blue)
 	if red and green and blue then
 		local hexa = TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
@@ -1177,12 +1202,48 @@ function setEditDisplay()
 
 			setTooltipForSameFrame(frame.CustomLeftColor, "RIGHT", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT
 			.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
 			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 			setTooltipForSameFrame(frame.CustomRightColor, "RIGHT", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT
 			.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
 			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+
+			frame.CustomLeftColor:SetScript("OnMouseDown", function(self, button)
+				if button == "LeftButton" then
+					if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
+						TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
+					else
+						TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, nil, {self.setColor, self.red, self.green, self.blue});
+					end
+				elseif button == "RightButton" then
+					local hexa = psychoStructure.LC and TRP3_API.CreateColorFromTable(psychoStructure.LC):GenerateHexColorOpaque() or TRP3_API.MiscColors.PersonalityTraitColorLeft:GenerateHexColorOpaque();
+					TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+						description:CreateButton(loc.REG_PLAYER_COLOR_TT_COPY, TRP3_API.SetLastCopiedColor, hexa);
+						description:CreateButton(loc.REG_PLAYER_COLOR_TT_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({"#" .. hexa}); end);
+						description:CreateButton(loc.REG_PLAYER_COLOR_TT_PASTE, function() pasteCopiedColor(frame.CustomLeftColor, "psychoLeft", psychoStructure); end);
+						description:CreateButton("|cnRED_FONT_COLOR:" .. loc.REG_PLAYER_COLOR_TT_DISCARD .. "|r", function() self.setColor(nil); end);
+					end);
+				end
+			end);
+
+			frame.CustomRightColor:SetScript("OnMouseDown", function(self, button)
+				if button == "LeftButton" then
+					if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
+						TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
+					else
+						TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, nil, {self.setColor, self.red, self.green, self.blue});
+					end
+				elseif button == "RightButton" then
+					local hexa = psychoStructure.RC and TRP3_API.CreateColorFromTable(psychoStructure.RC):GenerateHexColorOpaque() or TRP3_API.MiscColors.PersonalityTraitColorRight:GenerateHexColorOpaque();
+					TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+						description:CreateButton(loc.REG_PLAYER_COLOR_TT_COPY, TRP3_API.SetLastCopiedColor, hexa);
+						description:CreateButton(loc.REG_PLAYER_COLOR_TT_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({"#" .. hexa}); end);
+						description:CreateButton(loc.REG_PLAYER_COLOR_TT_PASTE, function() pasteCopiedColor(frame.CustomRightColor, "psychoRight", psychoStructure); end);
+						description:CreateButton("|cnRED_FONT_COLOR:" .. loc.REG_PLAYER_COLOR_TT_DISCARD .. "|r", function() self.setColor(nil); end);
+					end);
+				end
+			end);
 
 			-- Only need to set up the closure for color pickers once, as it
 			-- just needs a reference to the frame itself.
@@ -1192,10 +1253,12 @@ function setEditDisplay()
 			--        as well as not worry about all the TRP3_API.CreateColorFromHexString -> rgb
 			--        conversion nonsense.
 			frame.CustomLeftColor.onSelection = function(r, g, b)
+				psychoStructure.LC = r and TRP3_API.CreateColorFromBytes(r, g, b):GetRGBTable();
 				refreshPsychoColor(frame, "LC", r and TRP3_API.CreateColorFromBytes(r, g, b));
 			end
 
 			frame.CustomRightColor.onSelection = function(r, g, b)
+				psychoStructure.RC = r and TRP3_API.CreateColorFromBytes(r, g, b):GetRGBTable();
 				refreshPsychoColor(frame, "RC", r and TRP3_API.CreateColorFromBytes(r, g, b));
 			end
 
@@ -1598,6 +1661,43 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_BirthplaceButton:SetScript("OnClick", function()
 		TRP3_RegisterCharact_Edit_BirthplaceField:SetText(buildZoneText());
 	end);
+
+	TRP3_RegisterCharact_Edit_ClassButton:SetScript("OnMouseDown", function(self, button)
+		if button == "LeftButton" then
+			if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
+				TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
+			else
+				TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, nil, {self.setColor, self.red, self.green, self.blue});
+			end
+		elseif button == "RightButton" then
+			local hexa = draftData.CH or nil;
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+				description:CreateButton(loc.REG_PLAYER_COLOR_TT_COPY, TRP3_API.SetLastCopiedColor, hexa);
+				description:CreateButton(loc.REG_PLAYER_COLOR_TT_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({"#" .. hexa}); end);
+				description:CreateButton(loc.REG_PLAYER_COLOR_TT_PASTE, function() pasteCopiedColor(TRP3_RegisterCharact_Edit_ClassButton, "classcolor", draftData); end);
+				description:CreateButton("|cnRED_FONT_COLOR:" .. loc.REG_PLAYER_COLOR_TT_DISCARD .. "|r", function() self.setColor(nil, nil, nil); end);
+			end);
+		end
+	end);
+
+	TRP3_RegisterCharact_Edit_EyeButton:SetScript("OnMouseDown", function(self, button)
+		if button == "LeftButton" then
+			if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
+				TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
+			else
+				TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, nil, {self.setColor, self.red, self.green, self.blue});
+			end
+		elseif button == "RightButton" then
+			local hexa = draftData.EH or nil;
+			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+				description:CreateButton(loc.REG_PLAYER_COLOR_TT_COPY, TRP3_API.SetLastCopiedColor, hexa);
+				description:CreateButton(loc.REG_PLAYER_COLOR_TT_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({"#" .. hexa}); end);
+				description:CreateButton(loc.REG_PLAYER_COLOR_TT_PASTE, function() pasteCopiedColor(TRP3_RegisterCharact_Edit_EyeButton, "eyecolor", draftData); end);
+				description:CreateButton("|cnRED_FONT_COLOR:" .. loc.REG_PLAYER_COLOR_TT_DISCARD .. "|r", function() self.setColor(nil, nil, nil); end);
+			end);
+		end
+	end);
+
 	TRP3_RegisterCharact_Edit_ClassButton.onSelection = onClassColorSelected;
 	TRP3_RegisterCharact_Edit_EyeButton.onSelection = onEyeColorSelected;
 
@@ -1635,11 +1735,11 @@ function TRP3_API.register.inits.characteristicsInit()
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_HERE_HOME_TT_DISCARD));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeButton, "RIGHT", 0, 5, loc.REG_PLAYER_EYE, loc.REG_PLAYER_EYE_TT
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassButton, "RIGHT", 0, 5, loc.REG_PLAYER_COLOR_CLASS, loc.REG_PLAYER_COLOR_CLASS_TT
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 
 	TRP3_RegisterCharact_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
