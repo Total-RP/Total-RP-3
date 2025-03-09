@@ -45,11 +45,11 @@ local CreditsData =
 	[CreditCategory.Developers] =
 	{
 		{
-			name  = [[{twitter*Solanya_*Solanya}]],
+			name  = [[{bsky*solanya.bsky.social*Solanya}]],
 			roles = { CreditRole.ProjectLead, CreditRole.CommunityManager },
 		},
 		{
-			name  = [[Daniel "{twitter*Meorawr*Meorawr}" Yates]],
+			name  = [[Daniel "{bsky*meorawr.bsky.social*Meorawr}" Yates]],
 			roles = { CreditRole.Developer, CreditRole.Mascot },
 		},
 		{
@@ -57,7 +57,7 @@ local CreditsData =
 			roles = { CreditRole.Developer },
 		},
 		{
-			name  = [[{twitter*Raenore*Raenore}]],
+			name  = [[{bsky*raenore.bsky.social*Raenore}]],
 			roles = { CreditRole.Developer },
 		},
 	},
@@ -175,7 +175,7 @@ function TRP3_DashboardUtil.GenerateCredits()
 
 	do  -- Logo Author
 		local LOGO_AUTHOR_LINK = string.format("{link*%1$s*%2$s}", "https://apheliondusk.tumblr.com", "AphelionDusk");
-		local SIDEBAR_DICE_AUTHOR_LINK = string.format("{twitter*%1$s*%2$s}", "keyboardturn", "keyboardturner");
+		local SIDEBAR_DICE_AUTHOR_LINK = string.format("{bsky*%1$s*%2$s}", "keyboardturner.bsky.social", "keyboardturner");
 
 		table.insert(output, string.format(L.CREDITS_THANK_YOU_SECTION_4, ""));
 		table.insert(output, "\n");

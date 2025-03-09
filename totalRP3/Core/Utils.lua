@@ -766,7 +766,8 @@ Utils.str.toHTML = function(text, noColor, noBrackets, defaultLinkType)
 			line = line:gsub("(){link%*([^*]+)%*([^}]+)}", formatter);
 		end
 
-		line = line:gsub("{twitter%*(.-)%*(.-)}", "<a href=\"twitter:%1\">|cff61AAEE%2|r</a>");
+		line = line:gsub("{twitter%*(.-)%*(.-)}", "<a href=\"twitter:%1\">|cff61aaee%2|r</a>");
+		line = line:gsub("{bsky%*(.-)%*(.-)}", "<a href=\"bsky:%1\">|cff0886fe%2|r</a>");
 
 		finalText = finalText .. line;
 	end

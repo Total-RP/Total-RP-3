@@ -262,6 +262,27 @@ function TRP3_LinkUtil.CreateExternalLinkHandler(owner)
 	return owner:CreateLinkHandler("external", OnClick, OnTooltipShow);
 end
 
+function TRP3_LinkUtil.CreateBSkyLinkHandler(owner)
+	local function GenerateURL(linkInfo)
+		return "https://bsky.app/profile/" .. linkInfo.data;
+	end
+
+	local function OnTooltipShow(_, description, linkInfo)
+		local text = linkInfo.text;
+		local link = GenerateURL(linkInfo);
+
+		text = TRP3_API.utils.str.sanitize(text);
+
+		TRP3_LinkUtil.CreateLinkCopyTooltip(description, text, link);
+	end
+
+	local function OnClick(linkInfo)
+		TRP3_LinkUtil.OpenLinkCopyDialog(GenerateURL(linkInfo));
+	end
+
+	return owner:CreateLinkHandler("bsky", OnClick, OnTooltipShow);
+end
+
 function TRP3_LinkUtil.CreateTwitterLinkHandler(owner)
 	local function GenerateURL(linkInfo)
 		return "https://twitter.com/" .. linkInfo.data;
@@ -285,5 +306,6 @@ end
 
 function TRP3_LinkUtil.RegisterStandardLinkHandlers(ownerRegion)
 	TRP3_LinkUtil.CreateTwitterLinkHandler(ownerRegion);
+	TRP3_LinkUtil.CreateBSkyLinkHandler(ownerRegion);
 	TRP3_LinkUtil.CreateExternalLinkHandler(ownerRegion);
 end
