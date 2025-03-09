@@ -1128,7 +1128,7 @@ function setEditDisplay()
 			end);
 		end);
 
-		frame.Icon:SetScript("OnMouseDown", function(self, button)
+		frame.Icon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(icon)
 					miscStructure.IC = icon;
@@ -1209,7 +1209,7 @@ function setEditDisplay()
 			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
 			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 
-			frame.CustomLeftColor:SetScript("OnMouseDown", function(self, button)
+			frame.CustomLeftColor:SetScript("OnClick", function(self, button)
 				if button == "LeftButton" then
 					if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
 						TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
@@ -1227,7 +1227,7 @@ function setEditDisplay()
 				end
 			end);
 
-			frame.CustomRightColor:SetScript("OnMouseDown", function(self, button)
+			frame.CustomRightColor:SetScript("OnClick", function(self, button)
 				if button == "LeftButton" then
 					if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
 						TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
@@ -1280,7 +1280,7 @@ function setEditDisplay()
 			end);
 		end);
 
-		frame.CustomLeftIcon:SetScript("onMouseDown", function(self, button)
+		frame.CustomLeftIcon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(icon)
 					psychoStructure.LI = icon;
@@ -1296,7 +1296,7 @@ function setEditDisplay()
 			end
 		end);
 
-		frame.CustomRightIcon:SetScript("onMouseDown", function(self, button)
+		frame.CustomRightIcon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(icon)
 					psychoStructure.RI = icon;
@@ -1623,7 +1623,7 @@ function TRP3_API.register.inits.characteristicsInit()
 
 	-- UI
 	TRP3_RegisterCharact_Edit_MiscAdd:SetScript("OnClick", miscAddDropDown);
-	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("onMouseDown", function(self, button)
+	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			showIconBrowser(onPlayerIconSelected, draftData.IC);
 		elseif button == "RightButton" then
@@ -1662,7 +1662,7 @@ function TRP3_API.register.inits.characteristicsInit()
 		TRP3_RegisterCharact_Edit_BirthplaceField:SetText(buildZoneText());
 	end);
 
-	TRP3_RegisterCharact_Edit_ClassButton:SetScript("OnMouseDown", function(self, button)
+	TRP3_RegisterCharact_Edit_ClassButton:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
 				TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
@@ -1680,7 +1680,7 @@ function TRP3_API.register.inits.characteristicsInit()
 		end
 	end);
 
-	TRP3_RegisterCharact_Edit_EyeButton:SetScript("OnMouseDown", function(self, button)
+	TRP3_RegisterCharact_Edit_EyeButton:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
 				TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});

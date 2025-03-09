@@ -162,7 +162,7 @@ local function buildConfigurationPage(structure)
 				local button = widget.ColorPicker;
 				element.controller = button;
 
-				button:SetScript("OnMouseDown", function(self, btn)
+				button:SetScript("OnClick", function(self, btn)
 					if btn == "LeftButton" then
 						if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
 							TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});

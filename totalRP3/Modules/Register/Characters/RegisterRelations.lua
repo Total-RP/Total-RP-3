@@ -220,7 +220,7 @@ local function initRelationEditor(relationID)
 	-- set icon, name, description, color
 	setupIconButton(TRP3_RelationsList.Editor.Content.Icon, draftRelationTexture);
 	setTooltipAll(TRP3_RelationsList.Editor.Content.Icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-	TRP3_RelationsList.Editor.Content.Icon:SetScript("OnMouseDown", function(self, button)
+	TRP3_RelationsList.Editor.Content.Icon:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {function(icon)
 				draftRelationTexture = icon;
@@ -273,7 +273,7 @@ local function initRelationEditor(relationID)
 		TRP3_RelationsList.Editor.Content.Color.setColor(nil);
 	end
 
-	TRP3_RelationsList.Editor.Content.Color:SetScript("OnMouseDown", function(self, button)
+	TRP3_RelationsList.Editor.Content.Color:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
 				TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
