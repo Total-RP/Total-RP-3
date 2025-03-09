@@ -1,6 +1,8 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+local L = TRP3_API.loc;
+
 TRP3_TooltipMixin = {};
 
 function TRP3_TooltipMixin:SetCenterColor(r, g, b, a)
@@ -214,4 +216,53 @@ end
 ---@return string|table color Contains the last color that was copied.
 function TRP3_API.GetLastCopiedColor()
 	return g_lastCopiedColor;
+end
+
+TRP3_ColorPickerButtonMixin = {};
+
+function TRP3_ColorPickerButtonMixin:OnClick(mouseButtonName)
+	if mouseButtonName ~= "LeftButton" and mouseButtonName ~= "RightButton" then
+		return;
+	end
+
+	local hexa;
+	if self.red then
+		hexa = TRP3_API.CreateColorFromBytes(self.red, self.green, self.blue):GenerateHexColorOpaque();
+	end
+
+	local function OnCopyColorClicked()
+		local code = "#" .. hexa;
+		TRP3_API.popup.showCopyDropdownPopup({ code });
+	end
+
+	local function OnPasteColorClicked()
+		local color = TRP3_API.GetLastCopiedColor() or nil;
+		local colorObject = type(color) == "table" and TRP3_API.CreateColorFromTable(color) or TRP3_API.CreateColorFromHexString(color);
+		self.setColor(colorObject:GetRGBAsBytes());
+	end
+
+	local function GenerateMenu(_, rootDescription)
+		local copyButton = rootDescription:CreateButton(L.REG_PLAYER_COLOR_TT_COPY, TRP3_API.SetLastCopiedColor, hexa);
+		copyButton:SetEnabled(hexa ~= nil);
+
+		local copyNameButton = rootDescription:CreateButton(L.REG_PLAYER_COLOR_TT_COPYNAME, OnCopyColorClicked);
+		copyNameButton:SetEnabled(hexa ~= nil);
+
+		local pasteButton = rootDescription:CreateButton(L.REG_PLAYER_COLOR_TT_PASTE, OnPasteColorClicked);
+		pasteButton:SetEnabled(TRP3_API.GetLastCopiedColor() ~= nil);
+
+		if hexa then
+			rootDescription:CreateButton("|cnRED_FONT_COLOR:" .. L.REG_PLAYER_COLOR_TT_DISCARD .. "|r", function() self.setColor(nil, nil, nil); end);
+		end
+	end
+
+	if mouseButtonName == "LeftButton" then
+		if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
+			TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
+		else
+			TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, nil, {self.setColor, self.red, self.green, self.blue});
+		end
+	elseif mouseButtonName == "RightButton" then
+		TRP3_MenuUtil.CreateContextMenu(self, GenerateMenu);
+	end
 end
