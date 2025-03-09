@@ -45,11 +45,11 @@ local CreditsData =
 	[CreditCategory.Developers] =
 	{
 		{
-			name  = [[{twitter*Solanya_*Solanya}]],
+			name  = [[{bsky*solanya.bsky.social*Solanya}]],
 			roles = { CreditRole.ProjectLead, CreditRole.CommunityManager },
 		},
 		{
-			name  = [[Daniel "{twitter*Meorawr*Meorawr}" Yates]],
+			name  = [[Daniel "{bsky*meorawr.bsky.social*Meorawr}" Yates]],
 			roles = { CreditRole.Developer, CreditRole.Mascot },
 		},
 		{
