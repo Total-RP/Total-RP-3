@@ -404,7 +404,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Button>
 
 	<!-- Color picker button -->
-	<Button mixin="TRP3_ColorPickerButtonMixin" name="TRP3_ColorPickerButton" virtual="true">
+	<Button name="TRP3_ColorPickerButton" mixin="TRP3_ColorPickerButtonMixin" virtual="true">
 		<Size x="16" y="16"/>
 		<HighlightTexture parentKey="SwatchBgHighlight" alphaMode="ADD" file="Interface\SpellActivationOverlay\IconAlert">
 			<Size x="71" y="68"/>
@@ -456,7 +456,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<PostClick>
 				PlaySound(TRP3_InterfaceSounds.ButtonClick);
 			</PostClick>
-			<OnMouseDown method="OnClick"/>
+			<OnClick method="OnClick"/>
 		</Scripts>
 	</Button>
 
