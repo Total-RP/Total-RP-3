@@ -765,28 +765,6 @@ local function ShowColorBrowser(callback, r8, g8, b8)
 	TRP3_ColorBrowser:Open(initialColor, OnAccept, OnCancel);
 end
 
-function TRP3_ColorButtonLoad(self)
-	self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-	self.setColor = function(red, green, blue)
-		self.red = red;
-		self.green = green;
-		self.blue = blue;
-		if red and green and blue then
-			self.SwatchBg:SetColorTexture(red / 255, green / 255, blue / 255);
-			self.SwatchBgHighlight:SetVertexColor(red / 255, green / 255, blue / 255);
-		else
-			self.SwatchBg:SetTexture([[interface\icons\]] .. TRP3_InterfaceIcons.Gears);
-			self.SwatchBgHighlight:SetVertexColor(1.0, 1.0, 1.0);
-		end
-		if self.onSelection then
-			self.onSelection(red, green, blue);
-		end
-		self.Blink.Animate:Play();
-		self.Blink.Animate:Finish();
-	end
-	self.setColor();
-end
-
 function TRP3_API.popup.showDefaultColorPicker(popupArgs)
 	local setColor, r, g, b = unpack(popupArgs);
 
