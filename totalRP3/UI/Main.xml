@@ -374,7 +374,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="LEFT" x="215" y="0"/>
 				</Anchors>
 			</Frame>
-			
+
 			<Frame parentKey="Spinner" frameStrata="DIALOG" hidden="true">
 				<Size x="22" y="22"/>
 				<Anchors>
