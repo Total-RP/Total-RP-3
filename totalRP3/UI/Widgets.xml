@@ -446,16 +446,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Scripts>
-			<OnLoad function="TRP3_ColorButtonLoad"/>
-			<OnEnter>
-				TRP3_RefreshTooltipForFrame(self);
-			</OnEnter>
-			<OnLeave>
-				TRP3_MainTooltip:Hide();
-			</OnLeave>
-			<PostClick>
-				PlaySound(TRP3_InterfaceSounds.ButtonClick);
-			</PostClick>
+			<OnLoad method="OnLoad"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<PostClick method="PostClick"/>
 			<OnClick method="OnClick"/>
 		</Scripts>
 	</Button>

@@ -220,6 +220,22 @@ end
 
 TRP3_ColorPickerButtonMixin = {};
 
+function TRP3_ColorPickerButtonMixin:OnLoad()
+	TRP3_ColorButtonLoad(self);
+end
+
+function TRP3_ColorPickerButtonMixin:OnEnter()
+	TRP3_RefreshTooltipForFrame(self);
+end
+
+function TRP3_ColorPickerButtonMixin:OnLeave()
+	TRP3_MainTooltip:Hide();
+end
+
+function TRP3_ColorPickerButtonMixin:PostClick()
+	PlaySound(TRP3_InterfaceSounds.ButtonClick);
+end
+
 function TRP3_ColorPickerButtonMixin:OnClick(mouseButtonName)
 	if mouseButtonName ~= "LeftButton" and mouseButtonName ~= "RightButton" then
 		return;
