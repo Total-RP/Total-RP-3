@@ -352,7 +352,7 @@ function refreshTemplate2EditDisplay()
 		frame.frameData = frameData;
 		_G[frame:GetName().."TextScrollText"]:SetText(frameData.TX or "");
 		setupIconButton(_G[frame:GetName().."Icon"], frameData.IC or TRP3_InterfaceIcons.Default);
-		_G[frame:GetName().."Icon"]:SetScript("onMouseDown", function(self, button)
+		_G[frame:GetName().."Icon"]:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(icon)
 					frame.frameData.IC = icon;
@@ -973,7 +973,7 @@ function TRP3_API.register.inits.aboutInit()
 
 	setupListBox(TRP3_RegisterAbout_Edit_TemplateField, {{"Template 1", 1}, {"Template 2", 2}, {"Template 3", 3}}, setEditTemplate, nil, 150, true);
 	setTooltipAll(TRP3_RegisterAbout_Edit_Template3_PhysIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("onMouseDown", function(self, button)
+	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			showIconBrowser(onPhisIconSelected, draftData.T3.PH.IC);
 		elseif button == "RightButton" then
@@ -1014,7 +1014,7 @@ function TRP3_API.register.inits.aboutInit()
 	end);
 
 	setTooltipAll(TRP3_RegisterAbout_Edit_Template3_PsyIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-	TRP3_RegisterAbout_Edit_Template3_PsyIcon:SetScript("onMouseDown", function(self, button)
+	TRP3_RegisterAbout_Edit_Template3_PsyIcon:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			showIconBrowser(onPsychoIconSelected, draftData.T3.PS.IC);
 		elseif button == "RightButton" then
@@ -1028,7 +1028,7 @@ function TRP3_API.register.inits.aboutInit()
 	end);
 
 	setTooltipAll(TRP3_RegisterAbout_Edit_Template3_HistIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("onMouseDown", function(self, button)
+	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			showIconBrowser(onHistoIconSelected, draftData.T3.HI.IC);
 		elseif button == "RightButton" then

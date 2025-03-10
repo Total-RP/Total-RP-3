@@ -1103,7 +1103,7 @@ function setEditDisplay()
 			end);
 		end);
 
-		frame.Icon:SetScript("OnMouseDown", function(self, button)
+		frame.Icon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(icon)
 					miscStructure.IC = icon;
@@ -1177,11 +1177,11 @@ function setEditDisplay()
 
 			setTooltipForSameFrame(frame.CustomLeftColor, "RIGHT", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT
 			.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
 			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 			setTooltipForSameFrame(frame.CustomRightColor, "RIGHT", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT
 			.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
 			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 
 			-- Only need to set up the closure for color pickers once, as it
@@ -1192,10 +1192,12 @@ function setEditDisplay()
 			--        as well as not worry about all the TRP3_API.CreateColorFromHexString -> rgb
 			--        conversion nonsense.
 			frame.CustomLeftColor.onSelection = function(r, g, b)
+				psychoStructure.LC = r and TRP3_API.CreateColorFromBytes(r, g, b):GetRGBTable();
 				refreshPsychoColor(frame, "LC", r and TRP3_API.CreateColorFromBytes(r, g, b));
 			end
 
 			frame.CustomRightColor.onSelection = function(r, g, b)
+				psychoStructure.RC = r and TRP3_API.CreateColorFromBytes(r, g, b):GetRGBTable();
 				refreshPsychoColor(frame, "RC", r and TRP3_API.CreateColorFromBytes(r, g, b));
 			end
 
@@ -1217,7 +1219,7 @@ function setEditDisplay()
 			end);
 		end);
 
-		frame.CustomLeftIcon:SetScript("onMouseDown", function(self, button)
+		frame.CustomLeftIcon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(icon)
 					psychoStructure.LI = icon;
@@ -1233,7 +1235,7 @@ function setEditDisplay()
 			end
 		end);
 
-		frame.CustomRightIcon:SetScript("onMouseDown", function(self, button)
+		frame.CustomRightIcon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(icon)
 					psychoStructure.RI = icon;
@@ -1560,7 +1562,7 @@ function TRP3_API.register.inits.characteristicsInit()
 
 	-- UI
 	TRP3_RegisterCharact_Edit_MiscAdd:SetScript("OnClick", miscAddDropDown);
-	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("onMouseDown", function(self, button)
+	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			showIconBrowser(onPlayerIconSelected, draftData.IC);
 		elseif button == "RightButton" then
@@ -1598,6 +1600,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_BirthplaceButton:SetScript("OnClick", function()
 		TRP3_RegisterCharact_Edit_BirthplaceField:SetText(buildZoneText());
 	end);
+
 	TRP3_RegisterCharact_Edit_ClassButton.onSelection = onClassColorSelected;
 	TRP3_RegisterCharact_Edit_EyeButton.onSelection = onEyeColorSelected;
 
@@ -1635,11 +1638,11 @@ function TRP3_API.register.inits.characteristicsInit()
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_HERE_HOME_TT_DISCARD));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeButton, "RIGHT", 0, 5, loc.REG_PLAYER_EYE, loc.REG_PLAYER_EYE_TT
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassButton, "RIGHT", 0, 5, loc.REG_PLAYER_COLOR_CLASS, loc.REG_PLAYER_COLOR_CLASS_TT
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 
 	TRP3_RegisterCharact_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
