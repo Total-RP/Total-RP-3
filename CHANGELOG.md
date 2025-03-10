@@ -1,3 +1,13 @@
+# Changelog version 3.0.8
+
+## Added
+
+- Right-clicking color picker buttons now opens a menu to copy/paste or discard colors.
+
+## Fixed
+
+- Fixed a Lua error appearing when opening some dropdowns (like walk-up friendly or RP proficiency).
+
 # Changelog version 3.0.7
 
 ## Added
