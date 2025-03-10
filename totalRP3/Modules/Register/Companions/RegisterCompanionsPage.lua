@@ -419,7 +419,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:SetScript("OnClick", toEditMode);
 	TRP3_CompanionsPageInformationEdit_NamePanel_CancelButton:SetScript("OnClick", showInformationTab);
 	TRP3_CompanionsPageInformationEdit_NamePanel_SaveButton:SetScript("OnClick", onSave);
-	TRP3_CompanionsPageInformationEdit_NamePanel_Icon:SetScript("onMouseDown", function(self, button)
+	TRP3_CompanionsPageInformationEdit_NamePanel_Icon:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			showIconBrowser(onPlayerIconSelected, draftData.IC);
 		elseif button == "RightButton" then
@@ -431,6 +431,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		end
 	end);
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, "RIGHT", 0, 5, loc.REG_COMPANION_ICON, loc.REG_COMPANION_ICON_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameColor.onSelection = onNameColorSelected;
 
 	TRP3_CompanionsPageInformationConsult_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
@@ -443,7 +444,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationEdit_NamePanel_NameColor, "RIGHT", 0, 5, loc.REG_COMPANION_NAME_COLOR, loc.REG_COMPANION_NAME_COLOR_TT
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 	TRP3_CompanionsPageInformationEdit_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
 	TRP3_CompanionsPageInformationEdit_About:SetTitleText(loc.REG_PLAYER_ABOUT);

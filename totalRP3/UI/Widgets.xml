@@ -404,7 +404,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Button>
 
 	<!-- Color picker button -->
-	<Button name="TRP3_ColorPickerButton" virtual="true">
+	<Button name="TRP3_ColorPickerButton" mixin="TRP3_ColorPickerButtonMixin" virtual="true">
 		<Size x="16" y="16"/>
 		<HighlightTexture parentKey="SwatchBgHighlight" alphaMode="ADD" file="Interface\SpellActivationOverlay\IconAlert">
 			<Size x="71" y="68"/>
@@ -446,27 +446,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Scripts>
-			<OnLoad function="TRP3_ColorButtonLoad"/>
-			<OnClick>
-				if button == "LeftButton" then
-					if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
-						TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
-					else
-						TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, nil, {self.setColor, self.red, self.green, self.blue});
-					end
-				elseif button == "RightButton" then
-					self.setColor(nil, nil, nil);
-				end
-			</OnClick>
-			<OnEnter>
-				TRP3_RefreshTooltipForFrame(self);
-			</OnEnter>
-			<OnLeave>
-				TRP3_MainTooltip:Hide();
-			</OnLeave>
-			<PostClick>
-				PlaySound(TRP3_InterfaceSounds.ButtonClick);
-			</PostClick>
+			<OnLoad method="OnLoad"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<PostClick method="PostClick"/>
+			<OnClick method="OnClick"/>
 		</Scripts>
 	</Button>
 

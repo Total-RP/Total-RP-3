@@ -191,7 +191,7 @@ local function initRelationEditor(relationID)
 	-- set icon, name, description, color
 	setupIconButton(TRP3_RelationsList.Editor.Content.Icon, draftRelationTexture);
 	setTooltipAll(TRP3_RelationsList.Editor.Content.Icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-	TRP3_RelationsList.Editor.Content.Icon:SetScript("OnMouseDown", function(self, button)
+	TRP3_RelationsList.Editor.Content.Icon:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {function(icon)
 				draftRelationTexture = icon;
@@ -235,7 +235,7 @@ local function initRelationEditor(relationID)
 
 	setTooltipAll(TRP3_RelationsList.Editor.Content.Color, "RIGHT", 0, 5, loc.CO_RELATIONS_NEW_COLOR, loc.CO_RELATIONS_NEW_COLOR_TT
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_DISCARD)
+	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 	if relation.color then
 		TRP3_RelationsList.Editor.Content.Color.setColor(TRP3_API.CreateColorFromHexString(relation.color):GetRGBAsBytes());

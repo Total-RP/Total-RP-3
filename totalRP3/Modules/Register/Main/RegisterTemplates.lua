@@ -81,7 +81,8 @@ function TRP3_RegisterColorSwatchMixin:OnMouseDown(mouseButtonName)
 	end
 
 	local function GenerateMenu(_, rootDescription)
-		rootDescription:CreateButton(L.CM_COPY_TO_CLIPBOARD, OnCopyColorClicked);
+		rootDescription:CreateButton(L.REG_PLAYER_COLOR_TT_COPY, TRP3_API.SetLastCopiedColor, color);
+		rootDescription:CreateButton(L.REG_PLAYER_COLOR_TT_COPYNAME, OnCopyColorClicked);
 		rootDescription:CreateButton(L.BW_COLOR_PRESET_SAVE_AS_CUSTOM, OnSaveColorClicked);
 	end
 
@@ -91,6 +92,8 @@ end
 function TRP3_RegisterColorSwatchMixin:OnTooltipShow(description)
 	if self.showContrastTooltip then
 		description:AddNormalLine(L.REG_COLOR_SWATCH_WARNING);
+		description:AddBlankLine();
+		description:AddInstructionLine("RCLICK", L.REG_PLAYER_COLOR_TT_OPTIONS);
 	end
 end
 
