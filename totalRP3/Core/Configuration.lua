@@ -209,7 +209,7 @@ local function buildConfigurationPage(structure)
 			local box = widget.Checkbox;
 			element.controller = box;
 			if element.configKey then
-				box:SetScript("OnClick", function(self)
+				box:SetScript("OnClick", function(self, ...)
 					local optionIsEnabled = self:GetChecked();
 					setValue(element.configKey, optionIsEnabled);
 
@@ -222,6 +222,11 @@ local function buildConfigurationPage(structure)
 								dependentOption.controller:SetEnabled(optionIsEnabled);
 							end
 						end
+					end
+
+					local callback = element.OnClick or element.callback;
+					if callback then
+						callback(self, ...);
 					end
 				end);
 				box:SetChecked(getValue(element.configKey));
@@ -481,6 +486,20 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 			}
 		}
 	}
+
+	if TRP3_API.globals.serious_day then
+		registerConfigKey("AF_STUFF_2025", true);
+		tinsert(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL.elements, 2, {
+			inherit = "TRP3_ConfigCheck",
+			title = TRP3_API.utils.Rainbowify("Enable April Fools' joke"),
+			help = "Disable this option to remove this year's April Fools' joke.",
+			configKey = "AF_STUFF_2025",
+			callback = function()
+				TRP3_MainFrame.Spinner:SetShown(Config.getValue("AF_STUFF_2025"));
+			end
+		});
+		TRP3_MainFrame.Spinner:SetShown(Config.getValue("AF_STUFF_2025"));
+	end
 end);
 
 AddOn_TotalRP3.Configuration = {}

@@ -375,6 +375,30 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Anchors>
 			</Frame>
 
+			<Frame parentKey="Spinner" frameStrata="DIALOG" hidden="true">
+				<Size x="22" y="22"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="30" y="-33"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<Texture parentKey="Icon" file="Interface\AddOns\totalRP3\Resources\UI\ui-refresh" texelSnappingBias="0.0" snapToPixelGrid="false">
+							<Size x="16" y="16"/>
+							<Anchors>
+								<Anchor point="CENTER"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Animations>
+					<AnimationGroup parentKey="SpinAnimation" looping="REPEAT">
+						<Rotation childKey="Icon" duration="1.5" degrees="-360" smoothing="OUT_IN"/>
+						<Scripts>
+							<OnLoad method="Play"/>
+						</Scripts>
+					</AnimationGroup>
+				</Animations>
+			</Frame>
 		</Frames>
 		<Scripts>
 			<OnLoad method="OnLoad" inherit="prepend"/>
