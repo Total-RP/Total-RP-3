@@ -485,7 +485,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				instructions = Utils.GetDefaultDateFormat(),
 			}
 		}
-	} 
+	}
 
 	if TRP3_API.globals.serious_day then
 		registerConfigKey("AF_STUFF_2025", true);
