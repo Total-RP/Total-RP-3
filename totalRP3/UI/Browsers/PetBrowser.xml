@@ -94,8 +94,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Layer level="OVERLAY">
 						<FontString parentKey="Text" inherits="QuestTitleFontBlackShadow" justifyH="CENTER" justifyV="MIDDLE">
 							<Anchors>
-								<Anchor point="TOPLEFT" relativeKey="$parent.Header"/>
-								<Anchor point="BOTTOMRIGHT" relativeKey="$parent.Header" y="8"/>
+								<Anchor point="TOPLEFT"/>
+								<Anchor point="BOTTOMRIGHT" y="8"/>
 							</Anchors>
 						</FontString>
 					</Layer>
