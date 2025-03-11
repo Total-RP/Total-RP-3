@@ -98,7 +98,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Button>
 
 	<!-- Common icon button  -->
-	<Button name="TRP3_IconButton" virtual="true">
+	<Button name="TRP3_IconButton" registerForClicks="LeftButtonUp, RightButtonUp" virtual="true">
 		<Size x="26" y="26"/>
 		<Layers>
 			<Layer level="OVERLAY">
