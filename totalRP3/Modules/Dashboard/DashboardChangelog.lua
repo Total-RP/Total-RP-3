@@ -2,6 +2,12 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.0.9
+
+## Fixed
+
+- Fixed icon button right-click menu not appearing.
+
 # Changelog version 3.0.8
 
 ## Added

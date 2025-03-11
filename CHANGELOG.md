@@ -1,8 +1,14 @@
+# Changelog version 3.0.9
+
+## Fixed
+
+- Fixed icon button right-click menu not appearing.
+
 # Changelog version 3.0.8
 
 ## Added
 
-- Right-clicking color picker buttons now opens a menu to copy/paste or discard colors.
+- Right-clicking color picker buttons now opens a menu to copy, paste or discard colors.
 
 ## Fixed
 
