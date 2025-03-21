@@ -173,8 +173,6 @@ Per favore ricorda che cambiare queste impostazioni potrebbero alterare la tua e
 In caso contrario, la lingua verrà cambiata sul prossima connessione.]=],
 	["CO_GENERAL_COM"] = "Comunicazione",
 	["CO_GENERAL_MISC"] = "Miscellaneo",
-	["CO_GENERAL_NEW_VERSION"] = "Avviso di aggiornamento",
-	["CO_GENERAL_NEW_VERSION_TT"] = "Ricevi un avviso quando una nuova versione è disponibile.",
 	["CO_GENERAL_UI_ANIMATIONS"] = "Animazioni UI",
 	["CO_GLANCE_PRESET_TRP2"] = "Usa lo stile di posizionamento di Total RP 2",
 	["CO_GLANCE_PRESET_TRP2_BUTTON"] = "Usa",
@@ -240,11 +238,6 @@ In caso contrario, la lingua verrà cambiata sul prossima connessione.]=],
 	["MATURE_FILTER_WARNING_CONTINUE"] = "Proseguire",
 	["MATURE_FILTER_WARNING_GO_BACK"] = "Tornare",
 	["MATURE_FILTER_WARNING_TITLE"] = "Contenuto per adulti",
-	["NEW_VERSION"] = [=[|cff00ff00Una versione nuova del TRP3 (v %s) è disponibile.
-
-|cffffff00Noi ti incoraggiamo di rimanere aggiornato.|r
-
-Questo messaggio apparirà solo una volta per sessione, e si può disattivarlo nell'impostazioni. (Impostazioni generali => Miscellaneo).]=],
 	["NEW_VERSION_TITLE"] = "Nuovo aggiornamento disponibile",
 	["NPC_TALK_SAY_PATTERN"] = "dici:",
 	["NPC_TALK_WHISPER_PATTERN"] = "sussurra:",

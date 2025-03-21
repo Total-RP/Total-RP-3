@@ -325,8 +325,6 @@ L = {
 	["CO_GENERAL_HIDE_MAXIMIZE_BUTTON_HELP"] = "隐藏TRP3窗口的最大化和最小化按钮。",
 	["CO_GENERAL_LOCALE"] = "插件语言环境",
 	["CO_GENERAL_MISC"] = "其他",
-	["CO_GENERAL_NEW_VERSION"] = "更新提醒",
-	["CO_GENERAL_NEW_VERSION_TT"] = "当有新版本可用时，接收提醒。",
 	["CO_GENERAL_RESET_CUSTOM_COLORS"] = "重设自定义颜色",
 	["CO_GENERAL_RESET_CUSTOM_COLORS_TT"] = "删除保存在颜色选择器中的所有自定义颜色。",
 	["CO_GENERAL_RESET_CUSTOM_COLORS_WARNING"] = "您确定要删除保存在颜色选择器中的所有自定义颜色吗?",
@@ -782,12 +780,6 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	["NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY"] = "由于缺少关联文件，本模组已自动关闭。",
 	["NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL"] = "由于与其他模组或插件冲突，本模组已自动关闭。",
 	["NAMEPLATES_NAME"] = "姓名版",
-	["NEW_VERSION"] = [=[|cff00ff00TRP3的一个新版本(v %s)已可用。
-
-	|cffffff00我们强烈建议你升级插件。|r
-
-	本消息每次游戏只会显示一次并可在设置中关闭(通用设置=>杂项)。]=],
-	["NEW_VERSION_BEHIND"] = "你当前落后%s个版本因而缺少bug修复和新功能，其他玩家可能无法正确看到你的人物卡。请考虑升级插件。",
 	["NEW_VERSION_TITLE"] = "新的更新可用",
 	["NPC_TALK_BUTTON_TT"] = "打开NPC发言界面，允许你让 NPC 说话或做表情。",
 	["NPC_TALK_CHANNEL"] = "频道: ",

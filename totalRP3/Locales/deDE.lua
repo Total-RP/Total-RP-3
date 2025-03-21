@@ -281,8 +281,6 @@ Wenn nicht, wird die Sprache beim nächsten Login geändert.]=],
 	["CO_GENERAL_HIDE_MAXIMIZE_BUTTON_HELP"] = "Blendet die Schaltflächen zum Minimieren und Maximieren des Total RP 3-Fensters aus.",
 	["CO_GENERAL_LOCALE"] = "Sprache des Addons",
 	["CO_GENERAL_MISC"] = "Verschiedenes",
-	["CO_GENERAL_NEW_VERSION"] = "Aktualisierungshinweis",
-	["CO_GENERAL_NEW_VERSION_TT"] = "Gibt dir einen Hinweis, sobald eine neue Version verfügbar ist.",
 	["CO_GENERAL_RESET_CUSTOM_COLORS"] = "Benutzerdefinierte Farben zurücksetzen",
 	["CO_GENERAL_RESET_CUSTOM_COLORS_TT"] = "Entfernt alle in der Farbauswahl gespeicherten benutzerdefinierten Farben.",
 	["CO_GENERAL_RESET_CUSTOM_COLORS_WARNING"] = "Bist du sicher, dass du alle in der Farbauswahl gespeicherten benutzerdefinierten Farben entfernen möchtest?",
@@ -644,12 +642,6 @@ Dieses Modul modifiziert die Blizzard Spieler- und Zielfenster, um den RP-Namen 
 	["NAMEPLATES_CONFIG_UNIT_NAME_FULL"] = "Zeige vollen Namen",
 	["NAMEPLATES_CONFIG_UNIT_STATE_HIDE"] = "Immer verbergen",
 	["NAMEPLATES_CONFIG_UNIT_STATE_SHOW"] = "Zeigen",
-	["NEW_VERSION"] = [=[|cff00ff00Eine neue Version von Total RP 3 (v %s) ist verfügbar.
-
-|cffffff00Wir empfehlen dringendst auf dem aktuellen Stand zu bleiben.|r
-
-Diese Nachricht wird nur einmal pro Sitzung angezeigt und kann in den Einstellungen (Allgemeine Einstellungen => Verschiedenes) abgeschaltet werden.]=],
-	["NEW_VERSION_BEHIND"] = "Du hinkst momentan %s Versionen hinterher und verpasst dadurch viele Bugfixes und neue Features. Anderen Spielern könnten zudem dein Profil nicht richtig angezeigt werden. Bitte ziehe in Erwägung dein Addon zu updaten.",
 	["NEW_VERSION_TITLE"] = "Neues Update verfügbar",
 	["NPC_TALK_BUTTON_TT"] = "Das NSC-Sprachfenster zu öffnen erlaubt dir NSC sprechen oder emoten zu lassen.",
 	["NPC_TALK_CHANNEL"] = "Kanal:",

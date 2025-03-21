@@ -268,7 +268,7 @@ local function checkVersion(sender, senderVersion, senderVersionText, extendedVe
 			local newVersionAlert = loc.NEW_VERSION:format(senderVersionText:sub(1, 15));
 			local numberOfVersionsBehind = senderVersion - Globals.version;
 			if numberOfVersionsBehind > 3 then
-				newVersionAlert = newVersionAlert .. "\n\n" .. loc.NEW_VERSION_BEHIND:format(numberOfVersionsBehind)
+				newVersionAlert = newVersionAlert .. "\n\n" .. loc.NEW_VERSION_BEHIND;
 			end
 			TRP3_UpdateFrame.popup.text:SetText(newVersionAlert);
 			TRP3_UpdateFrame:Show();
