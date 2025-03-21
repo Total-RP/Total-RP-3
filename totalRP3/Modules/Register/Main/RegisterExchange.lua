@@ -263,13 +263,9 @@ local function checkVersion(sender, senderVersion, senderVersionText, extendedVe
 	end
 
 	-- Test for Total RP 3
-	if  senderVersion > Globals.version and not has_seen_update_alert then
+	if senderVersion > Globals.version and not has_seen_update_alert then
 		if Utils.table.size(newVersionAlerts[senderVersionText]) >= 10 then
 			local newVersionAlert = loc.NEW_VERSION:format(senderVersionText:sub(1, 15));
-			local numberOfVersionsBehind = senderVersion - Globals.version;
-			if numberOfVersionsBehind > 3 then
-				newVersionAlert = newVersionAlert .. "\n\n" .. loc.NEW_VERSION_BEHIND;
-			end
 			TRP3_UpdateFrame.popup.text:SetText(newVersionAlert);
 			TRP3_UpdateFrame:Show();
 			has_seen_update_alert = true;
