@@ -203,8 +203,6 @@ Se não recarregar, a linguagem será alterada na próxima vez que conectar.]=],
 	["CO_GENERAL_HEAVY_TT"] = "Receber alerta quando o tamanho total de seu perfil exceder um valor aceitável.",
 	["CO_GENERAL_LOCALE"] = "Local do addon",
 	["CO_GENERAL_MISC"] = "Diversos",
-	["CO_GENERAL_NEW_VERSION"] = "Alerta de atualização",
-	["CO_GENERAL_NEW_VERSION_TT"] = "Receber alerta quando uma nova versão estiver disponível.",
 	["CO_GENERAL_RESET_CUSTOM_COLORS"] = "Resetar cores Customizadas ",
 	["CO_GENERAL_RESET_CUSTOM_COLORS_TT"] = "Remove todas cores salvas no selecionador de cores ",
 	["CO_GENERAL_RESET_CUSTOM_COLORS_WARNING"] = "Tem certeza que quer remover todas cores customizadas salvas no selecionador de cores? ",
@@ -541,13 +539,6 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	["NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY"] = "Este módulo foi desativado automaticamente devido a falta de alguma dependência.",
 	["NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL"] = "Este módulo foi desativado automaticamente devido a um conflito com outro módulo ou Addon!!",
 	["NAMEPLATES_NAME"] = "Placas de nome",
-	["NEW_VERSION"] = [=[|cff00ff00Uma nova versão do Total RP 3 (v %s) está disponível.
-
-|cffffff00Nós fortemente o(a) encorajamos a ficar atualizado(a).|r
-
-Esta mensagem só vai aparecer uma vez por sessão e pode ser desativada nas opções
-(Opções gerais => Diversos).]=],
-	["NEW_VERSION_BEHIND"] = "Você está atualmente com a versão %s atrasada e te falta muitas correções de bugs e novas funcionalidades. Outros jogadores poderão não conseguir ver corretamente o seu perfil. Por favor, considere a atualização do addon.",
 	["NEW_VERSION_TITLE"] = "Nova atualização disponível",
 	["NPC_TALK_BUTTON_TT"] = "Abre a tela de fala de NPC, permitindo fazer falas ou emotes de NPC.",
 	["NPC_TALK_CHANNEL"] = "Canal:",

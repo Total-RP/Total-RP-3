@@ -330,21 +330,19 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 						<Layers>
 							<Layer level="OVERLAY">
-								<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" text="[PROFILE_NAME]">
+								<FontString parentKey="title" inherits="GameFontHighlightLarge" justifyH="CENTER">
 									<Size x="0" y="20" />
 									<Anchors>
-										<Anchor point="TOPLEFT" x="5" y="-15" />
-										<Anchor point="TOPRIGHT" x="-5" y="-15" />
+										<Anchor point="TOPLEFT" x="5" y="-15"/>
+										<Anchor point="TOPRIGHT" x="-5" y="-15"/>
 									</Anchors>
-									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
-								<FontString parentKey="text" inherits="GameFontNormal" justifyH="LEFT" text="[PROFILE_NAME]" justifyV="MIDDLE">
+								<FontString parentKey="text" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE">
 									<Anchors>
-										<Anchor point="TOPLEFT" relativeKey="$parent.title" x="15" y="-10" />
-										<Anchor point="TOPRIGHT" relativeKey="$parent.title" x="-15" y="-10" />
-										<Anchor point="BOTTOM" x="0" y="10" />
+										<Anchor point="TOPLEFT" relativeKey="$parent.title" x="15" y="-10"/>
+										<Anchor point="TOPRIGHT" relativeKey="$parent.title" x="-15" y="-10"/>
+										<Anchor point="BOTTOM" x="0" y="10"/>
 									</Anchors>
-									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
 							</Layer>
 						</Layers>
