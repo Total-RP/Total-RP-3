@@ -1244,7 +1244,7 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	SCRIPT_UNKNOWN_EFFECT = "Script error, unknown FX",
 	SCRIPT_ERROR = "Error in script.",
 	NEW_VERSION_TITLE = "New update available",
-	NEW_VERSION = "|cnGREEN_FONT_COLOR:A new version of Total RP 3 (%s) is available.|r|n|nWe strongly encourage you to stay up-to-date to |cnGREEN_FONT_COLOR:receive bug fixes and avoid incompatibilities|r.|n|nIssues from not updating the addon may include |cnRED_FONT_COLOR:not being be able to send or receive character profiles correctly|r.",
+	NEW_VERSION = "|cnGREEN_FONT_COLOR:A new version of Total RP 3 (%s) is available.|r|n|nWe strongly encourage you to stay up-to-date to |cnGREEN_FONT_COLOR:receive bug fixes and avoid incompatibilities|r.|n|nIssues from not updating the addon may include |cnWARNING_FONT_COLOR:not being be able to send or receive character profiles correctly|r.",
 	BROADCAST_PASSWORD = "|cffff0000There is a password placed on the broadcast channel (%s).\n|cffff9900TRP3 won't try again to connect to it but you won't be able to use some features like players location on map.\n|cff00ff00You can disable or change the broadcast channel in the TRP3 general settings.",
 	BROADCAST_PASSWORDED = "|cffff0000The user|r %s |cffff0000just placed a password on the broadcast channel (%s).\n|cffff9900If you don't know that password, you won't be able to use features like players location on the map.",
 	BROADCAST_10 = "|cffff9900You already are in 10 channels. TRP3 won't try again to connect to the broadcast channel but you won't be able to use some features like players location on map.",
