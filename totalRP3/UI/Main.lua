@@ -143,6 +143,7 @@ function TRP3_MainFrameResizeButtonMixin:OnResizeStop(width, height)
 end
 
 function TRP3_MainFrameResizeButtonMixin:OnTooltipShow(description)
+	description:AddTitleLine(L.CM_RESIZE);
 	description:AddInstructionLine("DRAGDROP", L.CM_RESIZE_TT);
 	description:AddInstructionLine("RCLICK", L.CM_RESIZE_RESET_TT);
 end
