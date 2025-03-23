@@ -1408,7 +1408,7 @@ local function onActionClicked(button)
 	assert(context.profile, "No profile in context");
 
 	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
-		if context.profile.link and CountTable(context.profile.link) > 0 then
+		if context.profile.link and TableHasAnyEntries(context.profile.link) then
 			description:CreateButton(loc.REG_PLAYER_IGNORE:format(CountTable(context.profile.link)), onActionSelected, 2);
 		end
 		local relations = getRelationList(true);

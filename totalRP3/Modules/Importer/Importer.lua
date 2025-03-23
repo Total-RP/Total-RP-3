@@ -36,7 +36,7 @@ TRP3_API.importer.addAddOn = function(addOnName, API)
 end
 
 TRP3_API.importer.charactersProfilesAvailable = function()
-	return CountTable(addOns) > 0;
+	return TableHasAnyEntries(addOns);
 end
 
 TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
@@ -89,8 +89,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 	local function uiInitProfileList()
 		initList(TRP3_CharacterImporterList, profiles, TRP3_CharacterImporterListSlider);
-		TRP3_CharacterImporterAll:SetText(loc.PR_IMPORT_IMPORT_ALL .. " (" .. (CountTable(profiles)) .. ")");
-		if CountTable(profiles) == 0 then
+		local profileCount = CountTable(profiles);
+		TRP3_CharacterImporterAll:SetText(loc.PR_IMPORT_IMPORT_ALL .. " (" .. profileCount .. ")");
+		if profileCount == 0 then
 			TRP3_CharacterImporterAll:Disable();
 			TRP3_CharacterImporterListEmpty:Show();
 		else

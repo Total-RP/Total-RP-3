@@ -274,7 +274,7 @@ local function onBoundClicked(button)
 		boundTab:CreateButton(loc.PR_CO_MOUNT, function() onActionSelected(5, button); end);
 		boundTab:CreateButton(loc.REG_COMPANION_BOUND_TO_TARGET, function() onActionSelected(6, button); end);
 
-		if profile.links and CountTable(profile.links) > 0 then
+		if profile.links and TableHasAnyEntries(profile.links) then
 			local linksTab = description:CreateButton(loc.REG_COMPANION_UNBOUND);
 			for companionID, companionType in pairs(profile.links) do
 				linksTab:CreateButton(getCompanionNameFromSpellID(companionID), function() onActionSelected(companionID .. "|" .. companionType, button); end);

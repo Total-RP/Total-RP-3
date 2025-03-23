@@ -246,7 +246,7 @@ local function onActionClick(button)
 				mastersProfiles[hasProfile(ownerID)] = ownerID;
 			end
 		end
-		if CountTable(mastersProfiles) > 0 then
+		if TableHasAnyEntries(mastersProfiles) then
 			local masterTab = description:CreateButton(loc.PR_CO_MASTERS);
 			for profileID, ownerID in pairs(mastersProfiles) do
 				local profile = getUnitProfile(profileID);

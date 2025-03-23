@@ -622,7 +622,7 @@ local function cleanupCompanions()
 				companionProfile.links[companionFullID] = nil;
 			end
 		end
-		if CountTable(companionProfile.links) < 1 then
+		if TableIsEmpty(companionProfile.links) then
 			TRP3_API.Log("Purging companion " .. companionProfileID .. ", no more characters linked to it.");
 			deleteCompanionProfile(companionProfileID, true);
 		end

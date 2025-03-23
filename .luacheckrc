@@ -605,6 +605,8 @@ stds.wow = {
 		"strcmputf8i",
 		"StringToBoolean",
 		"SwapChatChannelByLocalID",
+		"TableHasAnyEntries",
+		"TableIsEmpty",
 		"ToggleDropDownMenu",
 		"tostringall",
 		"UIDropDownMenu_AddButton",

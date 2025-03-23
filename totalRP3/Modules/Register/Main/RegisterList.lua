@@ -242,7 +242,7 @@ local function onLineClicked(self, button)
 			end
 		else
 			local profile = getProfile(self:GetParent().id);
-			if profile.link and CountTable(profile.link) > 0 then
+			if profile.link and TableHasAnyEntries(profile.link) then
 				local characterList = {};
 				for unitID, _ in pairs(profile.link) do
 					local unitName, unitRealm = unitIDToInfo(unitID);
@@ -327,7 +327,7 @@ local function decorateCharacterLine(line, elementData)
 	local atLeastOneIgnored = false;
 	line.Info2:SetText("");
 	local firstLink;
-	if profile.link and CountTable(profile.link) > 0 then
+	if profile.link and TableHasAnyEntries(profile.link) then
 		leftTooltipText = leftTooltipText .. loc.REG_LIST_CHAR_TT_CHAR .. "|cnGREEN_FONT_COLOR:";
 		for unitID, _ in pairs(profile.link) do
 			if not firstLink then
@@ -523,7 +523,7 @@ local function onCharactersActionSelected(value)
 		local profiles = getProfileList();
 		local profilesToPurge = {};
 		for profileID, profile in pairs(profiles) do
-			if not profile.link or CountTable(profile.link) == 0 then
+			if not profile.link or TableIsEmpty(profile.link) then
 				tinsert(profilesToPurge, profileID);
 			end
 		end
@@ -598,7 +598,7 @@ local function onCharactersActions(button)
 		purge:CreateButton(loc.REG_LIST_ACTIONS_PURGE_UNLINKED, onCharactersActionSelected, "purge_unlinked");
 		purge:CreateButton(loc.REG_LIST_ACTIONS_PURGE_IGNORE, onCharactersActionSelected, "purge_ignore");
 		purge:CreateButton(loc.REG_LIST_ACTIONS_PURGE_ALL, onCharactersActionSelected, "purge_all");
-		if CountTable(selectedIDs) > 0 then
+		if TableHasAnyEntries(selectedIDs) then
 			local mass = description:CreateButton(loc.REG_LIST_ACTIONS_MASS:format(CountTable(selectedIDs)));
 			mass:CreateButton(loc.REG_LIST_ACTIONS_MASS_REMOVE, onCharactersActionSelected, "actions_delete");
 			mass:CreateButton(loc.REG_LIST_ACTIONS_MASS_IGNORE, onCharactersActionSelected, "actions_ignore");
@@ -783,7 +783,7 @@ local function onPetsActions(button)
 	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 		local purge = description:CreateButton(loc.REG_LIST_ACTIONS_PURGE);
 		purge:CreateButton(loc.REG_LIST_ACTIONS_PURGE_ALL, onCompanionActionSelected, "purge_all");
-		if CountTable(selectedIDs) > 0 then
+		if TableHasAnyEntries(selectedIDs) then
 			local mass = description:CreateButton(loc.REG_LIST_ACTIONS_MASS:format(CountTable(selectedIDs)));
 			mass:CreateButton(loc.REG_LIST_ACTIONS_MASS_REMOVE, onCompanionActionSelected, "actions_delete");
 		end
@@ -810,7 +810,7 @@ local function decorateIgnoredLine(line, unitID)
 end
 
 local function getIgnoredLines()
-	if CountTable(getIgnoredList()) == 0 then
+	if TableIsEmpty(getIgnoredList()) then
 		TRP3_RegisterListEmpty:SetText(loc.REG_LIST_IGNORE_EMPTY);
 	end
 	TRP3_RegisterListHeaderName:SetText(loc.REG_PLAYER);
@@ -845,7 +845,7 @@ function refreshList()
 		initializer = decorateIgnoredLine;
 	end
 
-	if CountTable(lines) == 0 then
+	if TableIsEmpty(lines) then
 		TRP3_RegisterListEmpty:Show();
 	end
 
