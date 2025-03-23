@@ -32,6 +32,7 @@ local LANGUAGES_ICONS = {
 	-- Allied races
 	[181] = Icon(TRP3_InterfaceIcons.LanguageShalassian), -- Shalassian
 	[285] = Icon(TRP3_InterfaceIcons.LanguageVulpera), -- Vulpera
+	[9] = Icon(TRP3_InterfaceIcons.LanguageTitan), -- Titan (Earthen)
 
 	-- Funsies
 	[37] = Icon(TRP3_InterfaceIcons.LanguageGnomishBinary), -- Gnome binary (Brewfest beer)
@@ -41,7 +42,6 @@ local LANGUAGES_ICONS = {
 	[12] = Icon(TRP3_InterfaceIcons.LanguageKalimag), -- Kalimag (shaman?)
 	[179] = Icon(TRP3_InterfaceIcons.LanguageNerglish), -- Murloc (?)
 	[178] = Icon(TRP3_InterfaceIcons.LanguageShathYar), -- Shath'Yar (Shadow priests, Void Elves and Alliance Archbishops)
-	[9] = Icon(TRP3_InterfaceIcons.LanguageTitan), -- Titan
 	[36] = Icon(TRP3_InterfaceIcons.LanguageZombie), -- Zombie (in your head)
 	[168] = Icon(TRP3_InterfaceIcons.LanguageSprite), -- Sprite (Faerie dragon)
 	[303] = Icon(TRP3_InterfaceIcons.LanguageFurbolg), -- Furbolg (Dragonflight reputation)
