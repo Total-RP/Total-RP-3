@@ -312,23 +312,22 @@ UnitPopupsModule.MenuElementFactories = {
 };
 
 UnitPopupsModule.MenuEntries = {
-	BATTLEPET      = { "OpenCompanionProfile" },
-	BN_FRIEND      = { "OpenBattleNetProfile" },
-	CHAT_ROSTER    = { "OpenCharacterProfile" },
-	COMMUNITIES_GUILD_MEMBER  = { "OpenCharacterProfile" },
-	COMMUNITIES_WOW_MEMBER  = { "OpenCharacterProfile" },
-	FRIEND         = { "OpenCharacterProfile" },
+	BATTLEPET = { "OpenCompanionProfile" },
+	BN_FRIEND = { "OpenBattleNetProfile" },
+	CHAT_ROSTER = { "OpenCharacterProfile" },
+	COMMUNITIES_MEMBER = { "OpenBattleNetProfile" },
+	COMMUNITIES_GUILD_MEMBER = { "OpenCharacterProfile" },
+	COMMUNITIES_WOW_MEMBER = { "OpenCharacterProfile" },
+	FRIEND = { "OpenCharacterProfile" },
 	FRIEND_OFFLINE = { "OpenCharacterProfile" },
-	GUILD          = { "OpenCharacterProfile" },
-	GUILD_OFFLINE  = { "OpenCharacterProfile" },
 	OTHERBATTLEPET = { "OpenCompanionProfile" },
-	OTHERPET       = { "OpenCompanionProfile" },
-	PARTY          = { "OpenCharacterProfile" },
-	PET            = { "OpenCompanionProfile" },
-	PLAYER         = { "OpenCharacterProfile" },
-	RAID           = { "OpenCharacterProfile" },
-	RAID_PLAYER    = { "OpenCharacterProfile" },
-	SELF           = { "OpenCharacterProfile", "CharacterStatus" },
+	OTHERPET = { "OpenCompanionProfile" },
+	PARTY = { "OpenCharacterProfile" },
+	PET = { "OpenCompanionProfile" },
+	PLAYER = { "OpenCharacterProfile" },
+	RAID = { "OpenCharacterProfile" },
+	RAID_PLAYER = { "OpenCharacterProfile" },
+	SELF = { "OpenCharacterProfile", "CharacterStatus" },
 };
 
 --
