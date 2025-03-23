@@ -11,20 +11,6 @@ local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 
-function Utils.pcall(func, ...)
-	if func then
-		return {pcall(func, ...)};
-	end
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Chat frame
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-Utils.print = function(...)
-	print(...);
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Messaging
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -94,14 +80,6 @@ Utils.table.remove = function(table, object)
 		end
 	end
 	return false;
-end
-
-function Utils.table.keys(table)
-	local keys = {};
-	for key, _ in pairs(table) do
-		tinsert(keys, key);
-	end
-	return keys;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -257,27 +235,12 @@ function Utils.str.emptyToNil(text)
 	return nil;
 end
 
--- Assure that the given string will not be nil
-function Utils.str.nilToEmpty(text)
-	return text or "";
-end
-
 function Utils.str.buildZoneText()
 	local text = GetZoneText() or ""; -- assuming that there is ALWAYS a zone text. Don't know if it's true.
 	if GetSubZoneText():len() > 0 then
 		text = strconcat(text, " - ", GetSubZoneText());
 	end
 	return text;
-end
-
--- Search if the string matches the pattern in error-safe way.
--- Useful if the pattern his user writen.
-function Utils.str.safeMatch(text, pattern)
-	local trace = Utils.pcall(string.find, text, pattern);
-	if trace[1] then
-		return type(trace[2]) == "number";
-	end
-	return nil; -- Pattern error
 end
 
 local escapes = {

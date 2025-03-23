@@ -9,7 +9,6 @@ local getProfile = TRP3_API.register.getProfile;
 local tcopy, tsize = Utils.table.copy, Utils.table.size;
 local loc = TRP3_API.loc;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
-local getKeys = Utils.table.keys;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
@@ -1390,7 +1389,7 @@ local function onActionSelected(value)
 				deleteProfile(context.profileID);
 			end);
 	elseif value == 2 then
-		showTextInputPopup(loc.REG_PLAYER_IGNORE_WARNING:format(strjoin("\n", unpack(getKeys(context.profile.link)))), function(text)
+		showTextInputPopup(loc.REG_PLAYER_IGNORE_WARNING:format(strjoin("\n", unpack(GetKeysArray(context.profile.link)))), function(text)
 			for unitID, _ in pairs(context.profile.link) do
 				ignoreID(unitID, text);
 			end
