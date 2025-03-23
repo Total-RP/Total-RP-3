@@ -539,6 +539,12 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	["NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY"] = "Este módulo foi desativado automaticamente devido a falta de alguma dependência.",
 	["NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL"] = "Este módulo foi desativado automaticamente devido a um conflito com outro módulo ou Addon!!",
 	["NAMEPLATES_NAME"] = "Placas de nome",
+	["NEW_VERSION"] = [=[|cff00ff00Uma nova versão do Total RP 3 (v %s) está disponível.
+
+|cffffff00Nós fortemente o(a) encorajamos a ficar atualizado(a).|r
+
+Esta mensagem só vai aparecer uma vez por sessão e pode ser desativada nas opções
+(Opções gerais => Diversos).]=],
 	["NEW_VERSION_TITLE"] = "Nova atualização disponível",
 	["NPC_TALK_BUTTON_TT"] = "Abre a tela de fala de NPC, permitindo fazer falas ou emotes de NPC.",
 	["NPC_TALK_CHANNEL"] = "Canal:",

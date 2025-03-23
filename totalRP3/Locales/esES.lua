@@ -551,6 +551,11 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	["NAMEPLATES_CONFIG_UNIT_STATE_SHOW"] = "Mostrar",
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Configuraciones de visibilidad",
 	["NAMEPLATES_NAME"] = "Placa de nombres",
+	["NEW_VERSION"] = [=[|cff00ff00Hay una nueva versión de Total RP 3 (v %s) disponible.
+
+|cffffff00Recomendamos encarecidamente mantenerlo actualizado.|r
+
+Este mensaje sólo aparecerá una vez por sesión y puede ser deshabilitado en los ajustes (Ajustes generales => Varios).]=],
 	["NEW_VERSION_TITLE"] = "Nueva actualización disponible",
 	["NPC_TALK_BUTTON_TT"] = "Abre el marco de diálogos de PNJ el cual permite realizar diálogos y emociones de PNJ.",
 	["NPC_TALK_CHANNEL"] = "Canal:",
