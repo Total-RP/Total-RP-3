@@ -1,14 +1,14 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+local L = TRP3_API.loc;
 local LibWindow = LibStub:GetLibrary("LibWindow-1.1");
 
-local DEFAULT_WINDOW_WIDTH = 840;
-local DEFAULT_WINDOW_HEIGHT = 600;
-
-local WindowState = {
-	Normal = 1,
-	Maximized = 2,
+TRP3_MainFrameSizeConstants = {
+	DefaultWidth = 840,
+	DefaultHeight = 600,
+	MinimumWidth = 840,
+	MinimumHeight = 600,
 };
 
 local function ResetWindowPoint(frame)
@@ -23,23 +23,8 @@ end
 TRP3_MainFrameMixin = {};
 
 function TRP3_MainFrameMixin:OnLoad()
-	self.windowState = WindowState.Normal;
-
 	tinsert(UISpecialFrames, self:GetName());
-	TRP3_Addon.RegisterCallback(self, "CONFIGURATION_CHANGED", "OnConfigurationChanged");
-	self.Resize.onResizeStart = function() self:OnResizeStart(); end;
-	self.Resize.onResizeStop = function(width, height) self:OnResizeStop(width, height); end;
-	TRP3_API.ui.frame.initResize(self.Resize);
-end
-
-function TRP3_MainFrameMixin:OnConfigurationChanged(_, key)
-	if key == "hide_maximize_button" then
-		self:UpdateWindowStateButtons();
-	end
-end
-
-function TRP3_MainFrameMixin:OnShow()
-	self:UpdateWindowStateButtons();
+	self.ResizeButton:Init(self);
 end
 
 function TRP3_MainFrameMixin:OnSizeChanged()
@@ -55,53 +40,17 @@ function TRP3_MainFrameMixin:OnResizeStop(width, height)
 	self:ResizeWindow(width, height);
 end
 
+function TRP3_MainFrameMixin:OnResizeToDefault()
+	self:RestoreWindow();
+end
+
 function TRP3_MainFrameMixin:ResizeWindow(width, height)
 	ResetWindowPoint(self);
 	self:SetSize(width, height);
-	self:SetWindowState(WindowState.Normal);
-end
-
-function TRP3_MainFrameMixin:OnWindowStateChanged(oldState, newState)  -- luacheck: no unused
-	self:UpdateWindowStateButtons();
-end
-
-function TRP3_MainFrameMixin:MaximizeWindow()
-	self:SetSize(UIParent:GetSize());
-	self:SetWindowState(WindowState.Maximized);
 end
 
 function TRP3_MainFrameMixin:RestoreWindow()
-	self:SetSize(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
-	self:SetWindowState(WindowState.Normal);
-end
-
-function TRP3_MainFrameMixin:GetWindowState()
-	return self.windowState or WindowState.Normal;
-end
-
-function TRP3_MainFrameMixin:SetWindowState(state)
-	assert(type(state) == "number", "bad argument #2 to 'SetWindowState': expected number");
-
-	local oldState = self.windowState;
-	local newState = state;
-
-	if oldState == newState then
-		return;
-	end
-
-	self.windowState = newState;
-	self:OnWindowStateChanged(oldState, newState);
-end
-
-local function ShouldShowWindowStateButtons()
-	return not TRP3_API.configuration.getValue("hide_maximize_button");
-end
-
-function TRP3_MainFrameMixin:UpdateWindowStateButtons()
-	local state = self:GetWindowState();
-
-	self.Minimize:SetShown(state == WindowState.Maximized and ShouldShowWindowStateButtons());
-	self.Maximize:SetShown(state == WindowState.Normal and ShouldShowWindowStateButtons());
+	self:SetSize(TRP3_MainFrameSizeConstants.DefaultWidth, TRP3_MainFrameSizeConstants.DefaultHeight);
 end
 
 function TRP3_MainFrameMixin:UpdateClampRectInsets()
@@ -147,8 +96,8 @@ end
 function TRP3_MainFrameLayoutMixin:RestoreLayout()
 	assert(self:IsLayoutLoaded(), "attempted to restore window layout before layout has been loaded");
 
-	local width = math.max(self.windowLayout.w or DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_WIDTH);
-	local height = math.max(self.windowLayout.h or DEFAULT_WINDOW_HEIGHT, DEFAULT_WINDOW_HEIGHT);
+	local width = math.max(self.windowLayout.w or TRP3_MainFrameSizeConstants.DefaultWidth, TRP3_MainFrameSizeConstants.MinimumWidth);
+	local height = math.max(self.windowLayout.h or TRP3_MainFrameSizeConstants.DefaultHeight, TRP3_MainFrameSizeConstants.MinimumHeight);
 	self:SetSize(width, height);
 	LibWindow.RestorePosition(self);
 	ResetWindowPoint(self);
@@ -161,6 +110,47 @@ function TRP3_MainFrameLayoutMixin:SaveLayout()
 	self.windowLayout.w = width;
 	self.windowLayout.h = height;
 	LibWindow.SavePosition(self);
+end
+
+TRP3_MainFrameResizeButtonMixin = {};
+
+function TRP3_MainFrameResizeButtonMixin:Init(target)
+	self.target = target;
+	self.onResizeStart = function(mouseButtonName) return self:OnResizeStart(mouseButtonName); end;
+	self.onResizeStop = function(width, height) self:OnResizeStop(width, height); end;
+	TRP3_API.ui.frame.initResize(self);
+end
+
+function TRP3_MainFrameResizeButtonMixin:OnResizeStart(mouseButtonName)
+	if mouseButtonName == "LeftButton" then
+		self.target:OnResizeStart();
+		self:HideTooltip();
+		return false;
+	end
+
+	-- All other mouse interactions will prevent the user from resizing the
+	-- window via dragging.
+
+	if mouseButtonName == "RightButton" then
+		self.target:OnResizeToDefault();
+	end
+
+	return true;
+end
+
+function TRP3_MainFrameResizeButtonMixin:OnResizeStop(width, height)
+	self.target:OnResizeStop(width, height);
+end
+
+function TRP3_MainFrameResizeButtonMixin:OnTooltipShow(description)
+	description:AddInstructionLine("DRAGDROP", L.CM_RESIZE_TT);
+	description:AddInstructionLine("RCLICK", L.CM_RESIZE_RESET_TT);
+end
+
+TRP3_MainFrameCloseButtonMixin = {};
+
+function TRP3_MainFrameCloseButtonMixin:OnClick()
+	TRP3_API.navigation.switchMainFrame();
 end
 
 TRP3_SidebarLogoMixin = {};

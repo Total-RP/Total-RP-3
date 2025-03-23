@@ -392,7 +392,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	registerConfigKey("heavy_profile_alert", true);
 	registerConfigKey("new_version_alert", true);
 	registerConfigKey("disable_welcome_message", false);
-	registerConfigKey("hide_maximize_button", false);
 	registerConfigKey("window_layout", {});  -- Contents managed by TRP3_MainFrameMixin.
 	registerConfigKey("default_color_picker", false);
 	registerConfigKey("color_contrast_level", TRP3_ColorContrastOption.Default);
@@ -413,12 +412,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				title = loc.CO_GENERAL_DISABLE_WELCOME_MESSAGE,
 				configKey = "disable_welcome_message",
 				help = loc.CO_GENERAL_DISABLE_WELCOME_MESSAGE_HELP,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_GENERAL_HIDE_MAXIMIZE_BUTTON,
-				configKey = "hide_maximize_button",
-				help = loc.CO_GENERAL_HIDE_MAXIMIZE_BUTTON_HELP,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
