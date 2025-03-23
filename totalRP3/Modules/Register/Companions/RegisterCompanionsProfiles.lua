@@ -7,7 +7,6 @@ local Ellyb = TRP3_API.Ellyb;
 
 -- imports
 local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.loc, TRP3_API.utils, TRP3_Addon.Events;
-local tsize = Utils.table.size;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 local isMenuRegistered, rebuildMenu = TRP3_API.navigation.menu.isMenuRegistered, TRP3_API.navigation.menu.rebuildMenu;
 local registerMenu, selectMenu, openMainFrame = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu, TRP3_API.navigation.openMainFrame;
@@ -275,7 +274,7 @@ local function onBoundClicked(button)
 		boundTab:CreateButton(loc.PR_CO_MOUNT, function() onActionSelected(5, button); end);
 		boundTab:CreateButton(loc.REG_COMPANION_BOUND_TO_TARGET, function() onActionSelected(6, button); end);
 
-		if profile.links and tsize(profile.links) > 0 then
+		if profile.links and CountTable(profile.links) > 0 then
 			local linksTab = description:CreateButton(loc.REG_COMPANION_UNBOUND);
 			for companionID, companionType in pairs(profile.links) do
 				linksTab:CreateButton(getCompanionNameFromSpellID(companionID), function() onActionSelected(companionID .. "|" .. companionType, button); end);

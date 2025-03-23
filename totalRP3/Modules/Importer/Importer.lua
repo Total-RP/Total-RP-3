@@ -13,7 +13,7 @@ local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local initList = TRP3_API.ui.list.initList;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local isProfileNameAvailable = TRP3_API.profile.isProfileNameAvailable;
-local tsize, tcopy = TRP3_API.utils.table.size, TRP3_API.utils.table.copy;
+local tcopy = TRP3_API.utils.table.copy;
 local duplicateProfile = TRP3_API.profile.duplicateProfile;
 
 local profiles = {};
@@ -36,7 +36,7 @@ TRP3_API.importer.addAddOn = function(addOnName, API)
 end
 
 TRP3_API.importer.charactersProfilesAvailable = function()
-	return tsize(addOns) > 0;
+	return CountTable(addOns) > 0;
 end
 
 TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
@@ -89,8 +89,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 	local function uiInitProfileList()
 		initList(TRP3_CharacterImporterList, profiles, TRP3_CharacterImporterListSlider);
-		TRP3_CharacterImporterAll:SetText(loc.PR_IMPORT_IMPORT_ALL .. " (" .. (tsize(profiles)) .. ")");
-		if tsize(profiles) == 0 then
+		TRP3_CharacterImporterAll:SetText(loc.PR_IMPORT_IMPORT_ALL .. " (" .. (CountTable(profiles)) .. ")");
+		if CountTable(profiles) == 0 then
 			TRP3_CharacterImporterAll:Disable();
 			TRP3_CharacterImporterListEmpty:Show();
 		else

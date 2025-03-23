@@ -594,8 +594,6 @@ end
 -- CLEANUP
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tsize = Utils.table.size;
-
 -- Unbound character from missing profiles
 local function cleanupCharacters()
 	for unitID, character in pairs(characters) do
@@ -624,7 +622,7 @@ local function cleanupCompanions()
 				companionProfile.links[companionFullID] = nil;
 			end
 		end
-		if tsize(companionProfile.links) < 1 then
+		if CountTable(companionProfile.links) < 1 then
 			TRP3_API.Log("Purging companion " .. companionProfileID .. ", no more characters linked to it.");
 			deleteCompanionProfile(companionProfileID, true);
 		end
@@ -680,14 +678,14 @@ local function cleanupProfiles()
 			protectedProfileIDs[profileID] = true;
 		end
 	end
-	TRP3_API.Log("Protected profiles: " .. tsize(protectedProfileIDs));
+	TRP3_API.Log("Protected profiles: " .. CountTable(protectedProfileIDs));
 	local profilesToPurge = {};
 	for profileID, profile in pairs(profiles) do
 		if not protectedProfileIDs[profileID] and (not profile.time or time() - profile.time > getConfigValue("register_auto_purge_mode")) then
 			tinsert(profilesToPurge, profileID);
 		end
 	end
-	TRP3_API.Log("Profiles to purge: " .. tsize(profilesToPurge));
+	TRP3_API.Log("Profiles to purge: " .. CountTable(profilesToPurge));
 	for _, profileID in pairs(profilesToPurge) do
 		deleteProfile(profileID, true);
 	end

@@ -6,7 +6,7 @@ local Globals, Utils, Events, Ellyb = TRP3_API.globals, TRP3_API.utils, TRP3_Add
 local stEtN = Utils.str.emptyToNil;
 local get = TRP3_API.profile.getData;
 local getProfile = TRP3_API.register.getProfile;
-local tcopy, tsize = Utils.table.copy, Utils.table.size;
+local tcopy = Utils.table.copy;
 local loc = TRP3_API.loc;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -1408,8 +1408,8 @@ local function onActionClicked(button)
 	assert(context.profile, "No profile in context");
 
 	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
-		if context.profile.link and tsize(context.profile.link) > 0 then
-			description:CreateButton(loc.REG_PLAYER_IGNORE:format(tsize(context.profile.link)), onActionSelected, 2);
+		if context.profile.link and CountTable(context.profile.link) > 0 then
+			description:CreateButton(loc.REG_PLAYER_IGNORE:format(CountTable(context.profile.link)), onActionSelected, 2);
 		end
 		local relations = getRelationList(true);
 		local relationValues = description:CreateButton(loc.REG_RELATION);

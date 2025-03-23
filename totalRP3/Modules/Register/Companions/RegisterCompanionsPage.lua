@@ -13,7 +13,7 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 local hidePopups = TRP3_API.popup.hidePopups;
 local displayConsult;
-local tcopy, tsize, EMPTY = Utils.table.copy, Utils.table.size, Globals.empty;
+local tcopy, EMPTY = Utils.table.copy, Globals.empty;
 local stEtN = Utils.str.emptyToNil;
 local isUnitIDKnown, hasProfile, getUnitProfile = TRP3_API.register.isUnitIDKnown, TRP3_API.register.hasProfile, TRP3_API.register.getProfile;
 local getCompleteName, openPageByUnitID = TRP3_API.register.getCompleteName;
@@ -246,7 +246,7 @@ local function onActionClick(button)
 				mastersProfiles[hasProfile(ownerID)] = ownerID;
 			end
 		end
-		if tsize(mastersProfiles) > 0 then
+		if CountTable(mastersProfiles) > 0 then
 			local masterTab = description:CreateButton(loc.PR_CO_MASTERS);
 			for profileID, ownerID in pairs(mastersProfiles) do
 				local profile = getUnitProfile(profileID);

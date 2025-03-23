@@ -477,6 +477,7 @@ stds.wow = {
 		"CreateFramePoolCollection",
 		"CreateFromMixins",
 		"CreateIndexRangeDataProvider",
+		"CountTable",
 		"CreateMinimalSliderFormatter",
 		"CreateScrollBoxLinearView",
 		"CreateScrollBoxListGridView",

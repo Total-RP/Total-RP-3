@@ -58,17 +58,6 @@ local function tableCopy(destination, source)
 end
 Utils.table.copy = tableCopy;
 
--- Return the table size.
--- Less effective than #table but works for hash table as well (#hashtable don't).
-local function tableSize(table)
-	local count = 0;
-	for _,_ in pairs(table) do
-		count = count + 1;
-	end
-	return count;
-end
-Utils.table.size = tableSize;
-
 -- Remove an object from table
 -- Return true if the object is found.
 -- Object is search with == operator.
