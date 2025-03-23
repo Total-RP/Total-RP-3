@@ -326,8 +326,6 @@ Cela provoquera un rechargement de l'interface.]=],
 	["CO_GENERAL_HIDE_MAXIMIZE_BUTTON_HELP"] = "Cache les boutons minimiser et maximiser de la fenêtre Total RP 3.",
 	["CO_GENERAL_LOCALE"] = "Langue de l'add-on",
 	["CO_GENERAL_MISC"] = "Divers",
-	["CO_GENERAL_NEW_VERSION"] = "Alerte de mise-à-jour",
-	["CO_GENERAL_NEW_VERSION_TT"] = "Afficher une alerte lorsqu'une nouvelle version est disponible.",
 	["CO_GENERAL_RESET_CUSTOM_COLORS"] = "Réinitialiser les couleurs personnalisées",
 	["CO_GENERAL_RESET_CUSTOM_COLORS_TT"] = "Supprimer toutes les couleurs personnalisées enregistrées dans le sélecteur de couleur.",
 	["CO_GENERAL_RESET_CUSTOM_COLORS_WARNING"] = "Êtes-vous certain de vouloir supprimer toutes les couleurs personnalisées sauvegardées dans le sélecteur de couleur ?",
@@ -796,12 +794,6 @@ Ce module modifie les noms sur les barres de joueur et cible de Blizzard pour ut
 	["NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY"] = "Ce module a été automatiquement désactivé dû à une dépendance manquante.",
 	["NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL"] = "Ce module a été automatiquement désactivé dû à un conflit avec un autre module ou addon.",
 	["NAMEPLATES_NAME"] = "Barres d'info",
-	["NEW_VERSION"] = [=[|cff00ff00Une nouvelle version de Total RP 3 (v %s) est disponible.
-
-|cffffff00Nous vous encourageons fortement à mettre à jour l'add-on pour profiter des dernières corrections de bugs.|r
-
-Ce message n'apparaîtra qu'une seule fois par session et peut être désactivé dans les réglages (Général => Divers).]=],
-	["NEW_VERSION_BEHIND"] = "Vous êtes actuellement en retard de %s versions et manquez beaucoup de corrections de bugs et nouvelles fonctionnalités. Les autres joueurs risquent de ne pas voir votre profil correctement. Pensez à mettre à jour l'add-on.",
 	["NEW_VERSION_TITLE"] = "Nouvelle mise-à-jour disponible",
 	["NPC_TALK_BUTTON_TT"] = "Ouvre la fenêtre de dialogues de PNJ.",
 	["NPC_TALK_CHANNEL"] = "Canal:",

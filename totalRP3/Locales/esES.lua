@@ -213,8 +213,6 @@ Si no, el idioma será cambiado en la próxima conexión.]=],
 	["CO_GENERAL_HEAVY_TT"] = "Ser avisado cuando el tamaño del perfil exceda un valor razonable.",
 	["CO_GENERAL_LOCALE"] = "Idioma",
 	["CO_GENERAL_MISC"] = "Miscelánea",
-	["CO_GENERAL_NEW_VERSION"] = "Alerta de actualización",
-	["CO_GENERAL_NEW_VERSION_TT"] = "Ser avisado cuando haya una nueva versión disponible.",
 	["CO_GENERAL_RESET_CUSTOM_COLORS"] = "Resetear colores personalizados",
 	["CO_GENERAL_RESET_CUSTOM_COLORS_TT"] = "Elimina todos los colores personalizados en el selector de color.",
 	["CO_GENERAL_RESET_CUSTOM_COLORS_WARNING"] = "¿Seguro que quieres eliminar todos los colores personalizados en el selector de color?",
@@ -555,12 +553,6 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	["NAMEPLATES_CONFIG_UNIT_STATE_SHOW"] = "Mostrar",
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Configuraciones de visibilidad",
 	["NAMEPLATES_NAME"] = "Placa de nombres",
-	["NEW_VERSION"] = [=[|cff00ff00Hay una nueva versión de Total RP 3 (v %s) disponible.
-
-|cffffff00Recomendamos encarecidamente mantenerlo actualizado.|r
-
-Este mensaje sólo aparecerá una vez por sesión y puede ser deshabilitado en los ajustes (Ajustes generales => Varios).]=],
-	["NEW_VERSION_BEHIND"] = "Actualmente estás %s versiones atrasado y te faltan bugs arreglados y nuevas características. Puede que otros jugadores no vean tu perfil correctamente. Por favor, considera actualizar tu add-on.",
 	["NEW_VERSION_TITLE"] = "Nueva actualización disponible",
 	["NPC_TALK_BUTTON_TT"] = "Abre el marco de diálogos de PNJ el cual permite realizar diálogos y emociones de PNJ.",
 	["NPC_TALK_CHANNEL"] = "Canal:",
