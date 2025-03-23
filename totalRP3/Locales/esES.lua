@@ -10,7 +10,6 @@ local L;
 
 L = {
 	["ABOUT_TITLE"] = "Acerca de",
-	["ANALYTICS_CONFIG_ENABLE"] = "Habilitar %s",
 	["AUTOMATION_ACTION_CHARACTER_EQUIPSET"] = "Equipar set de equipo",
 	["AUTOMATION_ACTION_CHARACTER_EQUIPSET_APPLIED"] = "Set de equipo cambiado a %s.",
 	["BINDING_NAME_TRP3_OPEN_TARGET_PROFILE"] = "Abrir perfil del objetivo",
@@ -459,7 +458,6 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["LAUNCHER_CONFIG_LOCK_MINIMAP_BUTTON_HELP"] = "Al marcarlo, previene que el botón del minimapa pueda ser movido.",
 	["LAUNCHER_CONFIG_MENU_TITLE"] = "Botón del minimapa",
 	["LAUNCHER_CONFIG_RESET_MINIMAP_BUTTON"] = "Reiniciar posición del botón del minimapa",
-	["MACRO_ACTION_PROFILE_NAME_INVALID"] = "Nombre de perfil desconocido: %s",
 	["MACRO_RPSTATUS_INVALID"] = "Estado de rol desconocido: %s",
 	["MAP_BUTTON_NO_SCAN"] = "Rastreo no disponible",
 	["MAP_BUTTON_SCANNING"] = "Rastreando",

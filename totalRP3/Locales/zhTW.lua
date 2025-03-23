@@ -10,8 +10,6 @@ local L;
 
 L = {
 	["ABOUT_TITLE"] = "關於",
-	["ANALYTICS_COMMAND_HELP"] = "在聊天室窗顯示插件用法",
-	["ANALYTICS_CONFIG_ENABLE"] = "啟用 %s",
 	["AUTOMATION_ACTION_CHARACTER_EQUIPSET"] = "穿上已儲存的套裝",
 	["BINDING_NAME_TRP3_TOGGLE"] = "開啟主頁面",
 	["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "開啟工具欄",
