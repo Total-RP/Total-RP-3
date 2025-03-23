@@ -62,7 +62,6 @@ read_globals = {
 	"Prat",
 	"TinyTooltip",
 	"TipTac",
-	"WoWUnit",
 	"xrpSaved",
 
 	-- Common protocol globals
