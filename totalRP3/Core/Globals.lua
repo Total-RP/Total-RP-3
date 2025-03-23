@@ -99,15 +99,6 @@ TRP3_API.globals.build = function()
 	TRP3_API.globals.player_realm_id = realm;
 	TRP3_API.globals.player_id = fullName .. "-" .. realm;
 	TRP3_API.globals.player_icon = TRP3_API.ui.misc.getUnitTexture(race, UnitSex("player"));
-
-	-- Build BNet account Hash
-	local bn = select(2, BNGetInfo());
-	if bn then
-		TRP3_API.globals.player_hash = TRP3_API.utils.serial.hashCode(bn);
-	else
-		-- Trial account ..etc.
-		TRP3_API.globals.player_hash = TRP3_API.utils.serial.hashCode(TRP3_API.globals.player_id);
-	end
 end
 
 TRP3_API.globals.addon = TRP3_Addon;

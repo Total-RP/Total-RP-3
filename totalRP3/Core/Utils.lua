@@ -841,10 +841,6 @@ Utils.serial.encodeCompressStructure = function(structure)
 	return encodeCompressMessage(serialize(structure));
 end
 
-Utils.serial.hashCode = function(str)
-	return libCompress:fcs32final(libCompress:fcs32update(libCompress:fcs32init(), str));
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- MUSIC / SOUNDS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
