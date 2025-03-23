@@ -100,6 +100,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<Frame name="TRP3_MainFrameArtTemplate" virtual="true">
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-neutral-background" horizTile="true" vertTile="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="4" y="-4"/>
+						<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+					</Anchors>
+					<Color r="0.6" g="0.6" b="0.6"/>
+				</Texture>
+			</Layer>
+		</Layers>
 		<Frames>
 			<Frame parentKey="Backdrop" inherits="TooltipBorderBackdropTemplate" setAllPoints="true">
 				<KeyValues>
@@ -156,17 +167,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Anchors>
 			<Anchor point="CENTER"/>
 		</Anchors>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture parentKey="Background" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-neutral-background" horizTile="true" vertTile="true">
-					<Anchors>
-						<Anchor point="TOPLEFT" x="4" y="-4"/>
-						<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
-					</Anchors>
-					<Color r="0.6" g="0.6" b="0.6"/>
-				</Texture>
-			</Layer>
-		</Layers>
 		<Frames>
 			<!-- RIGHT PART : Place for content. Needs to be defined first as the menu scroll invokes OnSizeChanged. -->
 			<Frame name="TRP3_MainFramePageContainer" useParentLevel="true">
