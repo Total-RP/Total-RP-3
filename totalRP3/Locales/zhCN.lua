@@ -10,11 +10,6 @@ local L;
 
 L = {
 	["ABOUT_TITLE"] = "关于",
-	["ANALYTICS_COMMAND_HELP"] = "将插件使用情况发送至聊天框。",
-	["ANALYTICS_CONFIG_ENABLE"] = "启用%s",
-	["ANALYTICS_CONFIG_ENABLE_HELP"] = "启用通过%s的匿名插件使用情况收集。|n|n这种使用情况的模板可以通过|cff00ff00/trp3 statistics|r指令发送到聊天窗口。",
-	["ANALYTICS_CONFIG_ENABLE_HELP_WAGO"] = "这需要Wago插件的 |cff00ff00\"帮助插件开发者\"|r设置启动。",
-	["ANALYTICS_OUTPUT_HEADER"] = "插件使用情况统计：",
 	["AUTOMATION_ACTION_CHARACTER_EQUIPSET"] = "穿戴装备方案",
 	["AUTOMATION_ACTION_CHARACTER_EQUIPSET_APPLIED"] = "将装备方案设置为%s。",
 	["AUTOMATION_ACTION_CHARACTER_EQUIPSET_DESCRIPTION"] = "自动穿戴一个装备方案。",
@@ -635,7 +630,6 @@ L = {
 	["LAUNCHER_CONFIG_SHOW_ADDON_COMPARTMENT_BUTTON_HELP"] = "如果勾选，在小地图边的暴雪插件工具栏显示一个TRP3入口。|n|n这对怀旧服没有效果。",
 	["LAUNCHER_MODULE_DESCRIPTION"] = "为用户提供诸如小地图按钮这样的界面元素来控制插件。",
 	["LAUNCHER_MODULE_NAME"] = "启动器",
-	["MACRO_ACTION_PROFILE_NAME_INVALID"] = "未知人物卡名：%s",
 	["MACRO_RPSTATUS_INVALID"] = "未知角色扮演状态：%s",
 	["MAP_BUTTON_NO_SCAN"] = "没有搜到",
 	["MAP_BUTTON_SCANNING"] = "搜索",

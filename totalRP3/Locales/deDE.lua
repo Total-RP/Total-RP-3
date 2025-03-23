@@ -572,7 +572,6 @@ Deine Profile, Begleiterprofile und Einstellungen werden temporär ausgelagert u
 	["LAUNCHER_ACTION_PLAYER"] = "Öffne aktuelle Profilseite",
 	["LAUNCHER_ACTION_PROFILES"] = "Öffne Profile",
 	["LAUNCHER_ACTION_SETTINGS"] = "Öffne Einstellungen",
-	["MACRO_ACTION_PROFILE_NAME_INVALID"] = "Unbekannter Profilname: %s",
 	["MACRO_RPSTATUS_INVALID"] = "Unbekannter Rollenspielstatus: %s",
 	["MAP_BUTTON_NO_SCAN"] = "Kein Scan verfügbar",
 	["MAP_BUTTON_SCANNING"] = "Scanne",

@@ -10,9 +10,6 @@ local L;
 
 L = {
 	["ABOUT_TITLE"] = "О персонаже",
-	["ANALYTICS_COMMAND_HELP"] = "Печатает статистику использования аддона в окно чата.",
-	["ANALYTICS_CONFIG_ENABLE"] = "Включить %s",
-	["ANALYTICS_OUTPUT_HEADER"] = "Статистика использования расширения:",
 	["AUTOMATION_ACTION_CHARACTER_EQUIPSET"] = "Надеть комплект экипировки",
 	["AUTOMATION_ACTION_CHARACTER_EQUIPSET_APPLIED"] = "Экипировка изменена на %s.",
 	["AUTOMATION_ACTION_CHARACTER_EQUIPSET_DESCRIPTION"] = "Автоматически надевает комлпект экипировки.",
@@ -551,7 +548,6 @@ L = {
 	["LAUNCHER_ACTION_SETTINGS"] = "Открыть страницу настроек",
 	["LAUNCHER_ACTION_STATUS"] = "Переключить ролевой статус",
 	["LAUNCHER_ACTION_TOOLBAR"] = "Показать/скрыть полосу инструментов",
-	["MACRO_ACTION_PROFILE_NAME_INVALID"] = "Неизвестное название профиля: %s",
 	["MACRO_RPSTATUS_INVALID"] = "Неизвестный ролевой статус: %s",
 	["MAP_BUTTON_NO_SCAN"] = "Сканирование недоступно",
 	["MAP_BUTTON_SCANNING"] = "Сканирование",
