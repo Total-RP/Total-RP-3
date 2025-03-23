@@ -99,8 +99,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_MainFrameArtTemplate" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" virtual="true">
-		<Size x="840" y="600"/>
+	<Frame name="TRP3_MainFrameArtTemplate" virtual="true">
 		<Frames>
 			<Frame parentKey="Backdrop" inherits="TooltipBorderBackdropTemplate" setAllPoints="true">
 				<KeyValues>
@@ -152,9 +151,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameArtTemplate" mixin="TRP3_MainFrameLayoutMixin" hidden="true" movable="true" dontSavePosition="true" frameBuffer="true">
+	<Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameArtTemplate" mixin="TRP3_MainFrameLayoutMixin" parent="UIParent" toplevel="true" enableMouse="true" clampedToScreen="true" hidden="true" movable="true" dontSavePosition="true" frameBuffer="true">
+		<Size x="840" y="600"/>
 		<Anchors>
-			<Anchor point="CENTER" x="0" y="0"/>
+			<Anchor point="CENTER"/>
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
