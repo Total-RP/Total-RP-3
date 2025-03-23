@@ -808,27 +808,6 @@ local function safeDeserialize(structure, default)
 end
 Utils.serial.safeDeserialize = safeDeserialize;
 
-local function encodeCompressMessage(message)
-	return libCompressEncoder:Encode(libCompress:Compress(message));
-end
-Utils.serial.encodeCompressMessage = encodeCompressMessage;
-
-Utils.serial.decompressCodedMessage = function(message)
-	return libCompress:Decompress(libCompressEncoder:Decode(message));
-end
-
-Utils.serial.safeEncodeCompressMessage = function(serial)
-	local encoded = encodeCompressMessage(serial);
-	-- Rollback test
-	local decoded = Utils.serial.decompressCodedMessage(encoded);
-	if decoded == serial then
-		return encoded;
-	else
-		TRP3_API.Log("safeEncodeCompressStructure error:\n" .. tostring(serial));
-		return nil;
-	end
-end
-
 Utils.serial.decompressCodedStructure = function(message)
 	return deserialize(libCompress:Decompress(libCompressEncoder:Decode(message)));
 end
@@ -838,7 +817,7 @@ Utils.serial.safeDecompressCodedStructure = function(message)
 end
 
 Utils.serial.encodeCompressStructure = function(structure)
-	return encodeCompressMessage(serialize(structure));
+	return libCompressEncoder:Encode(libCompress:Compress(serialize(structure)));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
