@@ -1073,8 +1073,8 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 	assert(resizeButton.minWidth, "minWidth key is not set.");
 	assert(resizeButton.minHeight, "minHeight key is not set.");
 	local parentFrame = resizeButton.resizableFrame;
-	resizeButton:SetScript("OnMouseDown", function(self)
-		if not self.onResizeStart or not self.onResizeStart() then
+	resizeButton:SetScript("OnMouseDown", function(self, mouseButtonName)
+		if not self.onResizeStart or not self.onResizeStart(mouseButtonName) then
 			TRP3_ResizeShadowFrame:ClearAllPoints();
 			TRP3_ResizeShadowFrame:SetPoint("CENTER", self.resizableFrame, "CENTER", 0, 0);
 			TRP3_ResizeShadowFrame:SetWidth(parentFrame:GetWidth());
