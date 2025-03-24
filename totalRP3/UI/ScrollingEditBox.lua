@@ -49,8 +49,8 @@ function TRP3_ScrollingEditBoxMixin:OnChar(char)
 	end
 end
 
-function TRP3_ScrollingEditBoxMixin:OnCursorChanged(x, y, width, height, context)
-	self:TriggerEvent("OnCursorChanged", x, y, width, height, context);
+function TRP3_ScrollingEditBoxMixin:OnCursorChanged(editbox, x, y, width, height, context)
+	self:TriggerEvent("OnCursorChanged", editbox, x, y, width, height, context);
 end
 
 function TRP3_ScrollingEditBoxMixin:OnEditFocusGained()
@@ -69,9 +69,9 @@ function TRP3_ScrollingEditBoxMixin:OnTabPressed()
 	self:TriggerEvent("OnTabPressed");
 end
 
-function TRP3_ScrollingEditBoxMixin:OnTextChanged(userChanged)
+function TRP3_ScrollingEditBoxMixin:OnTextChanged(editbox, userChanged)
 	self.currentInputText = self:GetInputText();
-	self:TriggerEvent("OnTextChanged", userChanged);
+	self:TriggerEvent("OnTextChanged", editbox, userChanged);
 end
 
 function TRP3_ScrollingEditBoxMixin:GetEditBox()
@@ -99,7 +99,7 @@ function TRP3_ScrollingEditBoxMixin:GetInputText()
 end
 
 function TRP3_ScrollingEditBoxMixin:IsReadOnly()
-	return self.readOnlyText ~= nil;
+	return self.readOnly == true;
 end
 
 function TRP3_ScrollingEditBoxMixin:SetDefaultText(defaultText)
