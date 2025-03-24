@@ -154,3 +154,149 @@ function TRP3_RegisterInfoSwatchLineMixin:SetValueColor(color)
 		self.Swatch:Hide();
 	end
 end
+
+-- TODO: This file is on the road to getting meaty. Relocate this?
+-- TODO: Do we also want to change naming convention here? ('TRP3_ProfileEditorTextInputLabelMixin', ...)
+--       "Register" is shorter but the module name is stoopdid.
+
+TRP3_RegisterTextInputLabelMixin = CreateFromMixins(TRP3_TooltipScriptMixin);
+
+function TRP3_RegisterTextInputLabelMixin:Init(initializer)
+	self.title = initializer:GetTitle() or L.CM_UNKNOWN;
+	self.description = initializer:GetDescription() or "";
+	self.textLength = initializer:GetInitialTextLength() or 0;
+	self.textLengthLimit = initializer:GetTextLengthLimit() or math.huge;
+	-- TODO: Maybe make this an initializer property. If the limit is too small small then the rounding here is awkward.
+	self.textLengthHint = RoundToNearestMultiple(self.textLengthLimit * 0.9, 5);
+
+	self.Title:SetText(self.title);
+	self:OnTextLengthChanged(self.textLength);
+end
+
+function TRP3_RegisterTextInputLabelMixin:OnEnter()
+	TRP3_TooltipScriptMixin.OnEnter(self);
+end
+
+function TRP3_RegisterTextInputLabelMixin:OnLeave()
+	TRP3_TooltipScriptMixin.OnLeave(self);
+end
+
+function TRP3_RegisterTextInputLabelMixin:OnTextLengthChanged()
+	self:RefreshLetterCount();
+	self:RefreshTooltip();
+end
+
+function TRP3_RegisterTextInputLabelMixin:OnTooltipShow(description)
+	TRP3_TooltipTemplates.CreateBasicTooltip(description, self.title, self.description);
+
+	if self:ShouldShowTooltipWarning() then
+		description:AddBlankLine();
+		-- TODO: AddSubtitleLine / AddSubtitleWithIconLine perhaps? :thinkles:
+		description:AddHighlightLine(TRP3_MarkupUtil.GenerateIconMarkup("services-icon-warning", { height = 16, width = 18 }) .. " Warning");
+		-- TODO: Allow configuring this in the initializer (and localize it).
+		description:AddNormalLine("We strongly recommend |cnGREEN_FONT_COLOR:reducing the amount of text|r in this field as it |cnWARNING_FONT_COLOR:may not display correctly|r when viewed by other players.");
+	end
+end
+
+function TRP3_RegisterTextInputLabelMixin:ShouldShowTooltipWarning()
+	return self.textLength > self.textLengthLimit;
+end
+
+function TRP3_RegisterTextInputLabelMixin:ShouldShowTooltip()
+	-- TODO: Do we (need to) support description-less fields? Note that the "i" icon shows even if the tooltip won't.
+	return (self.description ~= "") or self:ShouldShowTooltipWarning() or self.Title:IsTruncated();
+end
+
+function TRP3_RegisterTextInputLabelMixin:SetTextLength(textLength)
+	if self.textLength == textLength then
+		return;
+	end
+
+	self.textLength = textLength;
+	self:OnTextLengthChanged(textLength);
+end
+
+function TRP3_RegisterTextInputLabelMixin:RefreshLetterCount()
+	local textLength = self.textLength;
+	local textLengthLimit = self.textLengthLimit;
+	local textLengthHint = self.textLengthHint;
+
+	if textLength >= textLengthHint then
+		local color = (textLength > textLengthLimit) and WARNING_FONT_COLOR or HIGHLIGHT_FONT_COLOR;
+		self.Counter:SetFormattedText("%d", (textLengthLimit - textLength));
+		self.Counter:SetTextColor(color:GetRGB());
+		self.Counter:Show();
+	else
+		self.Counter:Hide();
+	end
+end
+
+TRP3_RegisterTextInputControlMixin = {};
+
+function TRP3_RegisterTextInputControlMixin:Init(initializer)
+	self.Label:Init(initializer);
+
+	local function OnTextChanged(_, editbox, isUserInput)
+		local text = editbox:GetText();
+		self.Label:SetTextLength(editbox:GetNumLetters());
+		initializer:InvokeTextChangedCallback(text, isUserInput);
+	end
+
+	self.Control:RegisterCallback("OnTextChanged", OnTextChanged, self);
+	self.Control:SetText(initializer:GetInitialText());
+end
+
+TRP3_RegisterUtil = {};
+
+local RegisterTextInputInitializer = {};
+
+function RegisterTextInputInitializer:GetTitle()
+	return self.title;
+end
+
+function RegisterTextInputInitializer:SetTitle(title)
+	self.title = title;
+end
+
+function RegisterTextInputInitializer:GetDescription()
+	return self.description;
+end
+
+function RegisterTextInputInitializer:SetDescription(description)
+	self.description = description;
+end
+
+function RegisterTextInputInitializer:GetInitialText()
+	return self.initialText;
+end
+
+function RegisterTextInputInitializer:GetInitialTextLength()
+	return strlenutf8(self.initialText or "");
+end
+
+function RegisterTextInputInitializer:SetInitialText(initialText)
+	self.initialText = initialText;
+end
+
+function RegisterTextInputInitializer:InvokeTextChangedCallback(text, isUserInput)
+	if self.textChangedCallback then
+		securecallfunction(self.textChangedCallback, text, isUserInput);
+	end
+end
+
+function RegisterTextInputInitializer:SetTextChangedCallback(textChangedCallback)
+	self.textChangedCallback = textChangedCallback;
+end
+
+function RegisterTextInputInitializer:GetTextLengthLimit()
+	return self.textLengthLimit;
+end
+
+function RegisterTextInputInitializer:SetTextLengthLimit(textLengthLimit)
+	self.textLengthLimit = textLengthLimit;
+end
+
+-- TODO: Some things are required, make them into parameters perhaps (it'd be silly to *not* have a title, for example).
+function TRP3_RegisterUtil.CreateTextInputInitializer()
+	return TRP3_API.CreateObject(RegisterTextInputInitializer);
+end
