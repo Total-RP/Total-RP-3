@@ -355,18 +355,8 @@ TRP3_API.register.swapGlanceSlot = swapGlanceSlot;
 -- Currently
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function displayCurrently(context)
-	TRP3_RegisterMiscViewCurrentlyIC:SetReadOnly(not context.isPlayer);
-	TRP3_RegisterMiscViewCurrentlyIC.HelpButton:SetShown(context.isPlayer);
-
-	TRP3_RegisterMiscViewCurrentlyOOC:SetReadOnly(not context.isPlayer);
-	TRP3_RegisterMiscViewCurrentlyOOC.HelpButton:SetShown(context.isPlayer);
-
-
-	local dataTab = context.profile.character or Globals.empty;
-	TRP3_RegisterMiscViewCurrentlyIC:SetText(dataTab.CU or "");
-	TRP3_RegisterMiscViewCurrentlyOOC:SetText(dataTab.CO or "");
-end
+local TEMP_currentlyText;
+local TEMP_oocText;
 
 local function onCurrentlyChanged()
 	if not getCurrentContext().isPlayer then
@@ -374,7 +364,7 @@ local function onCurrentlyChanged()
 	end
 
 	local multiLine = true;
-	local text = Utils.str.sanitize(TRP3_RegisterMiscViewCurrentlyIC:GetInputText(), multiLine);
+	local text = Utils.str.sanitize(TEMP_currentlyText, multiLine);
 
 	local player = AddOn_TotalRP3.Player.GetCurrentUser();
 	player:SetCurrentlyText(text);
@@ -386,26 +376,70 @@ local function onOOCInfoChanged()
 	end
 
 	local multiLine = true;
-	local text = Utils.str.sanitize(TRP3_RegisterMiscViewCurrentlyOOC:GetInputText(), multiLine);
+	local text = Utils.str.sanitize(TEMP_oocText, multiLine);
 
 	local player = AddOn_TotalRP3.Player.GetCurrentUser();
 	player:SetOutOfCharacterInfo(text);
 end
 
+-- TODO: Allow parameter passthrough for debounce or reimplement this to be less bad.
 local UpdateCurrentlyText = TRP3_FunctionUtil.Debounce(0.2, onCurrentlyChanged);
 
-local function OnCurrentlyTextChanged(_, userInput)
+local function OnCurrentlyTextChanged(text, userInput)
 	if userInput then
+		TEMP_currentlyText = text;
 		UpdateCurrentlyText();
 	end
 end
 
+-- TODO: Allow parameter passthrough for debounce or reimplement this to be less bad.
 local UpdateOOCText = TRP3_FunctionUtil.Debounce(0.2, onOOCInfoChanged);
 
-local function OnOOCTextChanged(_, userInput)
+local function OnOOCTextChanged(text, userInput)
 	if userInput then
+		TEMP_oocText = text;
 		UpdateOOCText();
 	end
+end
+
+local function displayCurrently(context)
+	local dataTab = context.profile.character or Globals.empty;
+
+	do
+		local initializer = TRP3_RegisterUtil.CreateTextInputInitializer();
+		initializer:SetTitle(loc.DB_STATUS_CURRENTLY);
+		initializer:SetDescription(loc.DB_STATUS_CURRENTLY_TT);
+		initializer:SetInitialText(dataTab.CU or "");
+		initializer:SetTextLengthLimit(240);  -- TODO: Make this a named and globally-accessible constant.
+		-- TODO: Initializer also needs a property for read-only-ness.
+		initializer:SetTextChangedCallback(OnCurrentlyTextChanged);
+		TRP3_RegisterMiscViewCurrently.IC:Init(initializer);
+	end
+
+	do
+		local initializer = TRP3_RegisterUtil.CreateTextInputInitializer();
+		initializer:SetTitle(loc.DB_STATUS_CURRENTLY_OOC);
+		initializer:SetDescription(loc.DB_STATUS_CURRENTLY_OOC_TT);
+		initializer:SetInitialText(dataTab.CO or "");
+		initializer:SetTextLengthLimit(240);  -- TODO: Make this a named and globally-accessible constant.
+		-- TODO: Initializer also needs a property for read-only-ness.
+		initializer:SetTextChangedCallback(OnOOCTextChanged);
+		TRP3_RegisterMiscViewCurrently.OOC:Init(initializer);
+	end
+
+	-- TRP3_RegisterMiscViewCurrently.IC:SetTitleText(loc.DB_STATUS_CURRENTLY);
+	-- TRP3_RegisterMiscViewCurrently.IC:SetInputTextChangedCallback(OnCurrentlyTextChanged);
+	-- TRP3_RegisterMiscViewCurrently.OOC:SetTitleText(loc.DB_STATUS_CURRENTLY_OOC);
+	-- TRP3_RegisterMiscViewCurrently.OOC:SetInputTextChangedCallback(OnOOCTextChanged);
+
+	-- TRP3_RegisterMiscViewCurrently.IC:SetReadOnly(not context.isPlayer);
+	-- TRP3_RegisterMiscViewCurrently.IC.HelpButton:SetShown(context.isPlayer);
+
+	-- TRP3_RegisterMiscViewCurrently.OOC:SetReadOnly(not context.isPlayer);
+	-- TRP3_RegisterMiscViewCurrently.OOC.HelpButton:SetShown(context.isPlayer);
+
+	-- TRP3_RegisterMiscViewCurrently.IC:SetInputText(dataTab.CU or "");
+	-- TRP3_RegisterMiscViewCurrently.OOC:SetInputText(dataTab.CO or "");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -510,14 +544,6 @@ function TRP3_API.register.inits.miscInit()
 	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc.REG_PLAYER_STYLE_EMPTY);
 
 	TRP3_API.ui.tooltip.setTooltipAll(TRP3_AtFirstGlanceEditorActive, "RIGHT", 0, 5, loc.CM_ACTIVATE, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_USE));
-
-	TRP3_RegisterMiscViewCurrentlyIC.Title:SetText(loc.DB_STATUS_CURRENTLY);
-	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyIC.HelpButton, "RIGHT", 0, 5, loc.DB_STATUS_CURRENTLY, loc.DB_STATUS_CURRENTLY_TT);
-	TRP3_RegisterMiscViewCurrentlyIC:RegisterCallback("OnTextChanged", OnCurrentlyTextChanged);
-
-	TRP3_RegisterMiscViewCurrentlyOOC.Title:SetText(loc.DB_STATUS_CURRENTLY_OOC);
-	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC.HelpButton, "RIGHT", 0, 5, loc.DB_STATUS_CURRENTLY_OOC, loc.DB_STATUS_CURRENTLY_OOC_TT);
-	TRP3_RegisterMiscViewCurrentlyOOC:RegisterCallback("OnTextChanged", OnOOCTextChanged);
 
 	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE, TRP3_API.register.glance.addClickHandlers(loc.REG_PLAYER_GLANCE_CONFIG));
 

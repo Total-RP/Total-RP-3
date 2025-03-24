@@ -156,78 +156,32 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 					<!-- Currently -->
 					<Frame name="TRP3_RegisterMiscViewCurrently" inherits="TRP3_GroupBoxTemplate">
-						<Size x="0" y="100"/>
+						<Size y="100"/>
 						<KeyValues>
 							<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
 						</KeyValues>
 						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterMiscViewGlance" x="0" y="-10"/>
-							<Anchor point="LEFT" x="0" y="0"/>
-							<Anchor point="RIGHT" x="-3" y="0"/>
-							<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="TRP3_RegisterMiscViewRPStyle" x="0" y="10"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterMiscViewGlance" y="-10"/>
+							<Anchor point="LEFT"/>
+							<Anchor point="RIGHT" x="-3"/>
+							<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="TRP3_RegisterMiscViewRPStyle" y="10"/>
 						</Anchors>
 						<Frames>
-							<Frame name="TRP3_RegisterMiscViewCurrentlyPoint">
-								<Size x="10" y="10"/>
+							<Frame parentKey="IC" inherits="TRP3_RegisterTextInputControlTemplate">
 								<Anchors>
-									<Anchor point="CENTER" x="0" y="0"/>
+									<Anchor point="TOP" y="-17"/>
+									<Anchor point="BOTTOM" y="10"/>
+									<Anchor point="LEFT" x="10"/>
+									<Anchor point="RIGHT" relativePoint="CENTER" x="-5"/>
 								</Anchors>
 							</Frame>
-							<Frame name="TRP3_RegisterMiscViewCurrentlyIC" inherits="TRP3_InsetScrollingEditBoxTemplate">
+							<Frame parentKey="OOC" inherits="TRP3_RegisterTextInputControlTemplate">
 								<Anchors>
-									<Anchor point="TOP" x="0" y="-25"/>
-									<Anchor point="BOTTOM" x="0" y="10"/>
-									<Anchor point="LEFT" x="10" y="0"/>
-									<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterMiscViewCurrentlyPoint" x="-5" y="0"/>
+									<Anchor point="TOP" y="-17"/>
+									<Anchor point="BOTTOM" y="10"/>
+									<Anchor point="RIGHT" x="-10"/>
+									<Anchor point="LEFT" relativePoint="CENTER" x="5"/>
 								</Anchors>
-								<Layers>
-									<Layer level="OVERLAY">
-										<FontString parentKey="Title" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
-											<Anchors>
-												<Anchor point="TOPLEFT" x="15" y="10"/>
-												<Anchor point="TOPRIGHT" x="-15" y="10"/>
-											</Anchors>
-											<Color r="0.95" g="0.75" b="0.1"/>
-										</FontString>
-									</Layer>
-								</Layers>
-								<Frames>
-									<Button parentKey="HelpButton" inherits="TRP3_HelpButton">
-										<Size x="14" y="14"/>
-										<Anchors>
-											<Anchor point="TOPRIGHT" x="0" y="13"/>
-										</Anchors>
-									</Button>
-								</Frames>
-							</Frame>
-
-							<Frame name="TRP3_RegisterMiscViewCurrentlyOOC" inherits="TRP3_InsetScrollingEditBoxTemplate">
-								<Size x="235" y="0"/>
-								<Anchors>
-									<Anchor point="TOP" x="0" y="-25"/>
-									<Anchor point="BOTTOM" x="0" y="10"/>
-									<Anchor point="RIGHT" x="-10" y="0"/>
-									<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscViewCurrentlyPoint" x="5" y="0"/>
-								</Anchors>
-								<Layers>
-									<Layer level="OVERLAY">
-										<FontString parentKey="Title" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
-											<Anchors>
-												<Anchor point="TOPLEFT" x="15" y="10"/>
-												<Anchor point="TOPRIGHT" x="-15" y="10"/>
-											</Anchors>
-											<Color r="0.95" g="0.75" b="0.1"/>
-										</FontString>
-									</Layer>
-								</Layers>
-								<Frames>
-									<Button parentKey="HelpButton" inherits="TRP3_HelpButton">
-										<Size x="14" y="14"/>
-										<Anchors>
-											<Anchor point="TOPRIGHT" x="0" y="13"/>
-										</Anchors>
-									</Button>
-								</Frames>
 							</Frame>
 						</Frames>
 					</Frame>
