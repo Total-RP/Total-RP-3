@@ -1,0 +1,23 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Frame name="TRP3_ProfileEditorTextLineTemplate" inherits="TRP3_ProfileEditorTextControlTemplate" mixin="TRP3_ProfileEditorTextLineMixin" virtual="true">
+		<Size y="56"/>
+		<Frames>
+			<EditBox parentKey="Control" inherits="InputBoxTemplate">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.Label" relativePoint="BOTTOM"/>
+					<Anchor point="LEFT"/>
+					<Anchor point="BOTTOMRIGHT"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
+	</Frame>
+</Ui>

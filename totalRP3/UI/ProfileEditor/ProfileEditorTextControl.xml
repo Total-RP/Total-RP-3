@@ -1,0 +1,47 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Frame name="TRP3_ProfileEditorTextControlLabelTemplate" mixin="TRP3_ProfileEditorTextControlLabelMixin" enableMouseMotion="true" virtual="true">
+		<Size y="24"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<!-- TODO: Confirm collapsesLayout is uniformly available (and works). -->
+				<FontString parentKey="Counter" inherits="GameFontHighlight" justifyH="RIGHT" justifyV="MIDDLE" wordwrap="false" nonspacewrap="false" collapsesLayout="false">
+					<Anchors>
+						<Anchor point="RIGHT" relativePoint="LEFT" x="-4"/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey="Title" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" wordwrap="false" nonspacewrap="false">
+					<Anchors>
+						<Anchor point="LEFT" x="4"/>
+						<Anchor point="RIGHT" relativeKey="$parent.Counter" relativePoint="LEFT" x="-4"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Frame>
+
+	<Frame name="TRP3_ProfileEditorTextControlTemplate" inherits="TRP3_ProfileEditorControlTemplate" mixin="TRP3_ProfileEditorTextControlMixin" virtual="true">
+		<Frames>
+			<Frame parentKey="Label" inherits="TRP3_ProfileEditorTextControlLabelTemplate">
+				<Size y="24"/>
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="TOPRIGHT"/>
+				</Anchors>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
+	</Frame>
+</Ui>
