@@ -1,15 +1,31 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+local L = TRP3_API.loc;
+
 TRP3_ProfileEditorTextControlInitializer = CreateFromMixins(TRP3_ProfileEditorControlInitializer);
 
-function TRP3_ProfileEditorTextControlInitializer:__init(accessor, label, tooltip, maxLetters)
+function TRP3_ProfileEditorTextControlInitializer:__init(accessor, label, tooltip, letterCountLimit)
 	TRP3_ProfileEditorControlInitializer.__init(self, accessor, label, tooltip);
-	self.maxLetters = maxLetters or math.huge;
+
+	self.letterCountLimit = letterCountLimit;
+	self.letterCountWarningText = nil;
 end
 
-function TRP3_ProfileEditorTextControlInitializer:GetMaxLetters()
-	return self.maxLetters;
+function TRP3_ProfileEditorTextControlInitializer:GetLetterCountLimit()
+	return self.letterCountLimit or math.huge;
+end
+
+function TRP3_ProfileEditorTextControlInitializer:SetLetterCountLimit(letterCountLimit)
+	self.letterCountLimit = letterCountLimit;
+end
+
+function TRP3_ProfileEditorTextControlInitializer:GetLetterCountWarningText()
+	return self.letterCountWarningText or L.TODOFINDAPREFIXTODO_PROFILE_FIELD_IS_CHONK3;
+end
+
+function TRP3_ProfileEditorTextControlInitializer:SetLetterCountWarningText(letterCountWarningText)
+	self.letterCountWarningText = letterCountWarningText;
 end
 
 TRP3_ProfileEditorTextControlMixin = CreateFromMixins(TRP3_ProfileEditorControlMixin);
@@ -37,8 +53,9 @@ end
 function TRP3_ProfileEditorTextControlLabelMixin:Init(initializer)
 	self.label = initializer:GetLabel();
 	self.tooltip = initializer:GetTooltip();
-	self.letterCountMax = (initializer:GetMaxLetters() or math.huge);
-	self.letterCountHint = math.floor((self.letterCountMax * 0.9) / 5) * 5;
+	self.letterCountLimit = initializer:GetLetterCountLimit();
+	self.letterCountWarningText = initializer:GetLetterCountWarningText();
+	self.letterCountHint = math.floor((self.letterCountLimit * 0.9) / 5) * 5;
 
 	self.Title:SetText(initializer:GetLabel());
 end
@@ -64,12 +81,11 @@ end
 function TRP3_ProfileEditorTextControlLabelMixin:OnTooltipShow(description)
 	TRP3_ProfileEditor.CreateControlTooltip(description, self.label, self.tooltip);
 
-	if self:IsAboveMaxLetterCount() then
+	if self:IsAboveLetterLimit() then
 		description:AddBlankLine();
 		-- TODO: AddSubtitleLine / AddSubtitleWithIconLine perhaps? :thinkles:
 		description:AddHighlightLine(TRP3_MarkupUtil.GenerateIconMarkup("services-icon-warning", { height = 16, width = 18 }) .. " Warning");
-		-- TODO: Allow configuring this in the initializer (and localize it).
-		description:AddNormalLine("We strongly recommend |cnGREEN_FONT_COLOR:reducing the amount of text|r in this field as it |cnWARNING_FONT_COLOR:may not display correctly|r when viewed by other players.");
+		description:AddNormalLine(self.letterCountWarningText);
 	end
 end
 
@@ -88,11 +104,11 @@ function TRP3_ProfileEditorTextControlLabelMixin:OnLetterCountChanged(letterCoun
 end
 
 function TRP3_ProfileEditorTextControlLabelMixin:ShouldShowTooltip()
-	return self.tooltip ~= nil or self:IsAboveMaxLetterCount() or self.Title:IsTruncated();
+	return self.tooltip ~= nil or self:IsAboveLetterLimit() or self.Title:IsTruncated();
 end
 
-function TRP3_ProfileEditorTextControlLabelMixin:IsAboveMaxLetterCount()
-	return self.letterCount > self.letterCountMax;
+function TRP3_ProfileEditorTextControlLabelMixin:IsAboveLetterLimit()
+	return self.letterCount > self.letterCountLimit;
 end
 
 function TRP3_ProfileEditorTextControlLabelMixin:ResetLetterCount()
@@ -109,7 +125,7 @@ function TRP3_ProfileEditorTextControlLabelMixin:UpdateLetterCount(letterCount)
 end
 
 function TRP3_ProfileEditorTextControlLabelMixin:RefreshLetterCount()
-	self.Counter:SetLetterCount(self.letterCount, self.letterCountHint, self.letterCountMax);
+	self.Counter:SetLetterCount(self.letterCount, self.letterCountHint, self.letterCountLimit);
 end
 
 TRP3_ProfileEditorTextControlLetterCountMixin = {};
