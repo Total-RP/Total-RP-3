@@ -222,7 +222,7 @@ function TRP3_RegisterTextInputLabelMixin:RefreshLetterCount()
 	local textLengthHint = self.textLengthHint;
 
 	if textLength >= textLengthHint then
-		local color = (textLength > textLengthLimit) and self.warningColor or self.defaultColor;
+		local color = (textLength > textLengthLimit) and WARNING_FONT_COLOR or HIGHLIGHT_FONT_COLOR;
 		self.Counter:SetFormattedText("%d", (textLengthLimit - textLength));
 		self.Counter:SetTextColor(color:GetRGB());
 		self.Counter:Show();

@@ -116,7 +116,7 @@ TRP3_ProfileEditorTextControlLetterCountMixin = {};
 
 function TRP3_ProfileEditorTextControlLetterCountMixin:SetLetterCount(count, hint, limit)
 	if count >= hint then
-		local color = (count > limit) and WARNING_FONT_COLOR or HIGHLIGHT_FONT_COLOR;
+		local color = (count > limit) and self.warningColor or self.defaultColor;
 		local distance = (limit - count);
 
 		self:SetFormattedText("%d", distance);
