@@ -37,8 +37,8 @@ end
 
 function TRP3_ProfileEditorTextControlLabelMixin:Release()
 	self:HideTooltip();
-	self.Count:Hide();
-	self.Count:SetText("");
+	self.Counter:Hide();
+	self.Counter:SetText("");
 	self.Title:SetText("");
 
 	self.tooltip = nil;

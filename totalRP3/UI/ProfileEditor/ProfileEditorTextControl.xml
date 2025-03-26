@@ -9,22 +9,21 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size y="24"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<!-- TODO: Confirm collapsesLayout is uniformly available (and works). -->
-				<FontString parentKey="Counter" inherits="GameFontHighlight" justifyH="RIGHT" justifyV="MIDDLE" wordwrap="false" nonspacewrap="false" collapsesLayout="false">
+				<!-- TODO: So what about the information icon? :AYAYA: in the chat -->
+				<FontString parentKey="Counter" inherits="GameFontHighlight" justifyH="RIGHT" justifyV="MIDDLE" wordwrap="false" nonspacewrap="false" collapsesLayout="true" hidden="true">
 					<Anchors>
-						<Anchor point="RIGHT" relativePoint="LEFT" x="-4"/>
+						<Anchor point="RIGHT"/>
 					</Anchors>
 				</FontString>
 				<FontString parentKey="Title" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" wordwrap="false" nonspacewrap="false">
 					<Anchors>
 						<Anchor point="LEFT" x="4"/>
-						<Anchor point="RIGHT" relativeKey="$parent.Counter" relativePoint="LEFT" x="-4"/>
+						<Anchor point="RIGHT" relativeKey="$parent.Counter" relativePoint="LEFT"/>
 					</Anchors>
 				</FontString>
 			</Layer>
 		</Layers>
 		<Scripts>
-			<OnLoad method="OnLoad"/>
 			<OnEnter method="OnEnter"/>
 			<OnLeave method="OnLeave"/>
 		</Scripts>
@@ -33,7 +32,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Frame name="TRP3_ProfileEditorTextControlTemplate" inherits="TRP3_ProfileEditorControlTemplate" mixin="TRP3_ProfileEditorTextControlMixin" virtual="true">
 		<Frames>
 			<Frame parentKey="Label" inherits="TRP3_ProfileEditorTextControlLabelTemplate">
-				<Size y="24"/>
 				<Anchors>
 					<Anchor point="TOPLEFT"/>
 					<Anchor point="TOPRIGHT"/>
