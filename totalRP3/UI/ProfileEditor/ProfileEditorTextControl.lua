@@ -88,7 +88,7 @@ function TRP3_ProfileEditorTextControlLabelMixin:OnLetterCountChanged(letterCoun
 end
 
 function TRP3_ProfileEditorTextControlLabelMixin:ShouldShowTooltip()
-	return self.tooltip ~= nil or self:ShouldShowCounterWarning() or self.Title:IsTruncated();
+	return self.tooltip ~= nil or self:IsAboveMaxLetterCount() or self.Title:IsTruncated();
 end
 
 function TRP3_ProfileEditorTextControlLabelMixin:IsAboveMaxLetterCount()
