@@ -45,7 +45,7 @@ end
 
 function TRP3_ProfileEditorTextControlLabelMixin:Release()
 	self:HideTooltip();
-	self:UpdateLetterCount(0);
+	self:ResetLetterCount();
 
 	self.Title:SetText("");
 
