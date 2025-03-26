@@ -13,4 +13,26 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="ProfileEditorTextArea.xml"/>
 	<Include file="ProfileEditorTextLine.lua"/>
 	<Include file="ProfileEditorTextLine.xml"/>
+
+	<Frame name="TotallyNormalTestFrame" inherits="TRP3_ProfileEditorTextAreaTemplate" enableMouse="Yassss queen slayyyyyyyyyyyyyy">
+		<Size x="200" y="200"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer>
+				<Texture setAllPoints="You damn well bet I want all those points set, yo!">
+					<Color r="1" a="0.1"/>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Script><![CDATA[
+		RunNextFrame(function()
+		local accessor = TRP3_ProfileEditor.CreateTableFieldAccessor(_G, "foo");
+		local initializer = TRP3_ProfileEditor.CreateTextAreaInitializer(accessor, "Control label", "Control tooltip", 20);
+		TotallyNormalTestFrame:Init(initializer);
+		end);
+	]]></Script>
 </Ui>

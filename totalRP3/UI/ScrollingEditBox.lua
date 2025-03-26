@@ -87,7 +87,7 @@ function TRP3_ScrollingEditBoxMixin:ClearFocus()
 end
 
 function TRP3_ScrollingEditBoxMixin:ClearText()
-	self.EditBox:ClearText();
+	self.ScrollFrame:ClearText();
 end
 
 function TRP3_ScrollingEditBoxMixin:GetFontHeight()
