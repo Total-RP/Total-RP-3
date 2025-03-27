@@ -30,7 +30,7 @@ function TRP3_ProfileEditorTextAreaMixin:OnControlTextChanged(editbox, isUserInp
 	self:UpdateLetterCount(self:GetTextLength());
 
 	if isUserInput then
-		self:GetAccessor():SetValue(self:GetText())
+		self:GetAccessor():SetValue(self:GetText());
 	end
 end
 
