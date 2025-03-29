@@ -971,6 +971,7 @@ Total RP is not responsible for links leading to harmful content.|r]],
 	CM_DO_NOT_SHOW = "Do not show",
 	CM_COPY_URL = "Copy link",
 	CM_COPY_TO_CLIPBOARD = "Copy to clipboard",
+	CM_WARNING = "Warning",
 
 	CM_ORANGE = "Orange",
 	CM_WHITE = "White",

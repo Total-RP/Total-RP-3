@@ -1,9 +1,9 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-function TRP3_ProfileEditor.CreateTextLineInitializer(accessor, label, description, maxLetters)
+function TRP3_ProfileEditor.CreateTextLineInitializer(field, label, description, maxLetters)
 	local object = TRP3_API.AllocateObject(TRP3_ProfileEditorTextControlInitializer);
-	object:__init(accessor, label, description, maxLetters);
+	object:__init(field, label, description, maxLetters);
 	return object;
 end
 

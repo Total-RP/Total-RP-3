@@ -5,9 +5,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
-	<Frame name="TRP3_ProfileEditorControlTemplate" mixin="TRP3_ProfileEditorControlMixin" enableMouse="true" virtual="true">
-		<Scripts>
-			<OnLoad method="OnLoad"/>
-		</Scripts>
-	</Frame>
+	<Frame name="TRP3_ProfileEditorControlTemplate" mixin="TRP3_ProfileEditorControlMixin" enableMouse="true" virtual="true"/>
 </Ui>

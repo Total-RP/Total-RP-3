@@ -5,16 +5,19 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
-	<Frame name="TRP3_ProfileEditorTextControlLabelTemplate" mixin="TRP3_ProfileEditorTextControlLabelMixin" enableMouseMotion="true" virtual="true">
+	<FontString name="TRP3_ProfileEditorLetterCounterTemplate" inherits="GameFontHighlight" mixin="TRP3_ProfileEditorLetterCounterMixin" wordwrap="false" nonspacewrap="false" virtual="true">
+		<KeyValues>
+			<KeyValue key="defaultColor" value="HIGHLIGHT_FONT_COLOR" type="global"/>
+			<KeyValue key="warningColor" value="WARNING_FONT_COLOR" type="global"/>
+		</KeyValues>
+	</FontString>
+
+	<Frame name="TRP3_ProfileEditorTextLabelTemplate" mixin="TRP3_ProfileEditorTextLabelMixin" enableMouseMotion="true" virtual="true">
 		<Size y="24"/>
 		<Layers>
 			<Layer level="OVERLAY">
 				<!-- TODO: So what about the information icon? :AYAYA: in the chat -->
-				<FontString parentKey="Counter" inherits="GameFontHighlight" mixin="TRP3_ProfileEditorTextControlLetterCountMixin" justifyH="RIGHT" justifyV="MIDDLE" wordwrap="false" nonspacewrap="false" collapsesLayout="true" hidden="true">
-					<KeyValues>
-						<KeyValue key="defaultColor" value="HIGHLIGHT_FONT_COLOR" type="global"/>
-						<KeyValue key="warningColor" value="WARNING_FONT_COLOR" type="global"/>
-					</KeyValues>
+				<FontString parentKey="LetterCounter" inherits="TRP3_ProfileEditorLetterCounterTemplate" justifyH="RIGHT" justifyV="MIDDLE" collapsesLayout="true" hidden="true">
 					<Anchors>
 						<Anchor point="RIGHT"/>
 					</Anchors>
@@ -22,7 +25,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<FontString parentKey="Title" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" wordwrap="false" nonspacewrap="false">
 					<Anchors>
 						<Anchor point="LEFT" x="4"/>
-						<Anchor point="RIGHT" relativeKey="$parent.Counter" relativePoint="LEFT"/>
+						<Anchor point="RIGHT" relativeKey="$parent.LetterCounter" relativePoint="LEFT"/>
 					</Anchors>
 				</FontString>
 			</Layer>
@@ -34,16 +37,31 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<Frame name="TRP3_ProfileEditorTextControlTemplate" inherits="TRP3_ProfileEditorControlTemplate" mixin="TRP3_ProfileEditorTextControlMixin" virtual="true">
+		<KeyValues>
+			<KeyValue key="numLetters" value="0" type="number"/>
+			<KeyValue key="maxLetters" value="0" type="number"/>
+		</KeyValues>
 		<Frames>
-			<Frame parentKey="Label" inherits="TRP3_ProfileEditorTextControlLabelTemplate">
+			<!--
+				TODO: See if we can kill TextLabelTemplate; have Label use LabelTemplate
+					and put the LetterCounter as an adjacent region. One issue with
+					this will be the tooltip; maybe tooltip population should move
+					to the initializer as a whole rather than be defined as a method
+					on controls?
+
+					Alternatively, what if labels had no tooltip by default but
+					rather you had to set up a "Header" region of sorts which had
+					the tooltip behavior?
+
+					This compositional approach will also solve the "i" problem.
+			-->
+
+			<Frame parentKey="Label" inherits="TRP3_ProfileEditorTextLabelTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT"/>
 					<Anchor point="TOPRIGHT"/>
 				</Anchors>
 			</Frame>
 		</Frames>
-		<Scripts>
-			<OnLoad method="OnLoad"/>
-		</Scripts>
 	</Frame>
 </Ui>

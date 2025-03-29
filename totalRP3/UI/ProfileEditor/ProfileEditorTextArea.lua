@@ -1,9 +1,9 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-function TRP3_ProfileEditor.CreateTextAreaInitializer(accessor, label, description, maxLetters)
+function TRP3_ProfileEditor.CreateTextAreaInitializer(field, label, description, maxLetters)
 	local object = TRP3_API.AllocateObject(TRP3_ProfileEditorTextControlInitializer);
-	object:__init(accessor, label, description, maxLetters);
+	object:__init(field, label, description, maxLetters);
 	return object;
 end
 
@@ -12,7 +12,7 @@ TRP3_ProfileEditorTextAreaMixin = CreateFromMixins(TRP3_ProfileEditorTextControl
 function TRP3_ProfileEditorTextAreaMixin:Init(initializer)
 	TRP3_ProfileEditorTextControlMixin.Init(self, initializer);
 
-	local initialText = self:GetAccessor():GetValue() or "";
+	local initialText = self:GetField():GetValue() or "";
 	self.Control:SetText(initialText);
 	self.Control:RegisterCallback("OnTextChanged", self.OnControlTextChanged, self);
 
@@ -20,7 +20,7 @@ function TRP3_ProfileEditorTextAreaMixin:Init(initializer)
 end
 
 function TRP3_ProfileEditorTextAreaMixin:Release()
-	self.Control:UnregisterAllCallbacks(self);
+	self.Control:UnregisterCallback("OnTextChanged", self);
 	self.Control:ClearText();
 
 	TRP3_ProfileEditorTextControlMixin.Release(self);
@@ -30,7 +30,7 @@ function TRP3_ProfileEditorTextAreaMixin:OnControlTextChanged(editbox, isUserInp
 	self:UpdateLetterCount(self:GetTextLength());
 
 	if isUserInput then
-		self:GetAccessor():SetValue(self:GetText());
+		self:GetField():SetValue(self:GetText());
 	end
 end
 

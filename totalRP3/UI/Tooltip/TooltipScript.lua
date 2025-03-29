@@ -30,8 +30,8 @@ function TRP3_TooltipScriptMixin:ShowTooltip()
 end
 
 function TRP3_TooltipScriptMixin:RefreshTooltip()
-	if self:IsTooltipShown() then
-		self:ShowTooltip();
+	if self:IsMouseMotionFocus() then
+		self:SetTooltipShown(self:ShouldShowTooltip());
 	end
 end
 

@@ -5,6 +5,10 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="ProfileEditor.lua"/>
+	<Include file="ProfileEditorField.lua"/>
+	<Include file="ProfileEditorTooltip.lua"/>
+	<Include file="ProfileEditorLabel.lua"/>
+	<Include file="ProfileEditorLabel.xml"/>
 	<Include file="ProfileEditorControl.lua"/>
 	<Include file="ProfileEditorControl.xml"/>
 	<Include file="ProfileEditorTextControl.lua"/>
@@ -27,12 +31,4 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 	</Frame>
-
-	<Script><![CDATA[
-		RunNextFrame(function()
-		local accessor = TRP3_ProfileEditor.CreateTableFieldAccessor(_G, "foo");
-		local initializer = TRP3_ProfileEditor.CreateTextAreaInitializer(accessor, "Control label", "Control tooltip", 20);
-		TotallyNormalTestFrame:Init(initializer);
-		end);
-	]]></Script>
 </Ui>
