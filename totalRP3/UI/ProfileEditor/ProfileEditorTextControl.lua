@@ -22,7 +22,7 @@ function TRP3_ProfileEditorTextControlInitializer:SetMaxLetters(maxLetters)
 end
 
 function TRP3_ProfileEditorTextControlInitializer:GetLengthWarningText()
-	return (self.lengthWarningText ~= "") and self.lengthWarningText or "heckin' ayaya";
+	return (self.lengthWarningText ~= "") and self.lengthWarningText or nil;
 end
 
 function TRP3_ProfileEditorTextControlInitializer:SetLengthWarningText(lengthWarningText)
