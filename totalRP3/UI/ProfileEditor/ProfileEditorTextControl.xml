@@ -42,20 +42,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<KeyValue key="maxLetters" value="0" type="number"/>
 		</KeyValues>
 		<Frames>
-			<!--
-				TODO: See if we can kill TextLabelTemplate; have Label use LabelTemplate
-					and put the LetterCounter as an adjacent region. One issue with
-					this will be the tooltip; maybe tooltip population should move
-					to the initializer as a whole rather than be defined as a method
-					on controls?
-
-					Alternatively, what if labels had no tooltip by default but
-					rather you had to set up a "Header" region of sorts which had
-					the tooltip behavior?
-
-					This compositional approach will also solve the "i" problem.
-			-->
-
 			<Frame parentKey="Label" inherits="TRP3_ProfileEditorTextLabelTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT"/>
