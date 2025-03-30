@@ -401,7 +401,7 @@ end
 function TRP3_ColorBrowserSwatchMixin:Update()
 	self.SelectedColor:SetColorTexture(self:GetColor():GetRGB());
 	self.ReadableColor:SetColorTexture(self:GetReadableColor():GetRGB());
-	self:SetTooltipShown(self:IsMouseMotionFocus() and self:ShouldShowTooltip());
+	self:SetTooltipShown(self:ShouldShowTooltip());
 	self.ReadableColorWarningIcon:SetShown(not self:IsColorReadable());
 end
 

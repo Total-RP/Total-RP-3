@@ -11,6 +11,10 @@ function TRP3_TooltipScriptMixin:OnLeave()
 	self:SetTooltipShown(false);
 end
 
+function TRP3_TooltipScriptMixin:GetTooltipFrame()
+	return self.tooltipFrame or TRP3_TooltipUtil.GetDefaultTooltip();
+end
+
 function TRP3_TooltipScriptMixin:ShouldShowTooltip()
 	-- Override if the tooltip should only be shown conditionally when
 	-- hovered, eg. if associated text is truncated.
@@ -22,21 +26,27 @@ function TRP3_TooltipScriptMixin:OnTooltipShow(description)  -- luacheck: no unu
 end
 
 function TRP3_TooltipScriptMixin:IsTooltipShown()
-	return TRP3_TooltipUtil.IsOwned(TRP3_MainTooltip, self);
+	return TRP3_TooltipUtil.IsOwned(self:GetTooltipFrame(), self);
 end
 
 function TRP3_TooltipScriptMixin:ShowTooltip()
-	TRP3_TooltipUtil.ShowTooltip(self, self.OnTooltipShow);
+	self:SetTooltipDescription(self:GenerateTooltipDescription());
+end
+
+function TRP3_TooltipScriptMixin:RegenerateTooltip()
+	if self:IsTooltipShown() then
+		self:SetTooltipDescription(self:GenerateTooltipDescription());
+	end
 end
 
 function TRP3_TooltipScriptMixin:RefreshTooltip()
-	if self:IsMouseMotionFocus() then
-		self:SetTooltipShown(self:ShouldShowTooltip());
+	if self:IsTooltipShown() then
+		self:ProcessTooltipDescription(self:GetTooltipDescription());
 	end
 end
 
 function TRP3_TooltipScriptMixin:HideTooltip()
-	TRP3_TooltipUtil.HideTooltip(self);
+	self:SetTooltipDescription(nil);
 end
 
 function TRP3_TooltipScriptMixin:SetTooltipShown(shown)
@@ -44,5 +54,30 @@ function TRP3_TooltipScriptMixin:SetTooltipShown(shown)
 		self:ShowTooltip();
 	else
 		self:HideTooltip();
+	end
+end
+
+function TRP3_TooltipScriptMixin:GetTooltipDescription()
+	return self.tooltipDescription;
+end
+
+function TRP3_TooltipScriptMixin:SetTooltipDescription(description)
+	self.tooltipDescription = description;
+	self:ProcessTooltipDescription(description);
+end
+
+function TRP3_TooltipScriptMixin:GenerateTooltipDescription()
+	local description = TRP3_Tooltip.CreateTooltipDescription(self);
+	TRP3_Tooltip.PopulateTooltipDescription(self.OnTooltipShow, self, description);
+	return description;
+end
+
+function TRP3_TooltipScriptMixin:ProcessTooltipDescription(description)
+	local tooltipFrame = self:GetTooltipFrame();
+
+	if description then
+		TRP3_Tooltip.ProcessTooltipDescription(tooltipFrame, description);
+	else
+		TRP3_TooltipUtil.HideTooltip(self);
 	end
 end

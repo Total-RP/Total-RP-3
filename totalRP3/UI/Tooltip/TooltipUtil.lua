@@ -95,8 +95,12 @@ function TRP3_TooltipUtil.SetLineFontOptions(tooltip, line, height, flags)
 	end
 end
 
+function TRP3_TooltipUtil.GetDefaultTooltip()
+	return TRP3_MainTooltip;
+end
+
 function TRP3_TooltipUtil.HideTooltip(owner)
-	local tooltip = TRP3_MainTooltip;
+	local tooltip = TRP3_TooltipUtil.GetDefaultTooltip();
 
 	if TRP3_TooltipUtil.IsOwned(tooltip, owner) then
 		tooltip:Hide();
@@ -104,9 +108,11 @@ function TRP3_TooltipUtil.HideTooltip(owner)
 end
 
 function TRP3_TooltipUtil.ShowTooltip(owner, generator, ...)
+	local tooltip = TRP3_TooltipUtil.GetDefaultTooltip();
 	local description = TRP3_Tooltip.CreateTooltipDescription(owner);
+
 	TRP3_Tooltip.PopulateTooltipDescription(generator, owner, description, ...);
-	TRP3_Tooltip.ProcessTooltipDescription(TRP3_MainTooltip, description);
+	TRP3_Tooltip.ProcessTooltipDescription(tooltip, description);
 end
 
 function TRP3_TooltipUtil.IsOwned(tooltip, owner)

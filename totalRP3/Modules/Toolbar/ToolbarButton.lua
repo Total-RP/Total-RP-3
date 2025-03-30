@@ -133,7 +133,7 @@ function TRP3_ToolbarButtonMixin:UpdateImmediately()
 	end
 
 	self:SetIconTexture(elementData.icon);
-	self:RefreshTooltip();
+	self:RegenerateTooltip();
 end
 
 function TRP3_ToolbarButtonMixin:MarkDirty()
