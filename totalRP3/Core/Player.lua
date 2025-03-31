@@ -225,6 +225,10 @@ function Player:GetCurrentlyText()
 	return self:GetInfo("character/CU");
 end
 
+function Player:GetOutOfCharacterInfo()
+	return self:GetInfo("character/CO");
+end
+
 function Player:GetWalkup()
 	return self:GetInfo("character/WU") or AddOn_TotalRP3.Enums.WALKUP.NO;
 end
@@ -291,9 +295,34 @@ function Player:GetCharacterSpecificNotes()
 	return profile and profile.notes and profile.notes[profileID] or nil;
 end
 
+function Player:SetCharacterSpecificNotes(notes)
+	local profile = TRP3_API.profile.getPlayerCurrentProfile();
+	local profileID = self:GetProfileID();
+
+	if not profile then
+		return;  -- Should never happen.
+	end
+
+	if not profile.notes then
+		profile.notes = {};
+	end
+
+	profile.notes[profileID] = notes;
+end
+
 function Player:GetAccountWideNotes()
 	local profileID = self:GetProfileID();
 	return TRP3_Notes and TRP3_Notes[profileID] or nil;
+end
+
+function Player:SetAccountWideNotes(notes)
+	local profileID = self:GetProfileID();
+
+	if not TRP3_Notes then
+		TRP3_Notes = {};
+	end
+
+	TRP3_Notes[profileID] = notes;
 end
 
 -- TODO Deprecate GetInfo(path) in favor of proper type safe methods to access profile data
