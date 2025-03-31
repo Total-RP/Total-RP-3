@@ -47,9 +47,7 @@ end
 
 function TRP3_ProfileEditorLabelMixin:OnTooltipShow(description)
 	description:AddTitleLine(self.Title:GetText());
-	description:QueueBlankLine();
 	TRP3_ProfileEditorTooltipMixin.OnTooltipShow(self, description);
-	description:ClearQueuedLines();
 end
 
 function TRP3_ProfileEditorLabelMixin:ShouldShowTooltip()

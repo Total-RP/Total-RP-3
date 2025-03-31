@@ -5,7 +5,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
-	<Frame name="TRP3_ProfileEditorTextLabelTemplate" mixin="TRP3_ProfileEditorTextLabelMixin" enableMouse="true" virtual="true">
+	<Frame name="TRP3_ProfileEditorTextLabelTemplate" mixin="TRP3_ProfileEditorTextLabelMixin" enableMouseMotion="true" virtual="true">
 		<Size y="28"/>
 		<KeyValues>
 			<KeyValue key="numLetters" value="0" type="number"/>

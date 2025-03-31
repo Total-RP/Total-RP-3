@@ -45,7 +45,7 @@ function TRP3_ProfileEditorTooltipMixin:OnTooltipShow(description)
 end
 
 function TRP3_ProfileEditorTooltipMixin:ShouldShowTooltip()
-	return self:HasTooltip();
+	return self:IsMouseMotionFocus() and self:HasTooltip();
 end
 
 function TRP3_ProfileEditorTooltipMixin:HasTooltip()
