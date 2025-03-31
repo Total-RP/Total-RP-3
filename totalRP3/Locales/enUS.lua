@@ -1401,7 +1401,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	REG_NOTES_PROFILE = "Notes",
 	REG_NOTES_PROFILE_TT = "Open the notes window for the target character.",
 	REG_PLAYER_NOTES = "Notes",
-	REG_PLAYER_NOTES_NOTICE = "Setting a note will display a %s icon in the character's tooltip.",
+	REG_PLAYER_NOTES_NOTICE = "|cnGREEN_FONT_COLOR:Tip:|r Setting a note will display a %s icon in the character's tooltip.",
 	REG_PLAYER_NOTES_PROFILE = "Notes from |cnGREEN_FONT_COLOR:%s|r",
 	REG_PLAYER_NOTES_PROFILE_NONAME = "Profile notes",
 	REG_PLAYER_NOTES_PROFILE_HELP = "These private notes are tied to your current profile and will change based on what profile you currently have active.",

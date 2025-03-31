@@ -1212,7 +1212,7 @@ Il y a plusieurs manières de l'indiquer:|c0000ff00
 	["REG_PLAYER_NOTES"] = "Notes",
 	["REG_PLAYER_NOTES_ACCOUNT"] = "Notes du compte",
 	["REG_PLAYER_NOTES_ACCOUNT_HELP"] = "Ces notes privées sont liées à votre compte et seront partagées avec tous vos profils.",
-	["REG_PLAYER_NOTES_NOTICE"] = "Remplir une note affichera une icône %s dans l'infobulle du personnage.",
+	["REG_PLAYER_NOTES_NOTICE"] = "|cnGREEN_FONT_COLOR:Astuce :|r Remplir une note affichera une icône %s dans l'infobulle du personnage.",
 	["REG_PLAYER_NOTES_PROFILE"] = "Notes de %s",
 	["REG_PLAYER_NOTES_PROFILE_HELP"] = "Ces notes privées sont liées à votre profil actuel et changeront en fonction de votre profil actuel.",
 	["REG_PLAYER_NOTES_PROFILE_NONAME"] = "Notes du profil",

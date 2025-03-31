@@ -1030,7 +1030,7 @@ Hierfür gibt es mehrere Möglichkeiten:|c0000ff00
 	["REG_PLAYER_NOTES"] = "Notizen",
 	["REG_PLAYER_NOTES_ACCOUNT"] = "Account Notizen",
 	["REG_PLAYER_NOTES_ACCOUNT_HELP"] = "Diese privaten Notizen sind mit deinem Account verbunden und werden mit allen deinen Profile geteilt.",
-	["REG_PLAYER_NOTES_NOTICE"] = "Beim Setzen einer Notiz wird ein %s-Symbol im Tooltip des Charakters angezeigt.",
+	["REG_PLAYER_NOTES_NOTICE"] = "|cnGREEN_FONT_COLOR:Tipp:|r Beim Setzen einer Notiz wird ein %s-Symbol im Tooltip des Charakters angezeigt.",
 	["REG_PLAYER_NOTES_PROFILE"] = "Notizen von %s",
 	["REG_PLAYER_NOTES_PROFILE_HELP"] = "Diese privaten Notizen sind mit deinem aktuellen Profil verbunden und verändern sich, je nachdem welches Profil du benutzt. ",
 	["REG_PLAYER_NOTES_PROFILE_NONAME"] = "Profil Notizen",
