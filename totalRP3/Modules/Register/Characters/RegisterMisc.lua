@@ -355,91 +355,44 @@ TRP3_API.register.swapGlanceSlot = swapGlanceSlot;
 -- Currently
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TEMP_currentlyText;
-local TEMP_oocText;
-
-local function onCurrentlyChanged()
-	if not getCurrentContext().isPlayer then
-		return;
-	end
-
-	local multiLine = true;
-	local text = Utils.str.sanitize(TEMP_currentlyText, multiLine);
-
-	local player = AddOn_TotalRP3.Player.GetCurrentUser();
-	player:SetCurrentlyText(text);
-end
-
-local function onOOCInfoChanged()
-	if not getCurrentContext().isPlayer then
-		return;
-	end
-
-	local multiLine = true;
-	local text = Utils.str.sanitize(TEMP_oocText, multiLine);
-
-	local player = AddOn_TotalRP3.Player.GetCurrentUser();
-	player:SetOutOfCharacterInfo(text);
-end
-
--- TODO: Allow parameter passthrough for debounce or reimplement this to be less bad.
-local UpdateCurrentlyText = TRP3_FunctionUtil.Debounce(0.2, onCurrentlyChanged);
-
-local function OnCurrentlyTextChanged(text, userInput)
-	if userInput then
-		TEMP_currentlyText = text;
-		UpdateCurrentlyText();
-	end
-end
-
--- TODO: Allow parameter passthrough for debounce or reimplement this to be less bad.
-local UpdateOOCText = TRP3_FunctionUtil.Debounce(0.2, onOOCInfoChanged);
-
-local function OnOOCTextChanged(text, userInput)
-	if userInput then
-		TEMP_oocText = text;
-		UpdateOOCText();
-	end
-end
-
 local function displayCurrently(context)
-	local dataTab = context.profile.character or Globals.empty;
+	local player;
+
+	if context.isPlayer then
+		player = AddOn_TotalRP3.Player.GetCurrentUser();
+	else
+		player = AddOn_TotalRP3.Player.CreateFromProfileID(context.profileID);
+	end
 
 	do
-		local initializer = TRP3_RegisterUtil.CreateTextInputInitializer();
-		initializer:SetTitle(loc.DB_STATUS_CURRENTLY);
-		initializer:SetDescription(loc.DB_STATUS_CURRENTLY_TT);
-		initializer:SetInitialText(dataTab.CU or "");
-		initializer:SetTextLengthLimit(240);  -- TODO: Make this a named and globally-accessible constant.
-		-- TODO: Initializer also needs a property for read-only-ness.
-		initializer:SetTextChangedCallback(OnCurrentlyTextChanged);
+		local accessor = TRP3_ProfileEditor.CreateMethodAccessor(player, player.GetCurrentlyText, player.SetCurrentlyText);
+		local field = TRP3_ProfileEditor.CreateField(accessor);
+		TRP3_ProfileEditor.AddDeferredCommitBehavior(field, 0.5);
+
+		local label = loc.DB_STATUS_CURRENTLY;
+		local tooltip = loc.DB_STATUS_CURRENTLY_TT;
+		local maxLetters = TRP3_ProfileEditorLengthLimits.Currently;
+		local initializer = TRP3_ProfileEditor.CreateTextAreaInitializer(field, label, tooltip, maxLetters);
+
+		-- TODO: Initializer also needs a property for read-only-ness, but
+		--       really an RO control should just be a separate thing...
 		TRP3_RegisterMiscViewCurrently.IC:Init(initializer);
 	end
 
 	do
-		local initializer = TRP3_RegisterUtil.CreateTextInputInitializer();
-		initializer:SetTitle(loc.DB_STATUS_CURRENTLY_OOC);
-		initializer:SetDescription(loc.DB_STATUS_CURRENTLY_OOC_TT);
-		initializer:SetInitialText(dataTab.CO or "");
-		initializer:SetTextLengthLimit(240);  -- TODO: Make this a named and globally-accessible constant.
-		-- TODO: Initializer also needs a property for read-only-ness.
-		initializer:SetTextChangedCallback(OnOOCTextChanged);
+		local accessor = TRP3_ProfileEditor.CreateMethodAccessor(player, player.GetOutOfCharacterInfo, player.SetOutOfCharacterInfo);
+		local field = TRP3_ProfileEditor.CreateField(accessor);
+		TRP3_ProfileEditor.AddDeferredCommitBehavior(field, 0.5);
+
+		local label = loc.DB_STATUS_CURRENTLY_OOC;
+		local tooltip = loc.DB_STATUS_CURRENTLY_OOC_TT;
+		local maxLetters = TRP3_ProfileEditorLengthLimits.OOC;
+		local initializer = TRP3_ProfileEditor.CreateTextAreaInitializer(field, label, tooltip, maxLetters);
+
+		-- TODO: Initializer also needs a property for read-only-ness, but
+		--       really an RO control should just be a separate thing...
 		TRP3_RegisterMiscViewCurrently.OOC:Init(initializer);
-	end
-
-	-- TRP3_RegisterMiscViewCurrently.IC:SetTitleText(loc.DB_STATUS_CURRENTLY);
-	-- TRP3_RegisterMiscViewCurrently.IC:SetInputTextChangedCallback(OnCurrentlyTextChanged);
-	-- TRP3_RegisterMiscViewCurrently.OOC:SetTitleText(loc.DB_STATUS_CURRENTLY_OOC);
-	-- TRP3_RegisterMiscViewCurrently.OOC:SetInputTextChangedCallback(OnOOCTextChanged);
-
-	-- TRP3_RegisterMiscViewCurrently.IC:SetReadOnly(not context.isPlayer);
-	-- TRP3_RegisterMiscViewCurrently.IC.HelpButton:SetShown(context.isPlayer);
-
-	-- TRP3_RegisterMiscViewCurrently.OOC:SetReadOnly(not context.isPlayer);
-	-- TRP3_RegisterMiscViewCurrently.OOC.HelpButton:SetShown(context.isPlayer);
-
-	-- TRP3_RegisterMiscViewCurrently.IC:SetInputText(dataTab.CU or "");
-	-- TRP3_RegisterMiscViewCurrently.OOC:SetInputText(dataTab.CO or "");
+	end;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

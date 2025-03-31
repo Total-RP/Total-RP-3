@@ -1626,6 +1626,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	MAP_SCAN_CHAR_GUILD_ONLY_TITLE = "Guild",
 
 	PROFILE_EDITOR_LENGTH_WARNING_DEFAULT = "We recommend |cnGREEN_FONT_COLOR:reducing the amount of text|r in this field.|n|nLarge profile fields |cnWARNING_FONT_COLOR:can take longer to transfer|r to other players and |cnWARNING_FONT_COLOR:may not display as intended|r.",
+	PROFILE_EDITOR_LENGTH_WARNING_NOTES = "We recommend |cnGREEN_FONT_COLOR:reducing the amount of text|r in these notes |cnWARNING_FONT_COLOR:if you encounter issues exporting|r the profile."
 };
 
 -- Bindings and FrameXML Global Strings

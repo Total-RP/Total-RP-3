@@ -167,17 +167,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="TRP3_RegisterMiscViewRPStyle" y="10"/>
 						</Anchors>
 						<Frames>
-							<Frame parentKey="IC" inherits="TRP3_RegisterTextInputControlTemplate">
+							<Frame parentKey="IC" inherits="TRP3_ProfileEditorTextAreaTemplate">
 								<Anchors>
-									<Anchor point="TOP" y="-17"/>
+									<Anchor point="TOP" y="-10"/>
 									<Anchor point="BOTTOM" y="10"/>
 									<Anchor point="LEFT" x="10"/>
 									<Anchor point="RIGHT" relativePoint="CENTER" x="-5"/>
 								</Anchors>
 							</Frame>
-							<Frame parentKey="OOC" inherits="TRP3_RegisterTextInputControlTemplate">
+							<Frame parentKey="OOC" inherits="TRP3_ProfileEditorTextAreaTemplate">
 								<Anchors>
-									<Anchor point="TOP" y="-17"/>
+									<Anchor point="TOP" y="-10"/>
 									<Anchor point="BOTTOM" y="10"/>
 									<Anchor point="RIGHT" x="-10"/>
 									<Anchor point="LEFT" relativePoint="CENTER" x="5"/>

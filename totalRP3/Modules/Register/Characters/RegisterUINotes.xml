@@ -34,8 +34,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Anchors>
 						<Layers>
 							<Layer level="OVERLAY">
-								<FontString parentKey="Notice" inherits="GameFontHighlightSmall" justifyH="LEFT">
-									<Size x="0" y="15"/>
+								<FontString parentKey="Notice" inherits="GameFontHighlight" justifyH="LEFT" justifyV="MIDDLE" wordwrap="false" nonspacewrap="false" collapsesLayout="true">
+									<Size y="28"/>
 									<Anchors>
 										<Anchor point="TOP" x="0" y="-15"/>
 										<Anchor point="LEFT" x="15" y="0"/>
@@ -45,60 +45,21 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							</Layer>
 						</Layers>
 						<Frames>
-							<Frame name="TRP3_RegisterNotesViewProfile" inherits="TRP3_InsetScrollingEditBoxTemplate">
-								<Anchors>
-									<Anchor point="TOP" x="0" y="-40"/>
-									<Anchor point="LEFT" x="10" y="0"/>
-									<Anchor point="RIGHT" x="-10" y="0"/>
-									<Anchor point="BOTTOM" relativePoint="CENTER" x="0" y="-8"/>
-								</Anchors>
-								<Layers>
-									<Layer level="OVERLAY">
-										<FontString parentKey="Title" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
-											<Anchors>
-												<Anchor point="TOPLEFT" x="15" y="10"/>
-												<Anchor point="TOPRIGHT" x="-15" y="10"/>
-											</Anchors>
-											<Color r="0.95" g="0.75" b="0.1"/>
-										</FontString>
-									</Layer>
-								</Layers>
-								<Frames>
-									<Button parentKey="HelpButton" inherits="TRP3_HelpButton">
-										<Size x="14" y="14"/>
-										<Anchors>
-											<Anchor point="TOPRIGHT" x="0" y="13"/>
-										</Anchors>
-									</Button>
-								</Frames>
-							</Frame>
-							<Frame name="TRP3_RegisterNotesViewAccount" inherits="TRP3_InsetScrollingEditBoxTemplate">
-								<Size x="235" y="0"/>
+							<Frame parentKey="AccountNotes" inherits="TRP3_ProfileEditorTextAreaTemplate" collapsesLayout="true">
 								<Anchors>
 									<Anchor point="BOTTOM" x="0" y="10"/>
 									<Anchor point="LEFT" x="10" y="0"/>
 									<Anchor point="RIGHT" x="-10" y="0"/>
-									<Anchor point="TOP" relativePoint="CENTER" x="0" y="-27"/>
+									<Anchor point="TOP" relativePoint="CENTER" x="0" y="-5"/>
 								</Anchors>
-								<Layers>
-									<Layer level="OVERLAY">
-										<FontString parentKey="Title" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
-											<Anchors>
-												<Anchor point="TOPLEFT" x="15" y="10"/>
-												<Anchor point="TOPRIGHT" x="-15" y="10"/>
-											</Anchors>
-											<Color r="0.95" g="0.75" b="0.1"/>
-										</FontString>
-									</Layer>
-								</Layers>
-								<Frames>
-									<Button parentKey="HelpButton" inherits="TRP3_HelpButton">
-										<Size x="14" y="14"/>
-										<Anchors>
-											<Anchor point="TOPRIGHT" x="0" y="13"/>
-										</Anchors>
-									</Button>
-								</Frames>
+							</Frame>
+							<Frame parentKey="ProfileNotes" inherits="TRP3_ProfileEditorTextAreaTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.Notice" relativePoint="BOTTOM"/>
+									<Anchor point="LEFT" x="10" y="0"/>
+									<Anchor point="RIGHT" x="-10" y="0"/>
+									<Anchor point="BOTTOM" relativeKey="$parent.AccountNotes" relativePoint="TOP" x="0" y="5"/>
+								</Anchors>
 							</Frame>
 						</Frames>
 					</Frame>

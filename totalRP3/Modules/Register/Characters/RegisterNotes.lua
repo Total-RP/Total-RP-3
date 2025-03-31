@@ -10,69 +10,64 @@ local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local hasProfile = TRP3_API.register.hasProfile;
 local openMainFrame = TRP3_API.navigation.openMainFrame;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
-local GetCurrentUser = AddOn_TotalRP3.Player.GetCurrentUser;
-local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 local getConfigValue = TRP3_API.configuration.getValue;
 
 local function displayNotes(context)
+	local player;
 
-	local profileID = context.profileID;
 	if context.isPlayer then
-		profileID = getPlayerCurrentProfileID();
+		player = AddOn_TotalRP3.Player.GetCurrentUser();
+	else
+		player = AddOn_TotalRP3.Player.CreateFromProfileID(context.profileID);
+	end
+
+	if context.isPlayer then
 		TRP3_RegisterNotesViewContainer.Notice:Hide();
-		TRP3_RegisterNotesViewAccount:Hide();
-		TRP3_RegisterNotesViewProfile:SetPoint("BOTTOM", TRP3_RegisterNotesView, "BOTTOM", 0, 10);
-		TRP3_RegisterNotesViewProfile:SetPoint("TOP", 0, -25);
 	else
 		TRP3_RegisterNotesViewContainer.Notice:Show();
-		TRP3_RegisterNotesViewProfile:SetPoint("BOTTOM", TRP3_RegisterNotesViewContainer, "CENTER", 0, -8);
-		TRP3_RegisterNotesViewProfile:SetPoint("TOP", 0, -45);
-		TRP3_RegisterNotesViewAccount:Show();
 	end
 
-	local currentProfileName = GetCurrentUser():GetProfileName();
-	local profileNotesTitle = string.format(loc.REG_PLAYER_NOTES_PROFILE, currentProfileName);
-	TRP3_RegisterNotesViewProfile.Title:SetText(profileNotesTitle);
+	-- Character-specific notes setup
 
-	assert(profileID, "No profileID in context !");
+	do
+		local currentProfileName = AddOn_TotalRP3.Player.GetCurrentUser():GetProfileName();
 
-	local profileNotes = getPlayerCurrentProfile().notes;
-	TRP3_RegisterNotesViewProfile:SetText(profileNotes and profileNotes[profileID] or "");
-	TRP3_RegisterNotesViewAccount:SetText(TRP3_Notes and TRP3_Notes[profileID] or "");
-end
+		local accessor = TRP3_ProfileEditor.CreateMethodAccessor(player, player.GetCharacterSpecificNotes, player.SetCharacterSpecificNotes);
+		local field = TRP3_ProfileEditor.CreateField(accessor);
+		local label = string.format(loc.REG_PLAYER_NOTES_PROFILE, currentProfileName);
+		local maxLetters = TRP3_ProfileEditorLengthLimits.Notes;
 
-local function onProfileNotesChanged()
-	local context = getCurrentContext();
-	local profileID = context.profileID;
-	if context.isPlayer then
-		profileID = getPlayerCurrentProfileID();
+		local function OnTooltipShow(description)
+			description:ClearLines();
+			description:AddTitleLine(loc.REG_PLAYER_NOTES_PROFILE_NONAME);
+			description:AddNormalLine(loc.REG_PLAYER_NOTES_PROFILE_HELP);
+		end
+
+		local initializer = TRP3_ProfileEditor.CreateTextAreaInitializer(field, label, OnTooltipShow, maxLetters);
+		initializer:SetLengthWarningText(loc.PROFILE_EDITOR_LENGTH_WARNING_NOTES);
+
+		TRP3_RegisterNotesViewContainer.ProfileNotes:Init(initializer);
 	end
 
-	local profile = getPlayerCurrentProfile();
-	if not profile.notes then
-		profile.notes = {};
+	-- Account-wide notes setup
+
+	if not context.isPlayer then
+		local accessor = TRP3_ProfileEditor.CreateMethodAccessor(player, player.GetAccountWideNotes, player.SetAccountWideNotes);
+		local field = TRP3_ProfileEditor.CreateField(accessor);
+		local label = loc.REG_PLAYER_NOTES_ACCOUNT;
+		local tooltip = loc.REG_PLAYER_NOTES_ACCOUNT_HELP;
+		local maxLetters = TRP3_ProfileEditorLengthLimits.Notes;
+
+		local initializer = TRP3_ProfileEditor.CreateTextAreaInitializer(field, label, tooltip, maxLetters);
+		initializer:SetLengthWarningText(loc.PROFILE_EDITOR_LENGTH_WARNING_NOTES);
+
+		TRP3_RegisterNotesViewContainer.AccountNotes:Init(initializer);
+		TRP3_RegisterNotesViewContainer.AccountNotes:Show();
+	else
+		TRP3_RegisterNotesViewContainer.AccountNotes:Hide();
 	end
-
-	local text = TRP3_RegisterNotesViewProfile:GetInputText();
-	text = string.trim(text);
-	text = text ~= "" and text or nil;
-	profile.notes[profileID] = text;
-end
-
-local function onAccountNotesChanged()
-	local context = getCurrentContext();
-	local profileID = context.profileID;
-	if context.isPlayer then
-		profileID = getPlayerCurrentProfileID();
-	end
-
-	local text = TRP3_RegisterNotesViewAccount:GetInputText();
-	text = string.trim(text);
-	text = text ~= "" and text or nil;
-	TRP3_Notes[profileID] = text;
 end
 
 local function showNotesTab()
@@ -93,15 +88,7 @@ function TRP3_API.register.inits.notesInit()
 	end
 
 	TRP3_RegisterNotesViewContainer:SetTitleText(loc.REG_PLAYER_NOTES);
-	TRP3_RegisterNotesViewContainer.Notice:SetText(string.format(loc.REG_PLAYER_NOTES_NOTICE, "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-note:22:22|t"));
-
-	TRP3_RegisterNotesViewAccount.Title:SetText(loc.REG_PLAYER_NOTES_ACCOUNT);
-
-	setTooltipForSameFrame(TRP3_RegisterNotesViewProfile.HelpButton, "LEFT", 0, 10, loc.REG_PLAYER_NOTES_PROFILE_NONAME, loc.REG_PLAYER_NOTES_PROFILE_HELP);
-	setTooltipForSameFrame(TRP3_RegisterNotesViewAccount.HelpButton, "LEFT", 0, 10, loc.REG_PLAYER_NOTES_ACCOUNT, loc.REG_PLAYER_NOTES_ACCOUNT_HELP);
-
-	TRP3_RegisterNotesViewAccount:RegisterCallback("OnTextChanged", onAccountNotesChanged, {});
-	TRP3_RegisterNotesViewProfile:RegisterCallback("OnTextChanged", onProfileNotesChanged, {});
+	TRP3_RegisterNotesViewContainer.Notice:SetFormattedText(loc.REG_PLAYER_NOTES_NOTICE, "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-note:22:22|t");
 
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		if not TRP3_API.target then
