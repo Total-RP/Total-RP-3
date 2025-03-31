@@ -235,6 +235,11 @@ function TooltipDescription:InsertLine(lineDescription, index)
 	return lineDescription;
 end
 
+function TooltipDescription:ClearLines()
+	self.lineDescriptions = {};
+	self.queuedDescriptions = {};
+end
+
 function TooltipDescription:QueueBlankLine()
 	local lineDescription = TRP3_TooltipTemplates.CreateBlankLine();
 	return self:QueueLine(lineDescription);
