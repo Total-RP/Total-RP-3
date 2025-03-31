@@ -35,14 +35,6 @@ function TRP3_ProfileEditorTooltipMixin:OnLeave()
 end
 
 function TRP3_ProfileEditorTooltipMixin:OnTooltipShow(description)
-	self:PopulateTooltip(description);
-end
-
-function TRP3_ProfileEditorTooltipMixin:ShouldShowTooltip()
-	return (self.tooltip ~= nil);
-end
-
-function TRP3_ProfileEditorTooltipMixin:PopulateTooltip(description)
 	local tooltip = self.tooltip;
 
 	if type(tooltip) == "function" then
@@ -50,4 +42,12 @@ function TRP3_ProfileEditorTooltipMixin:PopulateTooltip(description)
 	elseif tooltip ~= nil and tooltip ~= "" then
 		description:AddNormalLine(tooltip);
 	end
+end
+
+function TRP3_ProfileEditorTooltipMixin:ShouldShowTooltip()
+	return self:HasTooltip();
+end
+
+function TRP3_ProfileEditorTooltipMixin:HasTooltip()
+	return (self.tooltip ~= nil);
 end

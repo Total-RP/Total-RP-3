@@ -5,27 +5,35 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
-	<FontString name="TRP3_ProfileEditorLetterCounterTemplate" inherits="GameFontHighlight" mixin="TRP3_ProfileEditorLetterCounterMixin" wordwrap="false" nonspacewrap="false" virtual="true">
+	<Frame name="TRP3_ProfileEditorTextLabelTemplate" mixin="TRP3_ProfileEditorTextLabelMixin" enableMouse="true" virtual="true">
+		<Size y="28"/>
 		<KeyValues>
-			<KeyValue key="defaultColor" value="HIGHLIGHT_FONT_COLOR" type="global"/>
-			<KeyValue key="warningColor" value="WARNING_FONT_COLOR" type="global"/>
+			<KeyValue key="numLetters" value="0" type="number"/>
+			<KeyValue key="maxLetters" value="math.huge" type="global"/>
 		</KeyValues>
-	</FontString>
-
-	<Frame name="TRP3_ProfileEditorTextLabelTemplate" mixin="TRP3_ProfileEditorTextLabelMixin" enableMouseMotion="true" virtual="true">
-		<Size y="24"/>
+		<Frames>
+			<Frame parentKey="TooltipIcon" inherits="TRP3_ProfileEditorTooltipIconTemplate" collapsesLayout="true" hidden="true">
+				<Anchors>
+					<Anchor point="RIGHT"/>
+				</Anchors>
+			</Frame>
+			<Frame parentKey="WarningIcon" inherits="TRP3_ProfileEditorWarningIconTemplate" collapsesLayout="true" hidden="true">
+				<Anchors>
+					<Anchor point="RIGHT" relativeKey="$parent.TooltipIcon" relativePoint="LEFT"/>
+				</Anchors>
+			</Frame>
+		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
-				<!-- TODO: So what about the information icon? :AYAYA: in the chat -->
-				<FontString parentKey="LetterCounter" inherits="TRP3_ProfileEditorLetterCounterTemplate" justifyH="RIGHT" justifyV="MIDDLE" collapsesLayout="true" hidden="true">
+				<FontString parentKey="LetterCount" inherits="TRP3_ProfileEditorLetterCountTemplate" justifyH="RIGHT" justifyV="MIDDLE" collapsesLayout="true" hidden="true">
 					<Anchors>
-						<Anchor point="RIGHT"/>
+						<Anchor point="RIGHT" relativeKey="$parent.WarningIcon" relativePoint="LEFT"/>
 					</Anchors>
 				</FontString>
-				<FontString parentKey="Title" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" wordwrap="false" nonspacewrap="false">
+				<FontString parentKey="Title" inherits="TRP3_ProfileEditorLabelTitleTemplate" justifyH="LEFT" justifyV="MIDDLE">
 					<Anchors>
-						<Anchor point="LEFT" x="4"/>
-						<Anchor point="RIGHT" relativeKey="$parent.LetterCounter" relativePoint="LEFT"/>
+						<Anchor point="LEFT"/>
+						<Anchor point="RIGHT" relativeKey="$parent.LetterCount" relativePoint="LEFT"/>
 					</Anchors>
 				</FontString>
 			</Layer>
@@ -37,10 +45,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Frame>
 
 	<Frame name="TRP3_ProfileEditorTextControlTemplate" inherits="TRP3_ProfileEditorControlTemplate" mixin="TRP3_ProfileEditorTextControlMixin" virtual="true">
-		<KeyValues>
-			<KeyValue key="numLetters" value="0" type="number"/>
-			<KeyValue key="maxLetters" value="0" type="number"/>
-		</KeyValues>
 		<Frames>
 			<Frame parentKey="Label" inherits="TRP3_ProfileEditorTextLabelTemplate">
 				<Anchors>

@@ -10,7 +10,7 @@ function TRP3_ProfileEditorTextControlInitializer:__init(field, label, tooltip, 
 	TRP3_ProfileEditorLabelInitializer.__init(self, label, tooltip);
 
 	self.maxLetters = maxLetters;
-	self.lengthWarningText = nil;
+	self.lengthWarning = nil;
 end
 
 function TRP3_ProfileEditorTextControlInitializer:GetMaxLetters()
@@ -22,26 +22,11 @@ function TRP3_ProfileEditorTextControlInitializer:SetMaxLetters(maxLetters)
 end
 
 function TRP3_ProfileEditorTextControlInitializer:GetLengthWarningText()
-	return (self.lengthWarningText ~= "") and self.lengthWarningText or nil;
+	return (self.lengthWarning ~= "") and self.lengthWarning or L.PROFILE_EDITOR_LENGTH_WARNING_DEFAULT;
 end
 
-function TRP3_ProfileEditorTextControlInitializer:SetLengthWarningText(lengthWarningText)
-	self.lengthWarningText = lengthWarningText;
-end
-
-TRP3_ProfileEditorLetterCounterMixin = {};
-
-function TRP3_ProfileEditorLetterCounterMixin:SetLetterCount(count, hint, limit)
-	if count >= hint then
-		local color = (count > limit) and self.warningColor or self.defaultColor;
-		local distance = (limit - count);
-
-		self:SetFormattedText("%d", distance);
-		self:SetTextColor(color:GetRGB());
-		self:Show();
-	else
-		self:Hide();
-	end
+function TRP3_ProfileEditorTextControlInitializer:SetLengthWarningText(lengthWarning)
+	self.lengthWarning = lengthWarning;
 end
 
 TRP3_ProfileEditorTextLabelMixin = CreateFromMixins(TRP3_ProfileEditorLabelMixin);
@@ -50,31 +35,34 @@ function TRP3_ProfileEditorTextLabelMixin:Init(initializer)
 	TRP3_ProfileEditorLabelMixin.Init(self, initializer);
 
 	self.maxLetters = initializer:GetMaxLetters();
-	self.maxLettersHint = math.floor((self.maxLetters * 0.9) / 5) * 5;
-	self.lengthWarningText = initializer:GetLengthWarningText();
+	self.lengthWarning = initializer:GetLengthWarningText();
 end
 
 function TRP3_ProfileEditorTextLabelMixin:Release()
-	TRP3_ProfileEditorLabelMixin.Release(self);
-
 	self:ResetLetterCount();
+	TRP3_ProfileEditorLabelMixin.Release(self);
 end
 
-function TRP3_ProfileEditorTextLabelMixin:PopulateTooltip(description)
-	TRP3_ProfileEditorLabelMixin.PopulateTooltip(self, description);
+function TRP3_ProfileEditorTextLabelMixin:OnEnter()
+	TRP3_ProfileEditorLabelMixin.OnEnter(self);
+	self.WarningIcon:SetHighlightLocked(true);
+end
+
+function TRP3_ProfileEditorTextLabelMixin:OnLeave()
+	self.WarningIcon:SetHighlightLocked(false);
+	TRP3_ProfileEditorLabelMixin.OnLeave(self);
+end
+
+function TRP3_ProfileEditorTextLabelMixin:OnTooltipShow(description)
+	TRP3_ProfileEditorLabelMixin.OnTooltipShow(self, description);
 
 	if self:ShouldShowLengthWarning() then
 		local icon = TRP3_MarkupUtil.GenerateIconMarkup("services-icon-warning", { height = 16, width = 18 });
 
 		description:AddBlankLine();
 		description:AddHighlightLine(string.join(" ", icon, L.CM_WARNING));
-		description:AddNormalLine(self.lengthWarningText);
+		description:AddNormalLine(self.lengthWarning);
 	end
-end
-
-function TRP3_ProfileEditorTextLabelMixin:OnLetterCountChanged(numLetters)  -- luacheck: no unused
-	self:RefreshLetterCount();
-	self:RefreshTooltip();
 end
 
 function TRP3_ProfileEditorTextLabelMixin:ShouldShowTooltip()
@@ -86,7 +74,7 @@ function TRP3_ProfileEditorTextLabelMixin:ShouldShowTooltip()
 end
 
 function TRP3_ProfileEditorTextLabelMixin:ShouldShowLengthWarning()
-	return (self.lengthWarningText ~= nil) and (self.numLetters > self.maxLetters);
+	return (self.numLetters > self.maxLetters);
 end
 
 function TRP3_ProfileEditorTextLabelMixin:ResetLetterCount()
@@ -102,8 +90,13 @@ function TRP3_ProfileEditorTextLabelMixin:UpdateLetterCount(numLetters)
 	self:OnLetterCountChanged(numLetters);
 end
 
-function TRP3_ProfileEditorTextLabelMixin:RefreshLetterCount()
-	self.LetterCounter:SetLetterCount(self.numLetters, self.maxLettersHint, self.maxLetters);
+function TRP3_ProfileEditorTextLabelMixin:OnLetterCountChanged(_numLetters)
+	local shouldShowWarning = self:ShouldShowLengthWarning();
+
+	self.LetterCount:SetCount(self.numLetters, self.maxLetters);
+	self.WarningIcon:SetShown(shouldShowWarning);
+	self.TooltipIcon:SetShown(not shouldShowWarning);
+	self:SetTooltipShown(self:ShouldShowTooltip());
 end
 
 TRP3_ProfileEditorTextControlMixin = CreateFromMixins(TRP3_ProfileEditorControlMixin);

@@ -1625,9 +1625,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	MAP_SCAN_CHAR_GUILD_ONLY = "Scan for guild members",
 	MAP_SCAN_CHAR_GUILD_ONLY_TITLE = "Guild",
 
-	TODOFINDAPREFIXTODO_PROFILE_FIELD_IS_CHONK1 = "We strongly recommend |cnGREEN_FONT_COLOR:reducing the amount of text|r in this field as it |cnWARNING_FONT_COLOR:may not display correctly|r when viewed by other players.",
-	TODOFINDAPREFIXTODO_PROFILE_FIELD_IS_CHONK2 = "We strongly recommend |cnGREEN_FONT_COLOR:reducing the amount of text|r in this field as it |cnWARNING_FONT_COLOR:may take a significant amount of time|r to send this profile to other players.",
-	TODOFINDAPREFIXTODO_PROFILE_FIELD_IS_CHONK3 = "We strongly recommend |cnGREEN_FONT_COLOR:reducing the amount of text|r in this field as it |cnWARNING_FONT_COLOR:is probably large enough to be detrimental to your entire roleplay experience, your life, and the lives of your immediate family, friends, and coworkers. Seek help|r.",
+	PROFILE_EDITOR_LENGTH_WARNING_DEFAULT = "We recommend |cnGREEN_FONT_COLOR:reducing the amount of text|r in this field.|n|nLarge profile fields |cnWARNING_FONT_COLOR:can take longer to transfer|r to other players and |cnWARNING_FONT_COLOR:may not display as intended|r.",
 };
 
 -- Bindings and FrameXML Global Strings

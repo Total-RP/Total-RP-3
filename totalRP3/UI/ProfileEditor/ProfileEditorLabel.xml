@@ -7,28 +7,21 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ProfileEditorLabelTemplate" mixin="TRP3_ProfileEditorLabelMixin" enableMouse="true" virtual="true">
 		<Size y="28"/>
+		<Frames>
+			<Frame parentKey="TooltipIcon" inherits="TRP3_ProfileEditorTooltipIconTemplate" collapsesLayout="true" hidden="true">
+				<Anchors>
+					<Anchor point="RIGHT"/>
+				</Anchors>
+			</Frame>
+		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture parentKey="TooltipIcon" atlas="Ping_Chat_Warning" useAtlasSize="false" collapsesLayout="true">
-					<Size x="14" y="14"/>
+				<FontString parentKey="Title" inherits="TRP3_ProfileEditorLabelTitleTemplate" justifyH="LEFT" justifyV="MIDDLE">
 					<Anchors>
-						<Anchor point="RIGHT" x="-4"/>
-					</Anchors>
-				</Texture>
-				<FontString parentKey="Title" inherits="SystemFont_Shadow_Med2" justifyH="LEFT" justifyV="MIDDLE" wordwrap="false" nonspacewrap="false">
-					<Anchors>
-						<Anchor point="LEFT" x="4"/>
-						<Anchor point="RIGHT" relativeKey="$parent.TooltipIcon" x="-4"/>
+						<Anchor point="LEFT"/>
+						<Anchor point="RIGHT" relativeKey="$parent.TooltipIcon" relativePoint="LEFT"/>
 					</Anchors>
 				</FontString>
-			</Layer>
-			<Layer level="HIGHLIGHT">
-				<Texture parentKey="TooltipIconHighlight" atlas="Ping_Chat_Warning" useAtlasSize="false" alphaMode="ADD" alpha="0.4">
-					<Anchors>
-						<Anchor point="TOPLEFT" relativeKey="$parent.TooltipIcon"/>
-						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.TooltipIcon"/>
-					</Anchors>
-				</Texture>
 			</Layer>
 		</Layers>
 		<Scripts>

@@ -7,6 +7,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="ProfileEditor.lua"/>
 	<Include file="ProfileEditorField.lua"/>
 	<Include file="ProfileEditorTooltip.lua"/>
+	<Include file="ProfileEditorTemplates.lua"/>
+	<Include file="ProfileEditorTemplates.xml"/>
 	<Include file="ProfileEditorLabel.lua"/>
 	<Include file="ProfileEditorLabel.xml"/>
 	<Include file="ProfileEditorControl.lua"/>
