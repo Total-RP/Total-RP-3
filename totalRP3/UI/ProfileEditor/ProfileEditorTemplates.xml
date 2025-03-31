@@ -15,16 +15,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size x="24" y="24"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture parentKey="Icon" file="Interface\ICONS\TEMP" useAtlasSize="false">
-					<Size x="16" y="16"/>
+				<Texture parentKey="Icon" file="Interface\COMMON\help-i">
+					<Size x="30" y="30"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
 				</Texture>
 			</Layer>
 			<Layer level="HIGHLIGHT">
-				<Texture parentKey="Highlight" file="Interface\ICONS\TEMP" useAtlasSize="false" alphaMode="ADD" alpha="0.4">
-					<Size x="16" y="16"/>
+				<Texture parentKey="Highlight" file="Interface\COMMON\help-i" alphaMode="ADD" alpha="0.4">
+					<Size x="30" y="30"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
