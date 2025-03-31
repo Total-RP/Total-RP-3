@@ -48,8 +48,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Frames>
 			<Frame parentKey="Label" inherits="TRP3_ProfileEditorTextLabelTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT"/>
-					<Anchor point="TOPRIGHT"/>
+					<Anchor point="TOPLEFT" x="2"/>
+					<Anchor point="TOPRIGHT" x="-2"/>
 				</Anchors>
 			</Frame>
 		</Frames>
