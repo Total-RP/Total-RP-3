@@ -45,7 +45,8 @@ end
 ]]
 
 function InitializeMe()
-	local field = TRP3_ProfileEditor.CreateFieldFromTable(_G, "foo");
+	local accessor = TRP3_ProfileEditor.CreateTableAccessor(_G, "foo");
+	local field = TRP3_ProfileEditor.CreateField(accessor);
 	local initializer = TRP3_ProfileEditor.CreateTextAreaInitializer(field, "Control label", "Control tooltip", 20);
 	TotallyNormalTestFrame:Init(initializer);
 end

@@ -6,7 +6,7 @@ TRP3_ProfileEditorField = {};
 function TRP3_ProfileEditorField:__init(accessor)
 	self.callbacks = TRP3_API.InitCallbackRegistry(self);
 	self.accessor = accessor;
-	self.autoCommitEnabled = false;
+	self.autoCommitEnabled = true;
 	self.pendingValue = nil;
 	self.hasPendingValue = false;
 end
@@ -81,7 +81,7 @@ function TRP3_ProfileEditor.CreateField(accessor)
 	return field;
 end
 
-function TRP3_ProfileEditor.CreateFieldFromTable(table, key)
+function TRP3_ProfileEditor.CreateTableAccessor(table, key)
 	local accessor = {};
 
 	function accessor:GetValue()
@@ -93,10 +93,37 @@ function TRP3_ProfileEditor.CreateFieldFromTable(table, key)
 		table[key] = value;
 	end
 
-	-- A direct table field accessor likely doesn't need deferred commit
-	-- behavior and should pass-through by default.
+	return accessor;
+end
 
-	local field = TRP3_ProfileEditor.CreateField(accessor);
-	field:SetAutoCommitEnabled(true);
-	return field;
+function TRP3_ProfileEditor.CreateMethodAccessor(object, getValue, setValue)
+	local accessor = {};
+
+	function accessor:GetValue()
+		return getValue(object);
+	end
+
+	function accessor:SetValue(value)
+		setValue(object, value);
+	end
+
+	return accessor;
+end
+
+function TRP3_ProfileEditor.AddDeferredCommitBehavior(field, delay)
+	local behavior = {};
+	local timer = TRP3_API.CreateTimer();
+
+	function behavior:OnTimerElapsed()
+		field:CommitValue();
+	end
+
+	function behavior:OnValueChanged()
+		timer:Start(delay);
+	end
+
+	timer.RegisterCallback(behavior, "OnElapsed", "OnTimerElapsed");
+	field.RegisterCallback(behavior, "OnValueChanged");
+
+	return behavior;
 end
