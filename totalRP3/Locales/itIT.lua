@@ -238,6 +238,11 @@ In caso contrario, la lingua verrà cambiata sul prossima connessione.]=],
 	["MATURE_FILTER_WARNING_CONTINUE"] = "Proseguire",
 	["MATURE_FILTER_WARNING_GO_BACK"] = "Tornare",
 	["MATURE_FILTER_WARNING_TITLE"] = "Contenuto per adulti",
+	["NEW_VERSION"] = [=[|cff00ff00Una versione nuova del TRP3 (v %s) è disponibile.
+
+|cffffff00Noi ti incoraggiamo di rimanere aggiornato.|r
+
+Questo messaggio apparirà solo una volta per sessione, e si può disattivarlo nell'impostazioni. (Impostazioni generali => Miscellaneo).]=],
 	["NEW_VERSION_TITLE"] = "Nuovo aggiornamento disponibile",
 	["NPC_TALK_SAY_PATTERN"] = "dici:",
 	["NPC_TALK_WHISPER_PATTERN"] = "sussurra:",
