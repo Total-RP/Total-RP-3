@@ -454,30 +454,40 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Button>
 
+	<Texture name="TRP3_HelpPlateArrowDown" file="Interface\TalentFrame\TalentFrame-Parts" virtual="true">
+		<Size x="53" y="21"/>
+		<TexCoords left="0.78515625" right="0.99218750" top="0.54687500" bottom="0.58789063"/>
+	</Texture>
+
+	<Texture name="TRP3_HelpPlateArrowUp" file="Interface\TalentFrame\TalentFrame-Parts" virtual="true">
+		<Size x="53" y="21"/>
+		<TexCoords left="0.78515625" right="0.99218750" bottom="0.54687500" top="0.58789063"/>
+	</Texture>
+
 	<!-- Tutorial style hovered frame -->
 	<Frame name="TRP3_HoveredFrame" inherits="GlowBoxTemplate" virtual="true">
 		<Size x="220" y="100"/>
 		<Layers>
 			<Layer level="ARTWORK">
-				<Texture parentKey="ArrowUP" inherits="HelpPlateArrowDOWN" hidden="true">
+				<Texture parentKey="ArrowUP" inherits="TRP3_HelpPlateArrowDown" hidden="true">
 					<Size x="53" y="21"/>
 					<Anchors>
 						<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="3"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="ArrowDOWN" inherits="HelpPlateArrowUP" hidden="true">
+				<Texture parentKey="ArrowDOWN" inherits="TRP3_HelpPlateArrowUp" hidden="true">
 					<Size x="53" y="21"/>
 					<Anchors>
 						<Anchor point="BOTTOM" relativePoint="TOP" x="0" y="-3"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="ArrowRIGHT" inherits="HelpPlateArrowDOWN" hidden="true">
+				<Texture parentKey="ArrowRIGHT" inherits="TRP3_HelpPlateArrowDown" hidden="true">
 					<Size x="53" y="21"/>
 					<Anchors>
 						<Anchor point="RIGHT" relativePoint="LEFT" x="3" y="0"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="ArrowLEFT" inherits="HelpPlateArrowDOWN" hidden="true">
+				<Texture parentKey="ArrowLEFT" inherits="TRP3_HelpPlateArrowUp" hidden="true">
 					<Size x="53" y="21"/>
 					<Anchors>
 						<Anchor point="LEFT" relativePoint="RIGHT" x="-3" y="0"/>
