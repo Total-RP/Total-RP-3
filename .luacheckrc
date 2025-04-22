@@ -62,7 +62,6 @@ read_globals = {
 	"Prat",
 	"TinyTooltip",
 	"TipTac",
-	"WoWUnit",
 	"xrpSaved",
 
 	-- Common protocol globals
@@ -478,6 +477,7 @@ stds.wow = {
 		"CreateFramePoolCollection",
 		"CreateFromMixins",
 		"CreateIndexRangeDataProvider",
+		"CountTable",
 		"CreateMinimalSliderFormatter",
 		"CreateScrollBoxLinearView",
 		"CreateScrollBoxListGridView",
@@ -605,6 +605,8 @@ stds.wow = {
 		"strcmputf8i",
 		"StringToBoolean",
 		"SwapChatChannelByLocalID",
+		"TableHasAnyEntries",
+		"TableIsEmpty",
 		"ToggleDropDownMenu",
 		"tostringall",
 		"UIDropDownMenu_AddButton",

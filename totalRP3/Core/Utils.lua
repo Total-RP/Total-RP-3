@@ -11,20 +11,6 @@ local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 
-function Utils.pcall(func, ...)
-	if func then
-		return {pcall(func, ...)};
-	end
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Chat frame
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-Utils.print = function(...)
-	print(...);
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Messaging
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -72,17 +58,6 @@ local function tableCopy(destination, source)
 end
 Utils.table.copy = tableCopy;
 
--- Return the table size.
--- Less effective than #table but works for hash table as well (#hashtable don't).
-local function tableSize(table)
-	local count = 0;
-	for _,_ in pairs(table) do
-		count = count + 1;
-	end
-	return count;
-end
-Utils.table.size = tableSize;
-
 -- Remove an object from table
 -- Return true if the object is found.
 -- Object is search with == operator.
@@ -94,14 +69,6 @@ Utils.table.remove = function(table, object)
 		end
 	end
 	return false;
-end
-
-function Utils.table.keys(table)
-	local keys = {};
-	for key, _ in pairs(table) do
-		tinsert(keys, key);
-	end
-	return keys;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -199,31 +166,6 @@ function Utils.str.getUnitNPCID(unitID)
 	return npcID;
 end
 
-function Utils.str.GetGuildName(unitID)
-	local guildName = GetGuildInfo(unitID);
-	return guildName;
-end
-
-function Utils.str.GetGuildRank(unitID)
-	local _, rank = GetGuildInfo(unitID);
-	return rank;
-end
-
-function Utils.str.GetRace(unitID)
-	local _, race = UnitRace(unitID);
-	return race;
-end
-
-function Utils.str.GetClass(unitID)
-	local _, class = UnitClass(unitID);
-	return class;
-end
-
-function Utils.str.GetFaction(unitID)
-	local faction = UnitFactionGroup(unitID);
-	return faction;
-end
-
 -- Return an texture text tag based on the given image url and size.
 function Utils.str.texture(iconPath, iconSize)
 	assert(iconPath, "Icon path is nil.");
@@ -282,27 +224,12 @@ function Utils.str.emptyToNil(text)
 	return nil;
 end
 
--- Assure that the given string will not be nil
-function Utils.str.nilToEmpty(text)
-	return text or "";
-end
-
 function Utils.str.buildZoneText()
 	local text = GetZoneText() or ""; -- assuming that there is ALWAYS a zone text. Don't know if it's true.
 	if GetSubZoneText():len() > 0 then
 		text = strconcat(text, " - ", GetSubZoneText());
 	end
 	return text;
-end
-
--- Search if the string matches the pattern in error-safe way.
--- Useful if the pattern his user writen.
-function Utils.str.safeMatch(text, pattern)
-	local trace = Utils.pcall(string.find, text, pattern);
-	if trace[1] then
-		return type(trace[2]) == "number";
-	end
-	return nil; -- Pattern error
 end
 
 local escapes = {
@@ -808,27 +735,6 @@ local function safeDeserialize(structure, default)
 end
 Utils.serial.safeDeserialize = safeDeserialize;
 
-local function encodeCompressMessage(message)
-	return libCompressEncoder:Encode(libCompress:Compress(message));
-end
-Utils.serial.encodeCompressMessage = encodeCompressMessage;
-
-Utils.serial.decompressCodedMessage = function(message)
-	return libCompress:Decompress(libCompressEncoder:Decode(message));
-end
-
-Utils.serial.safeEncodeCompressMessage = function(serial)
-	local encoded = encodeCompressMessage(serial);
-	-- Rollback test
-	local decoded = Utils.serial.decompressCodedMessage(encoded);
-	if decoded == serial then
-		return encoded;
-	else
-		TRP3_API.Log("safeEncodeCompressStructure error:\n" .. tostring(serial));
-		return nil;
-	end
-end
-
 Utils.serial.decompressCodedStructure = function(message)
 	return deserialize(libCompress:Decompress(libCompressEncoder:Decode(message)));
 end
@@ -838,11 +744,7 @@ Utils.serial.safeDecompressCodedStructure = function(message)
 end
 
 Utils.serial.encodeCompressStructure = function(structure)
-	return encodeCompressMessage(serialize(structure));
-end
-
-Utils.serial.hashCode = function(str)
-	return libCompress:fcs32final(libCompress:fcs32update(libCompress:fcs32init(), str));
+	return libCompressEncoder:Encode(libCompress:Compress(serialize(structure)));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
