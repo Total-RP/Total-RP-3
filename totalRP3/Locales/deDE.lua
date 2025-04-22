@@ -641,6 +641,11 @@ Dieses Modul modifiziert die Blizzard Spieler- und Zielfenster, um den RP-Namen 
 	["NAMEPLATES_CONFIG_UNIT_NAME_FULL"] = "Zeige vollen Namen",
 	["NAMEPLATES_CONFIG_UNIT_STATE_HIDE"] = "Immer verbergen",
 	["NAMEPLATES_CONFIG_UNIT_STATE_SHOW"] = "Zeigen",
+	["NEW_VERSION"] = [=[|cff00ff00Eine neue Version von Total RP 3 (v %s) ist verfügbar.
+
+|cffffff00Wir empfehlen dringendst auf dem aktuellen Stand zu bleiben.|r
+
+Diese Nachricht wird nur einmal pro Sitzung angezeigt und kann in den Einstellungen (Allgemeine Einstellungen => Verschiedenes) abgeschaltet werden.]=],
 	["NEW_VERSION_TITLE"] = "Neues Update verfügbar",
 	["NPC_TALK_BUTTON_TT"] = "Das NSC-Sprachfenster zu öffnen erlaubt dir NSC sprechen oder emoten zu lassen.",
 	["NPC_TALK_CHANNEL"] = "Kanal:",
