@@ -8,8 +8,8 @@ local CHANGELOG_TEXT = [[
 
 - Added compatibility with patch 11.1.5.
 - Added 665 icons and 96 musics from patch 11.1.0 and 11.1.5.
-  - Added 13 icons for Cataclysm Classic.
-  - Added 4 icons and 3 musics for Classic Era.
+  - Added 13 icons for Cataclysm Classic.
+  - Added 4 icons and 3 musics for Classic Era.
 
 ## Fixed
 
