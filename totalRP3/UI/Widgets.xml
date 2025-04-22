@@ -590,7 +590,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Layers>
 	</Frame>
 
-	<Frame name="TRP3_HelpPlateBox" inherits="TRP3_ThinBorderTemplate" mixin="HelpPlateTileMixin " virtual="true" hidden="true">
+	<Frame name="TRP3_HelpPlateBox" inherits="TRP3_ThinBorderTemplate" mixin="HelpPlateTileMixin" virtual="true" hidden="true">
 		<Size x="200" y="200"/>
 		<Layers>
 			<Layer level="BACKGROUND">
