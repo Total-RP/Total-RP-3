@@ -786,6 +786,11 @@ Ce module modifie les noms sur les barres de joueur et cible de Blizzard pour ut
 	["NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY"] = "Ce module a été automatiquement désactivé dû à une dépendance manquante.",
 	["NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL"] = "Ce module a été automatiquement désactivé dû à un conflit avec un autre module ou addon.",
 	["NAMEPLATES_NAME"] = "Barres d'info",
+	["NEW_VERSION"] = [=[|cff00ff00Une nouvelle version de Total RP 3 (v %s) est disponible.
+
+|cffffff00Nous vous encourageons fortement à mettre à jour l'add-on pour profiter des dernières corrections de bugs.|r
+
+Ce message n'apparaîtra qu'une seule fois par session et peut être désactivé dans les réglages (Général => Divers).]=],
 	["NEW_VERSION_TITLE"] = "Nouvelle mise-à-jour disponible",
 	["NPC_TALK_BUTTON_TT"] = "Ouvre la fenêtre de dialogues de PNJ.",
 	["NPC_TALK_CHANNEL"] = "Canal:",
