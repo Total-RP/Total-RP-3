@@ -57,7 +57,7 @@ local CreditsData =
 			roles = { CreditRole.Developer },
 		},
 		{
-			name  = [[{bsky*raenore.bsky.social*Raenore}]],
+			name  = [[{bsky*dawnsong.me*Raenore}]],
 			roles = { CreditRole.Developer },
 		},
 	},
