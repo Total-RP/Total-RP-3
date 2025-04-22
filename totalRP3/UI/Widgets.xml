@@ -558,7 +558,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Anchors>
 					<TexCoords left="1" right="0" top="1" bottom="0"/>
 				</Texture>
-	
+
 				<Texture parentKey="Top" parentArray="Textures" file="Interface\Common\GlowBorder-Top" alphaMode="ADD">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeKey="$parent.TopLeft" relativePoint="TOPRIGHT"/>
@@ -572,7 +572,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Anchors>
 					<TexCoords left="0" right="1" top="1" bottom="0"/>
 				</Texture>
-	
+
 				<Texture parentKey="Left" parentArray="Textures" file="Interface\Common\GlowBorder-Left" alphaMode="ADD">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeKey="$parent.TopLeft" relativePoint="BOTTOMLEFT"/>
