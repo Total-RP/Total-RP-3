@@ -348,8 +348,8 @@ local function showTutorial(tutorialStructure)
 	for frameIndex, frameInfo in pairs(tutorialStructure) do
 		if not BUTTONS[frameIndex] then
 			BUTTONS[frameIndex] = CreateFrame( "Button", nil, TRP3_TutorialFrame, "TRP3_TutorialButton" );
-			BUTTONS[frameIndex].box = CreateFrame( "Frame", nil, TRP3_TutorialFrame, "HelpPlateBox" );
-			BUTTONS[frameIndex].boxHighlight = CreateFrame( "Frame", nil, TRP3_TutorialFrame, "HelpPlateBoxHighlight" );
+			BUTTONS[frameIndex].box = CreateFrame( "Frame", nil, TRP3_TutorialFrame, "TRP3_HelpPlateBox" );
+			BUTTONS[frameIndex].boxHighlight = CreateFrame( "Frame", nil, TRP3_TutorialFrame, "TRP3_GlowBorderTemplate" );
 			configureButton(BUTTONS[frameIndex]);
 		end
 		local buttonWidget = BUTTONS[frameIndex];
