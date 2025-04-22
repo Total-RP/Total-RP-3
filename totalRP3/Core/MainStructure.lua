@@ -404,8 +404,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_API.navigation.init = function()
-	TRP3_MainFrame.Close:SetScript("OnClick", function() switchMainFrame() end);
-
 	TRP3_MainTutorialButton:SetScript("OnClick", function(self)
 		if TRP3_TutorialFrame:IsShown() then
 			TRP3_TutorialFrame:Hide();

@@ -99,8 +99,22 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_MainFrameTemplate" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" virtual="true">
+	<Frame name="TRP3_MainFrame" mixin="TRP3_MainFrameLayoutMixin" parent="UIParent" toplevel="true" enableMouse="true" clampedToScreen="true" hidden="true" movable="true" dontSavePosition="true" frameBuffer="true">
 		<Size x="840" y="600"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-neutral-background" horizTile="true" vertTile="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="4" y="-4"/>
+						<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+					</Anchors>
+					<Color r="0.6" g="0.6" b="0.6"/>
+				</Texture>
+			</Layer>
+		</Layers>
 		<Frames>
 			<Frame parentKey="Backdrop" inherits="TooltipBorderBackdropTemplate" setAllPoints="true">
 				<KeyValues>
@@ -149,60 +163,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Layer>
 				</Layers>
 			</Frame>
-			<!-- CLOSE MAIN FRAME -->
-			<Button parentKey="Close" inherits="TRP3_RedButtonCloseArtTemplate">
-				<Size x="24" y="24"/>
-				<Anchors>
-					<Anchor point="TOPRIGHT" x="-1" y="-1"/>
-				</Anchors>
-			</Button>
 
-			<!-- MaxiButton -->
-			<Button parentKey="Maximize" inherits="TRP3_RedButtonExpandArtTemplate">
-				<Size x="24" y="24"/>
-				<Anchors>
-					<Anchor point="RIGHT" relativeKey="$parent.Close" relativePoint="LEFT"/>
-				</Anchors>
-			</Button>
-
-			<!-- MiniButton -->
-			<Button parentKey="Minimize" inherits="TRP3_RedButtonCondenseArtTemplate" hidden="true">
-				<Size x="24" y="24"/>
-				<Anchors>
-					<Anchor point="RIGHT" relativeKey="$parent.Close" relativePoint="LEFT"/>
-				</Anchors>
-			</Button>
-
-			<!-- RESIZING BUTTON -->
-			<Button parentKey="Resize" inherits="TRP3_RedButtonResizeArtTemplate">
-				<Size x="24" y="24"/>
-				<KeyValues>
-					<KeyValue key="minWidth" value="840" type="number"/>
-					<KeyValue key="minHeight" value="600" type="number"/>
-				</KeyValues>
-				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="-1" y="1"/>
-				</Anchors>
-			</Button>
-		</Frames>
-	</Frame>
-
-	<Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameTemplate" mixin="TRP3_MainFrameLayoutMixin" hidden="true" movable="true" dontSavePosition="true" frameBuffer="true">
-		<Anchors>
-			<Anchor point="CENTER" x="0" y="0"/>
-		</Anchors>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture parentKey="Background" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-neutral-background" horizTile="true" vertTile="true">
-					<Anchors>
-						<Anchor point="TOPLEFT" x="4" y="-4"/>
-						<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
-					</Anchors>
-					<Color r="0.6" g="0.6" b="0.6"/>
-				</Texture>
-			</Layer>
-		</Layers>
-		<Frames>
 			<!-- RIGHT PART : Place for content. Needs to be defined first as the menu scroll invokes OnSizeChanged. -->
 			<Frame name="TRP3_MainFramePageContainer" useParentLevel="true">
 				<Anchors>
@@ -397,10 +358,30 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</AnimationGroup>
 				</Animations>
 			</Frame>
+
+			<Button parentKey="CloseButton" inherits="TRP3_RedButtonCloseArtTemplate" mixin="TRP3_MainFrameCloseButtonMixin">
+				<Size x="24" y="24"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-1" y="-1"/>
+				</Anchors>
+				<Scripts>
+					<OnClick method="OnClick"/>
+				</Scripts>
+			</Button>
+
+			<Button parentKey="ResizeButton" inherits="TRP3_RedButtonResizeArtTemplate, TRP3_TooltipScriptTemplate" mixin="TRP3_MainFrameResizeButtonMixin">
+				<Size x="24" y="24"/>
+				<KeyValues>
+					<KeyValue key="minWidth" value="TRP3_MainFrameSizeConstants.MinimumWidth" type="global"/>
+					<KeyValue key="minHeight" value="TRP3_MainFrameSizeConstants.MinimumHeight" type="global"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="-1" y="1"/>
+				</Anchors>
+			</Button>
 		</Frames>
 		<Scripts>
-			<OnLoad method="OnLoad" inherit="prepend"/>
-			<OnShow method="OnShow"/>
+			<OnLoad method="OnLoad"/>
 			<OnSizeChanged method="OnSizeChanged"/>
 		</Scripts>
 	</Frame>
