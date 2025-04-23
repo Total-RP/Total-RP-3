@@ -368,6 +368,9 @@ local function showTutorial(tutorialStructure)
 			box:SetSize(frameInfo.box.width, frameInfo.box.height);
 			box:SetPoint( frameInfo.box.anchor, TRP3_TutorialFrame, frameInfo.box.anchor, frameInfo.box.x, frameInfo.box.y );
 		end
+		for _, texture in ipairs(box.Textures) do
+			texture:SetVertexColor(1, 0.82, 0);
+		end
 		box:SetScript("OnEnter", nil);
 		box:SetScript("OnLeave", nil);
 
