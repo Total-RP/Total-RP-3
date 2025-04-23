@@ -348,8 +348,8 @@ local function showTutorial(tutorialStructure)
 	for frameIndex, frameInfo in pairs(tutorialStructure) do
 		if not BUTTONS[frameIndex] then
 			BUTTONS[frameIndex] = CreateFrame( "Button", nil, TRP3_TutorialFrame, "TRP3_TutorialButton" );
-			BUTTONS[frameIndex].box = CreateFrame( "Frame", nil, TRP3_TutorialFrame, "HelpPlateBox" );
-			BUTTONS[frameIndex].boxHighlight = CreateFrame( "Frame", nil, TRP3_TutorialFrame, "HelpPlateBoxHighlight" );
+			BUTTONS[frameIndex].box = CreateFrame( "Frame", nil, TRP3_TutorialFrame, "TRP3_HelpPlateBox" );
+			BUTTONS[frameIndex].boxHighlight = CreateFrame( "Frame", nil, TRP3_TutorialFrame, "TRP3_GlowBorderTemplate" );
 			configureButton(BUTTONS[frameIndex]);
 		end
 		local buttonWidget = BUTTONS[frameIndex];
@@ -367,6 +367,9 @@ local function showTutorial(tutorialStructure)
 		else
 			box:SetSize(frameInfo.box.width, frameInfo.box.height);
 			box:SetPoint( frameInfo.box.anchor, TRP3_TutorialFrame, frameInfo.box.anchor, frameInfo.box.x, frameInfo.box.y );
+		end
+		for _, texture in ipairs(box.Textures) do
+			texture:SetVertexColor(1, 0.82, 0);
 		end
 		box:SetScript("OnEnter", nil);
 		box:SetScript("OnLeave", nil);
