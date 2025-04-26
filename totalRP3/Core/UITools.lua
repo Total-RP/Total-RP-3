@@ -585,24 +585,6 @@ local function getCompanionOwner(unitType, targetType)
 		if ownerGUID ~= nil then
 			ownerName, ownerRealm = select(6, GetPlayerInfoByGUID(ownerGUID));
 		end
-	elseif C_TooltipInfo then
-		local tooltipData = C_TooltipInfo.GetUnit(unitType);
-		local ownerGUID;
-
-		if not tooltipData then
-			return;
-		end
-
-		for _, line in ipairs(tooltipData.lines) do
-			if line.type == Enum.TooltipDataLineType.UnitOwner then
-				ownerGUID = line.guid;
-				break;
-			end
-		end
-
-		if ownerGUID ~= nil then
-			ownerName, ownerRealm = select(6, GetPlayerInfoByGUID(ownerGUID));
-		end
 	else
 		ScanningTooltip:SetOwner(WorldFrame, "ANCHOR_NONE");
 		ScanningTooltip:SetUnit(unitType);
