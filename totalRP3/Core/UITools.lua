@@ -579,7 +579,13 @@ local function getCompanionOwner(unitType, targetType)
 	local ownerName;
 	local ownerRealm;
 
-	if C_TooltipInfo then
+	if UnitOwnerGUID then
+		local ownerGUID = UnitOwnerGUID(unitType);
+
+		if ownerGUID ~= nil then
+			ownerName, ownerRealm = select(6, GetPlayerInfoByGUID(ownerGUID));
+		end
+	elseif C_TooltipInfo then
 		local tooltipData = C_TooltipInfo.GetUnit(unitType);
 		local ownerGUID;
 
@@ -598,7 +604,6 @@ local function getCompanionOwner(unitType, targetType)
 			ownerName, ownerRealm = select(6, GetPlayerInfoByGUID(ownerGUID));
 		end
 	else
-		-- TODO: Remove the old tooltip scanning stuff in 3.4.2.
 		ScanningTooltip:SetOwner(WorldFrame, "ANCHOR_NONE");
 		ScanningTooltip:SetUnit(unitType);
 		ScanningTooltip:Show();

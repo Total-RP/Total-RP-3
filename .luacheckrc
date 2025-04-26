@@ -646,6 +646,7 @@ stds.wow = {
 		"UnitLevel",
 		"UnitName",
 		"UnitNameUnmodified",
+		"UnitOwnerGUID",
 		"UnitPlayerControlled",
 		"UnitPVPName",
 		"UnitRace",
