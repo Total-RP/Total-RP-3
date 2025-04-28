@@ -63,8 +63,10 @@ local function onStart()
 
 	local function removeTextTags(text)
 		if text then
+			text =  text:gsub("%{link%*([^*]+)%*({icon:[^}]+})}","[%2]( %1 )"); --cleanup links instead of outright removing the tag
+			text =  text:gsub("%{link%*(.-)%*(.-)%}","[%2]( %1 )"); --cleanup links instead of outright removing the tag
 			text = Utils.str.convertTextTags(text);
-			return text:gsub("%{link%*(.-)%*(.-)%}","[%2]( %1 )"); --cleanup links instead of outright removing the tag
+			return text;
 		end
 	end
 
