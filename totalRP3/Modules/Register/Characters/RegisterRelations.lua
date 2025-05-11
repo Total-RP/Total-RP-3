@@ -151,6 +151,24 @@ local function pasteCopiedIcon(frame)
 	setupIconButton(frame, icon);
 end
 
+local function getRelationUsage(queryRelation)
+	local profiles = TRP3_API.profile.getProfiles();
+	local relationProfiles = {};
+
+	for profileId, profile in pairs(profiles) do
+		local relations = TRP3_API.profile.getData("relation", profile);
+		if not relations then
+			relations = {};
+		end
+		for _, relation in pairs(relations) do
+			if relation == queryRelation then
+				table.insert(relationProfiles, TRP3_API.profile.getProfileByID(profileId).profileName);
+			end
+		end
+	end
+	return relationProfiles;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -284,6 +302,7 @@ function updateRelationsList()
 
 	local widgetCount = 1;
 	for _, relation in ipairs(relations) do
+		local relationUsedBy = getRelationUsage(relation.id)
 		local widget = widgetsList[widgetCount];
 		if not widget then
 			widget = CreateFrame("Frame", nil, TRP3_RelationsList.ScrollFrame.Content, "TRP3_ConfigurationRelationsFrame");
@@ -301,6 +320,14 @@ function updateRelationsList()
 		end
 		widget.Title:SetText((getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_"..relation.id)));
 		widget.Text:SetText(GenerateEditDescription(relation.description or loc:GetText("REG_RELATION_" .. relation.id .. "_TT")));
+		if #relationUsedBy > 1 then
+			widget.Usage:SetText(loc.REG_RELATION_USAGE.."|cnYELLOW_FONT_COLOR: "..string.format(loc.REG_RELATION_USAGE_COUNT, #relationUsedBy))
+			TRP3_API.ui.tooltip.setTooltipForSameFrame(widget.Usage, "BOTTOMRIGHT", 0, 0, loc.REG_RELATION_USAGE_TT, table.concat(relationUsedBy, "|n"))
+		elseif #relationUsedBy == 1 then
+			widget.Usage:SetText(loc.REG_RELATION_USAGE.."|cnYELLOW_FONT_COLOR: "..relationUsedBy[1])
+		else
+			widget.Usage:SetText(loc.REG_RELATION_UNUSED)
+		end
 		setupIconButton(widget.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
 
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(widget.Actions, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
