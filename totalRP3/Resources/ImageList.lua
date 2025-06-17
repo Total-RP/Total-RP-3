@@ -3328,6 +3328,11 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Lorewalking",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_MaldraxxusColiseum",
 		width = 512,
 		height = 288
@@ -5603,6 +5608,11 @@ local IMAGES = {
 		height = 128,
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-1117-Delves-OCConsole-large",
+		width = 512,
+		height = 256,
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-AlliedRace-DarkIronDwarf",
 		width = 256,
 		height = 128,
@@ -5799,6 +5809,26 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-FRR_EnvoyValdrakken",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-lorewalking-elves",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-lorewalking-ethereals",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-lorewalking-lichking",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-lorewalking-xalatath",
 		width = 256,
 		height = 128
 	},
@@ -7029,6 +7059,13 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-EpicSeed-large",
+		width = 512,
+		height = 256
+	},
+	--endregion
+	--region Scenarios
+	{
+		url = "Interface\\Scenarios\\scenariolorewalking2x",
 		width = 512,
 		height = 256
 	},
