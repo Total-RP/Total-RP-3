@@ -1,3 +1,14 @@
+# Changelog version 3.0.11
+
+## Added
+
+- Added 65 icons, 7 images and 5 musics from patch 11.1.7.
+
+## Fixed
+
+- Fixed icon links being formatted incorrectly for MRP users.
+- Fixed issues with tutorials.
+
 # Changelog version 3.0.10
 
 ## Added
