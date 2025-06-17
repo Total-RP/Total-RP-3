@@ -429,7 +429,7 @@ Status possíveis:
 	["CO_RELATIONS_NEW"] = "Criar nova relação",
 	["CO_RELATIONS_NEW_COLOR"] = "Cor da relação",
 	["CO_RELATIONS_NEW_COLOR_TT"] = "Isto irá determinar a cor da relação",
-	["CO_RELATIONS_NEW_ERROR"] = "Você precisa colocar um nome  para a nova relação.",
+	["CO_RELATIONS_NEW_ERROR"] = "Você precisa colocar um nome para a nova relação.",
 	["CO_SANITIZER"] = "Limpar perfis recebidos",
 	["CO_SANITIZER_TT"] = "Remover sequências em campos de telas de informações de perfis recebidos quando o TRP não os permitir (cores, imagens...)",
 	["CO_TARGETFRAME"] = "Frame alvo",
