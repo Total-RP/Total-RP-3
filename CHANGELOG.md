@@ -1,3 +1,9 @@
+# Changelog version 3.0.12
+
+## Added
+
+- Added icons and musics for MoP Classic.
+
 # Changelog version 3.0.11
 
 ## Added

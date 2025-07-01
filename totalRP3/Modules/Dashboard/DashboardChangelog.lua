@@ -2,6 +2,12 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.0.12
+
+## Added
+
+- Added icons and musics for MoP Classic.
+
 # Changelog version 3.0.11
 
 ## Added
