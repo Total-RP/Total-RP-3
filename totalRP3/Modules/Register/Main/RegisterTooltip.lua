@@ -1374,8 +1374,6 @@ local function show(targetType, targetID, targetMode)
 					end
 				end
 			end
-
-			TRP3_CharacterTooltip:ClearAllPoints(); -- Prevent to break parent frame fade out if parent is a tooltip.
 		end
 	end
 end
