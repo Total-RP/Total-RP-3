@@ -57,54 +57,67 @@ getDefaultProfile().player.characteristics = {
 
 local FIELDS_TO_SANITIZE = {
 	"RA", "CL", "FN", "LN", "FT", "TI", "EC", "AG", "HE", "RE", "BP"
-}
+};
+local VALID_DEFAULT_FIELDS = {
+	"v", "RA", "CL", "FN", "IC"
+};
 
 ---@param structure table
 ---@return boolean
-local function sanitizeCharacteristics(structure)
+local function sanitizeCharacteristics(profileID, structure)
 	local somethingWasSanitized = false;
 
-	if structure then
-		for _, field in pairs(FIELDS_TO_SANITIZE) do
-			if structure[field] then
-				local sanitizedValue = Utils.str.sanitize(structure[field]);
-				if sanitizedValue ~= structure[field] then
-					structure[field] = sanitizedValue;
+	if not structure then return somethingWasSanitized end
+
+	if TRP3_API.profile.isDefaultProfile(profileID) then
+		for fieldID, _ in pairs(structure) do
+			if fieldID == "MI" or fieldID == "PS" then
+				structure[fieldID] = {};
+			elseif not tContains(VALID_DEFAULT_FIELDS, fieldID) then
+				structure[fieldID] = nil;
+			end
+		end
+	end
+	
+	for _, field in pairs(FIELDS_TO_SANITIZE) do
+		if structure[field] then
+			local sanitizedValue = Utils.str.sanitize(structure[field]);
+			if sanitizedValue ~= structure[field] then
+				structure[field] = sanitizedValue;
+				somethingWasSanitized = true;
+			end
+		end
+		-- Sanitizing misc traits
+		if structure.MI then
+			for _, trait in pairs(structure.MI) do
+				-- Sanitizing value
+				local sanitizedValue = Utils.str.sanitize(trait.VA);
+				if sanitizedValue ~= trait.VA then
+					trait.VA = sanitizedValue;
+					somethingWasSanitized = true;
+				end
+				-- Sanitizing name
+				sanitizedValue = Utils.str.sanitize(trait.NA);
+				if sanitizedValue ~= trait.NA then
+					trait.NA = sanitizedValue;
 					somethingWasSanitized = true;
 				end
 			end
-			-- Sanitizing misc traits
-			if structure.MI then
-				for _, trait in pairs(structure.MI) do
-					-- Sanitizing value
-					local sanitizedValue = Utils.str.sanitize(trait.VA);
-					if sanitizedValue ~= trait.VA then
-						trait.VA = sanitizedValue;
-						somethingWasSanitized = true;
-					end
-					-- Sanitizing name
-					sanitizedValue = Utils.str.sanitize(trait.NA);
-					if sanitizedValue ~= trait.NA then
-						trait.NA = sanitizedValue;
-						somethingWasSanitized = true;
-					end
+		end
+		-- Sanitizing personality traits
+		if structure.PS then
+			for _, trait in pairs(structure.PS) do
+				-- Sanitizing value
+				local sanitizedValue = Utils.str.sanitize(trait.RT);
+				if sanitizedValue ~= trait.RT then
+					trait.RT = sanitizedValue;
+					somethingWasSanitized = true;
 				end
-			end
-			-- Sanitizing personality traits
-			if structure.PS then
-				for _, trait in pairs(structure.PS) do
-					-- Sanitizing value
-					local sanitizedValue = Utils.str.sanitize(trait.RT);
-					if sanitizedValue ~= trait.RT then
-						trait.RT = sanitizedValue;
-						somethingWasSanitized = true;
-					end
-					-- Sanitizing name
-					sanitizedValue = Utils.str.sanitize(trait.LT);
-					if sanitizedValue ~= trait.LT then
-						trait.LT = sanitizedValue;
-						somethingWasSanitized = true;
-					end
+				-- Sanitizing name
+				sanitizedValue = Utils.str.sanitize(trait.LT);
+				if sanitizedValue ~= trait.LT then
+					trait.LT = sanitizedValue;
+					somethingWasSanitized = true;
 				end
 			end
 		end
