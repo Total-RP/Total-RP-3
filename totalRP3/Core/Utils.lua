@@ -528,6 +528,8 @@ local function GenerateLinkFormatter(line, defaultLinkColor, includeBraces, isMa
 			text = "[" .. text .. "]";
 		end
 
+		url = Utils.str.sanitize(url, false);
+
 		if linkType then
 			url = TRP3_LinkUtil.CreateLinkString(linkType, url);
 		end
