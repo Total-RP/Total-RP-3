@@ -10,6 +10,11 @@ local L;
 
 L = {
 	["ABOUT_TITLE"] = "Über",
+	["AUTOMATION_ACTION_MAP_SCANS_BROADCAST"] = "Standortübertragung schalten",
+	["AUTOMATION_ACTION_MAP_SCANS_BROADCAST_DESCRIPTION"] = "Schalten, um auf den Kartenscans anderer Spieler angezeigt zu werden, oder nicht.",
+	["AUTOMATION_ACTION_MAP_SCANS_BROADCAST_DISABLED"] = "Standortübertragung des Kartenscans wurde deaktiviert.",
+	["AUTOMATION_ACTION_MAP_SCANS_BROADCAST_ENABLED"] = "Standortübertragung des Kartenscans wurde aktiviert.",
+	["AUTOMATION_ACTION_MAP_SCANS_BROADCAST_ERROR"] = "Fehler beim schalten der Standortsübertragung des Kartenscans: %s",
 	["AUTOMATION_ACTION_PROFILE_CHANGE"] = "Profil ändern",
 	["AUTOMATION_ACTION_PROFILE_CHANGE_DESCRIPTION"] = "Ändert dein aktuell gewähltes Profil.",
 	["AUTOMATION_ACTION_ROLEPLAY_STATUS"] = "Rollenspielstatus ändern",
@@ -17,6 +22,7 @@ L = {
 	["AUTOMATION_ACTION_ROLEPLAY_STATUS_CHANGED_OOC"] = "Rollenspielstatus wurde zu 'OOC' geändert.",
 	["AUTOMATION_ACTION_ROLEPLAY_STATUS_DESCRIPTION"] = "Ändert deinen aktuellen Rollenspielstatus (IC oder OOC).",
 	["AUTOMATION_ACTION_ROLEPLAY_STATUS_ERROR"] = "Änderung des Rollenspielstatus fehlgeschlagen: %s",
+	["AUTOMATION_CATEGORY_MAP_SCANS"] = "Kartenscans",
 	["AUTOMATION_CATEGORY_PROFILE"] = "Profil",
 	["AUTOMATION_PROFILE_COPY"] = "Profil kopieren",
 	["AUTOMATION_PROFILE_COPY_DIALOG_BUTTON1"] = "Kopieren",
@@ -78,6 +84,7 @@ Andere Leute können den Inhalt des Links kopieren und nutzen.]=],
 	["CL_SENDING_COMMAND"] = "Sende Befehl...",
 	["CL_SENT_BY"] = "Link gesendet von: %s",
 	["CL_TOOLTIP"] = "Erstelle einen Chat-Link",
+	["CL_TYPE"] = "TRP3 Linktyp: %s",
 	["CL_VERSIONS_DIFFER"] = [=[Dieser Link wurde mit einer anderen Version von Total RP 3 generiert.
 
 Das Importieren des Inhaltes einer anderen Version könnte aufgrund von Inkompatibilitäten zu Problemen führen. Möchtest Du dennoch fortfahren?]=],
