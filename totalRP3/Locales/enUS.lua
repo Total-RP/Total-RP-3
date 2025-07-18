@@ -568,7 +568,7 @@ Possible status:
 	CO_TARGETFRAME_USE_2 = "Only when IC",
 	CO_TARGETFRAME_USE_3 = "Never (Disabled)",
 	CO_TARGETFRAME_ICON_SIZE = "Icons size",
-	CO_BARFRAME_BUTTONSVISIBILITY = "Buttons visibility",
+	CO_BARFRAME_BUTTONSVISIBILITY = "Button visibility",
 	CO_MINIMAP_BUTTON = "Minimap button",
 	CO_MINIMAP_BUTTON_SHOW_TITLE = "Show minimap button",
 	CO_MINIMAP_BUTTON_SHOW_HELP = [[If you are using another add-on to display Total RP 3's minimap button (FuBar, Titan, Bazooka) you can remove the button from the minimap.
