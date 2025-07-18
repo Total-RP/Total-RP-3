@@ -217,6 +217,11 @@ local function onStart()
 			configKey = TRP3_ToolbarConfigKeys.HideTitle,
 		});
 
+		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
+			inherit = "TRP3_ConfigH1",
+			title = loc.CO_BARFRAME_BUTTONSVISIBILITY,
+		});
+
 		local ids = {};
 		for buttonID, _ in pairs(buttonStructures) do
 			tinsert(ids, buttonID);

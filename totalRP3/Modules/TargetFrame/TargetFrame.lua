@@ -378,6 +378,10 @@ local function onStart()
 			end,
 		});
 
+		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
+			inherit = "TRP3_ConfigH1",
+			title = loc.CO_BARFRAME_BUTTONSVISIBILITY,
+		});
 
 		local ids = {};
 		for buttonID, _ in pairs(targetButtons) do
