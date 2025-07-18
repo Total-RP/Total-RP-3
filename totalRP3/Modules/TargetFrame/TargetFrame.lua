@@ -403,7 +403,7 @@ local function onStart()
 				configKey = configKey,
 			});
 		end
-		
+	
 		TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE);
 	end);
 
