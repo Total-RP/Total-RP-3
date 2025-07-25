@@ -392,24 +392,52 @@ end
 local TRP3_CompanionBrowser = TRP3_CompanionBrowser;
 local companionWidgetTab = {};
 local filteredCompanionList = {};
-local globalPetSearchFilter = "";
 local ui_CompanionBrowserContent = TRP3_CompanionBrowserContent;
 local currentCompanionType;
 
-local function GetNumPets()
+local function EnumerateOwnedPetsFromData()
+	local function GetNext(ownedPets, ownedPetIndex)
+		ownedPetIndex = ownedPetIndex + 1;
+
+		if ownedPetIndex <= ownedPets then
+			local ownedPetID = TRP3_API.utils.resources.GetPetInfoByIndex(ownedPetIndex);
+			return ownedPetIndex, ownedPetID;
+		end
+	end
+
+	local ownedPets = TRP3_API.utils.resources.GetNumPets();
+	local ownedPetIndex = 0;
+	return GetNext, ownedPets, ownedPetIndex;
+end
+
+local function EnumerateOwnedPetsFromJournal()
+	local function GetNext(ownedPets, ownedPetIndex)
+		ownedPetIndex = ownedPetIndex + 1;
+		local ownedPetID = ownedPets[ownedPetIndex];
+
+		if ownedPetID then
+			return ownedPetIndex, ownedPetID;
+		end
+	end
+
+	local ownedPets = C_PetJournal.GetOwnedPetIDs();
+	local ownedPetIndex = 0;
+	return GetNext, ownedPets, ownedPetIndex;
+end
+
+local function EnumerateOwnedPets()
 	if C_PetJournal then
-		return C_PetJournal.GetNumPets();
+		return EnumerateOwnedPetsFromJournal();
 	else
-		local numPets = TRP3_API.utils.resources.GetNumPets();
-		return numPets, numPets;
+		return EnumerateOwnedPetsFromData();
 	end
 end
 
-local function GetPetInfoByIndex(petIndex)
+local function GetPetInfoByID(petID)
 	if C_PetJournal then
-		return C_PetJournal.GetPetInfoByIndex(petIndex);
+		return C_PetJournal.GetPetInfoByPetID(petID);
 	else
-		return TRP3_API.utils.resources.GetPetInfoByIndex(petIndex);
+		return TRP3_API.utils.resources.GetPetInfoByPetID(petID);
 	end
 end
 
@@ -435,16 +463,6 @@ local function GetMountInfoExtraByID(mountID)
 	else
 		return TRP3_API.utils.resources.GetMountInfoExtraByID(mountID);
 	end
-end
-
--- Blizzard don't provide a GetSearchFilter for the pet journal, so we
--- keep track of it with a hook instead. This needs installing as early as
--- possible.
-
-if C_PetJournal and C_PetJournal.SetSearchFilter then
-	hooksecurefunc(C_PetJournal, "SetSearchFilter", function(text)
-		globalPetSearchFilter = (text == nil and "" or tostring(text));
-	end);
 end
 
 local function onCompanionClick(button)
@@ -494,78 +512,6 @@ local function nameComparator(elem1, elem2)
 	return elem1[1] < elem2[1];
 end
 
-local function CollectIndexedAccessor(accessorFunc, count)
-	local data = {};
-
-	for i = 1, count do
-		data[i] = accessorFunc(i);
-	end
-
-	return data;
-end
-
-local function RestoreIndexedMutator(mutatorFunc, data)
-	for i = 1, #data do
-		mutatorFunc(i, data[i]);
-	end
-end
-
-local function CallWithUnfilteredPetJournal(func, ...)
-	-- The pet journal API is stateful and accesses to information such as the
-	-- total pet count or information by index is affected by the filters applied
-	-- either by the user (which persist across sessions) or other addons.
-	--
-	-- As such, any queries which need either of the above must go through
-	-- this function which does the following in-order:
-	--
-	--   1. Collects all the current known state on the journal.
-	--   2. Resets the journal state to consistent defaults.
-	--   3. Executes the supplied function.
-	--   4. Restores the original state.
-	--
-	-- This function is resilient to errors at any step and will restore all
-	-- state as best as possible.
-
-	if not C_PetJournal then
-		return func(...);
-	end
-
-	local filters = {
-		options = CollectIndexedAccessor(C_PetJournal.IsFilterChecked, 2),
-		sources = CollectIndexedAccessor(C_PetJournal.IsPetSourceChecked, C_PetJournal.GetNumPetSources()),
-		types   = CollectIndexedAccessor(C_PetJournal.IsPetTypeChecked, C_PetJournal.GetNumPetTypes()),
-		search  = globalPetSearchFilter,
-		sort    = C_PetJournal.GetPetSortParameter(),
-	};
-
-	local function RestoreFiltersAndReturn(ok, ...)
-		securecallfunction(RestoreIndexedMutator, C_PetJournal.SetFilterChecked, filters.options);
-		securecallfunction(RestoreIndexedMutator, C_PetJournal.SetPetSourceChecked, filters.sources);
-		securecallfunction(RestoreIndexedMutator, C_PetJournal.SetPetTypeFilter, filters.types);
-		securecallfunction(C_PetJournal.SetSearchFilter, filters.search);
-		securecallfunction(C_PetJournal.SetPetSortParameter, filters.sort);
-
-		if not ok then
-			error((...), 3);
-		else
-			return ...;
-		end
-	end
-
-	local function ClearFiltersAndInvokeFunction(...)
-		C_PetJournal.SetFilterChecked(LE_PET_JOURNAL_FILTER_COLLECTED, true);
-		C_PetJournal.SetFilterChecked(LE_PET_JOURNAL_FILTER_NOT_COLLECTED, true);
-		C_PetJournal.SetAllPetSourcesChecked(true);
-		C_PetJournal.SetAllPetTypesChecked(true);
-		C_PetJournal.ClearSearchFilter();
-		C_PetJournal.SetPetSortParameter(LE_SORT_BY_LEVEL);
-
-		return func(...);
-	end
-
-	return RestoreFiltersAndReturn(pcall(ClearFiltersAndInvokeFunction, ...));
-end
-
 local function SearchFilterPredicate(value, filter)
 	if type(value) ~= "string" then
 		return false;
@@ -579,27 +525,22 @@ end
 
 local function CollectBattlePets(filter)
 	local uniquePetNames = {};
+	local battlePets = {};
 
-	local function CollectUnfilteredBattlePets()
-		local battlePets = {};
+	for _, petID in EnumerateOwnedPets() do
+		local _, customName, _, _, _, _, _, speciesName, icon, _, _, _, description = GetPetInfoByID(petID);
 
-		for i = 1, GetNumPets() do
-			local _, _, owned, customName, _, _, _, speciesName, icon, _, _, _, description = GetPetInfoByIndex(i);
-
-			if not customName or customName == "" then
-				customName = speciesName
-			end
-
-			if owned and not uniquePetNames[customName] and SearchFilterPredicate(customName, filter) then
-				uniquePetNames[customName] = true;
-				table.insert(battlePets, { customName, icon, description, speciesName });
-			end
+		if not customName or customName == "" then
+			customName = speciesName
 		end
 
-		return battlePets;
+		if not uniquePetNames[customName] and SearchFilterPredicate(customName, filter) then
+			uniquePetNames[customName] = true;
+			table.insert(battlePets, { customName, icon, description, speciesName });
+		end
 	end
 
-	return CallWithUnfilteredPetJournal(CollectUnfilteredBattlePets);
+	return battlePets;
 end
 
 local function BattlePetNameComparator(a, b)

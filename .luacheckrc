@@ -274,25 +274,10 @@ stds.wow = {
 
 		C_PetJournal = {
 			fields = {
-				"ClearSearchFilter",
-				"GetNumPets",
-				"GetNumPetSources",
-				"GetNumPetTypes",
-				"GetPetInfoByIndex",
+				"GetOwnedPetIDs",
 				"GetPetInfoByPetID",
-				"GetPetSortParameter",
 				"GetSummonedPetGUID",
-				"IsFilterChecked",
-				"IsPetSourceChecked",
-				"IsPetTypeChecked",
-				"SetAllPetSourcesChecked",
-				"SetAllPetTypesChecked",
 				"SetCustomName",
-				"SetFilterChecked",
-				"SetPetSortParameter",
-				"SetPetSourceChecked",
-				"SetPetTypeFilter",
-				"SetSearchFilter",
 			},
 		},
 
