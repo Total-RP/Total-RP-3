@@ -1,3 +1,6 @@
+-- Copyright The Total RP 3 Authors
+-- SPDX-License-Identifier: Apache-2.0
+
 -- This should be converted to an [AllowLoadGameType ...] directive when supported
 -- on all clients.
 --
