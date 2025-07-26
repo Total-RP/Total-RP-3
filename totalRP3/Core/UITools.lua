@@ -468,24 +468,6 @@ function TRP3_API.ui.misc.isTargetTypeACompanion(unitType)
 	return unitType == TRP3_Enums.UNIT_TYPE.BATTLE_PET or unitType == TRP3_Enums.UNIT_TYPE.PET;
 end
 
-local function IsBattlePetUnit(unitToken)
-	if UnitIsBattlePetCompanion then
-		return UnitIsBattlePetCompanion(unitToken);
-	end
-
-	-- Fallback for Classic; we can approximate companion pets with the
-	-- following API tests.
-
-	if not UnitPlayerControlled(unitToken) then
-		return false;
-	end
-
-	local unitGUID = UnitGUID(unitToken);
-	local guidType, _, _, _, _, creatureID = string.split("-", unitGUID or "", 7);
-
-	return guidType == "Creature" and TRP3_API.utils.resources.IsPetCreature(tonumber(creatureID));
-end
-
 local function IsPetUnit(unitToken)
 	if UnitPlayerControlled(unitToken) and UnitCreatureFamily(unitToken) ~= nil then
 		return true;
@@ -508,7 +490,7 @@ end
 function TRP3_API.ui.misc.getTargetType(unitType)
 	if UnitIsPlayer(unitType) then
 		return TRP3_Enums.UNIT_TYPE.CHARACTER, getUnitID(unitType) == globals.player_id;
-	elseif IsBattlePetUnit(unitType) then
+	elseif TRP3_CompanionUtil.IsCompanionPetUnit(unitType) then
 		return TRP3_Enums.UNIT_TYPE.BATTLE_PET, UnitIsOwnerOrControllerOfUnit("player", unitType);
 	elseif IsPetUnit(unitType) then
 		return TRP3_Enums.UNIT_TYPE.PET, UnitIsOwnerOrControllerOfUnit("player", unitType);
@@ -623,17 +605,12 @@ end
 TRP3_API.ui.misc.getCompanionOwner = getCompanionOwner;
 
 function TRP3_API.ui.misc.getCompanionShortID(unitToken, unitType)
-	local shortID = UnitNameUnmodified(unitToken);
+	local shortID;
 
-	if not C_PetJournal and unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.BATTLE_PET then
-		-- Classic: Companions can't be renamed nor can their names be
-		-- localized ahead of summoning, so we don't use the unit name but
-		-- instead tie their short IDs to a name inferred from how they're
-		-- summoned.
-
-		local unitGUID = UnitGUID(unitToken);
-		local creatureID = tonumber((select(6, string.split("-", unitGUID or "", 7))));
-		shortID = TRP3_API.utils.resources.GetPetNameByCreatureID(creatureID);
+	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.BATTLE_PET then
+		shortID = TRP3_CompanionUtil.GetCompanionPetUnitName(unitToken);
+	else
+		shortID = UnitNameUnmodified(unitToken);
 	end
 
 	return shortID;

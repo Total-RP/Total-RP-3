@@ -395,76 +395,6 @@ local filteredCompanionList = {};
 local ui_CompanionBrowserContent = TRP3_CompanionBrowserContent;
 local currentCompanionType;
 
-local function EnumerateOwnedPetsFromData()
-	local function GetNext(ownedPets, ownedPetIndex)
-		ownedPetIndex = ownedPetIndex + 1;
-
-		if ownedPetIndex <= ownedPets then
-			local ownedPetID = TRP3_API.utils.resources.GetPetInfoByIndex(ownedPetIndex);
-			return ownedPetIndex, ownedPetID;
-		end
-	end
-
-	local ownedPets = TRP3_API.utils.resources.GetNumPets();
-	local ownedPetIndex = 0;
-	return GetNext, ownedPets, ownedPetIndex;
-end
-
-local function EnumerateOwnedPetsFromJournal()
-	local function GetNext(ownedPets, ownedPetIndex)
-		ownedPetIndex = ownedPetIndex + 1;
-		local ownedPetID = ownedPets[ownedPetIndex];
-
-		if ownedPetID then
-			return ownedPetIndex, ownedPetID;
-		end
-	end
-
-	local ownedPets = C_PetJournal.GetOwnedPetIDs();
-	local ownedPetIndex = 0;
-	return GetNext, ownedPets, ownedPetIndex;
-end
-
-local function EnumerateOwnedPets()
-	if C_PetJournal then
-		return EnumerateOwnedPetsFromJournal();
-	else
-		return EnumerateOwnedPetsFromData();
-	end
-end
-
-local function GetPetInfoByID(petID)
-	if C_PetJournal then
-		return C_PetJournal.GetPetInfoByPetID(petID);
-	else
-		return TRP3_API.utils.resources.GetPetInfoByPetID(petID);
-	end
-end
-
-local function GetMountIDs()
-	if C_MountJournal then
-		return C_MountJournal.GetMountIDs();
-	else
-		return TRP3_API.utils.resources.GetMountIDs();
-	end
-end
-
-local function GetMountInfoByID(mountID)
-	if C_MountJournal then
-		return C_MountJournal.GetMountInfoByID(mountID);
-	else
-		return TRP3_API.utils.resources.GetMountInfoByID(mountID);
-	end
-end
-
-local function GetMountInfoExtraByID(mountID)
-	if C_MountJournal then
-		return C_MountJournal.GetMountInfoExtraByID(mountID);
-	else
-		return TRP3_API.utils.resources.GetMountInfoExtraByID(mountID);
-	end
-end
-
 local function onCompanionClick(button)
 	TRP3_CompanionBrowser:Hide();
 	hidePopups();
@@ -497,7 +427,7 @@ local function decorateCompanion(button, index)
 	-- For Retail clients we strongly recommend that battle pets be renamed
 	-- to be bound, but this is only possible there and not in Classic.
 
-	if C_PetJournal and C_PetJournal.SetCustomName and (name == speciesName) then
+	if TRP3_CompanionUtil.CanRenameCompanionPets() and (name == speciesName) then
 		button.RenameWarning:Show();
 		tooltipText = tooltipText .. "|n|n" .. TRP3_API.loc.UI_COMPANION_BROWSER_RENAME_WARNING;
 	else
@@ -527,16 +457,10 @@ local function CollectBattlePets(filter)
 	local uniquePetNames = {};
 	local battlePets = {};
 
-	for _, petID in EnumerateOwnedPets() do
-		local _, customName, _, _, _, _, _, speciesName, icon, _, _, _, description = GetPetInfoByID(petID);
-
-		if not customName or customName == "" then
-			customName = speciesName
-		end
-
-		if not uniquePetNames[customName] and SearchFilterPredicate(customName, filter) then
-			uniquePetNames[customName] = true;
-			table.insert(battlePets, { customName, icon, description, speciesName });
+	for _, petInfo in TRP3_CompanionUtil.EnumerateCompanionPets() do
+		if not uniquePetNames[petInfo.name] and SearchFilterPredicate(petInfo.name, filter) then
+			uniquePetNames[petInfo.name] = true;
+			table.insert(battlePets, { petInfo.name, petInfo.icon, petInfo.description, petInfo.speciesName });
 		end
 	end
 
@@ -567,11 +491,12 @@ local function getWoWCompanionFilteredList(filter)
 		table.sort(filteredCompanionList, BattlePetNameComparator);
 	elseif currentCompanionType == TRP3_Enums.UNIT_TYPE.MOUNT then
 		-- Mounts
-		for _, id in pairs(GetMountIDs()) do
-			local creatureName, spellID, icon, _, _, _, _, _, _, _, isCollected = GetMountInfoByID(id);
-			if isCollected and SearchFilterPredicate(creatureName, filter) then
-				local _, description = GetMountInfoExtraByID(id);
-				tinsert(filteredCompanionList, {creatureName, icon, description, loc.PR_CO_MOUNT, spellID, id});
+		for _, mountInfo in TRP3_CompanionUtil.EnumerateMounts() do
+			-- The not-false check here is intended to allow mounts that we've
+			-- either definitely collected (true) or mounts whose collection
+			-- state is indeterminate (nil).
+			if mountInfo.isCollected ~= false and SearchFilterPredicate(mountInfo.name, filter) then
+				tinsert(filteredCompanionList, {mountInfo.name, mountInfo.icon, mountInfo.description, loc.PR_CO_MOUNT, mountInfo.spellID, mountInfo.id});
 				count = count + 1;
 			end
 		end

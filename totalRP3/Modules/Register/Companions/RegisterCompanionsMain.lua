@@ -16,39 +16,18 @@ local EMPTY = Globals.empty;
 local tcopy = Utils.table.copy;
 local TYPE_MOUNT = TRP3_API.ui.misc.TYPE_MOUNT;
 
-local function GetMountIDs()
-	if C_MountJournal then
-		return C_MountJournal.GetMountIDs();
-	else
-		return TRP3_API.utils.resources.GetMountIDs();
-	end
-end
-
-local function GetMountInfoByID(mountID)
-	if C_MountJournal then
-		return C_MountJournal.GetMountInfoByID(mountID);
-	else
-		return TRP3_API.utils.resources.GetMountInfoByID(mountID);
-	end
-end
-
 TRP3_API.navigation.menu.id.COMPANIONS_MAIN = "main_20_companions";
 
 function TRP3_API.companions.getCompanionNameFromSpellID(spellIDString)
-	local name;
+	local spellName;
 	local spellID = tonumber(spellIDString);
 
 	-- C_Spell.GetSpellInfo will error if spellID is nil.
 	if spellID then
-		if C_Spell and C_Spell.GetSpellInfo then
-			local spellInfo = C_Spell.GetSpellInfo(spellID);
-			name = spellInfo and spellInfo.name;
-		else
-			name = GetSpellInfo(spellID);
-		end
+		spellName = C_Spell.GetSpellName(spellID);
 	end
 
-	return name or spellIDString;
+	return spellName or spellIDString;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -200,14 +179,14 @@ function TRP3_API.companions.player.getProfiles()
 end
 
 local function getCurrentMountSpellID()
-	if IsMounted() then
-		for _, id in pairs(GetMountIDs()) do
-			local _, spellID, _, active = GetMountInfoByID(id);
-			if active then
-				return spellID;
-			end
-		end
+	local mountID = TRP3_CompanionUtil.GetSummonedMountID();
+	local spellID;
+
+	if mountID then
+		spellID = TRP3_CompanionUtil.GetMountSpellID(mountID);
 	end
+
+	return spellID;
 end
 TRP3_API.companions.player.getCurrentMountSpellID = getCurrentMountSpellID;
 
@@ -233,65 +212,6 @@ local function getCompanionVersionNumbers(profileID)
 	end
 end
 
-local function UpdateSummonedPetGUID(speciesID)
-	if TRP3_Companions then
-		TRP3_Companions.summonedPetID = speciesID;
-	end
-end
-
-local function UpdateSummonedPetGUIDFromCast(unitToken, castGUID)
-	-- For Classic era we need to be creative with how we know what non-combat
-	-- pet the player has summoned. None of the companion API exists, nor does
-	-- the COMPANION_UPDATE event.
-	--
-	-- Our approach is to monitor for successful spellcasts whose spell IDs
-	-- are associated with that of a known companion pet. We assume that the
-	-- last successful cast will represent the current battle pet.
-	--
-	-- Note that we can't tell when a companion pet is dismissed, so our query
-	-- data will always contain the data for the last-successful cast even if
-	-- that cast dismissed the pet. Realistically this should be fine since
-	-- if it's dismissed other players can't see the unit to request the data
-	-- anyway.
-	--
-	-- For persistence across UI reloads we store the summoned pet data in our
-	-- saved variables, and reset it upon initial login of a new character.
-	-- When logging out pets aren't resummoned in Classic Era.
-
-	if unitToken ~= "player" then
-		return;
-	end
-
-	local spellID = tonumber((select(6, string.split("-", castGUID, 7))));
-	local speciesID = TRP3_API.utils.resources.GetPetSpeciesBySpellID(spellID);
-
-	if speciesID then
-		UpdateSummonedPetGUID(speciesID);
-	end
-end
-
-local function ResetSummonedPetGUIDFromLogin(isInitialLogin)
-	if isInitialLogin then
-		UpdateSummonedPetGUID(nil);
-	end
-end
-
-local function GetSummonedPetGUID()
-	if C_PetJournal then
-		return C_PetJournal.GetSummonedPetGUID();
-	elseif TRP3_Companions then
-		return TRP3_Companions.summonedPetID;
-	end
-end
-
-local function GetPetInfoByPetID(petID)
-	if C_PetJournal then
-		return C_PetJournal.GetPetInfoByPetID(petID);
-	else
-		return TRP3_API.utils.resources.GetPetInfoByPetID(petID);
-	end
-end
-
 function TRP3_API.companions.player.getCurrentMountQueryLine()
 	local currentMountSpellID = getCurrentMountSpellID();
 	if currentMountSpellID then
@@ -305,12 +225,12 @@ function TRP3_API.companions.player.getCurrentMountQueryLine()
 end
 
 function TRP3_API.companions.player.getCurrentBattlePetQueryLine()
-	local summonedPetGUID = GetSummonedPetGUID();
-	if summonedPetGUID then
-		local _, customName, _, _, _, _, _, name = GetPetInfoByPetID(summonedPetGUID);
-		local queryLine = customName or name;
-		if getCompanionProfileID(customName or name) then
-			local profileID =  getCompanionProfileID(customName or name);
+	local summonedPetID = TRP3_CompanionUtil.GetSummonedCompanionPetID();
+	if summonedPetID then
+		local petInfo = TRP3_CompanionUtil.GetCompanionPetInfo(summonedPetID);
+		local queryLine = petInfo.name;
+		if getCompanionProfileID(petInfo.name) then
+			local profileID =  getCompanionProfileID(petInfo.name);
 			return queryLine .. "_" .. profileID, getCompanionVersionNumbers(profileID);
 		end
 		return queryLine;
@@ -515,19 +435,20 @@ function TRP3_API.companions.register.deleteProfile(profileID, silently)
 end
 
 function TRP3_API.companions.register.getUnitMount(ownerID, unitType)
-	local buffIndex = 1;
-	local buffInfo = C_UnitAuras.GetAuraDataByIndex(unitType, buffIndex);
+	-- Inner 'select' here is to skip the leading 'continuationToken' return.
+	local auraSlots = { select(2, C_UnitAuras.GetAuraSlots(unitType, "HELPFUL")) };
 
-	while buffInfo do
-		local spellBuffID = buffInfo.spellId;
-		local companionFullID = ownerID .. "_" .. tostring(spellBuffID);
+	for slotIndex = 1, #auraSlots do
+		local auraInfo = C_UnitAuras.GetAuraDataBySlot(unitType, auraSlots[slotIndex]);
 
-		if registerProfileAssociation[companionFullID] then
-			return companionFullID, registerProfileAssociation[companionFullID], tostring(spellBuffID);
+		if auraInfo then
+			local spellBuffID = auraInfo.spellId;
+			local companionFullID = ownerID .. "_" .. tostring(spellBuffID);
+
+			if registerProfileAssociation[companionFullID] then
+				return companionFullID, registerProfileAssociation[companionFullID], tostring(spellBuffID);
+			end
 		end
-
-		buffIndex = buffIndex + 1;
-		buffInfo = C_UnitAuras.GetAuraDataByIndex(unitType, buffIndex);
 	end
 end
 
@@ -552,12 +473,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	end
 	registerCompanions = TRP3_Register.companion;
 	parseRegisterProfiles(registerCompanions);
-
-	if not C_PetJournal then
-		-- Classic support for companion pets.
-		TRP3_API.RegisterCallback(TRP3_API.GameEvents, "UNIT_SPELLCAST_SUCCEEDED", function() UpdateSummonedPetGUIDFromCast(); end);
-		TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_ENTERING_WORLD", function() ResetSummonedPetGUIDFromLogin(); end);
-	end
 
 	registerMenu({
 		id = TRP3_API.navigation.menu.id.COMPANIONS_MAIN,

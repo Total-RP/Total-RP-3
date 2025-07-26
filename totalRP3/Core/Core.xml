@@ -24,6 +24,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="BindingUtil.lua"/>
 	<Include file="RegionUtil.lua"/>
 	<Include file="MarkupUtil.lua"/>
+	<Include file="CompanionUtil.lua"/>
+	<Include file="Vanilla\CompanionUtilOverrides.lua"/>
 
 	<Include file="..\UI\Widgets.xml"/>
 
