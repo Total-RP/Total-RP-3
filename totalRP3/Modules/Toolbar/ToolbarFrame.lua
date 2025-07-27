@@ -10,6 +10,8 @@ function TRP3_ToolbarFrameMixin:Init()
 	self:LoadPosition();
 	self:UpdateFrameVisibility();
 	self:UpdateTitleBar();
+
+	RegisterStateDriver(self, "forcehide", "[petbattle] 1;0");
 end
 
 function TRP3_ToolbarFrameMixin:OnLoad()
@@ -19,6 +21,12 @@ end
 
 function TRP3_ToolbarFrameMixin:OnShow()
 	self:MarkDirty();
+end
+
+function TRP3_ToolbarFrameMixin:OnAttributeChanged(attr)
+	if attr == "state-forcehide" then
+		self:UpdateFrameVisibility();
+	end
 end
 
 function TRP3_ToolbarFrameMixin:OnUpdate()
@@ -136,6 +144,8 @@ function TRP3_ToolbarFrameMixin:UpdateFrameVisibility(forcedVisibility)
 
 	if forcedVisibility ~= nil then
 		shouldShow = forcedVisibility;
+	elseif self:GetAttribute("state-forcehide") == 1 then
+		shouldShow = false;
 	elseif configuredVisibility == TRP3_ToolbarVisibilityOption.AlwaysHidden then
 		shouldShow = false;
 	elseif configuredVisibility == TRP3_ToolbarVisibilityOption.OnlyShowInCharacter then

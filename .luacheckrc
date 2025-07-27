@@ -571,6 +571,7 @@ stds.wow = {
 		"PlaySoundFile",
 		"RaidNotice_AddMessage",
 		"RaidWarningFrame",
+		"RegisterStateDriver",
 		"ReloadUI",
 		"RemoveChatWindowChannel",
 		"ResetCursor",
