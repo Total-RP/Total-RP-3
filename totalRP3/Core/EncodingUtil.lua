@@ -114,7 +114,7 @@ function PEMDecoder:Decode()
 	-- Rather than mess around with line-by-line parsing, extract a full
 	-- PEM block through a basic pattern match.
 
-	local BLOCK_PATTERN = "-----BEGIN ([^-]+)-----%s+(.-)%s+-----END %1-----()";
+	local BLOCK_PATTERN = "%-%-%-%-%-BEGIN ([^-]+)%-%-%-%-%-%s+(.-)%s+-%-%-%-%-END %1-%-%-%-%-()";
 	local label, block, blockEnd = string.match(self.data, BLOCK_PATTERN, self.offset);
 
 	if not label then
