@@ -522,6 +522,7 @@ stds.wow = {
 		"GetCursorPosition",
 		"GetCVar",
 		"GetDefaultLanguage",
+		"GetEditBoxMetatable",
 		"GetFileIDFromPath",
 		"GetFrameMetatable",
 		"GetGuildInfo",

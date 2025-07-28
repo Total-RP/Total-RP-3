@@ -348,7 +348,7 @@ local function onActionSelected(value, button)
 		local profile = profiles[profileID];
 		local serial = TRP3_ProfileUtil.SerializeProfile(Globals.version, profileID, profile);
 		if serial:len() < 20000 then
-			TRP3_ProfileExport.content.scroll.text:SetText(serial);
+			TRP3_ProfileExport.content.scroll.text:SetReadOnlyText(serial);
 			TRP3_ProfileExport.content.title:SetText(loc.PR_EXPORT_NAME:format(profile.profileName, serial:len() / 1000));
 			TRP3_ProfileExport:Show();
 			TRP3_ProfileExport.content.scroll.text:SetFocus();
@@ -628,9 +628,16 @@ function TRP3_API.profile.init()
 		end
 	end);
 
-	-- Setup edit boxes to handle serialized data using Ellyb's mixin
-	Mixin(TRP3_ProfileExport.content.scroll.text, TRP3_API.Ellyb.EditBoxes.SerializedDataEditBoxMixin);
-	Mixin(TRP3_ProfileImport.content.scroll.text, TRP3_API.Ellyb.EditBoxes.SerializedDataEditBoxMixin);
+	-- Setup edit boxes to handle serialized data
+	Mixin(TRP3_ProfileExport.content.scroll.text, TRP3_FocusHighlightEditBoxMixin);
+	Mixin(TRP3_ProfileExport.content.scroll.text, TRP3_ReadOnlyEditBoxMixin);
+	Mixin(TRP3_ProfileExport.content.scroll.text, TRP3_EscapeSanitizedEditBoxMixin);
+
+	TRP3_ProfileExport.content.scroll.text:HookScript("OnChar", TRP3_ProfileExport.content.scroll.text.OnChar);
+	TRP3_ProfileExport.content.scroll.text:HookScript("OnEditFocusGained", TRP3_ProfileExport.content.scroll.text.OnEditFocusGained);
+	TRP3_ProfileExport.content.scroll.text:HookScript("OnEditFocusLost", TRP3_ProfileExport.content.scroll.text.OnEditFocusLost);
+
+	Mixin(TRP3_ProfileImport.content.scroll.text, TRP3_EscapeSanitizedEditBoxMixin);
 
 	TRP3_API.slash.registerCommand({
 		id = "profile",

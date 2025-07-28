@@ -978,4 +978,18 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
+	<EditBox name="TRP3_ReadOnlyEditBoxTemplate" mixin="TRP3_ReadOnlyEditBoxMixin" virtual="true">
+		<Scripts>
+			<OnChar method="OnChar"/>
+		</Scripts>
+	</EditBox>
+
+	<EditBox name="TRP3_FocusHighlightEditBoxTemplate" mixin="TRP3_FocusHighlightEditBoxMixin" virtual="true">
+		<Scripts>
+			<OnEditFocusGained method="OnEditFocusGained"/>
+			<OnEditFocusLost method="OnEditFocusLost"/>
+		</Scripts>
+	</EditBox>
+
+	<EditBox name="TRP3_EscapeSanitizedEditBoxTemplate" mixin="TRP3_EscapeSanitizedEditBoxMixin" virtual="true"/>
 </Ui>

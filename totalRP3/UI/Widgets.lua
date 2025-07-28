@@ -300,3 +300,60 @@ function TRP3_ColorPickerButtonMixin:OnClick(mouseButtonName)
 		TRP3_MenuUtil.CreateContextMenu(self, GenerateMenu);
 	end
 end
+
+TRP3_ReadOnlyEditBoxMixin = {};
+
+function TRP3_ReadOnlyEditBoxMixin:OnChar(char)
+	local readOnlyText = self:GetReadOnlyText();
+
+	if readOnlyText ~= nil then
+		local cursorPosition = self:GetUTF8CursorPosition();
+		self:RestoreReadOnlyText();
+		self:SetCursorPosition(cursorPosition - strlenutf8(char));
+	end
+end
+
+function TRP3_ReadOnlyEditBoxMixin:GetReadOnlyText()
+	return self.readOnlyText;
+end
+
+function TRP3_ReadOnlyEditBoxMixin:SetReadOnlyText(text)
+	self.readOnlyText = text;
+	self:RestoreReadOnlyText();
+end
+
+function TRP3_ReadOnlyEditBoxMixin:ClearReadOnlyText()
+	self:SetReadOnlyText(nil);
+end
+
+function TRP3_ReadOnlyEditBoxMixin:RestoreReadOnlyText()
+	self:SetText(self.readOnlyText);
+end
+
+TRP3_FocusHighlightEditBoxMixin = {};
+
+function TRP3_FocusHighlightEditBoxMixin:OnEditFocusGained()
+	self:HighlightText();
+end
+
+function TRP3_FocusHighlightEditBoxMixin:OnEditFocusLost()
+	self:HighlightText(0, 0);
+end
+
+TRP3_EscapeSanitizedEditBoxMixin = {};
+
+local function GetEditBoxTextUnhooked(editBox)
+	return GetEditBoxMetatable().__index.GetText(editBox);
+end
+
+local function SetEditBoxTextUnhooked(editBox, text)
+	return GetEditBoxMetatable().__index.SetText(editBox, text);
+end
+
+function TRP3_EscapeSanitizedEditBoxMixin:GetText()
+	return (string.gsub(GetEditBoxTextUnhooked(self), "||", "|"));
+end
+
+function TRP3_EscapeSanitizedEditBoxMixin:SetText(text)
+	SetEditBoxTextUnhooked(self, (string.gsub(text, "|", "||")));
+end
