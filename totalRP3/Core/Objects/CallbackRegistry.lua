@@ -1,8 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-
 local CallbackHandler = LibStub:GetLibrary("CallbackHandler-1.0");
 
 -- The below convenience utilities are for initializing callback callbacks

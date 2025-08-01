@@ -1,8 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-
 -- Callback objects are prebaked closures associated with a registry that can
 -- be toggled on-demand.
 --

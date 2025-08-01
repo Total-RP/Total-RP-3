@@ -1,0 +1,23 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="RefreshSpinner.lua"/>
+
+	<Texture name="TRP3_RefreshSpinnerIcon" mixin="TRP3_RefreshSpinnerMixin" file="Interface\AddOns\totalRP3\Resources\UI\ui-refresh" texelSnappingBias="0.0" snapToPixelGrid="false" virtual="true">
+		<Size x="16" y="16"/>
+		<KeyValues>
+			<KeyValue key="playOnShow" value="true" type="boolean"/>
+		</KeyValues>
+		<Animations>
+			<AnimationGroup parentKey="SpinAnimation" looping="REPEAT">
+				<Rotation duration="3" degrees="-1080" smoothing="OUT_IN"/>
+			</AnimationGroup>
+		</Animations>
+		<Scripts>
+			<OnShow method="OnShow"/>
+		</Scripts>
+	</Texture>
+</Ui>
