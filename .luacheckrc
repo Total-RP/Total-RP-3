@@ -427,6 +427,12 @@ stds.wow = {
 			},
 		},
 
+		ResizeLayoutMixin = {
+			fields = {
+				"OnShow",
+			},
+		},
+
 		ScrollBoxConstants = {
 			fields = {
 				"DiscardScrollPosition",

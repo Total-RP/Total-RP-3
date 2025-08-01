@@ -22,7 +22,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<Anchor point="LEFT" x="15" y="-5"/>
 					</Anchors>
 				</Texture>
-				<FontString parentKey="Text" inherits="GameFontHighlight" text="Updating profile...">
+				<FontString parentKey="Text" inherits="GameFontHighlight">
 					<Anchors>
 						<Anchor point="LEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="5"/>
 					</Anchors>
@@ -50,6 +50,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Animations>
 		<Scripts>
 			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
 		</Scripts>
 	</Frame>
 </Ui>
