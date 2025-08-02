@@ -16,6 +16,18 @@ local TRP3_Enums = AddOn_TotalRP3.Enums;
 -- Static popups definition
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function GetDialogEditBox(dialog)
+	return dialog.GetEditBox and dialog:GetEditBox() or dialog.editBox;
+end
+
+local function GetDialogButton1(dialog)
+	return dialog.GetButton1 and dialog:GetButton1() or dialog.button1;
+end
+
+local function GetDialogButton2(dialog)
+	return dialog.GetButton2 and dialog:GetButton2() or dialog.button2;
+end
+
 StaticPopupDialogs["TRP3_INFO"] = {
 	button1 = OKAY,
 	timeout = false,
@@ -84,13 +96,13 @@ StaticPopupDialogs["TRP3_INPUT_TEXT"] = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnShow = function(self)
-		_G[self:GetName().."EditBox"]:SetNumeric(false);
+		GetDialogEditBox(self):SetNumeric(false);
 		-- Remove letters limit that other add-ons might have added but not cleaned
-		_G[self:GetName().."EditBox"]:SetMaxLetters(0);
+		GetDialogEditBox(self):SetMaxLetters(0);
 	end,
 	OnAccept = function(self)
 		if StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onAccept then
-			StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onAccept(_G[self:GetName().."EditBox"]:GetText());
+			StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onAccept(GetDialogEditBox(self):GetText());
 		end
 	end,
 	OnCancel = function()
@@ -99,10 +111,10 @@ StaticPopupDialogs["TRP3_INPUT_TEXT"] = {
 		end
 	end,
 	EditBoxOnEnterPressed = function(self)
-		self:GetParent().button1:GetScript("OnClick")(self:GetParent().button1);
+		GetDialogButton1(self:GetParent()):GetScript("OnClick")(GetDialogButton1(self:GetParent()));
 	end,
 	EditBoxOnEscapePressed = function(self)
-		self:GetParent().button2:GetScript("OnClick")(self:GetParent().button2);
+		GetDialogButton2(self:GetParent()):GetScript("OnClick")(GetDialogButton2(self:GetParent()));
 	end,
 	timeout = false,
 	whileDead = true,
@@ -114,15 +126,15 @@ StaticPopupDialogs["TRP3_INPUT_NUMBER"] = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnShow = function(self)
-		_G[self:GetName().."EditBox"]:SetNumeric(true);
+		GetDialogEditBox(self):SetNumeric(true);
 	end,
 	OnAccept = function(self)
 		if StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onAccept then
-			StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onAccept(_G[self:GetName().."EditBox"]:GetNumber());
+			StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onAccept(GetDialogEditBox(self):GetNumber());
 		end
 	end,
 	OnHide = function(self)
-		_G[self:GetName().."EditBox"]:SetNumeric(false);
+		GetDialogEditBox(self):SetNumeric(false);
 	end,
 	OnCancel = function()
 		if StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onCancel then

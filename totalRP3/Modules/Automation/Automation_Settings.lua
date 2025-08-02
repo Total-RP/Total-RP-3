@@ -299,13 +299,21 @@ end
 ------------------------------------------------------------------------------
 -- Static Popup Dialogs
 
+local function GetDialogEditBox(dialog)
+	return dialog.GetEditBox and dialog:GetEditBox() or dialog.editBox;
+end
+
+local function GetDialogButton1(dialog)
+	return dialog.GetButton1 and dialog:GetButton1() or dialog.button1;
+end
+
 do
 	local function IsValidProfileName(profileName)
 		return string.trim(profileName) ~= "" and not TRP3_AutomationUtil.DoesProfileExist(profileName);
 	end
 
 	local function OnDialogAccept(self)
-		local profileName = self.editBox:GetText();
+		local profileName = GetDialogEditBox(self):GetText();
 
 		if IsValidProfileName(profileName) then
 			TRP3_AutomationUtil.SetCurrentProfile(profileName);
@@ -313,19 +321,19 @@ do
 	end
 
 	local function OnDialogShow(self)
-		self.editBox:SetText(TRP3_AutomationUtil.GenerateProfileName());
+		GetDialogEditBox(self):SetText(TRP3_AutomationUtil.GenerateProfileName());
 	end
 
 	local function OnDialogEditBoxEnterPressed(self)
 		local parent = self:GetParent();
-		parent.button1:Click();
+		GetDialogButton1(parent):Click();
 	end
 
 	local function OnDialogEditBoxTextChanged(self)
 		local parent = self:GetParent();
 		local profileName = self:GetText();
 
-		parent.button1:SetEnabled(IsValidProfileName(profileName));
+		GetDialogButton1(parent):SetEnabled(IsValidProfileName(profileName));
 	end
 
 	local function OnDialogEditBoxEscapePressed(self)
