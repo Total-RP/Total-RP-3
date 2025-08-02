@@ -299,13 +299,17 @@ end
 ------------------------------------------------------------------------------
 -- Static Popup Dialogs
 
+local function GetDialogEditBox(dialog)
+	return dialog.EditBox or dialog.editBox;
+end
+
 do
 	local function IsValidProfileName(profileName)
 		return string.trim(profileName) ~= "" and not TRP3_AutomationUtil.DoesProfileExist(profileName);
 	end
 
 	local function OnDialogAccept(self)
-		local profileName = self.editBox:GetText();
+		local profileName = GetDialogEditBox(self):GetText();
 
 		if IsValidProfileName(profileName) then
 			TRP3_AutomationUtil.SetCurrentProfile(profileName);
@@ -313,7 +317,7 @@ do
 	end
 
 	local function OnDialogShow(self)
-		self.editBox:SetText(TRP3_AutomationUtil.GenerateProfileName());
+		GetDialogEditBox(self):SetText(TRP3_AutomationUtil.GenerateProfileName());
 	end
 
 	local function OnDialogEditBoxEnterPressed(self)
