@@ -346,9 +346,9 @@ local function onActionSelected(value, button)
 		uiDuplicateProfile(profileID);
 	elseif value == PROFILEMANAGER_ACTIONS.EXPORT then
 		local profile = profiles[profileID];
-		local serial = Utils.serial.serialize({Globals.version, profileID, profile });
+		local serial = TRP3_ProfileUtil.SerializeProfile(Globals.version, profileID, profile);
 		if serial:len() < 20000 then
-			TRP3_ProfileExport.content.scroll.text:SetText(serial);
+			TRP3_ProfileExport.content.scroll.text:SetReadOnlyText(serial);
 			TRP3_ProfileExport.content.title:SetText(loc.PR_EXPORT_NAME:format(profile.profileName, serial:len() / 1000));
 			TRP3_ProfileExport:Show();
 			TRP3_ProfileExport.content.scroll.text:SetFocus();
@@ -589,12 +589,9 @@ function TRP3_API.profile.init()
 	TRP3_ProfileImport.save:SetScript("OnClick", function()
 		local profileID = TRP3_ProfileImport.profileID;
 		local code = TRP3_ProfileImport.content.scroll.text:GetText();
-		local object = Utils.serial.safeDeserialize(code);
+		local version, errorOrProfileID, data = TRP3_ProfileUtil.DeserializeProfile(string.trim(code));
 
-		if object and type(object) == "table" and #object == 3 then
-			local version = object[1];
-			local data = object[3];
-
+		if version ~= nil then
 			local import = function()
 				data.profileName = profiles[profileID].profileName;
 				wipe(profiles[profileID]);
@@ -627,13 +624,20 @@ function TRP3_API.profile.init()
 				showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING:format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
 			end
 		else
-			Utils.message.displayMessage(loc.DB_IMPORT_ERROR1, 2);
+			Utils.message.displayMessage(string.format(loc.PR_IMPORT_ERROR, errorOrProfileID), 2);
 		end
 	end);
 
-	-- Setup edit boxes to handle serialized data using Ellyb's mixin
-	Mixin(TRP3_ProfileExport.content.scroll.text, TRP3_API.Ellyb.EditBoxes.SerializedDataEditBoxMixin);
-	Mixin(TRP3_ProfileImport.content.scroll.text, TRP3_API.Ellyb.EditBoxes.SerializedDataEditBoxMixin);
+	-- Setup edit boxes to handle serialized data
+	Mixin(TRP3_ProfileExport.content.scroll.text, TRP3_FocusHighlightEditBoxMixin);
+	Mixin(TRP3_ProfileExport.content.scroll.text, TRP3_ReadOnlyEditBoxMixin);
+	Mixin(TRP3_ProfileExport.content.scroll.text, TRP3_EscapeSanitizedEditBoxMixin);
+
+	TRP3_ProfileExport.content.scroll.text:HookScript("OnChar", TRP3_ProfileExport.content.scroll.text.OnChar);
+	TRP3_ProfileExport.content.scroll.text:HookScript("OnEditFocusGained", TRP3_ProfileExport.content.scroll.text.OnEditFocusGained);
+	TRP3_ProfileExport.content.scroll.text:HookScript("OnEditFocusLost", TRP3_ProfileExport.content.scroll.text.OnEditFocusLost);
+
+	Mixin(TRP3_ProfileImport.content.scroll.text, TRP3_EscapeSanitizedEditBoxMixin);
 
 	TRP3_API.slash.registerCommand({
 		id = "profile",

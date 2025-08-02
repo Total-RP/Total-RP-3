@@ -223,3 +223,71 @@ function TRP3_API.GetRoleplayExperienceTooltipText(experience)
 		return L.DB_STATUS_XP_NORMAL_TT;
 	end
 end
+
+TRP3_ProfileUtil = {};
+
+function TRP3_ProfileUtil.SerializeProfile(addonVersion, profileID, profileData)
+	local packedData = { addonVersion, profileID, profileData };
+	local serializedData;
+
+	if TRP3_EncodingUtil.IsPEMEncodingSupported() then
+		local label = "TRP3 PROFILE";
+		local data = C_EncodingUtil.CompressString(C_EncodingUtil.SerializeCBOR(packedData));
+		local headers = {
+			{ key = "Name", value = profileData.profileName },
+			{ key = "Exported", value = date("%Y-%m-%d %H:%M:%S") },
+			{ key = "AddOn-Version", value = TRP3_API.globals.version_display },
+		};
+
+		serializedData = TRP3_EncodingUtil.EncodePEM(label, data, headers);
+	else
+		-- Legacy path via AceSerializer without compression or encoding.
+		serializedData = TRP3_API.utils.serial.serialize(packedData);
+	end
+
+	return serializedData;
+end
+
+function TRP3_ProfileUtil.DeserializeProfile(serializedData)
+	local ok, packedData;
+
+	-- Exports that begin with an "^1" are AceSerializer-based exports.
+	if string.find(serializedData, "^^1") then
+		ok, packedData = pcall(TRP3_API.utils.serial.deserialize, serializedData);
+
+		if not ok then
+			return nil, L.PR_IMPORT_ERROR_DESERIALIZE_ACE;
+		end
+	elseif TRP3_EncodingUtil.IsPEMEncodingSupported() then
+		local decodedLabel, decodedData;
+		ok, decodedLabel, decodedData = pcall(TRP3_EncodingUtil.DecodePEM, serializedData);
+
+		if not ok then
+			return nil, L.PR_IMPORT_ERROR_PEM_DECODE;
+		end
+
+		if decodedLabel ~= "TRP3 PROFILE" then
+			return nil, L.PR_IMPORT_ERROR_PEM_LABEL;
+		end
+
+		local decompressedData;
+		ok, decompressedData = pcall(C_EncodingUtil.DecompressString, decodedData);
+
+		if not ok then
+			return nil, L.PR_IMPORT_ERROR_DECOMPRESS;
+		end
+
+		ok, packedData = pcall(C_EncodingUtil.DeserializeCBOR, decompressedData);
+
+		if not ok then
+			return nil, L.PR_IMPORT_ERROR_DESERIALIZE_CBOR;
+		end
+	end
+
+	if type(packedData) ~= "table" or #packedData < 3 then
+		return nil, L.PR_IMPORT_ERROR_PACKED_DATA_INVALID;
+	end
+
+	local addonVersion, profileID, profileData = unpack(packedData, 1, 3);
+	return addonVersion, profileID, profileData;
+end
