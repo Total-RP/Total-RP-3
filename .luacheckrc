@@ -235,7 +235,6 @@ stds.wow = {
 
 		C_Item = {
 			fields = {
-				"DoesItemExistByID",
 				"GetItemIconByID",
 				"GetItemNameByID",
 				"IsItemInRange",
@@ -274,25 +273,9 @@ stds.wow = {
 
 		C_PetJournal = {
 			fields = {
-				"ClearSearchFilter",
-				"GetNumPets",
-				"GetNumPetSources",
-				"GetNumPetTypes",
-				"GetPetInfoByIndex",
+				"GetOwnedPetIDs",
 				"GetPetInfoByPetID",
-				"GetPetSortParameter",
 				"GetSummonedPetGUID",
-				"IsFilterChecked",
-				"IsPetSourceChecked",
-				"IsPetTypeChecked",
-				"SetAllPetSourcesChecked",
-				"SetAllPetTypesChecked",
-				"SetCustomName",
-				"SetFilterChecked",
-				"SetPetSortParameter",
-				"SetPetSourceChecked",
-				"SetPetTypeFilter",
-				"SetSearchFilter",
 			},
 		},
 
@@ -318,8 +301,8 @@ stds.wow = {
 
 		C_Spell = {
 			fields = {
-				"DoesSpellExist",
-				"GetSpellInfo",
+				"GetSpellTexture",
+				"GetSpellName",
 				"RequestLoadSpellData",
 			},
 		},
@@ -359,7 +342,9 @@ stds.wow = {
 
 		C_UnitAuras = {
 			fields = {
-				"GetAuraDataByIndex",
+				"GetAuraDataBySlot",
+				"GetAuraSlots",
+				"GetPlayerAuraBySpellID",
 			},
 		},
 
@@ -396,6 +381,12 @@ stds.wow = {
 		EventUtil = {
 			fields = {
 				"ContinueOnAddOnLoaded",
+			},
+		},
+
+		FrameUtil = {
+			fields = {
+				"SpecializeFrameWithMixins",
 			},
 		},
 
@@ -527,9 +518,6 @@ stds.wow = {
 		"GetNumLanguages",
 		"GetPlayerInfoByGUID",
 		"GetRealmName",
-		"GetSpellDescription",
-		"GetSpellInfo",
-		"GetSpellTexture",
 		"GetStablePetInfo",
 		"GetSubZoneText",
 		"GetTickTime",

@@ -392,60 +392,8 @@ end
 local TRP3_CompanionBrowser = TRP3_CompanionBrowser;
 local companionWidgetTab = {};
 local filteredCompanionList = {};
-local globalPetSearchFilter = "";
 local ui_CompanionBrowserContent = TRP3_CompanionBrowserContent;
 local currentCompanionType;
-
-local function GetNumPets()
-	if C_PetJournal then
-		return C_PetJournal.GetNumPets();
-	else
-		local numPets = TRP3_API.utils.resources.GetNumPets();
-		return numPets, numPets;
-	end
-end
-
-local function GetPetInfoByIndex(petIndex)
-	if C_PetJournal then
-		return C_PetJournal.GetPetInfoByIndex(petIndex);
-	else
-		return TRP3_API.utils.resources.GetPetInfoByIndex(petIndex);
-	end
-end
-
-local function GetMountIDs()
-	if C_MountJournal then
-		return C_MountJournal.GetMountIDs();
-	else
-		return TRP3_API.utils.resources.GetMountIDs();
-	end
-end
-
-local function GetMountInfoByID(mountID)
-	if C_MountJournal then
-		return C_MountJournal.GetMountInfoByID(mountID);
-	else
-		return TRP3_API.utils.resources.GetMountInfoByID(mountID);
-	end
-end
-
-local function GetMountInfoExtraByID(mountID)
-	if C_MountJournal then
-		return C_MountJournal.GetMountInfoExtraByID(mountID);
-	else
-		return TRP3_API.utils.resources.GetMountInfoExtraByID(mountID);
-	end
-end
-
--- Blizzard don't provide a GetSearchFilter for the pet journal, so we
--- keep track of it with a hook instead. This needs installing as early as
--- possible.
-
-if C_PetJournal and C_PetJournal.SetSearchFilter then
-	hooksecurefunc(C_PetJournal, "SetSearchFilter", function(text)
-		globalPetSearchFilter = (text == nil and "" or tostring(text));
-	end);
-end
 
 local function onCompanionClick(button)
 	TRP3_CompanionBrowser:Hide();
@@ -479,7 +427,7 @@ local function decorateCompanion(button, index)
 	-- For Retail clients we strongly recommend that battle pets be renamed
 	-- to be bound, but this is only possible there and not in Classic.
 
-	if C_PetJournal and C_PetJournal.SetCustomName and (name == speciesName) then
+	if TRP3_CompanionUtil.CanRenameCompanionPets() and (name == speciesName) then
 		button.RenameWarning:Show();
 		tooltipText = tooltipText .. "|n|n" .. TRP3_API.loc.UI_COMPANION_BROWSER_RENAME_WARNING;
 	else
@@ -492,78 +440,6 @@ end
 
 local function nameComparator(elem1, elem2)
 	return elem1[1] < elem2[1];
-end
-
-local function CollectIndexedAccessor(accessorFunc, count)
-	local data = {};
-
-	for i = 1, count do
-		data[i] = accessorFunc(i);
-	end
-
-	return data;
-end
-
-local function RestoreIndexedMutator(mutatorFunc, data)
-	for i = 1, #data do
-		mutatorFunc(i, data[i]);
-	end
-end
-
-local function CallWithUnfilteredPetJournal(func, ...)
-	-- The pet journal API is stateful and accesses to information such as the
-	-- total pet count or information by index is affected by the filters applied
-	-- either by the user (which persist across sessions) or other addons.
-	--
-	-- As such, any queries which need either of the above must go through
-	-- this function which does the following in-order:
-	--
-	--   1. Collects all the current known state on the journal.
-	--   2. Resets the journal state to consistent defaults.
-	--   3. Executes the supplied function.
-	--   4. Restores the original state.
-	--
-	-- This function is resilient to errors at any step and will restore all
-	-- state as best as possible.
-
-	if not C_PetJournal then
-		return func(...);
-	end
-
-	local filters = {
-		options = CollectIndexedAccessor(C_PetJournal.IsFilterChecked, 2),
-		sources = CollectIndexedAccessor(C_PetJournal.IsPetSourceChecked, C_PetJournal.GetNumPetSources()),
-		types   = CollectIndexedAccessor(C_PetJournal.IsPetTypeChecked, C_PetJournal.GetNumPetTypes()),
-		search  = globalPetSearchFilter,
-		sort    = C_PetJournal.GetPetSortParameter(),
-	};
-
-	local function RestoreFiltersAndReturn(ok, ...)
-		securecallfunction(RestoreIndexedMutator, C_PetJournal.SetFilterChecked, filters.options);
-		securecallfunction(RestoreIndexedMutator, C_PetJournal.SetPetSourceChecked, filters.sources);
-		securecallfunction(RestoreIndexedMutator, C_PetJournal.SetPetTypeFilter, filters.types);
-		securecallfunction(C_PetJournal.SetSearchFilter, filters.search);
-		securecallfunction(C_PetJournal.SetPetSortParameter, filters.sort);
-
-		if not ok then
-			error((...), 3);
-		else
-			return ...;
-		end
-	end
-
-	local function ClearFiltersAndInvokeFunction(...)
-		C_PetJournal.SetFilterChecked(LE_PET_JOURNAL_FILTER_COLLECTED, true);
-		C_PetJournal.SetFilterChecked(LE_PET_JOURNAL_FILTER_NOT_COLLECTED, true);
-		C_PetJournal.SetAllPetSourcesChecked(true);
-		C_PetJournal.SetAllPetTypesChecked(true);
-		C_PetJournal.ClearSearchFilter();
-		C_PetJournal.SetPetSortParameter(LE_SORT_BY_LEVEL);
-
-		return func(...);
-	end
-
-	return RestoreFiltersAndReturn(pcall(ClearFiltersAndInvokeFunction, ...));
 end
 
 local function SearchFilterPredicate(value, filter)
@@ -579,27 +455,16 @@ end
 
 local function CollectBattlePets(filter)
 	local uniquePetNames = {};
+	local battlePets = {};
 
-	local function CollectUnfilteredBattlePets()
-		local battlePets = {};
-
-		for i = 1, GetNumPets() do
-			local _, _, owned, customName, _, _, _, speciesName, icon, _, _, _, description = GetPetInfoByIndex(i);
-
-			if not customName or customName == "" then
-				customName = speciesName
-			end
-
-			if owned and not uniquePetNames[customName] and SearchFilterPredicate(customName, filter) then
-				uniquePetNames[customName] = true;
-				table.insert(battlePets, { customName, icon, description, speciesName });
-			end
+	for _, petInfo in TRP3_CompanionUtil.EnumerateCompanionPets() do
+		if not uniquePetNames[petInfo.name] and SearchFilterPredicate(petInfo.name, filter) then
+			uniquePetNames[petInfo.name] = true;
+			table.insert(battlePets, { petInfo.name, petInfo.icon, petInfo.description, petInfo.speciesName });
 		end
-
-		return battlePets;
 	end
 
-	return CallWithUnfilteredPetJournal(CollectUnfilteredBattlePets);
+	return battlePets;
 end
 
 local function BattlePetNameComparator(a, b)
@@ -626,11 +491,12 @@ local function getWoWCompanionFilteredList(filter)
 		table.sort(filteredCompanionList, BattlePetNameComparator);
 	elseif currentCompanionType == TRP3_Enums.UNIT_TYPE.MOUNT then
 		-- Mounts
-		for _, id in pairs(GetMountIDs()) do
-			local creatureName, spellID, icon, _, _, _, _, _, _, _, isCollected = GetMountInfoByID(id);
-			if isCollected and SearchFilterPredicate(creatureName, filter) then
-				local _, description = GetMountInfoExtraByID(id);
-				tinsert(filteredCompanionList, {creatureName, icon, description, loc.PR_CO_MOUNT, spellID, id});
+		for _, mountInfo in TRP3_CompanionUtil.EnumerateMounts() do
+			-- The not-false check here is intended to allow mounts that we've
+			-- either definitely collected (true) or mounts whose collection
+			-- state is indeterminate (nil).
+			if mountInfo.isCollected ~= false and SearchFilterPredicate(mountInfo.name, filter) then
+				tinsert(filteredCompanionList, {mountInfo.name, mountInfo.icon, mountInfo.description, loc.PR_CO_MOUNT, mountInfo.spellID, mountInfo.id});
 				count = count + 1;
 			end
 		end
