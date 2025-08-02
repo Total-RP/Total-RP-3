@@ -252,7 +252,9 @@ local function onStart()
 	end
 
 	local function shouldShowTargetFrame(config)
-		if currentTargetID == nil or (getConfigValue(config) ~= 1 and (getConfigValue(config) ~= 2 or not isPlayerIC())) then
+		if ui_TargetFrame:GetAttribute("state-forcehide") == 1 then
+			return false;
+		elseif currentTargetID == nil or (getConfigValue(config) ~= 1 and (getConfigValue(config) ~= 2 or not isPlayerIC())) then
 			return false;
 		elseif currentTargetType == TRP3_Enums.UNIT_TYPE.CHARACTER and (currentTargetID == Globals.player_id or (not isIDIgnored(currentTargetID) and isUnitIDKnown(currentTargetID))) then
 			return true;
@@ -312,6 +314,16 @@ local function onStart()
 		-- Update tooltip anchors
 		for _,uiButton in pairs(uiButtons) do
 			updateTargetFrameButtonTooltip(uiButton);
+		end
+	end);
+
+	ui_TargetFrame:SetScript("OnAttributeChanged", function(self, attr)
+		if attr == "state-forcehide" then
+			if shouldShowTargetFrame(CONFIG_TARGET_USE) then
+				displayTargetFrame();
+			else
+				ui_TargetFrame:Hide();
+			end
 		end
 	end);
 
@@ -431,6 +443,8 @@ local function onStart()
 	end);
 
 	TRP3_API.RegisterCallback(TRP3_Addon, "ROLEPLAY_STATUS_CHANGED", function() onTargetChanged(); end);
+
+	RegisterStateDriver(ui_TargetFrame, "forcehide", "[petbattle] 1;0");
 end
 
 local MODULE_STRUCTURE = {
