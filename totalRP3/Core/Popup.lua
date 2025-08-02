@@ -80,6 +80,14 @@ StaticPopupDialogs["TRP3_YES_NO_CUSTOM"] = {
 	showAlert = true,
 }
 
+local function GetDialogButton1(dialog)
+	return dialog.GetButton1 and dialog:GetButton1() or dialog.button1;
+end
+
+local function GetDialogButton2(dialog)
+	return dialog.GetButton2 and dialog:GetButton2() or dialog.button2;
+end
+
 StaticPopupDialogs["TRP3_INPUT_TEXT"] = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
@@ -99,10 +107,10 @@ StaticPopupDialogs["TRP3_INPUT_TEXT"] = {
 		end
 	end,
 	EditBoxOnEnterPressed = function(self)
-		self:GetParent().button1:GetScript("OnClick")(self:GetParent().button1);
+		GetDialogButton1(self:GetParent()):GetScript("OnClick")(GetDialogButton1(self:GetParent()));
 	end,
 	EditBoxOnEscapePressed = function(self)
-		self:GetParent().button2:GetScript("OnClick")(self:GetParent().button2);
+		GetDialogButton2(self:GetParent()):GetScript("OnClick")(GetDialogButton2(self:GetParent()));
 	end,
 	timeout = false,
 	whileDead = true,
