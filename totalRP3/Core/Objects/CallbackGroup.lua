@@ -1,8 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-
 -- Callback groups provide a mechanism for toggling a collection of registrables
 -- on-demand. The concept of a "registrable" is anything that provides a pair
 -- of parameterless "Register" and "Unregister" methods.

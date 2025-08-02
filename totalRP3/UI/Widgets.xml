@@ -15,6 +15,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="FontUtil.lua"/>
 	<Include file="TextUtil.lua"/>
 	<Include file="ColorSwatch.xml"/>
+	<Include file="RefreshSpinner.xml"/>
 	<Include file="Tooltip\Tooltip.xml"/>
 	<Include file="Widgets.lua"/>
 	<Include file="Menu\Menu.xml"/>

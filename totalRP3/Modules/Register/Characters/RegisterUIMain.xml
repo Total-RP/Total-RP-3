@@ -9,22 +9,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size x="22" y="22"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture parentKey="Icon" file="Interface\AddOns\totalRP3\Resources\UI\ui-refresh" texelSnappingBias="0.0" snapToPixelGrid="false">
-					<Size x="16" y="16"/>
+				<Texture parentKey="Icon" inherits="TRP3_RefreshSpinnerIcon">
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
 				</Texture>
 			</Layer>
 		</Layers>
-		<Animations>
-			<AnimationGroup parentKey="SpinAnimation" looping="REPEAT">
-				<Rotation childKey="Icon" duration="1.5" degrees="-360" smoothing="OUT_IN"/>
-				<Scripts>
-					<OnLoad method="Play"/>
-				</Scripts>
-			</AnimationGroup>
-		</Animations>
 	</Frame>
 
 	<!-- Character tooltip -->
@@ -131,6 +122,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Layers>
 				<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD"/>
 			</Button>
+			<Frame parentKey="RequestIndicator" inherits="TRP3_RegisterRequestIndicatorTemplate" frameLevel="1000" fixedFrameLevel="true" hidden="true">
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
+				</Anchors>
+			</Frame>
 		</Frames>
 	</Frame>
 

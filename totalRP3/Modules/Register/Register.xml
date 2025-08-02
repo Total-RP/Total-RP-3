@@ -6,6 +6,7 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Include file="Main\RegisterTemplates.xml"/>
+	<Include file="Main\RegisterRequestIndicator.xml"/>
 	<Include file="Characters\RegisterUICharacteristics.xml"/>
 	<Include file="Characters\RegisterUIAbout.xml"/>
 	<Include file="Characters\RegisterUIMisc.xml"/>

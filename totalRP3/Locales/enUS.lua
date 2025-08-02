@@ -374,6 +374,7 @@ The formatting tools give you access to various |cnGREEN_FONT_COLOR:layout param
 
 |cnGREEN_FONT_COLOR:Companion description:|r
 The description doesn't have to be limited to |cnGREEN_FONT_COLOR:physical description|r. Feel free to indicate parts from their |cnGREEN_FONT_COLOR:background|r or details about their |cnGREEN_FONT_COLOR:personality|r.]],
+	REG_UPDATING_PROFILE = "Updating profile...",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- CONFIGURATION

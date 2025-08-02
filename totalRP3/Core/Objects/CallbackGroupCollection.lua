@@ -1,8 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-
 -- Callback group collections are a convenience wrapper for managing a keyed
 -- set of callback groups. Callbacks can be added to a child group with a
 -- user-defined group "key", and the groups later mass-toggled or individually
