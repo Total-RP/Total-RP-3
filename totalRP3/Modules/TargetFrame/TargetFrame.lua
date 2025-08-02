@@ -378,7 +378,10 @@ local function onStart()
 			end,
 		});
 
-		TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE);
+		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
+			inherit = "TRP3_ConfigH1",
+			title = loc.CO_BARFRAME_BUTTONSVISIBILITY,
+		});
 
 		local ids = {};
 		for buttonID, _ in pairs(targetButtons) do
@@ -400,6 +403,8 @@ local function onStart()
 				configKey = configKey,
 			});
 		end
+
+		TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE);
 	end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
