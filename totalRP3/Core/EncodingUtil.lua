@@ -1,6 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+local Chomp = LibStub:GetLibrary("Chomp");
 local LibDeflate = LibStub:GetLibrary("LibDeflate");
 
 TRP3_EncodingUtil = {};
@@ -25,15 +26,81 @@ end
 -- over addon chat channels, which disallow null bytes. The format used is
 -- compatible with LibDeflate's EncodeForWoWAddonChannel implementation.
 
-local ADDON_ENCODE_TABLE = { ["\000"] = "\001\002", ["\001"] = "\001\003" };
-local ADDON_DECODE_TABLE = { ["\001\002"] = "\000", ["\001\003"] = "\001" };
+local BINARY_ENCODE_TABLE = { ["\000"] = "\001\002", ["\001"] = "\001\003" };
+local BINARY_DECODE_TABLE = { ["\001\002"] = "\000", ["\001\003"] = "\001" };
 
-function TRP3_EncodingUtil.EncodeAddOnMessage(data)
-	return (string.gsub(data, "[%z\001]", ADDON_ENCODE_TABLE));
+function TRP3_EncodingUtil.EncodeBinary(data)
+	return (string.gsub(data, "[%z\001]", BINARY_ENCODE_TABLE));
 end
 
-function TRP3_EncodingUtil.DecodeAddOnMessage(data)
-	return (string.gsub(data, "\001[\002\003]", ADDON_DECODE_TABLE));
+function TRP3_EncodingUtil.DecodeBinary(data)
+	return (string.gsub(data, "\001[\002\003]", BINARY_DECODE_TABLE));
+end
+
+local function CheckProtocolVersion(feature)
+	local projectID = WOW_PROJECT_ID;
+	local currentVersion = select(4, GetBuildInfo());
+	local minimumVersion = feature[projectID] or -math.huge;
+
+	return currentVersion >= minimumVersion;
+end
+
+local USE_CBOR_SERIALIZATION = CheckProtocolVersion({
+	[WOW_PROJECT_MAINLINE or 1] = 120000,
+	[WOW_PROJECT_CLASSIC or 2] = 11509,
+	[WOW_PROJECT_MISTS_CLASSIC or 19] = 50502,
+});
+
+local USE_BINARY_ENCODING = CheckProtocolVersion({
+	[WOW_PROJECT_MAINLINE or 1] = 120000,
+	[WOW_PROJECT_CLASSIC or 2] = 11509,
+	[WOW_PROJECT_MISTS_CLASSIC or 19] = 50502,
+});
+
+function TRP3_EncodingUtil.EncodeLoggedAddOnMessage(data)
+	local serializedData = Chomp.Serialize(data);
+	return serializedData;
+end
+
+function TRP3_EncodingUtil.DecodeLoggedAddOnMessage(data)
+	local deserializedData = Chomp.Deserialize(data);
+	return deserializedData;
+end
+
+function TRP3_EncodingUtil.EncodeBinaryAddOnMessage(data)
+	if USE_CBOR_SERIALIZATION then
+		data = C_EncodingUtil.SerializeCBOR(data);
+	else
+		data = Chomp.Serialize(data);
+	end
+
+	data = TRP3_EncodingUtil.CompressString(data);
+
+	if USE_BINARY_ENCODING then
+		data = TRP3_EncodingUtil.EncodeBinary(data);
+	else
+		data = LibDeflate:EncodeForWoWChatChannel(data);
+	end
+
+	return data;
+end
+
+function TRP3_EncodingUtil.DecodeBinaryAddOnMessage(data)
+	if USE_BINARY_ENCODING then
+		data = TRP3_EncodingUtil.DecodeBinary(data);
+	else
+		data = assert(LibDeflate:DecodeForWoWChatChannel(data));
+	end
+
+	data = TRP3_EncodingUtil.DecompressString(data);
+
+	if USE_CBOR_SERIALIZATION then
+		data = C_EncodingUtil.DeserializeCBOR(data);
+	else
+		data = Chomp.Deserialize(data);
+	end
+
+	return data;
 end
 
 --

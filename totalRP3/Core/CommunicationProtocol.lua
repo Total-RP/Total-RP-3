@@ -10,9 +10,6 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 -- AddOn imports
 local Chomp = AddOn_Chomp;
 
--- Total RP 3 imports
-local Compression = AddOn_TotalRP3.Compression;
-
 local PROTOCOL_PREFIX = "TRP3.3";
 local PROTOCOL_SETTINGS = {
 	permitUnlogged = true,
@@ -107,13 +104,13 @@ local function sendObject(prefix, object, channel, target, priority, messageToke
 
 		messageToken = messageToken or getNewMessageToken();
 
-		local serializedData = Chomp.Serialize({
-			modulePrefix = prefix,
-			data = object,
-		});
+		local serializedData;
+		local messageData = { modulePrefix = prefix, data = object };
 
-		if not useLoggedMessages then
-			serializedData = Compression.compress(serializedData, true);
+		if useLoggedMessages then
+			serializedData = TRP3_EncodingUtil.EncodeLoggedAddOnMessage(messageData);
+		else
+			serializedData = TRP3_EncodingUtil.EncodeBinaryAddOnMessage(messageData);
 		end
 
 		Chomp.SmartAddonMessage(
@@ -160,28 +157,26 @@ PROTOCOL_SETTINGS.rawCallback = onIncrementalMessageReceived;
 
 local function onChatMessageReceived(_, data, channel, sender)
 	_, data = extractMessageTokenFromData(data);
-	if not isLoggedChannel(channel) then
-		data = Compression.decompress(data, true);
+	if isLoggedChannel(channel) then
+		data = TRP3_EncodingUtil.DecodeLoggedAddOnMessage(data);
+	else
+		data = TRP3_EncodingUtil.DecodeBinaryAddOnMessage(data);
 	end
-	data = Chomp.Deserialize(data);
 	subSystemsDispatcher:TriggerEvent(data.modulePrefix, data.data, sender, channel);
 end
 
 Chomp.RegisterAddonPrefix(PROTOCOL_PREFIX, onChatMessageReceived, PROTOCOL_SETTINGS)
 
 
-local function estimateStructureSize(object, shouldBeCompressed)
+local function estimateStructureSize(object)
 	Ellyb.Assertions.isNotNil(object, "object");
-	local serializedObject = Chomp.Serialize(object);
-	if shouldBeCompressed then
-		serializedObject = Compression.compress(serializedObject);
-	end
+	local serializedObject = TRP3_EncodingUtil.EncodeLoggedAddOnMessage(object);
 	return #serializedObject;
 end
 
 -- Estimate the number of packet needed to send a object.
-local function estimateStructureLoad(object, shouldBeCompressed)
-	return math.ceil(estimateStructureSize(object, shouldBeCompressed) / Chomp.GetBPS());
+local function estimateStructureLoad(object)
+	return math.ceil(estimateStructureSize(object) / Chomp.GetBPS());
 end
 
 AddOn_TotalRP3.Communications = {
