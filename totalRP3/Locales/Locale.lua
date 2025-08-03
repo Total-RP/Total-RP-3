@@ -6,9 +6,8 @@ local _, TRP3_API = ...;
 local Locale = {};
 TRP3_API.Locale = Locale;
 
-function Locale.init()
-	TRP3_API.configuration.registerConfigKey("AddonLocale", GetLocale());
-	TRP3_API.loc:SetCurrentLocale(TRP3_API.utils.GetPreferredLocale(), true);
+local function OnLoad()
+	TRP3_API.loc:SetCurrentLocale(TRP3_Configuration and TRP3_Configuration.AddonLocale or GetLocale(), true);
 
 	BINDING_NAME_TRP3_TOGGLE = TRP3_API.loc.BINDING_NAME_TRP3_TOGGLE;
 	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = TRP3_API.loc.BINDING_NAME_TRP3_TOOLBAR_TOGGLE;
@@ -22,6 +21,12 @@ function Locale.init()
 	for key, value in TRP3_API.loc:EnumerateTexts() do
 		_G["TRP3_L_" .. key] = value;
 	end
+end
+
+securecallfunction(OnLoad);
+
+function Locale.init()
+	TRP3_API.configuration.registerConfigKey("AddonLocale", GetLocale());
 end
 
 -- Shortcut formatting

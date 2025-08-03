@@ -6,7 +6,6 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Include file="Backdrop.xml"/>
-	<Include file="LocalizedText.xml"/>
 	<Include file="ScrollingEditBox.xml"/>
 	<Include file="FocusRegion.xml"/>
 	<Include file="GroupBox.xml"/>

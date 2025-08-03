@@ -20,6 +20,7 @@
 ## OptionalDeps: !ClassColors, _DebugLog, Kui_Nameplates, Kui_Nameplates_Core, Prat-3.0
 ## RequiredDeps: totalRP3_Data
 ## SavedVariables: TRP3_Profiles, TRP3_Characters, TRP3_Configuration, TRP3_Flyway, TRP3_Presets, TRP3_Companions, TRP3_MatureFilter, TRP3_Colors, TRP3_Notes, TRP3_SavedAutomation
+## LoadSavedVariablesFirst: 1
 
 ## X-Category: Roleplay
 ## X-License: Apache-2.0
