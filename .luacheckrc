@@ -510,6 +510,7 @@ stds.wow = {
 		"GenerateClosure",
 		"GetAutoCompleteRealms",
 		"GetBindingText",
+		"GetBuildInfo",
 		"GetChannelDisplayInfo",
 		"GetChannelList",
 		"GetChannelName",

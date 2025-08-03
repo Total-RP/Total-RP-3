@@ -1,7 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Ellyb = TRP3_API.Ellyb;
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
@@ -10,36 +9,36 @@ local LibDeflate = LibStub:GetLibrary("LibDeflate");
 
 local Compression = {};
 
-function Compression.compress(data, willBeSentViaAddOnChannel)
-	Ellyb.Assertions.isType(data, "string", "data");
+-- Protocol break for 12.0: Historically, data compression intended for use
+-- in addon messages has been using a codec for regular chat messages. This
+-- incurs a ~53% overhead in transmission size as over half of the range of
+-- bytes needs to be escaped.
+local useAddonChatEncoding = (select(4, GetBuildInfo()) >= 120000);
 
-	local compressedData = LibDeflate:CompressDeflate(data);
+function Compression.compress(data, willBeSentViaAddOnChannel)
+	local compressedData = TRP3_EncodingUtil.CompressString(data);
 
 	if willBeSentViaAddOnChannel then
-		compressedData = LibDeflate:EncodeForWoWChatChannel(compressedData);
+		if useAddonChatEncoding then
+			compressedData = TRP3_EncodingUtil.EncodeAddOnMessage(compressedData);
+		else
+			compressedData = LibDeflate:EncodeForWoWChatChannel(compressedData);
+		end
 	end
 
 	return compressedData;
 end
 
 function Compression.decompress(compressedData, wasReceivedViaAddOnChannel)
-	Ellyb.Assertions.isType(compressedData, "string", "data");
-
 	if wasReceivedViaAddOnChannel then
-		local decodedCompressedData = LibDeflate:DecodeForWoWChatChannel(compressedData);
-		-- TODO Clean that up, instead of just returning the passed data
-		if not decodedCompressedData then
-			return compressedData;
+		if useAddonChatEncoding then
+			compressedData = TRP3_EncodingUtil.DecodeAddOnMessage(compressedData);
 		else
-			compressedData = decodedCompressedData;
+			compressedData = assert(LibDeflate:DecodeForWoWChatChannel(compressedData));
 		end
 	end
 
-	local decompressedData, _ = LibDeflate:DecompressDeflate(compressedData);
-	if decompressedData == nil then
-		error(TRP3_API.Colors.Red("[AddOn_TotalRP3.Compression.decompress ERROR]:") .. "\nCould not decompress data \"" .. TRP3_API.Colors.Grey(tostring(compressedData)) .. "\"");
-	end
-
+	local decompressedData = TRP3_EncodingUtil.DecompressString(compressedData);
 	return decompressedData;
 end
 

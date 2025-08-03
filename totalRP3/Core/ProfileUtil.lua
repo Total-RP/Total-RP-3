@@ -232,7 +232,7 @@ function TRP3_ProfileUtil.SerializeProfile(addonVersion, profileID, profileData)
 
 	if TRP3_EncodingUtil.IsPEMEncodingSupported() then
 		local label = "TRP3 PROFILE";
-		local data = C_EncodingUtil.CompressString(C_EncodingUtil.SerializeCBOR(packedData));
+		local data = TRP3_EncodingUtil.CompressString(C_EncodingUtil.SerializeCBOR(packedData));
 		local headers = {
 			{ key = "Name", value = profileData.profileName },
 			{ key = "Exported", value = date("%Y-%m-%d %H:%M:%S") },

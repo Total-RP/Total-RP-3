@@ -1,7 +1,40 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+local LibDeflate = LibStub:GetLibrary("LibDeflate");
+
 TRP3_EncodingUtil = {};
+
+function TRP3_EncodingUtil.CompressString(data)
+	if C_EncodingUtil and C_EncodingUtil.CompressString then
+		return C_EncodingUtil.CompressString(data);
+	else
+		return LibDeflate:CompressDeflate(data);
+	end
+end
+
+function TRP3_EncodingUtil.DecompressString(data)
+	if C_EncodingUtil and C_EncodingUtil.DecompressString then
+		return C_EncodingUtil.DecompressString(data);
+	else
+		return assert(LibDeflate:DecompressDeflate(data));
+	end
+end
+
+-- The following functions encode and decode data suitable for transmission
+-- over addon chat channels, which disallow null bytes. The format used is
+-- compatible with LibDeflate's EncodeForWoWAddonChannel implementation.
+
+local ADDON_ENCODE_TABLE = { ["\000"] = "\001\002", ["\001"] = "\001\003" };
+local ADDON_DECODE_TABLE = { ["\001\002"] = "\000", ["\001\003"] = "\001" };
+
+function TRP3_EncodingUtil.EncodeAddOnMessage(data)
+	return (string.gsub(data, "[%z\001]", ADDON_ENCODE_TABLE));
+end
+
+function TRP3_EncodingUtil.DecodeAddOnMessage(data)
+	return (string.gsub(data, "\001[\002\003]", ADDON_DECODE_TABLE));
+end
 
 --
 -- PEM Encoding and Decoding Utilities
