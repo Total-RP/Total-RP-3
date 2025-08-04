@@ -176,7 +176,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			if itemData.moduleName then
 				TRP3_RefTooltip:AddLine(loc.CL_TYPE:format("|cnWHITE_FONT_COLOR:" .. itemData.moduleName .. "|r"));
 			end
-			TRP3_RefTooltip:AddLine(loc.CL_SENT_BY:format("|cnWHITE_FONT_COLOR:" .. sender.. "|r"));
+			if sender then
+				TRP3_RefTooltip:AddLine(loc.CL_SENT_BY:format("|cnWHITE_FONT_COLOR:" .. sender.. "|r"));
+			end
 			if itemData.size then
 				TRP3_RefTooltip:AddLine(loc.CL_CONTENT_SIZE:format("|cnWHITE_FONT_COLOR:" .. Ellyb.Strings.formatBytes(itemData.size).. "|r"));
 			end
