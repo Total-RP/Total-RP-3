@@ -1,7 +1,420 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+local Chomp = LibStub:GetLibrary("Chomp");
+local LibDeflate = LibStub:GetLibrary("LibDeflate");
+
 TRP3_EncodingUtil = {};
+
+---@param data string
+---@return string
+function TRP3_EncodingUtil.CompressString(data)
+	if C_EncodingUtil and C_EncodingUtil.CompressString then
+		return C_EncodingUtil.CompressString(data);
+	else
+		return assert(LibDeflate:CompressDeflate(data));
+	end
+end
+
+---@param data string
+---@return string
+function TRP3_EncodingUtil.DecompressString(data)
+	if C_EncodingUtil and C_EncodingUtil.DecompressString then
+		return C_EncodingUtil.DecompressString(data);
+	else
+		return assert(LibDeflate:DecompressDeflate(data));
+	end
+end
+
+-- The following functions encode and decode data suitable for transmission
+-- over addon chat channels, which disallow null bytes. The format used is
+-- compatible with LibDeflate's EncodeForWoWAddonChannel implementation.
+
+local BINARY_ENCODE_TABLE = { ["\000"] = "\001\002", ["\001"] = "\001\003" };
+local BINARY_DECODE_TABLE = { ["\001\002"] = "\000", ["\001\003"] = "\001" };
+
+---@param data string
+function TRP3_EncodingUtil.EncodeBinary(data)
+	return (string.gsub(data, "[%z\001]", BINARY_ENCODE_TABLE));
+end
+
+---@param data string
+function TRP3_EncodingUtil.DecodeBinary(data)
+	return (string.gsub(data, "\001[\002\003]", BINARY_DECODE_TABLE));
+end
+
+---@enum TRP3_CommunicationsPrefix
+TRP3_CommunicationsPrefix = {
+	V3 = "TRP3.3",
+	V4 = "TRP3.4",
+};
+
+---@param data boolean|number|string|table|nil
+---@param prefix TRP3_CommunicationsPrefix
+function TRP3_EncodingUtil.EncodeLoggedAddOnMessage(data, prefix)
+	if prefix == TRP3_CommunicationsPrefix.V3 then
+		return Chomp.Serialize(data);
+	else
+		return TRP3_EncodingUtil.SerializeLogged(data);
+	end
+end
+
+---@param data string
+---@param prefix TRP3_CommunicationsPrefix
+function TRP3_EncodingUtil.DecodeLoggedAddOnMessage(data, prefix)
+	if prefix == TRP3_CommunicationsPrefix.V3 then
+		return Chomp.Deserialize(data);
+	else
+		return TRP3_EncodingUtil.DeserializeLogged(data);
+	end
+end
+
+---@param data boolean|number|string|table|nil
+---@param prefix TRP3_CommunicationsPrefix
+---@return boolean|number|string|table|nil
+function TRP3_EncodingUtil.EncodeBinaryAddOnMessage(data, prefix)
+	if prefix == TRP3_CommunicationsPrefix.V3 then
+		data = Chomp.Serialize(data);
+	else
+		data = C_EncodingUtil.SerializeCBOR(data);
+	end
+
+	data = TRP3_EncodingUtil.CompressString(data);
+
+	if prefix == TRP3_CommunicationsPrefix.V3 then
+		data = LibDeflate:EncodeForWoWChatChannel(data);
+	else
+		data = TRP3_EncodingUtil.EncodeBinary(data);
+	end
+
+	return data;
+end
+
+---@param data string
+---@param prefix TRP3_CommunicationsPrefix
+---@return boolean|number|string|table|nil
+function TRP3_EncodingUtil.DecodeBinaryAddOnMessage(data, prefix)
+	if prefix == TRP3_CommunicationsPrefix.V3 then
+		data = assert(LibDeflate:DecodeForWoWChatChannel(data));
+	else
+		data = TRP3_EncodingUtil.DecodeBinary(data);
+	end
+
+	data = TRP3_EncodingUtil.DecompressString(data);
+
+	if prefix == TRP3_CommunicationsPrefix.V3 then
+		data = Chomp.Deserialize(data);
+	else
+		data = C_EncodingUtil.DeserializeCBOR(data);
+	end
+
+	return data;
+end
+
+--
+-- Logged Data Serialization Utilities
+--
+
+local LOGGED_STRING_ENCODE_PATTERN = '[%z\r\n\\"]';
+local LOGGED_STRING_ENCODE_TABLE = { ["\000"] = "\\z", ["\r"] = "", ["\n"] = "\\n", ["\\"] = "\\\\", ['"'] = "\\q" };
+local LOGGED_STRING_DECODE_PATTERN = "\\[qnz\\]";
+local LOGGED_STRING_DECODE_TABLE = { ["\\z"] = "\0", ["\\n"] = "\n", ["\\\\"] = "\\", ["\\q"] = '"' };
+
+local LoggedSerializer = {};
+
+---@param _nil nil
+---@param output TRP3.StringBuilder
+function LoggedSerializer.SerializeNil(_nil, output)
+	output:Append("nil");
+end
+
+---@param bool boolean
+---@param output TRP3.StringBuilder
+function LoggedSerializer.SerializeBoolean(bool, output)
+	output:Append(bool and "true" or "false");
+end
+
+---@param num number
+---@param output TRP3.StringBuilder
+function LoggedSerializer.SerializeNumber(num, output)
+	-- Format to 5 decimal places and strip trailing zeroes for floating point numbers.
+	output:Append((string.format("%.5f", num):match("^(.-)%.?0*$")));
+end
+
+---@param str string
+---@param output TRP3.StringBuilder
+function LoggedSerializer.SerializeString(str, output)
+	output:Append('"');
+	output:Append((string.gsub(str, LOGGED_STRING_ENCODE_PATTERN, LOGGED_STRING_ENCODE_TABLE)));
+	output:Append('"');
+end
+
+---@param str string
+---@param output TRP3.StringBuilder
+function LoggedSerializer.SerializeStringAsKey(str, output)
+	if string.find(str, "^[a-zA-Z_-][a-zA-Z0-9_-]*$") then
+		output:Append(":" .. str);
+	else
+		LoggedSerializer.SerializeString(str, output);
+	end
+end
+
+---@param num integer
+---@param output TRP3.StringBuilder
+function LoggedSerializer.SerializeNumberAsKey(num, output)
+	if num == math.floor(num) then
+		output:Append(tostring(num));
+	else
+		error("attempted to serialize a non-integral numeric key");
+	end
+end
+
+---@param key string|number
+---@param output TRP3.StringBuilder
+function LoggedSerializer.SerializeKey(key, output)
+	local keyType = type(key);
+
+	if keyType == "string" then
+		LoggedSerializer.SerializeStringAsKey(key, output);
+	elseif keyType == "number" then
+		LoggedSerializer.SerializeNumberAsKey(key, output);
+	else
+		error(string.format("attempted to serialize a %s key", keyType));
+	end
+end
+
+---@param tbl table
+---@param size integer
+---@param output TRP3.StringBuilder
+---@param objects { [table]: true? }
+function LoggedSerializer.SerializeArray(tbl, size, output, objects)
+	output:Append("[");
+
+	for index = 1, size do
+		LoggedSerializer.SerializeValue(tbl[index], output, objects);
+		output:Queue(" ");
+	end
+
+	output:ClearQueue();
+	output:Append("]");
+end
+
+---@param tbl table
+---@param _size integer
+---@param output TRP3.StringBuilder
+---@param objects { [table]: true? }
+function LoggedSerializer.SerializeObject(tbl, _size, output, objects)
+	output:Append("{");
+
+	for key, value in pairs(tbl) do
+		LoggedSerializer.SerializeKey(key, output);
+		output:Append(" ");
+		LoggedSerializer.SerializeValue(value, output, objects);
+		output:Queue(" ");
+	end
+
+	output:ClearQueue();
+	output:Append("}");
+end
+
+---@param tbl table
+local function CalculateTableSize(tbl)
+	local numTableElements = 0;
+	local numArrayElements = 0;
+	local maxArrayIndex = 0;
+
+	for key in pairs(tbl) do
+		numTableElements = numTableElements + 1;
+
+		if type(key) == "number" and key == math.floor(key) then
+			numArrayElements = numArrayElements + 1;
+			maxArrayIndex = math.max(maxArrayIndex, key);
+		end
+	end
+
+	return numTableElements, numArrayElements, maxArrayIndex;
+end
+
+---@param tbl table
+---@param output TRP3.StringBuilder
+---@param objects { [table]: true? }
+function LoggedSerializer.SerializeTable(tbl, output, objects)
+	if objects[tbl] then
+		error("attempted to serialize a recursive table structure");
+	end
+
+	objects[tbl] = true;
+
+	local numTableElements, numArrayElements, maxArrayIndex = CalculateTableSize(tbl);
+
+	if numTableElements == numArrayElements and numArrayElements == maxArrayIndex then
+		LoggedSerializer.SerializeArray(tbl, numTableElements, output, objects);
+	else
+		LoggedSerializer.SerializeObject(tbl, numTableElements, output, objects);
+	end
+
+	objects[tbl] = nil;
+end
+
+---@param value number|string|table|boolean|nil
+---@param output TRP3.StringBuilder
+---@param objects { [table]: true? }
+function LoggedSerializer.SerializeValue(value, output, objects)
+	local valueType = type(value);
+
+	if valueType == "number" then
+		LoggedSerializer.SerializeNumber(value, output);
+	elseif valueType == "string" then
+		LoggedSerializer.SerializeString(value, output);
+	elseif valueType == "table" then
+		LoggedSerializer.SerializeTable(value, output, objects);
+	elseif valueType == "boolean" then
+		LoggedSerializer.SerializeBoolean(value, output);
+	elseif valueType == "nil" then
+		LoggedSerializer.SerializeNil(value, output);
+	else
+		error(string.format("attempted to serialize a %s value", valueType));
+	end
+end
+
+---@param reader TRP3.StringReader
+function LoggedSerializer.ParseString(reader)
+	local str = reader:ReadPattern('^(%b"")');
+
+	if not str then
+		error(string.format("unterminated string starting at byte %d", reader:GetOffset()));
+	end
+
+	str = string.sub(str, 2, -2);
+	str = string.gsub(str, LOGGED_STRING_DECODE_PATTERN, LOGGED_STRING_DECODE_TABLE);
+	return str;
+end
+
+---@param reader TRP3.StringReader
+function LoggedSerializer.ParseKeyword(reader)
+	local keyword = reader:ReadPattern("^:([a-zA-Z_-][a-zA-Z0-9_-]*)");
+
+	if not keyword then
+		error(string.format("unterminated keyword starting at byte %d", reader:GetOffset()));
+	end
+
+	---@cast keyword string
+	return keyword;
+end
+
+---@param reader TRP3.StringReader
+function LoggedSerializer.ParseObject(reader)
+	local object = table.create(0, 8);
+
+	reader:AdvanceBy(1);
+	reader:SkipWhitespace();
+
+	if reader:PeekChar() == "}" then
+		reader:AdvanceBy(1);
+		return object;
+	end
+
+	while true do
+		reader:SkipWhitespace();
+		local key = LoggedSerializer.ParseValue(reader);
+		reader:SkipWhitespace();
+		local value = LoggedSerializer.ParseValue(reader);
+		---@cast key any
+		object[key] = value;
+		reader:SkipWhitespace();
+
+		if reader:PeekChar() == "}" then
+			reader:AdvanceBy(1);
+			break;
+		end
+	end
+
+	return object;
+end
+
+---@param reader TRP3.StringReader
+function LoggedSerializer.ParseArray(reader)
+	local array = table.create(8, 0);
+	local index = 0;
+
+	reader:AdvanceBy(1);
+	reader:SkipWhitespace();
+
+	if reader:PeekChar() == "]" then
+		reader:AdvanceBy(1);
+		return array;
+	end
+
+	while true do
+		reader:SkipWhitespace();
+		index = index + 1;
+		array[index] = LoggedSerializer.ParseValue(reader);
+		reader:SkipWhitespace();
+
+		if reader:PeekChar() == "]" then
+			reader:AdvanceBy(1);
+			break;
+		end
+	end
+
+	return array;
+end
+
+---@param reader TRP3.StringReader
+function LoggedSerializer.ParseNumberOrLiteral(reader)
+	local number = reader:ReadPattern("^(%-?%d+%.?%d*)");
+
+	if number then
+		return tonumber(number);
+	end
+
+	local keyword = reader:ReadPattern("^(%a+)");
+
+	if keyword == "true" then
+		return true;
+	elseif keyword == "false" then
+		return false;
+	elseif keyword == "nil" then
+		return nil;
+	else
+		error(string.format("invalid token at byte %d", reader:GetOffset()));
+	end
+end
+
+---@param reader TRP3.StringReader
+function LoggedSerializer.ParseValue(reader)
+	reader:SkipWhitespace();
+
+	local char = reader:PeekChar();
+
+	if char == '"' then
+		return LoggedSerializer.ParseString(reader)
+	elseif char == ":" then
+		return LoggedSerializer.ParseKeyword(reader);
+	elseif char == "{" then
+		return LoggedSerializer.ParseObject(reader);
+	elseif char == "[" then
+		return LoggedSerializer.ParseArray(reader);
+	else
+		return LoggedSerializer.ParseNumberOrLiteral(reader);
+	end
+end
+
+---@param data number|string|table|boolean|nil
+function TRP3_EncodingUtil.SerializeLogged(data)
+	local buffer = TRP3_StringUtil.CreateStringBuilder(128);
+	local objects = table.create(0, 16);
+	LoggedSerializer.SerializeValue(data, buffer, objects);
+	return buffer:Concat();
+end
+
+---@param data string
+---@return number|string|table|boolean|nil
+function TRP3_EncodingUtil.DeserializeLogged(data)
+	local reader = TRP3_StringUtil.CreateStringReader(data);
+	local value = LoggedSerializer.ParseValue(reader);
+	return value;
+end
 
 --
 -- PEM Encoding and Decoding Utilities

@@ -1,9 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@class TRP3_API
-local TRP3_API = select(2, ...);
-
 --[[
 	This file defines a few convenience functions for instantiating objects
 	with metatable-based inheritance from prototypes.

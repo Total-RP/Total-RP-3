@@ -137,6 +137,7 @@ stds.wow = {
 
 		table = {
 			fields = {
+				"create",
 				"wipe",
 			},
 		},
@@ -510,6 +511,7 @@ stds.wow = {
 		"GenerateClosure",
 		"GetAutoCompleteRealms",
 		"GetBindingText",
+		"GetBuildInfo",
 		"GetChannelDisplayInfo",
 		"GetChannelList",
 		"GetChannelName",
@@ -850,10 +852,10 @@ stds.wow = {
 		"VIDEO_QUALITY_LABEL6",
 		"WARNING_FONT_COLOR",
 		"WHITE_FONT_COLOR",
-		"WOW_PROJECT_BURNING_CRUSADE_CLASSIC",
 		"WOW_PROJECT_CLASSIC",
 		"WOW_PROJECT_ID",
 		"WOW_PROJECT_MAINLINE",
+		"WOW_PROJECT_MISTS_CLASSIC",
 		"YELLOW_FONT_COLOR",
 		"YES",
 	},
