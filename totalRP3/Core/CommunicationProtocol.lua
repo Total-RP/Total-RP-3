@@ -10,7 +10,21 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 -- AddOn imports
 local Chomp = AddOn_Chomp;
 
-local PROTOCOL_PREFIX = "TRP3.3";
+local function CheckProtocolVersion(feature)
+	local projectID = WOW_PROJECT_ID;
+	local currentVersion = select(4, GetBuildInfo());
+	local minimumVersion = feature[projectID] or -math.huge;
+
+	return currentVersion >= minimumVersion;
+end
+
+local USE_PROTOCOL_V4 = CheckProtocolVersion({
+	[WOW_PROJECT_MAINLINE or 1] = 120000,
+	[WOW_PROJECT_CLASSIC or 2] = 11509,
+	[WOW_PROJECT_MISTS_CLASSIC or 19] = 50502,
+});
+
+local PROTOCOL_PREFIX = USE_PROTOCOL_V4 and TRP3_CommunicationsPrefix.V4 or TRP3_CommunicationsPrefix.V3;
 local PROTOCOL_SETTINGS = {
 	permitUnlogged = true,
 	permitLogged = true,
@@ -20,7 +34,6 @@ local PROTOCOL_SETTINGS = {
 		["string"] = true,
 		["table"] = true,
 	},
-	broadcastPrefix = "TRP3.3"
 }
 local PRIORITIES = {
 	LOW = "LOW",
@@ -108,9 +121,9 @@ local function sendObject(prefix, object, channel, target, priority, messageToke
 		local messageData = { modulePrefix = prefix, data = object };
 
 		if useLoggedMessages then
-			serializedData = TRP3_EncodingUtil.EncodeLoggedAddOnMessage(messageData);
+			serializedData = TRP3_EncodingUtil.EncodeLoggedAddOnMessage(messageData, PROTOCOL_PREFIX);
 		else
-			serializedData = TRP3_EncodingUtil.EncodeBinaryAddOnMessage(messageData);
+			serializedData = TRP3_EncodingUtil.EncodeBinaryAddOnMessage(messageData, PROTOCOL_PREFIX);
 		end
 
 		Chomp.SmartAddonMessage(
@@ -155,22 +168,23 @@ local function onIncrementalMessageReceived(_, data, _, sender, _, _, _, _, _, _
 end
 PROTOCOL_SETTINGS.rawCallback = onIncrementalMessageReceived;
 
-local function onChatMessageReceived(_, data, channel, sender)
+local function onChatMessageReceived(prefix, data, channel, sender)
 	_, data = extractMessageTokenFromData(data);
 	if isLoggedChannel(channel) then
-		data = TRP3_EncodingUtil.DecodeLoggedAddOnMessage(data);
+		data = TRP3_EncodingUtil.DecodeLoggedAddOnMessage(data, prefix);
 	else
-		data = TRP3_EncodingUtil.DecodeBinaryAddOnMessage(data);
+		data = TRP3_EncodingUtil.DecodeBinaryAddOnMessage(data, prefix);
 	end
 	subSystemsDispatcher:TriggerEvent(data.modulePrefix, data.data, sender, channel);
 end
 
-Chomp.RegisterAddonPrefix(PROTOCOL_PREFIX, onChatMessageReceived, PROTOCOL_SETTINGS)
+Chomp.RegisterAddonPrefix(TRP3_CommunicationsPrefix.V3, onChatMessageReceived, PROTOCOL_SETTINGS);
+Chomp.RegisterAddonPrefix(TRP3_CommunicationsPrefix.V4, onChatMessageReceived, PROTOCOL_SETTINGS);
 
 
 local function estimateStructureSize(object)
 	Ellyb.Assertions.isNotNil(object, "object");
-	local serializedObject = TRP3_EncodingUtil.EncodeLoggedAddOnMessage(object);
+	local serializedObject = TRP3_EncodingUtil.EncodeLoggedAddOnMessage(object, PROTOCOL_PREFIX);
 	return #serializedObject;
 end
 

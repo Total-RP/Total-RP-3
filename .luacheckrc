@@ -137,6 +137,7 @@ stds.wow = {
 
 		table = {
 			fields = {
+				"create",
 				"wipe",
 			},
 		},

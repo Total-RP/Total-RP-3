@@ -47,3 +47,8 @@ function string.trim(str) end
 ---@field margin { left: number?, right: number?, top: number?, bottom: number? }?
 ---@field texCoords { left: number?, right: number?, top: number?, bottom: number? }?
 ---@field vertexColor ColorMixin
+
+---@param arraySizeHint number
+---@param nodeSizeHint number?
+---@return table
+function table.create(arraySizeHint, nodeSizeHint) end

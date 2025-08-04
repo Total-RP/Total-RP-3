@@ -131,3 +131,157 @@ function TRP3_StringUtil.GenerateIncrementalName(predicate, prefix, suffix)
 
 	return name;
 end
+
+---@class TRP3.StringBuilder
+---@field private buffer string[]
+---@field private index integer
+---@field private size integer
+local StringBuilder = {};
+
+function StringBuilder:IsEmpty()
+	return self.size == 0;
+end
+
+function StringBuilder:GetSize()
+	return self.size;
+end
+
+function StringBuilder:Clear()
+	self.index = 1;
+	self.size = 0;
+end
+
+function StringBuilder:ClearQueue()
+	self.index = self.size + 1;
+end
+
+---@param str string
+function StringBuilder:Append(str)
+	local index = self.index;
+	self.buffer[index] = str;
+	self.index = index + 1;
+	self.size = index;
+end
+
+---@param format string
+function StringBuilder:AppendFormatted(format, ...)
+	self:Append(string.format(format, ...));
+end
+
+---@param str string
+function StringBuilder:Queue(str)
+	local index = self.index;
+	self.buffer[index] = str;
+	self.index = index + 1;
+end
+
+---@param format string
+function StringBuilder:QueueFormatted(format, ...)
+	self:Queue(string.format(format, ...));
+end
+
+---@param delimiter string?
+function StringBuilder:Concat(delimiter)
+	return table.concat(self.buffer, delimiter or "", 1, self.size);
+end
+
+---@param delimiter string?
+function StringBuilder:Finalize(delimiter)
+	local str = self:Concat(delimiter);
+	self:Clear();
+	return str;
+end
+
+---@param reservation number?
+function TRP3_StringUtil.CreateStringBuilder(reservation)
+	local builder = {
+		buffer = table.create(reservation or 16);
+		index = 1;
+		size = 0;
+	};
+
+	return TRP3_API.SetObjectPrototype(builder, StringBuilder);
+end
+
+local ByteToChar = {};
+
+for i = 0, 255 do
+	ByteToChar[i] = string.char(i);
+end
+
+---@class TRP3.StringReader
+---@field private data string
+---@field private offset integer
+---@field private length integer
+local StringReader = {};
+
+function StringReader:IsEmpty()
+	return self.offset > self.length;
+end
+
+function StringReader:GetString()
+	return self.data;
+end
+
+function StringReader:GetOffset()
+	return self.offset;
+end
+
+function StringReader:GetLength()
+	return self.length;
+end
+
+function StringReader:GetRemainingLength()
+	return self.length - self.offset;
+end
+
+function StringReader:GetRemainingString()
+	return string.sub(self.data, self.offset, self.length);
+end
+
+function StringReader:AdvanceBy(n)
+	self.offset = self.offset + n;
+end
+
+function StringReader:AdvanceTo(offset)
+	self.offset = offset;
+end
+function StringReader:PeekByte()
+	local offset = self.offset;
+	return string.byte(self.data, offset, offset);
+end
+
+function StringReader:PeekChar()
+	return ByteToChar[self:PeekByte()];
+end
+
+function StringReader:ReadByte()
+	local offset = self.offset;
+	local byte = string.byte(self.data, offset, offset);
+	self.offset = offset + 1;
+	return byte;
+end
+
+function StringReader:ReadChar()
+	return ByteToChar[self:ReadByte()];
+end
+
+function StringReader:ReadPattern(pattern)
+	local offset = self.offset;
+	local _, captureEnd, capture = string.find(self.data, pattern, offset);
+
+	if captureEnd then
+		self.offset = captureEnd + 1;
+		return capture;
+	end
+end
+
+function StringReader:SkipWhitespace()
+	local _, whitespaceEnd = string.find(self.data, "^%s*", self.offset);
+	self.offset = whitespaceEnd + 1;
+end
+
+function TRP3_StringUtil.CreateStringReader(str)
+	local reader = { data = str, offset = 1, length = #str };
+	return TRP3_API.SetObjectPrototype(reader, StringReader);
+end
