@@ -13,7 +13,7 @@ local Compression = {};
 function Compression.compress(data, willBeSentViaAddOnChannel)
 	Ellyb.Assertions.isType(data, "string", "data");
 
-	local compressedData = LibDeflate:CompressDeflate(data);
+	local compressedData = TRP3_EncodingUtil.CompressString(data);
 
 	if willBeSentViaAddOnChannel then
 		compressedData = LibDeflate:EncodeForWoWChatChannel(compressedData);
@@ -35,11 +35,7 @@ function Compression.decompress(compressedData, wasReceivedViaAddOnChannel)
 		end
 	end
 
-	local decompressedData, _ = LibDeflate:DecompressDeflate(compressedData);
-	if decompressedData == nil then
-		error(TRP3_API.Colors.Red("[AddOn_TotalRP3.Compression.decompress ERROR]:") .. "\nCould not decompress data \"" .. TRP3_API.Colors.Grey(tostring(compressedData)) .. "\"");
-	end
-
+	local decompressedData = TRP3_EncodingUtil.DecompressString(compressedData);
 	return decompressedData;
 end
 

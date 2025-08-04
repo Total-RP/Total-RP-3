@@ -28,7 +28,6 @@ externals:
   totalRP3/Libs/ChatThrottleLib: https://repos.curseforge.com/wow/chatthrottlelib/trunk
   totalRP3/Libs/Chomp: https://github.com/wow-rp-addons/Chomp
   totalRP3/Libs/LibChatAnims: https://repos.curseforge.com/wow/libchatanims/trunk/LibChatAnims
-  totalRP3/Libs/LibCompress: https://repos.curseforge.com/wow/libcompress/trunk
   totalRP3/Libs/LibDataBroker-1.1: https://github.com/tekkub/libdatabroker-1-1
   totalRP3/Libs/LibDBCompartment: https://github.com/Meorawr/LibDBCompartment
   totalRP3/Libs/LibDBIcon-1.0: https://repos.curseforge.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
