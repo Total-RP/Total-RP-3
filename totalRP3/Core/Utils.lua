@@ -708,8 +708,6 @@ end
 -- COMPRESSION / Serialization / HASH
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local libCompress = LibStub:GetLibrary("LibCompress");
-local libCompressEncoder = libCompress:GetAddonEncodeTable();
 local libSerializer = LibStub:GetLibrary("AceSerializer-3.0");
 
 local function serialize(structure)
@@ -734,18 +732,6 @@ local function safeDeserialize(structure, default)
 	return data;
 end
 Utils.serial.safeDeserialize = safeDeserialize;
-
-Utils.serial.decompressCodedStructure = function(message)
-	return deserialize(libCompress:Decompress(libCompressEncoder:Decode(message)));
-end
-
-Utils.serial.safeDecompressCodedStructure = function(message)
-	return safeDeserialize(libCompress:Decompress(libCompressEncoder:Decode(message)));
-end
-
-Utils.serial.encodeCompressStructure = function(structure)
-	return libCompressEncoder:Encode(libCompress:Compress(serialize(structure)));
-end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- MUSIC / SOUNDS

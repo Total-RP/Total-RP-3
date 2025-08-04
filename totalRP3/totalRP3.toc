@@ -40,7 +40,6 @@ Libs\TaintLess\TaintLess.xml
 Libs\Chomp\Chomp.xml
 Libs\Ellyb\Ellyb.xml
 Libs\LibChatAnims\LibChatAnims.xml
-Libs\LibCompress\lib.xml
 Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\LibDBCompartment\lib.xml
 Libs\LibDBIcon-1.0\lib.xml

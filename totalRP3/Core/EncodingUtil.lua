@@ -1,7 +1,25 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+local LibDeflate = LibStub:GetLibrary("LibDeflate");
+
 TRP3_EncodingUtil = {};
+
+function TRP3_EncodingUtil.CompressString(data)
+	if C_EncodingUtil and C_EncodingUtil.CompressString then
+		return C_EncodingUtil.CompressString(data);
+	else
+		return LibDeflate:CompressDeflate(data);
+	end
+end
+
+function TRP3_EncodingUtil.DecompressString(data)
+	if C_EncodingUtil and C_EncodingUtil.DecompressString then
+		return C_EncodingUtil.DecompressString(data);
+	else
+		return assert(LibDeflate:DecompressDeflate(data));
+	end
+end
 
 --
 -- PEM Encoding and Decoding Utilities

@@ -479,15 +479,9 @@ local function incomingInformationTypeSent(structure, senderID, channel)
 	QueryCooldowns[informationType][senderID] = nil;
 	TRP3_Addon:TriggerEvent("REGISTER_DATA_RECEIVED", senderID, informationType);
 
-	local decodedData = data;
-	-- If the data is a string, we assume that it was compressed.
-	if type(data) == "string" then
-		decodedData = Utils.serial.safeDecompressCodedStructure(decodedData, {});
-	end
-
 	if informationType == registerInfoTypes.CHARACTERISTICS or informationType == registerInfoTypes.ABOUT
 	or informationType == registerInfoTypes.MISC or informationType == registerInfoTypes.CHARACTER then
-		saveInformation(senderID, informationType, decodedData);
+		saveInformation(senderID, informationType, data);
 	elseif informationType:sub(1, COMPANION_PREFIX:len()) == COMPANION_PREFIX then
 		local v = informationType:sub(COMPANION_PREFIX:len() + 1, COMPANION_PREFIX:len() + 1);
 		local profileID = informationType:sub(COMPANION_PREFIX:len() + 2);
