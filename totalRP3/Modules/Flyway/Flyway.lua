@@ -10,7 +10,7 @@ if not TRP3_Flyway then
 end
 
 local function applyPatches(fromBuild, toBuild)
-	for i = fromBuild, toBuild do
+	for i = fromBuild + 1, toBuild do
 		if type(TRP3_API.flyway.patches[tostring(i)]) == "function" then
 			TRP3_API.Logf("Applying patch %s", i);
 			TRP3_API.flyway.patches[tostring(i)]();
