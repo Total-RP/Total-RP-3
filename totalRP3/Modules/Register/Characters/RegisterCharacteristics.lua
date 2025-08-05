@@ -78,7 +78,7 @@ local function sanitizeCharacteristics(profileID, structure)
 			end
 		end
 	end
-	
+
 	for _, field in pairs(FIELDS_TO_SANITIZE) do
 		if structure[field] then
 			local sanitizedValue = Utils.str.sanitize(structure[field]);

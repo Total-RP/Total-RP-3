@@ -80,7 +80,7 @@ function TRP3_API.dashboard.sanitizeCharacter(profileID, structure)
 			end
 		end
 	end
-	
+
 	if structure then
 		for _, field in pairs(FIELDS_TO_SANITIZE) do
 			if structure[field] then

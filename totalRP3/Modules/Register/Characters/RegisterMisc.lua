@@ -286,7 +286,7 @@ end
 -- SANITIZE
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function sanitizeMisc(structure)
+local function sanitizeMisc(profileID, structure)
 	local somethingWasSanitized = false;
 
 	if TRP3_API.profile.isDefaultProfile(profileID) then
@@ -298,7 +298,7 @@ local function sanitizeMisc(structure)
 			end
 		end
 	end
-	
+
 	if structure and structure.PE then
 		for i=1, 5 do
 			local index = tostring(i);
