@@ -21,7 +21,7 @@ end
 
 function TRP3_API.flyway.applyPatches()
 	if not TRP3_Flyway.currentBuild or TRP3_Flyway.currentBuild < SCHEMA_VERSION then
-		applyPatches((TRP3_Flyway.currentBuild or 0) + 1, SCHEMA_VERSION);
+		applyPatches((TRP3_Flyway.currentBuild or 0), SCHEMA_VERSION);
 	end
 	TRP3_Flyway.currentBuild = SCHEMA_VERSION;
 end
