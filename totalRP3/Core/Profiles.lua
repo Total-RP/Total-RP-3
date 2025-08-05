@@ -162,6 +162,8 @@ local function updateDefaultProfile()
 	-- The new profileID will automatically get selected during the init process
 	local oldProfileID = getConfigValue("default_profile_id");
 	local newProfileID = Utils.str.id();
+	newProfileID = string.sub(newProfileID, 1, -2) .. "*"; -- Last character swapped with * to be identified as default by other players
+
 	profiles[newProfileID] = profiles[oldProfileID];
 	profiles[oldProfileID] = nil;
 	TRP3_API.configuration.setValue("default_profile_id", newProfileID);
