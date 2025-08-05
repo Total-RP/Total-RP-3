@@ -158,7 +158,18 @@ end
 TRP3_API.profile.getPlayerCurrentProfile = getPlayerCurrentProfile;
 
 local function updateDefaultProfile()
-	local profileDefault = profiles[getConfigValue("default_profile_id")];
+	-- We replace the profile ID every login session so multiple characters don't get linked to the same profile ID
+	-- The new profileID will automatically get selected during the init process
+	local oldProfileID = getConfigValue("default_profile_id");
+	local newProfileID = Utils.str.id();
+	newProfileID = string.sub(newProfileID, 1, -2) .. "*"; -- Last character swapped with * to be identified as default by other players
+
+	profiles[newProfileID] = profiles[oldProfileID];
+	profiles[oldProfileID] = nil;
+	TRP3_API.configuration.setValue("default_profile_id", newProfileID);
+
+	local profileDefault = profiles[newProfileID];
+
 	-- Updating profile name in case of addon locale change
 	profileDefault.profileName = loc.PR_DEFAULT_PROFILE_NAME;
 

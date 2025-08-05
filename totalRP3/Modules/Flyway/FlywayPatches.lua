@@ -41,8 +41,8 @@ TRP3_API.flyway.patches["5"] = function()
 	-- Sanitize existing profiles
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 		local sanitizeFullProfile = TRP3_API.register.sanitizeFullProfile;
-		for _, profile in pairs(TRP3_Register.profiles) do
-			sanitizeFullProfile(profile);
+		for profileID, profile in pairs(TRP3_Register.profiles) do
+			sanitizeFullProfile(profileID, profile);
 		end
 	end)
 end

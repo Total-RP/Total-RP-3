@@ -285,34 +285,34 @@ local function saveCharacterInformation(unitID, race, class, gender, faction, ti
 end
 TRP3_API.register.saveCharacterInformation = saveCharacterInformation;
 
-local function sanitizeFullProfile(data)
+local function sanitizeFullProfile(profileID, data)
 	if not data or not data.player then return false end
 	local somethingWasSanitizedInsideProfile = false;
-	if data.player.characteristics and TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTERISTICS, data.player.characteristics) then
+	if data.player.characteristics and TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTERISTICS, profileID, data.player.characteristics) then
 		somethingWasSanitizedInsideProfile = true;
 	end
-	if data.player.character and TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTER, data.player.character) then
+	if data.player.character and TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTER, profileID, data.player.character) then
 		somethingWasSanitizedInsideProfile = true;
 	end
-	if data.player.misc and TRP3_API.register.sanitizeProfile(registerInfoTypes.MISC, data.player.misc) then
+	if data.player.misc and TRP3_API.register.sanitizeProfile(registerInfoTypes.MISC, profileID, data.player.misc) then
 		somethingWasSanitizedInsideProfile = true;
 	end
 	return somethingWasSanitizedInsideProfile;
 end
 TRP3_API.register.sanitizeFullProfile = sanitizeFullProfile;
 
-function TRP3_API.register.sanitizeProfile(informationType, data)
+function TRP3_API.register.sanitizeProfile(informationType, profileID, data)
 	local somethingWasSanitizedInsideProfile = false;
 	if informationType == registerInfoTypes.CHARACTERISTICS then
-		if TRP3_API.register.ui.sanitizeCharacteristics(data) then
+		if TRP3_API.register.ui.sanitizeCharacteristics(profileID, data) then
 			somethingWasSanitizedInsideProfile = true;
 		end
 	elseif informationType == registerInfoTypes.CHARACTER then
-		if TRP3_API.dashboard.sanitizeCharacter(data) then
+		if TRP3_API.dashboard.sanitizeCharacter(profileID, data) then
 			somethingWasSanitizedInsideProfile = true;
 		end
 	elseif informationType == registerInfoTypes.MISC then
-		if TRP3_API.register.ui.sanitizeMisc(data) then
+		if TRP3_API.register.ui.sanitizeMisc(profileID, data) then
 			somethingWasSanitizedInsideProfile = true;
 		end
 	end
@@ -321,12 +321,13 @@ end
 
 --- Raises error if unknown unitID or unit hasn't profile ID
 function TRP3_API.register.saveInformation(unitID, informationType, data)
+	local profileID = getUnitIDProfileID(unitID);
 	local profile = getUnitIDProfile(unitID);
 	if profile[informationType] then
 		wipe(profile[informationType]);
 	end
 
-	TRP3_API.register.sanitizeProfile(informationType, data);
+	TRP3_API.register.sanitizeProfile(informationType, profileID, data);
 	profile[informationType] = data;
 	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), informationType);
 end
@@ -665,7 +666,7 @@ local function cleanupProfiles()
 	end
 
 	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
-		return ;
+		return;
 	end
 	TRP3_API.Log(("Purging profiles older than %s day(s)"):format(getConfigValue("register_auto_purge_mode") / 86400));
 	-- First, get a tab with all profileID with which we have a relation or on which we have notes
@@ -681,7 +682,7 @@ local function cleanupProfiles()
 	TRP3_API.Log("Protected profiles: " .. CountTable(protectedProfileIDs));
 	local profilesToPurge = {};
 	for profileID, profile in pairs(profiles) do
-		if not protectedProfileIDs[profileID] and (not profile.time or time() - profile.time > getConfigValue("register_auto_purge_mode")) then
+		if TRP3_API.profile.isDefaultProfile(profileID) or (not protectedProfileIDs[profileID] and not profile.time or time() - profile.time > getConfigValue("register_auto_purge_mode")) then
 			tinsert(profilesToPurge, profileID);
 		end
 	end
@@ -693,8 +694,8 @@ end
 
 local function cleanupMyProfiles()
 	-- Get the player's profiles and sanitize them, removing all invalid codes manually inserted
-	for _, profile in pairs(TRP3_API.profile.getProfiles()) do
-		sanitizeFullProfile(profile);
+	for profileID, profile in pairs(TRP3_API.profile.getProfiles()) do
+		sanitizeFullProfile(profileID, profile);
 	end
 end
 

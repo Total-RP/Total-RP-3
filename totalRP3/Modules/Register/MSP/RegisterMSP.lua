@@ -518,9 +518,9 @@ local function onStart()
 				profile.characteristics["CH"] = color;
 			end
 
-			TRP3_API.register.ui.sanitizeCharacteristics(profile.characteristics);
-			TRP3_API.dashboard.sanitizeCharacter(profile.character)
-			TRP3_API.register.ui.sanitizeMisc(profile.misc);
+			TRP3_API.register.ui.sanitizeCharacteristics(character.profileID, profile.characteristics);
+			TRP3_API.dashboard.sanitizeCharacter(character.profileID, profile.character);
+			TRP3_API.register.ui.sanitizeMisc(character.profileID, profile.misc);
 
 			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
 		end

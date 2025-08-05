@@ -64,10 +64,23 @@ end
 local FIELDS_TO_SANITIZE = {
 	"CO", "CU"
 }
+local VALID_DEFAULT_FIELDS = {
+	"v", "RP", "WU"
+};
+
 ---@param structure table
 ---@return boolean
-function TRP3_API.dashboard.sanitizeCharacter(structure)
+function TRP3_API.dashboard.sanitizeCharacter(profileID, structure)
 	local somethingWasSanitized = false;
+
+	if TRP3_API.profile.isDefaultProfile(profileID) then
+		for fieldID, _ in pairs(structure) do
+			if not tContains(VALID_DEFAULT_FIELDS, fieldID) then
+				structure[fieldID] = nil;
+			end
+		end
+	end
+
 	if structure then
 		for _, field in pairs(FIELDS_TO_SANITIZE) do
 			if structure[field] then
@@ -79,6 +92,7 @@ function TRP3_API.dashboard.sanitizeCharacter(structure)
 			end
 		end
 	end
+
 	return somethingWasSanitized;
 end
 
