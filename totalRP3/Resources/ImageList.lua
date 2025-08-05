@@ -523,6 +523,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_ManaforgeStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_MoonkinFestival",
 		width = 128,
 		height = 128
@@ -1674,6 +1679,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Ecodome",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-EmeraldDream",
 		width = 256,
 		height = 256
@@ -1811,6 +1820,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Malygos",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Manaforge",
 		width = 256,
 		height = 256
 	}, {
@@ -2481,6 +2494,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Ecodome",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-EmberCourt",
 		width = 256,
 		height = 128
@@ -2688,6 +2705,26 @@ local IMAGES = {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-MALYGOS",
 		width = 256,
 		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Manaforge",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Manaforge1Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Manaforge2Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Manaforge3Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Manaforge4Q",
+		width = 512,
+		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-MARAUDON",
 		width = 256,
@@ -3283,6 +3320,11 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Dungeon_Ecodome",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Dungeon_Waterworks",
 		width = 512,
 		height = 288
@@ -3453,6 +3495,11 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Raid_ManaforgeOmega",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Raid_UndermineArena",
 		width = 512,
 		height = 288
@@ -3509,6 +3556,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_ZerethMortis",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Zone_Karesh",
 		width = 512,
 		height = 288
 	},
