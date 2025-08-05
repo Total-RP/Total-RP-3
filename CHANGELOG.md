@@ -1,3 +1,22 @@
+# Changelog version 3.1.0
+
+## Added
+
+- Added an indicator on the main profile view when the profile is currently getting received.
+- Added 485 icons, 12 images and 94 musics from patch 11.2.
+
+## Changed
+
+- Changed the format of profile exports to allow bigger profiles to be exported, and avoid issues with data becoming invalid after copy/pasting the exports on some platforms.
+  - Older profile exports can still be imported as before.
+
+## Fixed
+
+- Restore settings to enable/disable buttons on the target frame.
+- Toolbar and target frame are now hidden properly when starting a pet battle.
+- Fixed some issues with companion profiles in Classic.
+- Fixed a bug when pressing the Alt key while a chat link tooltip is open but still currently receiving data.
+
 # Changelog version 3.0.12
 
 ## Added
