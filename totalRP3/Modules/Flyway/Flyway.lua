@@ -16,7 +16,7 @@ local function applyPatches(fromBuild, toBuild)
 			TRP3_API.flyway.patches[tostring(i)]();
 		end
 	end
-	TRP3_Flyway.log = ("Patch applied from %s to %s on %s"):format(fromBuild, toBuild, date("%d/%m/%y %H:%M:%S"));
+	TRP3_Flyway.log = ("Patch applied from %s to %s on %s"):format(fromBuild - 1, toBuild, date("%d/%m/%y %H:%M:%S"));
 end
 
 function TRP3_API.flyway.applyPatches()
