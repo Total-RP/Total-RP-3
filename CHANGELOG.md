@@ -1,3 +1,9 @@
+# Changelog version 3.1.1
+
+## Fixed
+
+- Profiles with notes or relations are once again protected from auto-purge.
+
 # Changelog version 3.1.0
 
 ## Added
