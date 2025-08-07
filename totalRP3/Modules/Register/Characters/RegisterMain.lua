@@ -682,7 +682,7 @@ local function cleanupProfiles()
 	TRP3_API.Log("Protected profiles: " .. CountTable(protectedProfileIDs));
 	local profilesToPurge = {};
 	for profileID, profile in pairs(profiles) do
-		if TRP3_API.profile.isDefaultProfile(profileID) or (not protectedProfileIDs[profileID] and not profile.time or time() - profile.time > getConfigValue("register_auto_purge_mode")) then
+		if TRP3_API.profile.isDefaultProfile(profileID) or (not protectedProfileIDs[profileID] and (not profile.time or time() - profile.time > getConfigValue("register_auto_purge_mode"))) then
 			tinsert(profilesToPurge, profileID);
 		end
 	end
