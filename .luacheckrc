@@ -606,6 +606,7 @@ stds.wow = {
 		"ShowingCloak",
 		"ShowingHelm",
 		"ShowUIPanel",
+		"StaticPopup_OnClick",
 		"StaticPopup_Show",
 		"StopMusic",
 		"StopSound",
