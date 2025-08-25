@@ -111,10 +111,10 @@ StaticPopupDialogs["TRP3_INPUT_TEXT"] = {
 		end
 	end,
 	EditBoxOnEnterPressed = function(self)
-		GetDialogButton1(self:GetParent()):GetScript("OnClick")(GetDialogButton1(self:GetParent()));
+		StaticPopup_OnClick(self:GetParent(), GetDialogButton1(self:GetParent()):GetID());
 	end,
 	EditBoxOnEscapePressed = function(self)
-		GetDialogButton2(self:GetParent()):GetScript("OnClick")(GetDialogButton2(self:GetParent()));
+		StaticPopup_OnClick(self:GetParent(), GetDialogButton2(self:GetParent()):GetID());
 	end,
 	timeout = false,
 	whileDead = true,
@@ -142,10 +142,10 @@ StaticPopupDialogs["TRP3_INPUT_NUMBER"] = {
 		end
 	end,
 	EditBoxOnEnterPressed = function(self)
-		self:GetParent().button1:GetScript("OnClick")(self:GetParent().button1);
+		StaticPopup_OnClick(self:GetParent(), GetDialogButton1(self:GetParent()):GetID());
 	end,
 	EditBoxOnEscapePressed = function(self)
-		self:GetParent().button2:GetScript("OnClick")(self:GetParent().button2);
+		StaticPopup_OnClick(self:GetParent(), GetDialogButton2(self:GetParent()):GetID());
 	end,
 	timeout = false,
 	whileDead = true,
