@@ -161,6 +161,9 @@ local function isValidDiceObject(diceObject)
 	end
 end
 
+local DICEROLL_BROADCAST_COOLDOWN_DURATION = 2;
+local DICEROLLS_COOLDOWNS = {};
+
 TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	TRP3_API.slash.registerCommand({
 		id = "roll",
@@ -170,21 +173,36 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		end
 	});
 
-	AddOn_TotalRP3.Communications.registerSubSystemPrefix(DICE_SIGNAL, function(arg, sender)
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(DICE_SIGNAL, function(arg, sender, channel)
 		if sender == Globals.player_id or not isValidDiceObject(arg) then
 			return;
+		end
+
+		-- Cooldown on WHISPER dice roll broadcasts
+		if channel == "WHISPER" then
+			if DICEROLLS_COOLDOWNS[sender] and GetTime() - DICEROLLS_COOLDOWNS[sender] <= DICEROLL_BROADCAST_COOLDOWN_DURATION then
+				return; -- Spamming dice rolls too fast
+			end
+			DICEROLLS_COOLDOWNS[sender] = GetTime();
 		end
 
 		local player = AddOn_TotalRP3.Player.CreateFromCharacterID(sender);
 		local characterName = player:GenerateFormattedName(TRP3_PlayerNameFormat.Colored);
 
+		local totalMessage;
 		if arg.c and arg.d and arg.t then
 			local modifierString = (arg.m == 0) and "" or format("%+d", arg.m); -- we add a + to positive modifiers and don't render a 0 value
-			Utils.message.displayMessage(loc.DICE_ROLL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), characterName, arg.c, arg.d, modifierString, arg.t));
+			totalMessage = loc.DICE_ROLL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), characterName, arg.c, arg.d, modifierString, arg.t);
 		elseif arg.t then
-			local totalMessage = loc.DICE_TOTAL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), characterName, arg.t);
+			totalMessage = loc.DICE_TOTAL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), characterName, arg.t);
+		end
+
+		-- Adding player hyperlink so people can right-click and identify the player
+		if totalMessage then
+			totalMessage = string.format("|Hplayer:%s|h%s|h", sender, totalMessage);
 			Utils.message.displayMessage(totalMessage);
 		end
+
 		Utils.music.playSoundID(36629, "SFX", sender);
 	end);
 end);
