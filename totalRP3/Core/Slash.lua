@@ -161,6 +161,9 @@ local function isValidDiceObject(diceObject)
 	end
 end
 
+local DICEROLL_BROADCAST_COOLDOWN_DURATION = 2;
+local DICEROLLS_COOLDOWNS = {};
+
 TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	TRP3_API.slash.registerCommand({
 		id = "roll",
@@ -170,9 +173,17 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		end
 	});
 
-	AddOn_TotalRP3.Communications.registerSubSystemPrefix(DICE_SIGNAL, function(arg, sender)
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(DICE_SIGNAL, function(arg, sender, channel)
 		if sender == Globals.player_id or not isValidDiceObject(arg) then
 			return;
+		end
+
+		-- Cooldown on WHISPER dice roll broadcasts
+		if channel == "WHISPER" then
+			if DICEROLLS_COOLDOWNS[sender] and not (GetTime() - DICEROLLS_COOLDOWNS[sender] > DICEROLL_BROADCAST_COOLDOWN_DURATION) then
+				return; -- Spamming dice rolls too fast
+			end
+			DICEROLLS_COOLDOWNS[sender] = GetTime();
 		end
 
 		local player = AddOn_TotalRP3.Player.CreateFromCharacterID(sender);
