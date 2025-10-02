@@ -292,7 +292,7 @@ local function CreateImageDataProvider(model)
 	end
 
 	function provider:IsVirtual()
-		return false;
+		return true;
 	end
 
 	provider:GenerateCallbackEvents({ "OnSizeChanged" });
