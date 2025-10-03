@@ -22,7 +22,7 @@ local function WriteToLogChatFrame(entry)
 	end
 
 	if not LogChatFrame then
-		for i = 1, NUM_CHAT_WINDOWS do
+		for i = 1, Constants.ChatFrameConstants.MaxChatWindows do
 			if GetChatWindowInfo(i) == "Logs" then
 				LogChatFrame = Chat_GetChatFrame(i);
 				break;
