@@ -19,18 +19,6 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 local ChatLinks = {};
 TRP3_API.ChatLinks = ChatLinks;
 
---region Wow Imports
-local assert = assert;
-local pairs = pairs;
-local gsub = string.gsub;
-local ipairs = ipairs
-local strconcat = strconcat;
-local format = string.format;
-local ChatFrame_AddMessageEventFilter = ChatFrame_AddMessageEventFilter;
-local UIParent = UIParent;
-local ShowUIPanel = ShowUIPanel;
---endregion
-
 --region Total RP 3 imports
 local ChatLinkModule = TRP3_API.ChatLinkModule;
 local loc = TRP3_API.loc;
@@ -116,12 +104,12 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		end
 
 		local formattedName = strconcat("[", formattedText, "]");
-		return LINK_COLOR:WrapTextInColorCode(format(FORMATTED_LINK_FORMAT, LINK_CODE, playerName, text, formattedName));
+		return LINK_COLOR:WrapTextInColorCode(string.format(FORMATTED_LINK_FORMAT, LINK_CODE, playerName, text, formattedName));
 	end
 
 	-- MessageEventFilter to look for Total RP 3 chat links and format the message accordingly
 	local function lookForChatLinks(_, _, message, playerName, ...)
-		message = gsub(message, ChatLinks.FIND_LINK_PATTERN, function(name)
+		message = string.gsub(message, ChatLinks.FIND_LINK_PATTERN, function(name)
 			return generateFormattedLink(name, playerName)
 		end)
 		return false, message, playerName, ...;
