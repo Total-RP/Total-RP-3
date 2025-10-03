@@ -101,7 +101,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local DASHBOARD_PAGE_ID = "dashboard";
-local SendChatMessage, UnitIsDND, UnitIsAFK = SendChatMessage, UnitIsDND, UnitIsAFK;
 
 TRP3_API.dashboard.init = function()
 
@@ -219,14 +218,14 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			end,
 			onClick = function(_, _, button)
 				if UnitIsAFK("player") then
-					SendChatMessage("","AFK");
+					C_ChatInfo.SendChatMessage("","AFK");
 				elseif UnitIsDND("player") then
-					SendChatMessage("","DND");
+					C_ChatInfo.SendChatMessage("","DND");
 				else
 					if button == "LeftButton" then
-						SendChatMessage("","AFK");
+						C_ChatInfo.SendChatMessage("","AFK");
 					else
-						SendChatMessage("","DND");
+						C_ChatInfo.SendChatMessage("","DND");
 					end
 				end
 				PlaySound(TRP3_InterfaceSounds.ButtonClick);

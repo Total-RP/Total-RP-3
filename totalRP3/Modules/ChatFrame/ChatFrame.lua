@@ -749,9 +749,9 @@ end
 local textBeforeParse, parsedEditBox;
 function hooking()
 	for _, channel in pairs(POSSIBLE_CHANNELS) do
-		ChatFrame_RemoveMessageEventFilter(channel, handleCharacterMessage);
+		ChatFrameUtil.RemoveMessageEventFilter(channel, handleCharacterMessage);
 		if configIsChannelUsed(channel) then
-			ChatFrame_AddMessageEventFilter(channel, handleCharacterMessage);
+			ChatFrameUtil.AddMessageEventFilter(channel, handleCharacterMessage);
 		end
 	end
 
@@ -762,7 +762,7 @@ function hooking()
 	-- Hook the ChatEdit_InsertLink() function that is called when the user SHIFT-Click a player name
 	-- in the chat frame to insert it into a text field.
 	-- We can replace the name inserted by the complete RP name of the player if we have it.
-	hooksecurefunc("ChatEdit_InsertLink", function(unitID)
+	hooksecurefunc(ChatFrameUtil, "InsertLink", function(unitID)
 
 		if disabledByOOC() then return end ;
 
@@ -796,7 +796,7 @@ function hooking()
 		end
 	end);
 
-	hooksecurefunc("ChatEdit_ParseText", function(editBox, send)
+	hooksecurefunc(ChatFrameEditBoxBaseMixin, "ParseText", function(editBox, send)
 		local text = editBox:GetText();
 		if text and send == 1 then
 			textBeforeParse = text;
@@ -820,7 +820,7 @@ function hooking()
 	end);
 
 	-- Restore the text without substitution before it's stored in the chat history
-	hooksecurefunc("SubstituteChatMessageBeforeSend", function()
+	hooksecurefunc(ChatFrameUtil, "SubstituteChatMessageBeforeSend", function()
 		if parsedEditBox and textBeforeParse then
 			parsedEditBox:SetText(textBeforeParse);
 			parsedEditBox = nil;

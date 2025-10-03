@@ -128,7 +128,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	end
 
 	for _, channel in pairs(POSSIBLE_CHANNELS) do
-		ChatFrame_AddMessageEventFilter(channel, lookForChatLinks);
+		ChatFrameUtil.AddMessageEventFilter(channel, lookForChatLinks);
 	end
 
 	---@type GameTooltip

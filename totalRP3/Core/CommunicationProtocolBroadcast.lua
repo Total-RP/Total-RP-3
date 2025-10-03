@@ -323,7 +323,7 @@ local function moveBroadcastChannelToTheBottomOfTheList(forceMove)
 
 		-- Get the index of the last channel
 		local lastChannelIndex = 0;
-		for index = broadcastChannelIndex, MAX_WOW_CHAT_CHANNELS do
+		for index = broadcastChannelIndex, Constants.ChatFrameConstants.MaxChatChannels do
 			local shortcut = C_ChatInfo.GetChannelShortcut(index);
 			if shortcut and shortcut ~= "" then
 				lastChannelIndex = index;
@@ -356,7 +356,7 @@ local function isChannelListReady()
 	-- Find gaps in the channel list
 	local hasGaps = false;
 	local previousIndex = 0;
-	for index = 1, MAX_WOW_CHAT_CHANNELS do
+	for index = 1, Constants.ChatFrameConstants.MaxChatChannels do
 		local shortcut = C_ChatInfo.GetChannelShortcut(index);
 		if shortcut and shortcut ~= "" then
 			if index ~= previousIndex + 1 then
