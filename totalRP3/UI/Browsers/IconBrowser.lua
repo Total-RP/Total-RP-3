@@ -509,6 +509,10 @@ local function CreateIconDataProvider(model)
 		return model:GetIconCount();
 	end
 
+	function provider:IsVirtual()
+		return true;
+	end
+
 	provider:GenerateCallbackEvents({ "OnSizeChanged" });
 	provider:OnLoad();
 
