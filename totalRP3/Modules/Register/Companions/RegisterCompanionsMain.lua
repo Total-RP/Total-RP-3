@@ -442,7 +442,7 @@ function TRP3_API.companions.register.getUnitMount(ownerID, unitType)
 		local auraInfo = C_UnitAuras.GetAuraDataBySlot(unitType, auraSlots[slotIndex]);
 
 		if issecretvalue and issecretvalue(auraInfo) == true then
-			return
+			return;
 		end
 		if auraInfo then
 			local spellBuffID = auraInfo.spellId;
