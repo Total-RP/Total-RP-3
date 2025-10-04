@@ -1295,7 +1295,7 @@ local function show(targetType, targetID, targetMode)
 	if getConfigValue(ConfigKeys.IN_CHARACTER_ONLY) and not isPlayerIC() then return end
 	if getConfigValue(ConfigKeys.HIDE_IN_INSTANCE) and Utils.IsInCombatInstance() then return end
 	if ShouldDisplayUnmodifiedTooltip() then return; end
-	if UnitAffectingCombat("player") then return end
+	if InCombatLockdown() then return end
 
 	-- If we have a target
 	if targetID then
@@ -1442,7 +1442,7 @@ end
 local function GetCurrentTooltipUnit()
 	local unitToken;
 
-	if UnitAffectingCombat("player") then
+	if InCombatLockdown() then
 		return;
 	end
 
@@ -1488,7 +1488,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		hooksecurefunc(GameTooltip, "SetWorldCursor", NotifyTooltipUnitChanged);
 	end
 	GameTooltip:HookScript("OnShow", function()
-		if UnitAffectingCombat("player") or not GameTooltip:GetUnit() then
+		if InCombatLockdown() or not GameTooltip:GetUnit() then
 			TRP3_CharacterTooltip:Hide();
 			TRP3_CompanionTooltip:Hide();
 		end
