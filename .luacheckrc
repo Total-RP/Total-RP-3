@@ -172,6 +172,17 @@ stds.wow = {
 			},
 		},
 
+		ChatFrameUtil = {
+			fields = {
+				"AddMessageEventFilter",
+				"AddSenderNameFilter",
+				"FocusActiveWindow",
+				"GetActiveWindow",
+				"OpenChat",
+				"RemoveMessageEventFilter",
+			},
+		},
+
 		Constants = {
 			fields = {
 				PetConsts = {
