@@ -1295,83 +1295,81 @@ local function show(targetType, targetID, targetMode)
 	if getConfigValue(ConfigKeys.IN_CHARACTER_ONLY) and not isPlayerIC() then return end
 	if getConfigValue(ConfigKeys.HIDE_IN_INSTANCE) and Utils.IsInCombatInstance() then return end
 	if ShouldDisplayUnmodifiedTooltip() then return; end
+	if UnitAffectingCombat("player") then return end
 
-	-- If using TRP TT
-	if not UnitAffectingCombat("player") or not getConfigValue(ConfigKeys.CHARACT_COMBAT) then
-		-- If we have a target
-		if targetID then
-			TRP3_CharacterTooltip.target = targetID;
-			TRP3_CharacterTooltip.targetType = targetType;
-			TRP3_CharacterTooltip.targetMode = targetMode;
-			TRP3_CompanionTooltip.target = targetID;
-			TRP3_CompanionTooltip.targetType = targetType;
-			TRP3_CompanionTooltip.targetMode = targetMode;
+	-- If we have a target
+	if targetID then
+		TRP3_CharacterTooltip.target = targetID;
+		TRP3_CharacterTooltip.targetType = targetType;
+		TRP3_CharacterTooltip.targetMode = targetMode;
+		TRP3_CompanionTooltip.target = targetID;
+		TRP3_CompanionTooltip.targetType = targetType;
+		TRP3_CompanionTooltip.targetMode = targetMode;
 
-			-- Check if has a profile
-			if getConfigValue(ConfigKeys.PROFILE_ONLY) then
-				if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and targetID ~= Globals.player_id and (not IsUnitIDKnown(targetID) or not hasProfile(targetID)) then
-					return;
+		-- Check if has a profile
+		if getConfigValue(ConfigKeys.PROFILE_ONLY) then
+			if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and targetID ~= Globals.player_id and (not IsUnitIDKnown(targetID) or not hasProfile(targetID)) then
+				return;
+			end
+			if (targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and (getCompanionInfo(companionIDToInfo(targetID)) == EMPTY) then
+				return;
+			end
+		end
+
+		-- We have a target
+		if targetMode then
+
+			-- Stock all the current text from the GameTooltip
+			local isMatureFlagged = unitIDIsFilteredForMatureContent(targetID);
+
+			if (targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and (isIDIgnored(targetID) or isMatureFlagged)) or ((targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and (ownerIsIgnored(targetID) or isMatureFlagged)) then
+				TRP3_CharacterTooltip:SetOwner(GameTooltip, "ANCHOR_TOPRIGHT");
+			elseif not getAnchoredFrame() then
+				TRP3_API.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
+			elseif getAnchoredPosition() == "ANCHOR_CURSOR" then
+				TRP3_API.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
+				placeTooltipOnCursor(TRP3_CharacterTooltip);
+			elseif getAnchoredFrame() == GameTooltip and getConfigValue(ConfigKeys.CHARACT_HIDE_ORIGINAL) then
+				if GameTooltip:GetOwner() ~= nil and GameTooltip:GetNumPoints() > 0 then
+					TRP3_CharacterTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+					TRP3_CharacterTooltip:SetPoint(GameTooltip:GetPoint(1));
+				else
+					TRP3_API.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
 				end
-				if (targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and (getCompanionInfo(companionIDToInfo(targetID)) == EMPTY) then
-					return;
-				end
+			else
+				TRP3_CharacterTooltip:SetOwner(getAnchoredFrame(), getAnchoredPosition());
 			end
 
-			-- We have a target
-			if targetMode then
-
-				-- Stock all the current text from the GameTooltip
-				local isMatureFlagged = unitIDIsFilteredForMatureContent(targetID);
-
-				if (targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and (isIDIgnored(targetID) or isMatureFlagged)) or ((targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and (ownerIsIgnored(targetID) or isMatureFlagged)) then
-					TRP3_CharacterTooltip:SetOwner(GameTooltip, "ANCHOR_TOPRIGHT");
-				elseif not getAnchoredFrame() then
-					TRP3_API.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
-				elseif getAnchoredPosition() == "ANCHOR_CURSOR" then
-					TRP3_API.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
-					placeTooltipOnCursor(TRP3_CharacterTooltip);
-				elseif getAnchoredFrame() == GameTooltip and getConfigValue(ConfigKeys.CHARACT_HIDE_ORIGINAL) then
-					if GameTooltip:GetOwner() ~= nil and GameTooltip:GetNumPoints() > 0 then
-						TRP3_CharacterTooltip:SetOwner(UIParent, "ANCHOR_NONE");
-						TRP3_CharacterTooltip:SetPoint(GameTooltip:GetPoint(1));
-					else
-						TRP3_API.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
+			TRP3_CharacterTooltip:SetBorderColor(TRP3_API.ui.tooltip.tooltipBorderColor:GetRGB());
+			if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER then
+				writeTooltipForCharacter(targetID, targetType);
+				if showRelationColor() and targetID ~= Globals.player_id and not isIDIgnored(targetID) and IsUnitIDKnown(targetID) and hasProfile(targetID) then
+					local borderColor = getRelationColor(hasProfile(targetID));
+					if borderColor then
+						TRP3_CharacterTooltip:SetBorderColor(borderColor:GetRGB());
 					end
-				else
-					TRP3_CharacterTooltip:SetOwner(getAnchoredFrame(), getAnchoredPosition());
 				end
-
-				TRP3_CharacterTooltip:SetBorderColor(TRP3_API.ui.tooltip.tooltipBorderColor:GetRGB());
-				if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER then
-					writeTooltipForCharacter(targetID, targetType);
-					if showRelationColor() and targetID ~= Globals.player_id and not isIDIgnored(targetID) and IsUnitIDKnown(targetID) and hasProfile(targetID) then
-						local borderColor = getRelationColor(hasProfile(targetID));
-						if borderColor then
-							TRP3_CharacterTooltip:SetBorderColor(borderColor:GetRGB());
-						end
-					end
-					if shouldHideGameTooltip() and not (isIDIgnored(targetID) or unitIDIsFilteredForMatureContent(targetID)) then
-						GameTooltip:Hide();
-					end
-					-- Mounts
-					if targetID == Globals.player_id and getCurrentMountProfile() then
-						local mountSpellID = getCurrentMountSpellID();
+				if shouldHideGameTooltip() and not (isIDIgnored(targetID) or unitIDIsFilteredForMatureContent(targetID)) then
+					GameTooltip:Hide();
+				end
+				-- Mounts
+				if targetID == Globals.player_id and getCurrentMountProfile() then
+					local mountSpellID = getCurrentMountSpellID();
+					local mountName = getCompanionNameFromSpellID(mountSpellID);
+					TRP3_CompanionTooltip:SetOwner(TRP3_CharacterTooltip, "ANCHOR_TOPLEFT");
+					writeTooltipForMount(Globals.player_id, nil, mountName);
+				else
+					local companionFullID, profileID, mountSpellID = TRP3_API.companions.register.getUnitMount(targetID, targetType);
+					if profileID then
 						local mountName = getCompanionNameFromSpellID(mountSpellID);
 						TRP3_CompanionTooltip:SetOwner(TRP3_CharacterTooltip, "ANCHOR_TOPLEFT");
-						writeTooltipForMount(Globals.player_id, nil, mountName);
-					else
-						local companionFullID, profileID, mountSpellID = TRP3_API.companions.register.getUnitMount(targetID, targetType);
-						if profileID then
-							local mountName = getCompanionNameFromSpellID(mountSpellID);
-							TRP3_CompanionTooltip:SetOwner(TRP3_CharacterTooltip, "ANCHOR_TOPLEFT");
-							writeTooltipForMount(targetID, companionFullID, mountName);
-						end
+						writeTooltipForMount(targetID, companionFullID, mountName);
 					end
-				elseif targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET then
-					writeCompanionTooltip(targetID, targetType, targetMode);
-					if shouldHideGameTooltip() and not (ownerIsIgnored(targetID) or unitIDIsFilteredForMatureContent(targetID)) then
-						GameTooltip:Hide();
-					end
+				end
+			elseif targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET then
+				writeCompanionTooltip(targetID, targetType, targetMode);
+				if shouldHideGameTooltip() and not (ownerIsIgnored(targetID) or unitIDIsFilteredForMatureContent(targetID)) then
+					GameTooltip:Hide();
 				end
 			end
 		end
@@ -1444,6 +1442,10 @@ end
 local function GetCurrentTooltipUnit()
 	local unitToken;
 
+	if UnitAffectingCombat("player") then
+		return;
+	end
+
 	if GameTooltip:IsShown() then
 		unitToken = (select(2, GameTooltip:GetUnit())) or "none";
 	end
@@ -1486,7 +1488,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		hooksecurefunc(GameTooltip, "SetWorldCursor", NotifyTooltipUnitChanged);
 	end
 	GameTooltip:HookScript("OnShow", function()
-		if not GameTooltip:GetUnit() then
+		if UnitAffectingCombat("player") or not GameTooltip:GetUnit() then
 			TRP3_CharacterTooltip:Hide();
 			TRP3_CompanionTooltip:Hide();
 		end
