@@ -743,7 +743,7 @@ function hooking()
 
 	-- We add our own custom GetColoredName filter so we can display our own custom colors
 	-- And the full RP name of the players
-	ChatFrameUtil.AddSenderNameFilter(Utils.customGetColoredName)
+	ChatFrameUtil.AddSenderNameFilter(Utils.customGetColoredName);
 
 	-- Hook the ChatEdit_InsertLink() function that is called when the user SHIFT-Click a player name
 	-- in the chat frame to insert it into a text field.
