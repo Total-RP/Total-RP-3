@@ -204,7 +204,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			if IsShiftKeyDown() then
 				-- If the shift key is down, the user is trying to insert a TRP3 link.
 				-- That's not supported for now, so we'll remove the hyperlink escape sequence from the chatframe editbox text
-				local activeChatFrame = ChatEdit_GetActiveWindow();
+				local activeChatFrame = ChatFrameUtil.GetActiveWindow();
 				if activeChatFrame and activeChatFrame.chatFrame and activeChatFrame.chatFrame.editBox then
 					activeChatFrame.chatFrame.editBox:SetText(TRP3_API.utils.str.sanitize(activeChatFrame.chatFrame.editBox:GetText()));
 				end

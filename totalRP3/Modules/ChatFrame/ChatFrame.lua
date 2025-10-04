@@ -775,7 +775,7 @@ function hooking()
 		-- Do not modify the name if we don't know that character
 		if not (IsUnitIDKnown(unitID) or unitID == Globals.player_id) then return end ;
 
-		local activeChatFrame = ChatEdit_GetActiveWindow();
+		local activeChatFrame = ChatFrameUtil.GetActiveWindow();
 
 		if activeChatFrame and activeChatFrame.chatFrame and activeChatFrame.chatFrame.editBox then
 			local editBox = activeChatFrame.chatFrame.editBox;
