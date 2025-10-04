@@ -607,7 +607,7 @@ function TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType)
 	local shortID = TRP3_API.ui.misc.getCompanionShortID(unitToken, unitType);
 
 	if issecretvalue and issecretvalue(shortID) then
-		return
+		return;
 	end
 
 	if shortID then

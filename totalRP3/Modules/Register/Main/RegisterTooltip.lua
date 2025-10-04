@@ -1295,7 +1295,7 @@ local function show(targetType, targetID, targetMode)
 	if getConfigValue(ConfigKeys.IN_CHARACTER_ONLY) and not isPlayerIC() then return end
 	if getConfigValue(ConfigKeys.HIDE_IN_INSTANCE) and IsInInstance() then return end
 	if ShouldDisplayUnmodifiedTooltip() then return; end
-	if UnitAffectingCombat("player") then return end
+	if UnitAffectingCombat("player") then return; end
 
 	-- If we have a target
 	if targetID then
