@@ -224,6 +224,10 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 	button:Enable();
 	button.isCurrentMine = isMine;
 
+	if text then
+		text = text:gsub("\n%s*\n%s*\n+", "\n\n"):gsub("^%s*\n", ""):gsub("\n%s*$", "");
+	end
+
 	if active then
 		button:SetAlpha(1);
 		button:SetIconTexture(icon or GLANCE_NOT_USED_ICON);
