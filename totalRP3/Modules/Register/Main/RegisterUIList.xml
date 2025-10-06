@@ -17,25 +17,31 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Info2" inherits="GameFontHighlight" justifyH="CENTER" text="[Info ?]">
+				<FontString parentKey="Flags" inherits="GameFontHighlight" justifyH="CENTER" text="[Flags ?]">
 					<Size x="134" y="10"/>
 					<Anchors>
 						<Anchor point="RIGHT" x="-15"/>
 					</Anchors>
 				</FontString>
-				<FontString parentKey="Addon" inherits="GameFontHighlight" justifyH="LEFT" text="[Info ?]">
+				<FontString parentKey="Realm" inherits="GameFontHighlight" justifyH="LEFT" text="[Realm ?]">
 					<Size x="110" y="10"/>
 					<Anchors>
-						<Anchor point="RIGHT" relativeKey="$parent.Info2" relativePoint="LEFT" x="-15"/>
+						<Anchor point="RIGHT" relativeKey="$parent.Flags" relativePoint="LEFT" x="-15"/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey="GuildOrOwner" inherits="GameFontHighlight" justifyH="LEFT" text="[Guild / Owner ?]">
+					<Size x="110" y="10"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativeKey="$parent.Realm" relativePoint="LEFT" x="-15"/>
 					</Anchors>
 				</FontString>
 				<FontString parentKey="Time" inherits="GameFontHighlight" justifyH="LEFT" text="[Time ?]">
 					<Size x="110" y="10"/>
 					<Anchors>
-						<Anchor point="RIGHT" relativeKey="$parent.Addon" relativePoint="LEFT" x="-15"/>
+						<Anchor point="RIGHT" relativeKey="$parent.GuildOrOwner" relativePoint="LEFT" x="-15"/>
 					</Anchors>
 				</FontString>
-				<FontString parentKey="Info" inherits="GameFontHighlight" justifyH="LEFT" text="[Info ?]">
+				<FontString parentKey="Relations" inherits="GameFontHighlight" justifyH="LEFT" text="[Relations ?]">
 					<Size x="110" y="10"/>
 					<Anchors>
 						<Anchor point="RIGHT" relativeKey="$parent.Time" relativePoint="LEFT" x="-15"/>
@@ -45,54 +51,94 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Size x="0" y="10"/>
 					<Anchors>
 						<Anchor point="LEFT" x="30"/>
-						<Anchor point="RIGHT" relativeKey="$parent.Info" relativePoint="LEFT" x="-15"/>
+						<Anchor point="RIGHT" relativeKey="$parent.Relations" relativePoint="LEFT" x="-15"/>
 					</Anchors>
 				</FontString>
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button parentKey="ClickRight">
-				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.Info2"/>
-					<Anchor point="RIGHT" relativeKey="$parent.Info2"/>
-					<Anchor point="TOP"/>
-					<Anchor point="BOTTOM"/>
-				</Anchors>
-				<Scripts>
-					<OnEnter>
-						TRP3_RefreshTooltipForFrame(self);
-					</OnEnter>
-					<OnLeave>
-						TRP3_MainTooltip:Hide();
-					</OnLeave>
-				</Scripts>
-			</Button>
-			<Button parentKey="ClickMiddle">
-				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.Info"/>
-					<Anchor point="RIGHT" relativeKey="$parent.Info"/>
-					<Anchor point="TOP"/>
-					<Anchor point="BOTTOM"/>
-				</Anchors>
-				<Scripts>
-					<OnEnter>
-						TRP3_RefreshTooltipForFrame(self);
-					</OnEnter>
-					<OnLeave>
-						TRP3_MainTooltip:Hide();
-					</OnLeave>
-				</Scripts>
-			</Button>
-			<Button parentKey="Click">
+			<Button parentKey="Click" propagateMouseInput="Motion">
 				<Anchors>
 					<Anchor point="LEFT" relativeKey="$parent.Name"/>
-					<Anchor point="RIGHT" relativeKey="$parent.Name"/>
+					<Anchor point="RIGHT" relativeKey="$parent.Flags"/>
 					<Anchor point="TOP"/>
 					<Anchor point="BOTTOM"/>
 				</Anchors>
 				<HighlightTexture alphaMode="ADD" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar">
 					<TexCoords bottom="0" left="0.25" top="1" right="1" />
 				</HighlightTexture>
+			</Button>
+			<Button parentKey="ClickFlags">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.Flags"/>
+					<Anchor point="RIGHT" relativeKey="$parent.Flags"/>
+					<Anchor point="TOP"/>
+					<Anchor point="BOTTOM"/>
+				</Anchors>
+				<Scripts>
+					<OnEnter>
+						TRP3_RefreshTooltipForFrame(self);
+					</OnEnter>
+					<OnLeave>
+						TRP3_MainTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+			</Button>
+			<Button parentKey="ClickRealm">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.Realm"/>
+					<Anchor point="RIGHT" relativeKey="$parent.Realm"/>
+					<Anchor point="TOP"/>
+					<Anchor point="BOTTOM"/>
+				</Anchors>
+				<Scripts>
+					<OnEnter>
+						TRP3_RefreshTooltipForFrame(self);
+					</OnEnter>
+					<OnLeave>
+						TRP3_MainTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+			</Button>
+			<Button parentKey="ClickGuild">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.GuildOrOwner"/>
+					<Anchor point="RIGHT" relativeKey="$parent.GuildOrOwner"/>
+					<Anchor point="TOP"/>
+					<Anchor point="BOTTOM"/>
+				</Anchors>
+				<Scripts>
+					<OnEnter>
+						TRP3_RefreshTooltipForFrame(self);
+					</OnEnter>
+					<OnLeave>
+						TRP3_MainTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+			</Button>
+			<Button parentKey="ClickRelation">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.Relations"/>
+					<Anchor point="RIGHT" relativeKey="$parent.Relations"/>
+					<Anchor point="TOP"/>
+					<Anchor point="BOTTOM"/>
+				</Anchors>
+				<Scripts>
+					<OnEnter>
+						TRP3_RefreshTooltipForFrame(self);
+					</OnEnter>
+					<OnLeave>
+						TRP3_MainTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+			</Button>
+			<Button parentKey="ClickName">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.Name"/>
+					<Anchor point="RIGHT" relativeKey="$parent.Name"/>
+					<Anchor point="TOP"/>
+					<Anchor point="BOTTOM"/>
+				</Anchors>
 				<Scripts>
 					<OnEnter>
 						TRP3_RefreshTooltipForFrame(self);
@@ -156,28 +202,35 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 								</Texture>
 							</Layer>
 							<Layer level="OVERLAY">
-								<FontString name="TRP3_RegisterListHeaderInfo2" parentKey="Info2" inherits="GameFontNormal" justifyH="CENTER" text="[Info ?]">
+								<FontString name="TRP3_RegisterListHeaderFlags" parentKey="Flags" inherits="GameFontNormal" justifyH="CENTER" text="[Flags ?]">
 									<Size x="134" y="10" />
 									<Anchors>
 										<Anchor point="RIGHT" x="-15" y="0" />
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
-								<FontString name="TRP3_RegisterListHeaderAddon" parentKey="Addon" inherits="GameFontNormal" justifyH="LEFT" text="[ADDON]">
+								<FontString name="TRP3_RegisterListHeaderRealm" parentKey="Realm" inherits="GameFontNormal" justifyH="LEFT" text="[Characters realm]">
 									<Size x="110" y="10" />
 									<Anchors>
-										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderInfo2" />
+										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderFlags" />
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95" />
+								</FontString>
+								<FontString name="TRP3_RegisterListHeaderGuild" parentKey="Guild" inherits="GameFontNormal" justifyH="LEFT" text="[Characters guild]">
+									<Size x="110" y="10" />
+									<Anchors>
+										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderRealm" />
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
 								<FontString name="TRP3_RegisterListHeaderTime" parentKey="Time" inherits="GameFontNormal" justifyH="LEFT" text="[Time ?]">
 									<Size x="110" y="10" />
 									<Anchors>
-										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderAddon" />
+										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderGuild" />
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
-								<FontString name="TRP3_RegisterListHeaderInfo" parentKey="Info" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
+								<FontString name="TRP3_RegisterListHeaderRelations" parentKey="Info" inherits="GameFontNormal" justifyH="LEFT" text="[Relations ?]">
 									<Size x="110" y="10" />
 									<Anchors>
 										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderTime" />
@@ -188,7 +241,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<Size x="0" y="10" />
 									<Anchors>
 										<Anchor point="LEFT" x="30" y="0" />
-										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderInfo" />
+										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderRelations" />
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
@@ -210,18 +263,18 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									</OnLeave>
 								</Scripts>
 							</Button>
-							<Button name="TRP3_RegisterListHeaderInfoTT" parentKey="InfoTooltipButton" inherits="TRP3_InvisibleButton">
+							<Button name="TRP3_RegisterListHeaderRelationsTT" parentKey="InfoTooltipButton" inherits="TRP3_InvisibleButton">
 								<Size x="0" y="20" />
 								<Anchors>
-									<Anchor point="RIGHT" x="0" y="0" relativeTo="TRP3_RegisterListHeaderInfo"/>
-									<Anchor point="LEFT" x="0" y="0" relativeTo="TRP3_RegisterListHeaderInfo"/>
+									<Anchor point="RIGHT" x="0" y="0" relativeTo="TRP3_RegisterListHeaderRelations"/>
+									<Anchor point="LEFT" x="0" y="0" relativeTo="TRP3_RegisterListHeaderRelations"/>
 								</Anchors>
 								<Scripts>
 									<OnEnter>
-										TRP3_RegisterListHeaderInfo:SetTextColor(0.95, 0.75, 0);
+										TRP3_RegisterListHeaderRelations:SetTextColor(0.95, 0.75, 0);
 									</OnEnter>
 									<OnLeave>
-										TRP3_RegisterListHeaderInfo:SetTextColor(0.95, 0.95, 0.95);
+										TRP3_RegisterListHeaderRelations:SetTextColor(0.95, 0.95, 0.95);
 									</OnLeave>
 								</Scripts>
 							</Button>
@@ -237,6 +290,36 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									</OnEnter>
 									<OnLeave>
 										TRP3_RegisterListHeaderTime:SetTextColor(0.95, 0.95, 0.95);
+									</OnLeave>
+								</Scripts>
+							</Button>
+							<Button name="TRP3_RegisterListHeaderGuildTT" parentKey="TimeTooltipButton" inherits="TRP3_InvisibleButton">
+								<Size x="0" y="20" />
+								<Anchors>
+									<Anchor point="RIGHT" x="0" y="0" relativeTo="TRP3_RegisterListHeaderGuild"/>
+									<Anchor point="LEFT" x="0" y="0" relativeTo="TRP3_RegisterListHeaderGuild"/>
+								</Anchors>
+								<Scripts>
+									<OnEnter>
+										TRP3_RegisterListHeaderGuild:SetTextColor(0.95, 0.75, 0);
+									</OnEnter>
+									<OnLeave>
+										TRP3_RegisterListHeaderGuild:SetTextColor(0.95, 0.95, 0.95);
+									</OnLeave>
+								</Scripts>
+							</Button>
+							<Button name="TRP3_RegisterListHeaderRealmTT" parentKey="TimeTooltipButton" inherits="TRP3_InvisibleButton">
+								<Size x="0" y="20" />
+								<Anchors>
+									<Anchor point="RIGHT" x="0" y="0" relativeTo="TRP3_RegisterListHeaderRealm"/>
+									<Anchor point="LEFT" x="0" y="0" relativeTo="TRP3_RegisterListHeaderRealm"/>
+								</Anchors>
+								<Scripts>
+									<OnEnter>
+										TRP3_RegisterListHeaderRealm:SetTextColor(0.95, 0.75, 0);
+									</OnEnter>
+									<OnLeave>
+										TRP3_RegisterListHeaderRealm:SetTextColor(0.95, 0.95, 0.95);
 									</OnLeave>
 								</Scripts>
 							</Button>
@@ -319,7 +402,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterListPetFilterName" />
 								</Anchors>
 							</EditBox>
-							<EditBox name="TRP3_RegisterListPetFilterMaster" parentKey="Master" inherits="TRP3_TitledEditBox">
+							<EditBox name="TRP3_RegisterListPetFilterOwner" parentKey="Master" inherits="TRP3_TitledEditBox">
 								<Size x="125" y="20" />
 								<Anchors>
 									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterListPetFilterType" />
