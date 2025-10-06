@@ -854,7 +854,6 @@ Optional kann hier ein Grund angegeben werden. Es handelt sich um eine persönli
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Dies wird alle Profile, die nicht an einen WoW Charakter gebunden sind, löschen.
 
 |cff00ff00%s|r]=],
-	["REG_LIST_ADDON"] = "Profiltyp",
 	["REG_LIST_CHAR_EMPTY"] = "Kein Charakter",
 	["REG_LIST_CHAR_EMPTY2"] = "Kein Charakter passt zu deiner Auswahl",
 	["REG_LIST_CHAR_FILTER"] = "Charaktere: %s / %s",

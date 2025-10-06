@@ -990,7 +990,6 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[这个清除将删除所有没有绑定到魔兽世界角色的同伴卡。
 
 |cff00ff00%s|r]=],
-	["REG_LIST_ADDON"] = "档案种类",
 	["REG_LIST_CHAR_EMPTY"] = "没有角色",
 	["REG_LIST_CHAR_EMPTY2"] = "没有匹配的角色",
 	["REG_LIST_CHAR_FILTER"] = "角色: %s / %s",

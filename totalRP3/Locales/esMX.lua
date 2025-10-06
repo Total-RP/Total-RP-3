@@ -355,7 +355,6 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Esta purga eliminará todos los perfiles no vinculados a un personaje de WoW.
 
 |cff00ff00%s|r]=],
-	["REG_LIST_ADDON"] = "Tipo de perfil",
 	["REG_LIST_CHAR_EMPTY"] = "Sin personajes",
 	["REG_LIST_CHAR_EMPTY2"] = "Ningún personaje encaja con tu selección",
 	["REG_LIST_CHAR_FILTER"] = "Personajes: %s / %s",

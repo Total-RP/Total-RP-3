@@ -1004,7 +1004,6 @@ Vous pouvez optionnellement entrer la raison ci-dessous. C'est une note personne
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Cette purge supprimera tous les profils qui ne sont pas liés à un personnage WoW.
 
 |cff00ff00%s|r]=],
-	["REG_LIST_ADDON"] = "Type de profil",
 	["REG_LIST_CHAR_EMPTY"] = "Aucun personnage",
 	["REG_LIST_CHAR_EMPTY2"] = "Aucun personnage ne correspond à votre sélection",
 	["REG_LIST_CHAR_FILTER"] = "Personnages: %s / %s",

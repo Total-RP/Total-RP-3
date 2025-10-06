@@ -995,7 +995,6 @@ Você pode opcionalmente inserir o motivo abaixo. Essa é uma nota pessoal, que 
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Este expurgo irá remover todos os perfis que não estão conectados a um personagem do WoW.
 
 |cff00ff00%s|r]=],
-	["REG_LIST_ADDON"] = "Tipo de perfil",
 	["REG_LIST_CHAR_EMPTY"] = "Sem personagem",
 	["REG_LIST_CHAR_EMPTY2"] = "Nenhum personagem se encaixa na sua seleção",
 	["REG_LIST_CHAR_FILTER"] = "Personagens: %s / %s",

@@ -805,7 +805,6 @@ Link it anyway ?]=],
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Очистка удалит все профили, не связанные с персонажами WoW.
 
 |cff00ff00%s|r]=],
-	["REG_LIST_ADDON"] = "Тип профиля",
 	["REG_LIST_CHAR_EMPTY"] = "Нет персонажей",
 	["REG_LIST_CHAR_EMPTY2"] = "Ни один персонаж не подходит под описание",
 	["REG_LIST_CHAR_FILTER"] = "Персонажей: %s / %s",
