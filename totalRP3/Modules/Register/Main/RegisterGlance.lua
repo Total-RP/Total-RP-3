@@ -738,7 +738,7 @@ local function displayGlanceSlots()
 					glanceTitle = crop(glanceTitle, GLANCE_TITLE_CROP);
 				end
 				if TTText then
-					TTText = TTText:gsub("\n%s*\n%s*\n+", "\n\n"):gsub("^%s*\n", ""):gsub("\n%s*$", "");
+					TTText = TRP3_StringUtil.TrimNewlinesAndSpaces(TTText);
 				end
 				setTooltipForSameFrame(button, "TOP", 0, 5, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
 				updateGlanceButtonsTooltips();
@@ -755,7 +755,7 @@ local function displayGlanceSlots()
 						glanceTitle = glance.TI or loc.REG_PLAYER_GLANCE_UNUSED;
 					end
 					if TTText then
-						TTText = TTText:gsub("\n%s*\n%s*\n+", "\n\n"):gsub("^%s*\n", ""):gsub("\n%s*$", "");
+						TTText = TRP3_StringUtil.TrimNewlinesAndSpaces(TTText);
 					end
 					setTooltipForSameFrame(button, "TOP", 0, 5, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
 					updateGlanceButtonsTooltips();

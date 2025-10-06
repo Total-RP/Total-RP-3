@@ -225,7 +225,7 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 	button.isCurrentMine = isMine;
 
 	if text then
-		text = text:gsub("\n%s*\n%s*\n+", "\n\n"):gsub("^%s*\n", ""):gsub("\n%s*$", "");
+		text = TRP3_StringUtil.TrimNewlinesAndSpaces(text);
 	end
 
 	if active then
