@@ -1,3 +1,20 @@
+# Changelog version 3.1.2
+
+## Changed
+
+- The profile directory has received some changes:
+  - The relation column will now sort by relation order rather than alphabetically.
+  - The guild and realm columns have been added (only visible if the window is wide enough to display them).
+  - The profile type column has been removed.
+  - The entire line can now be hovered and clicked rather than only a portion of it.
+- Glances will no longer display leading/trailing spaces and excess newlines.
+- The dice roll broadcast line can now be right-clicked to see the sender's character name.
+- Dice rolls broadcast to a target will not show if sent in quick succession. This doesn't apply to party/raid broadcast.
+
+## Fixed
+
+- Fixed Enter/Escape not working on popups requiring an input.
+
 # Changelog version 3.1.1
 
 ## Fixed
