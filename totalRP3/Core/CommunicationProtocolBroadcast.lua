@@ -269,7 +269,7 @@ local function isBroadcastMessage(distributionType, channel)
 end
 
 local function onMessageReceived(_, prefix, message , distributionType, sender, _, _, _, channel)
-	if not sender then
+	if issecretvalue(sender) or not sender then
 		return;
 	end
 
@@ -453,6 +453,7 @@ Comm.broadcast.init = function()
 
 	-- When you are already in 10 channel
 	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_SYSTEM", function(_, message)
+		if issecretvalue(message) then return; end
 		if config_UseBroadcast() and message == ERR_TOO_MANY_CHAT_CHANNELS and not helloWorlded then
 			Utils.message.displayMessage(loc.BROADCAST_10);
 			ticker:Cancel();
