@@ -3,7 +3,7 @@
 ## Changed
 
 - The profile directory has received some changes:
-  - The relation column will now sort by relation order rather than alphabetically.
+  - The relation column will now sort by relation order rather than alphabetically, and None relation will always sort to the bottom.
   - The guild and realm columns have been added (only visible if the window is wide enough to display them).
   - The profile type column has been removed.
   - The entire line can now be hovered and clicked rather than only a portion of it.
