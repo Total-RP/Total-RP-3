@@ -133,5 +133,6 @@ function TRP3_StringUtil.GenerateIncrementalName(predicate, prefix, suffix)
 end
 
 function TRP3_StringUtil.TrimNewlinesAndSpaces(str)
-	return str:gsub("\n%s*\n%s*\n+", "\n\n"):gsub("^%s*\n", ""):gsub("\n%s*$", "");
+	str = str:gsub("\n%s*\n%s*\n+", "\n\n");
+	return string.trim(str);
 end
