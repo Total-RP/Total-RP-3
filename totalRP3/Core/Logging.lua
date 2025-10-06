@@ -24,7 +24,7 @@ local function WriteToLogChatFrame(entry)
 	if not LogChatFrame then
 		for i = 1, Constants.ChatFrameConstants.MaxChatWindows do
 			if GetChatWindowInfo(i) == "Logs" then
-				LogChatFrame = Chat_GetChatFrame(i);
+				LogChatFrame = ChatFrameUtil.GetChatFrame(i);
 				break;
 			end
 		end
