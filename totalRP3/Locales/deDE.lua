@@ -854,7 +854,6 @@ Optional kann hier ein Grund angegeben werden. Es handelt sich um eine persönli
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Dies wird alle Profile, die nicht an einen WoW Charakter gebunden sind, löschen.
 
 |cff00ff00%s|r]=],
-	["REG_LIST_ADDON"] = "Profiltyp",
 	["REG_LIST_CHAR_EMPTY"] = "Kein Charakter",
 	["REG_LIST_CHAR_EMPTY2"] = "Kein Charakter passt zu deiner Auswahl",
 	["REG_LIST_CHAR_FILTER"] = "Charaktere: %s / %s",
@@ -888,7 +887,7 @@ Wo zuletzt gesehen: |cff00ff00%s|r]=],
 	["REG_LIST_NOTIF_ADD"] = "Neues Profil gefunden für |cff00ff00%s",
 	["REG_LIST_NOTIF_ADD_CONFIG"] = "Neues Profil gefunden",
 	["REG_LIST_NOTIF_ADD_NOT"] = "Dieses Profil existiert nicht mehr.",
-	["REG_LIST_PET_MASTER"] = "Name des Herren",
+	["REG_LIST_PET_OWNER"] = "Name des Herren",
 	["REG_LIST_PET_NAME"] = "Name des Begleiters",
 	["REG_LIST_PET_TYPE"] = "Typ des Begleiters",
 	["REG_LIST_PETS_EMPTY"] = "Kein/e Begleiter",

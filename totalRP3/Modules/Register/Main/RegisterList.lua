@@ -20,7 +20,7 @@ local hasProfile = TRP3_API.register.hasProfile;
 local getCompleteName = TRP3_API.register.getCompleteName;
 local getProfile = TRP3_API.register.getProfile;
 local getIgnoredList, unignoreID, isIDIgnored = TRP3_API.register.getIgnoredList, TRP3_API.register.unignoreID, TRP3_API.register.isIDIgnored;
-local getRelationText, getRelationTooltipText = TRP3_API.register.relation.getRelationText, TRP3_API.register.relation.getRelationTooltipText;
+local getRelation, getRelationInfo, getRelationText, getRelationTooltipText = TRP3_API.register.relation.getRelation, TRP3_API.register.relation.getRelationInfo, TRP3_API.register.relation.getRelationText, TRP3_API.register.relation.getRelationTooltipText;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 local showAlertPopup, showConfirmPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showConfirmPopup;
 local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
@@ -136,26 +136,28 @@ TRP3_API.register.openPageByUnitID = openPageByUnitID;
 
 local sortingType = 1;
 
-local function switchNameSorting()
-	sortingType = sortingType == 2 and 1 or 2;
-	refreshList();
-end
+local sortingMap = {
+	Name = { asc = 1, desc = 2 },
+	Info = { asc = 3, desc = 4 },
+	Time = { asc = 5, desc = 6 },
+	Guild = { asc = 7, desc = 8 },
+	Realm = { asc = 9, desc = 10 },
+}
 
-local function switchInfoSorting()
-	sortingType = sortingType == 4 and 3 or 4;
-	refreshList();
-end
-
-local function switchTimeSorting()
-	sortingType = sortingType == 6 and 5 or 6;
+local function switchSorting(key)
+	local pair = sortingMap[key];
+	if not pair then
+		return;
+	end
+	sortingType = (sortingType == pair.asc) and pair.desc or pair.asc;
 	refreshList();
 end
 
 local function getNameForSort(name)
-	name = name:lower()
-	name = name:gsub("\"", "")
-	name = name:gsub("'", "")
-	return name
+	name = name:lower();
+	name = name:gsub("\"", "");
+	name = name:gsub("'", "");
+	return name;
 end
 
 local function nameComparator(elem1, elem2)
@@ -166,12 +168,18 @@ local function nameComparatorInverted(elem1, elem2)
 	return getNameForSort(elem1[2]) > getNameForSort(elem2[2]);
 end
 
-local function infoComparator(elem1, elem2)
-	return elem1[3]:lower() < elem2[3]:lower();
+local function relationComparator(elem1, elem2)
+	return elem1[3] > elem2[3];
 end
 
-local function infoComparatorInverted(elem1, elem2)
-	return elem1[3]:lower() > elem2[3]:lower();
+local function relationComparatorInverted(elem1, elem2)
+	local a, b = elem1[3], elem2[3];
+
+	-- Treat 0 as highest value so it goes last when descending
+	if a == 0 then a = math.huge; end
+	if b == 0 then b = math.huge; end
+
+	return a < b;
 end
 
 local function timeComparator(elem1, elem2)
@@ -192,8 +200,36 @@ local function timeComparatorInverted(elem1, elem2)
 	return elem1[4] > elem2[4];
 end
 
+local function getStringForSort(str, inverted)
+	if not str or str == "" then
+		-- "\0" sorts before everything, "\255" sorts after everything
+		return inverted and "\0" or "\255";
+	end
+	str = str:lower();
+	str = str:gsub("\"", "");
+	str = str:gsub("'", "");
+	return str;
+end
+
+local function guildComparator(elem1, elem2)
+	return getStringForSort(elem1[5], false) < getStringForSort(elem2[5], false);
+end
+
+local function guildComparatorInverted(elem1, elem2)
+	return getStringForSort(elem1[5], true) > getStringForSort(elem2[5], true);
+end
+
+local function realmComparator(elem1, elem2)
+	return getStringForSort(elem1[6], false) < getStringForSort(elem2[6], false);
+end
+
+local function realmComparatorInverted(elem1, elem2)
+	return getStringForSort(elem1[6], true) > getStringForSort(elem2[6], true);
+end
+
 local comparators = {
-	nameComparator, nameComparatorInverted, infoComparator, infoComparatorInverted, timeComparator, timeComparatorInverted
+	nameComparator, nameComparatorInverted, relationComparator, relationComparatorInverted, timeComparator,
+	timeComparatorInverted, guildComparator, guildComparatorInverted, realmComparator, realmComparatorInverted
 }
 
 local function getCurrentComparator()
@@ -203,22 +239,27 @@ end
 local ARROW_DOWN = "|TInterface\\Buttons\\Arrow-Down-Up:15:15:0:-6|t";
 local ARROW_UP = "|TInterface\\Buttons\\Arrow-Up-Up:15|t";
 
+---@return string nameArrow
+---@return string relationArrow
+---@return string timeArrow
+---@return string guildArrow
+---@return string realmArrow
 local function getComparatorArrows()
-	local nameArrow, relationArrow, timeArrow = "", "", "";
-	if sortingType == 1 then
-		nameArrow = " " .. ARROW_DOWN;
-	elseif sortingType == 2 then
-		nameArrow = " " .. ARROW_UP;
-	elseif sortingType == 3 then
-		relationArrow = " " .. ARROW_DOWN;
-	elseif sortingType == 4 then
-		relationArrow = " " .. ARROW_UP;
-	elseif sortingType == 5 then
-		timeArrow = " " .. ARROW_DOWN;
-	elseif sortingType == 6 then
-		timeArrow = " " .. ARROW_UP;
+	local arrows = { "", "", "", "", "" };
+	local arrowByType = {
+		[1] = {1, ARROW_DOWN}, [2] = {1, ARROW_UP}, -- name
+		[3] = {2, ARROW_DOWN}, [4] = {2, ARROW_UP}, -- relation
+		[5] = {3, ARROW_DOWN}, [6] = {3, ARROW_UP}, -- time
+		[7] = {4, ARROW_DOWN}, [8] = {4, ARROW_UP}, -- guild
+		[9] = {5, ARROW_DOWN}, [10] = {5, ARROW_UP}, -- realm
+	};
+
+	local entry = arrowByType[sortingType];
+	if entry then
+		arrows[entry[1]] = " " .. entry[2];
 	end
-	return nameArrow, relationArrow, timeArrow;
+
+	return unpack(arrows);
 end
 
 local MODE_CHARACTER, MODE_PETS, MODE_IGNORE = 1, 2, 3;
@@ -279,16 +320,14 @@ end
 local function ResizeLineContents(line)
 	local containerWidth = TRP3_MainFramePageContainer:GetWidth();
 
-	if containerWidth < 690 then
-		line.Time:SetWidth(2);
-	else
-		line.Time:SetWidth(160);
-	end
+	local lines = {
+		{ field = line.Time,  threshold = 690,  width = 160 },
+		{ field = line.GuildOrOwner, threshold = 850,  width = 160 },
+		{ field = line.Realm, threshold = 1010, width = 160 },
+	}
 
-	if containerWidth < 850 then
-		line.Addon:SetWidth(2);
-	else
-		line.Addon:SetWidth(160);
+	for _, lineColumn in ipairs(lines) do
+		lineColumn.field:SetWidth(containerWidth < lineColumn.threshold and 2 or lineColumn.width)
 	end
 end
 
@@ -313,6 +352,7 @@ local function decorateCharacterLine(line, elementData)
 
 	local name = getCompleteName(profile.characteristics or {}, UNKNOWN, true);
 	local leftTooltipTitle, leftTooltipText = name, "";
+	local guilds, realms = {}, {};
 
 	line.Name:SetText(name);
 	if profile.characteristics and profile.characteristics.IC then
@@ -325,43 +365,79 @@ local function decorateCharacterLine(line, elementData)
 	local isWalkupFriendly = profile.character and profile.character.WU == AddOn_TotalRP3.Enums.WALKUP.YES;
 
 	local atLeastOneIgnored = false;
-	line.Info2:SetText("");
-	local firstLink;
+	line.Flags:SetText("");
+	local firstLink, firstGuild, firstRealm;
+	local lines = {};
+
 	if profile.link and TableHasAnyEntries(profile.link) then
 		leftTooltipText = leftTooltipText .. loc.REG_LIST_CHAR_TT_CHAR .. "|cnGREEN_FONT_COLOR:";
 		for unitID, _ in pairs(profile.link) do
+			local unitName, unitRealm = unitIDToInfo(unitID);
+			local character = getUnitIDCharacter(unitID);
+
 			if not firstLink then
 				firstLink = unitID;
+				firstGuild = character.guild;
+				firstRealm = unitRealm;
 			end
-			local unitName, unitRealm = unitIDToInfo(unitID);
+
+			if character.guild then
+				local exists = false;
+				for _, guild in ipairs(guilds) do
+					if guild == character.guild then
+						exists = true;
+						break;
+					end
+				end
+
+				if not exists then
+					table.insert(guilds, character.guild);
+				end
+			end
+
+			if unitRealm then
+				local exists = false;
+				for _, realm in ipairs(realms) do
+					if realm == unitRealm then
+						exists = true;
+						break;
+					end
+				end
+
+				if not exists then
+					table.insert(realms, unitRealm);
+				end
+			end
+
+			local tooltipLine = " - " .. unitName .. " ( " .. unitRealm .. " )";
 			if isIDIgnored(unitID) then
-				leftTooltipText = leftTooltipText .. "\n - " .. unitName .. " ( " .. unitRealm .. " ) - " .. IGNORED_ICON .. " " .. loc.REG_LIST_IGNORE_TITLE;
+				tooltipLine = tooltipLine .. " - " .. IGNORED_ICON .. " " .. loc.REG_LIST_IGNORE_TITLE;
 				atLeastOneIgnored = true;
-			else
-				leftTooltipText = leftTooltipText .. "\n - " .. unitName .. " ( " .. unitRealm .. " )";
 			end
+			table.insert(lines, tooltipLine);
 		end
-		leftTooltipText = leftTooltipText .. "|r";
+
+		leftTooltipText = leftTooltipText .. "|n" .. table.concat(lines, "|n") .. "|r";
 	else
 		leftTooltipText = leftTooltipText .. loc.REG_LIST_CHAR_TT_CHAR_NO;
 	end
 
 	if profile.time and profile.zone then
 		local formatDate = Utils.GenerateFormattedDateString(profile.time);
-		leftTooltipText = leftTooltipText .. "\n" .. loc.REG_LIST_CHAR_TT_DATE:format(formatDate, profile.zone);
+		leftTooltipText = leftTooltipText .. "|n" .. loc.REG_LIST_CHAR_TT_DATE:format(formatDate, profile.zone);
 	end
-	-- Middle column : relation
+
 	local relation, relationColor = getRelationText(profileID, true), getRelationColor(profileID);
 	local color = (relationColor or TRP3_API.Colors.White):GenerateHexColorMarkup();
 	if #relation > 0 then
 		if relationColor then
 			relation = relationColor:WrapTextInColorCode(relation);
 		end
-		setTooltipForSameFrame(line.ClickMiddle, "TOPLEFT", 0, 5, loc.REG_RELATION .. ": " .. relation, getRelationTooltipText(profileID, profile));
+		setTooltipForSameFrame(line.ClickRelation, "TOPLEFT", 0, 5, loc.REG_RELATION .. ": " .. relation, getRelationTooltipText(profileID, profile));
 	else
-		setTooltipForSameFrame(line.ClickMiddle);
+		setTooltipForSameFrame(line.ClickRelation);
 	end
-	line.Info:SetText(color .. relation);
+	line.Relations:SetText(color .. relation);
 
 	local timeStr = "";
 	if profile.time then
@@ -369,7 +445,21 @@ local function decorateCharacterLine(line, elementData)
 	end
 	line.Time:SetText(timeStr);
 
-	-- Third column : flags
+	if #guilds > 0 then
+		setTooltipForSameFrame(line.ClickGuild, "TOPLEFT", 0, 5, loc.REG_GUILD, "- " .. table.concat(guilds, "|n- "));
+	else
+		setTooltipForSameFrame(line.ClickGuild);
+	end
+	line.GuildOrOwner:SetText(firstGuild or "");
+
+	if #realms > 0 then
+		setTooltipForSameFrame(line.ClickRealm, "TOPLEFT", 0, 5, loc.REG_REALM, "- " .. table.concat(realms, "|n- "));
+	else
+		setTooltipForSameFrame(line.ClickRealm);
+	end
+	line.Realm:SetText(firstRealm);
+
+	-- flags
 	---@type string[]
 	local rightTooltipTexts, flags = {}, {};
 	if atLeastOneIgnored then
@@ -392,29 +482,20 @@ local function decorateCharacterLine(line, elementData)
 		table.insert(flags, MATURE_CONTENT_ICON);
 		table.insert(rightTooltipTexts, MATURE_CONTENT_ICON .. " " .. loc.MATURE_FILTER_TOOLTIP_WARNING);
 	end
-	if #rightTooltipTexts > 0 then
-		setTooltipForSameFrame(line.ClickRight, "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, table.concat(rightTooltipTexts, "\n"));
-	else
-		setTooltipForSameFrame(line.ClickRight);
-	end
-	line.Info2:SetText(table.concat(flags, " "));
 
-	local addon = Globals.addon_name;
-	if profile.msp then
-		addon = "Mary-Sue Protocol";
-		if firstLink and isUnitIDKnown(firstLink) then
-			local character = getUnitIDCharacter(firstLink);
-			addon = character.client or "Mary-Sue Protocol";
-		end
+	if #rightTooltipTexts > 0 then
+		setTooltipForSameFrame(line.ClickFlags, "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, table.concat(rightTooltipTexts, "|n"));
+	else
+		setTooltipForSameFrame(line.ClickFlags);
 	end
-	line.Addon:SetText(addon);
+	line.Flags:SetText(table.concat(flags, " "));
 
 	line.Select:SetChecked(selectedIDs[profileID]);
 	line.Select:Show();
 
-	setTooltipForSameFrame(line.Click, "TOPLEFT", 0, 5, leftTooltipTitle, leftTooltipText .. "\n\n" ..
-		TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER) .. "\n" ..
-		TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_CHAR_NAME_COPY) .. "\n" ..
+	setTooltipForSameFrame(line.ClickName, "TOPLEFT", 0, 5, leftTooltipTitle, leftTooltipText .. "|n|n" ..
+		TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER) .. "|n" ..
+		TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_CHAR_NAME_COPY) .. "|n" ..
 		TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
 end
 
@@ -434,9 +515,18 @@ local function getCharacterLines()
 		-- Don't add default profiles to the directory
 		if not TRP3_API.profile.isDefaultProfile(profileID) and profile.characteristics and next(profile.characteristics) ~= nil then
 
+			local firstLink;
+			local firstGuild, firstRealm = "", "";
 			-- Defines if at least one character is conform to the search criteria
 			for unitID, _ in pairs(profile.link or Globals.empty) do
+				if not firstLink then
+					firstLink = unitID;
+				end
 				local unitName, unitRealm = unitIDToInfo(unitID);
+				if firstLink and isUnitIDKnown(firstLink) then
+					firstGuild = getUnitIDCharacter(firstLink).guild or "";
+					firstRealm = unitRealm or "";
+				end
 				if string.find(unitName:lower(), nameSearch, 1, true) then
 					nameIsConform = true;
 				end
@@ -463,7 +553,7 @@ local function getCharacterLines()
 			notesIsConform = notesIsConform or not notesOnly;
 
 			if nameIsConform and guildIsConform and realmIsConform and notesIsConform then
-				tinsert(characterLines, {profileID, completeName, getRelationText(profileID, true), profile.time});
+				tinsert(characterLines, {profileID, completeName, getRelationInfo(getRelation(profileID)).order, profile.time, firstGuild, firstRealm});
 			end
 
 		end
@@ -482,14 +572,18 @@ local function getCharacterLines()
 	TRP3_RegisterListCharactFilter:SetTitleText(loc.REG_LIST_CHAR_FILTER:format(lineSize, fullSize));
 	TRP3_RegisterListCharactFilter:SetTitleWidth(200);
 
-	local nameArrow, relationArrow, timeArrow = getComparatorArrows();
+	local nameArrow, relationArrow, timeArrow, guildArrow, realmArrow = getComparatorArrows();
 	TRP3_RegisterListHeaderName:SetText(loc.REG_PLAYER .. nameArrow);
-	TRP3_RegisterListHeaderInfo:SetText(loc.REG_RELATION .. relationArrow);
+	TRP3_RegisterListHeaderRelations:SetText(loc.REG_RELATION .. relationArrow);
 	TRP3_RegisterListHeaderTime:SetText(loc.REG_TIME .. timeArrow);
-	TRP3_RegisterListHeaderTimeTT:Enable();
-	TRP3_RegisterListHeaderInfoTT:Enable();
+	TRP3_RegisterListHeaderGuild:SetText(loc.REG_GUILD .. guildArrow);
+	TRP3_RegisterListHeaderRealm:SetText(loc.REG_REALM .. realmArrow);
+	TRP3_RegisterListHeaderFlags:SetText(loc.REG_LIST_FLAGS);
 	TRP3_RegisterListHeaderNameTT:Enable();
-	TRP3_RegisterListHeaderInfo2:SetText(loc.REG_LIST_FLAGS);
+	TRP3_RegisterListHeaderRelationsTT:Enable();
+	TRP3_RegisterListHeaderTimeTT:Enable();
+	TRP3_RegisterListHeaderGuildTT:Enable();
+	TRP3_RegisterListHeaderRealmTT:Enable();
 	TRP3_RegisterListHeaderActions:Show();
 
 	return characterLines;
@@ -632,42 +726,45 @@ local function decorateCompanionLine(line, elementData)
 		tooltip = Utils.str.icon(profile.data.IC, ICON_SIZE) .. " " .. name;
 	end
 
-	local links, masters = {}, {};
+	local links, owners = {}, {};
 	local fulllinks = getAssociationsForProfile(profileID);
 	for _, companionFullID in pairs(fulllinks) do
 		local ownerID, companionID = companionIDToInfo(companionFullID);
 		links[companionID] = 1;
-		masters[ownerID] = 1;
+		owners[ownerID] = 1;
 	end
 
 	local companionList = "";
 	companionList = companionList .. "|cnGREEN_FONT_COLOR:";
 	for companionID, _ in pairs(links) do
-		companionList = companionList .. "- " .. getCompanionNameFromSpellID(companionID) .. "\n";
+		companionList = companionList .. "- " .. getCompanionNameFromSpellID(companionID) .. "|n";
 	end
 	companionList = companionList .. "|r";
-	local masterList, firstMaster = "", "";
-	masterList = masterList .. "|cnGREEN_FONT_COLOR:";
-	for ownerID, _ in pairs(masters) do
-		masterList = masterList .. "- " .. ownerID .. "\n";
-		if firstMaster == "" then
-			firstMaster = ownerID;
+	local ownerList, firstOwner = "", "";
+	ownerList = ownerList .. "|cnGREEN_FONT_COLOR:";
+	for ownerID, _ in pairs(owners) do
+		ownerList = ownerList .. "- " .. ownerID .. "|n";
+		if firstOwner == "" then
+			firstOwner = ownerID;
 		end
 	end
-	masterList = masterList .. "|r";
+	ownerList = ownerList .. "|r";
 
-	if isUnitIDKnown(firstMaster) and  TRP3_API.register.profileExists(firstMaster) then
-		firstMaster = getCompleteName(getUnitIDProfile(firstMaster).characteristics or {}, "", true);
+	if isUnitIDKnown(firstOwner) and  TRP3_API.register.profileExists(firstOwner) then
+		firstOwner = getCompleteName(getUnitIDProfile(firstOwner).characteristics or {}, "", true);
 	end
-	line.Addon:SetText(firstMaster);
+	line.GuildOrOwner:SetText(firstOwner);
 
-	local secondLine = loc.REG_LIST_PETS_TOOLTIP .. ":\n" .. companionList .. "\n" .. loc.REG_LIST_PETS_TOOLTIP2 .. ":\n" .. masterList;
-	setTooltipForSameFrame(line.Click, "TOPLEFT", 0, 5, tooltip, secondLine .. "\n\n" ..
-		TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "\n" ..
+	local secondLine = loc.REG_LIST_PETS_TOOLTIP .. ":|n" .. companionList .. "|n" .. loc.REG_LIST_PETS_TOOLTIP2 .. ":|n" .. ownerList;
+	setTooltipForSameFrame(line.ClickName, "TOPLEFT", 0, 5, tooltip, secondLine .. "|n|n" ..
+		TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "|n" ..
 		TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
-	setTooltipForSameFrame(line.ClickMiddle);
+	setTooltipForSameFrame(line.ClickRelation);
 
-	-- Third column : flags
+	setTooltipForSameFrame(line.ClickGuild);
+	setTooltipForSameFrame(line.ClickRealm);
+
+	-- Flags
 	---@type string[]
 	local rightTooltipText, flags = {}, {};
 	if hasNewAbout then
@@ -675,39 +772,40 @@ local function decorateCompanionLine(line, elementData)
 		table.insert(rightTooltipText, NEW_ABOUT_ICON .. " " .. loc.REG_TT_NOTIF);
 	end
 	if #rightTooltipText > 0 then
-		setTooltipForSameFrame(line.ClickRight, "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, table.concat(rightTooltipText, "\n"));
+		setTooltipForSameFrame(line.ClickFlags, "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, table.concat(rightTooltipText, "|n"));
 	else
-		setTooltipForSameFrame(line.ClickRight);
+		setTooltipForSameFrame(line.ClickFlags);
 	end
-	line.Info2:SetText(table.concat(flags, " "));
+	line.Flags:SetText(table.concat(flags, " "));
 
 	line.Select:SetChecked(selectedIDs[profileID]);
 	line.Select:Show();
 
-	line.Info:SetText("");
+	line.Relations:SetText("");
 	line.Time:SetText("");
+	line.Realm:SetText("");
 end
 
 local function getCompanionLines()
 	local nameSearch = TRP3_RegisterListPetFilterName:GetText():lower();
 	local typeSearch = TRP3_RegisterListPetFilterType:GetText():lower();
-	local masterSearch = TRP3_RegisterListPetFilterMaster:GetText():lower();
+	local ownerSearch = TRP3_RegisterListPetFilterOwner:GetText():lower();
 	local profiles = getCompanionProfiles();
 	local fullSize = CountTable(profiles);
 	local companionLines = {};
 
 	for profileID, profile in pairs(profiles) do
-		local nameIsConform, typeIsConform, masterIsConform = false, false, false;
+		local nameIsConform, typeIsConform, ownerIsConform = false, false, false;
 
 		-- Run this test only if there are criterias
-		if #typeSearch > 0 or #masterSearch > 0 then
+		if #typeSearch > 0 or #ownerSearch > 0 then
 			for companionFullID, _ in pairs(profile.links) do
-				local masterID, companionID = companionIDToInfo(companionFullID);
+				local ownerID, companionID = companionIDToInfo(companionFullID);
 				if string.find(companionID:lower(), typeSearch, 1, true) then
 					typeIsConform = true;
 				end
-				if string.find(masterID:lower(), masterSearch, 1, true) then
-					masterIsConform = true;
+				if string.find(ownerID:lower(), ownerSearch, 1, true) then
+					ownerIsConform = true;
 				end
 			end
 		end
@@ -722,9 +820,9 @@ local function getCompanionLines()
 
 		nameIsConform = nameIsConform or #nameSearch == 0;
 		typeIsConform = typeIsConform or #typeSearch == 0;
-		masterIsConform = masterIsConform or #masterSearch == 0;
+		ownerIsConform = ownerIsConform or #ownerSearch == 0;
 
-		if nameIsConform and typeIsConform and masterIsConform then
+		if nameIsConform and typeIsConform and ownerIsConform then
 			tinsert(companionLines, {profileID, companionName, companionName, companionName});
 		end
 	end
@@ -744,12 +842,15 @@ local function getCompanionLines()
 
 	local nameArrow = getComparatorArrows();
 	TRP3_RegisterListHeaderName:SetText(loc.REG_COMPANION .. nameArrow);
-	TRP3_RegisterListHeaderInfo:SetText("");
+	TRP3_RegisterListHeaderRelations:SetText("");
 	TRP3_RegisterListHeaderTime:SetText("");
-	TRP3_RegisterListHeaderTimeTT:Disable();
-	TRP3_RegisterListHeaderInfoTT:Disable();
+	TRP3_RegisterListHeaderRealm:SetText("");
+	TRP3_RegisterListHeaderFlags:SetText(loc.REG_LIST_FLAGS);
 	TRP3_RegisterListHeaderNameTT:Enable();
-	TRP3_RegisterListHeaderInfo2:SetText(loc.REG_LIST_FLAGS);
+	TRP3_RegisterListHeaderRelationsTT:Disable();
+	TRP3_RegisterListHeaderTimeTT:Disable();
+	TRP3_RegisterListHeaderGuildTT:Disable();
+	TRP3_RegisterListHeaderRealmTT:Disable();
 	TRP3_RegisterListHeaderActions:Show();
 
 	return companionLines;
@@ -798,15 +899,18 @@ local function decorateIgnoredLine(line, unitID)
 	decorateGenericLine(line);
 	line.id = unitID;
 	line.Name:SetText(unitID);
-	line.Info:SetText("");
+	line.Relations:SetText("");
 	line.Time:SetText("");
-	line.Info2:SetText("");
-	line.Addon:SetText("");
+	line.Flags:SetText("");
+	line.GuildOrOwner:SetText("");
+	line.Realm:SetText("");
 	line.Select:Hide();
-	setTooltipForSameFrame(line.Click, "TOPLEFT", 0, 5, unitID, loc.REG_LIST_IGNORE_TT:format(getIgnoredList()[unitID])
+	setTooltipForSameFrame(line.ClickName, "TOPLEFT", 0, 5, unitID, loc.REG_LIST_IGNORE_TT:format(getIgnoredList()[unitID])
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_LIST_IGNORE_REMOVE));
-	setTooltipForSameFrame(line.ClickMiddle);
-	setTooltipForSameFrame(line.ClickRight);
+	setTooltipForSameFrame(line.ClickRelation);
+	setTooltipForSameFrame(line.ClickGuild);
+	setTooltipForSameFrame(line.ClickRealm);
+	setTooltipForSameFrame(line.ClickFlags);
 end
 
 local function getIgnoredLines()
@@ -814,12 +918,16 @@ local function getIgnoredLines()
 		TRP3_RegisterListEmpty:SetText(loc.REG_LIST_IGNORE_EMPTY);
 	end
 	TRP3_RegisterListHeaderName:SetText(loc.REG_PLAYER);
-	TRP3_RegisterListHeaderInfo:SetText("");
+	TRP3_RegisterListHeaderRelations:SetText("");
 	TRP3_RegisterListHeaderTime:SetText("");
-	TRP3_RegisterListHeaderTimeTT:Disable();
-	TRP3_RegisterListHeaderInfoTT:Disable();
+	TRP3_RegisterListHeaderGuild:SetText("");
+	TRP3_RegisterListHeaderRealm:SetText("");
+	TRP3_RegisterListHeaderFlags:SetText("");
 	TRP3_RegisterListHeaderNameTT:Disable();
-	TRP3_RegisterListHeaderInfo2:SetText("");
+	TRP3_RegisterListHeaderRelationsTT:Disable();
+	TRP3_RegisterListHeaderTimeTT:Disable();
+	TRP3_RegisterListHeaderGuildTT:Disable();
+	TRP3_RegisterListHeaderRealmTT:Disable();
 
 	return GetKeysArray(getIgnoredList());
 end
@@ -859,13 +967,13 @@ local function changeMode(_, value)
 	wipe(selectedIDs);
 	TRP3_RegisterListCharactFilter:Hide();
 	TRP3_RegisterListPetFilter:Hide();
-	TRP3_RegisterListHeaderAddon:SetText("");
+	TRP3_RegisterListHeaderGuild:SetText("");
 	if currentMode == MODE_CHARACTER then
 		TRP3_RegisterListCharactFilter:Show();
-		TRP3_RegisterListHeaderAddon:SetText(loc.REG_LIST_ADDON);
+		TRP3_RegisterListHeaderGuild:SetText(loc.REG_GUILD);
 	elseif currentMode == MODE_PETS then
 		TRP3_RegisterListPetFilter:Show();
-		TRP3_RegisterListHeaderAddon:SetText(loc.REG_LIST_PET_MASTER);
+		TRP3_RegisterListHeaderGuild:SetText(loc.REG_LIST_PET_OWNER);
 	end
 	refreshList();
 	TRP3_Addon:TriggerEvent(Events.NAVIGATION_TUTORIAL_REFRESH, REGISTER_LIST_PAGEID);
@@ -1007,17 +1115,18 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_RegisterListFilterCharactGuildText:SetText(loc.REG_LIST_GUILD);
 	TRP3_RegisterListFilterCharactRealm:SetText(loc.REG_LIST_REALMONLY);
 	TRP3_RegisterListFilterCharactNotes:SetText(loc.REG_LIST_NOTESONLY);
-	TRP3_RegisterListHeaderAddon:SetText(loc.REG_LIST_ADDON);
+	TRP3_RegisterListHeaderGuild:SetText(loc.REG_GUILD);
+	TRP3_RegisterListHeaderRealm:SetText(loc.REG_REALM);
 	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListFilterCharactName, TRP3_RegisterListFilterCharactGuild});
 
 	TRP3_RegisterListPetFilterName:SetScript("OnEnterPressed", refreshList);
 	TRP3_RegisterListPetFilterType:SetScript("OnEnterPressed", refreshList);
-	TRP3_RegisterListPetFilterMaster:SetScript("OnEnterPressed", refreshList);
+	TRP3_RegisterListPetFilterOwner:SetScript("OnEnterPressed", refreshList);
 	TRP3_RegisterListPetFilterButton:SetScript("OnClick", function(_, button)
 		if button == "RightButton" then
 			TRP3_RegisterListPetFilterName:SetText("");
 			TRP3_RegisterListPetFilterType:SetText("");
-			TRP3_RegisterListPetFilterMaster:SetText("");
+			TRP3_RegisterListPetFilterOwner:SetText("");
 		end
 		refreshList();
 	end)
@@ -1025,12 +1134,14 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_FILTERS_CLEAR));
 	TRP3_RegisterListPetFilterNameText:SetText(loc.REG_LIST_PET_NAME);
 	TRP3_RegisterListPetFilterTypeText:SetText(loc.REG_LIST_PET_TYPE);
-	TRP3_RegisterListPetFilterMasterText:SetText(loc.REG_LIST_PET_MASTER);
-	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListPetFilterName, TRP3_RegisterListPetFilterType, TRP3_RegisterListPetFilterMaster});
+	TRP3_RegisterListPetFilterOwnerText:SetText(loc.REG_LIST_PET_OWNER);
+	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListPetFilterName, TRP3_RegisterListPetFilterType, TRP3_RegisterListPetFilterOwner});
 
-	TRP3_RegisterListHeaderNameTT:SetScript("OnClick", switchNameSorting);
-	TRP3_RegisterListHeaderInfoTT:SetScript("OnClick", switchInfoSorting);
-	TRP3_RegisterListHeaderTimeTT:SetScript("OnClick", switchTimeSorting);
+	TRP3_RegisterListHeaderNameTT:SetScript("OnClick", function() switchSorting("Name"); end);
+	TRP3_RegisterListHeaderRelationsTT:SetScript("OnClick", function() switchSorting("Info"); end);
+	TRP3_RegisterListHeaderTimeTT:SetScript("OnClick", function() switchSorting("Time"); end);
+	TRP3_RegisterListHeaderGuildTT:SetScript("OnClick", function() switchSorting("Guild"); end);
+	TRP3_RegisterListHeaderRealmTT:SetScript("OnClick", function() switchSorting("Realm"); end);
 
 	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 	TRP3_RegisterListHeaderActions:SetScript("OnMouseDown", function(self)
@@ -1049,15 +1160,15 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		for _, line in TRP3_RegisterListContainer.ScrollBox:EnumerateFrames() do
 			ResizeLineContents(line);
 		end
-		if containerwidth < 690 then
-			TRP3_RegisterListHeaderTime:SetWidth(2);
-		else
-			TRP3_RegisterListHeaderTime:SetWidth(160);
-		end
-		if containerwidth < 850 then
-			TRP3_RegisterListHeaderAddon:SetWidth(2);
-		else
-			TRP3_RegisterListHeaderAddon:SetWidth(160);
+
+		local headers = {
+			{ frame = TRP3_RegisterListHeaderTime,  threshold = 690,  width = 160 },
+			{ frame = TRP3_RegisterListHeaderGuild, threshold = 850,  width = 160 },
+			{ frame = TRP3_RegisterListHeaderRealm, threshold = 1010, width = 160 },
+		}
+
+		for _, headerColumn in ipairs(headers) do
+			headerColumn.frame:SetWidth(containerwidth < headerColumn.threshold and 2 or headerColumn.width)
 		end
 	end);
 

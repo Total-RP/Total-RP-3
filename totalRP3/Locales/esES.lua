@@ -760,7 +760,6 @@ Opcionalmente, puede rellenar la razón de ser ignorado abajo. Esta nota es pers
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Esta purga eliminará todos los perfiles no vinculados a un personaje de WoW.
 
 |cff00ff00%s|r]=],
-	["REG_LIST_ADDON"] = "Tipo de perfil",
 	["REG_LIST_CHAR_EMPTY"] = "Sin personajes",
 	["REG_LIST_CHAR_EMPTY2"] = "Ningún personaje encaja con tu selección",
 	["REG_LIST_CHAR_FILTER"] = "Personajes: %s / %s",
@@ -794,7 +793,7 @@ Opcionalmente, puede rellenar la razón de ser ignorado abajo. Esta nota es pers
 	["REG_LIST_NOTIF_ADD"] = "Nuevo perfil descubierto: |cff00ff00%s",
 	["REG_LIST_NOTIF_ADD_CONFIG"] = "Nuevo perfil descubierto",
 	["REG_LIST_NOTIF_ADD_NOT"] = "Este perfil ya no existe.",
-	["REG_LIST_PET_MASTER"] = "Nombre del dueño",
+	["REG_LIST_PET_OWNER"] = "Nombre del dueño",
 	["REG_LIST_PET_NAME"] = "Nombre del compañero",
 	["REG_LIST_PET_TYPE"] = "Tipo de compañero",
 	["REG_LIST_PETS_EMPTY"] = "No hay compañero",

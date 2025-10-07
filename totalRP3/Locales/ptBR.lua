@@ -995,7 +995,6 @@ Você pode opcionalmente inserir o motivo abaixo. Essa é uma nota pessoal, que 
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Este expurgo irá remover todos os perfis que não estão conectados a um personagem do WoW.
 
 |cff00ff00%s|r]=],
-	["REG_LIST_ADDON"] = "Tipo de perfil",
 	["REG_LIST_CHAR_EMPTY"] = "Sem personagem",
 	["REG_LIST_CHAR_EMPTY2"] = "Nenhum personagem se encaixa na sua seleção",
 	["REG_LIST_CHAR_FILTER"] = "Personagens: %s / %s",
@@ -1028,7 +1027,7 @@ Local visto pela última vez: |cff00ff00%s|r]=],
 	["REG_LIST_NOTIF_ADD"] = "Novo perfil descoberto para |cff00ff00%s",
 	["REG_LIST_NOTIF_ADD_CONFIG"] = "Novo perfil descoberto",
 	["REG_LIST_NOTIF_ADD_NOT"] = "Este perfil não existe mais.",
-	["REG_LIST_PET_MASTER"] = "Nome do mestre",
+	["REG_LIST_PET_OWNER"] = "Nome do mestre",
 	["REG_LIST_PET_NAME"] = "Nome do companheiro",
 	["REG_LIST_PET_TYPE"] = "Tipo do companheiro",
 	["REG_LIST_PETS_EMPTY"] = "Sem companheiro",

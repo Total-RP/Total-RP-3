@@ -1004,7 +1004,6 @@ Vous pouvez optionnellement entrer la raison ci-dessous. C'est une note personne
 	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Cette purge supprimera tous les profils qui ne sont pas liés à un personnage WoW.
 
 |cff00ff00%s|r]=],
-	["REG_LIST_ADDON"] = "Type de profil",
 	["REG_LIST_CHAR_EMPTY"] = "Aucun personnage",
 	["REG_LIST_CHAR_EMPTY2"] = "Aucun personnage ne correspond à votre sélection",
 	["REG_LIST_CHAR_FILTER"] = "Personnages: %s / %s",
@@ -1058,7 +1057,7 @@ La |cnGREEN_FONT_COLOR:dernière colonne|r affiche divers indicateurs (ignoré .
 	["REG_LIST_NOTIF_ADD"] = "Nouveau profil découvert pour |cff00ff00%s",
 	["REG_LIST_NOTIF_ADD_CONFIG"] = "Nouveau profil découvert",
 	["REG_LIST_NOTIF_ADD_NOT"] = "Ce profil n'existe plus.",
-	["REG_LIST_PET_MASTER"] = "Nom du maître",
+	["REG_LIST_PET_OWNER"] = "Nom du maître",
 	["REG_LIST_PET_NAME"] = "Nom du compagnon",
 	["REG_LIST_PET_TYPE"] = "Type du compagnon",
 	["REG_LIST_PETS_EMPTY"] = "Aucun compagnon",
