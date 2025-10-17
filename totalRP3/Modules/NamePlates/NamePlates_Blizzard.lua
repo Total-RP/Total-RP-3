@@ -27,12 +27,16 @@ end
 
 local function UpdateFontStringWidgetColor(widget)
 	local desiredColor = widget.TRP3_overrideColor or widget.TRP3_originalColor;
-	CallUnhookedMethod(widget, "SetVertexColor", desiredColor:GetRGBA());
+	if desiredColor then -- To-Do: Temporary Midnight Alpha fix for errors on "Show Offscreen Nameplates", missing color data.
+		CallUnhookedMethod(widget, "SetVertexColor", desiredColor:GetRGBA());
+	end
 end
 
 local function UpdateStatusBarWidgetColor(widget)
 	local desiredColor = widget.TRP3_overrideColor or widget.TRP3_originalColor;
-	CallUnhookedMethod(widget, "SetStatusBarColor", desiredColor:GetRGBA());
+	if desiredColor then -- To-Do: Temporary Midnight Alpha fix for errors on "Show Offscreen Nameplates", missing color data.
+		CallUnhookedMethod(widget, "SetStatusBarColor", desiredColor:GetRGBA());
+	end
 end
 
 local function ProcessWidgetVisibilityChanged(widget)
@@ -237,7 +241,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 	end
 
 	local unitframe = nameplate.UnitFrame;
-	local unitToken = nameplate.namePlateUnitToken;
+	local unitToken = nameplate:GetUnit();
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
 
 	local overrideText;
@@ -263,7 +267,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 		if displayInfo.shouldColorName then
 			local color = displayInfo.color;
 
-			if UnitIsUnit(nameplate.namePlateUnitToken, "mouseover") then
+			if UnitIsUnit(unitToken, "mouseover") then
 				local r = Saturate(color.r * 1.25);
 				local g = Saturate(color.g * 1.25);
 				local b = Saturate(color.b * 1.25);
@@ -399,7 +403,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateOptions(nameplate)
 		return;
 	end
 
-	local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"));
+	local namePlateVerticalScale = tonumber(GetCVar("nameplateSize"));
 	local isUsingLargerStyle = (namePlateVerticalScale > 1.0);
 
 	if isUsingLargerStyle then
