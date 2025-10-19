@@ -339,7 +339,6 @@ local function onStart()
 	end
 
 	local function LoadRegisterProfile(characterID, char)
-		print(characterID, char)
 		if not TRP3_API.register.isUnitIDKnown(characterID) then
 			return;
 		elseif not TRP3_API.register.profileExists(characterID) then
