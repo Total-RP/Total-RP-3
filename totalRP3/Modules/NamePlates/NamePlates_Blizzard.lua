@@ -289,7 +289,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateHealthBar(nameplate)
 	end
 
 	local unitframe = nameplate.UnitFrame;
-	local unitToken = nameplate.namePlateUnitToken;
+	local unitToken = nameplate:GetUnit();
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
 
 	local overrideColor;
@@ -307,7 +307,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateIcon(nameplate)
 	end
 
 	local unitframe = nameplate.UnitFrame;
-	local unitToken = nameplate.namePlateUnitToken;
+	local unitToken = nameplate:GetUnit();
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
 	local displayIcon = displayInfo and displayInfo.icon or nil;
 	local shouldHide = displayInfo and displayInfo.shouldHide or false;
@@ -335,7 +335,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	end
 
 	local unitframe = nameplate.UnitFrame;
-	local unitToken = nameplate.namePlateUnitToken;
+	local unitToken = nameplate:GetUnit();
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
 	local displayText = displayInfo and displayInfo.fullTitle or nil;
 	local shouldHide = displayInfo and displayInfo.shouldHide or false;
@@ -378,8 +378,9 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateVisibility(nameplate)
 		return;
 	end
 
-	local displayInfo = self:GetUnitDisplayInfo(nameplate.namePlateUnitToken);
 	local unitframe = nameplate.UnitFrame;
+	local unitToken = nameplate:GetUnit();
+	local displayInfo = self:GetUnitDisplayInfo(unitToken);
 	local shouldShow; -- This is only false or nil explicitly.
 
 	if displayInfo and displayInfo.shouldHide then
