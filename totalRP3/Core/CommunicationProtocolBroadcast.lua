@@ -237,6 +237,7 @@ Comm.broadcast.resetPlayers = function()
 end
 
 local function onChannelJoin(_, _, arg2, _, _, _, _, _, _, arg9)
+	if issecretvalue(arg2) then return; end
 	if config_UseBroadcast() and arg2 and arg9 == config_BroadcastChannel() then
 		local unitName = unitIDToInfo(arg2);
 		connectedPlayers[unitName] = 1;
@@ -244,6 +245,7 @@ local function onChannelJoin(_, _, arg2, _, _, _, _, _, _, arg9)
 end
 
 local function onChannelLeave(_, _, arg2, _, _, _, _, _, _, arg9)
+	if issecretvalue(arg2) then return; end
 	if config_UseBroadcast() and arg2 and arg9 == config_BroadcastChannel() then
 		local unitName = unitIDToInfo(arg2);
 		connectedPlayers[unitName] = nil;
@@ -430,6 +432,7 @@ Comm.broadcast.init = function()
 
 	-- When someone placed a password on the channel
 	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_PASSWORD_REQUEST", function(_, channel)
+		if issecretvalue(channel) then return; end
 		if channel == config_BroadcastChannel() then
 			TRP3_API.Log("Passworded !");
 
@@ -445,6 +448,7 @@ Comm.broadcast.init = function()
 	if TRP3_ClientFeatures.ChannelBroadcasts then
 		-- For when someone just places a password
 		TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_CHANNEL_NOTICE_USER", function(_, mode, user, _, _, _, _, _, _, channel)
+			if issecretvalue(user) then return; end
 			if mode == "OWNER_CHANGED" and user == TRP3_API.globals.player_id and channel == config_BroadcastChannel() then
 				SetChannelPasswordOld(config_BroadcastChannel(), "");
 			end
