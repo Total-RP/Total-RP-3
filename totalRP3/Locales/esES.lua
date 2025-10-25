@@ -1163,7 +1163,7 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 	["TF_OPEN_MOUNT"] = "Mostrar página de montura",
 	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Versión %s (build %s){/col}{/p}
-{p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}
+{p:c}{link*http://totalrp.com*totalrp.com}{/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Creado por{/h2}
 - Morgane "{twitter*EllypseCelwe*Ellypse}" Parize

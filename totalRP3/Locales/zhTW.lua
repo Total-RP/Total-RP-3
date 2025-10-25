@@ -780,8 +780,8 @@ L = {
 	["TF_OPEN_MOUNT"] = "顯示坐騎頁面",
 	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}版本 %s (build %s){/col}{/p}
-{p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
-{p:c}{link*http://discord.totalrp3.info* 加入我們的Discord}{/p}
+{p:c}{link*http://totalrp.com*totalrp.com} — {twitter*TotalRP3*@TotalRP3} {/p}
+{p:c}{link*http://discord.totalrp.com* 加入我們的Discord}{/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} 作者：{/h2}
 %AUTHORS$s

@@ -1266,7 +1266,7 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 	["TF_OPEN_MOUNT"] = "Reittierseite anzeigen",
 	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
-{p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}
+{p:c}{link*http://totalrp.com*totalrp.com}{/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
 - Morgane "{twitter*EllypseCelwe*Ellypse}" Parize

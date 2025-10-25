@@ -10,7 +10,7 @@
 
 ## X-Category: Roleplay
 ## X-License: Apache-2.0
-## X-Website: http://totalrp3.info
+## X-Website: http://totalrp.com
 ## X-Curse-Project-ID: 75973
 ## X-Wago-ID: q96dnGOm
 ## X-WoWI-ID: 24113

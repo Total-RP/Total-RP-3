@@ -66,8 +66,8 @@ Want to integrate your addon with Total RP 3, or create your own module? Check o
 - Learn about Total RP 3's Communication System [here](https://github.com/Total-RP/Total-RP-3/wiki/Communication-system)!
 - Check out the [Total RP 3 API Documentation](https://github.com/Total-RP/Total-RP-3/wiki/Total-RP-3%27s-API-documentation)!
 
-[CurseForge]: http://curse.totalrp3.info
-[Discord]: http://discord.totalrp3.info
+[CurseForge]: http://curse.totalrp.com
+[Discord]: http://discord.totalrp.com
 [myth's guide]: http://tinyurl.com/myths-trp3-guide
 
 [F.A.Q]: https://github.com/Total-RP/Total-RP-3/wiki/Frequently-Asked-Questions
