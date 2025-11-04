@@ -12,7 +12,7 @@ function TRP3_MSPNamePlates:OnEnterWorld()
 		return;
 	end
 
-	TRP3_NamePlates.RegisterCallback("OnNamePlateDataUpdated", self);
+	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
 end
 
 function TRP3_MSPNamePlates:OnNamePlateDataUpdated()
