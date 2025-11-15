@@ -403,15 +403,6 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateOptions(nameplate)
 	if nameplate:IsForbidden() or not self.initializedNameplates[nameplate:GetName()] then
 		return;
 	end
-
-	local namePlateVerticalScale = tonumber(GetCVar("nameplateSize"));
-	local isUsingLargerStyle = (namePlateVerticalScale > 1.0);
-
-	if isUsingLargerStyle then
-		nameplate.TRP3_Title:SetFontObject(SystemFont_LargeNamePlate);
-	else
-		nameplate.TRP3_Title:SetFontObject(SystemFont_NamePlate);
-	end
 end
 
 function TRP3_BlizzardNamePlates:UpdateNamePlate(nameplate)
@@ -431,6 +422,8 @@ function TRP3_BlizzardNamePlates:CanCustomizeNamePlate(nameplate)
 		return false;
 	elseif not self.initializedNameplates[nameplate:GetName()] then
 		return false;
+	elseif issecretvalue(UnitIsUnit(nameplate.UnitFrame.unit, "target")) then
+		return false; -- can't check if ShouldShowName
 	else
 		return true;
 	end

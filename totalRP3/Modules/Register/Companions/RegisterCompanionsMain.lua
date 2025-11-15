@@ -448,7 +448,7 @@ function TRP3_API.companions.register.getUnitMount(ownerID, unitType)
 			local spellBuffID = auraInfo.spellId;
 			local companionFullID = ownerID .. "_" .. tostring(spellBuffID);
 
-			if registerProfileAssociation[companionFullID] then
+			if not issecretvalue(companionFullID) and registerProfileAssociation[companionFullID] then
 				return companionFullID, registerProfileAssociation[companionFullID], tostring(spellBuffID);
 			end
 		end

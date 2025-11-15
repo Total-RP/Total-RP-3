@@ -355,7 +355,7 @@ local function GenerateColoredTooltipLine(text, color)
 	--
 	-- Empty lines need to have one character at-minimum to prevent errors
 	-- when assigning tooltip line fonts later.
-	if not text or text == "" then
+	if not issecretvalue(text) and (not text or text == "") then
 		text = " ";
 	end
 
@@ -1447,7 +1447,13 @@ local function GetCurrentTooltipUnit()
 	end
 
 	if GameTooltip:IsShown() then
-		unitToken = (select(2, GameTooltip:GetUnit())) or "none";
+		local tooltipUnit = GameTooltip:GetUnit();
+		if not issecretvalue(tooltipUnit) then
+			unitToken = select(2, tooltipUnit);
+		end
+		if type(unitToken) == nil then
+			unitToken = "none";
+		end
 	end
 
 	if not unitToken and UnitExists("mouseover") then
@@ -1531,7 +1537,11 @@ local function onModuleInit()
 			GameTooltip:SetUnit(unitToken);
 			GameTooltip:Show();
 		elseif GameTooltip:IsShown() then
-			local unitToken = (select(2, GameTooltip:GetUnit())) or "none";
+			local unitToken = "none";
+			local tooltipUnit = GameTooltip:GetUnit();
+			if not issecretvalue(tooltipUnit) then
+				unitToken = select(2, tooltipUnit) or unitToken;
+			end
 			ShowUnitTooltip(unitToken);
 		end
 	end);
