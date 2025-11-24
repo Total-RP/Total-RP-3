@@ -971,7 +971,5 @@ function Utils.GenerateFormattedDateString(time)
 end
 
 function Utils.IsAddOnEnabled(addonName)
-	local characterName = UnitNameUnmodified("player");
-	local enableState = C_AddOns.GetAddOnEnableState(addonName, characterName);
-	return enableState == 2;
+    return C_AddOns.GetAddOnEnableState(addonName, UnitGUID("player")) == 2;
 end
