@@ -633,15 +633,11 @@ TRP3_API.chat.getFullnameForUnitUsingChatMethod = getFullnameForUnitUsingChatMet
 -- This is our custom function for the SenderNameFilter function that will replace player's names with their full RP names
 -- and use their custom colors.
 -- (It is stored in Utils as we need it in other modules like Prat or WIM)
-function Utils.customGetColoredName(event, senderName, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12, ...)
+function Utils.customGetColoredName(event, _, _, unitID, _, _, _, _, _, _, _, _, messageID, GUID, ...)
 
 	if disabledByOOC() then
 		return;
 	end
-
-	local GUID = arg12;
-	local unitID = arg2;
-	local messageID = arg11;
 
 	-- Do not change stuff if the customizations are disabled for this channel or the GUID is invalid (WIM…), use the default function
 	if not isChannelHandled(event) or not configIsChannelUsed(event) or not GUID or not Utils.guid.isAPlayerGUID(GUID) then
