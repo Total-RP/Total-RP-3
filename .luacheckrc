@@ -164,6 +164,12 @@ stds.wow = {
 
 		-- Global Functions
 
+		AddOnUtil = {
+			fields = {
+				"IsAddOnEnabledForCurrentCharacter",
+			},
+		},
+
 		AnchorUtil = {
 			fields = {
 				"CreateAnchor",
@@ -185,7 +191,6 @@ stds.wow = {
 		C_AddOns = {
 			fields = {
 				"DisableAddOn",
-				"GetAddOnEnableState",
 				"GetAddOnMetadata",
 				"IsAddOnLoaded",
 			},

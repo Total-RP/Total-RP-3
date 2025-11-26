@@ -144,7 +144,7 @@ function TRP3_PlaterNamePlates:OnNamePlateDataUpdated(_, nameplate, unitToken, d
 end
 
 function TRP3_PlaterNamePlates:OnModuleInitialize()
-	if not TRP3_API.utils.IsAddOnEnabled(PlaterAddonName) then
+	if not AddOnUtil.IsAddOnEnabledForCurrentCharacter(PlaterAddonName) then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	end
 
