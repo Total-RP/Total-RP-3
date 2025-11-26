@@ -60,7 +60,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		if not message or strlen(strtrim(message)) < 1 then return end
 
 		-- Send a chat message via the EMOTE channel
-		SendChatMessage(constructMessage(NPCName, channel, message), "EMOTE");
+		C_ChatInfo.SendChatMessage(constructMessage(NPCName, channel, message), "EMOTE");
 		-- Empty the message field (we leave the NPC name field as is in case the user wants to send multiple messages with the same NPC)
 		frame.MessageText.scroll.text:SetText("");
 

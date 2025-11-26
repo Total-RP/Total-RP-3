@@ -106,17 +106,17 @@ end
 --- The arguments passed to this function will be passed to
 ---@vararg any @ You can pass any arguments that ChatLinkModule:GetLinkData(...) needs
 function ChatLinkModule:InsertLink(...)
-	local editbox = ChatEdit_GetActiveWindow();
+	local editbox = ChatFrameUtil.GetActiveWindow();
 	local name, data = self:GetLinkData(...);
 	local link = ChatLink(name, data, self:GetID());
 	local linkText = link:GetText();
 
 	if editbox then -- If an editbox is currently focused we use it and insert the link in place
-		ChatEdit_FocusActiveWindow();
+		ChatFrameUtil.FocusActiveWindow();
 		editbox:Insert(linkText);
 	else
 		-- If not editbox were focused (or the focus was lost because empty), open a new chat message with the link text
-		ChatFrame_OpenChat(linkText);
+		ChatFrameUtil.OpenChat(linkText);
 	end
 end
 
