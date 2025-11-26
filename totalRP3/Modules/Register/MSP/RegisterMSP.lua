@@ -338,6 +338,114 @@ local function onStart()
 		styleData[styleKey] = tonumber(value) or 0;
 	end
 
+	local function LoadRegisterProfile(characterID, char)
+		if not TRP3_API.register.isUnitIDKnown(characterID) then
+			return;
+		elseif not TRP3_API.register.profileExists(characterID) then
+			return;
+		end
+
+		local character = TRP3_API.register.getUnitIDCharacter(characterID);
+		local profile = TRP3_API.register.getUnitIDProfile(characterID);
+
+		-- We only copy the bare minimum fields that are likely to be sent for
+		-- tooltip requests.
+
+		if profile.characteristics ~= nil then
+			-- Full Name
+			do
+				local hideTitle = true;
+				local defaultName = (string.split("-", characterID));
+				local completeName = TRP3_API.register.getCompleteName(profile.characteristics, defaultName, hideTitle)
+
+				if profile.characteristics.CH ~= nil and profile.characteristics.CH ~= "" then
+					char.field.NA = string.format("|cff%s%s|r", profile.characteristics.CH, completeName);
+				else
+					char.field.NA = completeName;
+				end
+			end
+
+			-- Class
+			if profile.characteristics.CL ~= nil and profile.characteristics.CH ~= nil and profile.characteristics.CH ~= "" then
+				char.field.RC = string.format("|cff%s%s|r", profile.characteristics.CH, profile.characteristics.CL);
+			else
+				char.field.RC = profile.characteristics.CL;
+			end
+
+			-- Eye Color
+			if profile.characteristics.EC ~= nil and profile.characteristics.EH ~= nil and profile.characteristics.EH ~= "" then
+				char.field.AE = string.format("|cff%s%s|r", profile.characteristics.EH, profile.characteristics.EC);
+			else
+				char.field.AE = profile.characteristics.EC;
+			end
+
+			char.field.PX = profile.characteristics.TI;  -- Prefix Title
+			char.field.NT = profile.characteristics.FT;  -- Full Title
+			char.field.IC = profile.characteristics.IC;  -- Icon
+			char.field.RA = profile.characteristics.RA;  -- Race
+			char.field.RS = tostring(profile.characteristics.RS or AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN);
+			char.field.AG = profile.characteristics.AG;  -- Age
+			char.field.AH = profile.characteristics.HE;  -- Height
+			char.field.AW = profile.characteristics.WE;  -- Weight
+			char.field.HH = profile.characteristics.RE;  -- Residence
+			char.field.HB = profile.characteristics.BP;  -- Birthplace
+
+			-- Misc Info
+			if profile.characteristics.MI ~= nil then
+				for _, miscData in ipairs(profile.characteristics.MI) do
+					local miscType = TRP3_API.GetMiscInfoTypeFromData(miscData);
+
+					if miscType == TRP3_API.MiscInfoType.Motto then
+						char.field.MO = TRP3_StringUtil.DequoteString(miscData.VA or "");
+					elseif miscType == TRP3_API.MiscInfoType.House then
+						char.field.NH = miscData.VA;
+					elseif miscType == TRP3_API.MiscInfoType.Nickname then
+						char.field.NI = miscData.VA;
+					elseif miscType == TRP3_API.MiscInfoType.Pronouns then
+						char.field.PN = miscData.VA;
+					elseif miscType == TRP3_API.MiscInfoType.GuildName then
+						char.field.PG = miscData.VA;
+					elseif miscType == TRP3_API.MiscInfoType.GuildRank then
+						char.field.PR = miscData.VA;
+					elseif miscType == TRP3_API.MiscInfoType.VoiceReference then
+						char.field.PV = miscData.VA;
+					end
+				end
+			end
+		end
+
+		if profile.character ~= nil then
+			-- Roleplay Status and Walkup
+			if profile.character.RP == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
+				char.field.FC = "1";  -- Out of Character
+			elseif profile.character.WU == AddOn_TotalRP3.Enums.WALKUP.YES then
+				char.field.FC = "3";  -- Looking for Contact
+			elseif profile.character.RP == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER then
+				char.field.FC = "2";  -- In Character
+			end
+
+			char.field.CU = profile.character.CU;  -- Currently
+			char.field.CO = profile.character.CO;  -- OOC Info
+		end
+
+		if character ~= nil then
+			-- Roleplay Experience
+			if character.roleplayExperience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
+				char.field.FR = "1";
+			elseif character.roleplayExperience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
+				char.field.FR = "3";
+			elseif character.roleplayExperience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE then
+				char.field.FR = "4";
+			elseif character.roleplayExperience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL then
+				char.field.FR = "2";
+			end
+		end
+	end
+
+	tinsert(msp.callback.dataload, function(characterID, char)
+		LoadRegisterProfile(characterID, char);
+	end);
+
 	tinsert(msp.callback.received, function(senderID)
 		local data = msp.char[senderID].field;
 
