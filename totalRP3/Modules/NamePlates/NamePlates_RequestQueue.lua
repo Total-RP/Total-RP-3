@@ -203,6 +203,15 @@ function TRP3_NamePlatesRequestMixin:SubmitNow()
 	TRP3_API.r.sendQuery(self.characterID);
 	TRP3_API.r.sendMSPQuery(self.characterID);
 
+	-- If the user has an MSP-based external nameplate addon installed then
+	-- we directly send out requests for a limited set of fields in order to
+	-- ensure they get an updated set of data, since LibMSP doesn't allow us
+	-- to update 'msp.char' with new data after initial load.
+
+	if TRP3_NamePlatesUtil.HasMSPNamePlateAddOn() then
+		msp:Request(self.characterID, { "NA", "NT", "PX", "IC", "PG", "PR", "FR", "FC" });
+	end
+
 	-- Once submitted we clear the request as a sanity measure.
 	self:Clear();
 end

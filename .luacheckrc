@@ -58,6 +58,7 @@ read_globals = {
 	"LibStub",
 	"mrp",
 	"mrpSaved",
+	"msp_RPNameplatesAddOn",
 	"Plater",
 	"Prat",
 	"TinyTooltip",
