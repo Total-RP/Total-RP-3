@@ -778,7 +778,7 @@ function hooking()
 		end
 	end);
 
-	hooksecurefunc(ChatFrameEditBoxBaseMixin, "ParseText", function(editBox, send)
+	local function ParseTokens(editBox, send)
 		local text = editBox:GetText();
 		if text and send == 1 then
 			textBeforeParse = text;
@@ -799,7 +799,10 @@ function hooking()
 			text = string.gsub(text, "%%x.[fl]?", tokens);
 			editBox:SetText(text);
 		end
-	end);
+	end
+	for i = 1, Constants.ChatFrameConstants.MaxChatWindows do
+		hooksecurefunc(_G["ChatFrame" .. i .. "EditBox"], "ParseText", ParseTokens);
+	end
 
 	-- Restore the text without substitution before it's stored in the chat history
 	hooksecurefunc(ChatFrameUtil, "SubstituteChatMessageBeforeSend", function()
