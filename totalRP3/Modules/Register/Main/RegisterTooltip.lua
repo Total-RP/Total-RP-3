@@ -1293,7 +1293,7 @@ local function show(targetType, targetID, targetMode)
 
 	-- If option is to only show tooltips when player is in character and player is out of character, stop here
 	if getConfigValue(ConfigKeys.IN_CHARACTER_ONLY) and not isPlayerIC() then return end
-	if getConfigValue(ConfigKeys.HIDE_IN_INSTANCE) and IsInInstance() then return end
+	if getConfigValue(ConfigKeys.HIDE_IN_INSTANCE) and Utils.IsInCombatInstance() then return end
 	if ShouldDisplayUnmodifiedTooltip() then return; end
 
 	-- If using TRP TT

@@ -107,7 +107,7 @@ local function ShouldCustomizeUnitNamePlate(unitToken)
 		shouldCustomize = false;  -- Never decorate personal nameplates.
 	elseif TRP3_NamePlatesSettings.DisableInCombat and isInCombat then
 		shouldCustomize = false;  -- Player is in (or about to enter) combat.
-	elseif TRP3_NamePlatesSettings.DisableInInstances and IsInInstance() then
+	elseif TRP3_NamePlatesSettings.DisableInInstances and TRP3_API.utils.IsInCombatInstance() then
 		shouldCustomize = false;   -- Player is in instanced content.
 	elseif TRP3_NamePlatesSettings.DisableOutOfCharacter and IsUnitOutOfCharacter("player") then
 		shouldCustomize = false;  -- Player is currently OOC.

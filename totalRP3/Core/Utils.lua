@@ -969,3 +969,8 @@ function Utils.GenerateFormattedDateString(time)
 
 	return result;
 end
+
+function Utils.IsInCombatInstance()
+	local inInstance, instanceType = IsInInstance();
+	return inInstance and instanceType ~= "neighborhood" and instanceType ~= "interior";
+end
