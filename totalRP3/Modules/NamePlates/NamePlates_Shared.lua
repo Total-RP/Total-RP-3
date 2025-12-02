@@ -1,9 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-
-local TRP3_NamePlatesUtil = {};
+TRP3_NamePlatesUtil = {};
 
 TRP3_NamePlatesUtil.OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15:15|t";
 
@@ -94,4 +92,10 @@ function TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(enabled)
 	end
 end
 
-_G.TRP3_NamePlatesUtil = TRP3_NamePlatesUtil;
+function TRP3_NamePlatesUtil.GetMSPNamePlateAddOn()
+	return msp_RPNameplatesAddOn;
+end
+
+function TRP3_NamePlatesUtil.HasMSPNamePlateAddOn()
+	return msp_RPNameplatesAddOn ~= nil;
+end

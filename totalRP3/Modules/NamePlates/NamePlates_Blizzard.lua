@@ -95,6 +95,7 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 
 	local addons = {
 		"Kui_Nameplates",
+		"Platynator",
 		"TidyPlates",
 	};
 
