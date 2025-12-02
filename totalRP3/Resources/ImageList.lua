@@ -3360,6 +3360,21 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Housing_ElwynnForest",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Housing_EnterHouse",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Housing_Ogrimmar",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_KhazAlgarContinent",
 		width = 512,
 		height = 288
@@ -3568,6 +3583,38 @@ local IMAGES = {
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Zone_Undermine",
 		width = 512,
 		height = 288
+	},
+	--endregion
+	--region Housing
+	{
+		url = "Interface\\Housing\\answer-HousingTutorialSkip-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Housing\\HousingDashboardBackgroundWelcome",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Housing\\HousingDashboardInitiativesBackgroundDurotar",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Housing\\HousingDashboardInitiativesBackgroundDurotar2x",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Housing\\HousingDashboardInitiativesBackgroundElwynn",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Housing\\UIMinimapHousingIndoor",
+		width = 512,
+		height = 512
 	},
 	--endregion
 	--region Pet Battles
@@ -5050,6 +5097,11 @@ local IMAGES = {
 		height = 256
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-ArgusRift",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-ArmoryAlliance",
 		width = 512,
 		height = 256
@@ -5073,6 +5125,11 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-Ashran",
 		width = 512,
 		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-BronzeMagic",
+		width = 256,
+		height = 128
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-CharacterEarthen",
@@ -5130,6 +5187,11 @@ local IMAGES = {
 		height = 256
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-Gathering",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-Gorgrond-BlackrockFoundry",
 		width = 512,
 		height = 256
@@ -5150,6 +5212,16 @@ local IMAGES = {
 		height = 256
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-KeystoneDungeon",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-LevelUp",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-LumberMillAlliance",
 		width = 512,
 		height = 256
@@ -5168,6 +5240,11 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-MageTowerHorde",
 		width = 512,
 		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Quest",
+		width = 256,
+		height = 128
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-Nagrand-BrokenPrecipice",
@@ -5235,6 +5312,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-Raid",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-Shadowmoon-DarktideRoost",
 		width = 512,
 		height = 256
@@ -5243,6 +5325,11 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-Shadowmoon-SanctumofOthaar",
 		width = 512,
 		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-SlayEnemies",
+		width = 256,
+		height = 128
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-SpiresofArakk-EasternMushroomSwamp",
@@ -5281,6 +5368,31 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-TimeTrial",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Tutorial-Dragonflight",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Tutorial-ExilesReach",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Tutorial-Housing",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Tutorial-Midnight",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Tutorial-TheWarWithin",
 		width = 256,
 		height = 128
 	},
@@ -5333,6 +5445,16 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-WorkshopHorde",
 		width = 512,
 		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-WorldBoss",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-WorldQuest",
+		width = 256,
+		height = 128
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-alliance",
@@ -7117,7 +7239,64 @@ local IMAGES = {
 	--endregion
 	--region Scenarios
 	{
-		url = "Interface\\Scenarios\\scenariolorewalking2x",
+		url = "Interface\\Scenarios\\ScenarioLorewalking2x",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Scenarios\\ScenarioEvergreenWidget2x",
+		width = 512,
+		height = 256
+	},
+	--endregion
+	--region Shop
+	{
+		url = "Interface\\Shop\\CatalogShopBGEnvironmentGrass",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Shop\\CatalogShopBGEnvironmentLava",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Shop\\CatalogShopBGEnvironmentMagical",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Shop\\CatalogShopBGEnvironmentSnow",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Shop\\CatalogShopBGField",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Shop\\CatalogShopBGMapToys",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Shop\\CatalogShopBGTheatrical",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Shop\\CatalogShopTempBG1",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Shop\\CatalogShopTempBG2",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Shop\\CatalogShopUnavailableEmpty",
 		width = 512,
 		height = 256
 	},
