@@ -2,6 +2,17 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.1.3
+
+## Added
+
+- Added 160 icons, 72 musics and 35 images from patch 11.2.7.
+
+## Fixed
+
+- Fixed %xt/%xf tokens not working after patch 11.2.7.
+- Fixed addon detection for compatibility modules sometimes failing.
+
 # Changelog version 3.1.2
 
 ## Changed

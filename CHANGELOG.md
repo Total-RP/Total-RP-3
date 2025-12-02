@@ -1,3 +1,16 @@
+# Changelog version 3.1.3
+
+*Due to some significant upcoming changes in 12.0.0, we are temporarily pausing Classic releases. The previous version should work without issues until we resume the updates.*
+
+## Added
+
+- Added 160 icons, 72 musics and 35 images from patch 11.2.7.
+
+## Fixed
+
+- Fixed %xt/%xf tokens not working after patch 11.2.7.
+- Fixed addon detection for compatibility modules sometimes failing.
+
 # Changelog version 3.1.2
 
 ## Changed
