@@ -630,28 +630,18 @@ local function getFullnameForUnitUsingChatMethod(unitID)
 end
 TRP3_API.chat.getFullnameForUnitUsingChatMethod = getFullnameForUnitUsingChatMethod;
 
--- I have renamed this function from beta 1 to beta 2 because Saelora commented on its name :P
-local defaultGetColoredNameFunction = GetColoredName;
-
--- This is our custom GetColoredName function that will replace player's names with their full RP names
+-- This is our custom function for the SenderNameFilter function that will replace player's names with their full RP names
 -- and use their custom colors.
 -- (It is stored in Utils as we need it in other modules like Prat or WIM)
--- It must receive a fallback function as first parameter. It is the function it will use if we don't handle name customizations ourselves
-function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12, ...)
-
-	assert(fallback, "Trying to call TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, ...) without a fallback function!")
+function Utils.customGetColoredName(event, _, _, unitID, _, _, _, _, _, _, _, _, messageID, GUID)
 
 	if disabledByOOC() then
-		return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12, ...);
+		return;
 	end
-
-	local GUID = arg12;
-	local unitID = arg2;
-	local messageID = arg11;
 
 	-- Do not change stuff if the customizations are disabled for this channel or the GUID is invalid (WIM…), use the default function
 	if not isChannelHandled(event) or not configIsChannelUsed(event) or not GUID or not Utils.guid.isAPlayerGUID(GUID) then
-		return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12)
+		return;
 	end ;
 
 	local characterName = unitID;
@@ -660,7 +650,9 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 
 	-- We don't have a unit ID for this message (WTF? Some other add-on must be doing some weird shit again…)
 	-- Bail out, let the fallback function handle that shit.
-	if not unitID then return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12) end ;
+	if not unitID then
+		return;
+	end
 
 	-- Check if this message ID was flagged as containing NPC chat
 	-- If it does we use the NPC name that was saved before.
@@ -672,7 +664,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	local character, realm = unitIDToInfo(unitID);
 	if not realm then
 		-- if realm is nil (i.e. globals haven't been set yet) just run the vanilla version of the code to prevent errors.
-		return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12);
+		return;
 	end
 	-- Make sure we have a unitID formatted as "Player-Realm"
 	unitID = unitInfoToID(character, realm);
@@ -714,10 +706,6 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 		characterName = OOC_INDICATOR_TEXT .. characterName;
 	end
 
-	if C_ChatInfo.IsTimerunningPlayer and C_ChatInfo.IsTimerunningPlayer(GUID) then
-		characterName = TimerunningUtil.AddSmallIcon(characterName);
-	end
-
 	if hasNonDefaultProfile and getConfigValue(CONFIG_SHOW_ICON) then
 		local info = getCharacterInfoTab(unitID);
 		if info and info.characteristics and info.characteristics.IC then
@@ -740,29 +728,23 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	return characterName;
 end
 
--- This is the actual GetColoredName replacement function.
--- It calls our custom GetColoredName function with the default Blizzard function as a fallback.
-function Utils.customGetColoredName(...)
-	return Utils.customGetColoredNameWithCustomFallbackFunction(defaultGetColoredNameFunction, ...);
-end
-
 local textBeforeParse, parsedEditBox;
 function hooking()
 	for _, channel in pairs(POSSIBLE_CHANNELS) do
-		ChatFrame_RemoveMessageEventFilter(channel, handleCharacterMessage);
+		ChatFrameUtil.RemoveMessageEventFilter(channel, handleCharacterMessage);
 		if configIsChannelUsed(channel) then
-			ChatFrame_AddMessageEventFilter(channel, handleCharacterMessage);
+			ChatFrameUtil.AddMessageEventFilter(channel, handleCharacterMessage);
 		end
 	end
 
-	-- We hard replace the game GetColoredName function by ours so we can display our own custom colors
+	-- We add our own custom GetColoredName filter so we can display our own custom colors
 	-- And the full RP name of the players
-	GetColoredName = Utils.customGetColoredName;
+	ChatFrameUtil.AddSenderNameFilter(Utils.customGetColoredName);
 
 	-- Hook the ChatEdit_InsertLink() function that is called when the user SHIFT-Click a player name
 	-- in the chat frame to insert it into a text field.
 	-- We can replace the name inserted by the complete RP name of the player if we have it.
-	hooksecurefunc("ChatEdit_InsertLink", function(unitID)
+	hooksecurefunc(ChatFrameUtil, "InsertLink", function(unitID)
 
 		if disabledByOOC() then return end ;
 
@@ -775,7 +757,7 @@ function hooking()
 		-- Do not modify the name if we don't know that character
 		if not (IsUnitIDKnown(unitID) or unitID == Globals.player_id) then return end ;
 
-		local activeChatFrame = ChatEdit_GetActiveWindow();
+		local activeChatFrame = ChatFrameUtil.GetActiveWindow();
 
 		if activeChatFrame and activeChatFrame.chatFrame and activeChatFrame.chatFrame.editBox then
 			local editBox = activeChatFrame.chatFrame.editBox;
@@ -796,7 +778,7 @@ function hooking()
 		end
 	end);
 
-	hooksecurefunc("ChatEdit_ParseText", function(editBox, send)
+	local function ParseTokens(editBox, send)
 		local text = editBox:GetText();
 		if text and send == 1 then
 			textBeforeParse = text;
@@ -817,10 +799,13 @@ function hooking()
 			text = string.gsub(text, "%%x.[fl]?", tokens);
 			editBox:SetText(text);
 		end
-	end);
+	end
+	for i = 1, Constants.ChatFrameConstants.MaxChatWindows do
+		hooksecurefunc(_G["ChatFrame" .. i .. "EditBox"], "ParseText", ParseTokens);
+	end
 
 	-- Restore the text without substitution before it's stored in the chat history
-	hooksecurefunc("SubstituteChatMessageBeforeSend", function()
+	hooksecurefunc(ChatFrameUtil, "SubstituteChatMessageBeforeSend", function()
 		if parsedEditBox and textBeforeParse then
 			parsedEditBox:SetText(textBeforeParse);
 			parsedEditBox = nil;

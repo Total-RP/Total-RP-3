@@ -178,11 +178,29 @@ stds.wow = {
 			},
 		},
 
+		ChatFrameUtil = {
+			fields = {
+				"AddMessageEventFilter",
+				"AddSenderNameFilter",
+				"FocusActiveWindow",
+				"GetActiveWindow",
+				"GetChatFrame",
+				"OpenChat",
+				"RemoveMessageEventFilter",
+			},
+		},
+
 		Constants = {
 			fields = {
 				PetConsts = {
 					fields = {
 						"NUM_PET_SLOTS",
+					},
+				},
+				ChatFrameConstants = {
+					fields = {
+						"MaxChatChannels",
+						"MaxChatWindows",
 					},
 				},
 			},
@@ -207,6 +225,7 @@ stds.wow = {
 				"GetChannelShortcut",
 				"IsTimerunningPlayer",
 				"RegisterAddonMessagePrefix",
+				"SendChatMessage",
 				"SwapChatChannelsByChannelIndex",
 			},
 		},
@@ -475,6 +494,7 @@ stds.wow = {
 		"ChatFrame_AddMessageEventFilter",
 		"ChatFrame_OpenChat",
 		"ChatFrame_RemoveMessageEventFilter",
+		"ChatFrameEditBoxBaseMixin",
 		"CheckInteractDistance",
 		"Clamp",
 		"ClampedPercentageBetween",
