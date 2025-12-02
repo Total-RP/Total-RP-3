@@ -100,7 +100,7 @@ function TRP3_KuiNamePlates:OnModuleInitialize()
 	-- Disable our (old) Kui nameplate module explicitly, we'll also tell
 	-- users that they can disable it.
 
-	if TRP3_API.utils.IsAddOnEnabled("totalRP3_KuiNameplates") then
+	if AddOnUtil.IsAddOnEnabledForCurrentCharacter("totalRP3_KuiNameplates") then
 		C_AddOns.DisableAddOn("totalRP3_KuiNameplates");
 		TRP3_API.popup.showAlertPopup(L.KUI_NAMEPLATES_WARN_OUTDATED_MODULE);
 	end

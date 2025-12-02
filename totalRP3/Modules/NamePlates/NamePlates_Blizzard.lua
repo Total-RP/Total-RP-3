@@ -99,7 +99,7 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 	};
 
 	for _, addon in ipairs(addons) do
-		if TRP3_API.utils.IsAddOnEnabled(addon) then
+		if AddOnUtil.IsAddOnEnabledForCurrentCharacter(addon) then
 			return TRP3_API.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 		end
 	end
