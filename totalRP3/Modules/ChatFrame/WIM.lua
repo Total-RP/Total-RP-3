@@ -29,8 +29,8 @@ local function onStart()
 
 	-- Replace WIM's GetColoredName function by our own to display RP names and fallback to WIM's GetColoredName function
 	-- if we couldn't handle the name ourselves.
-	classes.GetColoredNameByChatEvent = function(...)
-		return TRP3_API.utils.customGetColoredName(...) or WIMsGetColoredNameFunction(...);
+	classes.GetColoredNameByChatEvent = function(event, ...)
+		return TRP3_API.utils.customGetColoredName(event, nil, ...) or WIMsGetColoredNameFunction(event, ...);
 	end;
 
 	-- Replace WIM's GetMyColoredName to display our full RP name
