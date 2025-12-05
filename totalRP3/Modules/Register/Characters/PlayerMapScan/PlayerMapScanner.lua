@@ -69,10 +69,14 @@ PlayerMapScannerMixin.broadcastMethod = TRP3_API.BroadcastMethod.World
 -- The MapDataProvider will use this template to generate the pin
 PlayerMapScannerMixin.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAME;
 
+local function IsCurrentHousingMap()
+	return tContains(Map.Enums.NEIGHBORHOOD_ZONES_UIMAPID, Map.getDisplayedMapID()) and (not C_Housing.GetCurrentNeighborhoodGUID() or C_Housing.GetUIMapIDForNeighborhood(C_Housing.GetCurrentNeighborhoodGUID()) ~= Map.getDisplayedMapID());
+end
+
 --{{{ Default scan behavior
 function PlayerMapScannerMixin:Scan()
 	local mapID = Map.getDisplayedMapID();
-	if tContains(Map.Enums.NEIGHBORHOOD_ZONES_UIMAPID, Map.getDisplayedMapID()) then
+	if IsCurrentHousingMap() then
 		-- In neighborhoods we use the GUID instead (scan is disabled if you're not in a neighborhood)
 		mapID = C_Housing.GetCurrentNeighborhoodGUID();
 	end
@@ -93,7 +97,7 @@ function PlayerMapScannerMixin:CanScan()
 		if not x or not y then
 			return false;
 		end
-	elseif tContains(Map.Enums.NEIGHBORHOOD_ZONES_UIMAPID, Map.getDisplayedMapID()) and (not C_Housing.GetCurrentNeighborhoodGUID() or C_Housing.GetUIMapIDForNeighborhood(C_Housing.GetCurrentNeighborhoodGUID()) ~= Map.getDisplayedMapID()) then
+	elseif IsCurrentHousingMap() then
 		-- Can't scan the neighborhood map if you're not in the neighborhood
 		return false;
 	elseif not TRP3_ClientFeatures.ChannelBroadcasts then
