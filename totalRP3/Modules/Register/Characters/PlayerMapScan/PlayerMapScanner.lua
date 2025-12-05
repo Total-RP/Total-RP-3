@@ -184,16 +184,63 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		return true;
 	end
 
+	local function GetScanResponseCoordinates(mapID)
+		local x, y;
+		local inInstance, instanceType = IsInInstance();
+		if inInstance then
+			if instanceType == "interior" then
+				if not FlagsUtil.IsSet(C_Housing.GetHousingAccessFlags(), Enum.HouseSettingFlags.HouseAccessAnyone) then
+					-- House is not open to everyone, don't respond
+					return;
+				end
+
+				local houseInfo = C_Housing.GetCurrentHouseInfo();
+				if not houseInfo then
+					-- Problem with house info
+					return;
+				end
+
+				local plotEntryID = houseInfo.plotID;
+				if C_Housing.GetUIMapIDForNeighborhood(houseInfo.neighborhoodGUID) == 2352 then
+					-- Only Alliance starts at 0, thanks Blizz
+					plotEntryID = plotEntryID + 1;
+				end
+
+				local houseMapInfo = C_HousingNeighborhood.GetNeighborhoodMapData()[plotEntryID];
+				-- Adding a little bit of fuzzing so it's easier to see if there are multiple people in a house
+				x = houseMapInfo.mapPosition.x + fastrandom(-50, 50) * 0.0001;
+				y = houseMapInfo.mapPosition.y + fastrandom(-100, 100) * 0.0001;
+			elseif instanceType == "neighborhood" then
+				local neighborhoodGUID = C_Housing.GetCurrentNeighborhoodGUID();
+					if neighborhoodGUID ~= mapID then
+					-- Wrong zone
+					return;
+				end
+
+				x, y = Map.getPlayerCoordinates();
+			else
+				-- no point responding if inside a non-housing instance
+				return;
+			end
+		else
+			mapID = tonumber(mapID);
+
+			local playerMapID = Map.getPlayerMapID();
+			if playerMapID ~= mapID then
+				-- Wrong zone
+				return;
+			end
+			x, y = Map.getPlayerCoordinates();
+		end
+
+		return x, y;
+	end
+
 	--{{{ Broadcast commands
 	broadcast.registerCommand(SCAN_COMMAND, function(sender, mapID)
 		if Map.playerCanSeeTarget(sender) then
-			mapID = tonumber(mapID);
 			if shouldAnswerToLocationRequest() then
-				local playerMapID = Map.getPlayerMapID();
-				if playerMapID ~= mapID then
-					return;
-				end
-				local x, y = Map.getPlayerCoordinates();
+				local x, y = GetScanResponseCoordinates(mapID);
 				if x and y then
 					local hasWarModeActive = (not TRP3_ClientFeatures.WarMode) or C_PvP.IsWarModeActive();
 					local roleplayStatus = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayStatus();

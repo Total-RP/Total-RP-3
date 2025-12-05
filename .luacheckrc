@@ -269,6 +269,21 @@ stds.wow = {
 			},
 		},
 
+		C_Housing = {
+			fields = {
+				"GetCurrentHouseInfo",
+				"GetCurrentNeighborhoodGUID",
+				"GetHousingAccessFlags",
+				"GetUIMapIDForNeighborhood",
+			},
+		},
+
+		C_HousingNeighborhood = {
+			fields = {
+				"GetNeighborhoodMapData",
+			},
+		},
+
 		C_Item = {
 			fields = {
 				"GetItemIconByID",
