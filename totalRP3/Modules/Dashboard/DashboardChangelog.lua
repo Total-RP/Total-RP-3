@@ -2,6 +2,19 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.1.4
+
+## Changed
+
+- The map scan has been adjusted in neighborhoods:
+  - Scanning the neighborhood map is only possible while inside a neighborhood, and will only show players in that specific neighborhood.
+  - Players inside houses will also respond to the scan, but only if the house is set to allow "Anyone" in.
+
+## Fixed
+
+- Fixed chat issues when using ElvUI or WIM.
+- Housing zones will no longer count as instances for the "Hide in instance" settings for nameplates, tooltips and unit popups.
+
 # Changelog version 3.1.3
 
 ## Added
@@ -54,25 +67,6 @@ local CHANGELOG_TEXT = [[
 - Toolbar and target frame are now hidden properly when starting a pet battle.
 - Fixed some issues with companion profiles in Classic.
 - Fixed a bug when pressing the Alt key while a chat link tooltip is open but still currently receiving data.
-
-# Changelog version 3.0.12
-
-## Added
-
-- Added icons and musics for MoP Classic.
-
-# Changelog version 3.0.11
-
-## Added
-
-- Added 65 icons, 7 images and 5 musics from patch 11.1.7.
-
-## Fixed
-
-- Fixed icon links being formatted incorrectly for MRP users.
-- Fixed issues with tutorials.
-
-For a visual guide to the major changes of version 3.0, please see [this article](https://github.com/Total-RP/Total-RP-3/wiki/Guide-to-version-3.0) on our wiki.
 ]];
 
 function TRP3_DashboardUtil.GenerateChangelog()
