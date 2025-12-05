@@ -179,7 +179,7 @@ function UnitPopupsModule:ShouldCustomizeMenus()
 		return false;
 	elseif ShouldDisableInCombat() and InCombatLockdown() then
 		return false;
-	elseif ShouldDisableInInstances() and IsInInstance() then
+	elseif ShouldDisableInInstances() and TRP3_API.utils.IsInCombatInstance() then
 		return false;
 	else
 		return true;
