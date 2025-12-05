@@ -31,6 +31,15 @@ Map.Enums.NEIGHBORHOOD_ZONES_UIMAPID = {
 	[Map.Enums.NEIGHBORHOOD_ZONES.HORDE] = 2351,
 };
 
+function Map.IsHousingMap()
+	return tContains(Map.Enums.NEIGHBORHOOD_ZONES_UIMAPID, Map.getDisplayedMapID());
+end
+
+function Map.IsCurrentHousingMap()
+	local neighborhoodGUID = C_Housing.GetCurrentNeighborhoodGUID();
+	return neighborhoodGUID and C_Housing.GetUIMapIDForNeighborhood(neighborhoodGUID) == Map.getDisplayedMapID();
+end
+
 ---@return number mapID @ The ID of the zone where the player currently is
 function Map.getPlayerMapID()
 	return C_Map.GetBestMapForUnit("player");
