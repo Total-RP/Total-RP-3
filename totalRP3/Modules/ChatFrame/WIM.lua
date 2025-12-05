@@ -13,7 +13,6 @@ local function onStart()
 	end
 
 	-- Import Total RP 3 functions
-	local customGetColoredNameWithCustomFallbackFunction = TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction;
 	local playerID = TRP3_API.globals.player_id;
 	local getFullnameForUnitUsingChatMethod = TRP3_API.chat.getFullnameForUnitUsingChatMethod; -- Get full name using settings
 	local configShowNameCustomColors = TRP3_API.chat.configShowNameCustomColors
@@ -30,8 +29,8 @@ local function onStart()
 
 	-- Replace WIM's GetColoredName function by our own to display RP names and fallback to WIM's GetColoredName function
 	-- if we couldn't handle the name ourselves.
-	classes.GetColoredNameByChatEvent = function(...)
-		return customGetColoredNameWithCustomFallbackFunction(WIMsGetColoredNameFunction, ...);
+	classes.GetColoredNameByChatEvent = function(event, ...)
+		return TRP3_API.utils.customGetColoredName(event, nil, ...) or WIMsGetColoredNameFunction(event, ...);
 	end;
 
 	-- Replace WIM's GetMyColoredName to display our full RP name
