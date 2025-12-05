@@ -15,6 +15,7 @@ Map.Enums.PERSONAL_PHASED_ZONES = {
 	GARRISON_A = 1, -- Lunarfall (Alliance garrison)
 	GARRISON_H = 2, -- Frostwall (Horde garrison)
 };
+
 Map.Enums.PERSONAL_PHASED_ZONES_UIMAPID = {
 	[Map.Enums.PERSONAL_PHASED_ZONES.GARRISON_A] = 582, -- Lunarfall (Alliance garrison)
 	[Map.Enums.PERSONAL_PHASED_ZONES.GARRISON_H] = 590, -- Frostwall (Horde garrison)
@@ -23,11 +24,12 @@ Map.Enums.PERSONAL_PHASED_ZONES_UIMAPID = {
 Map.Enums.NEIGHBORHOOD_ZONES = {
 	ALLIANCE = 1,
 	HORDE = 2,
-}
+};
+
 Map.Enums.NEIGHBORHOOD_ZONES_UIMAPID = {
 	[Map.Enums.NEIGHBORHOOD_ZONES.ALLIANCE] = 2352,
 	[Map.Enums.NEIGHBORHOOD_ZONES.HORDE] = 2351,
-}
+};
 
 ---@return number mapID @ The ID of the zone where the player currently is
 function Map.getPlayerMapID()
