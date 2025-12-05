@@ -210,8 +210,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 				local houseMapInfo = C_HousingNeighborhood.GetNeighborhoodMapData()[plotEntryID];
 				-- Adding a little bit of fuzzing so it's easier to see if there are multiple people in a house
-				x = houseMapInfo.mapPosition.x + fastrandom(-50, 50) * 0.0001;
-				y = houseMapInfo.mapPosition.y + fastrandom(-100, 100) * 0.0001;
+				x = houseMapInfo.mapPosition.x + fastrandom(-15, 15) * 0.0001;
+				y = houseMapInfo.mapPosition.y + fastrandom(-25, 25) * 0.0001;
 			elseif instanceType == "neighborhood" then
 				local neighborhoodGUID = C_Housing.GetCurrentNeighborhoodGUID();
 					if neighborhoodGUID ~= mapID then
