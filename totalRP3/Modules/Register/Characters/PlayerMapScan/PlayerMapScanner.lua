@@ -71,7 +71,12 @@ PlayerMapScannerMixin.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAM
 
 --{{{ Default scan behavior
 function PlayerMapScannerMixin:Scan()
-	broadcast.broadcast(SCAN_COMMAND, self.broadcastMethod, Map.getDisplayedMapID());
+	local mapID = Map.getDisplayedMapID();
+	if tContains(Map.Enums.NEIGHBORHOOD_ZONES_UIMAPID, Map.getDisplayedMapID()) then
+		-- In neighborhoods we use the GUID instead (scan is disabled if you're not in a neighborhood)
+		mapID = C_Housing.GetCurrentNeighborhoodGUID();
+	end
+	broadcast.broadcast(SCAN_COMMAND, self.broadcastMethod, mapID);
 	lastScannerUsed = self;
 end
 
@@ -88,6 +93,9 @@ function PlayerMapScannerMixin:CanScan()
 		if not x or not y then
 			return false;
 		end
+	elseif tContains(Map.Enums.NEIGHBORHOOD_ZONES_UIMAPID, Map.getDisplayedMapID()) and (not C_Housing.GetCurrentNeighborhoodGUID() or C_Housing.GetUIMapIDForNeighborhood(C_Housing.GetCurrentNeighborhoodGUID()) ~= Map.getDisplayedMapID()) then
+		-- Can't scan the neighborhood map if you're not in the neighborhood
+		return false;
 	elseif not TRP3_ClientFeatures.ChannelBroadcasts then
 		-- When Yell comms are in use we forbid scans in zones other
 		-- than the one you're in.
@@ -170,18 +178,12 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	guildMapScanner.scanTitle = loc.MAP_SCAN_CHAR_GUILD_ONLY_TITLE;
 	guildMapScanner.broadcastMethod = TRP3_API.BroadcastMethod.Guild;
 
-	guildMapScanner.CanScan = function()
+	local CanScanCommon = guildMapScanner.CanScan;
+	guildMapScanner.CanScan = function(self)
 		if not IsInGuild() then
 			return false;
 		end
-		if not getConfigValue(CONFIG_ENABLE_MAP_LOCATION) then
-			return false;
-		end
-		local x, y = Map.getPlayerCoordinates();
-		if not x or not y then
-			return false;
-		end
-		return true;
+		return CanScanCommon(self);
 	end
 
 	local function GetScanResponseCoordinates(mapID)
@@ -201,7 +203,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				end
 
 				local plotEntryID = houseInfo.plotID;
-				if C_Housing.GetUIMapIDForNeighborhood(houseInfo.neighborhoodGUID) == 2352 then
+				if C_Housing.GetUIMapIDForNeighborhood(houseInfo.neighborhoodGUID) == Map.Enums.NEIGHBORHOOD_ZONES_UIMAPID[Map.Enums.NEIGHBORHOOD_ZONES.ALLIANCE] then
 					-- Only Alliance starts at 0, thanks Blizz
 					plotEntryID = plotEntryID + 1;
 				end

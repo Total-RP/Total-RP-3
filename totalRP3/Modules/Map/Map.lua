@@ -7,13 +7,27 @@ local _, TRP3_API = ...;
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 local Map = {};
+Map.Enums = {};
 
 -- These are the map IDs for zones that have a phase personal to the user (garrisons)
 -- TODO Update with BfA zones ID
-local PERSONAL_PHASED_ZONES = {
-	582, -- Lunarfall (Alliance garrison)
-	590, -- Frostwall (Horde garrison)
+Map.Enums.PERSONAL_PHASED_ZONES = {
+	GARRISON_A = 1, -- Lunarfall (Alliance garrison)
+	GARRISON_H = 2, -- Frostwall (Horde garrison)
 };
+Map.Enums.PERSONAL_PHASED_ZONES_UIMAPID = {
+	[Map.Enums.PERSONAL_PHASED_ZONES.GARRISON_A] = 582, -- Lunarfall (Alliance garrison)
+	[Map.Enums.PERSONAL_PHASED_ZONES.GARRISON_H] = 590, -- Frostwall (Horde garrison)
+};
+
+Map.Enums.NEIGHBORHOOD_ZONES = {
+	ALLIANCE = 1,
+	HORDE = 2,
+}
+Map.Enums.NEIGHBORHOOD_ZONES_UIMAPID = {
+	[Map.Enums.NEIGHBORHOOD_ZONES.ALLIANCE] = 2352,
+	[Map.Enums.NEIGHBORHOOD_ZONES.HORDE] = 2351,
+}
 
 ---@return number mapID @ The ID of the zone where the player currently is
 function Map.getPlayerMapID()
@@ -40,7 +54,7 @@ function Map.playerCanSeeTarget(target, targetHasWarModeEnabled, targetMapID)
 		return false;
 	end
 	local currentMapID = Map.getPlayerMapID();
-	if tContains(PERSONAL_PHASED_ZONES, targetMapID or currentMapID) then
+	if tContains(Map.Enums.PERSONAL_PHASED_ZONES_UIMAPID, targetMapID or currentMapID) then
 		-- If the player is in a personal phased zone, the target has to be in their group to be seen
 		return UnitInParty(Ambiguate(target, "none"));
 	end
