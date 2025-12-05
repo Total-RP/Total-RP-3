@@ -71,7 +71,12 @@ PlayerMapScannerMixin.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAM
 
 --{{{ Default scan behavior
 function PlayerMapScannerMixin:Scan()
-	broadcast.broadcast(SCAN_COMMAND, self.broadcastMethod, Map.getDisplayedMapID());
+	local mapID = Map.getDisplayedMapID();
+	if Map.IsHousingMap() then
+		-- In neighborhoods we use the GUID instead (scan is disabled if you're not in a neighborhood)
+		mapID = C_Housing.GetCurrentNeighborhoodGUID();
+	end
+	broadcast.broadcast(SCAN_COMMAND, self.broadcastMethod, mapID);
 	lastScannerUsed = self;
 end
 
@@ -88,6 +93,9 @@ function PlayerMapScannerMixin:CanScan()
 		if not x or not y then
 			return false;
 		end
+	elseif Map.IsHousingMap() and not Map.IsCurrentHousingMap() then
+		-- Can't scan the neighborhood map if you're not in the neighborhood
+		return false;
 	elseif not TRP3_ClientFeatures.ChannelBroadcasts then
 		-- When Yell comms are in use we forbid scans in zones other
 		-- than the one you're in.
@@ -170,30 +178,71 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	guildMapScanner.scanTitle = loc.MAP_SCAN_CHAR_GUILD_ONLY_TITLE;
 	guildMapScanner.broadcastMethod = TRP3_API.BroadcastMethod.Guild;
 
-	guildMapScanner.CanScan = function()
+	local CanScanCommon = guildMapScanner.CanScan;
+	guildMapScanner.CanScan = function(self)
 		if not IsInGuild() then
 			return false;
 		end
-		if not getConfigValue(CONFIG_ENABLE_MAP_LOCATION) then
-			return false;
+		return CanScanCommon(self);
+	end
+
+	local function GetScanResponseCoordinates(mapID)
+		local x, y;
+		local inInstance, instanceType = IsInInstance();
+		if inInstance then
+			if instanceType == "interior" then
+				if not FlagsUtil.IsSet(C_Housing.GetHousingAccessFlags(), Enum.HouseSettingFlags.HouseAccessAnyone) then
+					-- House is not open to everyone, don't respond
+					return;
+				end
+
+				local houseInfo = C_Housing.GetCurrentHouseInfo();
+				if not houseInfo then
+					-- Problem with house info
+					return;
+				end
+
+				local plotEntryID = houseInfo.plotID;
+				if C_Housing.GetUIMapIDForNeighborhood(houseInfo.neighborhoodGUID) == Map.Enums.NEIGHBORHOOD_ZONES_UIMAPID[Map.Enums.NEIGHBORHOOD_ZONES.ALLIANCE] then
+					-- Only Alliance starts at 0, thanks Blizz
+					plotEntryID = plotEntryID + 1;
+				end
+
+				local houseMapInfo = C_HousingNeighborhood.GetNeighborhoodMapData()[plotEntryID];
+				-- Adding a little bit of fuzzing so it's easier to see if there are multiple people in a house
+				x = houseMapInfo.mapPosition.x + fastrandom(-15, 15) * 0.0001;
+				y = houseMapInfo.mapPosition.y + fastrandom(-25, 25) * 0.0001;
+			elseif instanceType == "neighborhood" then
+				local neighborhoodGUID = C_Housing.GetCurrentNeighborhoodGUID();
+					if neighborhoodGUID ~= mapID then
+					-- Wrong zone
+					return;
+				end
+
+				x, y = Map.getPlayerCoordinates();
+			else
+				-- no point responding if inside a non-housing instance
+				return;
+			end
+		else
+			mapID = tonumber(mapID);
+
+			local playerMapID = Map.getPlayerMapID();
+			if playerMapID ~= mapID then
+				-- Wrong zone
+				return;
+			end
+			x, y = Map.getPlayerCoordinates();
 		end
-		local x, y = Map.getPlayerCoordinates();
-		if not x or not y then
-			return false;
-		end
-		return true;
+
+		return x, y;
 	end
 
 	--{{{ Broadcast commands
 	broadcast.registerCommand(SCAN_COMMAND, function(sender, mapID)
 		if Map.playerCanSeeTarget(sender) then
-			mapID = tonumber(mapID);
 			if shouldAnswerToLocationRequest() then
-				local playerMapID = Map.getPlayerMapID();
-				if playerMapID ~= mapID then
-					return;
-				end
-				local x, y = Map.getPlayerCoordinates();
+				local x, y = GetScanResponseCoordinates(mapID);
 				if x and y then
 					local hasWarModeActive = (not TRP3_ClientFeatures.WarMode) or C_PvP.IsWarModeActive();
 					local roleplayStatus = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayStatus();

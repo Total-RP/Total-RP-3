@@ -269,6 +269,21 @@ stds.wow = {
 			},
 		},
 
+		C_Housing = {
+			fields = {
+				"GetCurrentHouseInfo",
+				"GetCurrentNeighborhoodGUID",
+				"GetHousingAccessFlags",
+				"GetUIMapIDForNeighborhood",
+			},
+		},
+
+		C_HousingNeighborhood = {
+			fields = {
+				"GetNeighborhoodMapData",
+			},
+		},
+
 		C_Item = {
 			fields = {
 				"GetItemIconByID",
@@ -386,6 +401,12 @@ stds.wow = {
 
 		Enum = {
 			fields = {
+				HouseSettingFlags = {
+					fields = {
+						"HouseAccessAnyone",
+					},
+				},
+
 				TooltipDataLineType = {
 					fields = {
 						"UnitOwner",
@@ -417,6 +438,12 @@ stds.wow = {
 		EventUtil = {
 			fields = {
 				"ContinueOnAddOnLoaded",
+			},
+		},
+
+		FlagsUtil = {
+			fields = {
+				"IsSet",
 			},
 		},
 
