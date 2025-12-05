@@ -29,8 +29,8 @@ local function onStart()
 	end
 
 	-- Replace ElvUI's GetColoredName
-	function ElvUIChatModule:GetColoredName(...)
-		return TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction(fallback, ...);
+	function ElvUIChatModule:GetColoredName(event, ...)
+		return TRP3_API.utils.customGetColoredName(event, nil, ...) or fallback(event, ...);
 	end
 end
 
