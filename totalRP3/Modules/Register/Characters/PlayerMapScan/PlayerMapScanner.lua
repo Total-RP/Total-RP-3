@@ -197,8 +197,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				end
 
 				local houseInfo = C_Housing.GetCurrentHouseInfo();
-				if not houseInfo then
-					-- Problem with house info
+				if not houseInfo or houseInfo.neighborhoodGUID ~= mapID then
+					-- House info doesn't match neighborhood
 					return;
 				end
 
