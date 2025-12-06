@@ -2,6 +2,12 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.1.5
+
+## Fixed
+
+- Fixed players in houses replying to every scan instead of just their neighborhood scan.
+
 # Changelog version 3.1.4
 
 ## Changed
