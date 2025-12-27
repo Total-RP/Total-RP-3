@@ -1520,6 +1520,9 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	KUI_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Kui nameplates.",
 	KUI_NAMEPLATES_WARN_OUTDATED_MODULE = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
 
+	PLATYNATOR_NAMEPLATES_MODULE_NAME = "Platynator Nameplates",
+	PLATYNATOR_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Platynator nameplates.",
+
 	CREDITS_THANK_YOU_SECTION_1 = [[{h1:c}Total RP 3{/h1}]],
 	CREDITS_THANK_YOU_SECTION_2 = [[{h2}%1$s Created by{/h2}]],
 	CREDITS_THANK_YOU_SECTION_3 = [[{h2}%1$s The Rest of the Team{/h2}]],
