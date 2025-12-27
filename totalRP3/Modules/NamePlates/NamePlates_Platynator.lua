@@ -51,15 +51,82 @@ do
 		end
 	end
 
+	function DisplayManager:GetTextureWidget(platyDisplay, key)
+		if not platyDisplay.TRP3_Widgets then
+			local WidgetContainer = CreateFrame("Frame", nil, platyDisplay);
+			WidgetContainer:SetUsingParentLevel(true);
+			WidgetContainer:SetScript("OnHide", function()
+				WidgetContainer:Hide();
+			end);
+
+			platyDisplay.TRP3_Widgets = {
+				WidgetContainer = WidgetContainer,
+			};
+		end
+
+		if not platyDisplay.TRP3_Widgets[key] then
+			platyDisplay.TRP3_Widgets[key] = platyDisplay.TRP3_Widgets.WidgetContainer:CreateTexture(nil, "ARTWORK");
+		end
+
+		platyDisplay.TRP3_Widgets.WidgetContainer:Show();
+
+		return platyDisplay.TRP3_Widgets[key]
+	end
+
+	function DisplayManager:ClearTextureWidget(platyDisplay, key)
+		if platyDisplay and platyDisplay.TRP3_Widgets then
+			local obj = platyDisplay.TRP3_Widgets[key];
+			obj:ClearAllPoints();
+			obj:Hide();
+		end
+	end
+
+	function DisplayManager:SetCharacterIcon(platyDisplay, icon, size)
+		local fontString;
+
+		if icon and platyDisplay.widgets then
+			for _, widget in ipairs(platyDisplay.widgets) do
+				if widget.kind == "texts" and widget.details then
+					if widget.details.kind == "creatureName" then
+						fontString = widget.text;
+						break;
+					end
+				end
+			end
+		end
+
+		if icon and fontString then
+			local offsetX = -4 -0.5*fontString:GetWrappedWidth();
+			local TRP3_Icon = self:GetTextureWidget(platyDisplay, "CharacterIcon");
+			TRP3_Icon:ClearAllPoints();
+			TRP3_Icon:SetPoint("RIGHT", fontString, "CENTER", offsetX, 0);
+			TRP3_Icon:SetTexture(TRP3_API.utils.getIconTexture(icon));
+			TRP3_Icon:SetSize(size, size);
+			TRP3_Icon:Show();
+		else
+			self:ClearTextureWidget(platyDisplay, "CharacterIcon");
+		end
+	end
+
+	function DisplayManager:SetupTextWidget(widget, text, r, g, b)
+		if widget.text then
+			widget.text:SetText(text);
+			if not r and widget.details.color then
+				--local c = widget.details.color;
+				--r, g, b = c.r, c.g, c.b;
+			end
+			if r then
+				widget.text:SetTextColor(r, g, b);
+			end
+		end
+	end
+
 	function DisplayManager:SetCreatureName(platyDisplay, creatureName, r, g, b)
 		if platyDisplay.widgets then
 			for _, widget in ipairs(platyDisplay.widgets) do
 				if widget.kind == "texts" and widget.details then
 					if widget.details.kind == "creatureName" and creatureName then
-						widget.text:SetText(creatureName);
-						if r then
-							widget.text:SetTextColor(r, g, b);
-						end
+						self:SetupTextWidget(widget, creatureName, r, g, b);
 					end
 				end
 			end
@@ -71,10 +138,7 @@ do
 			for _, widget in ipairs(platyDisplay.widgets) do
 				if widget.kind == "texts" and widget.details then
 					if widget.details.kind == "guildName" and guildName then
-						widget.text:SetText(guildName);
-						if r then
-							widget.text:SetTextColor(r, g, b);
-						end
+						self:SetupTextWidget(widget, guildName, r, g, b);
 					end
 				end
 			end
@@ -127,6 +191,8 @@ function TRP3_Platynator:OnModuleEnable()
 	self.unitDisplayInfo = {};
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
 	self:UpdateAllNamePlates();
+
+	EventRegistry:RegisterCallback("Platynator.DesignChanged", self.UpdateAllNamePlates, self);
 end
 
 function TRP3_Platynator:OnNamePlateDataUpdated(_, nameplate, unitToken, displayInfo)
@@ -189,13 +255,8 @@ function TRP3_Platynator:UpdateNamePlateIcon(unitToken, platyDisplay)
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
 	local displayIcon = displayInfo and displayInfo.icon or nil;
 
-	if displayIcon then
-		--nameplate.TRP3_Icon:SetTexture(TRP3_API.utils.getIconTexture(displayIcon));
-		--nameplate.TRP3_Icon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
-		--nameplate.TRP3_Icon:Show();
-	else
-		--nameplate.TRP3_Icon:Hide();
-	end
+	local size = 16;
+	DisplayManager:SetCharacterIcon(platyDisplay, displayIcon, size)
 end
 
 function TRP3_Platynator:UpdateNamePlateFullTitle(unitToken, platyDisplay)
@@ -225,9 +286,9 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 
 		if shouldShow then
 			self:UpdateNamePlateName(unitToken, platyDisplay);
-			self:UpdateNamePlateHealthBar(nameplate);
-			self:UpdateNamePlateIcon(nameplate);
-			self:UpdateNamePlateFullTitle(nameplate);
+			self:UpdateNamePlateHealthBar(unitToken, platyDisplay);
+			self:UpdateNamePlateIcon(unitToken, platyDisplay);
+			self:UpdateNamePlateFullTitle(unitToken, platyDisplay);
 		end
 	end
 end
