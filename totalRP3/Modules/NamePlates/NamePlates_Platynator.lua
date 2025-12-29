@@ -1,157 +1,35 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+
+-- plusmouse has kindly provided an API to modify unit names. See https://github.com/TheMouseNest/Platynator/commit/2446f3461c598b93d7e63f4ac175a5ed0e08d119
+-- We do not have access to the FontString itself. Long names may be truncated, Platynator users will have to adjust the settings themselves.
+-- Custom name colors and icons need to be wrapped together in escape sequences.
+-- Custom health colors will not be supported.
+
+
 local TRP3_API = select(2, ...);
 local TRP3_NamePlates = TRP3_NamePlates;
 local TRP3_NamePlatesUtil = TRP3_NamePlatesUtil;
 local L = TRP3_API.loc;
 
 
-local ShouldShowName = ShouldShowName;
-local UnitIsUnit = UnitIsUnit;
-local UnitName = UnitName;
-local Saturate = Saturate;
 local canaccessvalue = canaccessvalue or function(_) return true; end;
 
 
--- Platynator creates a "Display" as the container for their widgets.
--- Display is a child of UIParent, not nameplate
-
 local DisplayManager = {};
 do
-	DisplayManager.objects = {};
-
-	function DisplayManager:AddObject(platyDisplay)
-		self.objects[platyDisplay] = true;
+	function DisplayManager:SetUnitText(unitToken, creatureName, guildName)
+		self.overrideFunc(unitToken, creatureName, guildName)
 	end
 
-	function DisplayManager:CleanseObject(platyDisplay)
-		if self.objects[platyDisplay] then
-			self.objects[platyDisplay] = false;
-			if platyDisplay.TRP3_Widgets then
-				for _, widget in ipairs(platyDisplay.TRP3_Widgets) do
-					widget:Hide();
-					widget:ClearAllPoints();
-				end
-			end
-		end
-	end
-
-	function DisplayManager:CleanseAllObjects()
-		for platyDisplay, state in pairs(self.objects) do
-			self:CleanseObject(platyDisplay);
-		end
-	end
-
-	function DisplayManager:GetDisplayByUnit(unitToken)
-		local platyDisplay = unitToken and canaccessvalue(unitToken) and self.displayGetterFunc(unitToken);
-		if platyDisplay then
-			self:AddObject(platyDisplay);
-			return platyDisplay;
-		end
-	end
-
-	function DisplayManager:GetTextureWidget(platyDisplay, key)
-		if not platyDisplay.TRP3_Widgets then
-			local WidgetContainer = CreateFrame("Frame", nil, platyDisplay);
-			WidgetContainer:SetUsingParentLevel(true);
-			WidgetContainer:SetScript("OnHide", function()
-				WidgetContainer:Hide();
-			end);
-
-			platyDisplay.TRP3_Widgets = {
-				WidgetContainer = WidgetContainer,
-			};
-		end
-
-		if not platyDisplay.TRP3_Widgets[key] then
-			platyDisplay.TRP3_Widgets[key] = platyDisplay.TRP3_Widgets.WidgetContainer:CreateTexture(nil, "ARTWORK");
-		end
-
-		platyDisplay.TRP3_Widgets.WidgetContainer:Show();
-
-		return platyDisplay.TRP3_Widgets[key]
-	end
-
-	function DisplayManager:ClearTextureWidget(platyDisplay, key)
-		if platyDisplay and platyDisplay.TRP3_Widgets then
-			local obj = platyDisplay.TRP3_Widgets[key];
-			obj:ClearAllPoints();
-			obj:Hide();
-		end
-	end
-
-	function DisplayManager:SetCharacterIcon(platyDisplay, icon, size)
-		local fontString;
-
-		if icon and platyDisplay.widgets then
-			for _, widget in ipairs(platyDisplay.widgets) do
-				if widget.kind == "texts" and widget.details then
-					if widget.details.kind == "creatureName" then
-						fontString = widget.text;
-						break;
-					end
-				end
-			end
-		end
-
-		if icon and fontString then
-			local offsetX = -4 -0.5*fontString:GetWrappedWidth();
-			local TRP3_Icon = self:GetTextureWidget(platyDisplay, "CharacterIcon");
-			TRP3_Icon:ClearAllPoints();
-			TRP3_Icon:SetPoint("RIGHT", fontString, "CENTER", offsetX, 0);
-			TRP3_Icon:SetTexture(TRP3_API.utils.getIconTexture(icon));
-			TRP3_Icon:SetSize(size, size);
-			TRP3_Icon:Show();
-		else
-			self:ClearTextureWidget(platyDisplay, "CharacterIcon");
-		end
-	end
-
-	function DisplayManager:SetupTextWidget(widget, text, r, g, b)
-		if widget.text then
-			widget.text:SetText(text);
-			if not r and widget.details.color then
-				--local c = widget.details.color;
-				--r, g, b = c.r, c.g, c.b;
-			end
-			if r then
-				widget.text:SetTextColor(r, g, b);
-			end
-		end
-	end
-
-	function DisplayManager:SetCreatureName(platyDisplay, creatureName, r, g, b)
-		if platyDisplay.widgets then
-			for _, widget in ipairs(platyDisplay.widgets) do
-				if widget.kind == "texts" and widget.details then
-					if widget.details.kind == "creatureName" and creatureName then
-						self:SetupTextWidget(widget, creatureName, r, g, b);
-					end
-				end
-			end
-		end
-	end
-
-	function DisplayManager:SetGuildName(platyDisplay, guildName, r, g, b)
-		if platyDisplay.widgets then
-			for _, widget in ipairs(platyDisplay.widgets) do
-				if widget.kind == "texts" and widget.details then
-					if widget.details.kind == "guildName" and guildName then
-						self:SetupTextWidget(widget, guildName, r, g, b);
-					end
-				end
-			end
-		end
-	end
-
-	function DisplayManager:InitializeDependency()
+	function DisplayManager:Initialize()
 		if not C_AddOns.IsAddOnLoaded("Platynator") then
 			return false;
 		end
 
 		local requiredAPIs = {
-			displayGetterFunc = "Platynator_GetDisplayByUnit",	--TEMP, needs further discussion with plusmouse
+			overrideFunc = "Platynator.API.SetUnitTextOverride",
 		};
 
 		local function GetGlobalObject(objNameKey)
@@ -179,10 +57,11 @@ do
 	end
 end
 
+
 local TRP3_Platynator = {};
 
 function TRP3_Platynator:OnModuleInitialize()
-	if not DisplayManager:InitializeDependency() then
+	if not DisplayManager:Initialize() then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	end
 end
@@ -191,8 +70,6 @@ function TRP3_Platynator:OnModuleEnable()
 	self.unitDisplayInfo = {};
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
 	self:UpdateAllNamePlates();
-
-	EventRegistry:RegisterCallback("Platynator.DesignChanged", self.UpdateAllNamePlates, self);
 end
 
 function TRP3_Platynator:OnNamePlateDataUpdated(_, nameplate, unitToken, displayInfo)
@@ -200,12 +77,27 @@ function TRP3_Platynator:OnNamePlateDataUpdated(_, nameplate, unitToken, display
 	self:UpdateNamePlate(nameplate, unitToken);
 end
 
-function TRP3_Platynator:UpdateNamePlateName(unitToken, platyDisplay)
+function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
+	if nameplate:IsForbidden() or not nameplate:IsShown() then
+		return;
+	end
+
+	if not unitToken then
+		unitToken = nameplate.namePlateUnitToken;
+	end
+
+	if not unitToken then return; end;
+
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
+	local shouldShow = nameplate.UnitFrame and ShouldShowName(nameplate.UnitFrame);
+	if displayInfo and displayInfo.shouldHide then
+		shouldShow = false;
+	end
 
-	local overrideText, r, g, b;
+	if shouldShow then
+		local overrideText;
+		local overrideSubtext = nil;
 
-	if displayInfo then
 		if displayInfo.name then
 			overrideText = displayInfo.name;
 		end
@@ -223,79 +115,28 @@ function TRP3_Platynator:UpdateNamePlateName(unitToken, platyDisplay)
 		end
 
 		if overrideText then
+			if displayInfo.shouldColorName and displayInfo.color then
+				overrideText = displayInfo.color:WrapTextInColorCode(overrideText);
+			end
+
 			if displayInfo.roleplayStatus then
 				overrideText = TRP3_NamePlatesUtil.PrependRoleplayStatusToText(overrideText, displayInfo.roleplayStatus);
 			end
 
-			if displayInfo.shouldColorName then
-				local color = displayInfo.color;
-				r, g, b = color.r, color.g, color.b;
-
-				if UnitIsUnit(unitToken, "mouseover") then
-					r = Saturate(color.r * 1.25);
-					g = Saturate(color.g * 1.25);
-					b = Saturate(color.b * 1.25);
-				end
+			if displayInfo.icon then
+				local texture = TRP3_API.utils.getIconTexture(displayInfo.icon);
+				local iconSize = TRP3_NamePlatesUtil.GetPreferredIconSize();
+				local offsetX = 0;	--There is already a space between icon and text
+				local offsetY = 0;
+				overrideText = string.format("|T%s:%d:%d:%d:%d|t %s", texture, iconSize, iconSize, offsetX, offsetY, overrideText);
 			end
 
-			DisplayManager:SetCreatureName(platyDisplay, overrideText, r, g, b)
-		end
-	end
-end
-
-function TRP3_Platynator:UpdateNamePlateHealthBar(unitToken, platyDisplay)
-	local displayInfo = self:GetUnitDisplayInfo(unitToken);
-	local overrideColor;
-	if displayInfo and displayInfo.shouldColorHealth then
-		overrideColor = TRP3_API.CreateColor(displayInfo.color:GetRGB());
-	end
-end
-
-function TRP3_Platynator:UpdateNamePlateIcon(unitToken, platyDisplay)
-	local displayInfo = self:GetUnitDisplayInfo(unitToken);
-	local displayIcon = displayInfo and displayInfo.icon or nil;
-
-	local size = 16;
-	DisplayManager:SetCharacterIcon(platyDisplay, displayIcon, size)
-end
-
-function TRP3_Platynator:UpdateNamePlateFullTitle(unitToken, platyDisplay)
-	local displayInfo = self:GetUnitDisplayInfo(unitToken);
-	local displayText = displayInfo and displayInfo.fullTitle or nil;
-end
-
-function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
-	if nameplate:IsForbidden() or not nameplate:IsShown() then
-		return;
-	end
-
-	if not unitToken then
-		unitToken = nameplate.namePlateUnitToken;
-	end
-
-	local platyDisplay = DisplayManager:GetDisplayByUnit(unitToken);
-
-	if platyDisplay then
-		DisplayManager:CleanseObject(platyDisplay);
-
-		local displayInfo = self:GetUnitDisplayInfo(unitToken);
-		local shouldShow = ShouldShowName(nameplate.UnitFrame);
-		if displayInfo and displayInfo.shouldHide then
-			shouldShow = false;
-		end
-
-		if shouldShow then
-			self:UpdateNamePlateName(unitToken, platyDisplay);
-			self:UpdateNamePlateHealthBar(unitToken, platyDisplay);
-			self:UpdateNamePlateIcon(unitToken, platyDisplay);
-			self:UpdateNamePlateFullTitle(unitToken, platyDisplay);
+			DisplayManager:SetUnitText(unitToken, overrideText, overrideSubtext);
 		end
 	end
 end
 
 function TRP3_Platynator:UpdateAllNamePlates()
-	DisplayManager:CleanseAllObjects();
-
 	for _, nameplate in ipairs(C_NamePlate.GetNamePlates()) do
 		self:UpdateNamePlate(nameplate);
 	end
@@ -324,4 +165,4 @@ TRP3_API.module.registerModule({
 	onStart = function() return TRP3_Platynator:OnModuleEnable(); end,
 });
 
-_G.TRP3_Platynator = TRP3_Platynator;
+_G.TRP3_Platynator = TRP3_Platynator;	--Do not change the global name because Platynator detects this to disable their MSP implementation
