@@ -61,8 +61,8 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 	end
 
 	if shouldShow then
-		local overrideText;
-		local overrideSubtext = nil;
+		local overrideText
+		local overrideSubtext = nil;	--Not Implemented. Reserved for changing GuildName line
 
 		if displayInfo.name then
 			overrideText = displayInfo.name;
@@ -70,13 +70,10 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 
 		if not overrideText then
 			local originalName, realm = UnitName(unitToken);
-
-			if canaccessvalue(originalName) then
+			if realm then
+				overrideText = originalName.."-"..realm;
+			else
 				overrideText = originalName;
-			end
-
-			if realm and canaccessvalue(realm) then
-				overrideText = overrideText.."-"..realm;
 			end
 		end
 
@@ -98,6 +95,8 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 			end
 
 			Platynator.API.SetUnitTextOverride(unitToken, overrideText, overrideSubtext);
+		else
+			--No changes will be made to Platynator nameplate
 		end
 	end
 end
