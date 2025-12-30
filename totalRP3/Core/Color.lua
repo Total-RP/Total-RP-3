@@ -1,12 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-
-local ConvertHSLToHSV;
 local ConvertHSLToRGB;
-local ConvertHSVToHSL;
-local ConvertHSVToRGB;
 local ConvertHWBToRGB;
 local ConvertRGBToHSL;
 local ConvertRGBToHSV;
@@ -117,8 +112,7 @@ function Color:GenerateColorString()
 end
 
 function Color:WrapTextInColorCode(text)
-	local r, g, b = self:GetRGBAsBytes();
-	return string.format("|cff%02x%02x%02x%s|r", r, g, b, tostring(text));
+	return C_ColorUtil.WrapTextInColor(tostring(text), self);
 end
 
 function Color:__call(text)
@@ -187,7 +181,7 @@ function TRP3_API.CreateColorFromHSLA(h, s, l, a)
 end
 
 function TRP3_API.CreateColorFromHSVA(h, s, v, a)
-	local r, g, b = ConvertHSVToRGB(h, s, v);
+	local r, g, b = C_ColorUtil.ConvertHSVToRGB(h, s, v);
 	return ColorCache:Acquire(r, g, b, a or 1);
 end
 
@@ -365,43 +359,8 @@ end
 
 -- Color conversion utilities
 
-function ConvertHSLToHSV(h, s, l)
-	local H, S, V;
-
-	H = h;
-	V = l + s * math.min(l, 1 - l);
-	S = (V == 0 and 0 or (2 * (1 - (l / V))));
-
-	return H, S, V;
-end
-
-local function ConvertHSLComponent(n, h, s, l)
-	local k = (n + h * 12) % 12;
-	local a = s * math.min(l, 1 - l);
-
-	return l - a * math.max(-1, math.min(k - 3, 9 - k, 1));
-end
-
 function ConvertHSLToRGB(h, s, l)
-	local r = ConvertHSLComponent(0, h, s, l);
-	local g = ConvertHSLComponent(8, h, s, l);
-	local b = ConvertHSLComponent(4, h, s, l);
-
-	return r, g, b;
-end
-
-function ConvertHSVToHSL(h, s, v)
-	local H, S, L;
-
-	H = h;
-	L = v * (1 - (s / 2));
-	S = ((L == 0 or L == 1) and 0 or ((v - L) / math.min(L, 1 - L)));
-
-	return H, S, L;
-end
-
-function ConvertHSVToRGB(h, s, v)
-	return ConvertHSLToRGB(ConvertHSVToHSL(h, s, v));
+	return C_ColorUtil.ConvertHSVToRGB(C_ColorUtil.ConvertHSLToHSV(h, s, l));
 end
 
 function ConvertHWBToRGB(h, w, b)
@@ -418,33 +377,17 @@ function ConvertHWBToRGB(h, w, b)
 end
 
 function ConvertRGBToHSL(r, g, b)
-	local cmax = math.max(r, g, b);
-	local cmin = math.min(r, g, b);
-	local c = cmax - cmin;
-
-	local h = 0;
-	local s = 0;
-	local l = (cmin + cmax) / 2;
-
-	if c ~= 0 then
-		s = (l == 0 or l == 1) and 0 or ((cmax - l) / math.min(l, 1 - l));
-
-		if cmax == r then
-			h = (g - b) / c + (g < b and 6 or 0);
-		elseif cmax == g then
-			h = (b - r) / c + 2;
-		else
-			h = (r - g) / c + 4;
-		end
-
-		h = h / 6;
-	end
-
-	return h, s, l;
+	return C_ColorUtil.ConvertHSVToHSL(ConvertRGBToHSV(r, g, b));
 end
 
 function ConvertRGBToHSV(r, g, b)
-	return ConvertHSLToHSV(ConvertRGBToHSL(r, g, b));
+	local h, s, v = C_ColorUtil.ConvertRGBToHSV(r, g, b);
+
+	if h == -1 then
+		h = 0;  -- Achromatic input; clamp to zero hue.
+	end
+
+	return h, s, v;
 end
 
 function ConvertRGBToHWB(r, g, b)
