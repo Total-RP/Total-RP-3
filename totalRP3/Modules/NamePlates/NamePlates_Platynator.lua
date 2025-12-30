@@ -8,9 +8,7 @@
 -- Custom health colors will not be supported.
 
 
-local TRP3_API = select(2, ...);
-local TRP3_NamePlates = TRP3_NamePlates;
-local TRP3_NamePlatesUtil = TRP3_NamePlatesUtil;
+local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 local L = TRP3_API.loc;
 
 
