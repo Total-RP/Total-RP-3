@@ -16,8 +16,19 @@ local L = TRP3_API.loc;
 TRP3_Platynator = {};
 
 function TRP3_Platynator:OnModuleInitialize()
-	if not DisplayManager:Initialize() then
+	if not Platynator or not Platynator.API then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
+	end
+
+	local requirements = {
+		Platynator.API.SetUnitTextOverride,
+	};
+
+	for _, func in ipairs(requirements) do
+		if func == nil then
+			-- Ideally we'd use a different string here ("disabled because the addon is too old").
+			return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
+		end
 	end
 end
 
