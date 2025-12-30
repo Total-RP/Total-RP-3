@@ -90,11 +90,11 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 			end
 
 			if displayInfo.icon then
-				local texture = TRP3_API.utils.getIconTexture(displayInfo.icon);
-				local iconSize = TRP3_NamePlatesUtil.GetPreferredIconSize();
+				local size = TRP3_NamePlatesUtil.GetPreferredIconSize();
 				local offsetX = 0;	--There is already a space between icon and text
 				local offsetY = 0;
-				overrideText = string.format("|T%s:%d:%d:%d:%d|t %s", texture, iconSize, iconSize, offsetX, offsetY, overrideText);
+				local icon = LRPM12:GenerateIconMarkup(displayInfo.icon, size, size, offsetX, offsetY)
+				overrideText = string.join(" ", icon, overrideText);
 			end
 
 			Platynator.API.SetUnitTextOverride(unitToken, overrideText, overrideSubtext);
