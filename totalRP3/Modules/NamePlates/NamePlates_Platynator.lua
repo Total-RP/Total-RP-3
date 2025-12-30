@@ -11,45 +11,6 @@
 local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 local L = TRP3_API.loc;
 
-local DisplayManager = {};
-do
-	function DisplayManager:SetUnitText(unitToken, creatureName, guildName)
-		self.overrideFunc(unitToken, creatureName, guildName)
-	end
-
-	function DisplayManager:Initialize()
-		if not C_AddOns.IsAddOnLoaded("Platynator") then
-			return false;
-		end
-
-		local requiredAPIs = {
-			overrideFunc = "Platynator.API.SetUnitTextOverride",
-		};
-
-		local function GetGlobalObject(objNameKey)
-			--Get an object via string "Name.Key1.Key2..."
-			local obj = _G;
-			for k in string.gmatch(objNameKey, "[_%w]+") do
-				obj = obj[k];
-				if not obj then
-					return
-				end
-			end
-			return obj
-		end
-
-		for k, objNameKey in pairs(requiredAPIs) do
-			local getterFunc = GetGlobalObject(objNameKey);
-			if getterFunc then
-				self[k] = getterFunc;
-			else
-				return false;
-			end
-		end
-
-		return true
-	end
-end
 
 
 local TRP3_Platynator = {};
