@@ -11,10 +11,6 @@
 local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 local L = TRP3_API.loc;
 
-
-local canaccessvalue = canaccessvalue or function(_) return true; end;
-
-
 local DisplayManager = {};
 do
 	function DisplayManager:SetUnitText(unitToken, creatureName, guildName)
