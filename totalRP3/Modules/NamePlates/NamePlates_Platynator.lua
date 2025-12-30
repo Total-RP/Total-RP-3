@@ -130,5 +130,3 @@ TRP3_API.module.registerModule({
 	onInit = function() return TRP3_Platynator:OnModuleInitialize(); end,
 	onStart = function() return TRP3_Platynator:OnModuleEnable(); end,
 });
-
-_G.TRP3_Platynator = TRP3_Platynator;	--Do not change the global name because Platynator detects this to disable their MSP implementation
