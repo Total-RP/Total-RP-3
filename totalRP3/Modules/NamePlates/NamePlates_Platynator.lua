@@ -97,7 +97,7 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 				overrideText = string.format("|T%s:%d:%d:%d:%d|t %s", texture, iconSize, iconSize, offsetX, offsetY, overrideText);
 			end
 
-			DisplayManager:SetUnitText(unitToken, overrideText, overrideSubtext);
+			Platynator.API.SetUnitTextOverride(unitToken, overrideText, overrideSubtext);
 		end
 	end
 end
