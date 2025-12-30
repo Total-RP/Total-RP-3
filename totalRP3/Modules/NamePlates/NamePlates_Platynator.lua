@@ -13,7 +13,7 @@ local L = TRP3_API.loc;
 
 
 
-local TRP3_Platynator = {};
+TRP3_Platynator = {};
 
 function TRP3_Platynator:OnModuleInitialize()
 	if not DisplayManager:Initialize() then
