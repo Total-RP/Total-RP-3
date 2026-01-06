@@ -33,52 +33,6 @@ function TRP3_Platynator:OnModuleEnable()
 	self.unitDisplayInfo = {};
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
 	self:UpdateAllNamePlates();
-
-	-- Alert the player that some unit names may be hidden due to TRP settings.
-	-- Not using "CONFIGURATION_CHANGED" because the player likely doesn't pay attention to chat when MainFrame is visible
-	self.visiblitySettings = {"CustomizeNPCUnits", "CustomizeOOCUnits", "CustomizeNonRoleplayUnits"};
-	if not self:CheckAnyNameplateHidden() then
-		TRP3_Addon.RegisterCallback(self, "MAIN_FRAME_CLOSED", "CheckAnyNameplateHidden");
-	end
-end
-
-function TRP3_Platynator:CheckAnyNameplateHidden()
-	local anyHidden;
-	for _, key in ipairs(self.visiblitySettings) do
-		if TRP3_NamePlatesSettings[key] == TRP3_NamePlateUnitCustomizationState.Hide then
-			anyHidden = true;
-			break;
-		end
-	end
-
-	if anyHidden then
-		TRP3_Addon.UnregisterCallback(self, "MAIN_FRAME_CLOSED", "CheckAnyNameplateHidden");
-
-		-- Create a hyperlink so that the player can click it to open to nameplate settings
-		local arg1 = "settings";
-		local arg2 = "nameplates";
-		EventRegistry:RegisterCallback("SetItemRef", function(_, link, text, button, chatFrame)
-			if link then
-				local _arg1, _arg2 = string.match(link, "trp3:([^:]+):([^|]+)");
-				if arg1 == _arg1 and arg2 == _arg2 then
-					TRP3_API.navigation.openMainFrame();
-					TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_nameplates");
-				end
-			end
-		end);
-
-		local link = string.format("|Haddon:trp3:%s:%s", arg1, arg2);
-		link = string.format("|cff%s%s|h[%s]|h|r", "ffd100", link, L.PLATYNATOR_NAMEPLATES_UNIT_HIDDEN_ALERT_REASON);
-
-		-- Display alert message
-		-- Run next frame so it shows after the welcome message
-		C_Timer.After(0, function()
-			local msg = string.format(L.PLATYNATOR_NAMEPLATES_UNIT_HIDDEN_ALERT, link);
-			TRP3_API.utils.message.displayMessage(msg);
-		end);
-
-		return true
-	end
 end
 
 function TRP3_Platynator:OnNamePlateDataUpdated(_, nameplate, unitToken, displayInfo)

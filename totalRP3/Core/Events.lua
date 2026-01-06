@@ -24,9 +24,6 @@ TRP3_Addon.Events =
 	-- Called when the user changes the page in the main frame.
 	PAGE_OPENED = "PAGE_OPENED",
 
-	-- Fired when TRP3_MainFrame is closed
-	MAIN_FRAME_CLOSED = "MAIN_FRAME_CLOSED",
-
 	-- Fired when a config value is modified.
 	CONFIGURATION_CHANGED = "CONFIGURATION_CHANGED",
 

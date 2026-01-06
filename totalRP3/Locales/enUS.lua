@@ -1522,8 +1522,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 	PLATYNATOR_NAMEPLATES_MODULE_NAME = "Platynator Nameplates",
 	PLATYNATOR_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Platynator nameplates.",
-	PLATYNATOR_NAMEPLATES_UNIT_HIDDEN_ALERT = "Some nameplates may be hidden because of %s";
-	PLATYNATOR_NAMEPLATES_UNIT_HIDDEN_ALERT_REASON = "visiblity settings";
 
 	CREDITS_THANK_YOU_SECTION_1 = [[{h1:c}Total RP 3{/h1}]],
 	CREDITS_THANK_YOU_SECTION_2 = [[{h2}%1$s Created by{/h2}]],

@@ -112,10 +112,6 @@ function TRP3_MainFrameLayoutMixin:SaveLayout()
 	LibWindow.SavePosition(self);
 end
 
-function TRP3_MainFrameLayoutMixin:OnHide()
-	TRP3_Addon:TriggerEvent("MAIN_FRAME_CLOSED");
-end
-
 TRP3_MainFrameResizeButtonMixin = {};
 
 function TRP3_MainFrameResizeButtonMixin:Init(target)

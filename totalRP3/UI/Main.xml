@@ -383,7 +383,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Scripts>
 			<OnLoad method="OnLoad"/>
 			<OnSizeChanged method="OnSizeChanged"/>
-			<OnHide method="OnHide"/>
 		</Scripts>
 	</Frame>
 </Ui>
