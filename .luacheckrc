@@ -60,6 +60,7 @@ read_globals = {
 	"mrpSaved",
 	"msp_RPNameplatesAddOn",
 	"Plater",
+	"Platynator",
 	"Prat",
 	"TinyTooltip",
 	"TipTac",
