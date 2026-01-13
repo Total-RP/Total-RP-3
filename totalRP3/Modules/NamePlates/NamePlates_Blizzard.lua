@@ -422,7 +422,7 @@ function TRP3_BlizzardNamePlates:CanCustomizeNamePlate(nameplate)
 		return false;
 	elseif not self.initializedNameplates[nameplate:GetName()] then
 		return false;
-	elseif issecretvalue(UnitIsUnit(nameplate.UnitFrame.unit, "target")) then
+	elseif not canaccessvalue(UnitIsUnit(nameplate.UnitFrame.unit, "target")) then
 		return false; -- can't check if ShouldShowName
 	else
 		return true;

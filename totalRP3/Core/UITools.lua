@@ -469,7 +469,7 @@ function TRP3_API.ui.misc.isTargetTypeACompanion(unitType)
 end
 
 local function IsPetUnit(unitToken)
-	if issecretvalue(UnitCreatureFamily(unitToken)) then
+	if not canaccessvalue(UnitCreatureFamily(unitToken)) then
 		return false; -- Secret lock, would have more issues
 	elseif UnitPlayerControlled(unitToken) and UnitCreatureFamily(unitToken) then
 		return true;
@@ -608,7 +608,7 @@ end
 function TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType)
 	local shortID = TRP3_API.ui.misc.getCompanionShortID(unitToken, unitType);
 
-	if issecretvalue and issecretvalue(shortID) then
+	if not canaccessvalue(shortID) then
 		return;
 	end
 

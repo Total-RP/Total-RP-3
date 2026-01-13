@@ -526,6 +526,7 @@ stds.wow = {
 		"BNGetGameAccountInfoByGUID",
 		"BNGetInfo",
 		"CalculateStringEditDistance",
+		"canaccessvalue",
 		"Chat_GetChatFrame",
 		"ChatConfigChannelSettings_SwapChannelsByIndex",
 		"ChatEdit_FocusActiveWindow",

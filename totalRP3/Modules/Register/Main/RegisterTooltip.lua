@@ -355,7 +355,7 @@ local function GenerateColoredTooltipLine(text, color)
 	--
 	-- Empty lines need to have one character at-minimum to prevent errors
 	-- when assigning tooltip line fonts later.
-	if not issecretvalue(text) and (not text or text == "") then
+	if canaccessvalue(text) and (not text or text == "") then
 		text = " ";
 	end
 
@@ -1448,7 +1448,7 @@ local function GetCurrentTooltipUnit()
 
 	if GameTooltip:IsShown() then
 		local tooltipUnit = GameTooltip:GetUnit();
-		if not issecretvalue(tooltipUnit) then
+		if canaccessvalue(tooltipUnit) then
 			unitToken = select(2, tooltipUnit);
 		end
 		if type(unitToken) == nil then
@@ -1539,7 +1539,7 @@ local function onModuleInit()
 		elseif GameTooltip:IsShown() then
 			local unitToken = "none";
 			local tooltipUnit = GameTooltip:GetUnit();
-			if not issecretvalue(tooltipUnit) then
+			if canaccessvalue(tooltipUnit) then
 				unitToken = select(2, tooltipUnit) or unitToken;
 			end
 			ShowUnitTooltip(unitToken);

@@ -441,14 +441,14 @@ function TRP3_API.companions.register.getUnitMount(ownerID, unitType)
 	for slotIndex = 1, #auraSlots do
 		local auraInfo = C_UnitAuras.GetAuraDataBySlot(unitType, auraSlots[slotIndex]);
 
-		if issecretvalue and issecretvalue(auraInfo) == true then
+		if not canaccessvalue(auraInfo) == true then
 			return;
 		end
 		if auraInfo then
 			local spellBuffID = auraInfo.spellId;
 			local companionFullID = ownerID .. "_" .. tostring(spellBuffID);
 
-			if not issecretvalue(companionFullID) and registerProfileAssociation[companionFullID] then
+			if canaccessvalue(companionFullID) and registerProfileAssociation[companionFullID] then
 				return companionFullID, registerProfileAssociation[companionFullID], tostring(spellBuffID);
 			end
 		end
