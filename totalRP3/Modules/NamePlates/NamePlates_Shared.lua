@@ -101,5 +101,5 @@ function TRP3_NamePlatesUtil.HasMSPNamePlateAddOn()
 end
 
 function TRP3_NamePlatesUtil.GetNameplateUnit(nameplate)
-    return nameplate.namePlateUnitToken or nameplate.unitToken;
+	return nameplate.namePlateUnitToken or nameplate.unitToken;
 end
