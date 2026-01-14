@@ -530,7 +530,7 @@ end
 
 function TRP3_NamePlates:UpdateAllNamePlates()
 	for _, nameplate in ipairs(C_NamePlate.GetNamePlates()) do
-		local unitToken = nameplate.namePlateUnitToken;
+		local unitToken = TRP3_NamePlatesUtil.GetNameplateUnit(nameplate);
 
 		if unitToken then
 			self:UpdateNamePlateForUnit(unitToken);
@@ -549,7 +549,7 @@ end
 
 function TRP3_NamePlates:UpdateNamePlateTargetUnit()
 	local nameplate = C_NamePlate.GetNamePlateForUnit("target");
-	local unitToken = nameplate and nameplate.namePlateUnitToken or nil;
+	local unitToken = nameplate and TRP3_NamePlatesUtil.GetNameplateUnit(nameplate) or nil;
 
 	self.namePlateTargetToken = unitToken;
 end

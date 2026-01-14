@@ -46,7 +46,7 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 	end
 
 	if not unitToken then
-		unitToken = nameplate.namePlateUnitToken;
+		unitToken = TRP3_NamePlatesUtil.GetNameplateUnit(nameplate);
 	end
 
 	if not unitToken then return; end;
