@@ -355,6 +355,12 @@ stds.wow = {
 			},
 		},
 
+		C_Secrets = {
+			fields = {
+				"ShouldUnitIdentityBeSecret",
+			},
+		},
+
 		C_SocialRestrictions = {
 			fields = {
 				"IsChatDisabled",

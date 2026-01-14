@@ -1295,7 +1295,9 @@ local function show(targetType, targetID, targetMode)
 	if getConfigValue(ConfigKeys.IN_CHARACTER_ONLY) and not isPlayerIC() then return end
 	if getConfigValue(ConfigKeys.HIDE_IN_INSTANCE) and Utils.IsInCombatInstance() then return end
 	if ShouldDisplayUnmodifiedTooltip() then return; end
-	if InCombatLockdown() then return end
+	-- Don't show tooltips when unit identity is locked down nor when player has combat tooltips disabled.
+	if C_Secrets.ShouldUnitIdentityBeSecret(targetType) then return; end
+	if InCombatLockdown() and getConfigValue(ConfigKeys.CHARACT_COMBAT) then return; end
 
 	-- If we have a target
 	if targetID then
@@ -1442,10 +1444,6 @@ end
 local function GetCurrentTooltipUnit()
 	local unitToken;
 
-	if InCombatLockdown() then
-		return;
-	end
-
 	if GameTooltip:IsShown() then
 		local tooltipUnit = GameTooltip:GetUnit();
 		if canaccessvalue(tooltipUnit) then
@@ -1464,6 +1462,10 @@ local function GetCurrentTooltipUnit()
 		-- World cursor units are not consulted if the tooltip is set to
 		-- anchor to the cursor itself, as it looks a bit silly.
 		unitToken = GetWorldCursorUnit();
+	end
+
+	if unitToken and C_Secrets.ShouldUnitIdentityBeSecret(unitToken) then
+		return;
 	end
 
 	return unitToken;
@@ -1494,7 +1496,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		hooksecurefunc(GameTooltip, "SetWorldCursor", NotifyTooltipUnitChanged);
 	end
 	GameTooltip:HookScript("OnShow", function()
-		if InCombatLockdown() or not GameTooltip:GetUnit() then
+		if not GameTooltip:GetUnit() then
 			TRP3_CharacterTooltip:Hide();
 			TRP3_CompanionTooltip:Hide();
 		end
