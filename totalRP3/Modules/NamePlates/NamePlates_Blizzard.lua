@@ -132,7 +132,6 @@ function TRP3_BlizzardNamePlates:OnModuleEnable()
 	self.initializedNameplates = {};
 
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
-	TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(TRP3_NamePlatesUtil.IsNameOnlyModePreferred());
 
 	hooksecurefunc("CompactUnitFrame_SetUpFrame", function(...) return self:OnUnitFrameSetUp(...); end);
 	hooksecurefunc(NamePlateDriverFrame, "UpdateNamePlateOptions", function() return self:OnUpdateNamePlateOptions(); end);
@@ -211,6 +210,7 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 
 	do
 		local titleWidget = unitframe:CreateFontString(nil, "ARTWORK");
+		titleWidget:SetFontObject(SystemFont_NamePlate_Outlined);
 		titleWidget:ClearAllPoints();
 		titleWidget:SetPoint("TOP", unitframe.name, "BOTTOM", 0, -2);
 		titleWidget:SetVertexColor(TRP3_API.Colors.Grey:GetRGBA());
@@ -263,8 +263,10 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 		end
 
 		-- Process color overrides.
+		-- Do not color name when unit name is within the health bar, except when name-only mode is on.
+		local hasHealthBarOverlap = NamePlateSetupOptions.unitNameInsideHealthBar and not C_CVar.GetCVarBool("nameplateShowOnlyNameForFriendlyPlayerUnits");
 
-		if displayInfo.shouldColorName then
+		if displayInfo.shouldColorName and not hasHealthBarOverlap then
 			local color = displayInfo.color;
 
 			if UnitIsUnit(unitToken, "mouseover") then
@@ -343,11 +345,10 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	-- Hide the full title widget if no title is to be displayed, or if the
 	-- nameplate isn't in name-only mode.
 	--
-	-- Note that we don't check the name-only CVar here because Blizzard
-	-- only applies it on a full UI reload; instead we check if the healthbar
-	-- is showing or not.
 
-	if shouldHide or not ShouldShowName(unitframe) or unitframe.healthBar:IsShown() then
+	local isNameOnly = C_CVar.GetCVarBool("nameplateShowOnlyNameForFriendlyPlayerUnits");
+
+	if shouldHide or not ShouldShowName(unitframe) or not isNameOnly then
 		displayText = nil;
 	end
 
@@ -358,19 +359,20 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 		nameplate.TRP3_Title:Hide();
 	end
 
+	--[[ TO:DO Requires further adjustment for Classic
 	-- On Classic Blizzard shows the level text all the time in name-only
 	-- mode, so we'll be nice and fix that.
 	--
-	-- In contrast to the above this _does_ check the CVar because of an
-	-- edge case with the hide nameplate options where the level text could
-	-- spuriously disappear if name only mode isn't enabled because of our
-	-- visibility overrides on the level frame widget.
+	-- Check the CVar because of an edge case with the hide nameplate options
+	-- where the level text could spuriously disappear if name only mode isn't
+	-- enabled because of our visibility overrides on the level frame widget.
 
-	local isNameOnly = TRP3_NamePlatesUtil.IsNameOnlyModeEnabled();
+	local isNameOnlyClassic = C_CVar.GetCVarBool("nameplateShowOnlyNames");
 
-	if unitframe.LevelFrame and isNameOnly then
+	if unitframe.LevelFrame and isNameOnlyClassic then
 		unitframe.LevelFrame:SetShown(unitframe.healthBar:IsShown());
 	end
+	]]
 end
 
 function TRP3_BlizzardNamePlates:UpdateNamePlateVisibility(nameplate)
