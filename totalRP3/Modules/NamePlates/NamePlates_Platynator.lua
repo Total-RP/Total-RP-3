@@ -67,7 +67,11 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 			overrideText = displayInfo.name;
 		end
 
-		if displayInfo.guildName then
+		if displayInfo.fullTitle then
+			overrideSubtext = displayInfo.fullTitle;
+		end
+
+		if displayInfo.guildName and not overrideSubtext then
 			overrideSubtext = displayInfo.guildName;
 		end
 
