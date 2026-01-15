@@ -706,6 +706,7 @@ Possible status:
 	TF_IGNORE_NO_REASON = "No reason",
 	TB_LANGUAGE = "Language",
 	TB_LANGUAGES_TT = "Change language",
+	TB_LANGUAGE_DROPDOWN_TT = "Open language dropdown",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- PROFILES
