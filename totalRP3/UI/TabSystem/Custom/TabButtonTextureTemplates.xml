@@ -1,0 +1,33 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Texture name="TRP3_TabButtonLeftTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\blz-uiframetabs" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false" virtual="true">
+		<Size x="27" y="28"/>
+		<TexCoords left="0.015625" right="0.5625" top="0.81640625" bottom="0.95703125"/>
+	</Texture>
+	<Texture name="TRP3_TabButtonRightTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\blz-uiframetabs" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false" virtual="true">
+		<Size x="29" y="28"/>
+		<TexCoords left="0.015625" right="0.59375" top="0.66796875" bottom="0.80859375"/>
+	</Texture>
+	<Texture name="TRP3_TabButtonMiddleTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\blz-uiframetabs" hWrapMode="REPEAT" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false" virtual="true">
+		<Size x="1" y="28"/>
+		<TexCoords left="0" right="0.015625" top="0.17578125" bottom="0.31640625"/>
+	</Texture>
+
+	<Texture name="TRP3_TabButtonActiveLeftTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\blz-uiframetabs" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false" virtual="true">
+		<Size x="26" y="32"/>
+		<TexCoords left="0.015625" right="0.5625" top="0.49609375" bottom="0.66015625"/>
+	</Texture>
+	<Texture name="TRP3_TabButtonActiveRightTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\blz-uiframetabs" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false" virtual="true">
+		<Size x="28" y="32"/>
+		<TexCoords left="0.015625" right="0.59375" top="0.32421875" bottom="0.48828125"/>
+	</Texture>
+	<Texture name="TRP3_TabButtonActiveMiddleTextureTemplate" file="Interface\AddOns\totalRP3\Resources\UI\blz-uiframetabs" hWrapMode="REPEAT" rotation="180" texelSnappingBias="0.0" snapToPixelGrid="false" virtual="true">
+		<Size x="1" y="32"/>
+		<TexCoords left="0" right="0.015625" top="0.00390625" bottom="0.16796875"/>
+	</Texture>
+</Ui>
