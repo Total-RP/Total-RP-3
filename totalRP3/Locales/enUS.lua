@@ -705,7 +705,7 @@ Possible status:
 	TF_IGNORE_CONFIRM = "Are you sure you want to ignore this player?|n|n|cnWARNING_FONT_COLOR:%s|r|n|nYou can optionally enter the reason below. This is a personal note that serves as a reminder.",
 	TF_IGNORE_NO_REASON = "No reason",
 	TB_LANGUAGE = "Language",
-	TB_LANGUAGES_TT = "Change language",
+	TB_LANGUAGES_TT = "Change to next language (%s)",
 	TB_LANGUAGE_DROPDOWN_TT = "Open language dropdown",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

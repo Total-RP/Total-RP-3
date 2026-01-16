@@ -80,7 +80,7 @@ function Languages.setLanguageByID(languageID)
 end
 
 ---Selects the next language from the known languages list.
----@return nil
+---@return Language
 function Languages.selectNextLanguage()
 	local totalLanguages = GetNumLanguages();
 
@@ -92,8 +92,7 @@ function Languages.selectNextLanguage()
 			local nextIndex = Wrap(i + 1, totalLanguages);
 			local _, nextLanguageID = GetLanguageByIndex(nextIndex);
 
-			Languages.setLanguageByID(nextLanguageID);
-			return;
+			return Languages.getLanguageByID(nextLanguageID);
 		end
 	end
 end
@@ -123,7 +122,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				local currentLanguage = Languages.getCurrentLanguage();
 				buttonStructure.currentLanguageID = currentLanguage:GetID();
 				buttonStructure.tooltip = loc.TB_LANGUAGE .. ": " .. currentLanguage:GetName();
-				buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_LANGUAGES_TT) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_LANGUAGE_DROPDOWN_TT);
+				buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_LANGUAGES_TT):format(Languages.selectNextLanguage():GetName()) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_LANGUAGE_DROPDOWN_TT);
 				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or TRP3_InterfaceIcons.ToolbarLanguage;
 			end
 			buttonStructure.text = buttonStructure.tooltip;
@@ -141,7 +140,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					end
 				end);
 			else
-				Languages.selectNextLanguage();
+				Languages.setLanguage(Languages.selectNextLanguage());
 			end
 		end,
 	};

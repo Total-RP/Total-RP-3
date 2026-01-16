@@ -624,7 +624,6 @@ Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplement
 	["REG_TT_REALM"] = "Reino: |cffff9900%s",
 	["REG_TT_TARGET"] = "Objetivo: |cffff9900%s",
 	["TB_LANGUAGE"] = "Idioma",
-	["TB_LANGUAGES_TT"] = "Cambiar idioma",
 	["TB_SWITCH_PROFILE"] = "Cambiar a otro perfil",
 	["TF_IGNORE"] = "Ignorar jugador",
 	["TF_IGNORE_NO_REASON"] = "Sin razón",
