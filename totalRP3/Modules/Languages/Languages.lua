@@ -89,7 +89,7 @@ function Languages.selectNextLanguage()
 
 		if languageID == ChatFrame1EditBox.languageID then
 			-- Advance to the next index, wrapping to 1 at the end.
-			local nextIndex = (i % totalLanguages) + 1;
+			local nextIndex = Wrap(i + 1, totalLanguages);
 			local _, nextLanguageID = GetLanguageByIndex(nextIndex);
 
 			Languages.setLanguageByID(nextLanguageID);
