@@ -225,7 +225,7 @@ function TRP3_LauncherClickBindingButtonMixin:OnLoad()
 	self.events = TRP3_API.CreateCallbackGroup();
 	self.events:RegisterCallback(TRP3_Launcher, "OnBindingsChanged", self.OnBindingsChanged, self);
 	self.events:RegisterCallback(LauncherClickBindingController, "OnSelectedActionChanged", self.OnSelectedActionChanged, self);
-	self.events:RegisterCallback(TRP3_API.GameEvents, "CVAR_UPDATE", self.OnCVarUpdate, self);
+	self.events:RegisterCallback(TRP3_CVarCache, TRP3_CVarConstants.ColorblindMode, self.OnColorblindModeChanged, self);
 
 	self:RegisterForClicks("AnyUp");
 
@@ -257,10 +257,8 @@ function TRP3_LauncherClickBindingButtonMixin:OnSelectedActionChanged(actionID)
 	self:SetSelected(self.actionID == actionID);
 end
 
-function TRP3_LauncherClickBindingButtonMixin:OnCVarUpdate(variableName)
-	if variableName == "colorblindMode" then
-		self:Refresh();
-	end
+function TRP3_LauncherClickBindingButtonMixin:OnColorblindModeChanged()
+	self:Refresh();
 end
 
 function TRP3_LauncherClickBindingButtonMixin:GetAction()

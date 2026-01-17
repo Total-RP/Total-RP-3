@@ -194,7 +194,7 @@ function TRP3_BindingUtil.FormatBinding(binding, options)
 	for index, key in ipairs(keys) do
 		local text;
 
-		if options.useMouseButtonAtlases and not C_CVar.GetCVarBool("colorblindMode") then
+		if options.useMouseButtonAtlases and not TRP3_CVarCache:GetCVarBool(TRP3_CVarConstants.ColorblindMode) then
 			local atlas = MouseButtonAtlases[key];
 
 			if atlas then
