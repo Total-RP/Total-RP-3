@@ -249,7 +249,13 @@ local function buildConfigurationPage(structure)
 			local maxValue = element.max or 100;
 			local value = tonumber(getValue(element.configKey)) or minValue;
 			local steps = math.floor((maxValue - minValue) / element.step);
-			local formatters = { [Label.Left] = CreateMinimalSliderFormatter(Label.Left) };
+			local valueFormatter;
+
+			if element.integer then
+				valueFormatter = function(v) return string.format("%d", v); end;
+			end
+
+			local formatters = { [Label.Left] = CreateMinimalSliderFormatter(Label.Left, valueFormatter) };
 
 			control:Init(value, minValue, maxValue, steps, formatters);
 			control.Slider:SetObeyStepOnDrag(element.integer);
