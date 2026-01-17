@@ -286,6 +286,7 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 
 			if TRP3_NamePlatesSettings.CustomizeTitles then
 				displayInfo.fullTitle = profile.data.TI;
+				displayInfo.fullTitleUncropped = displayInfo.fullTitle;
 			end
 		end
 
