@@ -67,12 +67,12 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 			overrideText = displayInfo.name;
 		end
 
-		if displayInfo.fullTitle then
-			overrideSubtext = displayInfo.fullTitle;
+		if displayInfo.fullTitleUncropped then
+			overrideSubtext = displayInfo.fullTitleUncropped;
 		end
 
-		if displayInfo.guildName and not overrideSubtext then
-			overrideSubtext = displayInfo.guildName;
+		if displayInfo.guildNameUncropped and not overrideSubtext then
+			overrideSubtext = displayInfo.guildNameUncropped;
 		end
 
 		if overrideText then
@@ -91,6 +91,10 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 				local icon = LRPM12:GenerateIconMarkup(displayInfo.icon, size, size, offsetX, offsetY)
 				overrideText = string.join(" ", icon, overrideText);
 			end
+		end
+
+		if overrideSubtext then
+			overrideSubtext = "|W" .. overrideSubtext .. "|w";
 		end
 
 		Platynator.API.SetUnitTextOverride(unitToken, overrideText, overrideSubtext);

@@ -17,7 +17,9 @@ local function GetOrCreateDisplayInfo(unitToken)
 
 	displayInfo.color = nil;
 	displayInfo.fullTitle = nil;
+	displayInfo.fullTitleUncropped = nil;
 	displayInfo.guildName = nil;
+	displayInfo.guildNameUncropped = nil;
 	displayInfo.guildRank = nil;
 	displayInfo.guildIsCustom = nil;
 	displayInfo.icon = nil;
@@ -191,6 +193,7 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 
 			if TRP3_NamePlatesSettings.CustomizeFullTitles then
 				displayInfo.fullTitle = player:GetFullTitle();
+				displayInfo.fullTitleUncropped = displayInfo.fullTitle;
 			end
 		end
 
@@ -233,10 +236,12 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 
 				if customGuildName and customGuildName ~= "" then
 					displayInfo.guildName = TRP3_NamePlatesUtil.GenerateCroppedGuildName(customGuildName);
+					displayInfo.guildNameUncropped = customGuildName;
 					displayInfo.guildRank = customGuildRank or L.DEFAULT_GUILD_RANK;
 					displayInfo.guildIsCustom = true;
 				elseif originalGuildName and originalGuildName ~= "" then
 					displayInfo.guildName = TRP3_NamePlatesUtil.GenerateCroppedGuildName(originalGuildName);
+					displayInfo.guildNameUncropped = originalGuildName;
 					displayInfo.guildRank = originalGuildRank;
 					displayInfo.guildIsCustom = false;
 				end
