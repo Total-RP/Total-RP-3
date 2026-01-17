@@ -25,6 +25,7 @@ local function GetOrCreateDisplayInfo(unitToken)
 	displayInfo.icon = nil;
 	displayInfo.isRoleplayUnit = false;
 	displayInfo.name = nil;
+	displayInfo.nameUncropped = nil;
 	displayInfo.roleplayStatus = nil;
 	displayInfo.shouldColorHealth = nil;
 	displayInfo.shouldColorName = nil;
@@ -195,6 +196,8 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 				displayInfo.fullTitle = player:GetFullTitle();
 				displayInfo.fullTitleUncropped = displayInfo.fullTitle;
 			end
+
+			displayInfo.nameUncropped = displayInfo.name;
 		end
 
 		do  -- Colors
@@ -282,6 +285,7 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 		do  -- Names/Titles
 			if TRP3_NamePlatesSettings.CustomizeNames ~= TRP3_NamePlateUnitNameDisplayMode.OriginalName then
 				displayInfo.name = profile.data.NA;
+				displayInfo.nameUncropped = displayInfo.name;
 			end
 
 			if TRP3_NamePlatesSettings.CustomizeTitles then

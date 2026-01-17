@@ -63,8 +63,8 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 		local overrideText = nil;
 		local overrideSubtext = nil;
 
-		if displayInfo.name then
-			overrideText = displayInfo.name;
+		if displayInfo.nameUncropped then
+			overrideText = displayInfo.nameUncropped;
 		end
 
 		if displayInfo.fullTitleUncropped then
@@ -91,6 +91,8 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 				local icon = LRPM12:GenerateIconMarkup(displayInfo.icon, size, size, offsetX, offsetY)
 				overrideText = string.join(" ", icon, overrideText);
 			end
+
+			overrideText = "|W" .. overrideText .. "|w";
 		end
 
 		if overrideSubtext then
