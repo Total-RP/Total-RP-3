@@ -872,7 +872,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 	</Frame>
-	<Frame name="TRP3_TitledDropdown" inherits="TRP3_DropDownButtonTemplate" enableMouse="true" virtual="true">
+	<Frame name="TRP3_TitledDropdown" inherits="TRP3_DropdownButtonTemplate" enableMouse="true" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString name="$parentTitle" parentKey="title" text="" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP">

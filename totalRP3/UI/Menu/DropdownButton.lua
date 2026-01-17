@@ -81,7 +81,12 @@ function TRP3_DropdownButtonMixin:GenerateMenu()
 end
 
 function TRP3_DropdownButtonMixin:SetupMenu(menuGenerator)
-	self.Button:SetupMenu(menuGenerator);
+	local function WrappedMenuGenerator(ownerRegion, rootDescription)
+		TRP3_MenuUtil.PrepareRootMenuDescription(rootDescription);
+		return menuGenerator(ownerRegion, rootDescription);
+	end
+
+	self.Button:SetupMenu(WrappedMenuGenerator);
 end
 
 function TRP3_DropdownButtonMixin:Update()

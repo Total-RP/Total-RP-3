@@ -32,5 +32,23 @@ function TRP3_MenuUtil.AttachTexture(elementDescription, icon)
 end
 
 function TRP3_MenuUtil.CreateContextMenu(ownerRegion, menuGenerator)
-	return MenuUtil.CreateContextMenu(ownerRegion, menuGenerator);
+	local function WrappedMenuGenerator(ownerRegion, rootDescription)  -- luacheck: no redefined (ownerRegion)
+		TRP3_MenuUtil.PrepareRootMenuDescription(rootDescription);
+		return menuGenerator(ownerRegion, rootDescription);
+	end
+
+	return MenuUtil.CreateContextMenu(ownerRegion, WrappedMenuGenerator);
+end
+
+function TRP3_MenuUtil.PrepareRootMenuDescription(rootDescription)
+	-- Resolving taint issues with dropdowns - if no minimum width is defined
+	-- then if tainted code is the first thing to open a custom menu the
+	-- 'minimumWidth' field on menu frames is assigned a tainted nil value.
+	--
+	-- This then taints menus open by secure code later on if they themselves
+	-- don't set a minimum width due to metatable bullshit in the compositor.
+	--
+	-- Can remove when WowUIBugs#783 is fixed.
+
+	rootDescription:SetMinimumWidth(1);
 end

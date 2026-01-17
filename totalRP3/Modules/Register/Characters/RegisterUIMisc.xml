@@ -29,7 +29,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Frame name="TRP3_RegisterRPStyleMain_Edit_Line" inherits="TRP3_RegisterRPStyleMain_Basic_Line" virtual="true">
 		<Size x="465" y="30"/>
 		<Frames>
-			<Frame parentKey="Values" inherits="TRP3_DropDownButtonTemplate" enableMouse="true">
+			<Frame parentKey="Values" inherits="TRP3_DropdownButtonTemplate" enableMouse="true">
 				<Size x="225" y="32"/>
 				<Anchors>
 					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.FieldName"/>
