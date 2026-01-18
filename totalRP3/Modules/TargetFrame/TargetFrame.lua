@@ -256,7 +256,7 @@ local function onStart()
 			return false;
 		elseif currentTargetID == nil or (getConfigValue(config) ~= 1 and (getConfigValue(config) ~= 2 or not isPlayerIC())) then
 			return false;
-		elseif currentTargetType == TRP3_Enums.UNIT_TYPE.CHARACTER and (currentTargetID == Globals.player_id or (not isIDIgnored(currentTargetID) and isUnitIDKnown(currentTargetID))) then
+		elseif currentTargetType == TRP3_Enums.UNIT_TYPE.CHARACTER and (currentTargetID == Globals.player_id or (not isIDIgnored(currentTargetID) and hasProfile(currentTargetID))) then
 			return true;
 		elseif currentTargetType == TRP3_Enums.UNIT_TYPE.PET or currentTargetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
 			local owner = companionIDToInfo(currentTargetID);
