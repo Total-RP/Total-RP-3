@@ -171,7 +171,7 @@ TRP3_AutomationUtil.RegisterAction({
 	end,
 
 	Apply = function(context, enabled)
-		if C_CVar.GetCVarBool("nameplateShowFriends") == enabled then
+		if TRP3_CVarCache:GetCVarBool(TRP3_CVarConstants.NamePlateShowFriends) == enabled then
 			return;  -- Already in the desired state.
 		end
 
@@ -183,7 +183,7 @@ TRP3_AutomationUtil.RegisterAction({
 			enabledText = L.AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS_DISABLED;
 		end
 
-		C_CVar.SetCVar("nameplateShowFriends", enabled and "1" or "0");
+		C_CVar.SetCVar(TRP3_CVarConstants.NamePlateShowFriends, enabled and "1" or "0");
 		context:Print(enabledText);
 	end,
 });
@@ -208,7 +208,7 @@ TRP3_AutomationUtil.RegisterAction({
 	end,
 
 	Apply = function(context, enabled)
-		if C_CVar.GetCVarBool("nameplateShowFriendlyNPCs") == enabled then
+		if TRP3_CVarCache:GetCVarBool(TRP3_CVarConstants.NamePlateShowFriendlyNPCs) == enabled then
 			return;  -- Already in the desired state.
 		end
 
@@ -220,7 +220,7 @@ TRP3_AutomationUtil.RegisterAction({
 			enabledText = L.AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS_DISABLED;
 		end
 
-		C_CVar.SetCVar("nameplateShowFriendlyNPCs", enabled and "1" or "0");
+		C_CVar.SetCVar(TRP3_CVarConstants.NamePlateShowFriendlyNPCs, enabled and "1" or "0");
 		context:Print(enabledText);
 	end,
 });

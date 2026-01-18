@@ -233,6 +233,7 @@ stds.wow = {
 
 		C_CVar = {
 			fields = {
+				"GetCVar",
 				"GetCVarBool",
 				"SetCVar",
 			},
