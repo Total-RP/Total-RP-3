@@ -1433,7 +1433,6 @@ Change le statut de votre personnage en fonction de l'option spécifiée:
 	["TB_DND_MODE"] = "Ne pas déranger",
 	["TB_GO_TO_MODE"] = "Passer en mode %s",
 	["TB_LANGUAGE"] = "Langage",
-	["TB_LANGUAGES_TT"] = "Changer de langage",
 	["TB_NORMAL_MODE"] = "Normal",
 	["TB_RPSTATUS_OFF"] = "Personnage: |cnRED_FONT_COLOR:Hors du personnage|r",
 	["TB_RPSTATUS_ON"] = "Personnage: |cnGREEN_FONT_COLOR:Dans le personnage|r",

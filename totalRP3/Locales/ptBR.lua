@@ -1368,7 +1368,6 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["TB_DND_MODE"] = "Não perturbe",
 	["TB_GO_TO_MODE"] = "Mudar para modo %s",
 	["TB_LANGUAGE"] = "Linguagem",
-	["TB_LANGUAGES_TT"] = "Mudar linguagem",
 	["TB_NORMAL_MODE"] = "Normal",
 	["TB_RPSTATUS_OFF"] = "Personagem: |cnRED_FONT_COLOR:Não interpretando|r",
 	["TB_RPSTATUS_ON"] = "Personagem: |cnGREEN_FONT_COLOR:Interpretando|r",

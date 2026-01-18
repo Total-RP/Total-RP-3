@@ -747,7 +747,6 @@ L = {
 	["TB_DND_MODE"] = "請勿打擾",
 	["TB_GO_TO_MODE"] = "切換至 %s 模式",
 	["TB_LANGUAGE"] = "語言",
-	["TB_LANGUAGES_TT"] = "變更語言",
 	["TB_NORMAL_MODE"] = "有空",
 	["TB_RPSTATUS_OFF"] = "角色狀態：|cnRED_FONT_COLOR:脫離角色|r",
 	["TB_RPSTATUS_ON"] = "角色狀態：|cnGREEN_FONT_COLOR:進入角色（IC）|r",

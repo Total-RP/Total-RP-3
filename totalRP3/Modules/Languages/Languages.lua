@@ -79,6 +79,24 @@ function Languages.setLanguageByID(languageID)
 	Languages.setLanguage(language)
 end
 
+---Selects the next language from the known languages list.
+---@return Language
+function Languages.selectNextLanguage()
+	local totalLanguages = GetNumLanguages();
+
+	for i = 1, totalLanguages do
+		local _, languageID = GetLanguageByIndex(i);
+
+		if languageID == ChatFrame1EditBox.languageID then
+			-- Advance to the next index, wrapping to 1 at the end.
+			local nextIndex = Wrap(i + 1, totalLanguages);
+			local _, nextLanguageID = GetLanguageByIndex(nextIndex);
+
+			return Languages.getLanguageByID(nextLanguageID);
+		end
+	end
+end
+
 ---@return Language
 function Languages.getCurrentLanguage()
 	return Languages.getLanguageByID(ChatFrame1EditBox.languageID)
@@ -104,22 +122,26 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				local currentLanguage = Languages.getCurrentLanguage();
 				buttonStructure.currentLanguageID = currentLanguage:GetID();
 				buttonStructure.tooltip = loc.TB_LANGUAGE .. ": " .. currentLanguage:GetName();
-				buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_LANGUAGES_TT);
+				buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_LANGUAGES_TT):format(Languages.selectNextLanguage():GetName()) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_LANGUAGE_DROPDOWN_TT);
 				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or TRP3_InterfaceIcons.ToolbarLanguage;
 			end
 			buttonStructure.text = buttonStructure.tooltip;
 		end,
-		onClick = function(Uibutton)
-			TRP3_MenuUtil.CreateContextMenu(Uibutton, function(_, description)
-				description:CreateTitle(loc.TB_LANGUAGE);
-				for _, language in ipairs(Languages.getAvailableLanguages()) do
-					if language:IsActive() then
-						description:CreateButton(language:GetIcon():GenerateString(15) .. " " .. TRP3_API.Colors.Green(language:GetName()));
-					else
-						description:CreateButton(language:GetIcon():GenerateString(15) .. " " .. language:GetName(), Languages.setLanguageByID, language:GetID());
+		onClick = function(Uibutton, _, button)
+			if button == "RightButton" then
+				TRP3_MenuUtil.CreateContextMenu(Uibutton, function(_, description)
+					description:CreateTitle(loc.TB_LANGUAGE);
+					for _, language in ipairs(Languages.getAvailableLanguages()) do
+						if language:IsActive() then
+							description:CreateButton(language:GetIcon():GenerateString(15) .. " " .. TRP3_API.Colors.Green(language:GetName()));
+						else
+							description:CreateButton(language:GetIcon():GenerateString(15) .. " " .. language:GetName(), Languages.setLanguageByID, language:GetID());
+						end
 					end
-				end
-			end);
+				end);
+			else
+				Languages.setLanguage(Languages.selectNextLanguage());
+			end
 		end,
 	};
 	TRP3_API.toolbar.toolbarAddButton(languagesButton);
