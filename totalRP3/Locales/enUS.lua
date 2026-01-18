@@ -1594,7 +1594,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	LAUNCHER_ACTION_PLAYER = "Open current profile page",
 
 	CO_MODULES_SUPPORTS_HOTRELOAD = "This module supports hot reload.",
-	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
+	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, |cffa8deffPlater|r, and |cffc69b6dPlatynator|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
 	PLATER_NAMEPLATES_MODULE_NAME = "Plater Nameplates",
 	PLATER_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Plater nameplates.",
 	PLATER_NAMEPLATES_WARN_OUTDATED_MODULE = "|cffa8deffPlater|r Nameplates is outdated.",
