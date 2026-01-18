@@ -441,7 +441,7 @@ function TRP3_API.companions.register.getUnitMount(ownerID, unitType)
 	for slotIndex = 1, #auraSlots do
 		local auraInfo = C_UnitAuras.GetAuraDataBySlot(unitType, auraSlots[slotIndex]);
 
-		if not canaccessvalue(auraInfo) == true then
+		if not canaccessvalue(auraInfo) then
 			return;
 		end
 		if auraInfo then
