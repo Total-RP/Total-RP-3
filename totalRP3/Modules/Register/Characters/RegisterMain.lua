@@ -75,10 +75,6 @@ local function deleteProfile(profileID, dontFireEvents)
 		for characterID, _ in pairs(profiles[profileID].link) do
 			if characters[characterID] and characters[characterID].profileID == profileID then
 				characters[characterID].profileID = nil;
-				-- Clear character from table if no other profile known
-				if next(characters[characterID]) == nil then
-					characters[characterID] = nil;
-				end
 			end
 		end
 	end
