@@ -231,6 +231,16 @@ stds.wow = {
 			},
 		},
 
+		C_ColorUtil = {
+			fields = {
+				"ConvertHSLToHSV",
+				"ConvertHSVToHSL",
+				"ConvertHSVToRGB",
+				"ConvertRGBToHSV",
+				"WrapTextInColor",
+			},
+		},
+
 		C_CVar = {
 			fields = {
 				"GetCVar",

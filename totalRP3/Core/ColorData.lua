@@ -1,8 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-
 local function TryCreateColorFromTable(table)
 	if table then
 		return TRP3_API.CreateColorFromTable(table);
@@ -74,7 +72,7 @@ TRP3_API.RelationColors =
 	Love = TRP3_API.CreateColorFromBytes(255, 192, 203),
 	Family = TRP3_API.CreateColorFromBytes(255, 192, 0),
 	Friend = TRP3_API.CreateColorFromBytes(25, 255, 25),
-}
+};
 
 -- Power colors (See: https://warcraft.wiki.gg/wiki/Power_colors)
 TRP3_API.PowerTypeColors =

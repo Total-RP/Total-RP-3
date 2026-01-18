@@ -36,16 +36,17 @@ end
 
 local DEFAULT_RELATIONS = {
 	NONE = { id = "NONE", order = 0, texture = TRP3_InterfaceIcons.RelationNone },
-	UNFRIENDLY = { id = "UNFRIENDLY", order = 1, texture = TRP3_InterfaceIcons.RelationUnfriendly, color = TRP3_API.Colors.Red:GenerateHexColorOpaque() },
-	NEUTRAL = { id = "NEUTRAL", order = 2, texture = TRP3_InterfaceIcons.RelationNeutral, color = TRP3_API.CreateColor(0.5, 0.5, 1):GenerateHexColorOpaque() },
-	BUSINESS = { id = "BUSINESS", order = 3, texture = TRP3_InterfaceIcons.RelationBusiness, color = TRP3_API.CreateColor(1, 1, 0):GenerateHexColorOpaque() },
-	FRIEND = { id = "FRIEND", order = 4, texture = TRP3_InterfaceIcons.RelationFriend, color = TRP3_API.Colors.Green:GenerateHexColorOpaque() },
-	LOVE = { id = "LOVE", order = 5, texture = TRP3_InterfaceIcons.RelationLove, color = TRP3_API.Colors.Pink:GenerateHexColorOpaque() },
-	FAMILY = { id = "FAMILY", order = 6, texture = TRP3_InterfaceIcons.RelationFamily, color = TRP3_API.CreateColor(1, 0.75, 0):GenerateHexColorOpaque() },
+	UNFRIENDLY = { id = "UNFRIENDLY", order = 1, texture = TRP3_InterfaceIcons.RelationUnfriendly, color = TRP3_API.RelationColors.Unfriendly:GenerateHexColorOpaque() },
+	NEUTRAL = { id = "NEUTRAL", order = 2, texture = TRP3_InterfaceIcons.RelationNeutral, color = TRP3_API.RelationColors.Neutral:GenerateHexColorOpaque() },
+	BUSINESS = { id = "BUSINESS", order = 3, texture = TRP3_InterfaceIcons.RelationBusiness, color = TRP3_API.RelationColors.Business:GenerateHexColorOpaque() },
+	FRIEND = { id = "FRIEND", order = 4, texture = TRP3_InterfaceIcons.RelationFriend, color = TRP3_API.RelationColors.Friend:GenerateHexColorOpaque() },
+	LOVE = { id = "LOVE", order = 5, texture = TRP3_InterfaceIcons.RelationLove, color = TRP3_API.RelationColors.Love:GenerateHexColorOpaque() },
+	FAMILY = { id = "FAMILY", order = 6, texture = TRP3_InterfaceIcons.RelationFamily, color = TRP3_API.RelationColors.Family:GenerateHexColorOpaque() },
 };
+
 local ACTIONS = {
-	DELETE= "DEL",
-	EDIT= "EDT",
+	DELETE = "DEL",
+	EDIT = "EDT",
 };
 
 --getRelationList function should get relations stored in config, or default relations if none are stored
