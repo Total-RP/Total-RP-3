@@ -12,4 +12,5 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="NamePlates_Kui.lua"/>
 	<Include file="NamePlates_MSP.lua"/>
 	<Include file="NamePlates_Plater.lua"/>
+	<Include file="NamePlates_Platynator.lua"/>
 </Ui>

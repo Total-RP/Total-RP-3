@@ -1521,6 +1521,9 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	KUI_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Kui nameplates.",
 	KUI_NAMEPLATES_WARN_OUTDATED_MODULE = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
 
+	PLATYNATOR_NAMEPLATES_MODULE_NAME = "Platynator Nameplates",
+	PLATYNATOR_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Platynator nameplates.",
+
 	CREDITS_THANK_YOU_SECTION_1 = [[{h1:c}Total RP 3{/h1}]],
 	CREDITS_THANK_YOU_SECTION_2 = [[{h2}%1$s Created by{/h2}]],
 	CREDITS_THANK_YOU_SECTION_3 = [[{h2}%1$s The Rest of the Team{/h2}]],
@@ -1592,7 +1595,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	LAUNCHER_ACTION_PLAYER = "Open current profile page",
 
 	CO_MODULES_SUPPORTS_HOTRELOAD = "This module supports hot reload.",
-	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
+	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, |cffa8deffPlater|r, and |cffc69b6dPlatynator|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
 	PLATER_NAMEPLATES_MODULE_NAME = "Plater Nameplates",
 	PLATER_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Plater nameplates.",
 	PLATER_NAMEPLATES_WARN_OUTDATED_MODULE = "|cffa8deffPlater|r Nameplates is outdated.",
@@ -1612,11 +1615,11 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES = "Disable customizations in instances",
 	NAMEPLATES_CONFIG_DISABLE_IN_INSTANCES_HELP = "If checked, disables nameplate customizations while in instances.|n|nIn instanced content friendly nameplates cannot be customized.",
 	NAMEPLATES_CONFIG_MAX_NAME_CHARS = "Maximum name length",
-	NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP = "The maximum number of characters to display for names and prefix titles. Names exceeding this length will be cropped.",
+	NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP = "The maximum number of characters to display for names and prefix titles. Names exceeding this length will be cropped.|n|n|cnWARNING_FONT_COLOR:Note that Platynator ignores this setting, look for 'Width restriction' in its Designer tab instead.|r",
 	NAMEPLATES_CONFIG_MAX_TITLE_CHARS = "Maximum title length",
-	NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP = "The maximum number of characters to display for full titles. Titles exceeding this length will be cropped.",
+	NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP = "The maximum number of characters to display for full titles. Titles exceeding this length will be cropped.|n|n|cnWARNING_FONT_COLOR:Note that Platynator ignores this setting, look for 'Width restriction' in its Designer tab instead.|r",
 	NAMEPLATES_CONFIG_MAX_GUILD_NAME_CHARS = "Maximum guild name length",
-	NAMEPLATES_CONFIG_MAX_GUILD_NAME_CHARS_HELP = "The maximum number of characters to display for guild names. Guild names exceeding this length will be cropped.",
+	NAMEPLATES_CONFIG_MAX_GUILD_NAME_CHARS_HELP = "The maximum number of characters to display for guild names. Guild names exceeding this length will be cropped.|n|n|cnWARNING_FONT_COLOR:Note that Platynator ignores this setting, look for 'Width restriction' in its Designer tab instead.|r",
 	NAMEPLATES_CONFIG_PAGE_SETTINGS_MAY_REQUIRE_TOGGLE_HELP = "You may need to toggle your nameplates for any settings changes to take effect.",
 	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT = "Always show target unit",
 	NAMEPLATES_CONFIG_SHOW_TARGET_UNIT_HELP = "If checked, your current target will always have its nameplate visible.",

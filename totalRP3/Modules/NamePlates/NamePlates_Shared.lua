@@ -99,3 +99,7 @@ end
 function TRP3_NamePlatesUtil.HasMSPNamePlateAddOn()
 	return msp_RPNameplatesAddOn ~= nil;
 end
+
+function TRP3_NamePlatesUtil.GetNameplateUnit(nameplate)
+	return nameplate.namePlateUnitToken or nameplate.unitToken;
+end

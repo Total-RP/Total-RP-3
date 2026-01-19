@@ -17,12 +17,15 @@ local function GetOrCreateDisplayInfo(unitToken)
 
 	displayInfo.color = nil;
 	displayInfo.fullTitle = nil;
+	displayInfo.fullTitleUncropped = nil;
 	displayInfo.guildName = nil;
+	displayInfo.guildNameUncropped = nil;
 	displayInfo.guildRank = nil;
 	displayInfo.guildIsCustom = nil;
 	displayInfo.icon = nil;
 	displayInfo.isRoleplayUnit = false;
 	displayInfo.name = nil;
+	displayInfo.nameUncropped = nil;
 	displayInfo.roleplayStatus = nil;
 	displayInfo.shouldColorHealth = nil;
 	displayInfo.shouldColorName = nil;
@@ -191,7 +194,10 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 
 			if TRP3_NamePlatesSettings.CustomizeFullTitles then
 				displayInfo.fullTitle = player:GetFullTitle();
+				displayInfo.fullTitleUncropped = displayInfo.fullTitle;
 			end
+
+			displayInfo.nameUncropped = displayInfo.name;
 		end
 
 		do  -- Colors
@@ -233,10 +239,12 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 
 				if customGuildName and customGuildName ~= "" then
 					displayInfo.guildName = TRP3_NamePlatesUtil.GenerateCroppedGuildName(customGuildName);
+					displayInfo.guildNameUncropped = customGuildName;
 					displayInfo.guildRank = customGuildRank or L.DEFAULT_GUILD_RANK;
 					displayInfo.guildIsCustom = true;
 				elseif originalGuildName and originalGuildName ~= "" then
 					displayInfo.guildName = TRP3_NamePlatesUtil.GenerateCroppedGuildName(originalGuildName);
+					displayInfo.guildNameUncropped = originalGuildName;
 					displayInfo.guildRank = originalGuildRank;
 					displayInfo.guildIsCustom = false;
 				end
@@ -277,10 +285,12 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 		do  -- Names/Titles
 			if TRP3_NamePlatesSettings.CustomizeNames ~= TRP3_NamePlateUnitNameDisplayMode.OriginalName then
 				displayInfo.name = profile.data.NA;
+				displayInfo.nameUncropped = displayInfo.name;
 			end
 
 			if TRP3_NamePlatesSettings.CustomizeTitles then
 				displayInfo.fullTitle = profile.data.TI;
+				displayInfo.fullTitleUncropped = displayInfo.fullTitle;
 			end
 		end
 
@@ -530,7 +540,7 @@ end
 
 function TRP3_NamePlates:UpdateAllNamePlates()
 	for _, nameplate in ipairs(C_NamePlate.GetNamePlates()) do
-		local unitToken = nameplate.namePlateUnitToken;
+		local unitToken = TRP3_NamePlatesUtil.GetNameplateUnit(nameplate);
 
 		if unitToken then
 			self:UpdateNamePlateForUnit(unitToken);
@@ -549,7 +559,7 @@ end
 
 function TRP3_NamePlates:UpdateNamePlateTargetUnit()
 	local nameplate = C_NamePlate.GetNamePlateForUnit("target");
-	local unitToken = nameplate and nameplate.namePlateUnitToken or nil;
+	local unitToken = nameplate and TRP3_NamePlatesUtil.GetNameplateUnit(nameplate) or nil;
 
 	self.namePlateTargetToken = unitToken;
 end
