@@ -1232,6 +1232,7 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 	["TB_DND_MODE"] = "Nicht stören (DnD)",
 	["TB_GO_TO_MODE"] = "Zu %s Modus wechseln",
 	["TB_LANGUAGE"] = "Sprache",
+	["TB_LANGUAGES_TT"] = "Sprache wechseln",
 	["TB_NORMAL_MODE"] = "Normal",
 	["TB_RPSTATUS_OFF"] = "Charakter: |cnRED_FONT_COLOR:Out of Character (OOC)|r",
 	["TB_RPSTATUS_ON"] = "Charakter: |cnGREEN_FONT_COLOR:In Character (IC)|r",
