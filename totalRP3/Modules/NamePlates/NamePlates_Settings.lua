@@ -284,10 +284,10 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				title = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY,
 				help = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP,
 				OnShow = function(button)
-					button:SetChecked(C_CVar.GetCVarBool("nameplateShowOnlyNameForFriendlyPlayerUnits"));
+					button:SetChecked(TRP3_NamePlatesUtil.IsNameOnlyModeEnabled());
 				end,
 				OnClick = function(button)
-					C_CVar.SetCVar("nameplateShowOnlyNameForFriendlyPlayerUnits", button:GetChecked() and "1" or "0");
+					TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(button:GetChecked());
 				end,
 			},
 		}

@@ -6,6 +6,7 @@ TRP3_CVarConstants = {
 	ColorblindMode = "colorblindMode",
 	NamePlateShowFriendlyNPCs = "nameplateShowFriendlyNPCs",
 	NamePlateShowFriends = "nameplateShowFriends",
+	NamePlateShowOnlyNameForFriendlyPlayerUnits = "nameplateShowOnlyNameForFriendlyPlayerUnits",
 	ProfanityFilter = "profanityFilter",
 };
 
