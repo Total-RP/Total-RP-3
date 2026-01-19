@@ -103,8 +103,6 @@ local function ShouldCustomizeUnitNamePlate(unitToken)
 		shouldCustomize = false;  -- Module is disabled.
 	elseif not unitToken then
 		shouldCustomize = false;  -- Unit is invalid.
-	elseif not canaccessvalue(UnitIsUnit(unitToken, "player")) then
-		shouldCustomize = false;  -- Nameplates lockdown is in effect
 	elseif UnitIsUnit(unitToken, "player") then
 		shouldCustomize = false;  -- Never decorate personal nameplates.
 	elseif TRP3_NamePlatesSettings.DisableInCombat and isInCombat then
@@ -399,7 +397,7 @@ end
 
 function TRP3_NamePlates:OnNamePlateUnitAdded(unitToken)
 	local isUnitTarget = UnitIsUnit(unitToken, "target");
-	if canaccessvalue(isUnitTarget) and isUnitTarget then
+	if isUnitTarget then
 		self:UpdateNamePlateTargetUnit();
 	end
 
@@ -409,7 +407,7 @@ end
 
 function TRP3_NamePlates:OnNamePlateUnitRemoved(unitToken)
 	local isUnitTarget = UnitIsUnit(unitToken, "target");
-	if canaccessvalue(isUnitTarget) and isUnitTarget then
+	if isUnitTarget then
 		self:UpdateNamePlateTargetUnit();
 	end
 
