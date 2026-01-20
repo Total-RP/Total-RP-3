@@ -2,6 +2,23 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.2.0
+
+## Added
+
+- Added Platynator support for RP nameplates customization.
+- Added 1930 icons and 74 musics from patch 12.0.0.
+
+## Changed
+
+- Modified the behaviour of the language button. Left-click now switches to the next language in the list, while right-click opens the dropdown as it used to.
+- Disabled some features in cases where the new API restrictions apply. This mostly applies to instanced boss encounters, Mythic+ dungeons and battlegrounds.
+
+## Fixed
+
+- Fixed an issue with slider values sometimes displaying a lot of decimals.
+- Fixed an issue with the target frame still displaying if a character's profile is deleted from the directory but a new profile cannot be retrieved on them.
+
 # Changelog version 3.1.5
 
 ## Fixed
