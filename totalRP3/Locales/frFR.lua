@@ -764,7 +764,7 @@ Ce module modifie les noms sur les barres de joueur et cible de Blizzard pour ut
 	["NAMEPLATES_CONFIG_MAX_NAME_CHARS_HELP"] = "Le nombre de caractères maximum à afficher dans les noms et les titres. Les noms dépassant cette longueur seront coupés.",
 	["NAMEPLATES_CONFIG_MAX_TITLE_CHARS"] = "Longueur de titre complet max",
 	["NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP"] = "Le nombre de caractères maximum à afficher dans les titres complets. Les titres dépassant cette longueur seront coupés.",
-	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Veuillez noter que seules les barres d'infos |cff449fe0Blizzard|r, |cff9966ffKui|r et |cffa8deffPlater|r sont actuellement supportées. Réferez-vous aux bulles d'aide de chaque paramètre ci-dessous pour plus d'information.",
+	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Veuillez noter que seules les barres d'infos |cff449fe0Blizzard|r, |cff9966ffKui|r, |cffa8deffPlater|r et |cffc69b6dPlatynator|r sont actuellement supportées. Réferez-vous aux bulles d'aide de chaque paramètre ci-dessous pour plus d'information.",
 	["NAMEPLATES_CONFIG_PAGE_SETTINGS_MAY_REQUIRE_TOGGLE_HELP"] = "Vous devrez peut-être désactiver et réactiver vos barres d'info pour que les paramètres soient appliqués.",
 	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "Paramètres de barres d'info",
 	["NAMEPLATES_CONFIG_SHOW_TARGET_UNIT"] = "Toujours afficher la cible",
