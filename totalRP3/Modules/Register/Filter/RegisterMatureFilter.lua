@@ -450,9 +450,6 @@ local function onStart()
 
 	-- Mature filter should be enabled by default if profanity filter is enabled
 	matureFilterShouldBeEnabledByDefault = TRP3_CVarCache:GetCVarBool(TRP3_CVarConstants.ProfanityFilter) or matureFilterShouldBeEnabledByDefault;
-	-- Mature filter should be enabled by default if parental control is enabled
-	-- (As far as I know, there is not other way to know if parental control is enabled other that checking the store API…)
-	matureFilterShouldBeEnabledByDefault = C_StorePublic.IsDisabledByParentalControls() or matureFilterShouldBeEnabledByDefault;
 
 	registerConfigKey(MATURE_FILTER_CONFIG, matureFilterShouldBeEnabledByDefault);
 	registerConfigKey(MATURE_FILTER_CONFIG_STRENGTH, 7);

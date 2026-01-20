@@ -406,7 +406,8 @@ function TRP3_NamePlates:OnEventUnused(event)
 end
 
 function TRP3_NamePlates:OnNamePlateUnitAdded(unitToken)
-	if UnitIsUnit(unitToken, "target") then
+	local isUnitTarget = UnitIsUnit(unitToken, "target");
+	if isUnitTarget then
 		self:UpdateNamePlateTargetUnit();
 	end
 
@@ -415,7 +416,8 @@ function TRP3_NamePlates:OnNamePlateUnitAdded(unitToken)
 end
 
 function TRP3_NamePlates:OnNamePlateUnitRemoved(unitToken)
-	if UnitIsUnit(unitToken, "target") then
+	local isUnitTarget = UnitIsUnit(unitToken, "target");
+	if isUnitTarget then
 		self:UpdateNamePlateTargetUnit();
 	end
 

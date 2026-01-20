@@ -469,7 +469,10 @@ function TRP3_API.ui.misc.isTargetTypeACompanion(unitType)
 end
 
 local function IsPetUnit(unitToken)
-	if UnitPlayerControlled(unitToken) and UnitCreatureFamily(unitToken) ~= nil then
+	local creatureFamily = UnitCreatureFamily(unitToken);
+	if not canaccessvalue(creatureFamily) then
+		return false; -- Secret lock, would have more issues
+	elseif UnitPlayerControlled(unitToken) and creatureFamily ~= nil then
 		return true;
 	elseif not TRP3_ClientFeatures.WaterElementalWorkaround then
 		return false;
@@ -605,6 +608,10 @@ end
 
 function TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType)
 	local shortID = TRP3_API.ui.misc.getCompanionShortID(unitToken, unitType);
+
+	if not canaccessvalue(shortID) then
+		return;
+	end
 
 	if shortID then
 		local owner = getCompanionOwner(unitToken, unitType);

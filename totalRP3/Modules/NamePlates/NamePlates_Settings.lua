@@ -70,27 +70,6 @@ function TRP3_NamePlatesUtil.LoadSettings()
 	TRP3_NamePlatesSettings = settings;
 end
 
-local function UpdateNameOnlyModeCheckButton(button)
-	-- The checkbutton for name-only mode is a faux tri-state checkbutton
-	-- to deal with changes in 10.0.5 where the name-only mode cvar no longer
-	-- persists across client restarts.
-	--
-	-- Internally we store a desired preference for name-only mode in our
-	-- saved variables and assign this to the cvar on load. For the UI however
-	-- we visually track the current "effective" state of the cvar, which may
-	-- be set by other installed addons.
-	--
-	-- If name-only mode is currently active from any addon, we'll display the
-	-- checkbutton in a checked state. If the user didn't enable name-only
-	-- mode through our settings, the check will be desaturated.
-
-	local preferredState = TRP3_NamePlatesUtil.IsNameOnlyModePreferred();
-	local effectiveState = TRP3_NamePlatesUtil.IsNameOnlyModeEnabled();
-
-	button:SetChecked(effectiveState);
-	button:GetCheckedTexture():SetDesaturated(preferredState ~= effectiveState);
-end
-
 function TRP3_NamePlatesUtil.RegisterSettings()
 	for key, default in pairs(DefaultSettings) do
 		TRP3_API.configuration.registerConfigKey(MapSettingToConfigKey(key), default);
@@ -305,32 +284,10 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				title = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY,
 				help = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP,
 				OnShow = function(button)
-					UpdateNameOnlyModeCheckButton(button);
+					button:SetChecked(TRP3_NamePlatesUtil.IsNameOnlyModeEnabled());
 				end,
 				OnClick = function(button)
-					-- When updating our setting we need to invert the current
-					-- state of our internal tracking variable for name-only
-					-- mode and *not* rely on the checked state of the button,
-					-- as the checked state is a visual representation of the
-					-- effective name-only state only.
-
-					local preferredState = TRP3_NamePlatesUtil.IsNameOnlyModePreferred();
-					local desiredState = not preferredState;
-					local effectiveState = TRP3_NamePlatesUtil.IsNameOnlyModeEnabled();
-
-					if desiredState ~= preferredState then
-						TRP3_NamePlatesUtil.SetNameOnlyModePreferred(desiredState);
-					end
-
-					if desiredState ~= effectiveState then
-						if desiredState then
-							TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(desiredState);
-						else
-							TRP3_API.popup.showConfirmPopup(L.CO_UI_RELOAD_WARNING, ReloadUI);
-						end
-					end
-
-					UpdateNameOnlyModeCheckButton(button);
+					TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(button:GetChecked());
 				end,
 			},
 		}

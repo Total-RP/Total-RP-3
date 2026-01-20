@@ -70,26 +70,13 @@ function TRP3_NamePlatesUtil.GetUnitCharacterID(unitToken)
 	return characterID;
 end
 
-function TRP3_NamePlatesUtil.IsNameOnlyModePreferred()
-	return TRP3_API.configuration.getValue("NamePlates_EnableNameOnlyMode");
-end
-
-function TRP3_NamePlatesUtil.SetNameOnlyModePreferred(preferred)
-	TRP3_API.configuration.setValue("NamePlates_EnableNameOnlyMode", preferred);
-end
-
 function TRP3_NamePlatesUtil.IsNameOnlyModeEnabled()
-	return C_CVar.GetCVarBool("nameplateShowOnlyNames");
+	return TRP3_CVarCache:GetCVarBool(TRP3_CVarConstants.NamePlateShowOnlyNameForFriendlyPlayerUnits);
 end
 
 function TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(enabled)
-	-- Effective configuration of the name-only mode state acts as a latch;
-	-- we only ever enable the cvar based on the users' preferred state at
-	-- load, and won't subsequently disable it until the user reloads the UI.
-
-	if enabled then
-		C_CVar.SetCVar("nameplateShowOnlyNames", "1");
-	end
+	local value = enabled and "1" or "0";
+	C_CVar.SetCVar(TRP3_CVarConstants.NamePlateShowOnlyNameForFriendlyPlayerUnits, value);
 end
 
 function TRP3_NamePlatesUtil.GetMSPNamePlateAddOn()

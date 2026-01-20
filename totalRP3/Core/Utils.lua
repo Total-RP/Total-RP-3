@@ -141,6 +141,9 @@ end
 -- The returned id can be nil.
 function Utils.str.getUnitID(unit)
 	local playerName, realm = UnitNameUnmodified(unit);
+	if not canaccessvalue(playerName) then
+		return nil;
+	end
 	if not playerName or playerName:len() == 0 or playerName == UNKNOWNOBJECT then
 		return nil;
 	end
@@ -153,6 +156,9 @@ end
 local UnitGUID = UnitGUID;
 
 function Utils.str.getUnitDataFromGUIDDirect(GUID)
+	if not canaccessvalue(GUID) then
+		return nil;
+	end
 	local unitType, _, _, _, _, npcID = strsplit("-", GUID or "");
 	return unitType, npcID;
 end

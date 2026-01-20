@@ -356,6 +356,12 @@ stds.wow = {
 			},
 		},
 
+		C_Secrets = {
+			fields = {
+				"ShouldUnitIdentityBeSecret",
+			},
+		},
+
 		C_SocialRestrictions = {
 			fields = {
 				"IsChatDisabled",
@@ -527,6 +533,7 @@ stds.wow = {
 		"BNGetGameAccountInfoByGUID",
 		"BNGetInfo",
 		"CalculateStringEditDistance",
+		"canaccessvalue",
 		"Chat_GetChatFrame",
 		"ChatConfigChannelSettings_SwapChannelsByIndex",
 		"ChatEdit_FocusActiveWindow",
@@ -633,6 +640,7 @@ stds.wow = {
 		"Lerp",
 		"Mixin",
 		"MouseIsOver",
+		"NamePlateSetupOptions",
 		"NeutralPlayerSelectFaction",
 		"nop",
 		"OpenWorldMap",
@@ -780,6 +788,7 @@ stds.wow = {
 		"NamePlateDriverFrame",
 		"SystemFont_LargeNamePlate",
 		"SystemFont_NamePlate",
+		"SystemFont_NamePlate_Outlined",
 		"SystemFont_Shadow_Huge1",
 		"SystemFont_Shadow_Huge3",
 		"SystemFont_Shadow_Large",
