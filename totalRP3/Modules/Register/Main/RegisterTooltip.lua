@@ -887,7 +887,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 		local targetHP = UnitHealth(targetType);
 		local targetHPMax = UnitHealthMax(targetType);
 		-- Don't show health if full
-		if true then
+		if true then -- TODO: FIX
 			local percentHP = UnitHealthPercent(targetType, true, CurveConstants.ScaleTo100);
 			local lineText;
 
