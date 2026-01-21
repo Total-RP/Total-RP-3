@@ -15,7 +15,7 @@ local CHANGELOG_TEXT = [[
 
 ## Added
 
-- Added Platynator support for RP nameplates customization.
+- Added Platynator support for RP nameplates customization. Thanks to Peterodox for the work on it.
 - Added 1930 icons and 74 musics from patch 12.0.0.
 
 ## Changed
