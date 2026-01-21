@@ -1,8 +1,17 @@
+# Changelog version 3.2.1
+
+## Fixed
+
+- Fixed default class colors not displaying properly in chat.
+- Fixed an error when hovering on a character without a profile.
+- Fixed tooltips not working when health text is enabled.
+  - The text will temporarily not be hidden when the target is at 100% health. We'll investigate a potential fix later.
+
 # Changelog version 3.2.0
 
 ## Added
 
-- Added Platynator support for RP nameplates customization.
+- Added Platynator support for RP nameplates customization. Thanks to Peterodox for the work on it.
 - Added 1930 icons and 74 musics from patch 12.0.0.
 
 ## Changed

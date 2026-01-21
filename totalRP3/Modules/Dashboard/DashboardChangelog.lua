@@ -2,6 +2,15 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.2.1
+
+## Fixed
+
+- Fixed default class colors not displaying properly in chat.
+- Fixed an error when hovering on a character without a profile.
+- Fixed tooltips not working when health text is enabled.
+  - The text will temporarily not be hidden when the target is at 100% health. We'll investigate a potential fix later.
+
 # Changelog version 3.2.0
 
 ## Added
