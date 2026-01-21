@@ -23,6 +23,7 @@ local function GetOrCreateDisplayInfo(unitToken)
 	displayInfo.guildRank = nil;
 	displayInfo.guildIsCustom = nil;
 	displayInfo.icon = nil;
+	displayInfo.isPlayerUnit = false;
 	displayInfo.isRoleplayUnit = false;
 	displayInfo.name = nil;
 	displayInfo.nameUncropped = nil;
@@ -161,6 +162,7 @@ end
 
 local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 	local displayInfo = GetOrCreateDisplayInfo(unitToken);
+	displayInfo.isPlayerUnit = true;
 
 	if characterID and TRP3_API.register.isUnitIDKnown(characterID) then
 		local player = GetOrCreatePlayerFromCharacterID(characterID);
