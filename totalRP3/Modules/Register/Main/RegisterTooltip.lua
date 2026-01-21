@@ -881,13 +881,13 @@ local function writeTooltipForCharacter(targetID, targetType)
 	-- Health
 	--
 
-	-- Health formatting temporarily disabled due to secret changes in Midnight.
 	local healthFormat = getConfigValue(ConfigKeys.CHARACT_HEALTH);
 	if healthFormat ~= 0 then
 		local targetHP = UnitHealth(targetType);
 		local targetHPMax = UnitHealthMax(targetType);
 		-- Don't show health if full
-		if true then -- TODO: FIX
+		-- /!\ Temporarily disabled due to secret changes in Midnight.
+		if true then
 			local percentHP = UnitHealthPercent(targetType, true, CurveConstants.ScaleTo100);
 			local lineText;
 
