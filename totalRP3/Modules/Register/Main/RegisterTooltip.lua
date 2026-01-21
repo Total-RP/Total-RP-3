@@ -892,7 +892,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 			local lineText;
 
 			local targetHPText = AbbreviateLargeNumbers(targetHP);
-			local percentHPText = percentHP .. "%";
+			local percentHPText = string.format("%d%%", percentHP);
 			local targetHPMaxText = AbbreviateLargeNumbers(targetHPMax);
 
 			-- Number
