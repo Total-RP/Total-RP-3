@@ -886,12 +886,13 @@ local function writeTooltipForCharacter(targetID, targetType)
 		local targetHP = UnitHealth(targetType);
 		local targetHPMax = UnitHealthMax(targetType);
 		-- Don't show health if full
-		if targetHP ~= targetHPMax then
-			local percentHP = targetHP / targetHPMax;
+		-- /!\ Temporarily disabled due to secret changes in Midnight.
+		if true then
+			local percentHP = UnitHealthPercent(targetType, true, CurveConstants.ScaleTo100);
 			local lineText;
 
 			local targetHPText = AbbreviateLargeNumbers(targetHP);
-			local percentHPText = FormatPercentage(percentHP, true);
+			local percentHPText = string.format("%d%%", percentHP);
 			local targetHPMaxText = AbbreviateLargeNumbers(targetHPMax);
 
 			-- Number
