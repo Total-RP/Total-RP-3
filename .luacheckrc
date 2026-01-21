@@ -417,6 +417,12 @@ stds.wow = {
 			},
 		},
 
+		CurveConstants = {
+			fields = {
+				"ScaleTo100",
+			},
+		},
+		
 		Enum = {
 			fields = {
 				HouseSettingFlags = {
@@ -716,6 +722,7 @@ stds.wow = {
 		"UnitGUID",
 		"UnitHealth",
 		"UnitHealthMax",
+		"UnitHealthPercent",
 		"UnitInParty",
 		"UnitInRaid",
 		"UnitIsAFK",
