@@ -1130,6 +1130,7 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 	["TB_DND_MODE"] = "No molestar",
 	["TB_GO_TO_MODE"] = "Cambiar a %s",
 	["TB_LANGUAGE"] = "Idioma",
+	["TB_LANGUAGES_TT"] = "Cambiar idioma",
 	["TB_NORMAL_MODE"] = "Normal",
 	["TB_RPSTATUS_OFF"] = "Personaje: |cnRED_FONT_COLOR:Fuera de rol|r",
 	["TB_RPSTATUS_ON"] = "Personaje: |cnGREEN_FONT_COLOR:En rol|r",

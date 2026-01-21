@@ -434,6 +434,7 @@ Ci sono diverse maniere per farlo:|c0000ff00
 	["TB_AFK_MODE"] = "Assente",
 	["TB_DND_MODE"] = "Non disturbare",
 	["TB_LANGUAGE"] = "Lingua",
+	["TB_LANGUAGES_TT"] = "Cambia lingua",
 	["TB_NORMAL_MODE"] = "Normale",
 	["TB_RPSTATUS_OFF"] = "Personaggio: |cnRED_FONT_COLOR:Fuori dal personaggio|r",
 	["TB_RPSTATUS_ON"] = "Personaggio: |cnGREEN_FONT_COLOR:Nel personaggio|r",
