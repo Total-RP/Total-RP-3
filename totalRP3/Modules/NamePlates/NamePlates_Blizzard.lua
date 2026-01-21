@@ -98,7 +98,7 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 	-- make sense to fallback on Blizzard nameplates if present.
 
 	local addons = {
-		"Kui_Nameplates",
+		--"Kui_Nameplates",
 		"Platynator",
 		"TidyPlates",
 	};
