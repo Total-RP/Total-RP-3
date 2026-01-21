@@ -686,7 +686,7 @@ function Utils.customGetColoredName(event, _, _, unitID, _, _, _, _, _, _, _, _,
 		end
 	end
 
-	if TRP3_CVarCache:GetCVarBool(TRP3_CVarConstants.ChatClassColorOverride) then
+	if not TRP3_CVarCache:GetCVarBool(TRP3_CVarConstants.ChatClassColorOverride) then
 		local _, englishClass = GetPlayerInfoByGUID(GUID);
 		characterColor = TRP3_API.GetClassDisplayColor(englishClass);
 	end
