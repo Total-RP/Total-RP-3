@@ -264,7 +264,8 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 
 		-- Process color overrides.
 		-- Do not color name when unit name is within the health bar, except when name-only mode is on.
-		local hasHealthBarOverlap = NamePlateSetupOptions.unitNameInsideHealthBar and not TRP3_NamePlatesUtil.IsNameOnlyModeEnabled();
+		-- Companion nameplates don't have a name-only option, so exclude them from the name-only check.
+		local hasHealthBarOverlap = NamePlateSetupOptions.unitNameInsideHealthBar and not TRP3_NamePlatesUtil.IsNameOnlyModeEnabled() or not displayInfo.isPlayerUnit;
 
 		if displayInfo.shouldColorName and not hasHealthBarOverlap then
 			local color = displayInfo.color;
@@ -343,10 +344,10 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	local shouldHide = displayInfo and displayInfo.shouldHide or false;
 
 	-- Hide the full title widget if no title is to be displayed, or if the
-	-- nameplate isn't in name-only mode.
+	-- nameplate isn't in name-only mode (companions are excluded).
 	--
 
-	local isNameOnly = TRP3_NamePlatesUtil.IsNameOnlyModeEnabled();
+	local isNameOnly = TRP3_NamePlatesUtil.IsNameOnlyModeEnabled() and displayInfo.isPlayerUnit;
 
 	if shouldHide or not ShouldShowName(unitframe) or not isNameOnly then
 		displayText = nil;
