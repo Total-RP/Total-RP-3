@@ -9,7 +9,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="NamePlates_RequestQueue.lua"/>
 	<Include file="NamePlates_Core.lua"/>
 	<Include file="NamePlates_Blizzard.lua"/>
-	<!--Include file="NamePlates_Kui.lua"/-->
 	<Include file="NamePlates_MSP.lua"/>
 	<Include file="NamePlates_Plater.lua"/>
 	<Include file="NamePlates_Platynator.lua"/>
