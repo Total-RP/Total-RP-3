@@ -100,7 +100,7 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 	local addons = {
 		--"Kui_Nameplates",
 		"Platynator",
-		"TidyPlates",
+		--"TidyPlates",
 	};
 
 	for _, addon in ipairs(addons) do
