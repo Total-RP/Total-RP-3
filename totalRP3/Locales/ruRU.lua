@@ -587,7 +587,6 @@ L = {
 	["MO_CHAT_CUSTOMIZATIONS_DESCRIPTION"] = "Добавить пользовательскую совместимость с аддоном %s, таким образом чтобы сообщения в чате и отображение имён игрока модифицировались аддоном Total RP 3.",
 	["MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION"] = "Добавить пользовательскую совместимость с аддоном %s, таким образом чтобы предпочтения всплывающих подсказок применялись к всплывающим подсказкам Total RP 3.",
 	["NAMEPLATES_CONFIG_ACTIVE_QUERY"] = "Автоматически загружать профили",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES"] = "Показывать полный титул",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS"] = "Показывать пользоватеьские цвета здоровья",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_ICONS"] = "Показывать значки",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS"] = "Показывать пользовательские цвета имени",

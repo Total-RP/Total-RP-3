@@ -67,10 +67,12 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 			overrideText = displayInfo.nameUncropped;
 		end
 
-		if TRP3_NamePlatesSettings.CustomizeFullTitles then
+		if TRP3_NamePlatesUtil.IsFullTitleEnabled() then
 			overrideSubtext = displayInfo.fullTitleUncropped or "";
-		elseif TRP3_NamePlatesSettings.CustomizeGuild then
+		elseif TRP3_NamePlatesUtil.IsGuildNameEnabled() then
 			overrideSubtext = displayInfo.guildNameUncropped;
+		elseif TRP3_NamePlatesUtil.IsSubtextDisabled() then
+			overrideSubtext = "";
 		end
 
 		if overrideText then

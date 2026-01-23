@@ -451,3 +451,20 @@ TRP3_API.flyway.patches["23"] = function()
 		TRP3_Configuration[TRP3_LocaleConstants.LocaleConfigKey] = TRP3_LocaleConstants.DefaultLocaleCode;
 	end
 end
+
+TRP3_API.flyway.patches["24"] = function()
+	-- v23 converts CustomizeFullTitles (TRP3_NamePlatesSettings) to use CustomizeSubText
+
+	if TRP3_Configuration then
+		-- If FT was on, convert to FT + GN. If FT was off, 'Nothing' is chosen by default.
+		if TRP3_Configuration["NamePlates_CustomizeFullTitles"] then
+			if not C_AddOns.IsAddOnLoaded("Plater") and not C_AddOns.IsAddOnLoaded("Platynator") then
+				TRP3_Configuration["NamePlates_CustomizeSubText"] = TRP3_NamePlateSubTextDisplayMode.FullTitleAndGuildName;
+			else
+				TRP3_Configuration["NamePlates_CustomizeSubText"] = TRP3_NamePlateSubTextDisplayMode.FullTitle;
+			end
+		end
+
+		TRP3_Configuration["NamePlates_CustomizeFullTitles"] = nil;
+	end
+end

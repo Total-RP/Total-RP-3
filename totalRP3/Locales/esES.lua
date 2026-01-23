@@ -522,7 +522,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 {h2}Total RP 3: Unit Frames{/h2}
 This module modifies Blizzard player and target frames to use RP name and color, and add a button to open profile.
 {col:f2bf1a}{link*https://www.curseforge.com/wow/addons/total-rp-3-unit-frames*Descargar en CurseForge}{/col}]=],
-	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES"] = "Mostrar títulos completos",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS"] = "Mostrar los colores personalizados de salud",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP"] = "Si está activo, cambiará el color de la barra de salud por el color personalizado del perfil.",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_ICONS"] = "Mostrar íconos",

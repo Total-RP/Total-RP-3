@@ -217,6 +217,19 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 		nameplate.TRP3_Title = titleWidget;
 	end
 
+	-- Add guild name widget.
+
+	do
+		local guildWidget = unitframe:CreateFontString(nil, "ARTWORK");
+		guildWidget:SetFontObject(SystemFont_NamePlate_Outlined);
+		guildWidget:ClearAllPoints();
+		guildWidget:SetPoint("TOP", unitframe.name, "BOTTOM", 0, -2);
+		guildWidget:SetVertexColor(TRP3_API.Colors.Grey:GetRGBA());
+		guildWidget:Hide();
+
+		nameplate.TRP3_Guild = guildWidget;
+	end
+
 	-- Add icon widget.
 
 	do
@@ -330,7 +343,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateIcon(nameplate)
 	end
 end
 
-function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
+function TRP3_BlizzardNamePlates:UpdateNamePlateSubText(nameplate)
 	if not self:CanCustomizeNamePlate(nameplate) then
 		return;
 	end
@@ -338,24 +351,49 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	local unitframe = nameplate.UnitFrame;
 	local unitToken = nameplate:GetUnit();
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
-	local displayText = displayInfo and displayInfo.fullTitle or nil;
-	local shouldHide = displayInfo and displayInfo.shouldHide or false;
 
-	-- Hide the full title widget if no title is to be displayed, or if the
+	local displayFullTitle = nil;
+	local displayGuild = nil;
+
+	-- Hide the subtext widgets if no subtext is to be displayed, or if the
 	-- nameplate isn't in name-only mode (companions are excluded).
 	--
 
 	local isNameOnly = TRP3_NamePlatesUtil.IsNameOnlyModeEnabled() and displayInfo.isPlayerUnit;
+	local shouldShow = displayInfo and not displayInfo.shouldHide and not TRP3_NamePlatesUtil.IsSubtextDisabled() and ShouldShowName(unitframe);
 
-	if shouldHide or not ShouldShowName(unitframe) or not isNameOnly then
-		displayText = nil;
+	if shouldShow and isNameOnly then
+		if TRP3_NamePlatesUtil.IsFullTitleEnabled() then
+			displayFullTitle = displayInfo.fullTitle;
+		end
+
+		if TRP3_NamePlatesUtil.IsGuildNameEnabled() then
+			displayGuild = displayInfo.guildName;
+		end
 	end
 
-	if displayText then
-		nameplate.TRP3_Title:SetText(displayText);
+	if displayFullTitle then
+		-- We apply colors here, and not in widget creation, so changes to the color are shown instantly.
+		displayFullTitle = TRP3_API.CreateColorFromHexString(TRP3_NamePlatesSettings.TooltipFullTitleColor):WrapTextInColorCode(displayFullTitle);
+		nameplate.TRP3_Title:SetText(displayFullTitle);
 		nameplate.TRP3_Title:Show();
 	else
 		nameplate.TRP3_Title:Hide();
+	end
+
+	if displayGuild then
+		-- We apply colors here, and not in widget creation, so changes to the color are shown instantly.
+		displayGuild = TRP3_API.CreateColorFromHexString(TRP3_NamePlatesSettings.TooltipGuildNameColor):WrapTextInColorCode(displayGuild);
+		nameplate.TRP3_Guild:SetText(displayGuild);
+		-- Put under FT if it is shown
+		if displayFullTitle and nameplate.TRP3_Title:IsShown() then
+			nameplate.TRP3_Guild:SetPoint("TOP", nameplate.TRP3_Title, "BOTTOM", 0, -2);
+		else
+			nameplate.TRP3_Guild:SetPoint("TOP", unitframe.name, "BOTTOM", 0, -2);
+		end
+		nameplate.TRP3_Guild:Show();
+	else
+		nameplate.TRP3_Guild:Hide();
 	end
 
 	--[[ TO:DO Requires further adjustment for Classic
@@ -415,7 +453,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlate(nameplate)
 	self:UpdateNamePlateName(nameplate);
 	self:UpdateNamePlateHealthBar(nameplate);
 	self:UpdateNamePlateIcon(nameplate);
-	self:UpdateNamePlateFullTitle(nameplate);
+	self:UpdateNamePlateSubText(nameplate);
 end
 
 function TRP3_BlizzardNamePlates:CanCustomizeNamePlate(nameplate)

@@ -25,8 +25,14 @@ TRP3_NamePlateUnitNameDisplayMode = {
 	OriginalName = 3,
 };
 
+TRP3_NamePlateSubTextDisplayMode = {
+	FullTitle = 1,
+	GuildName = 2,
+	FullTitleAndGuildName = 3,
+	Nothing = 4,
+}
+
 local DefaultSettings = {
-	CustomizeFullTitles = false,
 	CustomizeGuild = false,
 	CustomizeHealthColors = true,
 	CustomizeIcons = false,
@@ -36,6 +42,7 @@ local DefaultSettings = {
 	CustomizeNPCUnits = TRP3_NamePlateUnitCustomizationState.Show,
 	CustomizeNames = TRP3_NamePlateUnitNameDisplayMode.FullName,
 	CustomizeRoleplayStatus = false,
+	CustomizeSubText = TRP3_NamePlateSubTextDisplayMode.Nothing,
 	CustomizeTitles = true,
 	DisableInCombat = false,
 	DisableInInstances = true,
@@ -49,6 +56,8 @@ local DefaultSettings = {
 	MaximumGuildNameLength = 30,
 	PreferredOOCIndicator = TRP3_OOCIndicatorStyle.Text,
 	ShowTargetUnit = true,
+	TooltipFullTitleColor = TRP3_API.Colors.White:GenerateHexColor(),
+	TooltipGuildNameColor = TRP3_API.Colors.Yellow:GenerateHexColor(),
 };
 
 local function MapSettingToConfigKey(field)
@@ -68,6 +77,24 @@ function TRP3_NamePlatesUtil.LoadSettings()
 	end
 
 	TRP3_NamePlatesSettings = settings;
+end
+
+local subTextOptions = {
+	{ L.NAMEPLATES_CONFIG_SUBTEXT_FULL_TITLE, TRP3_NamePlateSubTextDisplayMode.FullTitle, L.NAMEPLATES_CONFIG_SUBTEXT_FULL_TITLE_HELP },
+	{ L.NAMEPLATES_CONFIG_SUBTEXT_NOTHING, TRP3_NamePlateSubTextDisplayMode.Nothing, L.NAMEPLATES_CONFIG_SUBTEXT_NOTHING_HELP },
+}
+
+local isPlaterLoaded = C_AddOns.IsAddOnLoaded("Plater");
+local isPlatynatorLoaded = C_AddOns.IsAddOnLoaded("Platynator");
+
+-- Plater handles guild name display in its own settings, we can only handle Full Titles.
+if not isPlaterLoaded then
+	tinsert(subTextOptions, #subTextOptions, { L.NAMEPLATES_CONFIG_SUBTEXT_GUILD_NAME, TRP3_NamePlateSubTextDisplayMode.GuildName, L.NAMEPLATES_CONFIG_SUBTEXT_GUILD_NAME_HELP:format(L.NAMEPLATES_CONFIG_CUSTOMIZE_GUILD) });
+end
+
+-- Plater handles guild name display in its own settings, we can only handle Full Titles & Platynator only allows Full Title OR Guild Name.
+if not isPlaterLoaded and not isPlatynatorLoaded then
+	tinsert(subTextOptions, #subTextOptions, {L.NAMEPLATES_CONFIG_SUBTEXT_FULL_TITLE_GUILD_NAME, TRP3_NamePlateSubTextDisplayMode.FullTitleAndGuildName, L.NAMEPLATES_CONFIG_SUBTEXT_FULL_TITLE_GUILD_NAME_HELP:format(L.NAMEPLATES_CONFIG_CUSTOMIZE_GUILD) });
 end
 
 function TRP3_NamePlatesUtil.RegisterSettings()
@@ -204,23 +231,6 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES,
-				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES_HELP,
-				configKey = MapSettingToConfigKey("CustomizeFullTitles"),
-			},
-			{
-				inherit = "TRP3_ConfigSlider",
-				title = L.NAMEPLATES_CONFIG_MAX_TITLE_CHARS,
-				help = L.NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP,
-				configKey = MapSettingToConfigKey("MaximumTitleLength"),
-				dependentOnOptions = { MapSettingToConfigKey("CustomizeFullTitles") },
-				min = 10,
-				max = 60,
-				step = 1,
-				integer = true,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS,
 				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS_HELP,
 				configKey = MapSettingToConfigKey("CustomizeRoleplayStatus"),
@@ -253,17 +263,47 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				integer = true,
 			},
 			{
+				inherit = "TRP3_ConfigDropDown",
+				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_SUBTEXT,
+				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_SUBTEXT_HELP,
+				listContent = subTextOptions,
+				configKey = MapSettingToConfigKey("CustomizeSubText"),
+				listWidth = nil,
+				listCancel = true,
+			},
+			{
+				inherit = "TRP3_ConfigColorPicker",
+				title = L.NAMEPLATES_CONFIG_TOOLTIP_FULL_TITLE_COLOR,
+				help = L.NAMEPLATES_CONFIG_TOOLTIP_FULL_TITLE_COLOR_HELP,
+				configKey = MapSettingToConfigKey("TooltipFullTitleColor"),
+			},
+			{
+				inherit = "TRP3_ConfigSlider",
+				title = L.NAMEPLATES_CONFIG_MAX_TITLE_CHARS,
+				help = L.NAMEPLATES_CONFIG_MAX_TITLE_CHARS_HELP,
+				configKey = MapSettingToConfigKey("MaximumTitleLength"),
+				min = 10,
+				max = 60,
+				step = 1,
+				integer = true,
+			},
+			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_GUILD,
 				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_GUILD_HELP,
 				configKey = MapSettingToConfigKey("CustomizeGuild"),
 			},
 			{
+				inherit = "TRP3_ConfigColorPicker",
+				title = L.NAMEPLATES_CONFIG_TOOLTIP_GUILD_NAME_COLOR,
+				help = L.NAMEPLATES_CONFIG_TOOLTIP_GUILD_NAME_COLOR_HELP,
+				configKey = MapSettingToConfigKey("TooltipGuildNameColor"),
+			},
+			{
 				inherit = "TRP3_ConfigSlider",
 				title = L.NAMEPLATES_CONFIG_MAX_GUILD_NAME_CHARS,
 				help = L.NAMEPLATES_CONFIG_MAX_GUILD_NAME_CHARS_HELP,
 				configKey = MapSettingToConfigKey("MaximumGuildNameLength"),
-				dependentOnOptions = { MapSettingToConfigKey("CustomizeGuild") },
 				min = 10,
 				max = 60,
 				step = 1,

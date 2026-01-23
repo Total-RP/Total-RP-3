@@ -194,7 +194,7 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 				end
 			end
 
-			if TRP3_NamePlatesSettings.CustomizeFullTitles then
+			if TRP3_NamePlatesUtil.IsFullTitleEnabled() then
 				displayInfo.fullTitle = player:GetFullTitle();
 				displayInfo.fullTitleUncropped = displayInfo.fullTitle;
 			end
@@ -232,14 +232,14 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 		end
 
 		do  -- Guild Membership
-			if TRP3_NamePlatesSettings.CustomizeGuild then
+			if TRP3_NamePlatesUtil.IsGuildNameEnabled() then
 				local customGuildInfo = player:GetCustomGuildMembership();
 				local customGuildName = customGuildInfo.name and string.trim(customGuildInfo.name) or nil;
 				local customGuildRank = customGuildInfo.rank and string.trim(customGuildInfo.rank) or nil;
 
 				local originalGuildName, originalGuildRank = GetGuildInfo(unitToken);
 
-				if customGuildName and customGuildName ~= "" then
+				if customGuildName and customGuildName ~= "" and TRP3_NamePlatesSettings.CustomizeGuild then
 					displayInfo.guildName = TRP3_NamePlatesUtil.GenerateCroppedGuildName(customGuildName);
 					displayInfo.guildNameUncropped = customGuildName;
 					displayInfo.guildRank = customGuildRank or L.DEFAULT_GUILD_RANK;
