@@ -90,3 +90,18 @@ end
 function TRP3_NamePlatesUtil.GetNameplateUnit(nameplate)
 	return nameplate.namePlateUnitToken or nameplate.unitToken;
 end
+
+function TRP3_NamePlatesUtil.IsFullTitleEnabled()
+	local subTextMode = TRP3_NamePlatesSettings.CustomizeSubText;
+	return subTextMode == TRP3_NamePlateSubTextDisplayMode.FullTitle or subTextMode == TRP3_NamePlateSubTextDisplayMode.FullTitleAndGuildName;
+end
+
+function TRP3_NamePlatesUtil.IsGuildNameEnabled()
+	local subTextMode = TRP3_NamePlatesSettings.CustomizeSubText;
+	return subTextMode == TRP3_NamePlateSubTextDisplayMode.GuildName or subTextMode == TRP3_NamePlateSubTextDisplayMode.FullTitleAndGuildName;
+end
+
+function TRP3_NamePlatesUtil.IsSubtextDisabled()
+	local subTextMode = TRP3_NamePlatesSettings.CustomizeSubText;
+	return subTextMode == TRP3_NamePlateSubTextDisplayMode.Nothing;
+end
