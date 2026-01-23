@@ -725,8 +725,6 @@ Ce module modifie les noms sur les barres de joueur et cible de Blizzard pour ut
 	["NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP"] = "Si coché, récupère automatiquement les profils RP des unités avec des barres d'infos visibles.",
 	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY"] = "Cacher les barres d’info de personnage-joueur amical |cff449fe0Blizzard|r",
 	["NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP"] = "Si coché, ceci active le mode \"nom uniquement\" des barres d’info de personnage-joueur amical |cff449fe0Blizzard|r.|n|nDans ce mode, toutes les barres d’info de personnage-joueur amical ont les barres de vie cachées, y compris celles avec ou sans profil RP.",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES"] = "Afficher les titres complets",
-	["NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES_HELP"] = "Si coché, affiche le titre complet d'une unité sur sa barre d'info.|n|nPour les barres d'info |cff449fe0Blizzard|r et |cff9966ffKui|r, les titres complets ne sont affichés qu'en mode \"nom uniquement\".",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_GUILD"] = "Afficher les noms de guilde personnalisés",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_GUILD_HELP"] = "Si activé, affiche les noms de guilde personnalisés sur les barres d'info qui les supportent.",
 	["NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS"] = "Barres de vie avec couleur personnalisée",
