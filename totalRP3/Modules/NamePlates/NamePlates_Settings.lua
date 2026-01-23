@@ -323,9 +323,7 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY,
 				help = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP,
-				OnShow = function(button)
-					button:SetChecked(TRP3_NamePlatesUtil.IsNameOnlyModeEnabled());
-				end,
+				configKey = MapSettingToConfigKey("EnableNameOnlyMode"),
 				OnClick = function(button)
 					TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(button:GetChecked());
 				end,

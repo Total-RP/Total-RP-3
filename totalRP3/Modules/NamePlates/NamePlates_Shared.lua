@@ -70,6 +70,10 @@ function TRP3_NamePlatesUtil.GetUnitCharacterID(unitToken)
 	return characterID;
 end
 
+function TRP3_NamePlatesUtil.SyncNameOnlyModeState()
+	TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(TRP3_API.configuration.getValue("NamePlates_EnableNameOnlyMode"));
+end
+
 function TRP3_NamePlatesUtil.IsNameOnlyModeEnabled()
 	return TRP3_CVarCache:GetCVarBool(TRP3_CVarConstants.NamePlateShowOnlyNameForFriendlyPlayerUnits);
 end
