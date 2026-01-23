@@ -130,6 +130,7 @@ function TRP3_BlizzardNamePlates:OnModuleEnable()
 	self.initializedNameplates = {};
 
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
+	TRP3_NamePlatesUtil.SyncNameOnlyModeState();
 
 	hooksecurefunc("CompactUnitFrame_SetUpFrame", function(...) return self:OnUnitFrameSetUp(...); end);
 	hooksecurefunc(NamePlateDriverFrame, "UpdateNamePlateOptions", function() return self:OnUpdateNamePlateOptions(); end);
