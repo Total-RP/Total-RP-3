@@ -59,7 +59,7 @@ end
 
 function TRP3_CVarCacheMixin:GetCVarNumber(cvar)
 	local value = self:GetCVarValue(cvar);
-	return (value ~= nil) and tonumber(cvar);
+	return (value ~= nil) and tonumber(value);
 end
 
 function TRP3_CVarCacheMixin:SetCVarCachable(cvar)
