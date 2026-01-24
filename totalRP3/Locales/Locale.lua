@@ -3,25 +3,32 @@
 
 local _, TRP3_API = ...;
 
-local Locale = {};
-TRP3_API.Locale = Locale;
+TRP3_LocaleConstants = {
+	DefaultLocaleCode = "default",
+	LocaleConfigKey = "AddonLocale",
+};
 
-function Locale.init()
-	TRP3_API.configuration.registerConfigKey("AddonLocale", GetLocale());
-	TRP3_API.loc:SetCurrentLocale(TRP3_API.utils.GetPreferredLocale(), true);
+function TRP3_API.GetDefaultLocale()
+	-- GAME_LOCALE is an opt-in global supported by a few addons that allows
+	-- for centralized overrides of locale - use it if set.
 
-	BINDING_NAME_TRP3_TOGGLE = TRP3_API.loc.BINDING_NAME_TRP3_TOGGLE;
-	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = TRP3_API.loc.BINDING_NAME_TRP3_TOOLBAR_TOGGLE;
-	BINDING_NAME_TRP3_OPEN_TARGET_PROFILE = TRP3_API.loc.BINDING_NAME_TRP3_OPEN_TARGET_PROFILE;
-	BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS = TRP3_API.loc.BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS;
-
-	-- Localization strings are exported globally for use from XML which
-	-- is incapable of performing nested lookups. Longer-term, we may want
-	-- to use global strings everywhere for consistency.
-
-	for key, value in TRP3_API.loc:EnumerateTexts() do
-		_G["TRP3_L_" .. key] = value;
+	if GAME_LOCALE ~= nil then
+		return GAME_LOCALE;
 	end
+
+	return GetLocale();
+end
+
+function TRP3_API.GetPreferredLocale()
+	if TRP3_Configuration then
+		local configuredLocale = TRP3_Configuration[TRP3_LocaleConstants.LocaleConfigKey];
+
+		if configuredLocale ~= nil and configuredLocale ~= TRP3_LocaleConstants.DefaultLocaleCode then
+			return configuredLocale;
+		end
+	end
+
+	return TRP3_API.GetDefaultLocale();
 end
 
 -- Shortcut formatting
@@ -109,4 +116,19 @@ function TRP3_API.FormatShortcutWithInstruction(binding, instruction, shortcutTy
 	local shortcut = TRP3_API.FormatShortcut(binding, shortcutType);
 	local text = string.format(TRP3_API.loc.SHORTCUT_INSTRUCTION, shortcut, instruction);
 	return GREEN_FONT_COLOR:WrapTextInColorCode(text);
+end
+
+TRP3_API.loc:SetCurrentLocale(TRP3_API.GetPreferredLocale(), true);
+
+BINDING_NAME_TRP3_TOGGLE = TRP3_API.loc.BINDING_NAME_TRP3_TOGGLE;
+BINDING_NAME_TRP3_TOOLBAR_TOGGLE = TRP3_API.loc.BINDING_NAME_TRP3_TOOLBAR_TOGGLE;
+BINDING_NAME_TRP3_OPEN_TARGET_PROFILE = TRP3_API.loc.BINDING_NAME_TRP3_OPEN_TARGET_PROFILE;
+BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS = TRP3_API.loc.BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS;
+
+-- Localization strings are exported globally for use from XML which
+-- is incapable of performing nested lookups. Longer-term, we may want
+-- to use global strings everywhere for consistency.
+
+for key, value in TRP3_API.loc:EnumerateTexts() do
+	_G["TRP3_L_" .. key] = value;
 end

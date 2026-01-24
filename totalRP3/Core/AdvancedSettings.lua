@@ -82,30 +82,44 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 	-- Sort locales alphabetically.
 	table.sort(localeTab, function(a,b) return a[1] < b[1] end);
+	table.insert(localeTab, 1, { string.format(loc.CO_LOCALE_DEFAULT, loc:GetLocale(TRP3_API.GetDefaultLocale()):GetName()), TRP3_LocaleConstants.DefaultLocaleCode })
 
 	-- Localization settings
 	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc.CO_GENERAL_LOCALE,
 	});
+
+	TRP3_API.configuration.registerConfigKey(TRP3_LocaleConstants.LocaleConfigKey, TRP3_LocaleConstants.DefaultLocaleCode);
 	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigDropDown",
 		widgetName = "TRP3_ConfigurationGeneral_LangWidget",
 		title = loc.CO_GENERAL_LOCALE,
 		listContent = localeTab,
 		listCallback = function(newLocaleCode)
-			if newLocaleCode == loc:GetActiveLocale():GetCode() then
+			local currentLocaleCode = loc:GetActiveLocale():GetCode();
+
+			if newLocaleCode == currentLocaleCode then
 				-- Locale isn't changing.
 				return;
 			end
 
-			-- Only change `AddonLocale` config when user accepts.
-			TRP3_API.popup.showConfirmPopup(loc.CO_GENERAL_CHANGELOCALE_ALERT:format(TRP3_API.Colors.Green(loc:GetLocale(newLocaleCode):GetName())), function()
-				Configuration.setValue("AddonLocale", newLocaleCode);
-				ReloadUI();
-			end);
+			-- If we're changing to the default locale but the default and
+			-- active locales are effectively equivalent, commit directly
+			-- without a reload warning.
+
+			if newLocaleCode == TRP3_LocaleConstants.DefaultLocaleCode and currentLocaleCode == TRP3_API.GetDefaultLocale() then
+				Configuration.setValue(TRP3_LocaleConstants.LocaleConfigKey, TRP3_LocaleConstants.DefaultLocaleCode)
+			else
+				local function OnAccept()
+					Configuration.setValue(TRP3_LocaleConstants.LocaleConfigKey, newLocaleCode);
+					ReloadUI();
+				end
+
+				TRP3_API.popup.showConfirmPopup(loc.CO_GENERAL_CHANGELOCALE_ALERT:format(TRP3_API.Colors.Green(loc:GetLocale(newLocaleCode):GetName())), OnAccept);
+			end
 		end,
-		listDefault = loc:GetActiveLocale():GetName(),
+		configKey = TRP3_LocaleConstants.LocaleConfigKey,
 		listCancel = true,
 	});
 

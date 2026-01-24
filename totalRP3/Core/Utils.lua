@@ -913,19 +913,6 @@ TRP3_API.utils.Oldgodify = Oldgodify;
 -- Settings
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function Utils.GetDefaultLocale()
-	return GAME_LOCALE or GetLocale();
-end
-
-function Utils.GetPreferredLocale()
-	-- TODO: Our addon locale setting unfortunately defaults to the client
-	--       locale and gets sticky - if you install the addon on an esMX client
-	--       and then change to a ptBR one it'd stay set to esMX. As such, the
-	--       default fallback will almost always never actually occur.
-
-	return TRP3_API.configuration.getValue("AddonLocale") or Utils.GetDefaultLocale();
-end
-
 -- Ref: <https://en.wikipedia.org/wiki/Date_format_by_country>
 local LOCALIZED_DATE_FORMATS =
 {
@@ -945,7 +932,7 @@ local LOCALIZED_DATE_FORMATS =
 };
 
 function Utils.GetDefaultDateFormat()
-	local locale = Utils.GetPreferredLocale();
+	local locale = TRP3_API.GetPreferredLocale();
 
 	if locale == "enUS" and LOCALE_enGB then
 		locale = "enGB";

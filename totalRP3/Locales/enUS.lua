@@ -385,6 +385,7 @@ The description doesn't have to be limited to |cnGREEN_FONT_COLOR:physical descr
 	CO_GENERAL = "General",
 	CO_GENERAL_CHANGELOCALE_ALERT = "Reload the interface in order to change the language to %s now?\n\nIf not, the language will be changed on the next connection.",
 	CO_GENERAL_LOCALE = "Addon locale",
+	CO_LOCALE_DEFAULT = "Default (%s)",
 	CO_GENERAL_COM = "Communication",
 	CO_GENERAL_MISC = "Miscellaneous",
 	CO_GENERAL_TT_SIZE = "Info tooltip text size",
@@ -1641,10 +1642,5 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 BINDING_HEADER_TRP3 = "Total RP 3";
 
--- The default locale for any lookups in script bodies is based on the addon
--- locale global managed by the Data addon, which will prefer (in-order) the
--- the previously configured state of the AddonLocale setting, the unofficial
--- GAME_LOCALE global variable, or finally the default client locale.
 TRP3_API.loc = TRP3_API.Ellyb.Localization(L);
 TRP3_API.loc:RegisterNewLocale("enUS", "English", L);
-TRP3_API.loc:SetCurrentLocale(GAME_LOCALE or GetLocale(), true);

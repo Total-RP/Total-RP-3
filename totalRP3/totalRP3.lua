@@ -34,10 +34,6 @@ local function loadingSequence()
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.flyway.applyPatches";
 	TRP3_API.flyway.applyPatches();
 
-	-- Inits locale
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.Locale.init";
-	TRP3_API.Locale.init();
-
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.module.init";
 	TRP3_API.module.init();
 
