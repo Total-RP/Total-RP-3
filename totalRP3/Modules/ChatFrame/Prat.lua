@@ -39,17 +39,20 @@ Prat:AddModuleToLoad(function()
 
 	-- Runs before Prat add the message to the chat frames
 	function pratModule:Prat_PreAddMessage(_, message, _, event)
-		if TRP3_API.chat.disabledByOOC() then return end;
+		if TRP3_API.chat.disabledByOOC() then return; end
+
+		-- Secret lockdown is in effect, can't do anything with the information
+		if not canaccessvalue(message.GUID) then return; end
 
 		-- If the message has no GUID (system?) or an invalid GUID (WIM >:( ) we don't have anything to do with this
-		if not message.GUID or not C_PlayerInfo.GUIDIsPlayer(message.GUID) then return end;
+		if not message.GUID or not C_PlayerInfo.GUIDIsPlayer(message.GUID) then return; end
 
 		-- If the message has no player, we don't have anything to do with this
-		if not TRP3_API.utils.str.emptyToNil(message.PLAYER) then return end;
+		if not TRP3_API.utils.str.emptyToNil(message.PLAYER) then return; end
 
 		-- Do not do any modification if the channel is not handled by TRP3 or customizations has been disabled
 		-- for that channel in the settings
-		if not TRP3_API.chat.isChannelHandled(event) or not TRP3_API.chat.configIsChannelUsed(event) then return end;
+		if not TRP3_API.chat.isChannelHandled(event) or not TRP3_API.chat.configIsChannelUsed(event) then return; end
 
 		-- Retrieve all the player info from the message GUID
 		local _, _, _, _, _, name, realm = GetPlayerInfoByGUID(message.GUID);
