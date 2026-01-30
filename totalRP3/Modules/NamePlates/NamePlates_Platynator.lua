@@ -67,10 +67,21 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 			overrideText = displayInfo.nameUncropped;
 		end
 
-		if TRP3_NamePlatesSettings.CustomizeFullTitles then
-			overrideSubtext = displayInfo.fullTitleUncropped or "";
-		elseif TRP3_NamePlatesSettings.CustomizeGuild then
+		if TRP3_NamePlatesUtil.IsFullTitleEnabled() then
+			overrideSubtext = displayInfo.fullTitleUncropped;
+
+			-- If full title is empty on characters or pets, we give an empty string to the title text
+			-- (so it doesn't get replaced by the guild)
+			if not overrideSubtext then
+				local targetType = TRP3_API.ui.misc.getTargetType(unitToken);
+				if targetType ~= AddOn_TotalRP3.Enums.UNIT_TYPE.NPC then
+					overrideSubtext = "";
+				end
+			end
+		elseif TRP3_NamePlatesUtil.IsGuildNameEnabled() then
 			overrideSubtext = displayInfo.guildNameUncropped;
+		elseif TRP3_NamePlatesUtil.IsSubtextDisabled() then
+			overrideSubtext = "";
 		end
 
 		if overrideText then

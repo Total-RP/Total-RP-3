@@ -35,8 +35,8 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 		displayName = TRP3_NamePlatesUtil.PrependRoleplayStatusToText(displayName, displayInfo.roleplayStatus);
 	end
 
-	-- Insert the full RP title
-	if displayInfo.fullTitle and not displayInfo.shouldHide then
+	-- Insert the full RP title (if FT display is chosen by the user)
+	if TRP3_NamePlatesUtil.IsFullTitleEnabled() and displayInfo.fullTitle and not displayInfo.shouldHide then
 		local fullTitle = displayInfo.fullTitle;
 		if self.useFullTitleColor then
 			displayName = displayName .. "\n" .. self.fullTitleColor:WrapTextInColorCode(fullTitle);

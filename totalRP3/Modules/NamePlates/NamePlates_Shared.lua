@@ -70,6 +70,10 @@ function TRP3_NamePlatesUtil.GetUnitCharacterID(unitToken)
 	return characterID;
 end
 
+function TRP3_NamePlatesUtil.SyncNameOnlyModeState()
+	TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(TRP3_API.configuration.getValue("NamePlates_EnableNameOnlyMode"));
+end
+
 function TRP3_NamePlatesUtil.IsNameOnlyModeEnabled()
 	return TRP3_CVarCache:GetCVarBool(TRP3_CVarConstants.NamePlateShowOnlyNameForFriendlyPlayerUnits);
 end
@@ -89,4 +93,19 @@ end
 
 function TRP3_NamePlatesUtil.GetNameplateUnit(nameplate)
 	return nameplate.namePlateUnitToken or nameplate.unitToken;
+end
+
+function TRP3_NamePlatesUtil.IsFullTitleEnabled()
+	local subTextMode = TRP3_NamePlatesSettings.CustomizeSubText;
+	return subTextMode == TRP3_NamePlateSubTextDisplayMode.FullTitle or subTextMode == TRP3_NamePlateSubTextDisplayMode.FullTitleAndGuildName;
+end
+
+function TRP3_NamePlatesUtil.IsGuildNameEnabled()
+	local subTextMode = TRP3_NamePlatesSettings.CustomizeSubText;
+	return subTextMode == TRP3_NamePlateSubTextDisplayMode.GuildName or subTextMode == TRP3_NamePlateSubTextDisplayMode.FullTitleAndGuildName;
+end
+
+function TRP3_NamePlatesUtil.IsSubtextDisabled()
+	local subTextMode = TRP3_NamePlatesSettings.CustomizeSubText;
+	return subTextMode == TRP3_NamePlateSubTextDisplayMode.Nothing;
 end
