@@ -1,3 +1,24 @@
+# Changelog version 3.2.2
+
+## Changed
+
+- Replaced the "Show full titles" checkbox with a subtext dropdown:
+  - On Blizzard nameplates, this allows to display full titles and/or guild names.
+  - On Platynator nameplates, this allows to choose between full titles or guild names.
+  - On Plater nameplates, this allows to replace guild names with full titles as before.
+- When changing the game text language, the addon will now automatically adjust to the new selected language by default.
+  - You can re-select a specific language in the addon settings if you don't want the addon automatically adjusting the language.
+  - If your addon language settings were already different from the game, this setting was not modified.
+
+## Fixed
+
+- Fixed default class colors not displaying properly in chat (for real this time).
+- Fixed some secret-related issues when right-clicking a unit, having soft target enabled, or using Prat.
+- Fixed the name-only Blizzard nameplates setting not persisting through client restarts.
+- Pet nameplates will no longer have colored text and titles while text-only mode is enabled on Blizzard nameplates.
+- Fixed Platynator customization erasing NPC titles when displaying full titles.
+- Fixed Blizzard nameplates customization not applying if Kui is left enabled despite not loading.
+
 # Changelog version 3.2.1
 
 ## Fixed
