@@ -9,7 +9,7 @@ local CHANGELOG_TEXT = [[
 - Replaced the "Show full titles" checkbox with a subtext dropdown:
   - On Blizzard nameplates, this allows to display full titles and/or guild names.
   - On Platynator nameplates, this allows to choose between full titles or guild names.
-  - On Plater nameplates, this allows to replace guild names with full titles as before.
+  - On Plater nameplates, the setting works as before, allowing to display full titles while guild names are handled by Plater settings.
 - When changing the game text language, the addon will now automatically adjust to the new selected language by default.
   - You can re-select a specific language in the addon settings if you don't want the addon automatically adjusting the language.
   - If your addon language settings were already different from the game, this setting was not modified.
