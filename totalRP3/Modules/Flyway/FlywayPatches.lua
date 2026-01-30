@@ -435,3 +435,19 @@ TRP3_API.flyway.patches["22"] = function()
 		end
 	end
 end
+
+TRP3_API.flyway.patches["23"] = function()
+	-- v23 adds a "default" locale that isn't sticky and will correctly follow
+	-- client locale if the user for some reason changes language.
+	--
+	-- Any existing configuration of the addon locale that is equivalent to
+	-- the default on login should swap to this.
+
+	if not TRP3_Configuration then
+		return;
+	end
+
+	if TRP3_Configuration[TRP3_LocaleConstants.LocaleConfigKey] == TRP3_API.GetDefaultLocale() then
+		TRP3_Configuration[TRP3_LocaleConstants.LocaleConfigKey] = TRP3_LocaleConstants.DefaultLocaleCode;
+	end
+end

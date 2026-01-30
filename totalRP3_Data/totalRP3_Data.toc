@@ -5,7 +5,8 @@
 ## Notes: The best data storage for the best roleplaying addon for World of Warcraft.|n|n|cffffd200Version:|r @project-version@
 ## IconTexture: 982414
 ## Group: totalRP3
-## SavedVariables: TRP3_AddonLocale, TRP3_Register
+## SavedVariables: TRP3_Register
+## LoadSavedVariablesFirst: 1
 ## LoadOnDemand: 1
 
 ## X-Category: Roleplay
@@ -14,5 +15,3 @@
 ## X-Curse-Project-ID: 75973
 ## X-Wago-ID: q96dnGOm
 ## X-WoWI-ID: 24113
-
-totalRP3_Data.lua
