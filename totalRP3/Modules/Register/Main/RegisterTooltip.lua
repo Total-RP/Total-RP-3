@@ -1462,7 +1462,10 @@ local function GetCurrentTooltipUnit()
 	if not unitToken and showWorldCursor() and getAnchoredPosition() ~= "ANCHOR_CURSOR" then
 		-- World cursor units are not consulted if the tooltip is set to
 		-- anchor to the cursor itself, as it looks a bit silly.
-		unitToken = GetWorldCursorUnit();
+		local worldCursorUnit = GetWorldCursorUnit();
+		if canaccessvalue(worldCursorUnit) then
+			unitToken = worldCursorUnit;
+		end
 	end
 
 	if unitToken and C_Secrets.ShouldUnitIdentityBeSecret(unitToken) then
