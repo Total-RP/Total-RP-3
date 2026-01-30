@@ -17,7 +17,7 @@
 ## Category-zhTW: 角色扮演
 ## Group: totalRP3
 
-## OptionalDeps: !ClassColors, _DebugLog, Kui_Nameplates, Kui_Nameplates_Core, Platynator, Prat-3.0
+## OptionalDeps: !ClassColors, _DebugLog, Kui_Nameplates, Kui_Nameplates_Core, Plater, Platynator, Prat-3.0
 ## RequiredDeps: totalRP3_Data
 ## SavedVariables: TRP3_Characters, TRP3_Colors, TRP3_Companions, TRP3_Configuration, TRP3_Flyway, TRP3_MatureFilter, TRP3_Notes, TRP3_Presets, TRP3_Profiles, TRP3_SavedAutomation
 ## LoadSavedVariablesFirst: 1
