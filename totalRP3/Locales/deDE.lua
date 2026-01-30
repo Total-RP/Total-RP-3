@@ -645,7 +645,6 @@ Dieses Modul modifiziert die Blizzard Spieler- und Zielfenster, um den RP-Namen 
 	["NAMEPLATES_CONFIG_UNIT_NAME_FIRST"] = "Zeige Vorname",
 	["NAMEPLATES_CONFIG_UNIT_NAME_FULL"] = "Zeige vollen Namen",
 	["NAMEPLATES_CONFIG_UNIT_STATE_HIDE"] = "Immer verbergen",
-	["NAMEPLATES_CONFIG_UNIT_STATE_SHOW"] = "Zeigen",
 	["NEW_VERSION"] = [=[|cff00ff00Eine neue Version von Total RP 3 (v %s) ist verfügbar.
 
 |cffffff00Wir empfehlen dringendst auf dem aktuellen Stand zu bleiben.|r

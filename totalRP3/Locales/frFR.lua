@@ -777,7 +777,7 @@ Ce module modifie les noms sur les barres de joueur et cible de Blizzard pour ut
 	["NAMEPLATES_CONFIG_UNIT_STATE_DISABLE_HELP"] = "Ignore les barres d'info pour ces unités et ne les personnalise pas.",
 	["NAMEPLATES_CONFIG_UNIT_STATE_HIDE"] = "Toujours cacher",
 	["NAMEPLATES_CONFIG_UNIT_STATE_HIDE_HELP"] = "Cache toujours les barres d'info de ces unités.",
-	["NAMEPLATES_CONFIG_UNIT_STATE_SHOW"] = "Afficher",
+	["NAMEPLATES_CONFIG_UNIT_STATE_SHOW"] = "Personnaliser",
 	["NAMEPLATES_CONFIG_UNIT_STATE_SHOW_HELP"] = "Affiche les barres d'info pour ces unités avec toutes les personnalisations appliquées.|n|nLa visibilité de ces barres d'info peut être écrasée par d'autres paramètres.",
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Paramètres de visibilité",
 	["NAMEPLATES_MODULE_DESCRIPTION"] = "Active la personnalisation des barres d'info avec les informations contenues dans les profils RP.",

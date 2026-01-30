@@ -1500,7 +1500,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP = "If checked, this enables the use of class colors for names and health bars as a fallback for units that do not have a custom class color in their profile.|n|nUnits that do not have roleplay profiles are unaffected by this setting and will not be class-colored.",
 	NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY = "Hide bars on |cff449fe0Blizzard|r friendly player nameplates",
 	NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP = "If checked, this enables the use of name-only mode for |cff449fe0Blizzard|r friendly player nameplates.|n|nIn this mode, all friendly player nameplates will have their health bars hidden, including those with or without roleplay profiles.",
-	NAMEPLATES_CONFIG_UNIT_STATE_SHOW = "Show",
+	NAMEPLATES_CONFIG_UNIT_STATE_SHOW = "Customize",
 	NAMEPLATES_CONFIG_UNIT_STATE_SHOW_HELP = "Show nameplates for these units with full customizations applied.|n|nVisibility of these nameplates may be overridden by other settings.",
 	NAMEPLATES_CONFIG_UNIT_STATE_HIDE = "Always hide",
 	NAMEPLATES_CONFIG_UNIT_STATE_HIDE_HELP = "Always hide nameplates for these units.",

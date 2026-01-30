@@ -547,7 +547,7 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	["NAMEPLATES_CONFIG_UNIT_NAME_ORIGINAL"] = "Mostrar nombre original",
 	["NAMEPLATES_CONFIG_UNIT_STATE_DISABLE"] = "No personalizar",
 	["NAMEPLATES_CONFIG_UNIT_STATE_HIDE"] = "Ocultar siempre",
-	["NAMEPLATES_CONFIG_UNIT_STATE_SHOW"] = "Mostrar",
+	["NAMEPLATES_CONFIG_UNIT_STATE_SHOW"] = "Personalizar",
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Configuraciones de visibilidad",
 	["NAMEPLATES_NAME"] = "Placa de nombres",
 	["NEW_VERSION"] = [=[|cff00ff00Hay una nueva versión de Total RP 3 (v %s) disponible.
