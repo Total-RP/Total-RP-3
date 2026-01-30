@@ -41,11 +41,9 @@ translations-export-all: $(addprefix translations-export-,$(LOCALES))
 translations-import: $(addprefix translations-import-,$(IMPORT_LOCALES))
 translations-import-all: $(addprefix translations-import-,$(LOCALES))
 
-translations-export-enUS: EXPORT_OPTIONS := --delete-missing-phrases
-
 .PHONY: $(addprefix translations-export-,$(LOCALES))
 $(addprefix translations-export-,$(LOCALES)): translations-export-%:
-	$(LOCALES_SCRIPT) upload --locale $* --project-id $(CF_PROJECT_ID) $(EXPORT_OPTIONS) <$(LOCALES_DIR)/$*.lua
+	$(LOCALES_SCRIPT) upload --locale $* --project-id $(CF_PROJECT_ID) --delete-missing-phrases $(EXPORT_OPTIONS) <$(LOCALES_DIR)/$*.lua
 
 .PHONY: $(addprefix translations-import-,$(LOCALES))
 $(addprefix translations-import-,$(LOCALES)): translations-import-%:
