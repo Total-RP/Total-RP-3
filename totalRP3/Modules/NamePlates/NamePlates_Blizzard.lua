@@ -353,6 +353,13 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateSubText(nameplate)
 	local unitToken = nameplate:GetUnit();
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
 
+	-- No displayInfo = no customization to apply, hide subtext widgets and leave
+	if not displayInfo then
+		nameplate.TRP3_Title:Hide();
+		nameplate.TRP3_Guild:Hide();
+		return;
+	end
+
 	local displayFullTitle = nil;
 	local displayGuild = nil;
 
@@ -361,7 +368,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateSubText(nameplate)
 	--
 
 	local isNameOnly = TRP3_NamePlatesUtil.IsNameOnlyModeEnabled() and displayInfo.isPlayerUnit;
-	local shouldShow = displayInfo and not displayInfo.shouldHide and not TRP3_NamePlatesUtil.IsSubtextDisabled() and ShouldShowName(unitframe);
+	local shouldShow = not displayInfo.shouldHide and not TRP3_NamePlatesUtil.IsSubtextDisabled() and ShouldShowName(unitframe);
 
 	if shouldShow and isNameOnly then
 		if TRP3_NamePlatesUtil.IsFullTitleEnabled() then
