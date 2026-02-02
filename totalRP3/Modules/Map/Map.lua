@@ -42,7 +42,7 @@ end
 
 ---@return number mapID @ The ID of the zone where the player currently is
 function Map.getPlayerMapID()
-	return C_Map.GetBestMapForUnit("player");
+	return C_Map.GetBestMapForUnit("player") or -1;
 end
 
 ---@return number, number x, y @ Returns the X and Y coordinates of the player for the current map, or nil if we could not get their coordinates
