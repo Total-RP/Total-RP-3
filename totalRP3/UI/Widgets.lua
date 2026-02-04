@@ -7,10 +7,18 @@ TRP3_TooltipMixin = {};
 
 function TRP3_TooltipMixin:SetCenterColor(r, g, b, a)
 	self.NineSlice:SetCenterColor(r, g, b, a or 1);
+
+	if self.Center and self.Center.SetVertexColor then -- used by ElvUI skin
+		self.Center:SetVertexColor(r, g, b, a or 1)
+	end
 end
 
 function TRP3_TooltipMixin:SetBorderColor(r, g, b, a)
 	self.NineSlice:SetBorderColor(r, g, b, a or 1);
+
+	if self.SetBackdropBorderColor then -- used by ElvUI skin
+		self:SetBackdropBorderColor(r, g, b, a or 1)
+	end
 end
 
 TRP3_TextAreaBaseMixin = {};
