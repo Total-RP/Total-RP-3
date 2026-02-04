@@ -51,14 +51,14 @@ TRP3_API.module.registerModule({
 		}
 
 		local SKINNABLE_TARGET_FRAMES = {
-			["TRP3_TargetFrame"] = {},
-			["TRP3_TargetFrame.Header"] = { template = 'Default', point = 'TOP', yOffset = 18 },
-			["TRP3_GlanceBar"] = { template = 'Default', point = 'TOP', relativePoint = 'BOTTOM', yOffset = 6 },
+			["TRP3_TargetFrame"] = { template = 'Transparent' },
+			["TRP3_TargetFrame.Header"] = { point = 'TOP', yOffset = 18 },
+			["TRP3_GlanceBar"] = { point = 'TOP', relativePoint = 'BOTTOM', yOffset = 6 },
 		}
 
 		local SKINNABLE_TOOLBAR_FRAMES = {
-			["TRP3_ToolbarFrame.Container.Backdrop"] = {},
-			["TRP3_ToolbarFrame.TitleBar"] = { template = 'Default', point = 'BOTTOM', relativePoint = 'TOP', yOffset = -19 }
+			["TRP3_ToolbarFrame.Container.Backdrop"] = { template = 'Transparent' },
+			["TRP3_ToolbarFrame.TitleBar"] = { point = 'BOTTOM', relativePoint = 'TOP', yOffset = -24 }
 		}
 
 		TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
@@ -140,7 +140,7 @@ TRP3_API.module.registerModule({
 				if not frame.SetTemplate then return; end
 
 				frame.customBackdropAlpha = TT.db.colorAlpha;
-				frame:SetTemplate(data.template or 'Transparent');
+				frame:SetTemplate(data.template);
 
 				local parent = data.point and frame:GetParent();
 				if parent then
