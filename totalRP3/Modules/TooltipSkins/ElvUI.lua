@@ -137,15 +137,15 @@ TRP3_API.module.registerModule({
 
 			-- 9.2 changed Tooltips to use NineSlice but TargetFrame doesn't use it, therefore we need to use the old styling function
 			local function SetStyleForFrame(frame, data)
-				if not frame.SetTemplate then return end
+				if not frame.SetTemplate then return; end
 
-				frame.customBackdropAlpha = TT.db.colorAlpha
-				frame:SetTemplate(data.template or 'Transparent')
+				frame.customBackdropAlpha = TT.db.colorAlpha;
+				frame:SetTemplate(data.template or 'Transparent');
 
-				local parent = data.point and frame:GetParent()
+				local parent = data.point and frame:GetParent();
 				if parent then
-					frame:ClearAllPoints()
-					frame:SetPoint(data.point, parent, data.relativePoint or data.point, data.xOffset or 0, data.yOffset or 0)
+					frame:ClearAllPoints();
+					frame:SetPoint(data.point, parent, data.relativePoint or data.point, data.xOffset or 0, data.yOffset or 0);
 				end
 			end
 
