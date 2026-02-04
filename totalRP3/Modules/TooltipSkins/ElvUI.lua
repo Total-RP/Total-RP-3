@@ -128,15 +128,15 @@ TRP3_API.module.registerModule({
 
 		-- Wait for the add-on to be fully loaded so all the tooltips are available
 		TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
-			local E = ElvUI[1]
-			local TT = E:GetModule('Tooltip')
+			local E = ElvUI[1];
+			local TT = E:GetModule('Tooltip');
 
 			function skinTooltips()
 				-- Go through each tooltips from our table
 				for _, tooltip in pairs(TOOLTIPS) do
-					local tt = _G[tooltip]
+					local tt = _G[tooltip];
 					if tt and not tt.template then
-						TT:SetStyle(tt)
+						TT:SetStyle(tt);
 					end
 				end
 			end
