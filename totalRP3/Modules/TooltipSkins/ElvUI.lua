@@ -139,7 +139,7 @@ TRP3_API.module.registerModule({
 			local function SetStyleForFrame(frame, data)
 				if not frame.SetTemplate then return; end
 
-				frame.customBackdropAlpha = TT.db.colorAlpha;
+				frame.customBackdropAlpha = data.template ~= 'Transparent' and TT.db.colorAlpha or nil;
 				frame:SetTemplate(data.template);
 
 				local parent = data.point and frame:GetParent();
