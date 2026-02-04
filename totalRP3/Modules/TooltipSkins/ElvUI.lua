@@ -51,20 +51,14 @@ TRP3_API.module.registerModule({
 		}
 
 		local SKINNABLE_TARGET_FRAMES = {
-			"TRP3_TargetFrame",
-			"TRP3_TargetFrame.Header",
-			"TRP3_GlanceBar",
-			"TRP3_GlanceBarSlot1",
-			"TRP3_GlanceBarSlot2",
-			"TRP3_GlanceBarSlot3",
-			"TRP3_GlanceBarSlot4",
-			"TRP3_GlanceBarSlot5",
+			["TRP3_TargetFrame"] = {},
+			["TRP3_TargetFrame.Header"] = { template = '', point = 'TOP', yOffset = 23 },
+			["TRP3_GlanceBar"] = { template = '', point = 'TOP', relativePoint = 'BOTTOM', yOffset = 1 },
 		}
 
 		local SKINNABLE_TOOLBAR_FRAMES = {
-			"TRP3_ToolbarFrame",
-			"TRP3_ToolbarFrame.Container.Backdrop",
-			"TRP3_ToolbarFrame.TitleBar",
+			["TRP3_ToolbarFrame.Container.Backdrop"] = {},
+			["TRP3_ToolbarFrame.TitleBar"] = { template = '', point = 'BOTTOM', relativePoint = 'TOP', yOffset = -19 }
 		}
 
 		TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
@@ -142,23 +136,26 @@ TRP3_API.module.registerModule({
 			end
 
 			-- 9.2 changed Tooltips to use NineSlice but TargetFrame doesn't use it, therefore we need to use the old styling function
-			local function SetStyleForFrame(tt)
-				if not tt or (tt == _G["ElvUI"][1].ScanTooltip or tt.IsEmbedded or not tt.SetTemplate or not tt.SetBackdrop) or tt:IsForbidden() then return; end
-				tt.customBackdropAlpha = TT.db.colorAlpha;
-				tt:SetTemplate('Transparent');
+			local function SetStyleForFrame(frame, data)
+				if not frame.SetTemplate then return end
+
+				frame.customBackdropAlpha = TT.db.colorAlpha
+				frame:SetTemplate(data.template or 'Transparent')
+
+				local parent = data.point and frame:GetParent()
+				if parent then
+					frame:ClearAllPoints()
+					frame:SetPoint(data.point, parent, data.relativePoint or data.point, data.xOffset or 0, data.yOffset or 0)
+				end
 			end
 
 			function skinFrame(skinnableFrames)
 				-- Go through each skinnable frames from our table
-				for _, frameName in pairs(skinnableFrames) do
+				for frameName, data in pairs(skinnableFrames) do
 					local frame = ResolveFrame(_G, string.split(".", frameName));
 
 					if frame then
-						TT:SecureHookScript(frame, 'OnShow', SetStyleForFrame);
-
-						if frame:IsShown() then
-							SetStyleForFrame(frame);
-						end
+						SetStyleForFrame(frame, data);
 					end
 				end
 			end
