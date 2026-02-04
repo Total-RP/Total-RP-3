@@ -52,13 +52,13 @@ TRP3_API.module.registerModule({
 
 		local SKINNABLE_TARGET_FRAMES = {
 			["TRP3_TargetFrame"] = {},
-			["TRP3_TargetFrame.Header"] = { template = 'Default', point = 'TOP', yOffset = 23 },
-			["TRP3_GlanceBar"] = { template = 'Default', point = 'TOP', relativePoint = 'BOTTOM', yOffset = 1 },
+			["TRP3_TargetFrame.Header"] = { template = 'Default', point = 'TOP', yOffset = 19 },
+			["TRP3_GlanceBar"] = { template = 'Default', point = 'TOP', relativePoint = 'BOTTOM', yOffset = 5 },
 		}
 
 		local SKINNABLE_TOOLBAR_FRAMES = {
 			["TRP3_ToolbarFrame.Container.Backdrop"] = {},
-			["TRP3_ToolbarFrame.TitleBar"] = { template = 'Default', point = 'BOTTOM', relativePoint = 'TOP', yOffset = -19 }
+			["TRP3_ToolbarFrame.TitleBar"] = { template = 'Default', point = 'BOTTOM', relativePoint = 'TOP', yOffset = -23 }
 		}
 
 		TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
