@@ -4,7 +4,7 @@
 PYTHON ?= python3
 LIBDIR := totalRP3/Libs
 PACKAGER_URL := https://raw.githubusercontent.com/BigWigsMods/packager/eca4e176cd6ae5404c66bef5c11c08200a458400/release.sh
-SCHEMA_URL := https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd
+SCHEMA_URL := https://raw.githubusercontent.com/Gethe/wow-ui-source/live/Interface/AddOns/Blizzard_SharedXML/UI.xsd
 
 CF_PROJECT_ID := 75973
 
@@ -32,7 +32,7 @@ libs:
 	cp -aTv .release/$(LIBDIR) $(LIBDIR)
 
 schema:
-	curl -s $(SCHEMA_URL) -o .github/scripts/ui.xsd
+	curl -s $(SCHEMA_URL) -o Types/UI.xsd
 
 .PHONY: translations translations-export translations-export-all translations-import translations-import-all
 translations: translations-export translations-import
