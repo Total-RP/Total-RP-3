@@ -3,6 +3,7 @@
 
 local L;
 
+---@class TRP3.Locale.enUS
 L = {
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- GENERAL
@@ -1655,5 +1656,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 BINDING_HEADER_TRP3 = "Total RP 3";
 
+---@class TRP3.L : TRP3.Locale.enUS, Ellyb_Localization
 TRP3.loc = TRP3.Ellyb.Localization(L);
 TRP3.loc:RegisterNewLocale("enUS", "English", L);
