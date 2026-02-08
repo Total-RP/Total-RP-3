@@ -64,12 +64,11 @@ Locales\zhCN.lua
 Locales\zhTW.lua
 Locales\Locale.lua
 
-Resources\ImageList.lua
-Resources\ImageListClassic.lua
+Resources\[Family]\ImageList.lua
 Resources\InterfaceIcons.lua
 Resources\InterfaceAtlases.lua
 Resources\InterfaceSounds.lua
-Resources\CompanionData.lua
+Resources\[Family]\CompanionData.lua [AllowLoadGameType vanilla, tbc]
 Resources\UI\Templates.xml
 
 Core\Enums.lua
@@ -93,7 +92,7 @@ Core\BindingUtil.lua
 Core\RegionUtil.lua
 Core\MarkupUtil.lua
 Core\CompanionUtil.lua
-Core\[Game]\CompanionUtilOverrides.lua [AllowLoadGameType vanilla, tbc]
+Core\[Family]\CompanionUtilOverrides.lua [AllowLoadGameType vanilla, tbc]
 Core\Utils.lua
 Core\ProfileUtil.lua
 Core\UITools.lua
@@ -108,6 +107,8 @@ Core\UIMain.lua
 Core\Profiles.lua
 Core\ProfilesChatLinksModule.lua
 Core\ModuleManagement.lua
+Core\Flyway.lua
+Core\FlywayPatches.lua
 
 UI\Backdrop.lua
 UI\Backdrop.xml
@@ -181,8 +182,6 @@ Deprecated.xml
 Deprecated.lua
 totalRP3.lua
 
-Modules\Flyway\Flyway.lua
-Modules\Flyway\FlywayPatches.lua
 Modules\Dashboard\Dashboard.xml
 Modules\Map\Map.xml
 Modules\Register\Register.xml
