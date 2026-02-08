@@ -122,15 +122,15 @@ TRP3_API.module.registerModule({
 
 		-- Wait for the add-on to be fully loaded so all the tooltips are available
 		TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
-
-			local TT = _G["ElvUI"][1]:GetModule('Tooltip');
+			local E = ElvUI[1];
+			local TT = E:GetModule('Tooltip');
 
 			function skinTooltips()
 				-- Go through each tooltips from our table
 				for _, tooltip in pairs(TOOLTIPS) do
-					if _G[tooltip] then
-						-- We check that the tooltip exists and then add it to ElvUI
-						TT:SecureHookScript(_G[tooltip], 'OnShow', 'SetStyle');
+					local tt = _G[tooltip];
+					if tt and not tt.template then
+						TT:SetStyle(tt);
 					end
 				end
 			end
