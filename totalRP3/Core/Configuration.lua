@@ -498,7 +498,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 	end
 end);
 
-AddOn_TotalRP3.Configuration = {}
+TRP3.Configuration = {}
 
 function TRP3.configuration.constructConfigPage()
 	TRP3.configuration.registerConfigurationPage(TRP3.configuration.CONFIG_STRUCTURE_GENERAL);

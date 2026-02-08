@@ -41,7 +41,7 @@ local function onStart()
 		local color = TRP3.GetClassDisplayColor((UnitClassBase("player")));
 
 		if configShowNameCustomColors() then
-			local player = AddOn_TotalRP3.Player.GetCurrentUser();
+			local player = TRP3.Player.GetCurrentUser();
 			local customColor = player:GetCustomColorForDisplay();
 
 			if customColor then

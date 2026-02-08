@@ -359,7 +359,7 @@ local function decorateCharacterLine(line, elementData)
 	local hasNewAbout = profile.about and not profile.about.read;
 	local currentNotes = TRP3.profile.getPlayerCurrentProfile().notes or {};
 	local hasNotes = TRP3_Notes and TRP3_Notes[profileID] or currentNotes[profileID];
-	local isWalkupFriendly = profile.character and profile.character.WU == AddOn_TotalRP3.Enums.WALKUP.YES;
+	local isWalkupFriendly = profile.character and profile.character.WU == TRP3.Enums.WALKUP.YES;
 
 	local atLeastOneIgnored = false;
 	line.Flags:SetText("");
@@ -530,7 +530,7 @@ local function getCharacterLines()
 				if unitRealm == Globals.player_realm_id or connectedRealms[unitRealm] then
 					realmIsConform = true;
 				end
-				local characterData = AddOn_TotalRP3.Directory.getCharacterDataForCharacterId(unitID);
+				local characterData = TRP3.Directory.getCharacterDataForCharacterId(unitID);
 				if characterData and characterData.guild and string.find(characterData.guild:lower(), guildSearch, 1, true) then
 					guildIsConform = true;
 				end
@@ -1176,7 +1176,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 		TRP3.target.registerButton({
 			id = "aa_player_a_page",
 			configText = loc.TF_OPEN_CHARACTER,
-			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
+			onlyForType = TRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, characterID)
 				return characterID == Globals.player_id or (isUnitIDKnown(characterID) and hasProfile(characterID));
 			end,

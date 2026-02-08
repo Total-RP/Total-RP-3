@@ -4,7 +4,7 @@
 local Ellyb = TRP3.Ellyb;
 
 -- Imports.
-local Enums = AddOn_TotalRP3.Enums;
+local Enums = TRP3.Enums;
 
 ---@class Player : Object
 local Player, _private = Ellyb.Class("Player")
@@ -226,7 +226,7 @@ function Player:GetCurrentlyText()
 end
 
 function Player:GetWalkup()
-	return self:GetInfo("character/WU") or AddOn_TotalRP3.Enums.WALKUP.NO;
+	return self:GetInfo("character/WU") or TRP3.Enums.WALKUP.NO;
 end
 
 function Player:GetMiscFieldByType(miscType)
@@ -277,7 +277,7 @@ end
 function Player:IsOnATrialAccount()
 	local accountType = self:GetAccountType()
 	if type(accountType) == "number" then
-		return accountType == AddOn_TotalRP3.Enums.ACCOUNT_TYPE.TRIAL or accountType == AddOn_TotalRP3.Enums.ACCOUNT_TYPE.VETERAN
+		return accountType == TRP3.Enums.ACCOUNT_TYPE.TRIAL or accountType == TRP3.Enums.ACCOUNT_TYPE.VETERAN
 	else
 		-- Backward compatible check, for versions where the trial flag was true or false
 		return accountType == true
@@ -400,11 +400,11 @@ end
 
 function CurrentUser:GetAccountType()
 	if IsTrialAccount() then
-		return AddOn_TotalRP3.Enums.ACCOUNT_TYPE.TRIAL;
+		return TRP3.Enums.ACCOUNT_TYPE.TRIAL;
 	elseif IsVeteranTrialAccount() then
-		return AddOn_TotalRP3.Enums.ACCOUNT_TYPE.VETERAN;
+		return TRP3.Enums.ACCOUNT_TYPE.VETERAN;
 	else
-		return AddOn_TotalRP3.Enums.ACCOUNT_TYPE.REGULAR;
+		return TRP3.Enums.ACCOUNT_TYPE.REGULAR;
 	end
 end
 
@@ -518,4 +518,4 @@ currentUser = CurrentUser()
 end
 --}}}
 
-AddOn_TotalRP3.Player = Player
+TRP3.Player = Player

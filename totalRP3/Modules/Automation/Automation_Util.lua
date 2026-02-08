@@ -193,9 +193,9 @@ end
 
 function TRP3_AutomationUtil.ParseRoleplayStatusString(str)
 	if str == "ic" or str == L.AUTOMATION_STATE_IC then
-		return true, AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
+		return true, TRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
 	elseif str == "ooc" or str == L.AUTOMATION_STATE_OOC then
-		return true, AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+		return true, TRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
 	elseif str == "nochange" or str == L.AUTOMATION_STATE_UNSET then
 		return true, nil;
 	else

@@ -409,7 +409,7 @@ TRP3.register.inits.relationsInit = function()
 		TRP3.target.registerButton({
 			id = "aa_player_d_relation",
 			configText = loc.REG_RELATION,
-			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
+			onlyForType = TRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
 				return UnitIsPlayer("target") and unitID ~= TRP3.globals.player_id and hasProfile(unitID);
 			end,

@@ -6,7 +6,7 @@ local Ellyb = TRP3.Ellyb;
 local Chomp = AddOn_Chomp;
 
 -- Total RP 3 imports
-local Compression = AddOn_TotalRP3.Compression;
+local Compression = TRP3.Compression;
 
 local PROTOCOL_PREFIX = "TRP3.3";
 local PROTOCOL_SETTINGS = {
@@ -179,7 +179,7 @@ local function estimateStructureLoad(object, shouldBeCompressed)
 	return math.ceil(estimateStructureSize(object, shouldBeCompressed) / Chomp.GetBPS());
 end
 
-AddOn_TotalRP3.Communications = {
+TRP3.Communications = {
 	getNewMessageToken = getNewMessageToken,
 	registerSubSystemPrefix = registerSubSystemPrefix,
 	registerMessageTokenProgressHandler = registerMessageTokenProgressHandler,

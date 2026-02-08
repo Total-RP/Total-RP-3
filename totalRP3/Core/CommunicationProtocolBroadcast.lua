@@ -5,7 +5,7 @@
 local Chomp = AddOn_Chomp;
 local Globals = TRP3.globals;
 local Utils = TRP3.utils;
-local Comm, isIDIgnored = AddOn_TotalRP3.Communications, nil;
+local Comm, isIDIgnored = TRP3.Communications, nil;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local getConfigValue = TRP3.configuration.getValue;
 local loc = TRP3.loc;

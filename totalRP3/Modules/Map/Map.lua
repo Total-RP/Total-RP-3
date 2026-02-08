@@ -91,4 +91,4 @@ function Map.placeSingleMarker(x, y, poiInfo, pinTemplate)
 end
 
 -- Exposing public API
-AddOn_TotalRP3.Map = Map;
+TRP3.Map = Map;

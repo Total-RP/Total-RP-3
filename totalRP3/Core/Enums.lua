@@ -1,15 +1,15 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-AddOn_TotalRP3.Enums = {};
+TRP3.Enums = {};
 
-AddOn_TotalRP3.Enums.ACCOUNT_TYPE = {
+TRP3.Enums.ACCOUNT_TYPE = {
 	REGULAR = 0,
 	TRIAL = 1,
 	VETERAN = 2
 }
 
-AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS = {
+TRP3.Enums.RELATIONSHIP_STATUS = {
 	UNKNOWN = 0,
 	SINGLE = 1,
 	TAKEN = 2,
@@ -19,14 +19,14 @@ AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS = {
 }
 
 -- ROLEPLAY_STATUS is an enumeration of roleplay statuses for a player unit.
-AddOn_TotalRP3.Enums.ROLEPLAY_STATUS = {
+TRP3.Enums.ROLEPLAY_STATUS = {
 	IN_CHARACTER = 1,
 	OUT_OF_CHARACTER = 2,
 };
 
 -- ROLEPLAY_EXPERIENCE is an enumeration of roleplay experience entries for
 -- a player, for example "beginner roleplayer".
-AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE = {
+TRP3.Enums.ROLEPLAY_EXPERIENCE = {
 	NEWCOMER = 1,
 	VETERAN = 2,
 	NEWCOMER_GUIDE = 3,
@@ -35,7 +35,7 @@ AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE = {
 
 -- UNIT_TYPE describes the base type of a unit, such as whether it represents
 -- a character or pet. These replace the old TRP3.ui.misc.TYPE_* constants.
-AddOn_TotalRP3.Enums.UNIT_TYPE = {
+TRP3.Enums.UNIT_TYPE = {
 	CHARACTER = "CHARACTER",
 	PET = "PET",
 	BATTLE_PET = "BATTLE_PET",
@@ -44,7 +44,7 @@ AddOn_TotalRP3.Enums.UNIT_TYPE = {
 };
 
 -- WALKUP is an enumeration of walkup options for a player.
-AddOn_TotalRP3.Enums.WALKUP = {
+TRP3.Enums.WALKUP = {
 	NO = 1,
 	YES = 2,
 };

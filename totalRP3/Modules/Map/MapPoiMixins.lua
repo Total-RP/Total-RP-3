@@ -174,7 +174,7 @@ function AnimatedPinMixin:OnLoad()
 	hooksecurefunc(self, "OnAcquired", function(_, poiInfo)
 		if poiInfo.position and self.Bounce then
 			self:Hide();
-			C_Timer.After(AddOn_TotalRP3.Map.getDistanceFromMapCenterFactor(poiInfo.position), function()
+			C_Timer.After(TRP3.Map.getDistanceFromMapCenterFactor(poiInfo.position), function()
 				self:Show();
 				TRP3.ui.misc.playAnimation(self.Bounce);
 			end);
@@ -227,7 +227,7 @@ function MapPoiMixins.createPinTemplate(...)
 	-- Create a new template for POI pins
 	local pinTemplate = BaseMapPoiPinMixin:CreateSubPin("PIN_FRAME_LEVEL_VEHICLE_ABOVE_GROUP_MEMBER");
 	-- Add our base mixin to it
-	Mixin(pinTemplate, AddOn_TotalRP3.MapPoiMixins.BasePinMixin);
+	Mixin(pinTemplate, TRP3.MapPoiMixins.BasePinMixin);
 	-- Go through all the mixins we were given and add them too
 	for _, mixin in pairs({...}) do
 		Mixin(pinTemplate, mixin);
@@ -235,4 +235,4 @@ function MapPoiMixins.createPinTemplate(...)
 	return pinTemplate
 end
 
-AddOn_TotalRP3.MapPoiMixins = MapPoiMixins;
+TRP3.MapPoiMixins = MapPoiMixins;

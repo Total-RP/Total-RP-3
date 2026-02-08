@@ -45,7 +45,7 @@ local function GetOrCreatePlayerFromCharacterID(characterID)
 		return player;
 	end
 
-	player = AddOn_TotalRP3.Player.CreateFromCharacterID(characterID);
+	player = TRP3.Player.CreateFromCharacterID(characterID);
 	playerCharacterPool[characterID] = player;
 	return player;
 end
@@ -62,7 +62,7 @@ local function GetUnitRoleplayStatus(unitToken)
 	if not unitToken then
 		return nil;
 	elseif UnitIsUnit(unitToken, "player") then
-		player = AddOn_TotalRP3.Player.GetCurrentUser();
+		player = TRP3.Player.GetCurrentUser();
 	elseif UnitIsPlayer(unitToken) then
 		local characterID = TRP3.utils.str.getUnitID(unitToken);
 
@@ -76,7 +76,7 @@ local function GetUnitRoleplayStatus(unitToken)
 
 		if characterID then
 			if characterID == TRP3.globals.player_id then
-				player = AddOn_TotalRP3.Player.GetCurrentUser();
+				player = TRP3.Player.GetCurrentUser();
 			else
 				player = GetOrCreatePlayerFromCharacterID(characterID);
 			end
@@ -92,7 +92,7 @@ end
 
 local function IsUnitOutOfCharacter(unitToken)
 	local roleplayStatus = GetUnitRoleplayStatus(unitToken);
-	return roleplayStatus == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+	return roleplayStatus == TRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
 end
 
 local function IsNPCUnit(unitToken)
@@ -341,8 +341,6 @@ end
 -- Note that the contents of the TRP3_NamePlates table is intended for private
 -- internal use by the addon and shouldn't be assumed stable.
 --
--- Public API will be added to the AddOn_TotalRP3 table at a later date.
---
 
 TRP3_NamePlates = TRP3_Addon:NewModule("NamePlates");
 
@@ -499,11 +497,11 @@ function TRP3_NamePlates:GetUnitDisplayInfo(unitToken)
 
 	if not ShouldCustomizeUnitNamePlate(unitToken) then
 		displayInfo = nil;  -- Customizations disabled for this unit.
-	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
+	elseif unitType == TRP3.Enums.UNIT_TYPE.CHARACTER then
 		displayInfo = GetCharacterUnitDisplayInfo(unitToken, characterID);
-	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
+	elseif unitType == TRP3.Enums.UNIT_TYPE.PET then
 		displayInfo = GetCompanionUnitDisplayInfo(unitToken, characterID);
-	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.NPC then
+	elseif unitType == TRP3.Enums.UNIT_TYPE.NPC then
 		displayInfo = GetNonPlayableUnitDisplayInfo(unitToken);
 	end
 

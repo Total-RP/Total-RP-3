@@ -929,7 +929,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 	if TRP3.target then
 		TRP3.target.registerButton({
 			id = "aa_player_b_music",
-			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
+			onlyForType = TRP3.Enums.UNIT_TYPE.CHARACTER,
 			configText = loc.TF_CHAR_THEME,
 			condition = function(_, unitID)
 				return getUnitIDTheme(unitID) ~= nil;

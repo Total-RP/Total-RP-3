@@ -2,7 +2,7 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local Directory = {};
-AddOn_TotalRP3.Directory = Directory;
+TRP3.Directory = Directory;
 
 -- Public accessor
 TRP3.register = {
@@ -244,13 +244,13 @@ function TRP3.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 	end
 end
 
-local RoleplayExperienceValues = tInvert(AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE);
+local RoleplayExperienceValues = tInvert(TRP3.Enums.ROLEPLAY_EXPERIENCE);
 
 local function SanitizeRoleplayExperience(experience)
 	experience = tonumber(experience);
 
 	if not RoleplayExperienceValues[experience] then
-		experience = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL;
+		experience = TRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL;
 	end
 
 	return experience;
@@ -424,7 +424,7 @@ TRP3.r.name = TRP3.register.getUnitRPName;
 function TRP3.register.getUnitRPFirstName(targetType)
 	local unitID = getUnitID(targetType);
 	if unitID then
-		local player = AddOn_TotalRP3.Player.static.CreateFromCharacterID(unitID);
+		local player = TRP3.Player.static.CreateFromCharacterID(unitID);
 		return player:GetFirstName() or TRP3.register.getUnitRPName(targetType);
 	end
 	return TRP3.register.getUnitRPName(targetType);
@@ -433,7 +433,7 @@ end
 function TRP3.register.getUnitRPLastName(targetType)
 	local unitID = getUnitID(targetType);
 	if unitID then
-		local player = AddOn_TotalRP3.Player.static.CreateFromCharacterID(unitID);
+		local player = TRP3.Player.static.CreateFromCharacterID(unitID);
 		return player:GetLastName() or TRP3.register.getUnitRPName(targetType);
 	end
 	return TRP3.register.getUnitRPName(targetType);
@@ -790,7 +790,7 @@ function TRP3.register.init()
 			menuItemID = "main_12_player_character";
 			menuItemText = get("player/characteristics/FN") or Globals.player;
 		elseif TRP3.register.getProfileOrNil(profileID) then
-			local player = AddOn_TotalRP3.Player.CreateFromProfileID(profileID);
+			local player = TRP3.Player.CreateFromProfileID(profileID);
 
 			menuItemID = TRP3.register.MENU_LIST_ID_TAB .. profileID;
 			menuItemText = player:GetFirstName() or player:GetName();

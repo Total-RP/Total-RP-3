@@ -666,7 +666,7 @@ function Utils.customGetColoredName(event, _, _, unitID, _, _, _, _, _, _, _, _,
 	-- Make sure we have a unitID formatted as "Player-Realm"
 	unitID = unitInfoToID(character, realm);
 	---@type Player
-	local player = AddOn_TotalRP3.Player.static.CreateFromNameAndRealm(character, realm);
+	local player = TRP3.Player.static.CreateFromNameAndRealm(character, realm);
 
 	-- Character name is without the server name is they are from the same realm or if the option to remove realm info is enabled
 	if realm == Globals.player_realm_id or getConfigValue(CONFIG_REMOVE_REALM) then
@@ -780,7 +780,7 @@ function hooking()
 		if text and send == 1 then
 			textBeforeParse = text;
 			parsedEditBox = editBox;
-			local player = AddOn_TotalRP3.Player.GetCurrentUser();
+			local player = TRP3.Player.GetCurrentUser();
 			local tokens = {
 				["%xtf"] = getUnitRPFirstName("target") or TARGET_TOKEN_NOT_FOUND,
 				["%xtl"] = getUnitRPLastName("target") or TARGET_TOKEN_NOT_FOUND,

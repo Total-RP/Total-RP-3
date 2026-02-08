@@ -5,7 +5,7 @@
 local Globals = TRP3.globals;
 local Utils = TRP3.utils;
 local get = TRP3.profile.getData;
-local Comm = AddOn_TotalRP3.Communications;
+local Comm = TRP3.Communications;
 local loc = TRP3.loc;
 local Events = TRP3_Addon.Events;
 local getCharacterExchangeData = TRP3.dashboard.getCharacterExchangeData;
@@ -23,7 +23,7 @@ local boundAndCheckCompanion = TRP3.companions.register.boundAndCheckCompanion;
 local getCompanionData = TRP3.companions.player.getCompanionData;
 local saveCompanionInformation = TRP3.companions.register.saveInformation;
 local displayMessage = TRP3.utils.message.displayMessage;
-local TRP3_Enums = AddOn_TotalRP3.Enums;
+local TRP3_Enums = TRP3.Enums;
 
 -- Character name for profile opening command
 local characterToOpen = "";
@@ -174,7 +174,7 @@ function createVernumQuery()
 	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT] = mountLine or "";
 	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1] = mountV1 or 0;
 	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2] = mountV2 or 0;
-	query[VERNUM_QUERY_INDEX_ROLEPLAY_EXPERIENCE] = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayExperience();
+	query[VERNUM_QUERY_INDEX_ROLEPLAY_EXPERIENCE] = TRP3.Player.GetCurrentUser():GetRoleplayExperience();
 	query[VERNUM_QUERY_INDEX_CHARACTER_CLASS] = TRP3.globals.player_class_index;
 
 	-- Extended
@@ -449,7 +449,7 @@ local function incomingInformationType(informationType, senderID)
 		local useLoggedMessages = true;
 		local queue = GenerateQueueName(prefix, informationType, senderID);
 
-		AddOn_TotalRP3.Communications.sendObject(prefix, object, channel, target, priority, messageToken, useLoggedMessages, queue);
+		TRP3.Communications.sendObject(prefix, object, channel, target, priority, messageToken, useLoggedMessages, queue);
 	end
 end
 
@@ -539,17 +539,17 @@ function TRP3.register.inits.dataExchangeInit()
 	TRP3.RegisterCallback(TRP3.GameEvents, "PLAYER_TARGET_CHANGED", function() onTargetChanged(); end);
 
 	-- Register prefix for data exchange
-	AddOn_TotalRP3.Communications.registerSubSystemPrefix(VERNUM_QUERY_PREFIX, function(structure, senderID)
+	TRP3.Communications.registerSubSystemPrefix(VERNUM_QUERY_PREFIX, function(structure, senderID)
 		incomingVernumQuery(structure, senderID, true);
 	end);
-	AddOn_TotalRP3.Communications.registerSubSystemPrefix(VERNUM_R_QUERY_PREFIX, function(structure, senderID)
+	TRP3.Communications.registerSubSystemPrefix(VERNUM_R_QUERY_PREFIX, function(structure, senderID)
 		incomingVernumQuery(structure, senderID, false);
 	end);
-	AddOn_TotalRP3.Communications.registerSubSystemPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
-	AddOn_TotalRP3.Communications.registerSubSystemPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
+	TRP3.Communications.registerSubSystemPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
+	TRP3.Communications.registerSubSystemPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
 
 	-- When receiving HELLO from someone else (from the other side ?)
-	AddOn_TotalRP3.Communications.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay, extendedVersion, extendedVersionDisplay)
+	TRP3.Communications.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay, extendedVersion, extendedVersionDisplay)
 		version = tonumber(version) or 0;
 		extendedVersion = tonumber(extendedVersion) or 0;
 		-- Only treat the message if it does not come from us

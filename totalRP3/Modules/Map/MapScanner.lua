@@ -82,4 +82,4 @@ end
 
 end
 
-AddOn_TotalRP3.MapScanner = MapScanner
+TRP3.MapScanner = MapScanner

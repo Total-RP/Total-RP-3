@@ -14,7 +14,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 		local multiLine = true;
 		local text = TRP3.utils.str.sanitize(editBox:GetText(), multiLine);
 
-		AddOn_TotalRP3.Player.GetCurrentUser():SetCurrentlyText(text);
+		TRP3.Player.GetCurrentUser():SetCurrentlyText(text);
 	end);
 
 	local function onCurrentlyChanged(_, userInput)
@@ -33,7 +33,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 			return;
 		end
 
-		frame.CurrentlyText.scroll.text:SetText(AddOn_TotalRP3.Player.GetCurrentUser():GetCurrentlyText() or "");
+		frame.CurrentlyText.scroll.text:SetText(TRP3.Player.GetCurrentUser():GetCurrentlyText() or "");
 
 		frame:Show();
 		PlaySound(TRP3_InterfaceSounds.WindowOpen);

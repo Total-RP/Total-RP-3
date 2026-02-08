@@ -319,7 +319,7 @@ TRP3.flyway.patches["19"] = function()
 		local character = SafeGet(profile, "player", "character");
 
 		if character then
-			character.RP = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+			character.RP = TRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
 			character.v = TRP3.utils.math.incrementNumber(character.v or 1, 2);
 		end
 	end

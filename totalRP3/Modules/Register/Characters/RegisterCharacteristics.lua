@@ -252,8 +252,8 @@ end
 
 -- Create the pin template, above group members
 ---@type BaseMapPoiPinMixin|MapCanvasPinMixin|{Texture: Texture, GetMap: fun():MapCanvasMixin}
-TRP3_PlayerHousePinMixin = AddOn_TotalRP3.MapPoiMixins.createPinTemplate(
-		AddOn_TotalRP3.MapPoiMixins.AnimatedPinMixin -- Use animated icons (bounce in)
+TRP3_PlayerHousePinMixin = TRP3.MapPoiMixins.createPinTemplate(
+		TRP3.MapPoiMixins.AnimatedPinMixin -- Use animated icons (bounce in)
 );
 
 -- Expose template name, so the scan can use it for the MapDataProvider
@@ -262,9 +262,9 @@ TRP3_PlayerHousePinMixin.TEMPLATE_NAME = "TRP3_PlayerHousePinTemplate";
 function TRP3_PlayerHousePinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	local player
 	if poiInfo.characterID then
-		player = AddOn_TotalRP3.Player.CreateFromCharacterID(poiInfo.characterID);
+		player = TRP3.Player.CreateFromCharacterID(poiInfo.characterID);
 	elseif poiInfo.profileID then
-		player = AddOn_TotalRP3.Player.CreateFromProfileID(poiInfo.profileID);
+		player = TRP3.Player.CreateFromProfileID(poiInfo.profileID);
 	else
 		error("Cannot get display data for this player house.");
 	end
@@ -312,7 +312,7 @@ local function setConsultDisplay(context)
 	TRP3_RegisterCharact_CharactPanel_ResidenceButton:Hide();
 	TRP3_RegisterCharact_NamePanel_WalkupButton:Hide();
 
-	if context.profile.character and context.profile.character.WU == AddOn_TotalRP3.Enums.WALKUP.YES then
+	if context.profile.character and context.profile.character.WU == TRP3.Enums.WALKUP.YES then
 		TRP3_RegisterCharact_NamePanel_WalkupButton:Show();
 		setTooltipForSameFrame(TRP3_RegisterCharact_NamePanel_WalkupButton, "RIGHT", 0, 5, loc.DB_STATUS_WU, loc.REG_PLAYER_WALKUP_TT);
 	end
@@ -394,7 +394,7 @@ local function setConsultDisplay(context)
 				else
 					error("Could not retrieve unit from this profile.")
 				end
-				AddOn_TotalRP3.Map.placeSingleMarker(dataTab.RC[2], dataTab.RC[3], { characterID = characterID, profileID = profileID }, TRP3_PlayerHousePinMixin.TEMPLATE_NAME)
+				TRP3.Map.placeSingleMarker(dataTab.RC[2], dataTab.RC[3], { characterID = characterID, profileID = profileID }, TRP3_PlayerHousePinMixin.TEMPLATE_NAME)
 			end);
 		end
 		previous = frame;
@@ -1077,7 +1077,7 @@ function setEditDisplay()
 	TRP3_RegisterCharact_Edit_ResidenceField:SetText(draftData.RE or "");
 	TRP3_RegisterCharact_Edit_BirthplaceField:SetText(draftData.BP or "");
 
-	TRP3_RegisterCharact_Dropdown_RelationshipField:SetSelectedValue(draftData.RS or AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN)
+	TRP3_RegisterCharact_Dropdown_RelationshipField:SetSelectedValue(draftData.RS or TRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN)
 
 	refreshDraftHouseCoordinates();
 
@@ -1560,12 +1560,12 @@ local function initStructures()
 	};
 
 	RELATIONSHIP_STATUS_DROPDOWN = {
-		{loc.CM_DO_NOT_SHOW, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN},
-		{loc.REG_PLAYER_RELATIONSHIP_STATUS_SINGLE, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.SINGLE},
-		{loc.REG_PLAYER_RELATIONSHIP_STATUS_TAKEN, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.TAKEN},
-		{loc.REG_PLAYER_RELATIONSHIP_STATUS_MARRIED, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.MARRIED},
-		{loc.REG_PLAYER_RELATIONSHIP_STATUS_DIVORCED, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.DIVORCED},
-		{loc.REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.WIDOWED},
+		{loc.CM_DO_NOT_SHOW, TRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN},
+		{loc.REG_PLAYER_RELATIONSHIP_STATUS_SINGLE, TRP3.Enums.RELATIONSHIP_STATUS.SINGLE},
+		{loc.REG_PLAYER_RELATIONSHIP_STATUS_TAKEN, TRP3.Enums.RELATIONSHIP_STATUS.TAKEN},
+		{loc.REG_PLAYER_RELATIONSHIP_STATUS_MARRIED, TRP3.Enums.RELATIONSHIP_STATUS.MARRIED},
+		{loc.REG_PLAYER_RELATIONSHIP_STATUS_DIVORCED, TRP3.Enums.RELATIONSHIP_STATUS.DIVORCED},
+		{loc.REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED, TRP3.Enums.RELATIONSHIP_STATUS.WIDOWED},
 	};
 end
 
@@ -1593,9 +1593,9 @@ function TRP3.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_ResidenceButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 	TRP3_RegisterCharact_Edit_ResidenceButton:SetScript("OnClick", function(_, button)
 		if button == "LeftButton" then
-			if AddOn_TotalRP3.Map.getPlayerCoordinates() then
-				local x, y= AddOn_TotalRP3.Map.getPlayerCoordinates();
-				local mapId = AddOn_TotalRP3.Map.getPlayerMapID()
+			if TRP3.Map.getPlayerCoordinates() then
+				local x, y= TRP3.Map.getPlayerCoordinates();
+				local mapId = TRP3.Map.getPlayerMapID()
 				draftData.RC = { mapId, x, y };
 				tinsert(draftData.RC, Utils.str.buildZoneText());
 				TRP3_RegisterCharact_Edit_ResidenceField:SetText(buildZoneText());

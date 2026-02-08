@@ -71,7 +71,7 @@ end
 function ChatLink:GetContentSize()
 	if not _private[self].contentSize then
 		-- We save the content size so we only have to get it once, instead of serializing every time
-		_private[self].contentSize = AddOn_TotalRP3.Communications.estimateStructureSize(self:GetData(), true);
+		_private[self].contentSize = TRP3.Communications.estimateStructureSize(self:GetData(), true);
 	end
 	return _private[self].contentSize;
 end

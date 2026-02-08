@@ -23,7 +23,7 @@ TRP3_AutomationUtil.RegisterAction({
 	end,
 
 	Apply = function(context, status)
-		local player = AddOn_TotalRP3.Player.GetCurrentUser();
+		local player = TRP3.Player.GetCurrentUser();
 
 		if status == nil then
 			return;  -- User used the "nochange" token which does what it says on the tin.
@@ -33,7 +33,7 @@ TRP3_AutomationUtil.RegisterAction({
 
 		local statusText;
 
-		if status == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER then
+		if status == TRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER then
 			statusText = L.AUTOMATION_ACTION_ROLEPLAY_STATUS_CHANGED_IC;
 		else
 			statusText = L.AUTOMATION_ACTION_ROLEPLAY_STATUS_CHANGED_OOC;

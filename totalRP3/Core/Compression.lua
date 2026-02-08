@@ -37,4 +37,4 @@ function Compression.decompress(compressedData, wasReceivedViaAddOnChannel)
 	return decompressedData;
 end
 
-AddOn_TotalRP3.Compression = Compression;
+TRP3.Compression = Compression;

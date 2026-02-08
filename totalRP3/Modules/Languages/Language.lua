@@ -87,7 +87,7 @@ end
 
 ---@return boolean
 function Language:IsKnown()
-	for _, knownLanguage in ipairs(AddOn_TotalRP3.Languages.getAvailableLanguages()) do
+	for _, knownLanguage in ipairs(TRP3.Languages.getAvailableLanguages()) do
 		if knownLanguage:GetID() == self:GetID() then
 			return true
 		end
@@ -108,4 +108,4 @@ end
 	return text
 end
 
-AddOn_TotalRP3.Language = Language
+TRP3.Language = Language

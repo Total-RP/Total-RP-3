@@ -5,7 +5,7 @@ local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
 local faction, faction_loc = UnitFactionGroup("player");
 
-local Player = AddOn_TotalRP3.Player.GetCurrentUser();
+local Player = TRP3.Player.GetCurrentUser();
 
 local currentDate = date("*t");
 

@@ -135,7 +135,7 @@ local function displayRPStyle(context)
 
 	if not context.isPlayer then
 		local frame = TRP3_RegisterMiscViewRPStyle.RoleplayExperience;
-		local player = AddOn_TotalRP3.Player.CreateFromProfileID(context.profileID);
+		local player = TRP3.Player.CreateFromProfileID(context.profileID);
 		local experience = player:GetRoleplayExperience();
 
 		if experience then
@@ -392,7 +392,7 @@ local function onCurrentlyChanged()
 	local multiLine = true;
 	local text = Utils.str.sanitize(TRP3_RegisterMiscViewCurrentlyIC:GetInputText(), multiLine);
 
-	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+	local player = TRP3.Player.GetCurrentUser();
 	player:SetCurrentlyText(text);
 end
 
@@ -404,7 +404,7 @@ local function onOOCInfoChanged()
 	local multiLine = true;
 	local text = Utils.str.sanitize(TRP3_RegisterMiscViewCurrentlyOOC:GetInputText(), multiLine);
 
-	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+	local player = TRP3.Player.GetCurrentUser();
 	player:SetOutOfCharacterInfo(text);
 end
 
@@ -547,7 +547,7 @@ function TRP3.register.inits.miscInit()
 		button:SetScript("OnDragStart", TRP3.register.glance.onGlanceDragStart);
 		button:SetScript("OnDragStop", TRP3.register.glance.onGlanceDragStop);
 		button.slot = tostring(index);
-		button.targetType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER;
+		button.targetType = TRP3.Enums.UNIT_TYPE.CHARACTER;
 	end
 
 	-- RP style

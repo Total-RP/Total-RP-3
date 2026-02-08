@@ -3,7 +3,7 @@
 
 local Ellyb = TRP3.Ellyb
 local Languages = {};
-AddOn_TotalRP3.Languages = Languages;
+TRP3.Languages = Languages;
 
 -- Imports
 local loc = TRP3.loc;
@@ -26,7 +26,7 @@ end
 ---@return Language
 function Languages.getDefaultLanguage()
 	local name, id = GetDefaultLanguage()
-	return AddOn_TotalRP3.Language(id, name)
+	return TRP3.Language(id, name)
 end
 
 ---@return Language|nil
@@ -40,12 +40,12 @@ end
 
 function Languages.getLanguageByIndex(languageIndex)
 	local name, id = GetLanguageByIndex(languageIndex)
-	return AddOn_TotalRP3.Language(id, name)
+	return TRP3.Language(id, name)
 end
 
 ---@param language Language
 local function saveSelectedLanguageToCharacterData(language)
-	Ellyb.Assertions.isInstanceOf(language, AddOn_TotalRP3.Language, "language");
+	Ellyb.Assertions.isInstanceOf(language, TRP3.Language, "language");
 	TRP3_Characters[Globals.player_id][LAST_LANGUAGE_USED] = language:GetID();
 end
 
@@ -57,7 +57,7 @@ function Languages.setLanguage(language)
 		return;
 	end
 
-	Ellyb.Assertions.isInstanceOf(language, AddOn_TotalRP3.Language, "language")
+	Ellyb.Assertions.isInstanceOf(language, TRP3.Language, "language")
 	TRP3.Log("Setting language " .. language:GetName());
 
 	saveSelectedLanguageToCharacterData(language);

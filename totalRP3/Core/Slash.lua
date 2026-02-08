@@ -78,12 +78,12 @@ end
 
 local function sendDiceRoll(args)
 	if isTargetValidForDiceRoll() then
-		AddOn_TotalRP3.Communications.sendObject(DICE_SIGNAL, args, Utils.str.getUnitID("target"));
+		TRP3.Communications.sendObject(DICE_SIGNAL, args, Utils.str.getUnitID("target"));
 	end
 	if IsInRaid() then
-		AddOn_TotalRP3.Communications.sendObject(DICE_SIGNAL, args, "RAID");
+		TRP3.Communications.sendObject(DICE_SIGNAL, args, "RAID");
 	elseif IsInGroup() then
-		AddOn_TotalRP3.Communications.sendObject(DICE_SIGNAL, args, "PARTY");
+		TRP3.Communications.sendObject(DICE_SIGNAL, args, "PARTY");
 	end
 end
 
@@ -168,7 +168,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 		end
 	});
 
-	AddOn_TotalRP3.Communications.registerSubSystemPrefix(DICE_SIGNAL, function(arg, sender, channel)
+	TRP3.Communications.registerSubSystemPrefix(DICE_SIGNAL, function(arg, sender, channel)
 		if sender == Globals.player_id or not isValidDiceObject(arg) then
 			return;
 		end
@@ -181,7 +181,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 			DICEROLLS_COOLDOWNS[sender] = GetTime();
 		end
 
-		local player = AddOn_TotalRP3.Player.CreateFromCharacterID(sender);
+		local player = TRP3.Player.CreateFromCharacterID(sender);
 		local characterName = player:GenerateFormattedName(TRP3_PlayerNameFormat.Colored);
 
 		local totalMessage;

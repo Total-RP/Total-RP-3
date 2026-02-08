@@ -7,7 +7,7 @@ local registeredMapScans = {};
 
 ---@param scan MapScanner
 function MapScannersManager.register(scan)
-	Ellyb.Assertions.isInstanceOf(scan, AddOn_TotalRP3.MapScanner, "scan");
+	Ellyb.Assertions.isInstanceOf(scan, TRP3.MapScanner, "scan");
 
 	registeredMapScans[scan:GetID()] = scan;
 end
@@ -31,7 +31,7 @@ function MapScannersManager.launch(scanID)
 	TRP3.MapDataProvider:RemoveAllData();
 
 	-- Save the displayed map ID so we can check that we are still on the requested map when the scan ends
-	displayedMapID = AddOn_TotalRP3.Map.getDisplayedMapID()
+	displayedMapID = TRP3.Map.getDisplayedMapID()
 
 	scan:ResetScanData();
 
@@ -39,7 +39,7 @@ function MapScannersManager.launch(scanID)
 		TRP3_Addon:TriggerEvent(TRP3_Addon.Events.MAP_SCAN_ENDED);
 
 		-- If the displayed map changed
-		if displayedMapID ~= AddOn_TotalRP3.Map.getDisplayedMapID() then
+		if displayedMapID ~= TRP3.Map.getDisplayedMapID() then
 			return
 		end
 		scan:OnScanCompleted();

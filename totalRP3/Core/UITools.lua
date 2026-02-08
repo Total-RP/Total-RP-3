@@ -14,7 +14,7 @@ TRP3.ui = {
 local globals = TRP3.globals;
 local loc = TRP3.loc;
 local getUnitID = TRP3.utils.str.getUnitID;
-local TRP3_Enums = AddOn_TotalRP3.Enums;
+local TRP3_Enums = TRP3.Enums;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Frame utils
@@ -594,7 +594,7 @@ TRP3.ui.misc.getCompanionOwner = getCompanionOwner;
 function TRP3.ui.misc.getCompanionShortID(unitToken, unitType)
 	local shortID;
 
-	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.BATTLE_PET then
+	if unitType == TRP3.Enums.UNIT_TYPE.BATTLE_PET then
 		shortID = TRP3_CompanionUtil.GetCompanionPetUnitName(unitToken);
 	else
 		shortID = UnitNameUnmodified(unitToken);

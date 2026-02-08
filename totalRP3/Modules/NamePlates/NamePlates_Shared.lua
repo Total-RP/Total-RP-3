@@ -25,7 +25,7 @@ function TRP3_NamePlatesUtil.GetPreferredIconSize()
 end
 
 function TRP3_NamePlatesUtil.PrependRoleplayStatusToText(text, roleplayStatus)
-	if roleplayStatus ~= AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
+	if roleplayStatus ~= TRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
 		return text;
 	end
 
@@ -39,7 +39,7 @@ function TRP3_NamePlatesUtil.PrependRoleplayStatusToText(text, roleplayStatus)
 end
 
 function TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(fontstring, roleplayStatus)
-	if roleplayStatus ~= AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
+	if roleplayStatus ~= TRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
 		return;
 	end
 
@@ -56,9 +56,9 @@ function TRP3_NamePlatesUtil.GetUnitCharacterID(unitToken)
 	local unitType = TRP3.ui.misc.getTargetType(unitToken);
 	local characterID;
 
-	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
+	if unitType == TRP3.Enums.UNIT_TYPE.CHARACTER then
 		characterID = TRP3.utils.str.getUnitID(unitToken);
-	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
+	elseif unitType == TRP3.Enums.UNIT_TYPE.PET then
 		characterID = TRP3.ui.misc.getCompanionFullID(unitToken, unitType);
 	end
 

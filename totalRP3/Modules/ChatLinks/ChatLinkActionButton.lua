@@ -23,12 +23,12 @@ function ChatLinkActionButton:initialize(actionID, buttonText, questionCommand, 
 	_private[self].answerCommand = answerCommand;
 
 	-- Register to answer questions
-	AddOn_TotalRP3.Communications.registerSubSystemPrefix(questionCommand, function(linkData, sender)
+	TRP3.Communications.registerSubSystemPrefix(questionCommand, function(linkData, sender)
 		local link = TRP3.ChatLinksManager:GetSentLinkForIdentifier(linkData.linkID);
-		AddOn_TotalRP3.Communications.sendObject(answerCommand, link:GetData(), sender, "LOW", linkData.messageToken)
+		TRP3.Communications.sendObject(answerCommand, link:GetData(), sender, "LOW", linkData.messageToken)
 	end);
 
-	AddOn_TotalRP3.Communications.registerSubSystemPrefix(
+	TRP3.Communications.registerSubSystemPrefix(
 		answerCommand,
 		-- Note: We cannot use GenerateClosure here since the OnAnswerCommandReceived method is overwritten at a
 		-- later time by the module created and the binding will target the wrong method.
@@ -71,12 +71,12 @@ function ChatLinkActionButton:OnClick(linkID, sender, button)
 		self.button = button;
 
 		-- Get a unique message identifier for the data request, used for progression updates
-		local messageToken = AddOn_TotalRP3.Communications.getNewMessageToken();
+		local messageToken = TRP3.Communications.getNewMessageToken();
 		self.messageToken = messageToken;
-		self.handler = AddOn_TotalRP3.Communications.registerMessageTokenProgressHandler(messageToken, sender, GenerateClosure(self.OnProgressDownload, self));
+		self.handler = TRP3.Communications.registerMessageTokenProgressHandler(messageToken, sender, GenerateClosure(self.OnProgressDownload, self));
 
 		-- Send a request for this link ID and indicate a message ID to use for progression updates
-		AddOn_TotalRP3.Communications.sendObject(_private[self].questionCommand, {
+		TRP3.Communications.sendObject(_private[self].questionCommand, {
 			linkID = linkID,
 			messageToken = messageToken,
 		}, sender);

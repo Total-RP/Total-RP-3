@@ -173,7 +173,7 @@ function UnitPopupsModule:OnMenuOpen(owner, rootDescription, contextData)
 end
 
 function UnitPopupsModule:ShouldCustomizeMenus()
-	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+	local player = TRP3.Player.GetCurrentUser();
 
 	if ShouldDisableOutOfCharacter() and not player:IsInCharacter() then
 		return false;
@@ -273,26 +273,26 @@ local function CreateCharacterStatusMenu(menuDescription, contextData)
 	end
 
 	local function IsSelected(status)
-		local player = AddOn_TotalRP3.Player.GetCurrentUser();
+		local player = TRP3.Player.GetCurrentUser();
 		local roleplayStatus = player:GetRoleplayStatus();
 		return roleplayStatus == status;
 	end
 
 	local function SetSelected(status)
-		local player = AddOn_TotalRP3.Player.GetCurrentUser();
+		local player = TRP3.Player.GetCurrentUser();
 		player:SetRoleplayStatus(status);
 	end
 
 	local elementDescription = menuDescription:CreateButton(L.DB_STATUS_RP);
 
 	do
-		local state = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
+		local state = TRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
 		local button = elementDescription:CreateRadio(L.DB_STATUS_RP_IC, IsSelected, SetSelected, state);
 		TRP3_MenuUtil.SetElementTooltip(button, L.DB_STATUS_RP_IC_TT);
 	end
 
 	do
-		local state = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+		local state = TRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
 		local button = elementDescription:CreateRadio(L.DB_STATUS_RP_OOC, IsSelected, SetSelected, state);
 		TRP3_MenuUtil.SetElementTooltip(button, L.DB_STATUS_RP_OOC_TT);
 	end

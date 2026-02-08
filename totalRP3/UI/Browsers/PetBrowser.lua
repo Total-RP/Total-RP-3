@@ -115,9 +115,9 @@ end
 -- UI APIs
 --
 
-AddOn_TotalRP3.Ui = AddOn_TotalRP3.Ui or {};
+TRP3.Ui = TRP3.Ui or {};
 
-function AddOn_TotalRP3.Ui.IsPetBrowserEnabled()
+function TRP3.Ui.IsPetBrowserEnabled()
 	if TRP3.globals.player_character.class ~= "HUNTER" then
 		return false;  -- Player isn't a supported class.
 	elseif WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
@@ -127,10 +127,10 @@ function AddOn_TotalRP3.Ui.IsPetBrowserEnabled()
 	end
 end
 
-function AddOn_TotalRP3.Ui.GetPetBrowserFrame()
+function TRP3.Ui.GetPetBrowserFrame()
 	if TRP3_PetBrowserFrame then
 		return TRP3_PetBrowserFrame;
-	elseif AddOn_TotalRP3.Ui.IsPetBrowserEnabled() then
+	elseif TRP3.Ui.IsPetBrowserEnabled() then
 		return CreateFrame("Frame", "TRP3_PetBrowserFrame", TRP3_PopupsFrame, "TRP3_PetBrowserFrameTemplate");
 	else
 		return nil; -- Browser isn't enabled, so no frame for you.

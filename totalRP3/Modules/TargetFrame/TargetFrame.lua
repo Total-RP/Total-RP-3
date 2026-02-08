@@ -28,7 +28,7 @@ local function onStart()
 
 	local originalGetTargetType, getCompanionFullID = TRP3.ui.misc.getTargetType, TRP3.ui.misc.getCompanionFullID;
 	local getCompanionRegisterProfile, getCompanionProfile, companionHasProfile, isCurrentMine;
-	local TRP3_Enums = AddOn_TotalRP3.Enums;
+	local TRP3_Enums = TRP3.Enums;
 
 	local CONFIG_TARGET_USE = "target_use";
 	local CONFIG_TARGET_ICON_SIZE = "target_icon_size";

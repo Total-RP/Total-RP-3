@@ -13,9 +13,9 @@ local ORANGE = TRP3.Colors.Orange;
 
 -- Create the pin template, above group members
 ---@type BaseMapPoiPinMixin|MapCanvasPinMixin|{Texture: Texture, GetMap: fun():MapCanvasMixin}
-TRP3_PlayerMapPinMixin = AddOn_TotalRP3.MapPoiMixins.createPinTemplate(
-	AddOn_TotalRP3.MapPoiMixins.GroupedCoalescedMapPinMixin, -- Use coalesced grouped tooltips (show multiple player names)
-	AddOn_TotalRP3.MapPoiMixins.AnimatedPinMixin -- Use animated icons (bounce in)
+TRP3_PlayerMapPinMixin = TRP3.MapPoiMixins.createPinTemplate(
+	TRP3.MapPoiMixins.GroupedCoalescedMapPinMixin, -- Use coalesced grouped tooltips (show multiple player names)
+	TRP3.MapPoiMixins.AnimatedPinMixin -- Use animated icons (bounce in)
 );
 
 -- Expose template name, so the scan can use it for the MapDataProvider
@@ -27,7 +27,7 @@ local getConfigValue = TRP3.configuration.getValue;
 --- This is called when the data provider acquire a pin, to transform poiInfo received from the scan
 --- into display info to be used to decorate the pin.
 function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
-	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(poiInfo.sender);
+	local player = TRP3.Player.CreateFromCharacterID(poiInfo.sender);
 	local hasWarModeActive = poiInfo.hasWarModeActive;
 	local shouldDifferentiateBetweenWarModes = getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES);
 	local hasSameWarModeAsPlayer = (not TRP3_ClientFeatures.WarMode) or hasWarModeActive == C_PvP.IsWarModeActive();
@@ -69,7 +69,7 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 		end
 	end
 
-	if poiInfo.roleplayStatus == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
+	if poiInfo.roleplayStatus == TRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
 		-- OOC characters will be suffixed with an OOC indicator and faded.
 		displayData.opacity = math.min(0.5, displayData.opacity);
 		displayData.playerNameFancy = string.format("%2$s |cffff0000(%1$s)|r", loc.CM_OOC, displayData.playerNameFancy);

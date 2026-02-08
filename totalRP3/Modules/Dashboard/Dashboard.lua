@@ -6,7 +6,7 @@ TRP3.dashboard = {
 };
 
 -- imports
-local TRP3_Enums = AddOn_TotalRP3.Enums;
+local TRP3_Enums = TRP3.Enums;
 
 local getPlayerCurrentProfileID = TRP3.profile.getPlayerCurrentProfileID;
 local getProfiles = TRP3.profile.getProfiles;
@@ -35,7 +35,7 @@ getDefaultProfile().player.character = {
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3.dashboard.switchStatus()
-	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+	local player = TRP3.Player.GetCurrentUser();
 	local status = player:GetRoleplayStatus();
 
 	if status == TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER then
@@ -46,7 +46,7 @@ function TRP3.dashboard.switchStatus()
 end
 
 function TRP3.dashboard.isPlayerIC()
-	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+	local player = TRP3.Player.GetCurrentUser();
 	return player:IsInCharacter();
 end
 
@@ -158,7 +158,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 				subcommand = TRP3_AutomationUtil.ParseMacroOption(subcommand);
 			end
 
-			local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+			local currentUser = TRP3.Player.GetCurrentUser();
 
 			if subcommand == "ic" then
 				currentUser:SetRoleplayStatus(TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER);
@@ -243,7 +243,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 			text = rpTextOn,
 			configText = loc.CO_TOOLBAR_CONTENT_RPSTATUS,
 			onModelUpdate = function(buttonStructure)
-				if AddOn_TotalRP3.Player.GetCurrentUser():IsInCharacter() then
+				if TRP3.Player.GetCurrentUser():IsInCharacter() then
 					buttonStructure.tooltip  = rpTextOn;
 					buttonStructure.tooltipSub = rpText3;
 					buttonStructure.icon = RP_ICON;

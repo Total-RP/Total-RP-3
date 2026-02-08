@@ -10,7 +10,7 @@ local loc = TRP3.loc;
 local initList = TRP3.ui.list.initList;
 local handleMouseWheel = TRP3.ui.list.handleMouseWheel;
 local getImageList, getImageListSize;
-local TRP3_Enums = AddOn_TotalRP3.Enums;
+local TRP3_Enums = TRP3.Enums;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Static popups definition
@@ -592,7 +592,7 @@ function TRP3.popup.showCompanionBrowser(onSelectCallback, onCancelCallback, com
 end
 
 function TRP3.popup.showPetBrowser(profileID, onSelectCallback, onCancelCallback)
-	local frame = AddOn_TotalRP3.Ui.GetPetBrowserFrame();
+	local frame = TRP3.Ui.GetPetBrowserFrame();
 	if not frame then
 		return;
 	end
@@ -806,8 +806,8 @@ local POPUP_STRUCTURE = {
 		frame = TRP3_CompanionBrowser,
 		showMethod = TRP3.popup.showCompanionBrowser,
 	},
-	[TRP3.popup.PETS] = AddOn_TotalRP3.Ui.IsPetBrowserEnabled() and {
-		frame = AddOn_TotalRP3.Ui.GetPetBrowserFrame(),
+	[TRP3.popup.PETS] = TRP3.Ui.IsPetBrowserEnabled() and {
+		frame = TRP3.Ui.GetPetBrowserFrame(),
 		showMethod = TRP3.popup.showPetBrowser,
 	} or nil,
 	[TRP3.popup.BACKGROUNDS] = {

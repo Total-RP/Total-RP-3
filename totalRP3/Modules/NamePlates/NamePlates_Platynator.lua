@@ -74,7 +74,7 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 			-- (so it doesn't get replaced by the guild)
 			if not overrideSubtext then
 				local targetType = TRP3.ui.misc.getTargetType(unitToken);
-				if targetType ~= AddOn_TotalRP3.Enums.UNIT_TYPE.NPC then
+				if targetType ~= TRP3.Enums.UNIT_TYPE.NPC then
 					overrideSubtext = "";
 				end
 			end

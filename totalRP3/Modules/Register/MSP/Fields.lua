@@ -5,7 +5,7 @@ local Ellyb = TRP3.Ellyb;
 
 local Globals = TRP3.globals;
 
-local module = AddOn_TotalRP3.MSP or {};
+local module = TRP3.MSP or {};
 
 module.TOOLTIP_FIELDS = {"CO", "IC", "PX", "RC", "RS", "TR", "PN"};
 module.REQUEST_FIELDS = {"TT", "IC", "PG", "PR", "PN", "PV", "CO", "AE", "AG", "AH", "AW", "DE", "HB", "HH", "HI", "MO", "NH", "MU", "PE", "PS", "RS"};
@@ -94,7 +94,7 @@ function module.TryRegisterField(...)
 	return true
 end
 
-AddOn_TotalRP3.MSP = module;
+TRP3.MSP = module;
 
 ---
 --- Serializer/Deserializer Implementations

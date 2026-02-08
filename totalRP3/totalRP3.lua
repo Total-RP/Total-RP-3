@@ -36,8 +36,8 @@ local function loadingSequence()
 	MAIN_SEQUENCE_DETAIL = "TRP3.module.initModules";
 	TRP3.module.initModules();
 
-	MAIN_SEQUENCE_DETAIL = "AddOn_TotalRP3.Communications.broadcast.init";
-	AddOn_TotalRP3.Communications.broadcast.init();
+	MAIN_SEQUENCE_DETAIL = "TRP3.Communications.broadcast.init";
+	TRP3.Communications.broadcast.init();
 	MAIN_SEQUENCE_DETAIL = "TRP3.profile.init";
 	TRP3.profile.init();
 	MAIN_SEQUENCE_DETAIL = "TRP3.dashboard.init";

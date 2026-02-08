@@ -396,7 +396,7 @@ function TRP3_Automation:OnFieldSetCommand(field, ...)
 		data = self:ParseMacroOption(data);
 	end
 
-	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+	local player = TRP3.Player.GetCurrentUser();
 
 	if field == "" or field == "help" then
 		local STEM_COLOR = "ffffffff"

@@ -5,19 +5,19 @@ local L = TRP3.loc;
 
 
 local function IsRoleplayStatus(status)
-	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	local currentUser = TRP3.Player.GetCurrentUser();
 	local currentStatus = currentUser:GetRoleplayStatus();
 	return currentStatus == status;
 end
 
 local function IsRoleplayExperienceLevel(level)
-	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	local currentUser = TRP3.Player.GetCurrentUser();
 	local currentExperience = currentUser:GetRoleplayExperience();
 	return currentExperience == level;
 end
 
 local function IsWalkupFriendly(walkup)
-	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	local currentUser = TRP3.Player.GetCurrentUser();
 	local currentWalkup = currentUser:GetWalkup();
 	return currentWalkup == walkup;
 end
@@ -37,7 +37,7 @@ local function GetRoleplayExperienceButtonText(selection)
 end
 
 local function SetRoleplayExperienceLevel(level)
-	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	local currentUser = TRP3.Player.GetCurrentUser();
 	currentUser:SetRoleplayExperience(level);
 end
 
@@ -45,9 +45,9 @@ local function GetRoleplayStatusButtonText(selection)
 	local status = selection:GetData();
 	local text = MenuUtil.GetElementText(selection);
 
-	if status == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER then
+	if status == TRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER then
 		text = string.join(" ", "|TInterface\\COMMON\\Indicator-Green:16:16|t ", text);
-	elseif status == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
+	elseif status == TRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
 		text = string.join(" ", "|TInterface\\COMMON\\Indicator-Red:16:16|t ", text);
 	end
 
@@ -55,7 +55,7 @@ local function GetRoleplayStatusButtonText(selection)
 end
 
 local function SetRoleplayStatus(status)
-	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	local currentUser = TRP3.Player.GetCurrentUser();
 	currentUser:SetRoleplayStatus(status);
 end
 
@@ -63,7 +63,7 @@ local function GetWalkupButtonText(selection)
 	local status = selection:GetData();
 	local text = MenuUtil.GetElementText(selection);
 
-	if status == AddOn_TotalRP3.Enums.WALKUP.YES then
+	if status == TRP3.Enums.WALKUP.YES then
 		text = string.join(" ", "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-walkup:16:16|t ", text);
 	end
 
@@ -71,20 +71,20 @@ local function GetWalkupButtonText(selection)
 end
 
 local function SetWalkup(walkup)
-	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	local currentUser = TRP3.Player.GetCurrentUser();
 	currentUser:SetWalkup(walkup);
 end
 
 local function GenerateRPStatusMenu(_, rootDescription)
 	do  -- Out of character
-		local status = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+		local status = TRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
 		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_RP_OOC, IsRoleplayStatus, SetRoleplayStatus, status);
 		TRP3_MenuUtil.AttachTexture(elementDescription, [[Interface\COMMON\Indicator-Red]]);
 		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_RP_OOC_TT);
 	end
 
 	do  -- In character
-		local status = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
+		local status = TRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
 		local elementDescription = rootDescription:CreateRadio(L.DB_STATUS_RP_IC, IsRoleplayStatus, SetRoleplayStatus, status);
 		TRP3_MenuUtil.AttachTexture(elementDescription, [[Interface\COMMON\Indicator-Green]]);
 		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_RP_IC_TT);
@@ -93,12 +93,12 @@ end
 
 local function GenerateWalkupMenu(_, rootDescription)
 	do  -- Walkup No
-		local walkup = AddOn_TotalRP3.Enums.WALKUP.NO;
+		local walkup = TRP3.Enums.WALKUP.NO;
 		rootDescription:CreateRadio(L.CM_DO_NOT_SHOW, IsWalkupFriendly, SetWalkup, walkup);
 	end
 
 	do  -- Walkup Yes
-		local walkup = AddOn_TotalRP3.Enums.WALKUP.YES;
+		local walkup = TRP3.Enums.WALKUP.YES;
 		local elementDescription = rootDescription:CreateRadio(L.CM_YES, IsWalkupFriendly, SetWalkup, walkup);
 		TRP3_MenuUtil.AttachTexture(elementDescription, [[Interface\AddOns\totalRP3\Resources\UI\ui-icon-walkup.tga]]);
 		TRP3_MenuUtil.SetElementTooltip(elementDescription, L.DB_STATUS_WU_YES_TT);
@@ -107,10 +107,10 @@ end
 
 local function GenerateXPStatusMenu(_, rootDescription)
 	local levels = {
-		AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER,
-		AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL,
-		AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN,
-		AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE,
+		TRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER,
+		TRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL,
+		TRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN,
+		TRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE,
 	};
 
 	for _, level in ipairs(levels) do

@@ -9,7 +9,7 @@ local openMainFrame = TRP3.navigation.openMainFrame;
 local getCurrentContext = TRP3.navigation.page.getCurrentContext;
 local setTooltipForSameFrame = TRP3.ui.tooltip.setTooltipForSameFrame;
 
-local GetCurrentUser = AddOn_TotalRP3.Player.GetCurrentUser;
+local GetCurrentUser = TRP3.Player.GetCurrentUser;
 local getPlayerCurrentProfile = TRP3.profile.getPlayerCurrentProfile;
 local getPlayerCurrentProfileID = TRP3.profile.getPlayerCurrentProfileID;
 local getConfigValue = TRP3.configuration.getValue;
@@ -111,7 +111,7 @@ function TRP3.register.inits.notesInit()
 		TRP3.target.registerButton({
 			id = "za_notes",
 			configText = loc.REG_NOTES_PROFILE,
-			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
+			onlyForType = TRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
 				return (unitID == Globals.player_id and getPlayerCurrentProfileID() ~= getConfigValue("default_profile_id")) or (isUnitIDKnown(unitID) and hasProfile(unitID));
 			end,

@@ -149,7 +149,7 @@ function TRP3_ToolbarFrameMixin:UpdateFrameVisibility(forcedVisibility)
 	elseif configuredVisibility == TRP3_ToolbarVisibilityOption.AlwaysHidden then
 		shouldShow = false;
 	elseif configuredVisibility == TRP3_ToolbarVisibilityOption.OnlyShowInCharacter then
-		shouldShow = AddOn_TotalRP3.Player.GetCurrentUser():IsInCharacter();
+		shouldShow = TRP3.Player.GetCurrentUser():IsInCharacter();
 	else
 		shouldShow = true;
 	end

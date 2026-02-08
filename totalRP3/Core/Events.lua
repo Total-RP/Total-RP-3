@@ -104,7 +104,7 @@ do
 	local status = nil;
 
 	local function OnRegisterDataUpdated()
-		local current = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayStatus();
+		local current = TRP3.Player.GetCurrentUser():GetRoleplayStatus();
 
 		if status ~= current then
 			status = current;

@@ -8,7 +8,7 @@ TRP3_AutomationUtil.RegisterCondition({
 	tokens = { "rpstatus" },
 
 	Evaluate = function(context)
-		local player = AddOn_TotalRP3.Player.GetCurrentUser();
+		local player = TRP3.Player.GetCurrentUser();
 		local ok, status = TRP3_AutomationUtil.ParseRoleplayStatusString(context.option);
 
 		if not ok then
@@ -25,8 +25,8 @@ TRP3_AutomationUtil.RegisterCondition({
 	tokens = { "ic" },
 
 	Evaluate = function()
-		local player = AddOn_TotalRP3.Player.GetCurrentUser();
-		return player:GetRoleplayStatus() == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
+		local player = TRP3.Player.GetCurrentUser();
+		return player:GetRoleplayStatus() == TRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
 	end,
 });
 
@@ -35,8 +35,8 @@ TRP3_AutomationUtil.RegisterCondition({
 	tokens = { "ooc" },
 
 	Evaluate = function()
-		local player = AddOn_TotalRP3.Player.GetCurrentUser();
-		return player:GetRoleplayStatus() == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+		local player = TRP3.Player.GetCurrentUser();
+		return player:GetRoleplayStatus() == TRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
 	end,
 });
 
@@ -45,7 +45,7 @@ TRP3_AutomationUtil.RegisterCondition({
 	tokens = { "profile" },
 
 	Evaluate = function(context)
-		local player = AddOn_TotalRP3.Player.GetCurrentUser();
+		local player = TRP3.Player.GetCurrentUser();
 		local currentProfileName = player:GetProfileName();
 		local desiredProfileName = context.option;
 

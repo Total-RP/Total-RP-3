@@ -11,7 +11,7 @@ local setTooltipForSameFrame, toast = TRP3.ui.tooltip.setTooltipForSameFrame, TR
 local unitIDIsFilteredForMatureContent;
 local crop = TRP3.utils.str.crop;
 local shouldCropTexts = TRP3.ui.tooltip.shouldCropTexts;
-local TRP3_Enums = AddOn_TotalRP3.Enums;
+local TRP3_Enums = TRP3.Enums;
 
 -- CONSTANTS
 local EMPTY = Globals.empty;

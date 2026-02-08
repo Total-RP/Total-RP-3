@@ -4,10 +4,10 @@ local Ellyb = TRP3.Ellyb;
 
 --{{{ Total RP 3 imports
 local loc = TRP3.loc;
-local broadcast = AddOn_TotalRP3.Communications.broadcast;
+local broadcast = TRP3.Communications.broadcast;
 local registerConfigKey = TRP3.configuration.registerConfigKey;
 local getConfigValue = TRP3.configuration.getValue;
-local Map = AddOn_TotalRP3.Map;
+local Map = TRP3.Map;
 --}}}
 
 local CONFIG_ENABLE_MAP_LOCATION = "register_map_location";
@@ -16,7 +16,7 @@ local CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE = "register_map_location_disable_w
 local CONFIG_SHOW_DIFFERENT_WAR_MODES = "register_map_location_show_war_modes";
 local CONFIG_ROLEPLAY_STATUS_VISIBILITY = "register_map_location_status_visibility";
 
-local player = AddOn_TotalRP3.Player.GetCurrentUser()
+local player = TRP3.Player.GetCurrentUser()
 
 local function shouldAnswerToLocationRequest()
 	if not getConfigValue(CONFIG_ENABLE_MAP_LOCATION) then
@@ -44,7 +44,7 @@ local function ShouldShowRoleplayStatus(roleplayStatus)
 	local preferredVisibility = getConfigValue(CONFIG_ROLEPLAY_STATUS_VISIBILITY);
 	local shouldShowStatus;
 
-	if roleplayStatus == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
+	if roleplayStatus == TRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
 		shouldShowStatus = (preferredVisibility ~= RoleplayStatusVisibility.ShowInCharacter);
 	else
 		shouldShowStatus = true;
@@ -103,7 +103,7 @@ function PlayerMapScannerMixin:CanScan()
 end
 
 local function newMapScanner(scanID)
-	local scanner = AddOn_TotalRP3.MapScanner(scanID);
+	local scanner = TRP3.MapScanner(scanID);
 	Mixin(scanner, PlayerMapScannerMixin);
 	return scanner;
 end
@@ -242,7 +242,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 				local x, y = GetScanResponseCoordinates(mapID);
 				if x and y then
 					local hasWarModeActive = (not TRP3_ClientFeatures.WarMode) or C_PvP.IsWarModeActive();
-					local roleplayStatus = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayStatus();
+					local roleplayStatus = TRP3.Player.GetCurrentUser():GetRoleplayStatus();
 
 					broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, hasWarModeActive, roleplayStatus);
 				end
@@ -263,7 +263,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 
 		if not roleplayStatus then
 			-- Compatibility for old network clients; assume they're in-character.
-			roleplayStatus = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
+			roleplayStatus = TRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
 		end
 
 		local scannedMapID = Map.getDisplayedMapID()

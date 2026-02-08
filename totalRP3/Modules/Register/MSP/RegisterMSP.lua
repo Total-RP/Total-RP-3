@@ -30,7 +30,7 @@ local function onStart()
 	-- LibMSP support code
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	msp_RPAddOn = "Total RP 3";
-	msp:AddFieldsToTooltip(AddOn_TotalRP3.MSP.TOOLTIP_FIELDS);
+	msp:AddFieldsToTooltip(TRP3.MSP.TOOLTIP_FIELDS);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Update
@@ -38,20 +38,20 @@ local function onStart()
 
 	local function updateCharacterData()
 		local character = get("player/character");
-		local experience = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayExperience();
+		local experience = TRP3.Player.GetCurrentUser():GetRoleplayExperience();
 		msp.my['CU'] = character.CU;
 		msp.my['CO'] = character.CO;
-		if experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
+		if experience == TRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
 			msp.my['FR'] = "1";  -- MRP: Beginner
-		elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
+		elseif experience == TRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
 			msp.my['FR'] = "3";  -- MRP: Experienced
-		elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE then
+		elseif experience == TRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE then
 			msp.my['FR'] = "4";  -- MRP: Guide
 		else
 			msp.my['FR'] = "2";  -- MRP: Casual
 		end
-		if character.RP == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER then
-			if character.WU == AddOn_TotalRP3.Enums.WALKUP.YES then
+		if character.RP == TRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER then
+			if character.WU == TRP3.Enums.WALKUP.YES then
 				msp.my['FC'] = "3";
 			else
 				msp.my['FC'] = "2";
@@ -122,7 +122,7 @@ local function onStart()
 		msp.my['HH'] = dataTab.RE;
 		msp.my['HB'] = dataTab.BP;
 		msp.my['NT'] = dataTab.FT;
-		msp.my['RS'] = tostring(dataTab.RS or AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN);
+		msp.my['RS'] = tostring(dataTab.RS or TRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN);
 		-- Clear fields that may or may not exist in the updated profile.
 		msp.my['MO'] = nil;
 		msp.my['NH'] = nil;
@@ -153,7 +153,7 @@ local function onStart()
 			end
 		end
 
-		msp.my['PS'] = AddOn_TotalRP3.MSP.SerializeField("PS", dataTab.PS);
+		msp.my['PS'] = TRP3.MSP.SerializeField("PS", dataTab.PS);
 	end
 
 	local RP_STYLE_FIELDS = {
@@ -383,7 +383,7 @@ local function onStart()
 			char.field.NT = profile.characteristics.FT;  -- Full Title
 			char.field.IC = profile.characteristics.IC;  -- Icon
 			char.field.RA = profile.characteristics.RA;  -- Race
-			char.field.RS = tostring(profile.characteristics.RS or AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN);
+			char.field.RS = tostring(profile.characteristics.RS or TRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN);
 			char.field.AG = profile.characteristics.AG;  -- Age
 			char.field.AH = profile.characteristics.HE;  -- Height
 			char.field.AW = profile.characteristics.WE;  -- Weight
@@ -416,11 +416,11 @@ local function onStart()
 
 		if profile.character ~= nil then
 			-- Roleplay Status and Walkup
-			if profile.character.RP == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
+			if profile.character.RP == TRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
 				char.field.FC = "1";  -- Out of Character
-			elseif profile.character.WU == AddOn_TotalRP3.Enums.WALKUP.YES then
+			elseif profile.character.WU == TRP3.Enums.WALKUP.YES then
 				char.field.FC = "3";  -- Looking for Contact
-			elseif profile.character.RP == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER then
+			elseif profile.character.RP == TRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER then
 				char.field.FC = "2";  -- In Character
 			end
 
@@ -430,13 +430,13 @@ local function onStart()
 
 		if character ~= nil then
 			-- Roleplay Experience
-			if character.roleplayExperience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
+			if character.roleplayExperience == TRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
 				char.field.FR = "1";
-			elseif character.roleplayExperience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
+			elseif character.roleplayExperience == TRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
 				char.field.FR = "3";
-			elseif character.roleplayExperience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE then
+			elseif character.roleplayExperience == TRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE then
 				char.field.FR = "4";
-			elseif character.roleplayExperience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL then
+			elseif character.roleplayExperience == TRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL then
 				char.field.FR = "2";
 			end
 		end
@@ -523,7 +523,7 @@ local function onStart()
 						end
 						-- Machine-formatted psychological traits.
 						if field == "PS" and value then
-							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = AddOn_TotalRP3.MSP.DeserializeField(field, value);
+							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = TRP3.MSP.DeserializeField(field, value);
 						end
 					elseif ABOUT_FIELDS[field] then
 						if field == "MU" then
@@ -557,14 +557,14 @@ local function onStart()
 					elseif CHARACTER_FIELDS[field] then
 					if field == "FC" then
 						if value == "1" then
-							profile.character.RP = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+							profile.character.RP = TRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
 						else
-							profile.character.RP = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
+							profile.character.RP = TRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
 						end
 						if value == "3" then
-							profile.character.WU = AddOn_TotalRP3.Enums.WALKUP.YES;
+							profile.character.WU = TRP3.Enums.WALKUP.YES;
 						else
-							profile.character.WU = AddOn_TotalRP3.Enums.WALKUP.NO;
+							profile.character.WU = TRP3.Enums.WALKUP.NO;
 						end
 						elseif field == "CU" then
 							profile.character.CU = value;
@@ -572,13 +572,13 @@ local function onStart()
 							profile.character.CO = value;
 						elseif field == "FR" then
 							if value == "1" then
-								character.roleplayExperience = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER;
+								character.roleplayExperience = TRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER;
 							elseif value == "3" then
-								character.roleplayExperience = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN;
+								character.roleplayExperience = TRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN;
 							elseif value == "4" then
-								character.roleplayExperience = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE;
+								character.roleplayExperience = TRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE;
 							else
-								character.roleplayExperience = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL;
+								character.roleplayExperience = TRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL;
 							end
 						elseif field == "VA" then
 							if value and value:find("/", nil, true) then
@@ -639,7 +639,7 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	msp.my['VA'] = "TotalRP3/" .. Globals.version_display;
-	msp.my['TR'] = tostring(AddOn_TotalRP3.Player.GetCurrentUser():GetAccountType());
+	msp.my['TR'] = tostring(TRP3.Player.GetCurrentUser():GetAccountType());
 
 	-- Init others vernum
 	for _, profile in pairs(TRP3.register.getProfileList()) do
@@ -679,7 +679,7 @@ function TRP3.r.sendMSPQuery(name, targetMode)
 		return;
 	elseif not name or name == TRP3.globals.player_id or TRP3.register.isIDIgnored(name) then
 		return;
-	elseif targetMode and targetMode ~= AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
+	elseif targetMode and targetMode ~= TRP3.Enums.UNIT_TYPE.CHARACTER then
 		return;
 	end
 
@@ -706,7 +706,7 @@ function TRP3.r.sendMSPQuery(name, targetMode)
 		msp:Request(name, { "VA" });
 	else
 		outstandingHelloRequests[name] = nil;
-		msp:Request(name, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
+		msp:Request(name, TRP3.MSP.REQUEST_FIELDS);
 	end
 end
 

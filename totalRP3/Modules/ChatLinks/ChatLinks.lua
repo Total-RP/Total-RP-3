@@ -208,7 +208,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 				local playerName = linkContent:sub(1, separatorIndex - 1);
 				local itemName = linkContent:sub(separatorIndex + 1);
 
-				AddOn_TotalRP3.Communications.sendObject(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, itemName, playerName);
+				TRP3.Communications.sendObject(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, itemName, playerName);
 
 				TRP3_RefTooltip.itemName = itemName;
 				-- TODO Localization and better UI feedback
@@ -222,14 +222,14 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 	end)
 
 	-- Register command prefix when requested for tooltip data for an item
-	AddOn_TotalRP3.Communications.registerSubSystemPrefix(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, function(identifier, sender)
+	TRP3.Communications.registerSubSystemPrefix(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, function(identifier, sender)
 		local link = TRP3.ChatLinksManager:GetSentLinkForIdentifier(identifier);
 		if not link then
-			AddOn_TotalRP3.Communications.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, UNKNOWN_LINK, sender);
+			TRP3.Communications.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, UNKNOWN_LINK, sender);
 			return
 		end
 
-		AddOn_TotalRP3.Communications.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, {
+		TRP3.Communications.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, {
 			itemName = link:GetIdentifier(), -- Item name is sent back so the recipient knows what we are answering to
 			tooltipLines = link:GetTooltipLines():GetRaw(), -- Get a list of lines to show inside the tooltip
 			actionButtons = link:GetActionButtons(), --  Get a list of actions buttons to show inside the tooltip (only data)
@@ -242,7 +242,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 	end);
 
 	-- Register command prefix when received tooltip data
-	AddOn_TotalRP3.Communications.registerSubSystemPrefix(CHAT_LINKS_PROTOCOL_DATA_PREFIX, function(itemData, sender)
+	TRP3.Communications.registerSubSystemPrefix(CHAT_LINKS_PROTOCOL_DATA_PREFIX, function(itemData, sender)
 		if itemData == UNKNOWN_LINK then
 			showTooltip({
 				tooltipLines = {

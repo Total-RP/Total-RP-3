@@ -80,7 +80,7 @@ Prat:AddModuleToLoad(function()
 
 		-- We retrieve the custom color if the option for custom colored names in chat is enabled
 		if TRP3.chat.configShowNameCustomColors() then
-			local player = AddOn_TotalRP3.Player.CreateFromCharacterID(unitID);
+			local player = TRP3.Player.CreateFromCharacterID(unitID);
 			local customColor = player:GetCustomColorForDisplay(unitID);
 
 			if customColor then

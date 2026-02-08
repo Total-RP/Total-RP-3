@@ -28,13 +28,13 @@ TRP3_LauncherUtil.RegisterAction({
 	name = L.LAUNCHER_ACTION_STATUS,
 
 	Activate = function()
-		local player = AddOn_TotalRP3.Player.GetCurrentUser();
+		local player = TRP3.Player.GetCurrentUser();
 
 		if player:IsInCharacter() then
-			player:SetRoleplayStatus(AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER);
+			player:SetRoleplayStatus(TRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER);
 			TRP3_Addon:Print(L.AUTOMATION_ACTION_ROLEPLAY_STATUS_CHANGED_OOC);
 		else
-			player:SetRoleplayStatus(AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER);
+			player:SetRoleplayStatus(TRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER);
 			TRP3_Addon:Print(L.AUTOMATION_ACTION_ROLEPLAY_STATUS_CHANGED_IC);
 		end
 	end,

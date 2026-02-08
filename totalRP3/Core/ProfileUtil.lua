@@ -159,11 +159,11 @@ function TRP3.GetMiscTypeInfo(miscType)
 end
 
 local RoleplayExperienceIcons = {
-	[AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER] = {
+	[TRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER] = {
 		atlas = "newplayerchat-chaticon-newcomer",
 		file = "interface/targetingframe/ui-targetingframe-seal",
 	},
-	[AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE] = {
+	[TRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE] = {
 		atlas = "newplayerchat-chaticon-guide",
 		file = "interface/targetingframe/portraitquestbadge",
 	},
@@ -200,11 +200,11 @@ function TRP3.GetRoleplayExperienceIconMarkup(experience)
 end
 
 function TRP3.GetRoleplayExperienceText(experience)
-	if experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
+	if experience == TRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
 		return L.DB_STATUS_XP_NEWCOMER;
-	elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
+	elseif experience == TRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
 		return L.DB_STATUS_XP_VETERAN;
-	elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE then
+	elseif experience == TRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE then
 		return L.DB_STATUS_XP_NEWCOMER_GUIDE;
 	else
 		return L.DB_STATUS_XP_NORMAL;
@@ -212,11 +212,11 @@ function TRP3.GetRoleplayExperienceText(experience)
 end
 
 function TRP3.GetRoleplayExperienceTooltipText(experience)
-	if experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
+	if experience == TRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
 		return L.DB_STATUS_XP_NEWCOMER_TT;
-	elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
+	elseif experience == TRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
 		return L.DB_STATUS_XP_VETERAN_TT;
-	elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE then
+	elseif experience == TRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER_GUIDE then
 		return L.DB_STATUS_XP_NEWCOMER_GUIDE_TT;
 	else
 		return L.DB_STATUS_XP_NORMAL_TT;

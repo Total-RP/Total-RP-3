@@ -14,7 +14,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 	TRP3.target.registerButton({
 		id = "zzzzzzzzzz_player_report",
 		configText = loc.REG_REPORT_PLAYER_PROFILE,
-		onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
+		onlyForType = TRP3.Enums.UNIT_TYPE.CHARACTER,
 		condition = function(_, unitID)
 			return UnitIsPlayer("target") and unitID ~= TRP3.globals.player_id
 		end,

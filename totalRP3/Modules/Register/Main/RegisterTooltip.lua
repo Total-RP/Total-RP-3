@@ -22,7 +22,7 @@ local unitIDToInfo = Utils.str.unitIDToInfo;
 local isPlayerIC;
 local unitIDIsFilteredForMatureContent;
 local crop = Utils.str.crop;
-local TRP3_Enums = AddOn_TotalRP3.Enums;
+local TRP3_Enums = TRP3.Enums;
 
 -- ICONS
 local OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15:15|t";
@@ -527,7 +527,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 	local targetName = UnitName(targetType);
 	local colors = getTooltipTextColors();
 	---@type Player
-	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(targetID);
+	local player = TRP3.Player.CreateFromCharacterID(targetID);
 	local profileID = player:GetProfileID();
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -818,7 +818,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 			local unitType = TRP3.ui.misc.getTargetType(targetType .. "target");
 
 			local targetClassColor;
-			if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.BATTLE_PET or unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
+			if unitType == TRP3.Enums.UNIT_TYPE.BATTLE_PET or unitType == TRP3.Enums.UNIT_TYPE.PET then
 				local owner, companionID = TRP3.utils.str.companionIDToInfo(targetTargetID);
 				targetClassColor = TRP3.Colors.White;
 
@@ -839,7 +839,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 				end
 			else
 				---@type Player
-				local targetTarget = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetTargetID)
+				local targetTarget = TRP3.Player.static.CreateFromCharacterID(targetTargetID)
 				local _, targetEnglishClass = UnitClass(targetType .. "target");
 				local targetInfo = getCharacterInfoTab(targetTargetID);
 				targetClassColor = targetEnglishClass and TRP3.GetClassDisplayColor(targetEnglishClass) or TRP3.Colors.White;
@@ -942,7 +942,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 				if Globals.extended_version then
 					clientText = strconcat(clientText, " x ", Utils.str.sanitizeVersion(Globals.extended_display_version));
 				end
-				if AddOn_TotalRP3.Player.GetCurrentUser():IsOnATrialAccount() then
+				if TRP3.Player.GetCurrentUser():IsOnATrialAccount() then
 					clientText = strconcat(clientText, " ", colors.SECONDARY("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
 				end
 			elseif IsUnitIDKnown(targetID) then

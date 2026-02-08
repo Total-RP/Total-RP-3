@@ -21,7 +21,7 @@ local companionIDToInfo = Utils.str.companionIDToInfo;
 local isTargetTypeACompanion, companionHasProfile = TRP3.ui.misc.isTargetTypeACompanion, TRP3.companions.register.companionHasProfile;
 local getCompanionNameFromSpellID = TRP3.companions.getCompanionNameFromSpellID;
 local getCurrentMountSpellID, getCurrentMountProfile = TRP3.companions.player.getCurrentMountSpellID, TRP3.companions.player.getCurrentMountProfile;
-local TRP3_Enums = AddOn_TotalRP3.Enums;
+local TRP3_Enums = TRP3.Enums;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -264,7 +264,7 @@ local function onBoundClicked(button)
 
 	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 		local boundTab = description:CreateButton(loc.REG_COMPANION_BOUND_TO);
-		if AddOn_TotalRP3.Ui.IsPetBrowserEnabled() then
+		if TRP3.Ui.IsPetBrowserEnabled() then
 			boundTab:CreateButton(loc.REG_COMPANION_BIND_TO_PET, function() onActionSelected(7, button); end);
 		end
 		boundTab:CreateButton(loc.PR_CO_BATTLE, function() onActionSelected(4, button); end);
@@ -644,7 +644,7 @@ TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function
 		TRP3.target.registerButton({
 			id = "bb_companion_profile_mount",
 			configText = loc.REG_COMPANION_TF_PROFILE_MOUNT,
-			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
+			onlyForType = TRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, characterID)
 				if characterID == Globals.player_id then
 					return getCurrentMountSpellID() ~= nil;
