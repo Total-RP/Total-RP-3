@@ -376,7 +376,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateSubText(nameplate)
 		end
 
 		if TRP3_NamePlatesUtil.IsGuildNameEnabled() then
-			displayGuild = displayInfo.guildName;
+			displayGuild = displayInfo.guildName or GetGuildInfo(unitToken);
 		end
 	end
 
