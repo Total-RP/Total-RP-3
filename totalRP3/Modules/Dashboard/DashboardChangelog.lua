@@ -10,6 +10,7 @@ local CHANGELOG_TEXT = [[
 - Fixed a Lua error in the Vashj'ir secret room when someone else is doing a map scan.
 - Disabled language toolbar button functionality in instances to prevent chat issues during encounters.
 - Fixed the tooltip colored border for relations when using ElvUI, and improvements to the looks of the skinned frames. Thanks to Simpy for the help on this.
+- Fixed guilds not displaying on Blizzard nameplates for players without profiles.
 
 # Changelog version 3.2.2
 
