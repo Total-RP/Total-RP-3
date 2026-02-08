@@ -2,6 +2,15 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.2.3
+
+## Fixed
+
+- Fixed a Lua error in instances when nameplates customization is disabled on some units.
+- Fixed a Lua error in the Vashj'ir secret room when someone else is doing a map scan.
+- Disabled language toolbar button functionality in instances to prevent chat issues during encounters.
+- Fixed the tooltip colored border for relations when using ElvUI, and improvements to the looks of the skinned frames. Thanks to Simpy for the help on this.
+
 # Changelog version 3.2.2
 
 ## Changed
