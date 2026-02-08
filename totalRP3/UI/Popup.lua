@@ -257,6 +257,8 @@ local function GetOrCreateCopyTextPopup()
 			end
 		end);
 	end
+
+	return popup;
 end
 
 --- Open a popup with an autofocused text field to let the user copy the a text selected via dropdown
@@ -804,11 +806,10 @@ local POPUP_STRUCTURE = {
 		frame = TRP3_CompanionBrowser,
 		showMethod = TRP3_API.popup.showCompanionBrowser,
 	},
-	-- FIXME: FILE LOADING ORDER IS FUNNNNNNNNNNNNNNNNNNNNN
-	-- [TRP3_API.popup.PETS] = AddOn_TotalRP3.Ui.IsPetBrowserEnabled() and {
-	-- 	frame = AddOn_TotalRP3.Ui.GetPetBrowserFrame(),
-	-- 	showMethod = TRP3_API.popup.showPetBrowser,
-	-- } or nil,
+	[TRP3_API.popup.PETS] = AddOn_TotalRP3.Ui.IsPetBrowserEnabled() and {
+		frame = AddOn_TotalRP3.Ui.GetPetBrowserFrame(),
+		showMethod = TRP3_API.popup.showPetBrowser,
+	} or nil,
 	[TRP3_API.popup.BACKGROUNDS] = {
 		frame = TRP3_BackgroundBrowserFrame,
 		showMethod = ShowBackgroundBrowser,
