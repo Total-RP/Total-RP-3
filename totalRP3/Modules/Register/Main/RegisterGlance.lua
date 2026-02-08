@@ -1,19 +1,16 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
+local Ellyb = TRP3.Ellyb;
 
 -- API
-TRP3_API.register.glance = {};
-local Utils, Events, Globals = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.globals;
-local loc = TRP3_API.loc;
+TRP3.register.glance = {};
+local Utils, Events, Globals = TRP3.utils, TRP3_Addon.Events, TRP3.globals;
+local loc = TRP3.loc;
 local getIcon, tableRemove = Utils.str.icon, Utils.table.remove;
-local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.toast;
+local setTooltipForSameFrame, toast = TRP3.ui.tooltip.setTooltipForSameFrame, TRP3.ui.tooltip.toast;
 local unitIDIsFilteredForMatureContent;
-local crop = TRP3_API.utils.str.crop;
-local shouldCropTexts = TRP3_API.ui.tooltip.shouldCropTexts;
+local crop = TRP3.utils.str.crop;
+local shouldCropTexts = TRP3.ui.tooltip.shouldCropTexts;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 -- CONSTANTS
@@ -90,7 +87,7 @@ local function getSlotPresetDataForList(output)
 
 	return output;
 end
-TRP3_API.register.glance.getSlotPresetDataForList = getSlotPresetDataForList;
+TRP3.register.glance.getSlotPresetDataForList = getSlotPresetDataForList;
 
 local function swapDataFromSlots(dataTab, from, to)
 	if not dataTab.PE then return; end
@@ -101,7 +98,7 @@ local function swapDataFromSlots(dataTab, from, to)
 	-- version increment
 	dataTab.v = Utils.math.incrementNumber(dataTab.v or 1, 2);
 end
-TRP3_API.register.glance.swapDataFromSlots = swapDataFromSlots;
+TRP3.register.glance.swapDataFromSlots = swapDataFromSlots;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Glance slot context menu population
@@ -151,17 +148,17 @@ local function getGlanceMenuEntries(button, ...)
 
 	-- Mirror the clipboard management items.
 	if bit.band(flags, GLANCE_MENU_FLAG_CLIPBOARD) ~= 0 then
-		TRP3_API.register.glance.getGlanceMenuClipboardEntries(button, entries);
+		TRP3.register.glance.getGlanceMenuClipboardEntries(button, entries);
 	end
 
 	-- Mirror the presets.
 	if bit.band(flags, GLANCE_MENU_FLAG_PRESETS) ~= 0 then
-		TRP3_API.register.glance.getSlotPresetDataForList(entries);
+		TRP3.register.glance.getSlotPresetDataForList(entries);
 	end
 
 	return entries;
 end
-TRP3_API.register.glance.getGlanceMenuEntries = getGlanceMenuEntries;
+TRP3.register.glance.getGlanceMenuEntries = getGlanceMenuEntries;
 
 --- dispatchGlanceMenuEntryAction attempts to dispatch any registered handler
 --  belonging to the given key. If there is no exact match for a given key,
@@ -180,7 +177,7 @@ local function dispatchGlanceMenuEntryAction(key, ...)
 		return true;
 	end
 end
-TRP3_API.register.glance.dispatchGlanceMenuEntryAction = dispatchGlanceMenuEntryAction;
+TRP3.register.glance.dispatchGlanceMenuEntryAction = dispatchGlanceMenuEntryAction;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Glance editor clipboard management
@@ -272,7 +269,7 @@ local function getGlanceMenuClipboardEntries(button, output)
 	local pasteName = clipboardCurrentEntries[clipboardType].TI or "";
 	tinsert(output, { loc.REG_PLAYER_GLANCE_MENU_PASTE:format(pasteName), pasteKey });
 end
-TRP3_API.register.glance.getGlanceMenuClipboardEntries = getGlanceMenuClipboardEntries;
+TRP3.register.glance.getGlanceMenuClipboardEntries = getGlanceMenuClipboardEntries;
 
 --- onGlanceMenuCopySelected is called when the "Copy" item in a glance slot
 --  menu is clicked. Rather self-explanatorily, it'll copy the item.
@@ -328,9 +325,9 @@ local function onGlanceMenuPasteSelected(key)
 	-- Dispatch the correct update function.
 	local updateFunc;
 	if typeID == GLANCE_MENU_CLIPBOARD_ID_CHARACTER then
-		updateFunc = TRP3_API.register.applyPeekSlot;
+		updateFunc = TRP3.register.applyPeekSlot;
 	elseif typeID == GLANCE_MENU_CLIPBOARD_ID_COMPANION then
-		updateFunc = TRP3_API.companions.player.applyPeekSlot;
+		updateFunc = TRP3.companions.player.applyPeekSlot;
 	else
 		-- Bad type ID, can't update.
 		return;
@@ -362,7 +359,7 @@ local function removeSlotPreset(presetID)
 	end
 	presetMessage(loc.REG_PLAYER_GLANCE_PRESET_REMOVE:format(Utils.str.icon(icon, 15) .. " " .. name), 3);
 end
-TRP3_API.register.glance.removeSlotPreset = removeSlotPreset;
+TRP3.register.glance.removeSlotPreset = removeSlotPreset;
 
 local function saveSlotPreset(glanceTab)
 	if glanceTab == nil then return end;
@@ -372,7 +369,7 @@ local function saveSlotPreset(glanceTab)
 	local presetID = Utils.str.id();
 
 	local icon = Utils.str.icon(presetIcon, 40) .. "|n|n|cnGREEN_FONT_COLOR:" .. presetTitle .. "|r";
-	TRP3_API.popup.showTextInputPopup(loc.REG_PLAYER_GLANCE_PRESET_GET_CAT:format(icon), function(presetCategory)
+	TRP3.popup.showTextInputPopup(loc.REG_PLAYER_GLANCE_PRESET_GET_CAT:format(icon), function(presetCategory)
 		if not presetCategory or presetCategory:len() == 0 then
 			presetMessage(loc.REG_PLAYER_GLANCE_PRESET_ALERT1, 2);
 			return;
@@ -388,9 +385,9 @@ local function saveSlotPreset(glanceTab)
 		presetMessage(loc.REG_PLAYER_GLANCE_PRESET_ADD:format(Utils.str.icon(presetIcon, 15) .. " " .. presetTitle), 3);
 	end);
 end
-TRP3_API.register.glance.saveSlotPreset = saveSlotPreset;
+TRP3.register.glance.saveSlotPreset = saveSlotPreset;
 
-function TRP3_API.register.inits.glanceInit()
+function TRP3.register.inits.glanceInit()
 	if not TRP3_Presets then
 		TRP3_Presets = {};
 	end
@@ -408,7 +405,7 @@ end
 -- Glance editor section
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local setupIconButton = TRP3_API.ui.frame.setupIconButton;
+local setupIconButton = TRP3.ui.frame.setupIconButton;
 local stEtN = Utils.str.emptyToNil;
 
 local function onIconSelected(icon)
@@ -420,7 +417,7 @@ end
 --- pasteCopiedIcon handles receiving an icon from the right-click menu.
 ---@param frame Frame The frame the icon belongs to.
 local function pasteCopiedIcon(frame)
-	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIcons.Default;
+	local icon = TRP3.GetLastCopiedIcon() or TRP3_InterfaceIcons.Default;
 	TRP3_AtFirstGlanceEditorIcon.icon = icon;
 	setupIconButton(frame, icon);
 end
@@ -460,28 +457,28 @@ local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 	end);
 
 	TRP3_AtFirstGlanceEditorIcon.isExternal = external;
-	setTooltipForSameFrame(TRP3_AtFirstGlanceEditorIcon, "LEFT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	setTooltipForSameFrame(TRP3_AtFirstGlanceEditorIcon, "LEFT", 0, 5, loc.UI_ICON_SELECT, TRP3.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	TRP3_AtFirstGlanceEditorIcon:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
-			TRP3_API.popup.hideIconBrowser();
+			TRP3.popup.hideIconBrowser();
 			if self.isExternal then
-				TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = TRP3_AtFirstGlanceEditor, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, nil, TRP3_AtFirstGlanceEditorIcon.icon});
+				TRP3.popup.showPopup(TRP3.popup.ICONS, {parent = TRP3_AtFirstGlanceEditor, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, nil, TRP3_AtFirstGlanceEditorIcon.icon});
 			else
-				TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {onIconSelected, nil, nil, TRP3_AtFirstGlanceEditorIcon.icon});
+				TRP3.popup.showPopup(TRP3.popup.ICONS, nil, {onIconSelected, nil, nil, TRP3_AtFirstGlanceEditorIcon.icon});
 			end
 		elseif button == "RightButton" then
 			local icon = TRP3_AtFirstGlanceEditorIcon.icon or TRP3_InterfaceIcons.Default;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+				description:CreateButton(loc.UI_ICON_COPY, TRP3.SetLastCopiedIcon, icon);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3.popup.showCopyDropdownPopup({icon}); end);
 				description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(self); end);
 			end);
 		end
 	end);
 	onIconSelected(slotData.IC);
-	TRP3_API.popup.hideIconBrowser();
+	TRP3.popup.hideIconBrowser();
 end
-TRP3_API.register.glance.openGlanceEditor = openGlanceEditor;
+TRP3.register.glance.openGlanceEditor = openGlanceEditor;
 
 
 
@@ -489,13 +486,13 @@ TRP3_API.register.glance.openGlanceEditor = openGlanceEditor;
 -- Glance bar module section
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
+local originalGetTargetType, getCompanionFullID = TRP3.ui.misc.getTargetType, TRP3.ui.misc.getCompanionFullID;
 local getUnitID, companionIDToInfo = Utils.str.getUnitID, Utils.str.companionIDToInfo;
-local get, getDataDefault = TRP3_API.profile.getData, TRP3_API.profile.getDataDefault;
-local hasProfile, isUnitIDKnown, getUnitIDCurrentProfile = TRP3_API.register.hasProfile, TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCurrentProfile;
-local getCompanionProfile, getCompanionRegisterProfile = TRP3_API.companions.player.getCompanionProfile, TRP3_API.companions.register.getCompanionProfile;
-local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
-local isIDIgnored = TRP3_API.register.isIDIgnored;
+local get, getDataDefault = TRP3.profile.getData, TRP3.profile.getDataDefault;
+local hasProfile, isUnitIDKnown, getUnitIDCurrentProfile = TRP3.register.hasProfile, TRP3.register.isUnitIDKnown, TRP3.register.getUnitIDCurrentProfile;
+local getCompanionProfile, getCompanionRegisterProfile = TRP3.companions.player.getCompanionProfile, TRP3.companions.register.getCompanionProfile;
+local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3.configuration.getValue, TRP3.configuration.registerConfigKey, TRP3.configuration.registerHandler, TRP3.configuration.setValue;
+local isIDIgnored = TRP3.register.isIDIgnored;
 
 local ui_GlanceBar;
 
@@ -571,9 +568,9 @@ end
 
 local function getOnGlanceEditorConfirmFunction(button)
 	if button.targetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
-		return TRP3_API.register.applyPeekSlot;
+		return TRP3.register.applyPeekSlot;
 	end
-	return TRP3_API.companions.player.applyPeekSlot;
+	return TRP3.companions.player.applyPeekSlot;
 end
 
 local function onGlanceSelection(presetAction, button)
@@ -611,8 +608,8 @@ local function onGlanceSlotClick(button, clickType)
 			local glanceTab = getDataDefault("misc/PE", EMPTY, get("player") or EMPTY);
 			local glance = glanceTab[button.slot];
 			if glance and glance.AC then
-				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_GLANCE, function(canBeImported)
-					TRP3_API.AtFirstGlanceChatLinksModule:InsertLink(glance, canBeImported);
+				TRP3.ChatLinks:OpenMakeImportablePrompt(loc.CL_GLANCE, function(canBeImported)
+					TRP3.AtFirstGlanceChatLinksModule:InsertLink(glance, canBeImported);
 				end);
 			end
 		else
@@ -623,7 +620,7 @@ local function onGlanceSlotClick(button, clickType)
 				local _, y = GetCursorPosition();
 				local scale = UIParent:GetEffectiveScale();
 				y = y / scale;
-				TRP3_API.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, y <= 200 and "BOTTOM" or "TOP");
+				TRP3.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, y <= 200 and "BOTTOM" or "TOP");
 				TRP3_AtFirstGlanceEditor.current = button;
 				-- Hide glance tooltip on open to not overlap with editor.
 				TRP3_TooltipUtil.HideTooltip(button);
@@ -672,24 +669,24 @@ local function onGlanceSlotClick(button, clickType)
 		end
 	end
 end
-TRP3_API.register.glance.onGlanceSlotClick = onGlanceSlotClick;
+TRP3.register.glance.onGlanceSlotClick = onGlanceSlotClick;
 local function onGlanceDoubleClick(button, clickType)
 	if button.isCurrentMine and clickType == "LeftButton" then
 		getOnGlanceEditorConfirmFunction(button)(button.slot, nil, nil, nil, nil, true, button.targetID, button.profileID);
 	end
 end
-TRP3_API.register.glance.onGlanceDoubleClick = onGlanceDoubleClick;
+TRP3.register.glance.onGlanceDoubleClick = onGlanceDoubleClick;
 
-function TRP3_API.register.glance.addClickHandlers(text)
+function TRP3.register.glance.addClickHandlers(text)
 	if not text then
 		text = "";
 	else
 		text = text .. "\n\n";
 	end
-	text = text .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT)
-		.. "\n" .. TRP3_API.FormatShortcutWithInstruction("DCLICK", loc.REG_PLAYER_GLANCE_CONFIG_TOGGLE)
-		.. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_GLANCE_CONFIG_PRESETS)
-		.. "\n" .. TRP3_API.FormatShortcutWithInstruction("DRAGDROP", loc.REG_PLAYER_GLANCE_CONFIG_REORDER);
+	text = text .. TRP3.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT)
+		.. "\n" .. TRP3.FormatShortcutWithInstruction("DCLICK", loc.REG_PLAYER_GLANCE_CONFIG_TOGGLE)
+		.. "\n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_GLANCE_CONFIG_PRESETS)
+		.. "\n" .. TRP3.FormatShortcutWithInstruction("DRAGDROP", loc.REG_PLAYER_GLANCE_CONFIG_REORDER);
 	return text;
 end
 
@@ -709,7 +706,7 @@ local function updateGlanceButtonsTooltips()
 	-- Refreshing each glance button tooltip
 	for i=1,5,1 do
 		local button = _G["TRP3_GlanceBarSlot"..i];
-		TRP3_API.ui.tooltip.setTooltipAnchorForFrame(button, tooltipAnchor, 0, anchorMargin);
+		TRP3.ui.tooltip.setTooltipAnchorForFrame(button, tooltipAnchor, 0, anchorMargin);
 	end
 end
 
@@ -782,7 +779,7 @@ local function onGlanceDragStart(button)
 		PlaySound(TRP3_InterfaceSounds.DragPickup);
 	end
 end
-TRP3_API.register.glance.onGlanceDragStart = onGlanceDragStart;
+TRP3.register.glance.onGlanceDragStart = onGlanceDragStart;
 
 local function GetGlanceDropTarget()
 	local frames;
@@ -813,15 +810,15 @@ local function onGlanceDragStop(button)
 			to = toButton.slot;
 			if to ~= from then
 				if button.targetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
-					TRP3_API.register.swapGlanceSlot(from, to);
+					TRP3.register.swapGlanceSlot(from, to);
 				else
-					TRP3_API.companions.player.swapGlanceSlot(from, to, button.targetID, button.profileID);
+					TRP3.companions.player.swapGlanceSlot(from, to, button.targetID, button.profileID);
 				end
 			end
 		end
 	end
 end
-TRP3_API.register.glance.onGlanceDragStop = onGlanceDragStop;
+TRP3.register.glance.onGlanceDragStop = onGlanceDragStop;
 
 local function onTargetChanged()
 	ui_GlanceBar:Hide();
@@ -849,7 +846,7 @@ local function onStart()
 	-- Config - Position
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
+	unitIDIsFilteredForMatureContent = TRP3.register.unitIDIsFilteredForMatureContent;
 
 	local function replaceBar()
 		local parentFrame = getParentFrame();
@@ -889,7 +886,7 @@ local function onStart()
 	replaceBar();
 	ui_GlanceBar:SetScript("OnUpdate", glanceBar_DraggingFrame_OnUpdate);
 
-	function TRP3_API.register.resetGlanceBar()
+	function TRP3.register.resetGlanceBar()
 		setConfigValue(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
 		setConfigValue(CONFIG_GLANCE_ANCHOR_X, 0);
 		setConfigValue(CONFIG_GLANCE_ANCHOR_Y, -14);
@@ -897,30 +894,30 @@ local function onStart()
 	end
 
 	-- Config must be built on WORKFLOW_ON_LOADED or else the TargetFrame module could be not yet loaded.
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+		tinsert(TRP3.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
 			title = loc.CO_GLANCE_MAIN,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigEditBox",
 			title = loc.CO_MINIMAP_BUTTON_FRAME,
 			configKey = CONFIG_GLANCE_PARENT,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = loc.CO_GLANCE_LOCK,
 			help = loc.CO_GLANCE_LOCK_TT,
 			configKey = CONFIG_GLANCE_LOCK,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigButton",
 			title = loc.CO_MINIMAP_BUTTON_RESET,
 			help = loc.CO_GLANCE_RESET_TT,
 			text = loc.CO_MINIMAP_BUTTON_RESET_BUTTON,
-			callback = TRP3_API.register.resetGlanceBar,
+			callback = TRP3.register.resetGlanceBar,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigButton",
 			title = loc.CO_GLANCE_PRESET_TRP2,
 			text = loc.CO_GLANCE_PRESET_TRP2_BUTTON,
@@ -938,8 +935,8 @@ local function onStart()
 	-- Init
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_TARGET_CHANGED", function() onTargetChanged(); end);
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
+	TRP3.RegisterCallback(TRP3.GameEvents, "PLAYER_TARGET_CHANGED", function() onTargetChanged(); end);
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 		if not unitID or (currentTargetID == unitID) and (not dataType or dataType == "misc") then
 			onTargetChanged();
 		end
@@ -956,7 +953,7 @@ local function onStart()
 		slot:SetScript("OnDoubleClick", onGlanceDoubleClick);
 
 		-- Display indications in the tooltip on how to create a chat link
-		Ellyb.Tooltips.getTooltip(slot):AddLine(TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
+		Ellyb.Tooltips.getTooltip(slot):AddLine(TRP3.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
 	end
 end
 
@@ -970,4 +967,4 @@ local MODULE_STRUCTURE = {
 	["minVersion"] = 3,
 };
 
-TRP3_API.module.registerModule(MODULE_STRUCTURE);
+TRP3.module.registerModule(MODULE_STRUCTURE);

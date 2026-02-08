@@ -1,12 +1,9 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
+local Ellyb = TRP3.Ellyb;
 
 -- Total RP 3 imports
-local ChatLink = TRP3_API.ChatLink;
+local ChatLink = TRP3.ChatLink;
 
 ---@class ChatLinkModule : Object
 local ChatLinkModule, _private = Ellyb.Class("ChatLinkModule");
@@ -97,7 +94,7 @@ function ChatLinkModule:NewActionButton(actionID, buttonText, questionCommand, a
 	Ellyb.Assertions.isType(questionCommand, "string", questionCommand);
 	Ellyb.Assertions.isType(answerCommand, "string", answerCommand);
 
-	local actionButton = TRP3_API.ChatLinkActionButton(actionID, buttonText, questionCommand, answerCommand);
+	local actionButton = TRP3.ChatLinkActionButton(actionID, buttonText, questionCommand, answerCommand);
 	_private[self].actionButtons[actionID] = actionButton;
 	return actionButton;
 end
@@ -120,4 +117,4 @@ function ChatLinkModule:InsertLink(...)
 	end
 end
 
-TRP3_API.ChatLinkModule = ChatLinkModule;
+TRP3.ChatLinkModule = ChatLinkModule;

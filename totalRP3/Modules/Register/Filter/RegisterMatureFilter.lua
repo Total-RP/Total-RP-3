@@ -1,18 +1,15 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 local function onStart()
 
 	-- TRP3 API imports
-	local Utils, Events, Register, UI, Config = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.register, TRP3_API.ui, TRP3_API.configuration;
+	local Utils, Events, Register, UI, Config = TRP3.utils, TRP3_Addon.Events, TRP3.register, TRP3.ui, TRP3.configuration;
 	local getProfileByID = Register.getProfile;
 	local getUnitIDProfile = Register.getUnitIDCurrentProfileSafe;
 	local getUnitIDProfileID = Register.getUnitIDProfileID;
 	local hasProfile = Register.hasProfile;
-	local getProfileOrNil = TRP3_API.register.getProfileOrNil;
+	local getProfileOrNil = TRP3.register.getProfileOrNil;
 	local getUnitRPName = Register.getUnitRPNameWithID;
 	local handleMouseWheel = UI.list.handleMouseWheel;
 	local initList = UI.list.initList;
@@ -23,14 +20,14 @@ local function onStart()
 	local setConfigValue = Config.setValue;
 	local registerConfigKey = Config.registerConfigKey;
 	local registerConfigHandler = Config.registerHandler;
-	local hidePopups = TRP3_API.popup.hidePopups;
-	local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
+	local hidePopups = TRP3.popup.hidePopups;
+	local showTextInputPopup = TRP3.popup.showTextInputPopup;
 	local getUnitID = Utils.str.getUnitID;
-	local loc = TRP3_API.loc;
-	local player_id = TRP3_API.globals.player_id;
+	local loc = TRP3.loc;
+	local player_id = TRP3.globals.player_id;
 
 	-- API
-	TRP3_API.register.mature_filter = {};
+	TRP3.register.mature_filter = {};
 
 	local MATURE_FILTER_CONFIG = "register_mature_filter";
 	local MATURE_FILTER_CONFIG_STRENGTH = "register_mature_filter_strength";
@@ -57,7 +54,7 @@ local function onStart()
 		safeList[profileID] = true;
 	end
 
-	TRP3_API.register.mature_filter.addProfileIdToSafeList = addProfileIdToSafeList;
+	TRP3.register.mature_filter.addProfileIdToSafeList = addProfileIdToSafeList;
 
 	---
 	-- Remove a profile from the safe list
@@ -78,7 +75,7 @@ local function onStart()
 		return safeList[profileID] or false;
 	end
 
-	TRP3_API.register.mature_filter.isProfileSafeListed = isProfileSafeListed;
+	TRP3.register.mature_filter.isProfileSafeListed = isProfileSafeListed;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- DICTIONARY MANAGEMENT
@@ -87,7 +84,7 @@ local function onStart()
 	local function resetDictionnary()
 		TRP3_MatureFilter.dictionary = {};
 		-- Insert every word of the default dictionnary
-		for _, word in pairs(TRP3_API.utils.resources.getMatureFilterDictionary()) do
+		for _, word in pairs(TRP3.utils.resources.getMatureFilterDictionary()) do
 			TRP3_MatureFilter.dictionary[word] = 1;
 		end
 	end
@@ -147,7 +144,7 @@ local function onStart()
 		profile.lastMatureContentEvaluation = time();
 		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
 	end
-	TRP3_API.register.mature_filter.flagUnitProfileHasHavingMatureContent = flagUnitProfileHasHavingMatureContent
+	TRP3.register.mature_filter.flagUnitProfileHasHavingMatureContent = flagUnitProfileHasHavingMatureContent
 
 	---
 	-- Open a confirm popup to flag the profile of a give unit ID has having mature content.
@@ -174,7 +171,7 @@ local function onStart()
 	end
 
 	local function presentRemoveUnitFromSafeListPopup(unitID)
-		TRP3_API.popup.showConfirmPopup(loc.MATURE_FILTER_REMOVE_FROM_SAFELIST_TEXT:format(unitID), function()
+		TRP3.popup.showConfirmPopup(loc.MATURE_FILTER_REMOVE_FROM_SAFELIST_TEXT:format(unitID), function()
 			local profileID = getUnitIDProfileID(unitID);
 			removeProfileIdFromSafeList(profileID);
 			-- Fire the event that the register has been updated so the UI stuff get refreshed
@@ -189,14 +186,14 @@ local function onStart()
 	local function presentAddUnitToSafeListPopup(unitID, callback)
 		local profileID = getUnitIDProfileID(unitID);
 
-		TRP3_API.popup.showConfirmPopup(loc.MATURE_FILTER_ADD_TO_SAFELIST_TEXT:format(unitID), function()
+		TRP3.popup.showConfirmPopup(loc.MATURE_FILTER_ADD_TO_SAFELIST_TEXT:format(unitID), function()
 			addProfileIdToSafeList(profileID);
 			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
 			if callback and type(callback) == "function" then callback() end;
 		end);
 	end
 
-	TRP3_API.register.mature_filter.presentAddUnitToSafeListPopup = presentAddUnitToSafeListPopup;
+	TRP3.register.mature_filter.presentAddUnitToSafeListPopup = presentAddUnitToSafeListPopup;
 
 	local function getBadWordsThreshold()
 		return 11 - getConfigValue(MATURE_FILTER_CONFIG_STRENGTH);
@@ -220,7 +217,7 @@ local function onStart()
 		for matureWord, _ in pairs(TRP3_MatureFilter.dictionary) do
 			-- If the word is found, return true
 			if words[matureWord] then
-				TRP3_API.Log("Found |cff00ff00" .. matureWord .. "|r " .. words[matureWord] .. " times!");
+				TRP3.Log("Found |cff00ff00" .. matureWord .. "|r " .. words[matureWord] .. " times!");
 				badWordsFound = badWordsFound + 1;
 				if badWordsFound >= threshold then
 					return badWordsFound;
@@ -287,8 +284,8 @@ local function onStart()
 		setTooltipForFrame(
 		lineFrame, lineFrame, "RIGHT", 0, -30, -- Tooltip position
 		word, -- Tooltip title
-		TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD)
-		.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD)
+		TRP3.FormatShortcutWithInstruction("LCLICK", loc.MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD)
+		.. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD)
 		);
 		lineFrame.text:SetText(word);
 		lineFrame.value = word;
@@ -415,9 +412,9 @@ local function onStart()
 	TRP3_MatureFilterPopup.cancel:SetText(loc.MATURE_FILTER_WARNING_GO_BACK);
 	TRP3_MatureFilterPopup.cancel:SetScript("OnClick", function()
 		-- Remove the current profile from the menu list
-		TRP3_API.navigation.menu.unregisterMenu(TRP3_MatureFilterPopup.menuID);
+		TRP3.navigation.menu.unregisterMenu(TRP3_MatureFilterPopup.menuID);
 		-- Go to dashboard
-		TRP3_API.navigation.menu.selectMenu("main_00_dashboard");
+		TRP3.navigation.menu.selectMenu("main_00_dashboard");
 	end);
 
 	-- Continue
@@ -456,7 +453,7 @@ local function onStart()
 
 	registerConfigHandler(MATURE_FILTER_CONFIG, function()
 		local unitID = getUnitID("target");
-		if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
+		if UnitIsPlayer("target") and unitID ~= player_id and not TRP3.register.isIDIgnored(unitID) then
 			local _, profileID = getUnitIDProfile(unitID);
 			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, profileID, nil);
 		end
@@ -467,24 +464,24 @@ local function onStart()
 	local function isMatureFilterEnabled()
 		return getConfigValue(MATURE_FILTER_CONFIG);
 	end
-	TRP3_API.register.mature_filter.isMatureFilterEnabled = isMatureFilterEnabled;
+	TRP3.register.mature_filter.isMatureFilterEnabled = isMatureFilterEnabled;
 
 	-- Config must be built on WORKFLOW_ON_LOADED or else the TargetFrame module could be not yet loaded.
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		-- Section title
-		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		tinsert(TRP3.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigH1",
 			title = loc.MATURE_FILTER_TITLE,
 		});
 		-- Enable mature filter checkbox
-		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		tinsert(TRP3.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = loc.MATURE_FILTER_OPTION,
 			configKey = MATURE_FILTER_CONFIG,
 			help = loc.MATURE_FILTER_OPTION_TT
 		});
 		-- Enable mature filter checkbox
-		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		tinsert(TRP3.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigSlider",
 			title = loc.MATURE_FILTER_STRENGTH,
 			help = loc.MATURE_FILTER_STRENGTH_TT,
@@ -496,24 +493,24 @@ local function onStart()
 			dependentOnOptions = {MATURE_FILTER_CONFIG},
 		});
 		-- Edit dictionary button
-		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		tinsert(TRP3.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigButton",
 			title = loc.MATURE_FILTER_EDIT_DICTIONARY,
 			help = loc.MATURE_FILTER_EDIT_DICTIONARY_TT,
 			text = loc.MATURE_FILTER_EDIT_DICTIONARY_BUTTON,
 			callback = function()
-				TRP3_API.popup.showPopup("mature_dictionary");
+				TRP3.popup.showPopup("mature_dictionary");
 				refreshDictionaryList();
 			end,
 			dependentOnOptions = {MATURE_FILTER_CONFIG},
 		});
 		-- Reset dictionnary button
-		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		tinsert(TRP3.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigButton",
 			title = loc.MATURE_FILTER_EDIT_DICTIONARY_RESET_TITLE,
 			text = loc.MATURE_FILTER_EDIT_DICTIONARY_RESET_BUTTON,
 			callback = function()
-				TRP3_API.popup.showConfirmPopup(loc.MATURE_FILTER_EDIT_DICTIONARY_RESET_WARNING, function()
+				TRP3.popup.showConfirmPopup(loc.MATURE_FILTER_EDIT_DICTIONARY_RESET_WARNING, function()
 					resetDictionnary();
 				end);
 			end,
@@ -521,12 +518,12 @@ local function onStart()
 		})
 
 		-- Register our popups to the popup manager
-		TRP3_API.popup.POPUPS["mature_dictionary"] = {
+		TRP3.popup.POPUPS["mature_dictionary"] = {
 			frame = TRP3_MatureDictionaryEditor,
 			showMethod = nil,
 		}
 
-		TRP3_API.popup.POPUPS["mature_filtered"] = {
+		TRP3.popup.POPUPS["mature_filtered"] = {
 			frame = TRP3_MatureFilterPopup,
 			showMethod = nil,
 		}
@@ -536,16 +533,16 @@ local function onStart()
 	-- TARGET FRAME BUTTONS
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	if TRP3_API.target then
+	if TRP3.target then
 		-- Add to safe list button
-		TRP3_API.target.registerButton({
+		TRP3.target.registerButton({
 			id = "aa_player_w_mature_white_list",
 			configText = loc.MATURE_FILTER_ADD_TO_SAFELIST_OPTION,
 			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
-				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
+				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3.register.isIDIgnored(unitID) then
 					local profileID = getUnitIDProfileID(unitID);
-					return profileID and TRP3_API.register.unitIDIsFilteredForMatureContent(unitID)
+					return profileID and TRP3.register.unitIDIsFilteredForMatureContent(unitID)
 				else
 					return false;
 				end
@@ -556,12 +553,12 @@ local function onStart()
 			icon = TRP3_InterfaceIcons.TargetFlagMatureSafe,
 		});
 		-- Remove from safe list button
-		TRP3_API.target.registerButton({
+		TRP3.target.registerButton({
 			id = "aa_player_w_mature_remove_white_list",
 			configText = loc.MATURE_FILTER_REMOVE_FROM_SAFELIST_OPTION,
 			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
-				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
+				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3.register.isIDIgnored(unitID) then
 					local profile = getUnitIDProfile(unitID);
 					local profileID = getUnitIDProfileID(unitID);
 					return profileID and profile.hasMatureContent and isProfileSafeListed(profileID);
@@ -578,12 +575,12 @@ local function onStart()
 		});
 
 		-- Manually flag player button
-		TRP3_API.target.registerButton({
+		TRP3.target.registerButton({
 			id = "aa_player_w_mature_flag",
 			configText = loc.MATURE_FILTER_FLAG_PLAYER_OPTION,
 			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
-				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
+				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3.register.isIDIgnored(unitID) then
 					local profile = getUnitIDProfile(unitID);
 					local profileID = getUnitIDProfileID(unitID);
 					return profileID and not profile.hasMatureContent and not isProfileSafeListed(profileID);
@@ -613,7 +610,7 @@ local function onStart()
 
 	-- We listen to data updates in the register and apply the filter if enabled
 	-- and the profile is not already safe listed.
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, _, profileID, _)
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, _, profileID, _)
 		if isMatureFilterEnabled() and profileID and getProfileOrNil(profileID) and not isProfileSafeListed(profileID) then
 			local profile = getProfileByID(profileID);
 			if not profile.hasMatureContent or shouldReEvaluateContent(profile.lastMatureContentEvaluation) then
@@ -632,4 +629,4 @@ local MODULE_STRUCTURE = {
 	["minVersion"] = 38,
 };
 
-TRP3_API.module.registerModule(MODULE_STRUCTURE);
+TRP3.module.registerModule(MODULE_STRUCTURE);

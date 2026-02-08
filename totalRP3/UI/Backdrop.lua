@@ -1,9 +1,9 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-TRP3_BACKDROP_COLOR_GOLD = TRP3_API.CreateColor(1, 0.675, 0.125);
-TRP3_BACKDROP_COLOR_GREY = TRP3_API.CreateColor(0.6, 0.6, 0.6);
-TRP3_BACKDROP_COLOR_CREAMY_BROWN = TRP3_API.CreateColor(0.48, 0.39, 0.32);
+TRP3_BACKDROP_COLOR_GOLD = TRP3.CreateColor(1, 0.675, 0.125);
+TRP3_BACKDROP_COLOR_GREY = TRP3.CreateColor(0.6, 0.6, 0.6);
+TRP3_BACKDROP_COLOR_CREAMY_BROWN = TRP3.CreateColor(0.48, 0.39, 0.32);
 
 TRP3_BACKDROP_OVERLAY = {
 	bgFile   = "Interface\\DialogFrame\\UI-DialogBox-Background",

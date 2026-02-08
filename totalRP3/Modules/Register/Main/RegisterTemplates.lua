@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 TRP3_RegisterSectionHeaderMixin = {};
 
@@ -16,11 +16,11 @@ end
 TRP3_RegisterTraitLineMixin = {};
 
 function TRP3_RegisterTraitLineMixin:OnEnter()
-	TRP3_API.register.togglePsychoCountText(self, true);
+	TRP3.register.togglePsychoCountText(self, true);
 end
 
 function TRP3_RegisterTraitLineMixin:OnLeave()
-	TRP3_API.register.togglePsychoCountText(self, false);
+	TRP3.register.togglePsychoCountText(self, false);
 end
 
 function TRP3_RegisterTraitLineMixin:SetLeftText(text)
@@ -64,7 +64,7 @@ function TRP3_RegisterColorSwatchMixin:OnMouseDown(mouseButtonName)
 
 	local function OnCopyColorClicked()
 		local code = "#" .. color:GenerateHexColorOpaque();
-		TRP3_API.popup.showCopyDropdownPopup({ code });
+		TRP3.popup.showCopyDropdownPopup({ code });
 	end
 
 	local function OnSaveColorClicked()
@@ -77,11 +77,11 @@ function TRP3_RegisterColorSwatchMixin:OnMouseDown(mouseButtonName)
 		end
 
 		local prompt = string.join("|n|n", L.BW_CUSTOM_NAME, L.BW_CUSTOM_NAME_TT);
-		TRP3_API.popup.showTextInputPopup(prompt, OnPopupResponse);
+		TRP3.popup.showTextInputPopup(prompt, OnPopupResponse);
 	end
 
 	local function GenerateMenu(_, rootDescription)
-		rootDescription:CreateButton(L.REG_PLAYER_COLOR_TT_COPY, TRP3_API.SetLastCopiedColor, color);
+		rootDescription:CreateButton(L.REG_PLAYER_COLOR_TT_COPY, TRP3.SetLastCopiedColor, color);
 		rootDescription:CreateButton(L.REG_PLAYER_COLOR_TT_COPYNAME, OnCopyColorClicked);
 		rootDescription:CreateButton(L.BW_COLOR_PRESET_SAVE_AS_CUSTOM, OnSaveColorClicked);
 	end
@@ -137,7 +137,7 @@ function TRP3_RegisterInfoSwatchLineMixin:SetValueColorFromHexString(hex)
 	local color;
 
 	if hex then
-		color = TRP3_API.ParseColorFromHexString(hex);
+		color = TRP3.ParseColorFromHexString(hex);
 	end
 
 	self:SetValueColor(color);
@@ -147,7 +147,7 @@ function TRP3_RegisterInfoSwatchLineMixin:SetValueColor(color)
 	if color then
 		self.Value:SetReadableTextColor(color);
 		self.Swatch:SetColor(color);
-		self.Swatch:SetShowContrastTooltip(not TRP3_API.IsColorReadable(color, TRP3_PARCHMENT_BACKGROUND_COLOR));
+		self.Swatch:SetShowContrastTooltip(not TRP3.IsColorReadable(color, TRP3_PARCHMENT_BACKGROUND_COLOR));
 		self.Swatch:Show();
 	else
 		self.Value:SetTextColor(HIGHLIGHT_FONT_COLOR:GetRGB());

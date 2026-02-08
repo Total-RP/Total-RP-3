@@ -2,31 +2,31 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 -- imports
-local Globals, Utils, Events, Ellyb = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Events, TRP3_API.Ellyb;
+local Globals, Utils, Events, Ellyb = TRP3.globals, TRP3.utils, TRP3_Addon.Events, TRP3.Ellyb;
 local stEtN = Utils.str.emptyToNil;
-local get = TRP3_API.profile.getData;
-local getProfile = TRP3_API.register.getProfile;
+local get = TRP3.profile.getData;
+local getProfile = TRP3.register.getProfile;
 local tcopy = Utils.table.copy;
-local loc = TRP3_API.loc;
-local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
-local setupIconButton = TRP3_API.ui.frame.setupIconButton;
-local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
-local getRelationTexture = TRP3_API.register.relation.getRelationTexture;
-local RELATIONS = TRP3_API.register.relation;
+local loc = TRP3.loc;
+local getDefaultProfile = TRP3.profile.getDefaultProfile;
+local setTooltipForSameFrame = TRP3.ui.tooltip.setTooltipForSameFrame;
+local getCurrentContext = TRP3.navigation.page.getCurrentContext;
+local setupIconButton = TRP3.ui.frame.setupIconButton;
+local getPlayerCurrentProfile = TRP3.profile.getPlayerCurrentProfile;
+local getRelationTexture = TRP3.register.relation.getRelationTexture;
+local RELATIONS = TRP3.register.relation;
 local getRelationText, getRelationTooltipText, setRelation = RELATIONS.getRelationText, RELATIONS.getRelationTooltipText, RELATIONS.setRelation;
-local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
-local showConfirmPopup, showTextInputPopup = TRP3_API.popup.showConfirmPopup, TRP3_API.popup.showTextInputPopup;
-local deleteProfile = TRP3_API.register.deleteProfile;
-local ignoreID = TRP3_API.register.ignoreID;
+local setTooltipAll = TRP3.ui.tooltip.setTooltipAll;
+local showConfirmPopup, showTextInputPopup = TRP3.popup.showConfirmPopup, TRP3.popup.showTextInputPopup;
+local deleteProfile = TRP3.register.deleteProfile;
+local ignoreID = TRP3.register.ignoreID;
 local buildZoneText = Utils.str.buildZoneText;
-local setupEditBoxesNavigation = TRP3_API.ui.frame.setupEditBoxesNavigation;
-local setupListBox = TRP3_API.ui.listbox.setupListBox;
-local getRelationList = TRP3_API.register.relation.getRelationList;
+local setupEditBoxesNavigation = TRP3.ui.frame.setupEditBoxesNavigation;
+local setupListBox = TRP3.ui.listbox.setupListBox;
+local getRelationList = TRP3.register.relation.getRelationList;
 
 local showIconBrowser = function(callback, selectedIcon)
-	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback, nil, nil, selectedIcon});
+	TRP3.popup.showPopup(TRP3.popup.ICONS, nil, {callback, nil, nil, selectedIcon});
 end;
 
 local PSYCHO_PRESETS_UNKOWN;
@@ -35,7 +35,7 @@ local PSYCHO_PRESETS_DROPDOWN;
 
 local RELATIONSHIP_STATUS_DROPDOWN;
 
-TRP3_PARCHMENT_BACKGROUND_COLOR = TRP3_API.CreateColor(0.37, 0.32, 0.21);
+TRP3_PARCHMENT_BACKGROUND_COLOR = TRP3.CreateColor(0.37, 0.32, 0.21);
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -46,7 +46,7 @@ getDefaultProfile().player.characteristics = {
 	RA = Globals.player_race_loc,
 	CL = Globals.player_class_loc,
 	FN = Globals.player,
-	IC = TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player")),
+	IC = TRP3.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player")),
 	MI = {},
 	PS = {}
 };
@@ -69,7 +69,7 @@ local function sanitizeCharacteristics(profileID, structure)
 
 	if not structure then return somethingWasSanitized end
 
-	if TRP3_API.profile.isDefaultProfile(profileID) then
+	if TRP3.profile.isDefaultProfile(profileID) then
 		for fieldID, _ in pairs(structure) do
 			if fieldID == "MI" or fieldID == "PS" then
 				structure[fieldID] = {};
@@ -125,13 +125,13 @@ local function sanitizeCharacteristics(profileID, structure)
 
 	return somethingWasSanitized
 end
-TRP3_API.register.ui.sanitizeCharacteristics = sanitizeCharacteristics;
+TRP3.register.ui.sanitizeCharacteristics = sanitizeCharacteristics;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- COMPRESSION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.register.player.getCharacteristicsExchangeData()
+function TRP3.register.player.getCharacteristicsExchangeData()
 	return get("player/characteristics");
 end
 
@@ -166,14 +166,14 @@ local function getCompleteName(characteristicsTab, name, hideTitle)
 	return text;
 end
 
-TRP3_API.register.getCompleteName = getCompleteName;
+TRP3.register.getCompleteName = getCompleteName;
 
 local function getPlayerCompleteName(hideTitle)
 	local profile = getPlayerCurrentProfile();
 	return getCompleteName(profile.player.characteristics, Globals.player, hideTitle);
 end
 
-TRP3_API.register.getPlayerCompleteName = getPlayerCompleteName;
+TRP3.register.getPlayerCompleteName = getPlayerCompleteName;
 
 local function getPsychoStructureValue(psychoStructure)
 	if psychoStructure.V2 then
@@ -216,7 +216,7 @@ local function refreshPsycho(psychoLine, value)
 end
 
 -- TODO One day I'm gonna refactor all this and make a nice pretty mixin for TRP3_RegisterCharact_PsychoInfoDisplayLine, but not today
-function TRP3_API.register.togglePsychoCountText(frame, isCursorOnFrame)
+function TRP3.register.togglePsychoCountText(frame, isCursorOnFrame)
 	local context = getCurrentContext();
 	if isCursorOnFrame or context.isEditMode then
 		frame.LeftCount:Show();
@@ -235,12 +235,12 @@ end
 --               or nil if resetting the color to a default.
 local function refreshPsychoColor(psychoLine, psychoColorField, color)
 	psychoLine[psychoColorField] = color;
-	psychoLine:SetLeftColor(psychoLine.LC or TRP3_API.MiscColors.PersonalityTraitColorLeft);
-	psychoLine:SetRightColor(psychoLine.RC or TRP3_API.MiscColors.PersonalityTraitColorRight);
+	psychoLine:SetLeftColor(psychoLine.LC or TRP3.MiscColors.PersonalityTraitColorLeft);
+	psychoLine:SetRightColor(psychoLine.RC or TRP3.MiscColors.PersonalityTraitColorRight);
 end
 
 local function setBkg(backgroundIndex)
-	TRP3_API.ui.frame.setBackdropToBackground(TRP3_RegisterCharact_CharactPanel, backgroundIndex);
+	TRP3.ui.frame.setBackdropToBackground(TRP3_RegisterCharact_CharactPanel, backgroundIndex);
 end
 
 local CHAR_KEYS = { "RA", "CL", "AG", "EC", "HE", "WE", "BP", "RE", "RS" };
@@ -280,7 +280,7 @@ function TRP3_PlayerHousePinMixin:Decorate(displayData)
 
 	if displayData.tooltip then
 		Ellyb.Tooltips.getTooltip(self)
-				:SetTitle(loc.REG_PLAYER_RESIDENCE, TRP3_API.Colors.Orange)
+				:SetTitle(loc.REG_PLAYER_RESIDENCE, TRP3.Colors.Orange)
 				:ClearLines()
 				:AddLine(displayData.tooltip)
 	end
@@ -298,7 +298,7 @@ local function setConsultDisplay(context)
 	-- Icon, complete name and titles
 	local completeName = getCompleteName(dataTab, UNKNOWN);
 	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
-	TRP3_RegisterCharact_NamePanel_Name:SetReadableTextColor(TRP3_API.CreateColorFromHexString(dataTab.CH or "ffffff"));
+	TRP3_RegisterCharact_NamePanel_Name:SetReadableTextColor(TRP3.CreateColorFromHexString(dataTab.CH or "ffffff"));
 	TRP3_RegisterCharact_NamePanel_Name:SetFixedColor(true);
 	TRP3_RegisterCharact_NamePanel_Title:SetText((string.gsub(dataTab.FT or "", "%s+", " ")));
 	TRP3_RegisterCharact_NamePanel.Icon:SetIconTexture(dataTab.IC);
@@ -373,7 +373,7 @@ local function setConsultDisplay(context)
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:Show();
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:ClearAllPoints();
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame.Value, "LEFT", -5, 0);
-			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_RESIDENCE_SHOW, dataTab.RC[4] .. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_RESIDENCE_SHOW_TT));
+			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_RESIDENCE_SHOW, dataTab.RC[4] .. "|n|n" .. TRP3.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_RESIDENCE_SHOW_TT));
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetScript("OnClick", function()
 				if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
 					-- Bug: https://github.com/Stanzilla/WoWUIBugs/issues/124
@@ -386,7 +386,7 @@ local function setConsultDisplay(context)
 				local characterID;
 				local profileID;
 				if context.source == "player" then
-					characterID = TRP3_API.globals.player_id
+					characterID = TRP3.globals.player_id
 				elseif context.unitID then
 					characterID = context.unitID
 				elseif context.profileID then
@@ -410,7 +410,7 @@ local function setConsultDisplay(context)
 		previous = TRP3_RegisterCharact_CharactPanel_Container.MiscTitle;
 
 		for frameIndex, miscStructure in ipairs(dataTab.MI) do
-			local field = TRP3_API.GetMiscFieldFromData(miscStructure);
+			local field = TRP3.GetMiscFieldFromData(miscStructure);
 			local frame = ConsultFramePools:Acquire("TRP3_RegisterCharact_RegisterInfoLine");
 			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, frameIndex == 1 and -5 or 0);
 			frame:SetPoint("RIGHT", 0, 0);
@@ -454,8 +454,8 @@ local function setConsultDisplay(context)
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 
 			refreshPsycho(frame, value);
-			refreshPsychoColor(frame, "LC", psychoStructure.LC and TRP3_API.CreateColorFromTable(psychoStructure.LC));
-			refreshPsychoColor(frame, "RC", psychoStructure.RC and TRP3_API.CreateColorFromTable(psychoStructure.RC));
+			refreshPsychoColor(frame, "LC", psychoStructure.LC and TRP3.CreateColorFromTable(psychoStructure.LC));
+			refreshPsychoColor(frame, "RC", psychoStructure.RC and TRP3.CreateColorFromTable(psychoStructure.RC));
 			frame:Show();
 			previous = frame;
 		end
@@ -552,7 +552,7 @@ end
 ---@param fields string To identify the required fields to modify.
 ---@param structure Frame The draftData frame that holds all the info.
 local function pasteCopiedIcon(frame, fields, structure)
-	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIcons.Default;
+	local icon = TRP3.GetLastCopiedIcon() or TRP3_InterfaceIcons.Default;
 	if fields == "misc" then
 		structure.IC = icon;
 	elseif fields == "psychoLeft" then
@@ -565,7 +565,7 @@ end
 
 local function onEyeColorSelected(red, green, blue)
 	if red and green and blue then
-		local hexa = TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
+		local hexa = TRP3.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
 		draftData.EH = hexa;
 	else
 		draftData.EH = nil;
@@ -574,7 +574,7 @@ end
 
 local function onClassColorSelected(red, green, blue)
 	if red and green and blue then
-		local hexa = TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
+		local hexa = TRP3.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
 		draftData.CH = hexa;
 	else
 		draftData.CH = nil;
@@ -629,19 +629,19 @@ local function onMiscConvert(self)
 end
 
 local MISC_PRESET = {
-	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.House),
-	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Nickname),
-	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Motto),
-	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.FacialFeatures),
-	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Piercings),
-	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Pronouns),
-	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.GuildName),
-	Mixin(TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.GuildRank), {
+	TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.House),
+	TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.Nickname),
+	TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.Motto),
+	TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.FacialFeatures),
+	TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.Piercings),
+	TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.Pronouns),
+	TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.GuildName),
+	Mixin(TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.GuildRank), {
 		value = loc.DEFAULT_GUILD_RANK,
 	}),
-	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Tattoos),
-	TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.VoiceReference),
-	Mixin(TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Custom), {
+	TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.Tattoos),
+	TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.VoiceReference),
+	Mixin(TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.Custom), {
 		list = "|cnGREEN_FONT_COLOR:" .. loc.REG_PLAYER_ADD_NEW,
 		value = loc.CM_VALUE,
 	}),
@@ -742,7 +742,7 @@ local function onPsychoConvert(self)
 end
 
 local function refreshDraftHouseCoordinates()
-	local houseTT = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_HERE_HOME_TT_CURRENT) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_HERE_HOME_TT_DISCARD);
+	local houseTT = TRP3.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_HERE_HOME_TT_CURRENT) .. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_HERE_HOME_TT_DISCARD);
 	if draftData.RC and #draftData.RC == 4 then
 		houseTT = loc.REG_PLAYER_HERE_HOME_PRE_TT:format(draftData.RC[4]) .. "|n|n" .. houseTT;
 	else
@@ -1061,13 +1061,13 @@ function setEditDisplay()
 	TRP3_RegisterCharact_Edit_EyeField:SetText(draftData.EC or "");
 
 	if draftData.EH then
-		TRP3_RegisterCharact_Edit_EyeButton.setColor(TRP3_API.CreateColorFromHexString(draftData.EH):GetRGBAsBytes());
+		TRP3_RegisterCharact_Edit_EyeButton.setColor(TRP3.CreateColorFromHexString(draftData.EH):GetRGBAsBytes());
 	else
 		TRP3_RegisterCharact_Edit_EyeButton.setColor(nil, nil, nil);
 	end
 
 	if draftData.CH then
-		TRP3_RegisterCharact_Edit_ClassButton.setColor(TRP3_API.CreateColorFromHexString(draftData.CH):GetRGBAsBytes());
+		TRP3_RegisterCharact_Edit_ClassButton.setColor(TRP3.CreateColorFromHexString(draftData.CH):GetRGBAsBytes());
 	else
 		TRP3_RegisterCharact_Edit_ClassButton.setColor(nil, nil, nil);
 	end
@@ -1090,13 +1090,13 @@ function setEditDisplay()
 			frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscEditLine" .. frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_MiscEditLine");
 			frame.NameField:SetText(loc.CM_NAME);
 			frame.ValueField:SetText(loc.CM_VALUE);
-			setTooltipForSameFrame(frame.Action, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+			setTooltipForSameFrame(frame.Action, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 			scaleField(frame, TRP3_RegisterCharact_Edit_CharactPanel_Container:GetWidth(), "NameField");
 
 			-- Register the drag/drop handlers for reordering. Use the
 			-- icon as our handle, and make it control this frame.
 			setInfoReorderable(frame.DragButton, frame, "misc", TRP3_RegisterCharact_Edit_CharactPanel_Container.MiscTitle, TRP3_RegisterCharact_Edit_MiscAdd);
-			setTooltipForSameFrame(frame.Icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+			setTooltipForSameFrame(frame.Icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 
 			tinsert(miscEditCharFrame, frame);
 		end
@@ -1104,9 +1104,9 @@ function setEditDisplay()
 		frame.Action:SetScript("OnMouseDown", function(self)
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 				-- If not custom, allow convert to custom.
-				if miscStructure.ID ~= TRP3_API.MiscInfoType.Custom then
+				if miscStructure.ID ~= TRP3.MiscInfoType.Custom then
 					local convertOption = description:CreateButton(loc.REG_PLAYER_CONVERT, onMiscConvert, self);
-					if TRP3_API.GetMiscTypeInfo(miscStructure.ID).shownOnTooltip then
+					if TRP3.GetMiscTypeInfo(miscStructure.ID).shownOnTooltip then
 						TRP3_MenuUtil.SetElementTooltip(convertOption, loc.REG_PLAYER_CONVERT_WARNING);
 					end
 				end
@@ -1124,8 +1124,8 @@ function setEditDisplay()
 			elseif button == "RightButton" then
 				local icon = miscStructure.IC or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+					description:CreateButton(loc.UI_ICON_COPY, TRP3.SetLastCopiedIcon, icon);
+					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3.popup.showCopyDropdownPopup({icon}); end);
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.Icon, "misc", miscStructure); end);
 				end);
 			end
@@ -1135,7 +1135,7 @@ function setEditDisplay()
 		frame.Icon.IC = miscStructure.IC or TRP3_InterfaceIcons.Default;
 		frame.NameField:SetText(miscStructure.NA or loc.CM_NAME);
 		-- Disable name editing on presets
-		if miscStructure.ID == TRP3_API.MiscInfoType.Custom then
+		if miscStructure.ID == TRP3.MiscInfoType.Custom then
 			frame.NameField:Show();
 			frame.PresetName:Hide();
 		else
@@ -1183,34 +1183,34 @@ function setEditDisplay()
 			frame.Slider:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 			frame.Slider:SetScript("OnValueChanged", onPsychoValueChanged);
 
-			setTooltipForSameFrame(frame.CustomLeftIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_LEFTICON_TT .. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-			setTooltipForSameFrame(frame.CustomRightIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_RIGHTICON_TT.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
-			setTooltipForSameFrame(frame.ActionButton, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+			setTooltipForSameFrame(frame.CustomLeftIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_LEFTICON_TT .. "|n|n" .. TRP3.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+			setTooltipForSameFrame(frame.CustomRightIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, loc.REG_PLAYER_PSYCHO_RIGHTICON_TT.. "|n|n" .. TRP3.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+			setTooltipForSameFrame(frame.ActionButton, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 
 			setTooltipForSameFrame(frame.CustomLeftColor, "RIGHT", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT
-			.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
-			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+			.. "|n|n" .. TRP3.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
+			.. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
+			.. "|n" .. TRP3.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 			setTooltipForSameFrame(frame.CustomRightColor, "RIGHT", 0, 5, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR, loc.REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT
-			.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
-			.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+			.. "|n|n" .. TRP3.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
+			.. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
+			.. "|n" .. TRP3.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 
 			-- Only need to set up the closure for color pickers once, as it
 			-- just needs a reference to the frame itself.
 			--
 			-- FIXME: When the feature/color_picker_button_mixin branch
 			--        lands we can drop these closures and swap to methods,
-			--        as well as not worry about all the TRP3_API.CreateColorFromHexString -> rgb
+			--        as well as not worry about all the TRP3.CreateColorFromHexString -> rgb
 			--        conversion nonsense.
 			frame.CustomLeftColor.onSelection = function(r, g, b)
-				psychoStructure.LC = r and TRP3_API.CreateColorFromBytes(r, g, b):GetRGBTable();
-				refreshPsychoColor(frame, "LC", r and TRP3_API.CreateColorFromBytes(r, g, b));
+				psychoStructure.LC = r and TRP3.CreateColorFromBytes(r, g, b):GetRGBTable();
+				refreshPsychoColor(frame, "LC", r and TRP3.CreateColorFromBytes(r, g, b));
 			end
 
 			frame.CustomRightColor.onSelection = function(r, g, b)
-				psychoStructure.RC = r and TRP3_API.CreateColorFromBytes(r, g, b):GetRGBTable();
-				refreshPsychoColor(frame, "RC", r and TRP3_API.CreateColorFromBytes(r, g, b));
+				psychoStructure.RC = r and TRP3.CreateColorFromBytes(r, g, b):GetRGBTable();
+				refreshPsychoColor(frame, "RC", r and TRP3.CreateColorFromBytes(r, g, b));
 			end
 
 			-- Register the drag/drop handlers for reordering. Use the
@@ -1240,8 +1240,8 @@ function setEditDisplay()
 			elseif button == "RightButton" then
 				local icon = psychoStructure.LI or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+					description:CreateButton(loc.UI_ICON_COPY, TRP3.SetLastCopiedIcon, icon);
+					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3.popup.showCopyDropdownPopup({icon}); end);
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.CustomLeftIcon, "psychoLeft", psychoStructure); end);
 				end);
 			end
@@ -1256,8 +1256,8 @@ function setEditDisplay()
 			elseif button == "RightButton" then
 				local icon = psychoStructure.RI or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+					description:CreateButton(loc.UI_ICON_COPY, TRP3.SetLastCopiedIcon, icon);
+					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3.popup.showCopyDropdownPopup({icon}); end);
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.CustomRightIcon, "psychoRight", psychoStructure); end);
 				end);
 			end
@@ -1293,20 +1293,20 @@ function setEditDisplay()
 		-- invoke onSelected anyway, which means we'll update the bars through
 		-- that handler.
 		if psychoStructure.LC then
-			frame.CustomLeftColor.setColor(TRP3_API.CreateColorFromTable(psychoStructure.LC):GetRGBAsBytes());
+			frame.CustomLeftColor.setColor(TRP3.CreateColorFromTable(psychoStructure.LC):GetRGBAsBytes());
 		else
 			frame.CustomLeftColor.setColor(nil);
 		end
 
 		if psychoStructure.RC then
-			frame.CustomRightColor.setColor(TRP3_API.CreateColorFromTable(psychoStructure.RC):GetRGBAsBytes());
+			frame.CustomRightColor.setColor(TRP3.CreateColorFromTable(psychoStructure.RC):GetRGBAsBytes());
 		else
 			frame.CustomRightColor.setColor(nil);
 		end
 
 		frame.frameIndex = frameIndex;
-		frame:SetLeftColor(psychoStructure.LC and TRP3_API.CreateColorFromTable(psychoStructure.LC) or TRP3_API.MiscColors.PersonalityTraitColorLeft);
-		frame:SetRightColor(psychoStructure.RC and TRP3_API.CreateColorFromTable(psychoStructure.RC) or TRP3_API.MiscColors.PersonalityTraitColorRight);
+		frame:SetLeftColor(psychoStructure.LC and TRP3.CreateColorFromTable(psychoStructure.LC) or TRP3.MiscColors.PersonalityTraitColorLeft);
+		frame:SetRightColor(psychoStructure.RC and TRP3.CreateColorFromTable(psychoStructure.RC) or TRP3.MiscColors.PersonalityTraitColorRight);
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 		frame:SetPoint("RIGHT", 0, 0);
@@ -1321,7 +1321,7 @@ end
 local function setupRelationButton(profileID, profile)
 	setupIconButton(TRP3_RegisterCharact_ActionButton, getRelationTexture(profileID));
 	local relationColoredName = getRelationText(profileID);
-	local relationColor = TRP3_API.register.relation.getRelationColor(profileID);
+	local relationColor = TRP3.register.relation.getRelationColor(profileID);
 	if relationColor then
 		relationColoredName = relationColor:WrapTextInColorCode(relationColoredName);
 	end
@@ -1387,7 +1387,7 @@ local function refreshDisplay()
 	end
 end
 
-local toast = TRP3_API.ui.tooltip.toast;
+local toast = TRP3.ui.tooltip.toast;
 
 local function onActionSelected(value)
 	local context = getCurrentContext();
@@ -1440,7 +1440,7 @@ local function showCharacteristicsTab()
 	refreshDisplay();
 end
 
-TRP3_API.register.ui.showCharacteristicsTab = showCharacteristicsTab;
+TRP3.register.ui.showCharacteristicsTab = showCharacteristicsTab;
 
 local function onEdit()
 	if draftData then
@@ -1569,7 +1569,7 @@ local function initStructures()
 	};
 end
 
-function TRP3_API.register.inits.characteristicsInit()
+function TRP3.register.inits.characteristicsInit()
 	initStructures();
 
 	-- UI
@@ -1580,9 +1580,9 @@ function TRP3_API.register.inits.characteristicsInit()
 		elseif button == "RightButton" then
 			local icon = draftData.IC or TRP3_InterfaceIcons.ProfileDefault;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(TRP3_API.GetLastCopiedIcon()); end);
+				description:CreateButton(loc.UI_ICON_COPY, TRP3.SetLastCopiedIcon, icon);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3.popup.showCopyDropdownPopup({icon}); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(TRP3.GetLastCopiedIcon()); end);
 			end);
 		end
 	end);
@@ -1631,8 +1631,8 @@ function TRP3_API.register.inits.characteristicsInit()
 
 	-- Localz
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "RIGHT", 0, 5, loc.REG_PLAYER_ICON, loc.REG_PLAYER_ICON_TT
-	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	.. "|n|n" .. TRP3.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER)
+	.. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_TitleFieldHelp, "RIGHT", 0, 5, loc.REG_TITLE, loc.REG_PLAYER_TITLE_TT);
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_FirstFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_FIRSTNAME, loc.REG_PLAYER_FIRSTNAME_TT:format(Globals.player));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_LastFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_LASTNAME, loc.REG_PLAYER_LASTNAME_TT);
@@ -1646,16 +1646,16 @@ function TRP3_API.register.inits.characteristicsInit()
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_HeightFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_HEIGHT, loc.REG_PLAYER_HEIGHT_TT);
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_WeightFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_WEIGHT, loc.REG_PLAYER_WEIGHT_TT);
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_BirthplaceButton, "RIGHT", 0, 5, loc.REG_PLAYER_HERE, loc.REG_PLAYER_HERE_TT
-	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_HERE_HOME_TT_CURRENT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_HERE_HOME_TT_DISCARD));
+	.. "|n|n" .. TRP3.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_HERE_HOME_TT_CURRENT)
+	.. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_HERE_HOME_TT_DISCARD));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeButton, "RIGHT", 0, 5, loc.REG_PLAYER_EYE, loc.REG_PLAYER_EYE_TT
-	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+	.. "|n|n" .. TRP3.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
+	.. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
+	.. "|n" .. TRP3.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassButton, "RIGHT", 0, 5, loc.REG_PLAYER_COLOR_CLASS, loc.REG_PLAYER_COLOR_CLASS_TT
-	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+	.. "|n|n" .. TRP3.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
+	.. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
+	.. "|n" .. TRP3.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 
 	TRP3_RegisterCharact_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
 	TRP3_RegisterCharact_Edit_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
@@ -1720,7 +1720,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Dropdown_RelationshipFieldTitle:SetText(loc.REG_PLAYER_RELATIONSHIP_STATUS);
 
 	-- Resizing
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
 		local finalContainerWidth = containerWidth - 70;
 		TRP3_RegisterCharact_CharactPanel_Container:SetSize(finalContainerWidth, 50);
 		TRP3_RegisterCharact_Edit_CharactPanel_Container:SetSize(finalContainerWidth, 50);
@@ -1730,7 +1730,7 @@ function TRP3_API.register.inits.characteristicsInit()
 		TRP3_RegisterCharact_Edit_FirstField:SetSize((finalContainerWidth - 100) * 0.3, 18);
 	end);
 
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.REGISTER_PROFILE_OPENED, function()
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.REGISTER_PROFILE_OPENED, function()
 		TRP3_RegisterCharact_CharactPanel_Scroll.ScrollBar:ScrollToBegin();
 		TRP3_RegisterCharact_Edit_CharactPanel_Scroll.ScrollBar:ScrollToBegin();
 	end);

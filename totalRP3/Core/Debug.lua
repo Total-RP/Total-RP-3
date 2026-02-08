@@ -52,7 +52,7 @@ local function OnCallbackEventFired(registry, event, ...)
 end
 
 function TRP3_DebugUtil.AddToEventTraceWindow(registry)
-	if not TRP3_API.globals.DEBUG_MODE then
+	if not TRP3.globals.DEBUG_MODE then
 		return;
 	end
 

@@ -1,8 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 TRP3_AutomationUtil.RegisterCondition({
 	id = "trp3:rpstatus",

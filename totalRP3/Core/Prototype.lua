@@ -1,9 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@class TRP3_API
-local TRP3_API = select(2, ...);
-
 --[[
 	This file defines a few convenience functions for instantiating objects
 	with metatable-based inheritance from prototypes.
@@ -17,7 +14,7 @@ local TRP3_API = select(2, ...);
 		function Person:__init(name) self.name = name; end
 		function Person:Greet() print("Hello", self.name); end
 
-		local Bob = TRP3_API.CreateObject(Person);
+		local Bob = TRP3.CreateObject(Person);
 		Bob:Greet();  -- prints "Hello Bob"
 
 	This system does not enforce a strict model of inheritance, but either
@@ -32,10 +29,10 @@ local TRP3_API = select(2, ...);
 		local Feedable = {};
 		function Feedable:Feed(food) print("You feed", self:GetName(), food, "."); end;
 
-		local Cat = TRP3_API.CreateObject(Pet);
+		local Cat = TRP3.CreateObject(Pet);
 		Mixin(Cat, Feedable);
 
-		local Mittens = TRP3_API.CreateObject(Cat, "Mittens");
+		local Mittens = TRP3.CreateObject(Cat, "Mittens");
 		Mittens:Feed("bananas");  -- prints "You feed Mittens bananas."
 
 	Creation and initialization of objects can be customized by defining two
@@ -109,7 +106,7 @@ end
 ---@param prototype T?
 ---@param ... any
 ---@return T object
-function TRP3_API.CreateObject(prototype, ...)
+function TRP3.CreateObject(prototype, ...)
 	local metatable = GetPrototypeMetatable(prototype);
 	local object = AllocateObject(prototype);
 	setmetatable(object, metatable);
@@ -128,7 +125,7 @@ end
 ---@generic T
 ---@param prototype T?
 ---@return T object
-function TRP3_API.AllocateObject(prototype)
+function TRP3.AllocateObject(prototype)
 	local metatable = GetPrototypeMetatable(prototype);
 	local object = AllocateObject(prototype);
 	return setmetatable(object, metatable);
@@ -140,7 +137,7 @@ end
 ---@generic T
 ---@param object T
 ---@return table object
-function TRP3_API.ConstructObject(object, ...)
+function TRP3.ConstructObject(object, ...)
 	ConstructObject(object, ...);
 	return object;
 end
@@ -149,7 +146,7 @@ end
 ---
 ---@param object table
 ---@return table? prototype
-function TRP3_API.GetObjectPrototype(object)
+function TRP3.GetObjectPrototype(object)
 	local metatable = getmetatable(object);
 	return metatable and metatable.__prototype or nil;
 end
@@ -162,7 +159,7 @@ end
 ---@param object table
 ---@param prototype T
 ---@return T object
-function TRP3_API.SetObjectPrototype(object, prototype)
+function TRP3.SetObjectPrototype(object, prototype)
 	local metatable = GetPrototypeMetatable(prototype);
 	return setmetatable(object, metatable);
 end

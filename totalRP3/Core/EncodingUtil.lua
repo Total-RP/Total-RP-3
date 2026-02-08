@@ -92,7 +92,7 @@ function PEMEncoder:QueueBlankLine()
 end
 
 function TRP3_EncodingUtil.CreatePEMEncoder()
-	local encoder = TRP3_API.AllocateObject(PEMEncoder);
+	local encoder = TRP3.AllocateObject(PEMEncoder);
 	encoder:__init();
 	return encoder;
 end
@@ -170,7 +170,7 @@ function PEMDecoder:DecodeAll()
 end
 
 function TRP3_EncodingUtil.CreatePEMDecoder(data)
-	local decoder = TRP3_API.AllocateObject(PEMDecoder);
+	local decoder = TRP3.AllocateObject(PEMDecoder);
 	decoder:__init(data);
 	return decoder;
 end

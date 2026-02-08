@@ -1,14 +1,12 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local _, TRP3_API = ...;
-
 TRP3_LocaleConstants = {
 	DefaultLocaleCode = "default",
 	LocaleConfigKey = "AddonLocale",
 };
 
-function TRP3_API.GetDefaultLocale()
+function TRP3.GetDefaultLocale()
 	-- GAME_LOCALE is an opt-in global supported by a few addons that allows
 	-- for centralized overrides of locale - use it if set.
 
@@ -19,7 +17,7 @@ function TRP3_API.GetDefaultLocale()
 	return GetLocale();
 end
 
-function TRP3_API.GetPreferredLocale()
+function TRP3.GetPreferredLocale()
 	if TRP3_Configuration then
 		local configuredLocale = TRP3_Configuration[TRP3_LocaleConstants.LocaleConfigKey];
 
@@ -28,7 +26,7 @@ function TRP3_API.GetPreferredLocale()
 		end
 	end
 
-	return TRP3_API.GetDefaultLocale();
+	return TRP3.GetDefaultLocale();
 end
 
 -- Shortcut formatting
@@ -66,7 +64,7 @@ local function GetLocalizedKeyText(key)
 	local text;
 
 	if KeyLocalizationOverrides[key] then
-		text = TRP3_API.loc[KeyLocalizationOverrides[key]];
+		text = TRP3.loc[KeyLocalizationOverrides[key]];
 	else
 		text = GetBindingText(key);
 	end
@@ -86,18 +84,18 @@ local function GetLocalizedSystemKeyText(key)
 	return GetLocalizedKeyText(key);
 end
 
-TRP3_API.ShortcutType = {
+TRP3.ShortcutType = {
 	Normal = nil,
 	System = 1,
 };
 
-function TRP3_API.FormatShortcut(binding, shortcutType)
+function TRP3.FormatShortcut(binding, shortcutType)
 	local separator = "-";
 	local localizer;
 
-	if shortcutType == TRP3_API.ShortcutType.Normal then
+	if shortcutType == TRP3.ShortcutType.Normal then
 		localizer = GetLocalizedKeyText;
-	elseif shortcutType == TRP3_API.ShortcutType.System then
+	elseif shortcutType == TRP3.ShortcutType.System then
 		localizer = GetLocalizedSystemKeyText;
 	else
 		error("invalid shortcut type");
@@ -112,23 +110,23 @@ function TRP3_API.FormatShortcut(binding, shortcutType)
 	return table.concat(keys, separator);
 end
 
-function TRP3_API.FormatShortcutWithInstruction(binding, instruction, shortcutType)
-	local shortcut = TRP3_API.FormatShortcut(binding, shortcutType);
-	local text = string.format(TRP3_API.loc.SHORTCUT_INSTRUCTION, shortcut, instruction);
+function TRP3.FormatShortcutWithInstruction(binding, instruction, shortcutType)
+	local shortcut = TRP3.FormatShortcut(binding, shortcutType);
+	local text = string.format(TRP3.loc.SHORTCUT_INSTRUCTION, shortcut, instruction);
 	return GREEN_FONT_COLOR:WrapTextInColorCode(text);
 end
 
-TRP3_API.loc:SetCurrentLocale(TRP3_API.GetPreferredLocale(), true);
+TRP3.loc:SetCurrentLocale(TRP3.GetPreferredLocale(), true);
 
-BINDING_NAME_TRP3_TOGGLE = TRP3_API.loc.BINDING_NAME_TRP3_TOGGLE;
-BINDING_NAME_TRP3_TOOLBAR_TOGGLE = TRP3_API.loc.BINDING_NAME_TRP3_TOOLBAR_TOGGLE;
-BINDING_NAME_TRP3_OPEN_TARGET_PROFILE = TRP3_API.loc.BINDING_NAME_TRP3_OPEN_TARGET_PROFILE;
-BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS = TRP3_API.loc.BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS;
+BINDING_NAME_TRP3_TOGGLE = TRP3.loc.BINDING_NAME_TRP3_TOGGLE;
+BINDING_NAME_TRP3_TOOLBAR_TOGGLE = TRP3.loc.BINDING_NAME_TRP3_TOOLBAR_TOGGLE;
+BINDING_NAME_TRP3_OPEN_TARGET_PROFILE = TRP3.loc.BINDING_NAME_TRP3_OPEN_TARGET_PROFILE;
+BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS = TRP3.loc.BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS;
 
 -- Localization strings are exported globally for use from XML which
 -- is incapable of performing nested lookups. Longer-term, we may want
 -- to use global strings everywhere for consistency.
 
-for key, value in TRP3_API.loc:EnumerateTexts() do
+for key, value in TRP3.loc:EnumerateTexts() do
 	_G["TRP3_L_" .. key] = value;
 end

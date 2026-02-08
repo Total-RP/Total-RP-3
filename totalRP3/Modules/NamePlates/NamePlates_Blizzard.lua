@@ -1,10 +1,9 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
 local TRP3_NamePlates = TRP3_NamePlates;
 local TRP3_NamePlatesUtil = TRP3_NamePlatesUtil;
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 local function CallUnhookedMethod(widget, methodName, ...)
 	getmetatable(widget).__index[methodName](widget, ...);
@@ -50,12 +49,12 @@ local function ProcessFontStringWidgetTextChanged(widget)
 end
 
 local function ProcessFontStringWidgetColorChanged(widget)
-	widget.TRP3_originalColor = TRP3_API.CreateColor(widget:GetTextColor());
+	widget.TRP3_originalColor = TRP3.CreateColor(widget:GetTextColor());
 	UpdateFontStringWidgetColor(widget);
 end
 
 local function ProcessStatusBarWidgetColorChanged(widget)
-	widget.TRP3_originalColor = TRP3_API.CreateColor(widget:GetStatusBarColor());
+	widget.TRP3_originalColor = TRP3.CreateColor(widget:GetStatusBarColor());
 	UpdateStatusBarWidgetColor(widget);
 end
 
@@ -89,7 +88,7 @@ local TRP3_BlizzardNamePlates = {};
 
 function TRP3_BlizzardNamePlates:OnModuleInitialize()
 	if not C_AddOns.IsAddOnLoaded("Blizzard_NamePlates") then
-		return TRP3_API.module.status.MISSING_DEPENDENCY, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
+		return TRP3.module.status.MISSING_DEPENDENCY, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	end
 
 	-- Quick hack to make these nameplates "cowardly"; if any of the below
@@ -103,7 +102,7 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 
 	for _, addon in ipairs(addons) do
 		if AddOnUtil.IsAddOnEnabledForCurrentCharacter(addon) then
-			return TRP3_API.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
+			return TRP3.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 		end
 	end
 
@@ -113,14 +112,14 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 	if ElvUI then
 		local E = ElvUI[1];
 		if E and E.NamePlates and E.NamePlates.Initialized then
-			return TRP3_API.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
+			return TRP3.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 		end
 	end
 
 	-- Plater also has optional friendly nameplates - if they're enabled, we bail
 	if Plater then
 		if Plater.db.profile.plate_config.friendlyplayer.module_enabled then
-			return TRP3_API.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
+			return TRP3.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 		end
 	end
 end
@@ -212,7 +211,7 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 		titleWidget:SetFontObject(SystemFont_NamePlate_Outlined);
 		titleWidget:ClearAllPoints();
 		titleWidget:SetPoint("TOP", unitframe.name, "BOTTOM", 0, -2);
-		titleWidget:SetVertexColor(TRP3_API.Colors.Grey:GetRGBA());
+		titleWidget:SetVertexColor(TRP3.Colors.Grey:GetRGBA());
 		titleWidget:Hide();
 
 		nameplate.TRP3_Title = titleWidget;
@@ -225,7 +224,7 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 		guildWidget:SetFontObject(SystemFont_NamePlate_Outlined);
 		guildWidget:ClearAllPoints();
 		guildWidget:SetPoint("TOP", unitframe.name, "BOTTOM", 0, -2);
-		guildWidget:SetVertexColor(TRP3_API.Colors.Grey:GetRGBA());
+		guildWidget:SetVertexColor(TRP3.Colors.Grey:GetRGBA());
 		guildWidget:Hide();
 
 		nameplate.TRP3_Guild = guildWidget;
@@ -287,9 +286,9 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 				local g = Saturate(color.g * 1.25);
 				local b = Saturate(color.b * 1.25);
 
-				overrideColor = TRP3_API.CreateColor(r, g, b);
+				overrideColor = TRP3.CreateColor(r, g, b);
 			else
-				overrideColor = TRP3_API.CreateColor(color:GetRGB());
+				overrideColor = TRP3.CreateColor(color:GetRGB());
 			end
 		end
 	end
@@ -310,7 +309,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateHealthBar(nameplate)
 	local overrideColor;
 
 	if displayInfo and displayInfo.shouldColorHealth then
-		overrideColor = TRP3_API.CreateColor(displayInfo.color:GetRGB());
+		overrideColor = TRP3.CreateColor(displayInfo.color:GetRGB());
 	end
 
 	SetStatusBarWidgetOverrideColor(unitframe.healthBar, overrideColor);
@@ -336,7 +335,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateIcon(nameplate)
 	end
 
 	if displayIcon then
-		nameplate.TRP3_Icon:SetTexture(TRP3_API.utils.getIconTexture(displayIcon));
+		nameplate.TRP3_Icon:SetTexture(TRP3.utils.getIconTexture(displayIcon));
 		nameplate.TRP3_Icon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
 		nameplate.TRP3_Icon:Show();
 	else
@@ -382,7 +381,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateSubText(nameplate)
 
 	if displayFullTitle then
 		-- We apply colors here, and not in widget creation, so changes to the color are shown instantly.
-		displayFullTitle = TRP3_API.CreateColorFromHexString(TRP3_NamePlatesSettings.TooltipFullTitleColor):WrapTextInColorCode(displayFullTitle);
+		displayFullTitle = TRP3.CreateColorFromHexString(TRP3_NamePlatesSettings.TooltipFullTitleColor):WrapTextInColorCode(displayFullTitle);
 		nameplate.TRP3_Title:SetText(displayFullTitle);
 		nameplate.TRP3_Title:Show();
 	else
@@ -391,7 +390,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateSubText(nameplate)
 
 	if displayGuild then
 		-- We apply colors here, and not in widget creation, so changes to the color are shown instantly.
-		displayGuild = TRP3_API.CreateColorFromHexString(TRP3_NamePlatesSettings.TooltipGuildNameColor):WrapTextInColorCode(displayGuild);
+		displayGuild = TRP3.CreateColorFromHexString(TRP3_NamePlatesSettings.TooltipGuildNameColor):WrapTextInColorCode(displayGuild);
 		nameplate.TRP3_Guild:SetText(displayGuild);
 		-- Put under FT if it is shown
 		if displayFullTitle and nameplate.TRP3_Title:IsShown() then
@@ -498,7 +497,7 @@ end
 -- Module Registration
 --
 
-TRP3_API.module.registerModule({
+TRP3.module.registerModule({
 	id = "trp3_blizzard_nameplates",
 	name = L.BLIZZARD_NAMEPLATES_MODULE_NAME,
 	description = L.BLIZZARD_NAMEPLATES_MODULE_DESCRIPTION,

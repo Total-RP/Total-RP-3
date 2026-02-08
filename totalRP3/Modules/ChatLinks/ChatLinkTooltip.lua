@@ -1,9 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
+local Ellyb = TRP3.Ellyb;
 
 ---@type GameTooltip
 TRP3_ChatLinkTooltipMixin = {};
@@ -17,12 +14,12 @@ function TRP3_ChatLinkTooltipMixin:OnLoad()
 	self.TitleLine = _G[self:GetName() .. "TextLeft1"];
 
 	-- Set tooltip title font size once the settings have been loaded
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		local fontSize = 16;
-		if TRP3_API.module.isModuleLoaded("trp3_tooltips") then
-			fontSize = TRP3_API.ui.tooltip.getMainLineFontSize();
-			TRP3_API.configuration.registerHandler("tooltip_char_mainSize", function()
-				self:SetTitleSize(TRP3_API.ui.tooltip.getMainLineFontSize());
+		if TRP3.module.isModuleLoaded("trp3_tooltips") then
+			fontSize = TRP3.ui.tooltip.getMainLineFontSize();
+			TRP3.configuration.registerHandler("tooltip_char_mainSize", function()
+				self:SetTitleSize(TRP3.ui.tooltip.getMainLineFontSize());
 			end)
 		end
 		self:SetTitleSize(fontSize);

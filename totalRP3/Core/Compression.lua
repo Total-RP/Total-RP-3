@@ -1,9 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Ellyb = TRP3_API.Ellyb;
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
+local Ellyb = TRP3.Ellyb;
 
 -- AddOns imports
 local LibDeflate = LibStub:GetLibrary("LibDeflate");

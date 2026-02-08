@@ -1,9 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
-
 AddOn_TotalRP3.Enums = {};
 
 AddOn_TotalRP3.Enums.ACCOUNT_TYPE = {
@@ -37,7 +34,7 @@ AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE = {
 };
 
 -- UNIT_TYPE describes the base type of a unit, such as whether it represents
--- a character or pet. These replace the old TRP3_API.ui.misc.TYPE_* constants.
+-- a character or pet. These replace the old TRP3.ui.misc.TYPE_* constants.
 AddOn_TotalRP3.Enums.UNIT_TYPE = {
 	CHARACTER = "CHARACTER",
 	PET = "PET",

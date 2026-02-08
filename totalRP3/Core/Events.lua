@@ -65,7 +65,7 @@ TRP3_Addon.Events =
 
 -- TODO: Would prefer to move this to OnInitialize, however that first requires
 --       modularizing everything.
-TRP3_Addon.callbacks = TRP3_API.InitCallbackRegistryWithEvents(TRP3_Addon, TRP3_Addon.Events);
+TRP3_Addon.callbacks = TRP3.InitCallbackRegistryWithEvents(TRP3_Addon, TRP3_Addon.Events);
 
 function TRP3_Addon:TriggerEvent(event, ...)
 	assert(self.Events[event], "attempted to trigger an invalid addon event");
@@ -75,10 +75,10 @@ end
 -- The game event source provides a callback registry-based mechanism for
 -- subscribing to and receiving game-triggered events like ADDON_LOADED.
 
-TRP3_API.GameEvents = {};
+TRP3.GameEvents = {};
 
 local GameEventFrame = CreateFrame("Frame", "TRP3_GameEventFrame");
-local GameEventRegistry = TRP3_API.InitCallbackRegistry(TRP3_API.GameEvents);
+local GameEventRegistry = TRP3.InitCallbackRegistry(TRP3.GameEvents);
 
 function GameEventFrame:OnEvent(...)
 	GameEventRegistry:Fire(...);
@@ -86,15 +86,15 @@ end
 
 GameEventFrame:SetScript("OnEvent", GameEventFrame.OnEvent);
 
-function TRP3_API.GameEvents:OnEventUsed(event)
+function TRP3.GameEvents:OnEventUsed(event)
 	GameEventFrame:RegisterEvent(event);
 end
 
-function TRP3_API.GameEvents:OnEventUnused(event)
+function TRP3.GameEvents:OnEventUnused(event)
 	GameEventFrame:UnregisterEvent(event);
 end
 
-function TRP3_API.GameEvents:IsEventValid(event)
+function TRP3.GameEvents:IsEventValid(event)
 	return C_EventUtils == nil or C_EventUtils.IsEventValid(event);
 end
 
@@ -112,7 +112,7 @@ do
 		end
 	end
 
-	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", OnRegisterDataUpdated);
+	TRP3.RegisterCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", OnRegisterDataUpdated);
 end
 
 TRP3_DebugUtil.RemoveFromEventTraceWindow(GameEventRegistry);

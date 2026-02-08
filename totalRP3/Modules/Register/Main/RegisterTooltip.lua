@@ -1,25 +1,22 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 -- imports
-local Globals = TRP3_API.globals;
-local Utils = TRP3_API.utils;
-local loc = TRP3_API.loc;
-local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
-local getIgnoreReason = TRP3_API.register.getIgnoreReason;
+local Globals = TRP3.globals;
+local Utils = TRP3.utils;
+local loc = TRP3.loc;
+local getUnitIDCurrentProfile, isIDIgnored = TRP3.register.getUnitIDCurrentProfile, TRP3.register.isIDIgnored;
+local getIgnoreReason = TRP3.register.getIgnoreReason;
 local getCharacterUnitID = Utils.str.getUnitID;
-local get = TRP3_API.profile.getData;
-local getConfigValue = TRP3_API.configuration.getValue;
-local getCompleteName = TRP3_API.register.getCompleteName;
-local getOtherCharacter = TRP3_API.register.getUnitIDCharacter;
-local getYourCharacter = TRP3_API.profile.getPlayerCharacter;
-local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
+local get = TRP3.profile.getData;
+local getConfigValue = TRP3.configuration.getValue;
+local getCompleteName = TRP3.register.getCompleteName;
+local getOtherCharacter = TRP3.register.getUnitIDCharacter;
+local getYourCharacter = TRP3.profile.getPlayerCharacter;
+local IsUnitIDKnown = TRP3.register.isUnitIDKnown;
 local Events = TRP3_Addon.Events;
-local hasProfile, getRelationColor = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColor;
-local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
+local hasProfile, getRelationColor = TRP3.register.hasProfile, TRP3.register.relation.getRelationColor;
+local originalGetTargetType, getCompanionFullID = TRP3.ui.misc.getTargetType, TRP3.ui.misc.getCompanionFullID;
 local EMPTY = Globals.empty;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local isPlayerIC;
@@ -118,29 +115,29 @@ end
 local function shouldHideGameTooltip()
 	return getConfigValue(ConfigKeys.CHARACT_HIDE_ORIGINAL);
 end
-TRP3_API.ui.tooltip.shouldHideGameTooltip = shouldHideGameTooltip;
+TRP3.ui.tooltip.shouldHideGameTooltip = shouldHideGameTooltip;
 
 local function getMainLineFontSize()
 	return getConfigValue(ConfigKeys.CHARACT_MAIN_SIZE);
 end
-TRP3_API.ui.tooltip.getMainLineFontSize = getMainLineFontSize;
+TRP3.ui.tooltip.getMainLineFontSize = getMainLineFontSize;
 
 local function getSubLineFontSize()
 	return getConfigValue(ConfigKeys.CHARACT_SUB_SIZE);
 end
-TRP3_API.ui.tooltip.getSubLineFontSize = getSubLineFontSize;
+TRP3.ui.tooltip.getSubLineFontSize = getSubLineFontSize;
 
 local function getSmallLineFontSize()
 	return getConfigValue(ConfigKeys.CHARACT_TER_SIZE);
 end
-TRP3_API.ui.tooltip.getSmallLineFontSize = getSmallLineFontSize;
+TRP3.ui.tooltip.getSmallLineFontSize = getSmallLineFontSize;
 
-function TRP3_API.ui.tooltip.setTooltipDefaultAnchor(tooltip, parent)
+function TRP3.ui.tooltip.setTooltipDefaultAnchor(tooltip, parent)
 	-- This function may be overridden by other modules (eg. ElvUI).
 	GameTooltip_SetDefaultAnchor(tooltip, parent);
 end
 
-function TRP3_API.ui.tooltip.shouldCropTexts()
+function TRP3.ui.tooltip.shouldCropTexts()
 	if not registerTooltipModuleIsEnabled then
 		return true;
 	else
@@ -232,16 +229,16 @@ end
 
 local function getTooltipTextColors()
 	local colors = {
-		TITLE = TRP3_API.CreateColorFromHexString(getConfigValue(ConfigKeys.TOOLTIP_TITLE_COLOR)),
-		MAIN = TRP3_API.CreateColorFromHexString(getConfigValue(ConfigKeys.TOOLTIP_MAIN_COLOR)),
-		SECONDARY = TRP3_API.CreateColorFromHexString(getConfigValue(ConfigKeys.TOOLTIP_SECONDARY_COLOR)),
+		TITLE = TRP3.CreateColorFromHexString(getConfigValue(ConfigKeys.TOOLTIP_TITLE_COLOR)),
+		MAIN = TRP3.CreateColorFromHexString(getConfigValue(ConfigKeys.TOOLTIP_MAIN_COLOR)),
+		SECONDARY = TRP3.CreateColorFromHexString(getConfigValue(ConfigKeys.TOOLTIP_SECONDARY_COLOR)),
 	};
 
 	return colors;
 end
-TRP3_API.ui.tooltip.getTooltipTextColors = getTooltipTextColors;
+TRP3.ui.tooltip.getTooltipTextColors = getTooltipTextColors;
 
-TRP3_API.ui.tooltip.tooltipBorderColor = TRP3_API.Colors.White;
+TRP3.ui.tooltip.tooltipBorderColor = TRP3.Colors.White;
 
 local TooltipGuildDisplayOption = {
 	-- Old setting was a boolean; use false/true for sensible defaults here.
@@ -302,7 +299,7 @@ local function getGameTooltipTexts(tooltip)
 	end
 	return tab;
 end
-TRP3_API.ui.tooltip.getGameTooltipTexts = getGameTooltipTexts;
+TRP3.ui.tooltip.getGameTooltipTexts = getGameTooltipTexts;
 
 local GetCursorPosition = GetCursorPosition;
 local function placeTooltipOnCursor()
@@ -328,13 +325,13 @@ local function limitText(input, maxCharLength, maxLinesCount)
 			return input;
 		end
 
-		return TRP3_API.utils.str.crop(input, maxCharLength);
+		return TRP3.utils.str.crop(input, maxCharLength);
 	end
 
 	-- Otherwise extract the substring up to the character preceeding the
 	-- last matched newline or to the maximum allowable length of the text,
 	-- whichever is shorter.
-	return TRP3_API.utils.str.crop(input, math.min(finish - 1, maxCharLength));
+	return TRP3.utils.str.crop(input, math.min(finish - 1, maxCharLength));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -446,15 +443,15 @@ function TooltipBuilder:Build()
 end
 
 ---@return TRP3.TooltipBuilder
-function TRP3_API.ui.tooltip.createTooltipBuilder(tooltip)
-	return TRP3_API.CreateObject(TooltipBuilder, tooltip);
+function TRP3.ui.tooltip.createTooltipBuilder(tooltip)
+	return TRP3.CreateObject(TooltipBuilder, tooltip);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CHARACTER TOOLTIP
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tooltipBuilder = TRP3_API.ui.tooltip.createTooltipBuilder(TRP3_CharacterTooltip);
+local tooltipBuilder = TRP3.ui.tooltip.createTooltipBuilder(TRP3_CharacterTooltip);
 
 local function getUnitID(targetType)
 	local currentTargetType = originalGetTargetType(targetType);
@@ -465,7 +462,7 @@ local function getUnitID(targetType)
 	end
 end
 
-TRP3_API.register.getUnitID = getUnitID;
+TRP3.register.getUnitID = getUnitID;
 
 --- Returns a not nil table containing the character information.
 -- The returned table is not nil, but could be empty.
@@ -504,9 +501,9 @@ local function getLevelIconOrText(targetType)
 	end
 end
 
-local TOOLTIP_BLOCKED_IGNORED_COLOR = TRP3_API.Colors.Red;
-local TOOLTIP_BLOCKED_MATURE_COLOR = TRP3_API.CreateColor(1.00, 0.75, 0.86, 1.00);
-local TOOLTIP_BLOCKED_MAIN_COLOR = TRP3_API.CreateColor(1.00, 0.75, 0.00, 1.00);
+local TOOLTIP_BLOCKED_IGNORED_COLOR = TRP3.Colors.Red;
+local TOOLTIP_BLOCKED_MATURE_COLOR = TRP3.CreateColor(1.00, 0.75, 0.86, 1.00);
+local TOOLTIP_BLOCKED_MAIN_COLOR = TRP3.CreateColor(1.00, 0.75, 0.00, 1.00);
 
 local function SetProgressSpinnerShown(tooltip, shown)
 	local spinner = tooltip.ProgressSpinner;
@@ -554,7 +551,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	local localizedClass, englishClass = UnitClass(targetType);
-	local color = TRP3_API.GetClassDisplayColor(englishClass);
+	local color = TRP3.GetClassDisplayColor(englishClass);
 	local rightIcons = "";
 
 
@@ -575,7 +572,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 	-- OOC
 	if info.character and info.character.RP ~= 1 then
 		if getConfigValue(ConfigKeys.PREFER_OOC_ICON) == TRP3_OOCIndicatorStyle.Text then
-			completeName = strconcat(TRP3_API.Colors.Red("[" .. loc.CM_OOC .. "] "), completeName);
+			completeName = strconcat(TRP3.Colors.Red("[" .. loc.CM_OOC .. "] "), completeName);
 		else
 			rightIcons = strconcat(rightIcons, OOC_ICON);
 		end
@@ -599,7 +596,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 		-- Beginner icon / volunteer icon
 		do
 			local experience = player:GetRoleplayExperience();
-			local experienceIcon = TRP3_API.GetRoleplayExperienceIconMarkup(experience);
+			local experienceIcon = TRP3.GetRoleplayExperienceIconMarkup(experience);
 
 			if experienceIcon then
 				rightIcons = strconcat(rightIcons, experienceIcon);
@@ -611,7 +608,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 
 	-- Player icon
 	if showIcons() and info.characteristics and info.characteristics.IC then
-		tooltipBuilder:AddTexture(TRP3_API.utils.getIconTexture(info.characteristics.IC), ICON_TEXTURE_OPTIONS);
+		tooltipBuilder:AddTexture(TRP3.utils.getIconTexture(info.characteristics.IC), ICON_TEXTURE_OPTIONS);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -677,7 +674,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 	-- Guild
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local guildDisplayOption = TRP3_API.configuration.getValue(ConfigKeys.CHARACT_GUILD);
+	local guildDisplayOption = TRP3.configuration.getValue(ConfigKeys.CHARACT_GUILD);
 
 	if guildDisplayOption ~= TooltipGuildDisplayOption.Hidden then
 		local customGuildInfo = player:GetCustomGuildMembership();
@@ -724,18 +721,18 @@ local function writeTooltipForCharacter(targetID, targetType)
 	local relationLineDisplay = GetRelationLineDisplay();
 
 	if relationLineDisplay ~= RelationLineOption.Hidden and profileID then
-		local relation = TRP3_API.register.relation.getRelation(profileID);
+		local relation = TRP3.register.relation.getRelation(profileID);
 		if relation and relation.id ~= "NONE" then
-			local relationColor = TRP3_API.register.relation.getColor(relation) or colors.SECONDARY;
+			local relationColor = TRP3.register.relation.getColor(relation) or colors.SECONDARY;
 			local relationText;
 			local relationTextWrap;
 
 			if relationLineDisplay == RelationLineOption.Full then
-				local relationDescription = TRP3_API.register.relation.getRelationTooltipText(profileID, player:GetProfile());
+				local relationDescription = TRP3.register.relation.getRelationTooltipText(profileID, player:GetProfile());
 				relationText = relationColor:WrapTextInColorCode(relationDescription);
 				relationTextWrap = true;
 			else
-				local relationName = TRP3_API.register.relation.getRelationText(profileID);
+				local relationName = TRP3.register.relation.getRelationText(profileID);
 				relationText = loc.REG_RELATION .. ": " .. relationColor:WrapTextInColorCode(relationName);
 				relationTextWrap = false;
 			end
@@ -818,24 +815,24 @@ local function writeTooltipForCharacter(targetID, targetType)
 		local name = UnitName(targetType .. "target");
 		local targetTargetID = getUnitID(targetType .. "target");
 		if targetTargetID then
-			local unitType = TRP3_API.ui.misc.getTargetType(targetType .. "target");
+			local unitType = TRP3.ui.misc.getTargetType(targetType .. "target");
 
 			local targetClassColor;
 			if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.BATTLE_PET or unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
-				local owner, companionID = TRP3_API.utils.str.companionIDToInfo(targetTargetID);
-				targetClassColor = TRP3_API.Colors.White;
+				local owner, companionID = TRP3.utils.str.companionIDToInfo(targetTargetID);
+				targetClassColor = TRP3.Colors.White;
 
 				local profile;
-				if owner == TRP3_API.globals.player_id then
-					profile = TRP3_API.companions.player.getCompanionProfile(companionID);
+				if owner == TRP3.globals.player_id then
+					profile = TRP3.companions.player.getCompanionProfile(companionID);
 				else
-					profile = TRP3_API.companions.register.getCompanionProfile(targetTargetID);
+					profile = TRP3.companions.register.getCompanionProfile(targetTargetID);
 				end
 
 				if profile and profile.data then
 					if getConfigValue(ConfigKeys.CHARACT_COLOR) then
-						targetClassColor = profile.data.NH and TRP3_API.CreateColorFromHexString(profile.data.NH) or targetClassColor;
-						targetClassColor = TRP3_API.GenerateReadableColor(targetClassColor, TRP3_API.Colors.Black);
+						targetClassColor = profile.data.NH and TRP3.CreateColorFromHexString(profile.data.NH) or targetClassColor;
+						targetClassColor = TRP3.GenerateReadableColor(targetClassColor, TRP3.Colors.Black);
 					end
 
 					name = profile.data.NA;
@@ -845,7 +842,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 				local targetTarget = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetTargetID)
 				local _, targetEnglishClass = UnitClass(targetType .. "target");
 				local targetInfo = getCharacterInfoTab(targetTargetID);
-				targetClassColor = targetEnglishClass and TRP3_API.GetClassDisplayColor(targetEnglishClass) or TRP3_API.Colors.White;
+				targetClassColor = targetEnglishClass and TRP3.GetClassDisplayColor(targetEnglishClass) or TRP3.Colors.White;
 
 				if getConfigValue(ConfigKeys.CHARACT_COLOR) then
 					targetClassColor = targetTarget:GetCustomColorForDisplay() or targetClassColor;
@@ -872,7 +869,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 		local playerMapID = C_Map.GetBestMapForUnit("player");
 		if mapID and mapID ~= playerMapID then
 			local mapInfo = C_Map.GetMapInfo(mapID);
-			local lineText = string.format("%1$s: %2$s", TRP3_API.loc.REG_TT_ZONE, colors.SECONDARY:WrapTextInColorCode(mapInfo.name));
+			local lineText = string.format("%1$s: %2$s", TRP3.loc.REG_TT_ZONE, colors.SECONDARY:WrapTextInColorCode(mapInfo.name));
 			tooltipBuilder:AddLine(lineText, colors.MAIN, getSubLineFontSize());
 		end
 	end
@@ -967,7 +964,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 			tooltipBuilder:AddDoubleLine(notifText, clientText, colors.MAIN, colors.MAIN, 10);
 		end
 
-		SetProgressSpinnerShown(TRP3_CharacterTooltip, TRP3_API.register.HasActiveRequest(targetID));
+		SetProgressSpinnerShown(TRP3_CharacterTooltip, TRP3.register.HasActiveRequest(targetID));
 	else
 		SetProgressSpinnerShown(TRP3_CharacterTooltip, false);
 	end
@@ -1050,14 +1047,14 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 		petName = crop(petName, TRP3_TooltipCroppingConstants.Name);
 	end
 
-	local companionCustomColor = info.NH and TRP3_API.CreateColorFromHexString(info.NH) or TRP3_API.Colors.White
-	companionCustomColor = TRP3_API.GenerateReadableColor(companionCustomColor, TRP3_API.Colors.Black);
+	local companionCustomColor = info.NH and TRP3.CreateColorFromHexString(info.NH) or TRP3.Colors.White
+	companionCustomColor = TRP3.GenerateReadableColor(companionCustomColor, TRP3.Colors.Black);
 	tooltipBuilder:AddLine(companionCustomColor:WrapTextInColorCode((petName or companionID)), colors.MAIN, getMainLineFontSize());
 
 	if showCompanionIcons() then
 		-- Companion icon
 		if info.IC then
-			tooltipBuilder:AddTexture(TRP3_API.utils.getIconTexture(info.IC), ICON_TEXTURE_OPTIONS);
+			tooltipBuilder:AddTexture(TRP3.utils.getIconTexture(info.IC), ICON_TEXTURE_OPTIONS);
 		end
 	end
 
@@ -1088,7 +1085,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 
 	if showCompanionOwner() then
 		local ownerName, ownerRealm = unitIDToInfo(ownerID);
-		local ownerFinalName, ownerColor = ownerName, TRP3_API.Colors.White;
+		local ownerFinalName, ownerColor = ownerName, TRP3.Colors.White;
 		if ownerID == Globals.player_id or (IsUnitIDKnown(ownerID) and hasProfile(ownerID)) then
 			local ownerInfo = getCharacterInfoTab(ownerID);
 			if ownerInfo.characteristics then
@@ -1099,8 +1096,8 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 				end
 
 				if getConfigValue(ConfigKeys.CHARACT_COLOR) and ownerInfo.characteristics.CH then
-					local customColor = TRP3_API.CreateColorFromHexString(ownerInfo.characteristics.CH);
-					customColor = TRP3_API.GenerateReadableColor(customColor, TRP3_API.Colors.Black);
+					local customColor = TRP3.CreateColorFromHexString(ownerInfo.characteristics.CH);
+					customColor = TRP3.GenerateReadableColor(customColor, TRP3.Colors.Black);
 					ownerColor = customColor or ownerColor;
 				end
 			end
@@ -1181,10 +1178,10 @@ end
 -- MOUNTS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tooltipCompanionBuilder = TRP3_API.ui.tooltip.createTooltipBuilder(TRP3_CompanionTooltip);
-local getCurrentMountProfile = TRP3_API.companions.player.getCurrentMountProfile;
-local getCurrentMountSpellID = TRP3_API.companions.player.getCurrentMountSpellID;
-local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
+local tooltipCompanionBuilder = TRP3.ui.tooltip.createTooltipBuilder(TRP3_CompanionTooltip);
+local getCurrentMountProfile = TRP3.companions.player.getCurrentMountProfile;
+local getCurrentMountSpellID = TRP3.companions.player.getCurrentMountSpellID;
+local getCompanionNameFromSpellID = TRP3.companions.getCompanionNameFromSpellID;
 
 local function getMountProfile(ownerID, companionFullID)
 	if ownerID == Globals.player_id then
@@ -1215,14 +1212,14 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 		mountCustomName = crop(mountCustomName, TRP3_TooltipCroppingConstants.Name);
 	end
 
-	local mountCustomColor = info.NH and TRP3_API.CreateColorFromHexString(info.NH) or TRP3_API.Colors.White
-	mountCustomColor = TRP3_API.GenerateReadableColor(mountCustomColor, TRP3_API.Colors.Black);
+	local mountCustomColor = info.NH and TRP3.CreateColorFromHexString(info.NH) or TRP3.Colors.White
+	mountCustomColor = TRP3.GenerateReadableColor(mountCustomColor, TRP3.Colors.Black);
 	tooltipCompanionBuilder:AddLine(mountCustomColor:WrapTextInColorCode((mountCustomName or mountName)), colors.MAIN, getMainLineFontSize());
 
 	if showCompanionIcons() then
 		-- Companion icon
 		if info.IC then
-			tooltipCompanionBuilder:AddTexture(TRP3_API.utils.getIconTexture(info.IC), ICON_TEXTURE_OPTIONS);
+			tooltipCompanionBuilder:AddTexture(TRP3.utils.getIconTexture(info.IC), ICON_TEXTURE_OPTIONS);
 		end
 	end
 
@@ -1328,22 +1325,22 @@ local function show(targetType, targetID, targetMode)
 			if (targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and (isIDIgnored(targetID) or isMatureFlagged)) or ((targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and (ownerIsIgnored(targetID) or isMatureFlagged)) then
 				TRP3_CharacterTooltip:SetOwner(GameTooltip, "ANCHOR_TOPRIGHT");
 			elseif not getAnchoredFrame() then
-				TRP3_API.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
+				TRP3.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
 			elseif getAnchoredPosition() == "ANCHOR_CURSOR" then
-				TRP3_API.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
+				TRP3.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
 				placeTooltipOnCursor(TRP3_CharacterTooltip);
 			elseif getAnchoredFrame() == GameTooltip and getConfigValue(ConfigKeys.CHARACT_HIDE_ORIGINAL) then
 				if GameTooltip:GetOwner() ~= nil and GameTooltip:GetNumPoints() > 0 then
 					TRP3_CharacterTooltip:SetOwner(UIParent, "ANCHOR_NONE");
 					TRP3_CharacterTooltip:SetPoint(GameTooltip:GetPoint(1));
 				else
-					TRP3_API.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
+					TRP3.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
 				end
 			else
 				TRP3_CharacterTooltip:SetOwner(getAnchoredFrame(), getAnchoredPosition());
 			end
 
-			TRP3_CharacterTooltip:SetBorderColor(TRP3_API.ui.tooltip.tooltipBorderColor:GetRGB());
+			TRP3_CharacterTooltip:SetBorderColor(TRP3.ui.tooltip.tooltipBorderColor:GetRGB());
 			if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER then
 				writeTooltipForCharacter(targetID, targetType);
 				if showRelationColor() and targetID ~= Globals.player_id and not isIDIgnored(targetID) and IsUnitIDKnown(targetID) and hasProfile(targetID) then
@@ -1362,7 +1359,7 @@ local function show(targetType, targetID, targetMode)
 					TRP3_CompanionTooltip:SetOwner(TRP3_CharacterTooltip, "ANCHOR_TOPLEFT");
 					writeTooltipForMount(Globals.player_id, nil, mountName);
 				else
-					local companionFullID, profileID, mountSpellID = TRP3_API.companions.register.getUnitMount(targetID, targetType);
+					local companionFullID, profileID, mountSpellID = TRP3.companions.register.getUnitMount(targetID, targetType);
 					if profileID then
 						local mountName = getCompanionNameFromSpellID(mountSpellID);
 						TRP3_CompanionTooltip:SetOwner(TRP3_CharacterTooltip, "ANCHOR_TOPLEFT");
@@ -1492,9 +1489,9 @@ local function ShowUnitTooltip(unitToken)
 	end
 end
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 	-- Listen to the mouse over event
-	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "UPDATE_MOUSEOVER_UNIT", NotifyTooltipUnitChanged);
+	TRP3.RegisterCallback(TRP3.GameEvents, "UPDATE_MOUSEOVER_UNIT", NotifyTooltipUnitChanged);
 	hooksecurefunc(GameTooltip, "SetUnit", NotifyTooltipUnitChanged);
 	if GameTooltip.SetWorldCursor then
 		hooksecurefunc(GameTooltip, "SetWorldCursor", NotifyTooltipUnitChanged);
@@ -1509,12 +1506,12 @@ end);
 
 local function onModuleInit()
 	registerTooltipModuleIsEnabled = true;
-	getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
-	getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
-	isPlayerIC = TRP3_API.dashboard.isPlayerIC;
-	unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
+	getCompanionProfile = TRP3.companions.player.getCompanionProfile;
+	getCompanionRegisterProfile = TRP3.companions.register.getCompanionProfile;
+	isPlayerIC = TRP3.dashboard.isPlayerIC;
+	unitIDIsFilteredForMatureContent = TRP3.register.unitIDIsFilteredForMatureContent;
 
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.MOUSE_OVER_CHANGED, function(_, targetID, targetMode, unitID)
+	TRP3.RegisterCallback(TRP3_Addon, Events.MOUSE_OVER_CHANGED, function(_, targetID, targetMode, unitID)
 		show(unitID, targetID, targetMode);
 	end);
 
@@ -1526,20 +1523,20 @@ local function onModuleInit()
 		end
 	end
 
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, targetID, _, _)
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, targetID, _, _)
 		RefreshCharacterTooltip(targetID);
 	end);
 
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_REQUEST_STATE_CHANGED, function(_, targetID)
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_REQUEST_STATE_CHANGED, function(_, targetID)
 		RefreshCharacterTooltip(targetID);
 	end);
 
-	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "MODIFIER_STATE_CHANGED", function()
+	TRP3.RegisterCallback(TRP3.GameEvents, "MODIFIER_STATE_CHANGED", function()
 		if TRP3_CharacterTooltip:IsShown() and ShouldDisplayUnmodifiedTooltip() then
 			local unitToken = TRP3_CharacterTooltip.targetType;
 			TRP3_CharacterTooltip:Hide();
 
-			TRP3_API.ui.tooltip.setTooltipDefaultAnchor(GameTooltip, UIParent);
+			TRP3.ui.tooltip.setTooltipDefaultAnchor(GameTooltip, UIParent);
 			GameTooltip:SetUnit(unitToken);
 			GameTooltip:Show();
 		elseif GameTooltip:IsShown() then
@@ -1560,7 +1557,7 @@ local function onModuleInit()
 	TRP3_CompanionTooltip:HookScript("OnHide", UpdateCharacterTooltipClampInsets);
 
 	-- Config default value
-	local registerConfigKey = TRP3_API.configuration.registerConfigKey;
+	local registerConfigKey = TRP3.configuration.registerConfigKey;
 	registerConfigKey(ConfigKeys.PROFILE_ONLY, true);
 	registerConfigKey(ConfigKeys.IN_CHARACTER_ONLY, false);
 	registerConfigKey(ConfigKeys.CHARACT_COMBAT, false);
@@ -1619,7 +1616,7 @@ local function onModuleInit()
 	};
 
 	local OOC_INDICATOR_TYPES = {
-		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. TRP3_API.Colors.Red("[" .. loc.CM_OOC .. "] "), TRP3_OOCIndicatorStyle.Text},
+		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. TRP3.Colors.Red("[" .. loc.CM_OOC .. "] "), TRP3_OOCIndicatorStyle.Text},
 		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. OOC_ICON, TRP3_OOCIndicatorStyle.Icon}
 	};
 
@@ -1946,9 +1943,9 @@ local function onModuleInit()
 		}
 	}
 
-	TRP3_API.ui.tooltip.CONFIG = CONFIG_STRUCTURE;
+	TRP3.ui.tooltip.CONFIG = CONFIG_STRUCTURE;
 
-	TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
+	TRP3.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
 end
 
 local MODULE_STRUCTURE = {
@@ -1960,4 +1957,4 @@ local MODULE_STRUCTURE = {
 	["minVersion"] = 3,
 };
 
-TRP3_API.module.registerModule(MODULE_STRUCTURE);
+TRP3.module.registerModule(MODULE_STRUCTURE);

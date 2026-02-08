@@ -1,26 +1,23 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
-local loc = TRP3_API.loc;
+local loc = TRP3.loc;
 
 local function onStart()
 	-- Stop right here if WIM is not installed
 	if not WIM then
-		return TRP3_API.module.status.MISSING_DEPENDENCY, loc.MO_ADDON_NOT_INSTALLED:format("WIM");
+		return TRP3.module.status.MISSING_DEPENDENCY, loc.MO_ADDON_NOT_INSTALLED:format("WIM");
 	end
 
 	-- Import Total RP 3 functions
-	local playerID = TRP3_API.globals.player_id;
-	local getFullnameForUnitUsingChatMethod = TRP3_API.chat.getFullnameForUnitUsingChatMethod; -- Get full name using settings
-	local configShowNameCustomColors = TRP3_API.chat.configShowNameCustomColors
-	local getData = TRP3_API.profile.getData;
-	local getConfigValue = TRP3_API.configuration.getValue;
-	local icon = TRP3_API.utils.str.icon;
-	local playerName = TRP3_API.globals.player;
-	local disabledByOOC = TRP3_API.chat.disabledByOOC;
+	local playerID = TRP3.globals.player_id;
+	local getFullnameForUnitUsingChatMethod = TRP3.chat.getFullnameForUnitUsingChatMethod; -- Get full name using settings
+	local configShowNameCustomColors = TRP3.chat.configShowNameCustomColors
+	local getData = TRP3.profile.getData;
+	local getConfigValue = TRP3.configuration.getValue;
+	local icon = TRP3.utils.str.icon;
+	local playerName = TRP3.globals.player;
+	local disabledByOOC = TRP3.chat.disabledByOOC;
 
 	local classes = WIM.constants.classes;
 
@@ -30,7 +27,7 @@ local function onStart()
 	-- Replace WIM's GetColoredName function by our own to display RP names and fallback to WIM's GetColoredName function
 	-- if we couldn't handle the name ourselves.
 	classes.GetColoredNameByChatEvent = function(event, ...)
-		return TRP3_API.utils.customGetColoredName(event, nil, ...) or WIMsGetColoredNameFunction(event, ...);
+		return TRP3.utils.customGetColoredName(event, nil, ...) or WIMsGetColoredNameFunction(event, ...);
 	end;
 
 	-- Replace WIM's GetMyColoredName to display our full RP name
@@ -41,7 +38,7 @@ local function onStart()
 		end
 
 		local name = getFullnameForUnitUsingChatMethod(playerID) or playerName;
-		local color = TRP3_API.GetClassDisplayColor((UnitClassBase("player")));
+		local color = TRP3.GetClassDisplayColor((UnitClassBase("player")));
 
 		if configShowNameCustomColors() then
 			local player = AddOn_TotalRP3.Player.GetCurrentUser();
@@ -66,7 +63,7 @@ local function onStart()
 end
 
 -- Register a Total RP 3 module that can be disabled in the settings
-TRP3_API.module.registerModule({
+TRP3.module.registerModule({
 	["name"] = "WIM",
 	["description"] = loc.MO_CHAT_CUSTOMIZATIONS_DESCRIPTION:format("WIM (WoW Instant Messenger"),
 	["version"] = 1.000,

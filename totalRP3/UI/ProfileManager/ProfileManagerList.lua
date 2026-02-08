@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 TRP3_ProfileManagerListMixin = {};
 

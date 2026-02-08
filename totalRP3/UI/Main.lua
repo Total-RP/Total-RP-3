@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 local LibWindow = LibStub:GetLibrary("LibWindow-1.1");
 
 TRP3_MainFrameSizeConstants = {
@@ -75,7 +75,7 @@ function TRP3_MainFrameLayoutMixin:OnLoad()
 end
 
 function TRP3_MainFrameLayoutMixin:OnLayoutLoaded()
-	self.windowLayout = TRP3_API.configuration.getValue("window_layout");
+	self.windowLayout = TRP3.configuration.getValue("window_layout");
 	LibWindow.RegisterConfig(self, self.windowLayout);
 	LibWindow.MakeDraggable(self);
 	self:RestoreLayout();
@@ -118,7 +118,7 @@ function TRP3_MainFrameResizeButtonMixin:Init(target)
 	self.target = target;
 	self.onResizeStart = function(mouseButtonName) return self:OnResizeStart(mouseButtonName); end;
 	self.onResizeStop = function(width, height) self:OnResizeStop(width, height); end;
-	TRP3_API.ui.frame.initResize(self);
+	TRP3.ui.frame.initResize(self);
 end
 
 function TRP3_MainFrameResizeButtonMixin:OnResizeStart(mouseButtonName)
@@ -151,7 +151,7 @@ end
 TRP3_MainFrameCloseButtonMixin = {};
 
 function TRP3_MainFrameCloseButtonMixin:OnClick()
-	TRP3_API.navigation.switchMainFrame();
+	TRP3.navigation.switchMainFrame();
 end
 
 TRP3_SidebarLogoMixin = {};
@@ -171,8 +171,8 @@ function TRP3_SidebarLogoMixin:OnConfigurationChanged(_, key)
 end
 
 function TRP3_SidebarLogoMixin:Update()
-	local isSeriousDay = TRP3_API.globals.serious_day;
-	local isSeriousTime = TRP3_API.configuration.getValue("secret_party");
+	local isSeriousDay = TRP3.globals.serious_day;
+	local isSeriousTime = TRP3.configuration.getValue("secret_party");
 
 	if isSeriousDay or isSeriousTime then
 		self:SetTexture([[Interface\AddOns\totalRP3\Resources\UI\ui-sidebar-logo-alt]]);

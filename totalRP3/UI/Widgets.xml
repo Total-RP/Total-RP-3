@@ -736,7 +736,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Size x="24" y="24"/>
 		<Scripts>
 			<OnLoad inherit="prepend">
-				TRP3_API.ui.frame.initResize(self);
+				TRP3.ui.frame.initResize(self);
 			</OnLoad>
 		</Scripts>
 	</Button>

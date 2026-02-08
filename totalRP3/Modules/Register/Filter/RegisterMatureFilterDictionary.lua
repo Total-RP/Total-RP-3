@@ -1018,9 +1018,9 @@ dictionary["ruRU"] = {
 local DEFAULT_LOCALE = "enUS";
 local currentLocale = DEFAULT_LOCALE;
 
-function TRP3_API.utils.resources.getMatureFilterDictionary()
+function TRP3.utils.resources.getMatureFilterDictionary()
 
-	currentLocale = TRP3_API.GetPreferredLocale();
+	currentLocale = TRP3.GetPreferredLocale();
 	if not dictionary[currentLocale] then
 		currentLocale = DEFAULT_LOCALE;
 	end

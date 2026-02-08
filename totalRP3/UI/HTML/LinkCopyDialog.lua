@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 TRP3_LinkCopyDialogMixin = {};
 
@@ -24,8 +24,8 @@ function TRP3_LinkCopyDialogMixin:OnLoad()
 end
 
 function TRP3_LinkCopyDialogMixin:OnShow()
-	local copy = TRP3_API.FormatShortcut("CTRL-C", TRP3_API.ShortcutType.System);
-	local paste = TRP3_API.FormatShortcut("CTRL-V", TRP3_API.ShortcutType.System);
+	local copy = TRP3.FormatShortcut("CTRL-C", TRP3.ShortcutType.System);
+	local paste = TRP3.FormatShortcut("CTRL-V", TRP3.ShortcutType.System);
 
 	if self.Header then
 		self.Header:Setup(L.URL_COPY_TITLE);

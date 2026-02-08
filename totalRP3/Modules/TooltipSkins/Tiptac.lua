@@ -1,9 +1,9 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local loc = TRP3_API.loc;
+local loc = TRP3.loc;
 
-TRP3_API.module.registerModule({
+TRP3.module.registerModule({
 	["name"] = "TipTac",
 	["id"] = "trp3_tiptac",
 	["description"] = loc.MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION:format("TipTac"),
@@ -13,7 +13,7 @@ TRP3_API.module.registerModule({
 
 		-- Stop right here if TipTac is not installed
 		if not TipTac then
-			return TRP3_API.module.status.MISSING_DEPENDENCY, loc.MO_ADDON_NOT_INSTALLED:format("TipTac");
+			return TRP3.module.status.MISSING_DEPENDENCY, loc.MO_ADDON_NOT_INSTALLED:format("TipTac");
 		end
 
 		-- List of the tooltips we want to be customized by TipTac
@@ -28,7 +28,7 @@ TRP3_API.module.registerModule({
 		}
 
 		-- Wait for the add-on to be fully loaded so all the tooltips are available
-		TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
+		TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 
 			-- Go through each tooltips from our table
 			for _, tooltip in pairs(TOOLTIPS) do

@@ -1,20 +1,17 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 -- public accessor
-TRP3_API.configuration = {};
+TRP3.configuration = {};
 
 -- imports
-local loc = TRP3_API.loc;
-local Utils = TRP3_API.utils;
-local Config = TRP3_API.configuration;
-local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local setupListBox = TRP3_API.ui.listbox.setupListBox;
-local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
-local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
+local loc = TRP3.loc;
+local Utils = TRP3.utils;
+local Config = TRP3.configuration;
+local setTooltipForFrame = TRP3.ui.tooltip.setTooltipForSameFrame;
+local setupListBox = TRP3.ui.listbox.setupListBox;
+local registerMenu, selectMenu = TRP3.navigation.menu.registerMenu, TRP3.navigation.menu.selectMenu;
+local registerPage, setPage = TRP3.navigation.page.registerPage, TRP3.navigation.page.setPage;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Configuration methods
@@ -161,13 +158,13 @@ local function buildConfigurationPage(structure)
 			if element.configKey then
 				local button = widget.ColorPicker;
 				element.controller = button;
-				button.setColor(TRP3_API.CreateColorFromHexString(getValue(element.configKey)):GetRGBAsBytes());
+				button.setColor(TRP3.CreateColorFromHexString(getValue(element.configKey)):GetRGBAsBytes());
 				button.onSelection = function(red, green, blue)
 					if red and green and blue then
-						local hexa = TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
+						local hexa = TRP3.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
 						setValue(element.configKey, hexa);
 					else
-						button.setColor(TRP3_API.CreateColorFromHexString(defaultValues[element.configKey]):GetRGBAsBytes());
+						button.setColor(TRP3.CreateColorFromHexString(defaultValues[element.configKey]):GetRGBAsBytes());
 					end
 				end;
 			end
@@ -363,10 +360,10 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 
 	-- Resizing
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
 		for _, structure in pairs(registeredConfiPage) do
 			structure.parent:SetSize(containerWidth - 45, 50);
 		end
@@ -379,14 +376,14 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		onSelected = function() selectMenu("main_91_config_main_config_0_general") end,
 	});
 
-	TRP3_API.configuration.CONFIG_TOOLBAR_PAGE = {
+	TRP3.configuration.CONFIG_TOOLBAR_PAGE = {
 		id = "main_config_toolbar",
 		menuText = loc.CO_TOOLBAR,
 		pageText = loc.CO_TOOLBAR,
 		elements = {},
 	};
 
-	TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE = {
+	TRP3.configuration.CONFIG_TARGETFRAME_PAGE = {
 		id = "main_config_targetframe",
 		menuText = loc.CO_TARGETFRAME,
 		pageText = loc.CO_TARGETFRAME,
@@ -404,7 +401,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	registerConfigKey("date_format", "");
 
 	-- Build widgets
-	TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL = {
+	TRP3.configuration.CONFIG_STRUCTURE_GENERAL = {
 		id = "main_config_0_general",
 		menuText = loc.CO_GENERAL,
 		pageText = loc.CO_GENERAL,
@@ -448,7 +445,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				help = loc.CO_GENERAL_RESET_CUSTOM_COLORS_TT,
 				text = loc.CM_RESET,
 				callback = function()
-					TRP3_API.popup.showConfirmPopup(loc.CO_GENERAL_RESET_CUSTOM_COLORS_WARNING, function()
+					TRP3.popup.showConfirmPopup(loc.CO_GENERAL_RESET_CUSTOM_COLORS_WARNING, function()
 						TRP3_Colors = {};
 					end);
 				end,
@@ -463,20 +460,20 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 					local specifiers =
 					{
-						string.format(loc.CO_DATE_FORMAT_SPEC_a, TRP3_API.Colors.Green("%a"), TRP3_API.Colors.Green(date("!%a", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_A, TRP3_API.Colors.Green("%A"), TRP3_API.Colors.Green(date("!%A", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_b, TRP3_API.Colors.Green("%b"), TRP3_API.Colors.Green(date("!%b", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_B, TRP3_API.Colors.Green("%B"), TRP3_API.Colors.Green(date("!%B", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_d, TRP3_API.Colors.Green("%d"), TRP3_API.Colors.Green(date("!%d", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_H, TRP3_API.Colors.Green("%H"), TRP3_API.Colors.Green(date("!%H", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_I, TRP3_API.Colors.Green("%I"), TRP3_API.Colors.Green(date("!%I", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_m, TRP3_API.Colors.Green("%m"), TRP3_API.Colors.Green(date("!%m", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_M, TRP3_API.Colors.Green("%M"), TRP3_API.Colors.Green(date("!%M", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_p, TRP3_API.Colors.Green("%p"), TRP3_API.Colors.Green(date("!%p", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_S, TRP3_API.Colors.Green("%S"), TRP3_API.Colors.Green(date("!%S", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_y, TRP3_API.Colors.Green("%y"), TRP3_API.Colors.Green(date("!%y", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_Y, TRP3_API.Colors.Green("%Y"), TRP3_API.Colors.Green(date("!%Y", timestamp))),
-						string.format(loc.CO_DATE_FORMAT_SPEC_ESC, TRP3_API.Colors.Green("%%")),
+						string.format(loc.CO_DATE_FORMAT_SPEC_a, TRP3.Colors.Green("%a"), TRP3.Colors.Green(date("!%a", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_A, TRP3.Colors.Green("%A"), TRP3.Colors.Green(date("!%A", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_b, TRP3.Colors.Green("%b"), TRP3.Colors.Green(date("!%b", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_B, TRP3.Colors.Green("%B"), TRP3.Colors.Green(date("!%B", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_d, TRP3.Colors.Green("%d"), TRP3.Colors.Green(date("!%d", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_H, TRP3.Colors.Green("%H"), TRP3.Colors.Green(date("!%H", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_I, TRP3.Colors.Green("%I"), TRP3.Colors.Green(date("!%I", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_m, TRP3.Colors.Green("%m"), TRP3.Colors.Green(date("!%m", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_M, TRP3.Colors.Green("%M"), TRP3.Colors.Green(date("!%M", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_p, TRP3.Colors.Green("%p"), TRP3.Colors.Green(date("!%p", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_S, TRP3.Colors.Green("%S"), TRP3.Colors.Green(date("!%S", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_y, TRP3.Colors.Green("%y"), TRP3.Colors.Green(date("!%y", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_Y, TRP3.Colors.Green("%Y"), TRP3.Colors.Green(date("!%Y", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_ESC, TRP3.Colors.Green("%%")),
 					};
 
 					return string.format(loc.CO_DATE_FORMAT_HELP, table.concat(specifiers, "|n"))
@@ -486,11 +483,11 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		}
 	}
 
-	if TRP3_API.globals.serious_day then
+	if TRP3.globals.serious_day then
 		registerConfigKey("AF_STUFF_2025", true);
-		tinsert(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL.elements, 2, {
+		tinsert(TRP3.configuration.CONFIG_STRUCTURE_GENERAL.elements, 2, {
 			inherit = "TRP3_ConfigCheck",
-			title = TRP3_API.utils.Rainbowify("Enable April Fools' joke"),
+			title = TRP3.utils.Rainbowify("Enable April Fools' joke"),
 			help = "Disable this option to remove this year's April Fools' joke.",
 			configKey = "AF_STUFF_2025",
 			callback = function()
@@ -503,6 +500,6 @@ end);
 
 AddOn_TotalRP3.Configuration = {}
 
-function TRP3_API.configuration.constructConfigPage()
-	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL);
+function TRP3.configuration.constructConfigPage()
+	TRP3.configuration.registerConfigurationPage(TRP3.configuration.CONFIG_STRUCTURE_GENERAL);
 end

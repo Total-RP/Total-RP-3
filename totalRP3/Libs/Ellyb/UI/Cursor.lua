@@ -1,5 +1,6 @@
-local TRP3_API = select(2, ...);
-local Ellyb = TRP3_API.Ellyb;
+---@class TRP3
+local TRP3 = select(2, ...);
+local Ellyb = TRP3.Ellyb;
 
 if Ellyb.Cursor then
 	return
@@ -115,7 +116,6 @@ hooksecurefunc("TurnOrActionStop", function()
 	if time() - clickTimestamp < 1 then
 		-- Check that the user wasn't actually moving (very fast) the camera and the cursor still is on the targeted unit
 		if Target:GetUnitID() == clickUnitID then
-			Ellyb.Log("Unit right clicked: ", clickUnitID);
 			for _, callback in pairs(onUnitRightClickedCallbacks) do
 				callback(clickUnitID);
 			end

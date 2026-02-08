@@ -1,22 +1,19 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 -- Total RP 3 imports
-local loc = TRP3_API.loc;
-local tcopy = TRP3_API.utils.table.copy;
-local Utils = TRP3_API.utils;
-local crop = TRP3_API.utils.str.crop;
-local shouldCropTexts = TRP3_API.ui.tooltip.shouldCropTexts;
+local loc = TRP3.loc;
+local tcopy = TRP3.utils.table.copy;
+local Utils = TRP3.utils;
+local crop = TRP3.utils.str.crop;
+local shouldCropTexts = TRP3.ui.tooltip.shouldCropTexts;
 
 local GLANCE_TOOLTIP_CROP = 400;
 local GLANCE_TITLE_CROP = 150;
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
-	local AtFirstGlanceChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_GLANCE, "AT_FIRST_GLANCE");
+	local AtFirstGlanceChatLinksModule = TRP3.ChatLinks:InstantiateModule(loc.CL_GLANCE, "AT_FIRST_GLANCE");
 
 	--- Get a copy of the data for the link, using the information provided when using AtFirstGlanceChatLinksModule:InsertLink
 	function AtFirstGlanceChatLinksModule:GetLinkData(glanceTab, canBeImported)
@@ -34,7 +31,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	--- Creates and decorates tooltip lines for the given data
 	---@return ChatLinkTooltipLines
 	function AtFirstGlanceChatLinksModule:GetTooltipLines(tooltipData)
-		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
+		local tooltipLines = TRP3.ChatLinkTooltipLines();
 
 		local glance = tooltipData.glanceTab;
 
@@ -49,8 +46,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			glanceTitle = crop(glanceTitle, GLANCE_TITLE_CROP);
 		end
 
-		tooltipLines:SetTitle(Utils.str.icon(icon, 30) .. " " .. glanceTitle, TRP3_API.Colors.White);
-		tooltipLines:AddLine(TTText, TRP3_API.Colors.Orange);
+		tooltipLines:SetTitle(Utils.str.icon(icon, 30) .. " " .. glanceTitle, TRP3.Colors.White);
+		tooltipLines:AddLine(TTText, TRP3.Colors.Orange);
 		return tooltipLines;
 	end
 
@@ -63,8 +60,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	function ImportGlanceButton:OnAnswerCommandReceived(tooltipData)
 		local glance = tooltipData.glanceTab;
-		TRP3_API.register.glance.saveSlotPreset(glance);
+		TRP3.register.glance.saveSlotPreset(glance);
 	end
 
-	TRP3_API.AtFirstGlanceChatLinksModule = AtFirstGlanceChatLinksModule;
+	TRP3.AtFirstGlanceChatLinksModule = AtFirstGlanceChatLinksModule;
 end);

@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 -- Background Browser Data Models
 ------------------------------------------------------------------------------
@@ -9,10 +9,10 @@ local L = TRP3_API.loc;
 local BackgroundBrowserModel = {};
 
 function BackgroundBrowserModel:__init()
-	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.callbacks = TRP3.InitCallbackRegistry(self);
 	self.backgrounds = {};
 
-	for _, data in ipairs(TRP3_API.ui.frame.getTiledBackgroundList()) do
+	for _, data in ipairs(TRP3.ui.frame.getTiledBackgroundList()) do
 		table.insert(self.backgrounds, { id = data[1], name = data[2], file = data[2] });
 	end
 end
@@ -45,13 +45,13 @@ function BackgroundBrowserModel:GetImageIndex(name)
 end
 
 local function CreateBackgroundBrowserModel()
-	return TRP3_API.CreateObject(BackgroundBrowserModel);
+	return TRP3.CreateObject(BackgroundBrowserModel);
 end
 
 local BackgroundBrowserFilterModel = {};
 
 function BackgroundBrowserFilterModel:__init(source)
-	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.callbacks = TRP3.InitCallbackRegistry(self);
 	self.source = source;
 	self.sourceIndices = {};
 	self.searchQuery = "";
@@ -161,13 +161,13 @@ function BackgroundBrowserFilterModel:RebuildModel()
 end
 
 local function CreateBackgroundBrowserFilterModel(source)
-	return TRP3_API.CreateObject(BackgroundBrowserFilterModel, source);
+	return TRP3.CreateObject(BackgroundBrowserFilterModel, source);
 end
 
 local BackgroundBrowserSelectionModel = {};
 
 function BackgroundBrowserSelectionModel:__init(source)
-	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.callbacks = TRP3.InitCallbackRegistry(self);
 	self.source = source;
 	self.source.RegisterCallback(self, "OnModelUpdated", "OnSourceModelUpdated");
 	self.selectedImageID = nil;
@@ -262,7 +262,7 @@ function BackgroundBrowserSelectionModel:RebuildModel()
 end
 
 local function CreateBackgroundBrowserSelectionModel(source)
-	return TRP3_API.CreateObject(BackgroundBrowserSelectionModel, source);
+	return TRP3.CreateObject(BackgroundBrowserSelectionModel, source);
 end
 
 local function CreateImageDataProvider(model)
@@ -311,7 +311,7 @@ end
 TRP3_BackgroundBrowserMixin = {};
 
 function TRP3_BackgroundBrowserMixin:OnLoad()
-	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.callbacks = TRP3.InitCallbackRegistry(self);
 	self.baseModel = CreateBackgroundBrowserModel();
 	self.selectionModel = CreateBackgroundBrowserSelectionModel(self.baseModel);
 	self.filterModel = CreateBackgroundBrowserFilterModel(self.selectionModel);

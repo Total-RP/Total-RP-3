@@ -2,14 +2,14 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 -- imports
-local Utils, Events, Globals, Ellyb = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.globals, TRP3_API.Ellyb;
-local loc = TRP3_API.loc;
-local get = TRP3_API.profile.getData;
-local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
-local setupListBox = TRP3_API.ui.listbox.setupListBox;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
-local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
+local Utils, Events, Globals, Ellyb = TRP3.utils, TRP3_Addon.Events, TRP3.globals, TRP3.Ellyb;
+local loc = TRP3.loc;
+local get = TRP3.profile.getData;
+local getDefaultProfile = TRP3.profile.getDefaultProfile;
+local setupListBox = TRP3.ui.listbox.setupListBox;
+local setTooltipForSameFrame = TRP3.ui.tooltip.setTooltipForSameFrame;
+local getCurrentContext, getCurrentPageID = TRP3.navigation.page.getCurrentContext, TRP3.navigation.page.getCurrentPageID;
+local getPlayerCurrentProfileID = TRP3.profile.getPlayerCurrentProfileID;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -139,8 +139,8 @@ local function displayRPStyle(context)
 		local experience = player:GetRoleplayExperience();
 
 		if experience then
-			local text = TRP3_API.GetRoleplayExperienceText(experience);
-			local icon = TRP3_API.GetRoleplayExperienceIconMarkup(experience);
+			local text = TRP3.GetRoleplayExperienceText(experience);
+			local icon = TRP3.GetRoleplayExperienceIconMarkup(experience);
 
 			frame.FieldName:SetText(loc.DB_STATUS_XP);
 			frame.FieldValue:SetText(string.trim(string.join(" ", icon or "", text)));
@@ -246,7 +246,7 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 		end
 	end
 end
-TRP3_API.register.setupGlanceButton = setupGlanceButton;
+TRP3.register.setupGlanceButton = setupGlanceButton;
 
 local function displayPeek(context)
 	TRP3_AtFirstGlanceEditor:Hide();
@@ -266,7 +266,7 @@ local function displayPeek(context)
 end
 
 
-function TRP3_API.register.checkGlanceActivation(dataTab)
+function TRP3.register.checkGlanceActivation(dataTab)
 	for i=1, 5, 1 do
 		if dataTab[tostring(i)] and dataTab[tostring(i)].AC then
 			return true
@@ -275,7 +275,7 @@ function TRP3_API.register.checkGlanceActivation(dataTab)
 	return false;
 end
 
-function TRP3_API.register.getGlanceIconTextures(dataTab, size)
+function TRP3.register.getGlanceIconTextures(dataTab, size)
 	local text = "";
 	for i=1, 5, 1 do
 		local index = tostring(i);
@@ -293,7 +293,7 @@ end
 local function sanitizeMisc(profileID, structure)
 	local somethingWasSanitized = false;
 
-	if TRP3_API.profile.isDefaultProfile(profileID) then
+	if TRP3.profile.isDefaultProfile(profileID) then
 		for fieldID, _ in pairs(structure) do
 			if fieldID == "PE" or fieldID == "ST" then
 				structure[fieldID] = {};
@@ -323,7 +323,7 @@ local function sanitizeMisc(profileID, structure)
 
 	return somethingWasSanitized;
 end
-TRP3_API.register.ui.sanitizeMisc = sanitizeMisc;
+TRP3.register.ui.sanitizeMisc = sanitizeMisc;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Peek editor
@@ -356,16 +356,16 @@ local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
 	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
 
 end
-TRP3_API.register.applyPeekSlot = applyPeekSlot;
+TRP3.register.applyPeekSlot = applyPeekSlot;
 
 local function swapGlanceSlot(from, to)
 	TRP3_AtFirstGlanceEditor:Hide();
 	local dataTab = get("player/misc");
-	TRP3_API.register.glance.swapDataFromSlots(dataTab, from, to);
+	TRP3.register.glance.swapDataFromSlots(dataTab, from, to);
 	-- Refresh display & target frame
 	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
 end
-TRP3_API.register.swapGlanceSlot = swapGlanceSlot;
+TRP3.register.swapGlanceSlot = swapGlanceSlot;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Currently
@@ -442,9 +442,9 @@ local function showMiscTab()
 		TRP3_ProfileReportButton:Show();
 	end
 end
-TRP3_API.register.ui.showMiscTab = showMiscTab;
+TRP3.register.ui.showMiscTab = showMiscTab;
 
-function TRP3_API.register.player.getMiscExchangeData()
+function TRP3.register.player.getMiscExchangeData()
 	local miscData = CopyTable(get("player/misc"));
 
 	-- Remove data from disabled glances
@@ -504,7 +504,7 @@ local function createTutorialStructure()
 	}
 end
 
-function TRP3_API.register.ui.miscTutorialProvider()
+function TRP3.register.ui.miscTutorialProvider()
 	local context = getCurrentContext();
 	if context and context.isPlayer then
 		return TUTORIAL_EDIT;
@@ -515,7 +515,7 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.register.inits.miscInit()
+function TRP3.register.inits.miscInit()
 	buildStyleStructure();
 	createTutorialStructure();
 
@@ -525,7 +525,7 @@ function TRP3_API.register.inits.miscInit()
 	TRP3_AtFirstGlanceEditorNameText:SetText(loc.REG_PLAYER_GLANCE_TITLE);
 	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc.REG_PLAYER_STYLE_EMPTY);
 
-	TRP3_API.ui.tooltip.setTooltipAll(TRP3_AtFirstGlanceEditorActive, "RIGHT", 0, 5, loc.CM_ACTIVATE, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_USE));
+	TRP3.ui.tooltip.setTooltipAll(TRP3_AtFirstGlanceEditorActive, "RIGHT", 0, 5, loc.CM_ACTIVATE, TRP3.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_USE));
 
 	TRP3_RegisterMiscViewCurrentlyIC.Title:SetText(loc.DB_STATUS_CURRENTLY);
 	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyIC.HelpButton, "RIGHT", 0, 5, loc.DB_STATUS_CURRENTLY, loc.DB_STATUS_CURRENTLY_TT);
@@ -535,17 +535,17 @@ function TRP3_API.register.inits.miscInit()
 	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC.HelpButton, "RIGHT", 0, 5, loc.DB_STATUS_CURRENTLY_OOC, loc.DB_STATUS_CURRENTLY_OOC_TT);
 	TRP3_RegisterMiscViewCurrentlyOOC:RegisterCallback("OnTextChanged", OnOOCTextChanged);
 
-	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE, TRP3_API.register.glance.addClickHandlers(loc.REG_PLAYER_GLANCE_CONFIG));
+	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE, TRP3.register.glance.addClickHandlers(loc.REG_PLAYER_GLANCE_CONFIG));
 
 	for index=1,5,1 do
 		-- DISPLAY
 		local button = _G["TRP3_RegisterMiscViewGlanceSlot" .. index];
-		button:SetScript("OnClick", TRP3_API.register.glance.onGlanceSlotClick);
-		button:SetScript("OnDoubleClick", TRP3_API.register.glance.onGlanceDoubleClick);
+		button:SetScript("OnClick", TRP3.register.glance.onGlanceSlotClick);
+		button:SetScript("OnDoubleClick", TRP3.register.glance.onGlanceDoubleClick);
 		button:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		button:RegisterForDrag("LeftButton");
-		button:SetScript("OnDragStart", TRP3_API.register.glance.onGlanceDragStart);
-		button:SetScript("OnDragStop", TRP3_API.register.glance.onGlanceDragStop);
+		button:SetScript("OnDragStart", TRP3.register.glance.onGlanceDragStart);
+		button:SetScript("OnDragStop", TRP3.register.glance.onGlanceDragStop);
 		button.slot = tostring(index);
 		button.targetType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER;
 	end
@@ -553,9 +553,9 @@ function TRP3_API.register.inits.miscInit()
 	-- RP style
 	TRP3_RegisterMiscViewRPStyle:SetTitleText(loc.REG_PLAYER_STYLE_RPSTYLE);
 
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 		if getCurrentPageID() == "player_main" and unitID == Globals.player_id and (not dataType or dataType == "misc") then
-			TRP3_API.popup.hidePopups();
+			TRP3.popup.hidePopups();
 			local context = getCurrentContext();
 			assert(context, "No context for page player_main !");
 			displayPeek(context);

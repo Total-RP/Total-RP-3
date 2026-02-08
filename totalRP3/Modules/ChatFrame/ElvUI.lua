@@ -1,26 +1,23 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
-local loc = TRP3_API.loc;
+local loc = TRP3.loc;
 
 local function onStart()
 	-- Stop right here if ElvUI is not installed
 	if not ElvUI then
-		return TRP3_API.module.status.MISSING_DEPENDENCY, loc.MO_ADDON_NOT_INSTALLED:format("ElvUI");
+		return TRP3.module.status.MISSING_DEPENDENCY, loc.MO_ADDON_NOT_INSTALLED:format("ElvUI");
 	end
 
 	local ElvUI = ElvUI[1];
 	local ElvUIChatModule = ElvUI:GetModule("Chat", true);
 	if not ElvUIChatModule then
-		return TRP3_API.module.status.MISSING_DEPENDENCY, "Your version of ElvUI doesn't need this module to function.";
+		return TRP3.module.status.MISSING_DEPENDENCY, "Your version of ElvUI doesn't need this module to function.";
 	end
 	local ElvUIGetColoredName = ElvUIChatModule.GetColoredName;
 
 	if not ElvUIGetColoredName then
-		return TRP3_API.module.status.MISSING_DEPENDENCY, "Your version of ElvUI doesn't need this module to function.";
+		return TRP3.module.status.MISSING_DEPENDENCY, "Your version of ElvUI doesn't need this module to function.";
 	end
 
 	-- Build the fallback, using ElvUI's function
@@ -30,12 +27,12 @@ local function onStart()
 
 	-- Replace ElvUI's GetColoredName
 	function ElvUIChatModule:GetColoredName(event, ...)
-		return TRP3_API.utils.customGetColoredName(event, nil, ...) or fallback(event, ...);
+		return TRP3.utils.customGetColoredName(event, nil, ...) or fallback(event, ...);
 	end
 end
 
 -- Register a Total RP 3 module that can be disabled in the settings
-TRP3_API.module.registerModule({
+TRP3.module.registerModule({
 	["name"] = "ElvUI Chat",
 	["description"] = loc.MO_CHAT_CUSTOMIZATIONS_DESCRIPTION:format("ElvUI"),
 	["version"] = 1.0,

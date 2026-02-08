@@ -1,26 +1,26 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Ellyb = TRP3_API.Ellyb;
+local Ellyb = TRP3.Ellyb;
 
-local loc = TRP3_API.loc;
+local loc = TRP3.loc;
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-	if not TRP3_API.target then
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+	if not TRP3.target then
 		-- Target bar module disabled.
 		return;
 	end
 
-	TRP3_API.target.registerButton({
+	TRP3.target.registerButton({
 		id = "zzzzzzzzzz_player_report",
 		configText = loc.REG_REPORT_PLAYER_PROFILE,
 		onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 		condition = function(_, unitID)
-			return UnitIsPlayer("target") and unitID ~= TRP3_API.globals.player_id
+			return UnitIsPlayer("target") and unitID ~= TRP3.globals.player_id
 		end,
 		onClick = function()
-			local playerID = TRP3_API.utils.str.getUnitID("target");
-			local profile = TRP3_API.register.getUnitIDProfile(playerID)
+			local playerID = TRP3.utils.str.getUnitID("target");
+			local profile = TRP3.register.getUnitIDProfile(playerID)
 
 			local reportText = loc.REG_REPORT_PLAYER_OPEN_URL_160:format(playerID);
 			if profile.time then

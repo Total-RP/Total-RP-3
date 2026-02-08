@@ -1,8 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local _, TRP3_API = ...;
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 local function CallMethodIfShown(frame, methodName, ...)
 	if not frame:IsShown() then
@@ -23,12 +22,12 @@ local function CountIterator(iter, ...)
 end
 
 local function GetPetCompanionProfile(petName)
-	local profileID = TRP3_API.companions.player.getCompanionProfileID(petName);
+	local profileID = TRP3.companions.player.getCompanionProfileID(petName);
 	if not profileID then
 		return nil;
 	end
 
-	local profileData = TRP3_API.companions.player.getCompanionProfileByID(profileID);
+	local profileData = TRP3.companions.player.getCompanionProfileByID(profileID);
 	if not profileData then
 		return nil;
 	end
@@ -65,7 +64,7 @@ local function GetPetInfoBySlot(slotIndex)
 		return nil;
 	end
 
-	local profileID = TRP3_API.companions.player.getCompanionProfileID(petInfo.name);
+	local profileID = TRP3.companions.player.getCompanionProfileID(petInfo.name);
 	local profileData = GetPetCompanionProfile(petInfo.name);
 
 	-- The level squish is only applied to pets after they're summoned for the
@@ -119,7 +118,7 @@ end
 AddOn_TotalRP3.Ui = AddOn_TotalRP3.Ui or {};
 
 function AddOn_TotalRP3.Ui.IsPetBrowserEnabled()
-	if TRP3_API.globals.player_character.class ~= "HUNTER" then
+	if TRP3.globals.player_character.class ~= "HUNTER" then
 		return false;  -- Player isn't a supported class.
 	elseif WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
 		return false;  -- Classic is unsupported due to missing art assets.

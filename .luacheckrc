@@ -18,7 +18,7 @@ ignore = {
 
 globals = {
 	"AddOn_TotalRP3",
-	"Ellyb",
+	"TRP3",
 
 	-- Globals
 	"BINDING_HEADER_TRP3",
@@ -422,7 +422,7 @@ stds.wow = {
 				"ScaleTo100",
 			},
 		},
-		
+
 		Enum = {
 			fields = {
 				HouseSettingFlags = {

@@ -1,8 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 local Settings = {
 	Bindings = "Launcher_Bindings",
@@ -21,21 +20,21 @@ TRP3_LauncherSettings = {};
 
 function TRP3_LauncherSettings.GetSavedBindings()
 	local shallow = true;
-	return CopyTable(TRP3_API.configuration.getValue(Settings.Bindings), shallow);
+	return CopyTable(TRP3.configuration.getValue(Settings.Bindings), shallow);
 end
 
 function TRP3_LauncherSettings.SetSavedBindings(bindings)
 	local shallow = true;
-	return TRP3_API.configuration.setValue(Settings.Bindings, CopyTable(bindings, shallow));
+	return TRP3.configuration.setValue(Settings.Bindings, CopyTable(bindings, shallow));
 end
 
 function TRP3_LauncherSettings.ResetMinimapButtonPosition()
-	TRP3_API.configuration.setValue(Settings.MinimapButtonPosition, nil);
+	TRP3.configuration.setValue(Settings.MinimapButtonPosition, nil);
 	TRP3_Launcher:Refresh();
 end
 
 function TRP3_LauncherSettings.ShouldShowInAddonCompartment()
-	return TRP3_API.configuration.getValue(Settings.ShowAddonCompartmentButton);
+	return TRP3.configuration.getValue(Settings.ShowAddonCompartmentButton);
 end
 
 function TRP3_LauncherSettings.CreateMinimapButtonSettingsProxy()
@@ -45,11 +44,11 @@ function TRP3_LauncherSettings.CreateMinimapButtonSettingsProxy()
 
 	local function ReadSettingsValue(_, key)
 		if key == "hide" then
-			return not TRP3_API.configuration.getValue(Settings.ShowMinimapButton);
+			return not TRP3.configuration.getValue(Settings.ShowMinimapButton);
 		elseif key == "lock" then
-			return TRP3_API.configuration.getValue(Settings.LockMinimapButton);
+			return TRP3.configuration.getValue(Settings.LockMinimapButton);
 		elseif key == "minimapPos" then
-			return TRP3_API.configuration.getValue(Settings.MinimapButtonPosition);
+			return TRP3.configuration.getValue(Settings.MinimapButtonPosition);
 		else
 			return nil;
 		end
@@ -64,9 +63,9 @@ function TRP3_LauncherSettings.CreateMinimapButtonSettingsProxy()
 		-- but would rather not assume that will always be the case.
 
 		if key == "lock" then
-			return TRP3_API.configuration.setValue(Settings.LockMinimapButton, value);
+			return TRP3.configuration.setValue(Settings.LockMinimapButton, value);
 		elseif key == "minimapPos" then
-			return TRP3_API.configuration.setValue(Settings.MinimapButtonPosition, value);
+			return TRP3.configuration.setValue(Settings.MinimapButtonPosition, value);
 		end
 	end
 
@@ -81,11 +80,11 @@ function TRP3_LauncherSettings.RegisterSettings()
 		return;
 	end
 
-	TRP3_API.configuration.registerConfigKey(Settings.Bindings, DefaultBindings);
-	TRP3_API.configuration.registerConfigKey(Settings.LockMinimapButton, false);
-	TRP3_API.configuration.registerConfigKey(Settings.MinimapButtonPosition, 225);
-	TRP3_API.configuration.registerConfigKey(Settings.ShowAddonCompartmentButton, true);
-	TRP3_API.configuration.registerConfigKey(Settings.ShowMinimapButton, true);
+	TRP3.configuration.registerConfigKey(Settings.Bindings, DefaultBindings);
+	TRP3.configuration.registerConfigKey(Settings.LockMinimapButton, false);
+	TRP3.configuration.registerConfigKey(Settings.MinimapButtonPosition, 225);
+	TRP3.configuration.registerConfigKey(Settings.ShowAddonCompartmentButton, true);
+	TRP3.configuration.registerConfigKey(Settings.ShowMinimapButton, true);
 
 	hasRegisteredSettings = true;
 end
@@ -162,7 +161,7 @@ function TRP3_LauncherSettings.RegisterSettingsPage()
 		});
 	end
 
-	TRP3_API.configuration.registerConfigurationPage({
+	TRP3.configuration.registerConfigurationPage({
 		id = "main_config_launcher",
 		menuText = L.LAUNCHER_CONFIG_MENU_TITLE,
 		pageText = L.LAUNCHER_CONFIG_MENU_TITLE,
@@ -175,7 +174,7 @@ end
 local LauncherClickBindingController = {};
 
 function LauncherClickBindingController:OnLoad()
-	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.callbacks = TRP3.InitCallbackRegistry(self);
 	self.listener = CreateFrame("Frame");
 	self.selectedAction = nil;
 end
@@ -222,7 +221,7 @@ LauncherClickBindingController:OnLoad();
 TRP3_LauncherClickBindingButtonMixin = {};
 
 function TRP3_LauncherClickBindingButtonMixin:OnLoad()
-	self.events = TRP3_API.CreateCallbackGroup();
+	self.events = TRP3.CreateCallbackGroup();
 	self.events:RegisterCallback(TRP3_Launcher, "OnBindingsChanged", self.OnBindingsChanged, self);
 	self.events:RegisterCallback(LauncherClickBindingController, "OnSelectedActionChanged", self.OnSelectedActionChanged, self);
 	self.events:RegisterCallback(TRP3_CVarCache, TRP3_CVarConstants.ColorblindMode, self.OnColorblindModeChanged, self);

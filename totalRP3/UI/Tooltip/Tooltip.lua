@@ -15,7 +15,7 @@ function SharedTooltipProperties:SetColorWrappingEnabled(enabled)
 end
 
 local function CreateSharedTooltipProperties()
-	return TRP3_API.CreateObject(SharedTooltipProperties);
+	return TRP3.CreateObject(SharedTooltipProperties);
 end
 
 local TooltipElementDescription = {};
@@ -357,11 +357,11 @@ end
 TRP3_Tooltip = {};
 
 function TRP3_Tooltip.CreateLineDescription()
-	return TRP3_API.CreateObject(TooltipLineDescription);
+	return TRP3.CreateObject(TooltipLineDescription);
 end
 
 function TRP3_Tooltip.CreateTooltipDescription(owner)
-	return TRP3_API.CreateObject(TooltipDescription, owner);
+	return TRP3.CreateObject(TooltipDescription, owner);
 end
 
 local function UnpackColor(color)
@@ -467,7 +467,7 @@ function TRP3_Tooltip.ProcessTooltipDescription(tooltip, description)
 	tooltip:Show();
 end
 
-local TooltipModifyCallbacks = TRP3_API.CreateCallbackRegistry();
+local TooltipModifyCallbacks = TRP3.CreateCallbackRegistry();
 
 function TRP3_Tooltip.PopulateTooltipDescription(generator, ownerRegion, description, ...)
 	securecallfunction(generator, ownerRegion, description, ...);
@@ -480,5 +480,5 @@ function TRP3_Tooltip.PopulateTooltipDescription(generator, ownerRegion, descrip
 end
 
 function TRP3_Tooltip.ModifyTooltip(tag, callback)
-	return TRP3_API.RegisterCallback(TooltipModifyCallbacks, tag, callback);
+	return TRP3.RegisterCallback(TooltipModifyCallbacks, tag, callback);
 end

@@ -1,35 +1,34 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
-function TRP3_API.navigation.delayedRefresh()
+function TRP3.navigation.delayedRefresh()
 	C_Timer.After(0.25, function()
 		TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
 	end);
 end
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	-- Slash command to switch frames
-	TRP3_API.slash.registerCommand({
+	TRP3.slash.registerCommand({
 		id = "switch",
 		helpLine = " main || toolbar",
 		handler = function(arg1)
 			if arg1 ~= "main" and arg1 ~= "toolbar" then
 				TRP3_Addon:Print(L.COM_SWITCH_USAGE);
 			elseif arg1 == "main" then
-				TRP3_API.navigation.switchMainFrame();
+				TRP3.navigation.switchMainFrame();
 			else
-				if TRP3_API.toolbar then
-					TRP3_API.toolbar.switch();
+				if TRP3.toolbar then
+					TRP3.toolbar.switch();
 				end
 			end
 		end
 	});
 
 	-- Slash command to reset frames
-	TRP3_API.slash.registerCommand({
+	TRP3.slash.registerCommand({
 		id = "reset",
 		helpLine = " frames",
 		handler = function(arg1)
@@ -37,16 +36,16 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				TRP3_Addon:Print(L.COM_RESET_USAGE);
 			else
 				-- Target frame
-				if TRP3_API.target then
-					TRP3_API.target.reset();
+				if TRP3.target then
+					TRP3.target.reset();
 				end
 				-- Glance bar
-				if TRP3_API.register.resetGlanceBar then
-					TRP3_API.register.resetGlanceBar();
+				if TRP3.register.resetGlanceBar then
+					TRP3.register.resetGlanceBar();
 				end
 				-- Toolbar
-				if TRP3_API.toolbar then
-					TRP3_API.toolbar.reset();
+				if TRP3.toolbar then
+					TRP3.toolbar.reset();
 				end
 				ReloadUI();
 			end

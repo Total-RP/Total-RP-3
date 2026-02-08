@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 TRP3_LinkUtil = {};
 
@@ -127,7 +127,7 @@ function LinkHandler:SetTooltipCallback(callback)
 end
 
 local function CreateLinkHandler()
-	return TRP3_API.CreateObject(LinkHandler);
+	return TRP3.CreateObject(LinkHandler);
 end
 
 function TRP3_LinkUtil.CreateLinkHandler(clickCallback, tooltipCallback)
@@ -186,7 +186,7 @@ function LinkHandlerCollection:HandleEnter(linkInfo)
 end
 
 function TRP3_LinkUtil.CreateLinkHandlerCollection()
-	return TRP3_API.CreateObject(LinkHandlerCollection);
+	return TRP3.CreateObject(LinkHandlerCollection);
 end
 
 function TRP3_LinkUtil.AddLinkHandlerBehavior(frame)
@@ -248,7 +248,7 @@ function TRP3_LinkUtil.CreateExternalLinkHandler(owner)
 		local text = linkInfo.text;
 		local link = linkInfo.data;
 
-		text = TRP3_API.utils.str.sanitize(text);
+		text = TRP3.utils.str.sanitize(text);
 		text = string.gsub(text, "^%[", "");
 		text = string.gsub(text, "%]$", "");
 
@@ -271,7 +271,7 @@ function TRP3_LinkUtil.CreateBSkyLinkHandler(owner)
 		local text = linkInfo.text;
 		local link = GenerateURL(linkInfo);
 
-		text = TRP3_API.utils.str.sanitize(text);
+		text = TRP3.utils.str.sanitize(text);
 
 		TRP3_LinkUtil.CreateLinkCopyTooltip(description, text, link);
 	end
@@ -292,7 +292,7 @@ function TRP3_LinkUtil.CreateTwitterLinkHandler(owner)
 		local text = linkInfo.text;
 		local link = GenerateURL(linkInfo);
 
-		text = TRP3_API.utils.str.sanitize(text);
+		text = TRP3.utils.str.sanitize(text);
 
 		TRP3_LinkUtil.CreateLinkCopyTooltip(description, text, link);
 	end

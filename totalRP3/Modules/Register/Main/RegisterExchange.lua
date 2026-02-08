@@ -1,30 +1,28 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local AddOn_TotalRP3 = AddOn_TotalRP3;
-
 -- TRP3 imports
-local Globals = TRP3_API.globals;
-local Utils = TRP3_API.utils;
-local get = TRP3_API.profile.getData;
+local Globals = TRP3.globals;
+local Utils = TRP3.utils;
+local get = TRP3.profile.getData;
 local Comm = AddOn_TotalRP3.Communications;
-local loc = TRP3_API.loc;
+local loc = TRP3.loc;
 local Events = TRP3_Addon.Events;
-local getCharacterExchangeData = TRP3_API.dashboard.getCharacterExchangeData;
-local registerInfoTypes = TRP3_API.register.registerInfoTypes;
-local isIDIgnored, shouldUpdateInformation = TRP3_API.register.isIDIgnored, TRP3_API.register.shouldUpdateInformation;
-local addCharacter = TRP3_API.register.addCharacter;
-local saveCurrentProfileID, saveClientInformation, saveInformation = TRP3_API.register.saveCurrentProfileID, TRP3_API.register.saveClientInformation, TRP3_API.register.saveInformation;
-local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
-local isUnitIDKnown, hasProfile = TRP3_API.register.isUnitIDKnown, TRP3_API.register.hasProfile;
-local playerAPI = TRP3_API.register.player;
+local getCharacterExchangeData = TRP3.dashboard.getCharacterExchangeData;
+local registerInfoTypes = TRP3.register.registerInfoTypes;
+local isIDIgnored, shouldUpdateInformation = TRP3.register.isIDIgnored, TRP3.register.shouldUpdateInformation;
+local addCharacter = TRP3.register.addCharacter;
+local saveCurrentProfileID, saveClientInformation, saveInformation = TRP3.register.saveCurrentProfileID, TRP3.register.saveClientInformation, TRP3.register.saveInformation;
+local getPlayerCurrentProfileID = TRP3.profile.getPlayerCurrentProfileID;
+local isUnitIDKnown, hasProfile = TRP3.register.isUnitIDKnown, TRP3.register.hasProfile;
+local playerAPI = TRP3.register.player;
 local getCharExchangeData = playerAPI.getCharacteristicsExchangeData;
 local getAboutExchangeData = playerAPI.getAboutExchangeData;
 local getMiscExchangeData = playerAPI.getMiscExchangeData;
-local boundAndCheckCompanion = TRP3_API.companions.register.boundAndCheckCompanion;
-local getCompanionData = TRP3_API.companions.player.getCompanionData;
-local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
-local displayMessage = TRP3_API.utils.message.displayMessage;
+local boundAndCheckCompanion = TRP3.companions.register.boundAndCheckCompanion;
+local getCompanionData = TRP3.companions.player.getCompanionData;
+local saveCompanionInformation = TRP3.companions.register.saveInformation;
+local displayMessage = TRP3.utils.message.displayMessage;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 -- Character name for profile opening command
@@ -101,8 +99,8 @@ local function checkPlayerDataWeight()
 
 	local computedSize = GetPlayerDataWeight();
 	if computedSize > ALERT_FOR_SIZE then
-		TRP3_API.Log(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
-		TRP3_API.ui.tooltip.toast(loc.REG_PLAYER_ALERT_HEAVY_SMALL, 5);
+		TRP3.Log(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
+		TRP3.ui.tooltip.toast(loc.REG_PLAYER_ALERT_HEAVY_SMALL, 5);
 	end
 end
 
@@ -160,24 +158,24 @@ function createVernumQuery()
 	query[VERNUM_QUERY_INDEX_CHARACTER_MISC_V] = get("player/misc").v or 0;
 	query[VERNUM_QUERY_INDEX_CHARACTER_CHARACTER_V] = get("player/character").v or 1;
 	-- Companion
-	local battlePetLine, battlePetV1, battlePetV2 = TRP3_API.companions.player.getCurrentBattlePetQueryLine();
+	local battlePetLine, battlePetV1, battlePetV2 = TRP3.companions.player.getCurrentBattlePetQueryLine();
 	query[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET] = battlePetLine or "";
 	query[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V1] = battlePetV1 or 0;
 	query[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V2] = battlePetV2 or 0;
-	local primaryPetLine, primaryPetV1, primaryPetV2 = TRP3_API.companions.player.getCurrentPetQueryLine();
+	local primaryPetLine, primaryPetV1, primaryPetV2 = TRP3.companions.player.getCurrentPetQueryLine();
 	query[VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET] = primaryPetLine or "";
 	query[VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET_V1] = primaryPetV1 or 0;
 	query[VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET_V2] = primaryPetV2 or 0;
-	local secondaryPetLine, secondaryPetV1, secondaryPetV2 = TRP3_API.companions.player.getCurrentSecondaryPetQueryLine();
+	local secondaryPetLine, secondaryPetV1, secondaryPetV2 = TRP3.companions.player.getCurrentSecondaryPetQueryLine();
 	query[VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET] = secondaryPetLine or "";
 	query[VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET_V1] = secondaryPetV1 or 0;
 	query[VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET_V2] = secondaryPetV2 or 0;
-	local mountLine, mountV1, mountV2 = TRP3_API.companions.player.getCurrentMountQueryLine();
+	local mountLine, mountV1, mountV2 = TRP3.companions.player.getCurrentMountQueryLine();
 	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT] = mountLine or "";
 	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1] = mountV1 or 0;
 	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2] = mountV2 or 0;
 	query[VERNUM_QUERY_INDEX_ROLEPLAY_EXPERIENCE] = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayExperience();
-	query[VERNUM_QUERY_INDEX_CHARACTER_CLASS] = TRP3_API.globals.player_class_index;
+	query[VERNUM_QUERY_INDEX_CHARACTER_CLASS] = TRP3.globals.player_class_index;
 
 	-- Extended
 	if Globals.extended_version then
@@ -243,11 +241,11 @@ local function parseCompanionInfo(senderID, senderProfileID, petLine, petV1, pet
 	if petLine and petV1 and petV2 then
 		local profileID, queryV1, queryV2 = boundAndCheckCompanion(petLine, senderID, senderProfileID, petV1, petV2);
 		if queryV1 then
-			TRP3_API.Log(("Should update v1 for companion profileID %s"):format(profileID));
+			TRP3.Log(("Should update v1 for companion profileID %s"):format(profileID));
 			queryInformationType(senderID, COMPANION_PREFIX .. "1" .. profileID);
 		end
 		if queryV2 then
-			TRP3_API.Log(("Should update v2 for companion profileID %s"):format(profileID));
+			TRP3.Log(("Should update v2 for companion profileID %s"):format(profileID));
 			queryInformationType(senderID, COMPANION_PREFIX .. "2" .. profileID);
 		end
 	end
@@ -305,11 +303,11 @@ local function sendQuery(unitID)
 		Comm.sendObject(VERNUM_QUERY_PREFIX, query, unitID, VERNUM_QUERY_PRIORITY);
 	end
 end
-TRP3_API.r.sendQuery = sendQuery;
+TRP3.r.sendQuery = sendQuery;
 
 local function TryQueryInformation(target, infoType, currentData)
 	if shouldUpdateInformation(target, infoType, currentData) then
-		TRP3_API.Log(("Should update: %s's %s"):format(target, infoType));
+		TRP3.Log(("Should update: %s's %s"):format(target, infoType));
 		queryInformationType(target, infoType);
 	end
 end
@@ -325,7 +323,7 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	or type(structure[VERNUM_QUERY_INDEX_VERSION_DISPLAY]) ~= "string"
 	or type(structure[VERNUM_QUERY_INDEX_CHARACTER_PROFILE]) ~= "string"
 	then
-		TRP3_API.Log("Incoming vernum integrity check fails. Sender: " .. senderID);
+		TRP3.Log("Incoming vernum integrity check fails. Sender: " .. senderID);
 		return;
 	end
 
@@ -440,7 +438,7 @@ local function incomingInformationType(informationType, senderID)
 		data = getCompanionData(profileID, v);
 	end
 	if data then
-		TRP3_API.Log(("Send %s info to %s"):format(informationType, senderID));
+		TRP3.Log(("Send %s info to %s"):format(informationType, senderID));
 
 		local prefix = INFO_TYPE_SEND_PREFIX;
 		local object = { informationType, data };
@@ -475,7 +473,7 @@ local function incomingInformationTypeSent(structure, senderID, channel)
 		return;
 	end
 
-	TRP3_API.Logf("Received %s's %s info!", senderID, informationType);
+	TRP3.Logf("Received %s's %s info!", senderID, informationType);
 	QueryCooldowns[informationType][senderID] = nil;
 	TRP3_Addon:TriggerEvent("REGISTER_DATA_RECEIVED", senderID, informationType);
 
@@ -517,28 +515,28 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.register.HAS_NOT_YET_RESPONDED = LAST_QUERY_STAT;
+TRP3.register.HAS_NOT_YET_RESPONDED = LAST_QUERY_STAT;
 
-function TRP3_API.register.inits.dataExchangeInit()
+function TRP3.register.inits.dataExchangeInit()
 	if not TRP3_Register then
 		TRP3_Register = {};
 	end
 
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID)
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID)
 		if unitID == Globals.player_id then
 			checkPlayerDataWeight();
 		end
 	end);
 
 	-- Listen to the mouse over event
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.MOUSE_OVER_CHANGED, function(_, targetID, targetMode)
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.MOUSE_OVER_CHANGED, function(_, targetID, targetMode)
 		if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and targetID then
 			onMouseOverCharacter(targetID);
 		elseif (targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and targetID then
 			onMouseOverCompanion(targetID);
 		end
 	end);
-	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_TARGET_CHANGED", function() onTargetChanged(); end);
+	TRP3.RegisterCallback(TRP3.GameEvents, "PLAYER_TARGET_CHANGED", function() onTargetChanged(); end);
 
 	-- Register prefix for data exchange
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(VERNUM_QUERY_PREFIX, function(structure, senderID)
@@ -561,7 +559,7 @@ function TRP3_API.register.inits.dataExchangeInit()
 	end);
 end
 
-function TRP3_API.slash.openProfile(...)
+function TRP3.slash.openProfile(...)
 	local args = {...};
 
 	if commandOpeningTimerHandle then
@@ -586,7 +584,7 @@ function TRP3_API.slash.openProfile(...)
 			-- assume the input is name-only and use the current realm.
 
 			name  = name or characterToOpen;
-			realm = realm or TRP3_API.globals.player_realm_id;
+			realm = realm or TRP3.globals.player_realm_id;
 
 			name  = string.gsub(name, "^%l", string.upper);
 			realm = string.gsub(realm, "^%l", string.upper);
@@ -596,7 +594,7 @@ function TRP3_API.slash.openProfile(...)
 
 		-- If no realm has been entered, we use the player's realm automatically
 		if not characterToOpen:find("-") then
-			characterToOpen = characterToOpen .. "-" .. TRP3_API.globals.player_realm_id;
+			characterToOpen = characterToOpen .. "-" .. TRP3.globals.player_realm_id;
 		end
 	else
 		-- If no name is provided, we use the target ID
@@ -609,11 +607,11 @@ function TRP3_API.slash.openProfile(...)
 	end
 
 	sendQuery(characterToOpen);
-	TRP3_API.r.sendMSPQuery(characterToOpen);
+	TRP3.r.sendMSPQuery(characterToOpen);
 	-- If we already have a profile for that user in the registry, we open it and reset the name (so it doesn't try to open again afterwards)
-	if characterToOpen == TRP3_API.globals.player_id or (isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen)) then
-		TRP3_API.navigation.openMainFrame();
-		TRP3_API.register.openPageByUnitID(characterToOpen);
+	if characterToOpen == TRP3.globals.player_id or (isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen)) then
+		TRP3.navigation.openMainFrame();
+		TRP3.register.openPageByUnitID(characterToOpen);
 		characterToOpen = "";
 	else
 		displayMessage(loc.PR_SLASH_OPEN_WAITING);
@@ -626,22 +624,22 @@ function TRP3_API.slash.openProfile(...)
 	end
 end
 
-TRP3_API.slash.registerCommand({
+TRP3.slash.registerCommand({
 	id = "open",
 	helpLine = " " .. loc.PR_SLASH_OPEN_HELP,
-	handler = TRP3_API.slash.openProfile,
+	handler = TRP3.slash.openProfile,
 })
 
 -- Event for the "/trp3 open" command
-TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
+TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 	if AddOn_Chomp.InsensitiveStringEquals(characterToOpen, unitID)
 		and (not dataType or dataType == "character") then
 		-- Use the unitID when opening the UI as it will be precisely what's
 		-- in the register, whereas characterToOpen might have incorrect
 		-- casing if, for example, the user typed the name in all-caps.
 
-		TRP3_API.navigation.openMainFrame();
-		TRP3_API.register.openPageByUnitID(unitID);
+		TRP3.navigation.openMainFrame();
+		TRP3.register.openPageByUnitID(unitID);
 		if commandOpeningTimerHandle then
 			commandOpeningTimerHandle:Cancel();
 		end

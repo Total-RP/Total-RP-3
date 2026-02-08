@@ -1,15 +1,12 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
+local Ellyb = TRP3.Ellyb;
 local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
 
 -- TRP3 imports
-local Globals = TRP3_API.globals;
-local Utils = TRP3_API.utils;
-local loc = TRP3_API.loc;
+local Globals = TRP3.globals;
+local Utils = TRP3.utils;
+local loc = TRP3.loc;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Messaging
@@ -31,7 +28,7 @@ Utils.message.displayMessage = function(message, messageType)
 	if not messageType or messageType == messageTypes.CHAT_FRAME then
 		TRP3_Addon:Print(tostring(message));
 	elseif messageType == messageTypes.ALERT_POPUP then
-		TRP3_API.popup.showAlertPopup(tostring(message));
+		TRP3.popup.showAlertPopup(tostring(message));
 	elseif messageType == messageTypes.RAID_ALERT then
 		RaidNotice_AddMessage(RaidWarningFrame, tostring(message), ChatTypeInfo["RAID_WARNING"]);
 	elseif messageType == messageTypes.ALERT_MESSAGE then
@@ -609,21 +606,21 @@ Utils.str.toHTML = function(text, noColor, noBrackets, defaultLinkType)
 		after = text:sub(#before + #tagText + 1);
 		text = after;
 
-		--- 	TRP3_API.Log("Iteration "..i);
-		--- 	TRP3_API.Log("before ("..(#before).."): "..before);
-		--- 	TRP3_API.Log("tagText ("..(#tagText).."): "..tagText);
-		--- 	TRP3_API.Log("after ("..(#before).."): "..after);
+		--- 	TRP3.Log("Iteration "..i);
+		--- 	TRP3.Log("before ("..(#before).."): "..before);
+		--- 	TRP3.Log("tagText ("..(#tagText).."): "..tagText);
+		--- 	TRP3.Log("after ("..(#before).."): "..after);
 
 		i = i+1;
 		if i == 500 then
-			TRP3_API.Log("HTML overfloooow !");
+			TRP3.Log("HTML overfloooow !");
 		end
 	end
 	if #text > 0 then
 		tinsert(tab, text); -- Rest of the text
 	end
 
-	--- TRP3_API.Log("Parts count "..(#tab));
+	--- TRP3.Log("Parts count "..(#tab));
 
 	local finalText = "";
 	for _, line in pairs(tab) do
@@ -734,7 +731,7 @@ Utils.serial.errorCount = 0;
 local function safeDeserialize(structure, default)
 	local status, data = libSerializer:Deserialize(structure);
 	if not status then
-		TRP3_API.Log("Deserialization error:\n" .. tostring(structure) .. "\n" .. tostring(data));
+		TRP3.Log("Deserialization error:\n" .. tostring(structure) .. "\n" .. tostring(data));
 		return default;
 	end
 	return data;
@@ -808,7 +805,7 @@ end
 function Utils.music.playMusic(music, source)
 	assert(music, "Music can't be nil.")
 	Utils.music.stopMusic();
-	TRP3_API.Log("Playing music: " .. music);
+	TRP3.Log("Playing music: " .. music);
 	PlayMusic(music);
 	tinsert(soundHandlers, {channel = "Music", id = Utils.music.getTitle(music), handlerID = 0, source = source or Globals.player_id, date = date("%H:%M:%S"), stopped = false});
 	if TRP3_SoundsHistoryFrame then
@@ -845,17 +842,17 @@ local function Rainbow(value, max)
 	local movedValue = value - 1;    -- screw Lua lmao
 	local fifth = (max - 1) / 5;
 	if movedValue < fifth then
-		return TRP3_API.CreateColor(1, 0.3 + 0.7 * movedValue / fifth, 0.3)
+		return TRP3.CreateColor(1, 0.3 + 0.7 * movedValue / fifth, 0.3)
 	elseif movedValue < 2 * fifth then
-		return TRP3_API.CreateColor(1 - 0.7 * (movedValue - fifth) / fifth, 1, 0.3)
+		return TRP3.CreateColor(1 - 0.7 * (movedValue - fifth) / fifth, 1, 0.3)
 	elseif movedValue < 3 * fifth then
-		return TRP3_API.CreateColor(0.3, 1, 0.3 + 0.7 * (movedValue - 2 * fifth) / fifth)
+		return TRP3.CreateColor(0.3, 1, 0.3 + 0.7 * (movedValue - 2 * fifth) / fifth)
 	elseif movedValue < 4 * fifth then
-		return TRP3_API.CreateColor(0.3, 1 - 0.7 * (movedValue - 3 * fifth) / fifth, 1)
+		return TRP3.CreateColor(0.3, 1 - 0.7 * (movedValue - 3 * fifth) / fifth, 1)
 	elseif movedValue ~= max - 1 then
-		return TRP3_API.CreateColor(0.3 + 0.7 * (movedValue - 4 * fifth) / fifth, 0.3, 1)
+		return TRP3.CreateColor(0.3 + 0.7 * (movedValue - 4 * fifth) / fifth, 0.3, 1)
 	else
-		return TRP3_API.CreateColor(1, 0.3, 1)
+		return TRP3.CreateColor(1, 0.3, 1)
 	end
 end
 
@@ -876,17 +873,17 @@ local function Rainbowify(text)
 	end
 	return finalText
 end
-TRP3_API.utils.Rainbowify = Rainbowify;
+TRP3.utils.Rainbowify = Rainbowify;
 
 local function OldgodCharacterColor(value, max)
 	local movedValue = value - 1;    -- screw Lua lmao
 	local third = (max - 1) / 3;
 	if movedValue < 2 * third then
-		return TRP3_API.CreateColor(0.5 + 0.5 * movedValue / (2 * third), 0.3, 1 - 0.7 * movedValue / (2 * third))
+		return TRP3.CreateColor(0.5 + 0.5 * movedValue / (2 * third), 0.3, 1 - 0.7 * movedValue / (2 * third))
 	elseif movedValue ~= max - 1 then
-		return TRP3_API.CreateColor(1, 0.3 + 0.2 * (movedValue - 2 * third) / third, 0.3)
+		return TRP3.CreateColor(1, 0.3 + 0.2 * (movedValue - 2 * third) / third, 0.3)
 	else
-		return TRP3_API.CreateColor(1, 0.5, 0.3)
+		return TRP3.CreateColor(1, 0.5, 0.3)
 	end
 end
 
@@ -907,7 +904,7 @@ local function Oldgodify(text)
 	end
 	return finalText
 end
-TRP3_API.utils.Oldgodify = Oldgodify;
+TRP3.utils.Oldgodify = Oldgodify;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Settings
@@ -932,7 +929,7 @@ local LOCALIZED_DATE_FORMATS =
 };
 
 function Utils.GetDefaultDateFormat()
-	local locale = TRP3_API.GetPreferredLocale();
+	local locale = TRP3.GetPreferredLocale();
 
 	if locale == "enUS" and LOCALE_enGB then
 		locale = "enGB";
@@ -942,7 +939,7 @@ function Utils.GetDefaultDateFormat()
 end
 
 function Utils.GetPreferredDateFormat()
-	local format = TRP3_API.configuration.getValue("date_format");
+	local format = TRP3.configuration.getValue("date_format");
 
 	if type(format) ~= "string" or format == "" then
 		format = Utils.GetDefaultDateFormat();

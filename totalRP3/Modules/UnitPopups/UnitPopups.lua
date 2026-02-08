@@ -5,46 +5,46 @@ if not Menu or not Menu.ModifyMenu then
 	return;
 end
 
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 local GenerateConfigurationPage;
 
 local function ShouldDisableOutOfCharacter()
-	return TRP3_API.configuration.getValue("UnitPopups_DisableOutOfCharacter");
+	return TRP3.configuration.getValue("UnitPopups_DisableOutOfCharacter");
 end
 
 local function ShouldDisableInCombat()
-	return TRP3_API.configuration.getValue("UnitPopups_DisableInCombat");
+	return TRP3.configuration.getValue("UnitPopups_DisableInCombat");
 end
 
 local function ShouldDisableInInstances()
-	return TRP3_API.configuration.getValue("UnitPopups_DisableInInstances");
+	return TRP3.configuration.getValue("UnitPopups_DisableInInstances");
 end
 
 local function ShouldDisableOnUnitFrames()
-	return TRP3_API.configuration.getValue("UnitPopups_DisableOnUnitFrames");
+	return TRP3.configuration.getValue("UnitPopups_DisableOnUnitFrames");
 end
 
 local function ShouldShowOpenProfile(contextData)  -- luacheck: no unused
-	return TRP3_API.configuration.getValue("UnitPopups_ShowOpenProfile");
+	return TRP3.configuration.getValue("UnitPopups_ShowOpenProfile");
 end
 
 local function ShouldShowCharacterStatus(contextData)  -- luacheck: no unused
-	return TRP3_API.configuration.getValue("UnitPopups_ShowCharacterStatus");
+	return TRP3.configuration.getValue("UnitPopups_ShowCharacterStatus");
 end
 
 local function GetUnitCompanionProfileInfo(unitToken)
-	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-	local companionFullID = TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType);
-	local owner, companionID = TRP3_API.utils.str.companionIDToInfo(companionFullID);
+	local unitType = TRP3.ui.misc.getTargetType(unitToken);
+	local companionFullID = TRP3.ui.misc.getCompanionFullID(unitToken, unitType);
+	local owner, companionID = TRP3.utils.str.companionIDToInfo(companionFullID);
 	local profileType, profileID;
 
-	if owner == TRP3_API.globals.player_id then
+	if owner == TRP3.globals.player_id then
 		profileType = "SELF";
-		profileID = TRP3_API.companions.player.getCompanionProfileID(companionID);
+		profileID = TRP3.companions.player.getCompanionProfileID(companionID);
 	else
 		profileType = "OTHER";
-		profileID = TRP3_API.companions.register.companionHasProfile(companionFullID);
+		profileID = TRP3.companions.register.companionHasProfile(companionFullID);
 	end
 
 	if profileType and profileID then
@@ -123,10 +123,10 @@ UnitPopupsModule.MenuEntries = {};
 
 function UnitPopupsModule:OnModuleInitialize()
 	for _, setting in pairs(UnitPopupsModule.Configuration) do
-		TRP3_API.configuration.registerConfigKey(setting.key, setting.default);
+		TRP3.configuration.registerConfigKey(setting.key, setting.default);
 	end
 
-	TRP3_API.configuration.registerConfigurationPage(GenerateConfigurationPage());
+	TRP3.configuration.registerConfigurationPage(GenerateConfigurationPage());
 end
 
 function UnitPopupsModule:OnModuleEnable()
@@ -179,7 +179,7 @@ function UnitPopupsModule:ShouldCustomizeMenus()
 		return false;
 	elseif ShouldDisableInCombat() and InCombatLockdown() then
 		return false;
-	elseif ShouldDisableInInstances() and TRP3_API.utils.IsInCombatInstance() then
+	elseif ShouldDisableInInstances() and TRP3.utils.IsInCombatInstance() then
 		return false;
 	else
 		return true;
@@ -207,7 +207,7 @@ local function CreateOpenBattleNetProfileButton(menuDescription, contextData)
 		local characterID = GetBattleNetCharacterID(gameAccountInfo);
 
 		if characterID then
-			TRP3_API.slash.openProfile(characterID);
+			TRP3.slash.openProfile(characterID);
 		end
 	end
 
@@ -229,9 +229,9 @@ local function CreateOpenCharacterProfileButton(menuDescription, contextData)
 		local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
 
 		if UnitExists(unit) then
-			TRP3_API.slash.openProfile(unit);
+			TRP3.slash.openProfile(unit);
 		elseif not string.find(fullName, UNKNOWNOBJECT, 1, true) then
-			TRP3_API.slash.openProfile(fullName);
+			TRP3.slash.openProfile(fullName);
 		end
 	end
 
@@ -253,11 +253,11 @@ local function CreateOpenCompanionProfileButton(menuDescription, contextData)
 		if not profileInfo then
 			return;  -- Maybe something unlinked it while the menu was open?
 		elseif profileInfo.type == "SELF" then
-			TRP3_API.companions.openPage(profileInfo.id);
-			TRP3_API.navigation.openMainFrame();
+			TRP3.companions.openPage(profileInfo.id);
+			TRP3.navigation.openMainFrame();
 		elseif profileInfo.type == "OTHER" then
-			TRP3_API.companions.register.openPage(profileInfo.id);
-			TRP3_API.navigation.openMainFrame();
+			TRP3.companions.register.openPage(profileInfo.id);
+			TRP3.navigation.openMainFrame();
 		end
 	end
 
@@ -334,7 +334,7 @@ UnitPopupsModule.MenuEntries = {
 -- Module Registration
 --
 
-TRP3_API.module.registerModule({
+TRP3.module.registerModule({
 	id = "trp3_unitpopups",
 	name = L.UNIT_POPUPS_MODULE_NAME,
 	description = L.UNIT_POPUPS_MODULE_DESCRIPTION,
@@ -397,7 +397,7 @@ function GenerateConfigurationPage()
 				title = L.UNIT_POPUPS_CONFIG_ENABLE_MODULE,
 				text = DISABLE,
 				OnClick = function()
-					TRP3_API.popup.showConfirmPopup(L.UNIT_POPUPS_MODULE_DISABLE_WARNING, function()
+					TRP3.popup.showConfirmPopup(L.UNIT_POPUPS_MODULE_DISABLE_WARNING, function()
 						local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"];
 						TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"] = not current;
 						ReloadUI();

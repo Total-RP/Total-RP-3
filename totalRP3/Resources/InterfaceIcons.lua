@@ -234,7 +234,7 @@ do
 	for id, candidates in pairs(TRP3_InterfaceIcons) do
 		local name = GetFirstValidIcon(candidates);
 
-		if not name and TRP3_API.globals.DEBUG_MODE then
+		if not name and TRP3.globals.DEBUG_MODE then
 			securecallfunction(error, string.format("Invalid interface icon %q: No valid texture file found", id));
 		end
 

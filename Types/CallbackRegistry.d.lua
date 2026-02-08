@@ -40,9 +40,9 @@ function CallbackDispatcher:Fire(event, ...) end
 
 ---@param object table
 ---@return TRP3.CallbackDispatcher callbacks
-function TRP3_API.InitCallbackRegistry(object) end
+function TRP3.InitCallbackRegistry(object) end
 
 ---@param object table
 ---@param events string[] | { [string]: string }
 ---@return TRP3.CallbackDispatcher callbacks
-function TRP3_API.InitCallbackRegistryWithEvents(object, events) end
+function TRP3.InitCallbackRegistryWithEvents(object, events) end

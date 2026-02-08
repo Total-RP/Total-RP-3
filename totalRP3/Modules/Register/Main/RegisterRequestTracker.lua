@@ -71,7 +71,7 @@ local RequestTrackerList = {};
 
 ---@private
 function RequestTrackerList:__init()
-	self.head = TRP3_API.CreateObject(RequestTrackerListNode);
+	self.head = TRP3.CreateObject(RequestTrackerListNode);
 end
 
 function RequestTrackerList:PopFront()
@@ -101,7 +101,7 @@ function RequestTrackerList:GetNext(node)
 end
 
 local function CreateRequestTrackerList()
-	return TRP3_API.CreateObject(RequestTrackerList);
+	return TRP3.CreateObject(RequestTrackerList);
 end
 
 ---@class (exact) TRP3_Register.RequestTrackerEntry : TRP3_Register.RequestTrackerListNode
@@ -133,7 +133,7 @@ end
 
 ---@param key string
 local function CreateRequestTrackerEntry(key)
-	return TRP3_API.CreateObject(RequestTrackerEntry, key);
+	return TRP3.CreateObject(RequestTrackerEntry, key);
 end
 
 ---@class (exact) TRP3_Register.RequestTracker
@@ -220,11 +220,11 @@ function RequestTracker:PruneInactive()
 	return count;
 end
 
-function TRP3_API.register.HasActiveRequest(target)
+function TRP3.register.HasActiveRequest(target)
 	return RequestTracker:IsActive(target);
 end
 
-function TRP3_API.register.HasActiveRequestForData(target, type)
+function TRP3.register.HasActiveRequestForData(target, type)
 	return RequestTracker:IsPending(target, type);
 end
 

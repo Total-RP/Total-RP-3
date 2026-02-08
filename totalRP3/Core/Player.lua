@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Ellyb = TRP3_API.Ellyb;
+local Ellyb = TRP3.Ellyb;
 
 -- Imports.
 local Enums = AddOn_TotalRP3.Enums;
@@ -121,14 +121,14 @@ end
 
 ---@return string relationship
 function Player:GetRelationshipWithPlayer()
-	return TRP3_API.register.relation.getRelation(TRP3_API.register.getUnitIDProfileID(self:GetCharacterID()));
+	return TRP3.register.relation.getRelation(TRP3.register.getUnitIDProfileID(self:GetCharacterID()));
 end
 
 ---@return Ellyb_Color|nil customColor
 function Player:GetCustomColor()
 	local characteristics = self:GetCharacteristics();
 	if characteristics and characteristics.CH then
-		return TRP3_API.CreateColorFromHexString(characteristics.CH);
+		return TRP3.CreateColorFromHexString(characteristics.CH);
 	end
 end
 
@@ -139,7 +139,7 @@ end
 function Player:GetCustomColorForDisplay()
 	local color = self:GetCustomColor()
 	if color then
-		color = TRP3_API.GenerateReadableColor(color, TRP3_API.Colors.Black);
+		color = TRP3.GenerateReadableColor(color, TRP3.Colors.Black);
 	end
 	return color
 end
@@ -176,7 +176,7 @@ function Player:GenerateFormattedName(format)
 		local icon = self:GetCustomIcon();
 
 		if icon then
-			name = TRP3_API.utils.str.icon(icon, format.iconSize) .. " " .. name;
+			name = TRP3.utils.str.icon(icon, format.iconSize) .. " " .. name;
 		end
 	end
 
@@ -210,8 +210,8 @@ function Player:GetRoleplayExperience()
 	-- Note that this will return nil for profiles belonging to this player.
 	local characterInfo;
 
-	if self:GetCharacterID() and TRP3_API.register.isUnitIDKnown(self:GetCharacterID()) then
-		characterInfo = TRP3_API.register.getUnitIDCharacter(self:GetCharacterID());
+	if self:GetCharacterID() and TRP3.register.isUnitIDKnown(self:GetCharacterID()) then
+		characterInfo = TRP3.register.getUnitIDCharacter(self:GetCharacterID());
 	end
 
 	return characterInfo and characterInfo.roleplayExperience;
@@ -233,7 +233,7 @@ function Player:GetMiscFieldByType(miscType)
 	local miscInfo = self:GetInfo("characteristics/MI");
 
 	if miscInfo then
-		return TRP3_API.GetMiscFieldByType(miscInfo, miscType);
+		return TRP3.GetMiscFieldByType(miscInfo, miscType);
 	else
 		return nil;
 	end
@@ -243,15 +243,15 @@ function Player:GetMiscFields()
 	local miscInfo = self:GetInfo("characteristics/MI");
 
 	if miscInfo then
-		return TRP3_API.GetMiscFields(miscInfo);
+		return TRP3.GetMiscFields(miscInfo);
 	else
 		return {};
 	end
 end
 
 function Player:GetCustomGuildMembership()
-	local guildNameField = self:GetMiscFieldByType(TRP3_API.MiscInfoType.GuildName);
-	local guildRankField = self:GetMiscFieldByType(TRP3_API.MiscInfoType.GuildRank);
+	local guildNameField = self:GetMiscFieldByType(TRP3.MiscInfoType.GuildName);
+	local guildRankField = self:GetMiscFieldByType(TRP3.MiscInfoType.GuildRank);
 
 	return {
 		name = guildNameField and guildNameField.value or nil,
@@ -260,17 +260,17 @@ function Player:GetCustomGuildMembership()
 end
 
 function Player:GetCustomPronouns()
-	local fieldInfo = self:GetMiscFieldByType(TRP3_API.MiscInfoType.Pronouns);
+	local fieldInfo = self:GetMiscFieldByType(TRP3.MiscInfoType.Pronouns);
 	return fieldInfo and fieldInfo.value or nil;
 end
 
 function Player:GetCustomVoiceReference()
-	local fieldInfo = self:GetMiscFieldByType(TRP3_API.MiscInfoType.VoiceReference);
+	local fieldInfo = self:GetMiscFieldByType(TRP3.MiscInfoType.VoiceReference);
 	return fieldInfo and fieldInfo.value or nil;
 end
 
 function Player:GetAccountType()
-	local characterInfo = TRP3_API.register.getUnitIDCharacter(self:GetCharacterID());
+	local characterInfo = TRP3.register.getUnitIDCharacter(self:GetCharacterID());
 	return characterInfo.isTrial
 end
 
@@ -285,7 +285,7 @@ function Player:IsOnATrialAccount()
 end
 
 function Player:GetCharacterSpecificNotes()
-	local profile = TRP3_API.profile.getPlayerCurrentProfile();
+	local profile = TRP3.profile.getPlayerCurrentProfile();
 	local profileID = self:GetProfileID();
 
 	return profile and profile.notes and profile.notes[profileID] or nil;
@@ -298,7 +298,7 @@ end
 
 -- TODO Deprecate GetInfo(path) in favor of proper type safe methods to access profile data
 function Player:GetInfo(path)
-	return TRP3_API.profile.getData(path, self:GetProfile())
+	return TRP3.profile.getData(path, self:GetProfile())
 end
 
 --- Creates a new Player for a character ID ("PlayerName-ServerName")
@@ -345,7 +345,7 @@ end
 --- @return Player
 function Player.static.CreateFromNameAndRealm(name, realm)
 	name = (name ~= "") and name or UNKNOWNOBJECT;
-	realm = (realm ~= "") and realm or TRP3_API.globals.player_realm_id;
+	realm = (realm ~= "") and realm or TRP3.globals.player_realm_id;
 
 	return Player.static.CreateFromCharacterID(name .. "-" .. realm)
 end
@@ -368,34 +368,34 @@ end
 local CurrentUser = Ellyb.Class("CurrentUser", Player)
 
 function CurrentUser:GetProfile()
-	return TRP3_API.profile.getPlayerCurrentProfile().player;
+	return TRP3.profile.getPlayerCurrentProfile().player;
 end
 
 function CurrentUser:GetProfileID()
-	return TRP3_API.profile.getPlayerCurrentProfileID();
+	return TRP3.profile.getPlayerCurrentProfileID();
 end
 
 function CurrentUser:GetProfileName()
-	return TRP3_API.profile.getPlayerCurrentProfile().profileName;
+	return TRP3.profile.getPlayerCurrentProfile().profileName;
 end
 
 function CurrentUser:IsProfileDefault()
 	local profileID = self:GetProfileID();
-	local defaultID = TRP3_API.configuration.getValue("default_profile_id");
+	local defaultID = TRP3.configuration.getValue("default_profile_id");
 
 	return profileID == defaultID;
 end
 
 function CurrentUser:SetProfileID(profileID)
-	TRP3_API.profile.selectProfile(profileID);
+	TRP3.profile.selectProfile(profileID);
 end
 
 function CurrentUser:GetCharacterID()
-	return TRP3_API.globals.player_id;
+	return TRP3.globals.player_id;
 end
 
 function CurrentUser:GetRelationshipWithPlayer()
-	return TRP3_API.globals.RELATIONS.NONE;
+	return TRP3.globals.RELATIONS.NONE;
 end
 
 function CurrentUser:GetAccountType()
@@ -426,9 +426,9 @@ local function UpdateProfileField(player, subtableName, fieldName, value)
 	end
 
 	subtable[fieldName] = value;
-	subtable.v = TRP3_API.utils.math.incrementNumber(subtable.v or 1, 2);
+	subtable.v = TRP3.utils.math.incrementNumber(subtable.v or 1, 2);
 
-	local playerName = TRP3_API.globals.player_id;
+	local playerName = TRP3.globals.player_id;
 	local profileID = player:GetProfileID();
 	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.REGISTER_DATA_UPDATED, playerName, profileID, subtableName);
 end
@@ -492,7 +492,7 @@ function CurrentUser:SetCustomRace(race)
 end
 
 function CurrentUser:GetRoleplayExperience()
-	return TRP3_API.configuration.getValue("roleplay_experience");
+	return TRP3.configuration.getValue("roleplay_experience");
 end
 
 function CurrentUser:SetRoleplayExperience(experience)
@@ -501,10 +501,10 @@ function CurrentUser:SetRoleplayExperience(experience)
 	-- however we still emit REGISTER_DATA_UPDATED as some parts of the
 	-- code rely upon this (eg. MSP).
 
-	local playerID = TRP3_API.globals.player_id;
+	local playerID = TRP3.globals.player_id;
 	local profileID = self:GetProfileID();
 
-	TRP3_API.configuration.setValue("roleplay_experience", experience);
+	TRP3.configuration.setValue("roleplay_experience", experience);
 	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.REGISTER_DATA_UPDATED, playerID, profileID, "character");
 end
 

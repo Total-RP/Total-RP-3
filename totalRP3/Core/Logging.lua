@@ -1,7 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
 
 -- Basic logging infrastructure
 --
@@ -17,7 +16,7 @@ local function WriteToDebugLogAddon(entry)
 end
 
 local function WriteToLogChatFrame(entry)
-	if not TRP3_API.globals.DEBUG_MODE then
+	if not TRP3.globals.DEBUG_MODE then
 		return;
 	end
 
@@ -57,10 +56,10 @@ end
 -- that any errors from formatting or string conversion (__tostring) don't break
 -- calling code; these are intended to be non-failable calls.
 
-function TRP3_API.Log(message, ...)
+function TRP3.Log(message, ...)
 	securecallfunction(LogBasicMessage, message, ...);
 end
 
-function TRP3_API.Logf(format, ...)
+function TRP3.Logf(format, ...)
 	securecallfunction(LogFormattedMessage, format, ...);
 end

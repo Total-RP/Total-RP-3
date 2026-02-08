@@ -16,9 +16,9 @@ end
 TRP3_ReadableTextMixin = {};
 
 function TRP3_ReadableTextMixin:SetReadableTextColor(color, backgroundColor, targetLevel)
-	backgroundColor = backgroundColor or self.readableTextBackgroundColor or TRP3_API.Colors.Black;
+	backgroundColor = backgroundColor or self.readableTextBackgroundColor or TRP3.Colors.Black;
 	targetLevel = targetLevel or self.readableTextContrastLevel or TRP3_ColorContrastOption.UseConfiguredLevel;
 
-	color = TRP3_API.GenerateReadableColor(color, backgroundColor, targetLevel);
+	color = TRP3.GenerateReadableColor(color, backgroundColor, targetLevel);
 	self:SetTextColor(color:GetRGBA());
 end

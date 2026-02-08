@@ -1,15 +1,10 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
+local loc = TRP3.loc;
+local displayMessage = TRP3.utils.message.displayMessage;
 
-local loc = TRP3_API.loc;
-local displayMessage = TRP3_API.utils.message.displayMessage;
-
-TRP3_API.slash = {}
+TRP3.slash = {}
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Command management
@@ -17,14 +12,14 @@ TRP3_API.slash = {}
 
 local COMMANDS = {};
 
-function TRP3_API.slash.registerCommand(commandStructure)
+function TRP3.slash.registerCommand(commandStructure)
 	assert(commandStructure and commandStructure.id, "Command structure must have and id.");
 	assert(commandStructure.id ~= "help", "The command id \"help\" is reserved.");
 	assert(not COMMANDS[commandStructure.id], "Already registered command id: " .. tostring(commandStructure.id));
 	COMMANDS[commandStructure.id] = commandStructure;
 end
 
-function TRP3_API.slash.unregisterCommand(commandID)
+function TRP3.slash.unregisterCommand(commandID)
 	COMMANDS[commandID] = nil;
 end
 
@@ -51,9 +46,9 @@ function SlashCmdList.TOTALRP3(msg)
 		end
 		sort(sortTable);
 		for _, commandId in pairs(sortTable) do
-			local cmd, cmdText = COMMANDS[commandId], TRP3_API.Colors.Green("/trp3 " .. commandId);
+			local cmd, cmdText = COMMANDS[commandId], TRP3.Colors.Green("/trp3 " .. commandId);
 			if cmd.helpLine then
-				cmdText = cmdText .. TRP3_API.Colors.Orange(cmd.helpLine);
+				cmdText = cmdText .. TRP3.Colors.Orange(cmd.helpLine);
 			end
 			displayMessage(cmdText);
 		end
@@ -64,7 +59,7 @@ end
 -- Dices roll
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
+local Globals, Utils = TRP3.globals, TRP3.utils;
 local UnitExists, UnitInParty, UnitInRaid = UnitExists, UnitInParty, UnitInRaid;
 
 local DICE_SIGNAL = "DISN";
@@ -120,7 +115,7 @@ local function rollDice(diceString)
 	return 0;
 end
 
-function TRP3_API.slash.rollDices(...)
+function TRP3.slash.rollDices(...)
 	local args = {...};
 	local total = 0;
 	local i = 0;
@@ -139,7 +134,7 @@ function TRP3_API.slash.rollDices(...)
 		sendDiceRoll({t = total});
 	end
 	Utils.message.displayMessage(totalMessage, 3);
-	TRP3_API.ui.misc.playSoundKit(36629, "SFX");
+	TRP3.ui.misc.playSoundKit(36629, "SFX");
 	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.DICE_ROLL, strjoin(" ", unpack(args)), total);
 
 	return total, i;
@@ -164,12 +159,12 @@ end
 local DICEROLL_BROADCAST_COOLDOWN_DURATION = 2;
 local DICEROLLS_COOLDOWNS = {};
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-	TRP3_API.slash.registerCommand({
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+	TRP3.slash.registerCommand({
 		id = "roll",
 		helpLine = " " .. loc.DICE_HELP,
 		handler = function(...)
-			TRP3_API.slash.rollDices(...);
+			TRP3.slash.rollDices(...);
 		end
 	});
 

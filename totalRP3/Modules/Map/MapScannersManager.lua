@@ -1,11 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
+local Ellyb = TRP3.Ellyb;
 
 local MapScannersManager = {}
 local registeredMapScans = {};
@@ -33,7 +28,7 @@ function MapScannersManager.launch(scanID)
 	assert(registeredMapScans[scanID], ("Unknown scan id %s"):format(scanID));
 	---@type MapScanner
 	local scan = registeredMapScans[scanID];
-	TRP3_API.MapDataProvider:RemoveAllData();
+	TRP3.MapDataProvider:RemoveAllData();
 
 	-- Save the displayed map ID so we can check that we are still on the requested map when the scan ends
 	displayedMapID = AddOn_TotalRP3.Map.getDisplayedMapID()
@@ -48,16 +43,16 @@ function MapScannersManager.launch(scanID)
 			return
 		end
 		scan:OnScanCompleted();
-		TRP3_API.MapDataProvider:OnScan(scan:GetData(), scan:GetDataProviderTemplate())
-		TRP3_API.ui.misc.playSoundKit(43493);
+		TRP3.MapDataProvider:OnScan(scan:GetData(), scan:GetDataProviderTemplate())
+		TRP3.ui.misc.playSoundKit(43493);
 	end
 
 
 	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.MAP_SCAN_STARTED, scan.duration);
 	scan:Scan();
 	C_Timer.After(scan.duration, OnScanTimerElapsed);
-	TRP3_API.WorldMapButton.startCooldown(scan.duration);
-	TRP3_API.ui.misc.playSoundKit(40216);
+	TRP3.WorldMapButton.startCooldown(scan.duration);
+	TRP3.ui.misc.playSoundKit(40216);
 end
 
-TRP3_API.MapScannersManager = MapScannersManager;
+TRP3.MapScannersManager = MapScannersManager;

@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 TRP3_TooltipMixin = {};
 
@@ -200,29 +200,25 @@ end
 
 local g_lastCopiedIcon;
 
---- TRP3_API.SetLastCopiedIcon sets the last copied icon.
 ---@param icon string Contains the name of the icon to be copied.
-function TRP3_API.SetLastCopiedIcon(icon)
+function TRP3.SetLastCopiedIcon(icon)
 	g_lastCopiedIcon = icon;
 end
 
---- TRP3_API.GetLastCopiedIcon gets the last copied icon.
 ---@return string icon Contains the name of the last icon that was copied.
-function TRP3_API.GetLastCopiedIcon()
+function TRP3.GetLastCopiedIcon()
 	return g_lastCopiedIcon;
 end
 
 local g_lastCopiedColor;
 
---- TRP3_API.SetLastCopiedColor sets the last copied color.
 ---@param color string|table Contains the color to be copied.
-function TRP3_API.SetLastCopiedColor(color)
+function TRP3.SetLastCopiedColor(color)
 	g_lastCopiedColor = color;
 end
 
---- TRP3_API.GetLastCopiedColor gets the last copied color.
 ---@return string|table color Contains the last color that was copied.
-function TRP3_API.GetLastCopiedColor()
+function TRP3.GetLastCopiedColor()
 	return g_lastCopiedColor;
 end
 
@@ -269,29 +265,29 @@ function TRP3_ColorPickerButtonMixin:OnClick(mouseButtonName)
 
 	local hexa;
 	if self.red then
-		hexa = TRP3_API.CreateColorFromBytes(self.red, self.green, self.blue):GenerateHexColorOpaque();
+		hexa = TRP3.CreateColorFromBytes(self.red, self.green, self.blue):GenerateHexColorOpaque();
 	end
 
 	local function OnCopyColorClicked()
 		local code = "#" .. hexa;
-		TRP3_API.popup.showCopyDropdownPopup({ code });
+		TRP3.popup.showCopyDropdownPopup({ code });
 	end
 
 	local function OnPasteColorClicked()
-		local color = TRP3_API.GetLastCopiedColor() or nil;
-		local colorObject = type(color) == "table" and TRP3_API.CreateColorFromTable(color) or TRP3_API.CreateColorFromHexString(color);
+		local color = TRP3.GetLastCopiedColor() or nil;
+		local colorObject = type(color) == "table" and TRP3.CreateColorFromTable(color) or TRP3.CreateColorFromHexString(color);
 		self.setColor(colorObject:GetRGBAsBytes());
 	end
 
 	local function GenerateMenu(_, rootDescription)
-		local copyButton = rootDescription:CreateButton(L.REG_PLAYER_COLOR_TT_COPY, TRP3_API.SetLastCopiedColor, hexa);
+		local copyButton = rootDescription:CreateButton(L.REG_PLAYER_COLOR_TT_COPY, TRP3.SetLastCopiedColor, hexa);
 		copyButton:SetEnabled(hexa ~= nil);
 
 		local copyNameButton = rootDescription:CreateButton(L.REG_PLAYER_COLOR_TT_COPYNAME, OnCopyColorClicked);
 		copyNameButton:SetEnabled(hexa ~= nil);
 
 		local pasteButton = rootDescription:CreateButton(L.REG_PLAYER_COLOR_TT_PASTE, OnPasteColorClicked);
-		pasteButton:SetEnabled(TRP3_API.GetLastCopiedColor() ~= nil);
+		pasteButton:SetEnabled(TRP3.GetLastCopiedColor() ~= nil);
 
 		if hexa then
 			rootDescription:CreateButton("|cnRED_FONT_COLOR:" .. L.REG_PLAYER_COLOR_TT_DISCARD .. "|r", function() self.setColor(nil, nil, nil); end);
@@ -299,10 +295,10 @@ function TRP3_ColorPickerButtonMixin:OnClick(mouseButtonName)
 	end
 
 	if mouseButtonName == "LeftButton" then
-		if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
-			TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
+		if IsShiftKeyDown() or (TRP3.configuration.getValue("default_color_picker")) then
+			TRP3.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
 		else
-			TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, nil, {self.setColor, self.red, self.green, self.blue});
+			TRP3.popup.showPopup(TRP3.popup.COLORS, nil, {self.setColor, self.red, self.green, self.blue});
 		end
 	elseif mouseButtonName == "RightButton" then
 		TRP3_MenuUtil.CreateContextMenu(self, GenerateMenu);

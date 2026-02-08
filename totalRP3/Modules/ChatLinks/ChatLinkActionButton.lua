@@ -1,14 +1,9 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
+local Ellyb = TRP3.Ellyb;
 
 -- Total RP 3 imports
-local loc = TRP3_API.loc;
+local loc = TRP3.loc;
 
 ---@class ChatLinkActionButton : Object
 local ChatLinkActionButton, _private = Ellyb.Class("ChatLinkActionButton");
@@ -29,7 +24,7 @@ function ChatLinkActionButton:initialize(actionID, buttonText, questionCommand, 
 
 	-- Register to answer questions
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(questionCommand, function(linkData, sender)
-		local link = TRP3_API.ChatLinksManager:GetSentLinkForIdentifier(linkData.linkID);
+		local link = TRP3.ChatLinksManager:GetSentLinkForIdentifier(linkData.linkID);
 		AddOn_TotalRP3.Communications.sendObject(answerCommand, link:GetData(), sender, "LOW", linkData.messageToken)
 	end);
 
@@ -69,7 +64,7 @@ end
 ---@param sender string @ The name of the sender of the link
 ---@param button Button @ The UI button that was clicked
 function ChatLinkActionButton:OnClick(linkID, sender, button)
-	TRP3_API.ChatLinks:CheckVersions(function()
+	TRP3.ChatLinks:CheckVersions(function()
 		-- Set the button text to indicate that we are sending the command
 		button:SetText(loc.CL_SENDING_COMMAND);
 		button:Disable();
@@ -128,7 +123,7 @@ function TRP3_ChatLinkActionButtonMixin:OnSetText()
 end
 
 function TRP3_ChatLinkActionButtonMixin:OnClick()
-	local module = TRP3_API.ChatLinks:GetModuleByID(TRP3_RefTooltip.itemData.moduleID);
+	local module = TRP3.ChatLinks:GetModuleByID(TRP3_RefTooltip.itemData.moduleID);
 	module:OnActionButtonClicked(self.command, TRP3_RefTooltip.itemData.customData, TRP3_RefTooltip.sender, self);
 end
 
@@ -149,4 +144,4 @@ function TRP3_ChatLinkActionButtonMixin:Reset()
 	self:Enable();
 end
 
-TRP3_API.ChatLinkActionButton = ChatLinkActionButton;
+TRP3.ChatLinkActionButton = ChatLinkActionButton;

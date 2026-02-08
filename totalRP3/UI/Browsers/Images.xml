@@ -24,7 +24,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<OnClick>
 						PlaySound(TRP3_InterfaceSounds.PopupClose);
 						TRP3_ImageBrowser:Hide();
-						TRP3_API.popup.hidePopups();
+						TRP3.popup.hidePopups();
 					</OnClick>
 				</Scripts>
 			</Button>

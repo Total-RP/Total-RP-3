@@ -1,5 +1,6 @@
-local TRP3_API = select(2, ...);
-local Ellyb = TRP3_API.Ellyb;
+---@class TRP3
+local TRP3 = select(2, ...);
+local Ellyb = TRP3.Ellyb;
 
 if Ellyb.Popups then
 	return
@@ -41,17 +42,17 @@ end);
 function Popups:OpenURL(url, customText, customShortcutInstructions, customAlertOnClose)
 	local popupText = customText and (customText .. "\n\n") or "";
 	if not customShortcutInstructions then
-		customShortcutInstructions = TRP3_API.loc.COPY_URL_POPUP_TEXT;
+		customShortcutInstructions = TRP3.loc.COPY_URL_POPUP_TEXT;
 	end
 
-	local copyShortcut = TRP3_API.FormatShortcut("CTRL-C", TRP3_API.ShortcutType.System);
-	local pasteShortcut = TRP3_API.FormatShortcut("CTRL-V", TRP3_API.ShortcutType.System);
+	local copyShortcut = TRP3.FormatShortcut("CTRL-C", TRP3.ShortcutType.System);
+	local pasteShortcut = TRP3.FormatShortcut("CTRL-V", TRP3.ShortcutType.System);
 
-	popupText = popupText .. customShortcutInstructions:format(TRP3_API.Colors.Green(copyShortcut), TRP3_API.Colors.Green(pasteShortcut));
+	popupText = popupText .. customShortcutInstructions:format(TRP3.Colors.Green(copyShortcut), TRP3.Colors.Green(pasteShortcut));
 	URLPopup.Text:SetText(popupText);
 	URLPopup.Url:SetText(url);
 	if not customAlertOnClose then
-		customAlertOnClose = TRP3_API.loc.COPY_SYSTEM_MESSAGE;
+		customAlertOnClose = TRP3.loc.COPY_SYSTEM_MESSAGE;
 	end
 	URLPopup.alertMessage = customAlertOnClose;
 	URLPopup:SetHeight(120 + URLPopup.Text:GetHeight());

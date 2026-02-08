@@ -1,18 +1,15 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 --region Total RP 3 imports
 local Events = TRP3_Addon.Events;
-local playAnimation = TRP3_API.ui.misc.playAnimation;
+local playAnimation = TRP3.ui.misc.playAnimation;
 --endregion
 
 ---@type Frame|ScriptObject
 local TRP3_ScanLoaderFrame = TRP3_ScanLoaderFrame;
 
-TRP3_API.RegisterCallback(TRP3_Addon, Events.MAP_SCAN_STARTED, function(_, scanDuration)
+TRP3.RegisterCallback(TRP3_Addon, Events.MAP_SCAN_STARTED, function(_, scanDuration)
 	assert(scanDuration, "Did somebody forgot to set a duration to a scan? Silly you!")
 	TRP3_ScanLoaderFrame.time = scanDuration;
 	TRP3_ScanLoaderFrame:Show();
@@ -25,7 +22,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, Events.MAP_SCAN_STARTED, function(_, scanD
 	playAnimation(TRP3_ScanLoaderFrame.content);
 end);
 
-TRP3_API.RegisterCallback(TRP3_Addon, Events.MAP_SCAN_ENDED, function()
+TRP3.RegisterCallback(TRP3_Addon, Events.MAP_SCAN_ENDED, function()
 	playAnimation(TRP3_ScanLoaderFrame.fadeOut, function()
 		TRP3_ScanLoaderFrame:Hide();
 	end)

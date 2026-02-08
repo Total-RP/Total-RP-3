@@ -1,24 +1,21 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
+local Ellyb = TRP3.Ellyb;
 
 -- Total RP 3 imports
-local loc = TRP3_API.loc;
-local tcopy = TRP3_API.utils.table.copy;
-local Utils = TRP3_API.utils;
+local loc = TRP3.loc;
+local tcopy = TRP3.utils.table.copy;
+local Utils = TRP3.utils;
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
-	local RegisterCompanionChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_DIRECTORY_COMPANION_PROFILE, "DIR_COMPANION_PROFILE");
+	local RegisterCompanionChatLinksModule = TRP3.ChatLinks:InstantiateModule(loc.CL_DIRECTORY_COMPANION_PROFILE, "DIR_COMPANION_PROFILE");
 
 	--- Get a copy of the data for the link, using the information provided when using RegisterChatLinkModule:InsertLink
 	function RegisterCompanionChatLinksModule:GetLinkData(profileID, canBeImported)
 		Ellyb.Assertions.isType(profileID, "string", "profileID");
 
-		local profile = TRP3_API.companions.register.getProfiles()[profileID];
+		local profile = TRP3.companions.register.getProfiles()[profileID];
 		local linkText = UNKNOWN;
 		if profile.data and profile.data.NA then
 			linkText = profile.data.NA;
@@ -42,16 +39,16 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 		local profile = tooltipData.profile;
 
-		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
+		local tooltipLines = TRP3.ChatLinkTooltipLines();
 
 		local dataTab = profile.data;
 		local name = dataTab.NA;
 		if dataTab.IC then
 			name = Utils.str.icon(dataTab.IC, 30) .. " " .. name;
 		end
-		tooltipLines:SetTitle(name, TRP3_API.Colors.White);
+		tooltipLines:SetTitle(name, TRP3.Colors.White);
 		if dataTab.TI then
-			tooltipLines:AddLine("< " .. dataTab.TI .. " >", TRP3_API.Colors.Orange);
+			tooltipLines:AddLine("< " .. dataTab.TI .. " >", TRP3.Colors.Orange);
 		end
 		return tooltipLines;
 	end
@@ -62,13 +59,13 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	function OpenRegisterCompanionProfileButton:OnAnswerCommandReceived(profileData)
 		local profileID, profile = profileData.profileID, profileData.profileData;
 		-- Check profile exists
-		if not TRP3_API.companions.register.getProfiles()[profileID] then
-			TRP3_API.companions.register.registerCreateProfile(profileID);
+		if not TRP3.companions.register.getProfiles()[profileID] then
+			TRP3.companions.register.registerCreateProfile(profileID);
 		end
-		TRP3_API.companions.register.setProfileData(profileID, profile);
+		TRP3.companions.register.setProfileData(profileID, profile);
 
-		TRP3_API.companions.register.openPage(profileID);
-		TRP3_API.navigation.openMainFrame();
+		TRP3.companions.register.openPage(profileID);
+		TRP3.navigation.openMainFrame();
 	end
 
 	-- Import profile action button
@@ -85,14 +82,14 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			newName = profile.data.NA;
 		end
 		local i = 1;
-		while not TRP3_API.companions.player.isProfileNameAvailable(newName) and i < 500 do
+		while not TRP3.companions.player.isProfileNameAvailable(newName) and i < 500 do
 			i = i + 1;
 			newName = newName .. " " .. i;
 		end
-		local profileID = TRP3_API.companions.player.duplicateProfile(profile, newName);
-		TRP3_API.companions.openPage(profileID);
-		TRP3_API.navigation.openMainFrame();
+		local profileID = TRP3.companions.player.duplicateProfile(profile, newName);
+		TRP3.companions.openPage(profileID);
+		TRP3.navigation.openMainFrame();
 	end
 
-	TRP3_API.RegisterCompanionChatLinksModule = RegisterCompanionChatLinksModule;
+	TRP3.RegisterCompanionChatLinksModule = RegisterCompanionChatLinksModule;
 end);

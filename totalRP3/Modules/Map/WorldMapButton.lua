@@ -1,20 +1,17 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
+local Ellyb = TRP3.Ellyb;
 
 --region Total RP 3 imports
-local loc = TRP3_API.loc;
+local loc = TRP3.loc;
 local Events = TRP3_Addon.Events;
-local getConfigValue = TRP3_API.configuration.getValue;
-local setConfigValue = TRP3_API.configuration.setValue;
-local registerConfigKey = TRP3_API.configuration.registerConfigKey;
+local getConfigValue = TRP3.configuration.getValue;
+local setConfigValue = TRP3.configuration.setValue;
+local registerConfigKey = TRP3.configuration.registerConfigKey;
 --endregion
 
 --region Ellyb imports
-local YELLOW = TRP3_API.Colors.Yellow
+local YELLOW = TRP3.Colors.Yellow
 --endregion
 
 --region WoW imports
@@ -31,12 +28,12 @@ local NORMAL_STATE_MAP_ICON = Ellyb.Icon(TRP3_InterfaceIcons.ScanReady);
 local ON_COOLDOWN_STATE_MAP_ICON = Ellyb.Icon(TRP3_InterfaceIcons.ScanCooldown);
 
 --region Configuration
-TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, function()
+TRP3.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, function()
 	registerConfigKey(CONFIG_MAP_BUTTON_POSITION, "BOTTOMLEFT");
 	registerConfigKey(CONFIG_HIDE_BUTTON_IF_EMPTY, false);
 
 	local function placeMapButton(newPosition)
-		if getConfigValue(CONFIG_HIDE_BUTTON_IF_EMPTY) and next(TRP3_API.MapScannersManager.getAllScans()) == nil then
+		if getConfigValue(CONFIG_HIDE_BUTTON_IF_EMPTY) and next(TRP3.MapScannersManager.getAllScans()) == nil then
 			WorldMapButton:Hide();
 			return
 		else
@@ -67,12 +64,12 @@ TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, function()
 		WorldMapButton:SetPoint(position, WorldMapFrame.ScrollContainer, position, xPadding, yPadding);
 	end
 
-	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc.CO_MAP_BUTTON,
 	});
 
-	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigDropDown",
 		widgetName = "TRP3_ConfigurationFrame_MapButtonWidget",
 		title = loc.CO_MAP_BUTTON_POS,
@@ -87,13 +84,13 @@ TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, function()
 		configKey = CONFIG_MAP_BUTTON_POSITION,
 	});
 
-	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc.CO_HIDE_EMPTY_MAP_BUTTON,
 		configKey = CONFIG_HIDE_BUTTON_IF_EMPTY
 	});
 
-	TRP3_API.configuration.registerHandler(CONFIG_HIDE_BUTTON_IF_EMPTY, function()
+	TRP3.configuration.registerHandler(CONFIG_HIDE_BUTTON_IF_EMPTY, function()
 		placeMapButton();
 	end)
 
@@ -115,7 +112,7 @@ end)
 --region Broadcast Lifecycle
 -- When we get BROADCAST_CHANNEL_CONNECTING we'll ensure the button is
 -- disabled and tell the user things are firing up.
-TRP3_API.RegisterCallback(TRP3_Addon, Events.BROADCAST_CHANNEL_CONNECTING, function()
+TRP3.RegisterCallback(TRP3_Addon, Events.BROADCAST_CHANNEL_CONNECTING, function()
 	WorldMapButton:SetEnabled(false);
 	WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE_CONNECTING);
 	WorldMapButton.Icon:SetDesaturated(true);
@@ -123,7 +120,7 @@ end);
 
 -- If we get BROADCAST_CHANNEL_OFFLINE we'll ensure the button remains
 -- disabled and dump the localised error into the tooltip, to be useful.
-TRP3_API.RegisterCallback(TRP3_Addon, Events.BROADCAST_CHANNEL_OFFLINE, function(_, reason)
+TRP3.RegisterCallback(TRP3_Addon, Events.BROADCAST_CHANNEL_OFFLINE, function(_, reason)
 	WorldMapButton:SetEnabled(false);
 	WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE_OFFLINE):format(reason);
 	WorldMapButton.Icon:SetDesaturated(true);
@@ -131,7 +128,7 @@ end);
 
 -- When we get BROADCAST_CHANNEL_READY it's time to enable the button use the
 -- standard tooltip description.
-TRP3_API.RegisterCallback(TRP3_Addon, Events.BROADCAST_CHANNEL_READY, function()
+TRP3.RegisterCallback(TRP3_Addon, Events.BROADCAST_CHANNEL_READY, function()
 	WorldMapButton:SetEnabled(true);
 	WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE);
 	WorldMapButton.Icon:SetDesaturated(false);
@@ -141,7 +138,7 @@ end);
 
 WorldMapButton:SetScript("OnMouseDown", function(self)
 	local structure = {};
-	local scans = TRP3_API.MapScannersManager.getAllScans();
+	local scans = TRP3.MapScannersManager.getAllScans();
 	---@param scan MapScanner
 	for scanID, scan in pairs(scans) do
 		if scan:CanScan() then
@@ -177,7 +174,7 @@ WorldMapButton:SetScript("OnMouseDown", function(self)
 			local responder;
 
 			if scan[2] ~= nil then
-				responder = TRP3_API.MapScannersManager.launch;
+				responder = TRP3.MapScannersManager.launch;
 			end
 
 			description:CreateButton(scan[1], responder, scan[2]);
@@ -197,4 +194,4 @@ function WorldMapButton.startCooldown(timer)
 	after(timer, WorldMapButton.resetCooldown)
 end
 
-TRP3_API.WorldMapButton = WorldMapButton;
+TRP3.WorldMapButton = WorldMapButton;

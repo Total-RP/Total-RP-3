@@ -1,8 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-local L = TRP3_API.L;
+local L = TRP3.L;
 
 local function SetCustomClassColor(player, field, data)
 	local hexColorString = string.match(data, "^#?(%x%x%x%x%x%x)$");

@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 
@@ -57,7 +57,7 @@ function TRP3_MusicBrowserListElementMixin:OnClick(mouseButtonName)
 	if mouseButtonName == "LeftButton" then
 		self:TriggerEvent("OnMusicSelected", musicInfo);
 	elseif mouseButtonName == "RightButton" then
-		TRP3_API.utils.music.playMusic(musicInfo.file);
+		TRP3.utils.music.playMusic(musicInfo.file);
 	end
 end
 
@@ -113,7 +113,7 @@ function TRP3_MusicBrowserMixin:OnCloseButtonClick()
 end
 
 function TRP3_MusicBrowserMixin:OnStopButtonClick()
-	TRP3_API.utils.music.stopMusic();
+	TRP3.utils.music.stopMusic();
 end
 
 function TRP3_MusicBrowserMixin:OnMusicSelected(musicInfo)
@@ -144,6 +144,6 @@ function TRP3_MusicBrowserMixin:Update()
 end
 
 function TRP3_MusicBrowserMixin:Close()
-	TRP3_API.popup.hidePopups();
+	TRP3.popup.hidePopups();
 	self:Hide();
 end

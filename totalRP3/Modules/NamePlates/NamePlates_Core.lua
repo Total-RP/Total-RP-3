@@ -1,8 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 local displayInfoPool = {};
 local playerCharacterPool = setmetatable({}, { __mode = "kv" });
@@ -65,18 +64,18 @@ local function GetUnitRoleplayStatus(unitToken)
 	elseif UnitIsUnit(unitToken, "player") then
 		player = AddOn_TotalRP3.Player.GetCurrentUser();
 	elseif UnitIsPlayer(unitToken) then
-		local characterID = TRP3_API.utils.str.getUnitID(unitToken);
+		local characterID = TRP3.utils.str.getUnitID(unitToken);
 
 		if characterID then
 			player = GetOrCreatePlayerFromCharacterID(characterID);
 		end
 	else
 		-- For companion units query the OOC state of their owner.
-		local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-		local characterID = select(2, TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType));
+		local unitType = TRP3.ui.misc.getTargetType(unitToken);
+		local characterID = select(2, TRP3.ui.misc.getCompanionFullID(unitToken, unitType));
 
 		if characterID then
-			if characterID == TRP3_API.globals.player_id then
+			if characterID == TRP3.globals.player_id then
 				player = AddOn_TotalRP3.Player.GetCurrentUser();
 			else
 				player = GetOrCreatePlayerFromCharacterID(characterID);
@@ -111,7 +110,7 @@ local function ShouldCustomizeUnitNamePlate(unitToken)
 		shouldCustomize = false;  -- Never decorate personal nameplates.
 	elseif TRP3_NamePlatesSettings.DisableInCombat and isInCombat then
 		shouldCustomize = false;  -- Player is in (or about to enter) combat.
-	elseif TRP3_NamePlatesSettings.DisableInInstances and TRP3_API.utils.IsInCombatInstance() then
+	elseif TRP3_NamePlatesSettings.DisableInInstances and TRP3.utils.IsInCombatInstance() then
 		shouldCustomize = false;   -- Player is in instanced content.
 	elseif TRP3_NamePlatesSettings.DisableOutOfCharacter and IsUnitOutOfCharacter("player") then
 		shouldCustomize = false;  -- Player is currently OOC.
@@ -145,8 +144,8 @@ local function GetCompanionColorForDisplay(colorHexString)
 		return nil;
 	end
 
-	local color = TRP3_API.CreateColorFromHexString(colorHexString);
-	color = TRP3_API.GenerateReadableColor(color, TRP3_API.Colors.Black);
+	local color = TRP3.CreateColorFromHexString(colorHexString);
+	color = TRP3.GenerateReadableColor(color, TRP3.Colors.Black);
 	return color;
 end
 
@@ -154,7 +153,7 @@ local function GetCharacterColorForDisplay(player, classToken)
 	local color = player:GetCustomColorForDisplay();
 
 	if not color and TRP3_NamePlatesSettings.EnableClassColorFallback then
-		color = TRP3_API.GetClassDisplayColor(classToken);
+		color = TRP3.GetClassDisplayColor(classToken);
 	end
 
 	return color;
@@ -164,12 +163,12 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 	local displayInfo = GetOrCreateDisplayInfo(unitToken);
 	displayInfo.isPlayerUnit = true;
 
-	if characterID and TRP3_API.register.isUnitIDKnown(characterID) then
+	if characterID and TRP3.register.isUnitIDKnown(characterID) then
 		local player = GetOrCreatePlayerFromCharacterID(characterID);
 		local classToken = UnitClassBase(unitToken);
 
 		-- Don't customize default profile nameplates
-		if TRP3_API.profile.isDefaultProfile(player:GetProfileID()) then
+		if TRP3.profile.isDefaultProfile(player:GetProfileID()) then
 			return displayInfo;
 		end
 
@@ -272,13 +271,13 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 		return displayInfo;
 	end
 
-	local owner, companionID = TRP3_API.utils.str.companionIDToInfo(companionFullID);
+	local owner, companionID = TRP3.utils.str.companionIDToInfo(companionFullID);
 	local profile;
 
-	if owner == TRP3_API.globals.player_id then
-		profile = TRP3_API.companions.player.getCompanionProfile(companionID);
+	if owner == TRP3.globals.player_id then
+		profile = TRP3.companions.player.getCompanionProfile(companionID);
 	else
-		profile = TRP3_API.companions.register.getCompanionProfile(companionFullID);
+		profile = TRP3.companions.register.getCompanionProfile(companionFullID);
 	end
 
 	if profile and profile.data then
@@ -353,19 +352,19 @@ TRP3_NamePlates.Events =
 };
 
 function TRP3_NamePlates:OnInitialize()
-	self.callbacks = TRP3_API.InitCallbackRegistryWithEvents(self, TRP3_NamePlates.Events);
+	self.callbacks = TRP3.InitCallbackRegistryWithEvents(self, TRP3_NamePlates.Events);
 	self.requests = CreateAndInitFromMixin(TRP3_NamePlatesRequestManagerMixin);
 	self.displayInfoFilters = {};
 	self.unitCharacterIDs = {};
 
-	self.events = TRP3_API.CreateCallbackGroup();
-	self.events:AddCallback(TRP3_API.GameEvents, "NAME_PLATE_UNIT_ADDED", self.OnNamePlateUnitAdded, self);
-	self.events:AddCallback(TRP3_API.GameEvents, "NAME_PLATE_UNIT_REMOVED", self.OnNamePlateUnitRemoved, self);
-	self.events:AddCallback(TRP3_API.GameEvents, "UNIT_NAME_UPDATE", self.OnUnitNameUpdate, self);
-	self.events:AddCallback(TRP3_API.GameEvents, "PLAYER_REGEN_DISABLED", self.OnCombatStatusChanged, self);
-	self.events:AddCallback(TRP3_API.GameEvents, "PLAYER_REGEN_ENABLED", self.OnCombatStatusChanged, self);
-	self.events:AddCallback(TRP3_API.GameEvents, "PLAYER_ENTERING_WORLD", self.OnPlayerEnteringWorld, self);
-	self.events:AddCallback(TRP3_API.GameEvents, "PLAYER_TARGET_CHANGED", self.OnPlayerTargetChanged, self);
+	self.events = TRP3.CreateCallbackGroup();
+	self.events:AddCallback(TRP3.GameEvents, "NAME_PLATE_UNIT_ADDED", self.OnNamePlateUnitAdded, self);
+	self.events:AddCallback(TRP3.GameEvents, "NAME_PLATE_UNIT_REMOVED", self.OnNamePlateUnitRemoved, self);
+	self.events:AddCallback(TRP3.GameEvents, "UNIT_NAME_UPDATE", self.OnUnitNameUpdate, self);
+	self.events:AddCallback(TRP3.GameEvents, "PLAYER_REGEN_DISABLED", self.OnCombatStatusChanged, self);
+	self.events:AddCallback(TRP3.GameEvents, "PLAYER_REGEN_ENABLED", self.OnCombatStatusChanged, self);
+	self.events:AddCallback(TRP3.GameEvents, "PLAYER_ENTERING_WORLD", self.OnPlayerEnteringWorld, self);
+	self.events:AddCallback(TRP3.GameEvents, "PLAYER_TARGET_CHANGED", self.OnPlayerTargetChanged, self);
 
 	self.events:AddCallback(TRP3_Addon, "CONFIGURATION_CHANGED",self.OnConfigurationChanged, self);
 	self.events:AddCallback(TRP3_Addon, "REGISTER_DATA_UPDATED",self.OnRegisterDataUpdated, self);
@@ -468,7 +467,7 @@ function TRP3_NamePlates:OnConfigurationChanged(key)
 end
 
 function TRP3_NamePlates:OnRegisterDataUpdated(characterID)
-	if characterID == TRP3_API.globals.player_id then
+	if characterID == TRP3.globals.player_id then
 		self:UpdateAllNamePlates();
 	else
 		local unitToken = self.unitCharacterIDs[characterID];
@@ -494,7 +493,7 @@ function TRP3_NamePlates:RegisterDisplayInfoFilter(filter)
 end
 
 function TRP3_NamePlates:GetUnitDisplayInfo(unitToken)
-	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
+	local unitType = TRP3.ui.misc.getTargetType(unitToken);
 	local characterID = TRP3_NamePlatesUtil.GetUnitCharacterID(unitToken);
 	local displayInfo;
 

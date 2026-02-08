@@ -1,15 +1,14 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
+
+local Ellyb = TRP3.Ellyb;
 
 --{{{ Total RP 3 imports
-local loc = TRP3_API.loc;
+local loc = TRP3.loc;
 --}}}
 
 --{{{ Ellyb imports
-local ORANGE = TRP3_API.Colors.Orange;
+local ORANGE = TRP3.Colors.Orange;
 ---}}}
 
 -- Create the pin template, above group members
@@ -23,7 +22,7 @@ TRP3_PlayerMapPinMixin = AddOn_TotalRP3.MapPoiMixins.createPinTemplate(
 TRP3_PlayerMapPinMixin.TEMPLATE_NAME = "TRP3_PlayerMapPinTemplate";
 
 local CONFIG_SHOW_DIFFERENT_WAR_MODES = "register_map_location_show_war_modes";
-local getConfigValue = TRP3_API.configuration.getValue;
+local getConfigValue = TRP3.configuration.getValue;
 
 --- This is called when the data provider acquire a pin, to transform poiInfo received from the scan
 --- into display info to be used to decorate the pin.
@@ -49,23 +48,23 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	if player:IsCurrentUser() then
 		-- Special case when seeing ourselves on the map (DEBUG)
 		displayData.iconAtlas = "PlayerPartyBlip";
-		displayData.iconColor = TRP3_API.Colors.Cyan;
-		displayData.categoryName = loc.REG_RELATION .. ": " .. TRP3_API.Colors.Cyan("SELF");
+		displayData.iconColor = TRP3.Colors.Cyan;
+		displayData.categoryName = loc.REG_RELATION .. ": " .. TRP3.Colors.Cyan("SELF");
 		displayData.categoryPriority = math.huge;
 	elseif shouldDifferentiateBetweenWarModes and not hasSameWarModeAsPlayer then
 		-- Swap out the atlas for this marker, show it in red, low opacity, and in a special category
 		displayData.iconAtlas = "PlayerPartyBlip";
-		displayData.iconColor = TRP3_API.Colors.Grey;
+		displayData.iconColor = TRP3.Colors.Grey;
 		displayData.opacity = math.min(0.5, displayData.opacity);
-		displayData.categoryName = TRP3_API.Colors.Red(loc.REG_LOCATION_DIFFERENT_WAR_MODE);
+		displayData.categoryName = TRP3.Colors.Red(loc.REG_LOCATION_DIFFERENT_WAR_MODE);
 		displayData.categoryPriority = 1;
 	else
 		local relation = player:GetRelationshipWithPlayer()
-		if relation.id ~= TRP3_API.register.relation.getRelationInfo().id then
-			local relationshipColor = TRP3_API.register.relation.getColor(relation);
+		if relation.id ~= TRP3.register.relation.getRelationInfo().id then
+			local relationshipColor = TRP3.register.relation.getColor(relation);
 			displayData.iconAtlas = "PlayerPartyBlip";
 			displayData.iconColor = relationshipColor;
-			displayData.categoryName = loc.REG_RELATION .. ": " .. (relationshipColor or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_".. relation.id));
+			displayData.categoryName = loc.REG_RELATION .. ": " .. (relationshipColor or TRP3.Colors.White)(relation.name or loc:GetText("REG_RELATION_".. relation.id));
 			displayData.categoryPriority = -relation.order or math.huge;
 		end
 	end
@@ -128,7 +127,7 @@ local function GeneratePinContextMenu(pins, _, rootDescription)
 		local pin = pins[i];
 		local text = string.format("%1$s: %2$s", loc.CL_OPEN_PROFILE, pin.playerNameColored);
 		local sender = pin.sender;
-		local callback = function(...) TRP3_API.slash.openProfile((...)); end;
+		local callback = function(...) TRP3.slash.openProfile((...)); end;
 
 		rootDescription:CreateButton(text, callback, sender);
 	end
@@ -144,7 +143,7 @@ function TRP3_PlayerMapPinMixin:OnMouseDown(button)
 
 	if #pins == 1 then
 		-- Single pin; open straight to profile.
-		TRP3_API.slash.openProfile(pins[1].sender);
+		TRP3.slash.openProfile(pins[1].sender);
 	else
 		TRP3_MenuUtil.CreateContextMenu(self, function(...) GeneratePinContextMenu(pins, ...); end);
 	end
@@ -152,7 +151,7 @@ end
 
 function TRP3_PlayerMapPinMixin:OnTooltipAboutToShow(tooltip)
 	tooltip:AddTempLine([[|TInterface\Common\UI-TooltipDivider-Transparent:8:128:0:0:8:8:0:128:0:8:255:255:255|t]]);
-	tooltip:AddTempLine(TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.CL_OPEN_PROFILE), WHITE_FONT_COLOR);
+	tooltip:AddTempLine(TRP3.FormatShortcutWithInstruction("RCLICK", loc.CL_OPEN_PROFILE), WHITE_FONT_COLOR);
 end
 
 function TRP3_PlayerMapPinMixin:CheckMouseButtonPassthrough()

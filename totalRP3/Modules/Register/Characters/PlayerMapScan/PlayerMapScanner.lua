@@ -1,15 +1,12 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
+local Ellyb = TRP3.Ellyb;
 
 --{{{ Total RP 3 imports
-local loc = TRP3_API.loc;
+local loc = TRP3.loc;
 local broadcast = AddOn_TotalRP3.Communications.broadcast;
-local registerConfigKey = TRP3_API.configuration.registerConfigKey;
-local getConfigValue = TRP3_API.configuration.getValue;
+local registerConfigKey = TRP3.configuration.registerConfigKey;
+local getConfigValue = TRP3.configuration.getValue;
 local Map = AddOn_TotalRP3.Map;
 --}}}
 
@@ -64,7 +61,7 @@ local PlayerMapScannerMixin = {};
 PlayerMapScannerMixin.scanIcon = Ellyb.Icon(TRP3_InterfaceIcons.PlayerScanIcon);
 PlayerMapScannerMixin.scanOptionText = loc.MAP_SCAN_CHAR;
 PlayerMapScannerMixin.scanTitle = loc.MAP_SCAN_CHAR_TITLE;
-PlayerMapScannerMixin.broadcastMethod = TRP3_API.BroadcastMethod.World
+PlayerMapScannerMixin.broadcastMethod = TRP3.BroadcastMethod.World
 -- Indicate the name of the pin template to use with this scan.
 -- The MapDataProvider will use this template to generate the pin
 PlayerMapScannerMixin.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAME;
@@ -111,24 +108,24 @@ local function newMapScanner(scanID)
 	return scanner;
 end
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	registerConfigKey(CONFIG_ENABLE_MAP_LOCATION, true);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_OOC, false);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE, false);
 	registerConfigKey(CONFIG_SHOW_DIFFERENT_WAR_MODES, false);
 	registerConfigKey(CONFIG_ROLEPLAY_STATUS_VISIBILITY, RoleplayStatusVisibility.ShowInCharacter);
 
-	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	table.insert(TRP3.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc.CO_LOCATION,
 	});
-	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	table.insert(TRP3.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc.CO_LOCATION_ACTIVATE,
 		help = loc.CO_LOCATION_ACTIVATE_TT,
 		configKey = CONFIG_ENABLE_MAP_LOCATION,
 	});
-	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	table.insert(TRP3.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc.CO_LOCATION_DISABLE_OOC,
 		help = loc.CO_LOCATION_DISABLE_OOC_TT,
@@ -136,7 +133,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 	});
 	if not TRP3_ClientFeatures.WarMode then
-		table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		table.insert(TRP3.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = loc.CO_LOCATION_DISABLE_CLASSIC_PVP,
 			help = loc.CO_LOCATION_DISABLE_CLASSIC_PVP_TT,
@@ -144,14 +141,14 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 		});
 	else
-		table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		table.insert(TRP3.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = loc.CO_LOCATION_DISABLE_WAR_MODE,
 			help = loc.CO_LOCATION_DISABLE_WAR_MODE_TT,
 			configKey = CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE,
 			dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 		});
-		table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		table.insert(TRP3.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = loc.CO_LOCATION_SHOW_DIFFERENT_WAR_MODES,
 			help = loc.CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT,
@@ -159,7 +156,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 		});
 	end
-	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	table.insert(TRP3.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc.CO_LOCATION_SHOW_OUT_OF_CHARACTER,
 		help = loc.CO_LOCATION_SHOW_OUT_OF_CHARACTER_TT,
@@ -176,7 +173,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	guildMapScanner.scanOptionText = loc.MAP_SCAN_CHAR_GUILD_ONLY;
 	guildMapScanner.scanSortIndex = 50;
 	guildMapScanner.scanTitle = loc.MAP_SCAN_CHAR_GUILD_ONLY_TITLE;
-	guildMapScanner.broadcastMethod = TRP3_API.BroadcastMethod.Guild;
+	guildMapScanner.broadcastMethod = TRP3.BroadcastMethod.Guild;
 
 	local CanScanCommon = guildMapScanner.CanScan;
 	guildMapScanner.CanScan = function(self)
@@ -282,22 +279,22 @@ end)
 
 -- Slash command integration
 
-function TRP3_API.IsLocationBroadcastEnabled()
-	return TRP3_API.configuration.getValue(CONFIG_ENABLE_MAP_LOCATION);
+function TRP3.IsLocationBroadcastEnabled()
+	return TRP3.configuration.getValue(CONFIG_ENABLE_MAP_LOCATION);
 end
 
-function TRP3_API.SetLocationBroadcastEnabled(enabled)
-	local state = TRP3_API.IsLocationBroadcastEnabled();
+function TRP3.SetLocationBroadcastEnabled(enabled)
+	local state = TRP3.IsLocationBroadcastEnabled();
 
 	if state == enabled then
 		return;
 	end
 
-	TRP3_API.configuration.setValue(CONFIG_ENABLE_MAP_LOCATION, enabled);
+	TRP3.configuration.setValue(CONFIG_ENABLE_MAP_LOCATION, enabled);
 end
 
 local function DisplayLocationBroadcastStatus()
-	if TRP3_API.IsLocationBroadcastEnabled() then
+	if TRP3.IsLocationBroadcastEnabled() then
 		SendSystemMessage(loc.SLASH_CMD_LOCATION_ENABLED);
 	else
 		SendSystemMessage(loc.SLASH_CMD_LOCATION_DISABLED);
@@ -319,8 +316,8 @@ local function LocationBroadcastCommandHelp()
 	SendSystemMessage(string.format(loc.SLASH_CMD_HELP_COMMANDS, table.concat(examples, "|n")));
 end
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-	TRP3_API.slash.registerCommand({
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+	TRP3.slash.registerCommand({
 		id = "location",
 		helpLine = " " .. loc.SLASH_CMD_LOCATION_HELP,
 		handler = function(...)
@@ -333,13 +330,13 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			if subcommand == "" or subcommand == "help" then
 				LocationBroadcastCommandHelp();
 			elseif subcommand == "on" or subcommand == "enable" then
-				TRP3_API.SetLocationBroadcastEnabled(true);
+				TRP3.SetLocationBroadcastEnabled(true);
 				DisplayLocationBroadcastStatus();
 			elseif subcommand == "off" or subcommand == "disable" then
-				TRP3_API.SetLocationBroadcastEnabled(false);
+				TRP3.SetLocationBroadcastEnabled(false);
 				DisplayLocationBroadcastStatus();
 			elseif subcommand == "toggle" then
-				TRP3_API.SetLocationBroadcastEnabled(not TRP3_API.IsLocationBroadcastEnabled());
+				TRP3.SetLocationBroadcastEnabled(not TRP3.IsLocationBroadcastEnabled());
 				DisplayLocationBroadcastStatus();
 			elseif subcommand == "status" then
 				DisplayLocationBroadcastStatus();

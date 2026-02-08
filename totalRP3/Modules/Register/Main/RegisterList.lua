@@ -1,38 +1,35 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 -- imports
-local Globals, Events = TRP3_API.globals, TRP3_Addon.Events;
-local Utils = TRP3_API.utils;
-local loc = TRP3_API.loc;
-local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
+local Globals, Events = TRP3.globals, TRP3_Addon.Events;
+local Utils = TRP3.utils;
+local loc = TRP3.loc;
+local isUnitIDKnown = TRP3.register.isUnitIDKnown;
 local unitIDToInfo = Utils.str.unitIDToInfo;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local isMenuRegistered = TRP3_API.navigation.menu.isMenuRegistered;
-local registerMenu, selectMenu, openMainFrame = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu, TRP3_API.navigation.openMainFrame;
-local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
-local getUnitIDCharacter = TRP3_API.register.getUnitIDCharacter;
-local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
-local hasProfile = TRP3_API.register.hasProfile;
-local getCompleteName = TRP3_API.register.getCompleteName;
-local getProfile = TRP3_API.register.getProfile;
-local getIgnoredList, unignoreID, isIDIgnored = TRP3_API.register.getIgnoredList, TRP3_API.register.unignoreID, TRP3_API.register.isIDIgnored;
-local getRelation, getRelationInfo, getRelationText, getRelationTooltipText = TRP3_API.register.relation.getRelation, TRP3_API.register.relation.getRelationInfo, TRP3_API.register.relation.getRelationText, TRP3_API.register.relation.getRelationTooltipText;
-local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
-local showAlertPopup, showConfirmPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showConfirmPopup;
-local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
-local deleteProfile, deleteCharacter, getProfileList = TRP3_API.register.deleteProfile, TRP3_API.register.deleteCharacter, TRP3_API.register.getProfileList;
-local ignoreID = TRP3_API.register.ignoreID;
+local setTooltipForSameFrame = TRP3.ui.tooltip.setTooltipForSameFrame;
+local isMenuRegistered = TRP3.navigation.menu.isMenuRegistered;
+local registerMenu, selectMenu, openMainFrame = TRP3.navigation.menu.registerMenu, TRP3.navigation.menu.selectMenu, TRP3.navigation.openMainFrame;
+local registerPage, setPage = TRP3.navigation.page.registerPage, TRP3.navigation.page.setPage;
+local getUnitIDCharacter = TRP3.register.getUnitIDCharacter;
+local getUnitIDProfile = TRP3.register.getUnitIDProfile;
+local hasProfile = TRP3.register.hasProfile;
+local getCompleteName = TRP3.register.getCompleteName;
+local getProfile = TRP3.register.getProfile;
+local getIgnoredList, unignoreID, isIDIgnored = TRP3.register.getIgnoredList, TRP3.register.unignoreID, TRP3.register.isIDIgnored;
+local getRelation, getRelationInfo, getRelationText, getRelationTooltipText = TRP3.register.relation.getRelation, TRP3.register.relation.getRelationInfo, TRP3.register.relation.getRelationText, TRP3.register.relation.getRelationTooltipText;
+local unregisterMenu = TRP3.navigation.menu.unregisterMenu;
+local showAlertPopup, showConfirmPopup = TRP3.popup.showAlertPopup, TRP3.popup.showConfirmPopup;
+local showTextInputPopup = TRP3.popup.showTextInputPopup;
+local deleteProfile, deleteCharacter, getProfileList = TRP3.register.deleteProfile, TRP3.register.deleteCharacter, TRP3.register.getProfileList;
+local ignoreID = TRP3.register.ignoreID;
 local refreshList;
-local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
-local getCompanionProfiles = TRP3_API.companions.register.getProfiles;
-local getRelationColor = TRP3_API.register.relation.getRelationColor;
-local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
-local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
-local profileIDISFilteredForMatureContent = TRP3_API.register.profileIDISFilteredForMatureContent;
+local getCurrentPageID = TRP3.navigation.page.getCurrentPageID;
+local getCompanionProfiles = TRP3.companions.register.getProfiles;
+local getRelationColor = TRP3.register.relation.getRelationColor;
+local getCompanionNameFromSpellID = TRP3.companions.getCompanionNameFromSpellID;
+local unitIDIsFilteredForMatureContent = TRP3.register.unitIDIsFilteredForMatureContent;
+local profileIDISFilteredForMatureContent = TRP3.register.profileIDISFilteredForMatureContent;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -40,21 +37,21 @@ local profileIDISFilteredForMatureContent = TRP3_API.register.profileIDISFiltere
 
 local REGISTER_LIST_PAGEID = "register_list";
 local playerMenu = "main_10_player";
-local currentlyOpenedProfilePrefix = TRP3_API.register.MENU_LIST_ID_TAB;
-local REGISTER_PAGE = TRP3_API.register.MENU_LIST_ID;
+local currentlyOpenedProfilePrefix = TRP3.register.MENU_LIST_ID_TAB;
+local REGISTER_PAGE = TRP3.register.MENU_LIST_ID;
 
 local function openPage(profileID, unitID)
 	local profile = getProfile(profileID);
 	local menuID = currentlyOpenedProfilePrefix .. profileID
 	if isMenuRegistered(menuID) then
-		local menuItem = TRP3_API.navigation.menu.getMenuItem(menuID)
+		local menuItem = TRP3.navigation.menu.getMenuItem(menuID)
 		if unitID then
 			menuItem.pageContext.unitID            = unitID
 			menuItem.pageContext.openingWithUnitID = true
 		end
 		-- If the character already has his "tab", simply open it
 		selectMenu(menuID);
-		TRP3_API.navigation.page.getCurrentContext().openingWithUnitID = false
+		TRP3.navigation.page.getCurrentContext().openingWithUnitID = false
 	else
 		-- Else, create a new menu entry and open it.
 		local tabText = UNKNOWN;
@@ -82,17 +79,17 @@ local function openPage(profileID, unitID)
 			sortIndex = -time(),
 		});
 		selectMenu(menuID);
-		TRP3_API.navigation.page.getCurrentContext().openingWithUnitID = false
+		TRP3.navigation.page.getCurrentContext().openingWithUnitID = false
 
 		if (unitID and unitIDIsFilteredForMatureContent(unitID)) or (profileID and profileIDISFilteredForMatureContent(profileID)) then
-			TRP3_API.popup.showPopup("mature_filtered");
+			TRP3.popup.showPopup("mature_filtered");
 			TRP3_MatureFilterPopup.profileID = profileID;
 			TRP3_MatureFilterPopup.unitID = unitID;
 			TRP3_MatureFilterPopup.menuID = menuID;
 		end
 	end
 end
-TRP3_API.register.openPageByProfileID = openPage;
+TRP3.register.openPageByProfileID = openPage;
 
 local function openCompanionPage(profileID)
 	local profile = getCompanionProfiles()[profileID];
@@ -108,7 +105,7 @@ local function openCompanionPage(profileID)
 		registerMenu({
 			id = currentlyOpenedProfilePrefix .. profileID,
 			text = tabText,
-			onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PAGE, {profile = profile, profileID = profileID, isPlayer = false}) end,
+			onSelected = function() setPage(TRP3.navigation.page.id.COMPANIONS_PAGE, {profile = profile, profileID = profileID, isPlayer = false}) end,
 			isChildOf = REGISTER_PAGE,
 			closeable = true,
 			icon = [[interface\icons\]] .. TRP3_InterfaceIcons.CompanionMenuItem,
@@ -118,7 +115,7 @@ local function openCompanionPage(profileID)
 		selectMenu(currentlyOpenedProfilePrefix .. profileID);
 	end
 end
-TRP3_API.companions.register.openPage = openCompanionPage;
+TRP3.companions.register.openPage = openCompanionPage;
 
 local function openPageByUnitID(unitID)
 	if unitID == Globals.player_id then
@@ -127,7 +124,7 @@ local function openPageByUnitID(unitID)
 		openPage(hasProfile(unitID), unitID);
 	end
 end
-TRP3_API.register.openPageByUnitID = openPageByUnitID;
+TRP3.register.openPageByUnitID = openPageByUnitID;
 
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -277,7 +274,7 @@ local function onLineClicked(self, button)
 		assert(self:GetParent().id, "No profileID on line.");
 		if button == "LeftButton" then
 			if IsShiftKeyDown() then
-				TRP3_API.RegisterPlayerChatLinksModule:InsertLink(self:GetParent().id);
+				TRP3.RegisterPlayerChatLinksModule:InsertLink(self:GetParent().id);
 			else
 				openPage(self:GetParent().id);
 			end
@@ -293,14 +290,14 @@ local function onLineClicked(self, button)
 						tinsert(characterList, unitName .. "-" .. unitRealm);
 					end
 				end
-				TRP3_API.popup.showCopyDropdownPopup(characterList);
+				TRP3.popup.showCopyDropdownPopup(characterList);
 			end
 		end
 	elseif currentMode == MODE_PETS then
 		assert(self:GetParent().id, "No profileID on line.");
 		if IsShiftKeyDown() then
-			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_COMPANION_PROFILE, function(canBeImported)
-				TRP3_API.RegisterCompanionChatLinksModule:InsertLink(self:GetParent().id, canBeImported);
+			TRP3.ChatLinks:OpenMakeImportablePrompt(loc.CL_COMPANION_PROFILE, function(canBeImported)
+				TRP3.RegisterCompanionChatLinksModule:InsertLink(self:GetParent().id, canBeImported);
 			end);
 		else
 			openCompanionPage(self:GetParent().id);
@@ -360,7 +357,7 @@ local function decorateCharacterLine(line, elementData)
 	end
 
 	local hasNewAbout = profile.about and not profile.about.read;
-	local currentNotes = TRP3_API.profile.getPlayerCurrentProfile().notes or {};
+	local currentNotes = TRP3.profile.getPlayerCurrentProfile().notes or {};
 	local hasNotes = TRP3_Notes and TRP3_Notes[profileID] or currentNotes[profileID];
 	local isWalkupFriendly = profile.character and profile.character.WU == AddOn_TotalRP3.Enums.WALKUP.YES;
 
@@ -428,7 +425,7 @@ local function decorateCharacterLine(line, elementData)
 	end
 
 	local relation, relationColor = getRelationText(profileID, true), getRelationColor(profileID);
-	local color = (relationColor or TRP3_API.Colors.White):GenerateHexColorMarkup();
+	local color = (relationColor or TRP3.Colors.White):GenerateHexColorMarkup();
 	if #relation > 0 then
 		if relationColor then
 			relation = relationColor:WrapTextInColorCode(relation);
@@ -494,9 +491,9 @@ local function decorateCharacterLine(line, elementData)
 	line.Select:Show();
 
 	setTooltipForSameFrame(line.ClickName, "TOPLEFT", 0, 5, leftTooltipTitle, leftTooltipText .. "|n|n" ..
-		TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER) .. "|n" ..
-		TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_CHAR_NAME_COPY) .. "|n" ..
-		TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
+		TRP3.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER) .. "|n" ..
+		TRP3.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_CHAR_NAME_COPY) .. "|n" ..
+		TRP3.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
 end
 
 local function getCharacterLines()
@@ -513,7 +510,7 @@ local function getCharacterLines()
 		local nameIsConform, guildIsConform, realmIsConform, notesIsConform = false, false, false, false;
 
 		-- Don't add default profiles to the directory
-		if not TRP3_API.profile.isDefaultProfile(profileID) and profile.characteristics and next(profile.characteristics) ~= nil then
+		if not TRP3.profile.isDefaultProfile(profileID) and profile.characteristics and next(profile.characteristics) ~= nil then
 
 			local firstLink;
 			local firstGuild, firstRealm = "", "";
@@ -537,7 +534,7 @@ local function getCharacterLines()
 				if characterData and characterData.guild and string.find(characterData.guild:lower(), guildSearch, 1, true) then
 					guildIsConform = true;
 				end
-				local currentNotes = TRP3_API.profile.getPlayerCurrentProfile().notes or {};
+				local currentNotes = TRP3.profile.getPlayerCurrentProfile().notes or {};
 				if TRP3_Notes and TRP3_Notes[profileID] or currentNotes[profileID] then
 					notesIsConform = true;
 				end
@@ -634,7 +631,7 @@ local function onCharactersActionSelected(value)
 			end);
 		end
 	elseif value == "purge_ignore" then
-		local profilesToPurge, characterToPurge = TRP3_API.register.getIDsToPurge();
+		local profilesToPurge, characterToPurge = TRP3.register.getIDsToPurge();
 		if #profilesToPurge + #characterToPurge == 0 then
 			showAlertPopup(loc.REG_LIST_ACTIONS_PURGE_IGNORE_C:format(loc.REG_LIST_ACTIONS_PURGE_EMPTY));
 		else
@@ -704,8 +701,8 @@ end
 -- UI : COMPANIONS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local companionIDToInfo, getAssociationsForProfile = TRP3_API.utils.str.companionIDToInfo, TRP3_API.companions.register.getAssociationsForProfile;
-local deleteCompanionProfile = TRP3_API.companions.register.deleteProfile;
+local companionIDToInfo, getAssociationsForProfile = TRP3.utils.str.companionIDToInfo, TRP3.companions.register.getAssociationsForProfile;
+local deleteCompanionProfile = TRP3.companions.register.deleteProfile;
 
 local function decorateCompanionLine(line, elementData)
 	decorateGenericLine(line);
@@ -750,15 +747,15 @@ local function decorateCompanionLine(line, elementData)
 	end
 	ownerList = ownerList .. "|r";
 
-	if isUnitIDKnown(firstOwner) and  TRP3_API.register.profileExists(firstOwner) then
+	if isUnitIDKnown(firstOwner) and  TRP3.register.profileExists(firstOwner) then
 		firstOwner = getCompleteName(getUnitIDProfile(firstOwner).characteristics or {}, "", true);
 	end
 	line.GuildOrOwner:SetText(firstOwner);
 
 	local secondLine = loc.REG_LIST_PETS_TOOLTIP .. ":|n" .. companionList .. "|n" .. loc.REG_LIST_PETS_TOOLTIP2 .. ":|n" .. ownerList;
 	setTooltipForSameFrame(line.ClickName, "TOPLEFT", 0, 5, tooltip, secondLine .. "|n|n" ..
-		TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "|n" ..
-		TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
+		TRP3.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_COMPANION) .. "|n" ..
+		TRP3.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
 	setTooltipForSameFrame(line.ClickRelation);
 
 	setTooltipForSameFrame(line.ClickGuild);
@@ -906,7 +903,7 @@ local function decorateIgnoredLine(line, unitID)
 	line.Realm:SetText("");
 	line.Select:Hide();
 	setTooltipForSameFrame(line.ClickName, "TOPLEFT", 0, 5, unitID, loc.REG_LIST_IGNORE_TT:format(getIgnoredList()[unitID])
-	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_LIST_IGNORE_REMOVE));
+	.. "|n|n" .. TRP3.FormatShortcutWithInstruction("CLICK", loc.REG_LIST_IGNORE_REMOVE));
 	setTooltipForSameFrame(line.ClickRelation);
 	setTooltipForSameFrame(line.ClickGuild);
 	setTooltipForSameFrame(line.ClickRealm);
@@ -990,7 +987,7 @@ local function createTabBar()
 	frame:SetSize(400, 30);
 	frame:SetPoint("TOPLEFT", 17, 0);
 	frame:SetFrameLevel(1);
-	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
+	tabGroup = TRP3.ui.frame.createTabPanel(frame,
 	{
 		{loc.REG_LIST_CHAR_TITLE, 1, 150},
 		{loc.REG_LIST_PETS_TITLE, 2, 150},
@@ -1035,17 +1032,17 @@ local function tutorialProvider()
 	end
 end
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 	createTutorialStructure();
 
 	-- To try, but I'm afraid for performances ...
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 		if TRP3_MainFrame:IsShown() and getCurrentPageID() == REGISTER_LIST_PAGEID and unitID ~= Globals.player_id and (not dataType or dataType == "characteristics") then
 			refreshList();
 		end
 	end);
 
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_PROFILE_DELETED, function(_, profileID)
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_PROFILE_DELETED, function(_, profileID)
 		if profileID then
 			selectedIDs[profileID] = nil;
 			if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
@@ -1109,15 +1106,15 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		end
 		refreshList();
 	end)
-	setTooltipForSameFrame(TRP3_RegisterListCharactFilterButton, "RIGHT", 0, 5, loc.REG_LIST_FILTERS, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_LIST_FILTERS_APPLY)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_FILTERS_CLEAR));
+	setTooltipForSameFrame(TRP3_RegisterListCharactFilterButton, "RIGHT", 0, 5, loc.REG_LIST_FILTERS, TRP3.FormatShortcutWithInstruction("LCLICK", loc.REG_LIST_FILTERS_APPLY)
+	.. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_FILTERS_CLEAR));
 	TRP3_RegisterListFilterCharactNameText:SetText(loc.REG_LIST_NAME);
 	TRP3_RegisterListFilterCharactGuildText:SetText(loc.REG_LIST_GUILD);
 	TRP3_RegisterListFilterCharactRealm:SetText(loc.REG_LIST_REALMONLY);
 	TRP3_RegisterListFilterCharactNotes:SetText(loc.REG_LIST_NOTESONLY);
 	TRP3_RegisterListHeaderGuild:SetText(loc.REG_GUILD);
 	TRP3_RegisterListHeaderRealm:SetText(loc.REG_REALM);
-	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListFilterCharactName, TRP3_RegisterListFilterCharactGuild});
+	TRP3.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListFilterCharactName, TRP3_RegisterListFilterCharactGuild});
 
 	TRP3_RegisterListPetFilterName:SetScript("OnEnterPressed", refreshList);
 	TRP3_RegisterListPetFilterType:SetScript("OnEnterPressed", refreshList);
@@ -1130,12 +1127,12 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		end
 		refreshList();
 	end)
-	setTooltipForSameFrame(TRP3_RegisterListPetFilterButton, "RIGHT", 0, 5, loc.REG_LIST_FILTERS, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_LIST_FILTERS_APPLY)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_FILTERS_CLEAR));
+	setTooltipForSameFrame(TRP3_RegisterListPetFilterButton, "RIGHT", 0, 5, loc.REG_LIST_FILTERS, TRP3.FormatShortcutWithInstruction("LCLICK", loc.REG_LIST_FILTERS_APPLY)
+	.. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_FILTERS_CLEAR));
 	TRP3_RegisterListPetFilterNameText:SetText(loc.REG_LIST_PET_NAME);
 	TRP3_RegisterListPetFilterTypeText:SetText(loc.REG_LIST_PET_TYPE);
 	TRP3_RegisterListPetFilterOwnerText:SetText(loc.REG_LIST_PET_OWNER);
-	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListPetFilterName, TRP3_RegisterListPetFilterType, TRP3_RegisterListPetFilterOwner});
+	TRP3.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListPetFilterName, TRP3_RegisterListPetFilterType, TRP3_RegisterListPetFilterOwner});
 
 	TRP3_RegisterListHeaderNameTT:SetScript("OnClick", function() switchSorting("Name"); end);
 	TRP3_RegisterListHeaderRelationsTT:SetScript("OnClick", function() switchSorting("Info"); end);
@@ -1143,7 +1140,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_RegisterListHeaderGuildTT:SetScript("OnClick", function() switchSorting("Guild"); end);
 	TRP3_RegisterListHeaderRealmTT:SetScript("OnClick", function() switchSorting("Realm"); end);
 
-	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 	TRP3_RegisterListHeaderActions:SetScript("OnMouseDown", function(self)
 		if currentMode == MODE_CHARACTER then
 			onCharactersActions(self);
@@ -1156,7 +1153,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 
 	-- Resizing
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerwidth, containerHeight)  -- luacheck: no unused
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerwidth, containerHeight)  -- luacheck: no unused
 		for _, line in TRP3_RegisterListContainer.ScrollBox:EnumerateFrames() do
 			ResizeLineContents(line);
 		end
@@ -1174,9 +1171,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 end);
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-	if TRP3_API.target then
-		TRP3_API.target.registerButton({
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+	if TRP3.target then
+		TRP3.target.registerButton({
 			id = "aa_player_a_page",
 			configText = loc.TF_OPEN_CHARACTER,
 			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
@@ -1185,8 +1182,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			end,
 			onClick = function(characterID)
 				openMainFrame();
-				TRP3_API.r.sendQuery(characterID);
-				TRP3_API.r.sendMSPQuery(characterID);
+				TRP3.r.sendQuery(characterID);
+				TRP3.r.sendMSPQuery(characterID);
 				openPageByUnitID(characterID);
 			end,
 			adapter = function(buttonStructure, characterID)
@@ -1205,7 +1202,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				-- Retrieve the character's profile.
 				local profile;
 				if characterID == Globals.player_id then
-					profile = TRP3_API.profile.getData("player");
+					profile = TRP3.profile.getData("player");
 				else
 					profile = getUnitIDProfile(characterID);
 				end
@@ -1218,7 +1215,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					buttonStructure.alert = true;
 				end
 
-				table.insert(tooltipLines, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER));
+				table.insert(tooltipLines, TRP3.FormatShortcutWithInstruction("CLICK", loc.TF_OPEN_CHARACTER));
 				buttonStructure.tooltipSub = table.concat(tooltipLines, "|n|n");
 			end,
 			alertIcon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay",

@@ -1,12 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
-
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
+local Ellyb = TRP3.Ellyb;
 
 ---@class ChatLink
 local ChatLink, _private = Ellyb.Class("ChatLink");
@@ -21,7 +15,7 @@ function ChatLink:initialize(identifier, data, moduleID)
 	_private[self].data = data;
 	_private[self].moduleID = moduleID;
 
-	TRP3_API.ChatLinksManager:StoreSentLink(self);
+	TRP3.ChatLinksManager:StoreSentLink(self);
 
 	local tooltipLines = self:GetModule():GetTooltipLines(self:GetData());
 	_private[self].tooltipLines = tooltipLines;
@@ -39,7 +33,7 @@ function ChatLink:SetIdentifier(identifier)
 end
 
 function ChatLink:GetText()
-	return TRP3_API.ChatLinks.LINK_PATTERN:format(self:GetIdentifier());
+	return TRP3.ChatLinks.LINK_PATTERN:format(self:GetIdentifier());
 end
 
 function ChatLink:GetModuleID()
@@ -52,7 +46,7 @@ end
 
 ---@return ChatLinkModule
 function ChatLink:GetModule()
-	return TRP3_API.ChatLinks:GetModuleByID(self:GetModuleID());
+	return TRP3.ChatLinks:GetModuleByID(self:GetModuleID());
 end
 
 function ChatLink:GetData()
@@ -82,4 +76,4 @@ function ChatLink:GetContentSize()
 	return _private[self].contentSize;
 end
 
-TRP3_API.ChatLink = ChatLink;
+TRP3.ChatLink = ChatLink;

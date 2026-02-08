@@ -1,69 +1,69 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 local COLOR_PRESETS_BASIC = {
-	{ CO = TRP3_API.Colors.Red, TX = L.CM_RED},
-	{ CO = TRP3_API.Colors.Orange, TX = L.CM_ORANGE},
-	{ CO = TRP3_API.Colors.Yellow, TX = L.CM_YELLOW},
-	{ CO = TRP3_API.Colors.Green, TX = L.CM_GREEN},
-	{ CO = TRP3_API.Colors.Cyan, TX = L.CM_CYAN},
-	{ CO = TRP3_API.Colors.Blue, TX = L.CM_BLUE},
-	{ CO = TRP3_API.Colors.Purple, TX = L.CM_PURPLE},
-	{ CO = TRP3_API.Colors.Pink, TX = L.CM_PINK},
-	{ CO = TRP3_API.Colors.White, TX = L.CM_WHITE},
-	{ CO = TRP3_API.Colors.Grey, TX = L.CM_GREY},
-	{ CO = TRP3_API.Colors.Black, TX = L.CM_BLACK},
+	{ CO = TRP3.Colors.Red, TX = L.CM_RED},
+	{ CO = TRP3.Colors.Orange, TX = L.CM_ORANGE},
+	{ CO = TRP3.Colors.Yellow, TX = L.CM_YELLOW},
+	{ CO = TRP3.Colors.Green, TX = L.CM_GREEN},
+	{ CO = TRP3.Colors.Cyan, TX = L.CM_CYAN},
+	{ CO = TRP3.Colors.Blue, TX = L.CM_BLUE},
+	{ CO = TRP3.Colors.Purple, TX = L.CM_PURPLE},
+	{ CO = TRP3.Colors.Pink, TX = L.CM_PINK},
+	{ CO = TRP3.Colors.White, TX = L.CM_WHITE},
+	{ CO = TRP3.Colors.Grey, TX = L.CM_GREY},
+	{ CO = TRP3.Colors.Black, TX = L.CM_BLACK},
 }
 
 local COLOR_PRESETS_CLASS = {
-	{ CO = TRP3_API.ClassColors.HUNTER, TX = LOCALIZED_CLASS_NAMES_MALE.HUNTER or L.CM_CLASS_HUNTER },
-	{ CO = TRP3_API.ClassColors.WARLOCK, TX = LOCALIZED_CLASS_NAMES_MALE.WARLOCK or L.CM_CLASS_WARLOCK },
-	{ CO = TRP3_API.ClassColors.PRIEST, TX = LOCALIZED_CLASS_NAMES_MALE.PRIEST or L.CM_CLASS_PRIEST },
-	{ CO = TRP3_API.ClassColors.PALADIN, TX = LOCALIZED_CLASS_NAMES_MALE.PALADIN or L.CM_CLASS_PALADIN },
-	{ CO = TRP3_API.ClassColors.MAGE, TX = LOCALIZED_CLASS_NAMES_MALE.MAGE or L.CM_CLASS_MAGE },
-	{ CO = TRP3_API.ClassColors.ROGUE, TX = LOCALIZED_CLASS_NAMES_MALE.ROGUE or L.CM_CLASS_ROGUE },
-	{ CO = TRP3_API.ClassColors.DRUID, TX = LOCALIZED_CLASS_NAMES_MALE.DRUID or L.CM_CLASS_DRUID },
-	{ CO = TRP3_API.ClassColors.SHAMAN, TX = LOCALIZED_CLASS_NAMES_MALE.SHAMAN or L.CM_CLASS_SHAMAN },
-	{ CO = TRP3_API.ClassColors.WARRIOR, TX = LOCALIZED_CLASS_NAMES_MALE.WARRIOR or L.CM_CLASS_WARRIOR },
-	{ CO = TRP3_API.ClassColors.DEATHKNIGHT, TX = LOCALIZED_CLASS_NAMES_MALE.DEATHKNIGHT or L.CM_CLASS_DEATHKNIGHT },
-	{ CO = TRP3_API.ClassColors.MONK, TX = LOCALIZED_CLASS_NAMES_MALE.MONK or L.CM_CLASS_MONK },
-	{ CO = TRP3_API.ClassColors.DEMONHUNTER, TX = LOCALIZED_CLASS_NAMES_MALE.DEMONHUNTER or L.CM_CLASS_DEMONHUNTER },
-	{ CO = TRP3_API.ClassColors.EVOKER, TX = LOCALIZED_CLASS_NAMES_MALE.EVOKER or L.CM_CLASS_EVOKER },
+	{ CO = TRP3.ClassColors.HUNTER, TX = LOCALIZED_CLASS_NAMES_MALE.HUNTER or L.CM_CLASS_HUNTER },
+	{ CO = TRP3.ClassColors.WARLOCK, TX = LOCALIZED_CLASS_NAMES_MALE.WARLOCK or L.CM_CLASS_WARLOCK },
+	{ CO = TRP3.ClassColors.PRIEST, TX = LOCALIZED_CLASS_NAMES_MALE.PRIEST or L.CM_CLASS_PRIEST },
+	{ CO = TRP3.ClassColors.PALADIN, TX = LOCALIZED_CLASS_NAMES_MALE.PALADIN or L.CM_CLASS_PALADIN },
+	{ CO = TRP3.ClassColors.MAGE, TX = LOCALIZED_CLASS_NAMES_MALE.MAGE or L.CM_CLASS_MAGE },
+	{ CO = TRP3.ClassColors.ROGUE, TX = LOCALIZED_CLASS_NAMES_MALE.ROGUE or L.CM_CLASS_ROGUE },
+	{ CO = TRP3.ClassColors.DRUID, TX = LOCALIZED_CLASS_NAMES_MALE.DRUID or L.CM_CLASS_DRUID },
+	{ CO = TRP3.ClassColors.SHAMAN, TX = LOCALIZED_CLASS_NAMES_MALE.SHAMAN or L.CM_CLASS_SHAMAN },
+	{ CO = TRP3.ClassColors.WARRIOR, TX = LOCALIZED_CLASS_NAMES_MALE.WARRIOR or L.CM_CLASS_WARRIOR },
+	{ CO = TRP3.ClassColors.DEATHKNIGHT, TX = LOCALIZED_CLASS_NAMES_MALE.DEATHKNIGHT or L.CM_CLASS_DEATHKNIGHT },
+	{ CO = TRP3.ClassColors.MONK, TX = LOCALIZED_CLASS_NAMES_MALE.MONK or L.CM_CLASS_MONK },
+	{ CO = TRP3.ClassColors.DEMONHUNTER, TX = LOCALIZED_CLASS_NAMES_MALE.DEMONHUNTER or L.CM_CLASS_DEMONHUNTER },
+	{ CO = TRP3.ClassColors.EVOKER, TX = LOCALIZED_CLASS_NAMES_MALE.EVOKER or L.CM_CLASS_EVOKER },
 }
 
 local COLOR_PRESETS_RESOURCES = {
-	{ CO = TRP3_API.PowerTypeColors.Mana, TX = POWER_TYPE_MANA },
-	{ CO = TRP3_API.PowerTypeColors.Rage, TX = RAGE },
-	{ CO = TRP3_API.PowerTypeColors.Focus, TX = POWER_TYPE_FOCUS },
-	{ CO = TRP3_API.PowerTypeColors.Energy, TX = POWER_TYPE_ENERGY },
-	{ CO = TRP3_API.PowerTypeColors.ComboPoints, TX = COMBO_POINTS },
-	{ CO = TRP3_API.PowerTypeColors.Runes, TX = RUNES },
-	{ CO = TRP3_API.PowerTypeColors.RunicPower, TX = POWER_TYPE_RUNIC_POWER or RUNIC_POWER },
-	{ CO = TRP3_API.PowerTypeColors.SoulShards, TX = SOUL_SHARDS },
-	{ CO = TRP3_API.PowerTypeColors.LunarPower, TX = POWER_TYPE_LUNAR_POWER },
-	{ CO = TRP3_API.PowerTypeColors.HolyPower, TX = HOLY_POWER },
-	{ CO = TRP3_API.PowerTypeColors.Maelstrom, TX = POWER_TYPE_MAELSTROM },
-	{ CO = TRP3_API.PowerTypeColors.Insanity, TX = POWER_TYPE_INSANITY },
-	{ CO = TRP3_API.PowerTypeColors.Chi, TX = CHI },
-	{ CO = TRP3_API.PowerTypeColors.ArcaneCharges, TX = POWER_TYPE_ARCANE_CHARGES },
-	{ CO = TRP3_API.PowerTypeColors.Fury, TX = POWER_TYPE_FURY },
-	{ CO = TRP3_API.PowerTypeColors.Pain, TX = POWER_TYPE_PAIN },
-	{ CO = TRP3_API.PowerTypeColors.AmmoSlot, TX = AMMOSLOT },
-	{ CO = TRP3_API.PowerTypeColors.Fuel, TX = POWER_TYPE_FUEL },
+	{ CO = TRP3.PowerTypeColors.Mana, TX = POWER_TYPE_MANA },
+	{ CO = TRP3.PowerTypeColors.Rage, TX = RAGE },
+	{ CO = TRP3.PowerTypeColors.Focus, TX = POWER_TYPE_FOCUS },
+	{ CO = TRP3.PowerTypeColors.Energy, TX = POWER_TYPE_ENERGY },
+	{ CO = TRP3.PowerTypeColors.ComboPoints, TX = COMBO_POINTS },
+	{ CO = TRP3.PowerTypeColors.Runes, TX = RUNES },
+	{ CO = TRP3.PowerTypeColors.RunicPower, TX = POWER_TYPE_RUNIC_POWER or RUNIC_POWER },
+	{ CO = TRP3.PowerTypeColors.SoulShards, TX = SOUL_SHARDS },
+	{ CO = TRP3.PowerTypeColors.LunarPower, TX = POWER_TYPE_LUNAR_POWER },
+	{ CO = TRP3.PowerTypeColors.HolyPower, TX = HOLY_POWER },
+	{ CO = TRP3.PowerTypeColors.Maelstrom, TX = POWER_TYPE_MAELSTROM },
+	{ CO = TRP3.PowerTypeColors.Insanity, TX = POWER_TYPE_INSANITY },
+	{ CO = TRP3.PowerTypeColors.Chi, TX = CHI },
+	{ CO = TRP3.PowerTypeColors.ArcaneCharges, TX = POWER_TYPE_ARCANE_CHARGES },
+	{ CO = TRP3.PowerTypeColors.Fury, TX = POWER_TYPE_FURY },
+	{ CO = TRP3.PowerTypeColors.Pain, TX = POWER_TYPE_PAIN },
+	{ CO = TRP3.PowerTypeColors.AmmoSlot, TX = AMMOSLOT },
+	{ CO = TRP3.PowerTypeColors.Fuel, TX = POWER_TYPE_FUEL },
 }
 
 local COLOR_PRESETS_ITEMS = {
-	{ CO = TRP3_API.ItemQualityColors.Poor, TX = ITEM_QUALITY0_DESC},
-	{ CO = TRP3_API.ItemQualityColors.Common, TX = ITEM_QUALITY1_DESC},
-	{ CO = TRP3_API.ItemQualityColors.Uncommon, TX = ITEM_QUALITY2_DESC},
-	{ CO = TRP3_API.ItemQualityColors.Rare, TX = ITEM_QUALITY3_DESC},
-	{ CO = TRP3_API.ItemQualityColors.Epic, TX = ITEM_QUALITY4_DESC},
-	{ CO = TRP3_API.ItemQualityColors.Legendary, TX = ITEM_QUALITY5_DESC},
-	{ CO = TRP3_API.ItemQualityColors.Artifact, TX = ITEM_QUALITY6_DESC},
-	{ CO = TRP3_API.ItemQualityColors.Heirloom, TX = ITEM_QUALITY7_DESC},
-	{ CO = TRP3_API.ItemQualityColors.WoWToken, TX = ITEM_QUALITY8_DESC},
+	{ CO = TRP3.ItemQualityColors.Poor, TX = ITEM_QUALITY0_DESC},
+	{ CO = TRP3.ItemQualityColors.Common, TX = ITEM_QUALITY1_DESC},
+	{ CO = TRP3.ItemQualityColors.Uncommon, TX = ITEM_QUALITY2_DESC},
+	{ CO = TRP3.ItemQualityColors.Rare, TX = ITEM_QUALITY3_DESC},
+	{ CO = TRP3.ItemQualityColors.Epic, TX = ITEM_QUALITY4_DESC},
+	{ CO = TRP3.ItemQualityColors.Legendary, TX = ITEM_QUALITY5_DESC},
+	{ CO = TRP3.ItemQualityColors.Artifact, TX = ITEM_QUALITY6_DESC},
+	{ CO = TRP3.ItemQualityColors.Heirloom, TX = ITEM_QUALITY7_DESC},
+	{ CO = TRP3.ItemQualityColors.WoWToken, TX = ITEM_QUALITY8_DESC},
 }
 
 local function CompareSortPresetsByName(a, b)
@@ -89,7 +89,7 @@ function TRP3_ColorPresetManager.GetAllCustomPresets()
 	local presets = {};
 
 	for _, preset in ipairs(TRP3_Colors or {}) do
-		table.insert(presets, { TX = preset.TX, CO = TRP3_API.CreateColorFromHexString(preset.CO) });
+		table.insert(presets, { TX = preset.TX, CO = TRP3.CreateColorFromHexString(preset.CO) });
 	end
 
 	table.sort(presets, CompareSortPresetsByName);
@@ -174,7 +174,7 @@ function TRP3_ColorBrowserMixin:OnHexColorInput(color)
 end
 
 function TRP3_ColorBrowserMixin:OnColorWheelSelect(r, g, b)
-	local color = TRP3_API.CreateColor(r, g, b);
+	local color = TRP3.CreateColor(r, g, b);
 
 	self:SetSelectedColor(color);
 end
@@ -204,7 +204,7 @@ function TRP3_ColorBrowserMixin:OnPresetButtonClick()
 		end
 
 		local prompt = string.join("|n|n", L.BW_CUSTOM_NAME, L.BW_CUSTOM_NAME_TT);
-		TRP3_API.popup.showTextInputPopup(prompt, OnPopupResponse);
+		TRP3.popup.showTextInputPopup(prompt, OnPopupResponse);
 	end
 
 	local function OnPresetRenameClicked(preset)
@@ -217,7 +217,7 @@ function TRP3_ColorBrowserMixin:OnPresetButtonClick()
 		end
 
 		local prompt = string.join("|n|n", L.BW_CUSTOM_NAME, L.BW_CUSTOM_NAME_TT);
-		TRP3_API.popup.showTextInputPopup(prompt, OnPopupResponse);
+		TRP3.popup.showTextInputPopup(prompt, OnPopupResponse);
 	end
 
 	local function OnPresetDeleteClicked(preset)
@@ -229,7 +229,7 @@ function TRP3_ColorBrowserMixin:OnPresetButtonClick()
 
 		local function CreatePresetButton(preset, menuDescription)
 			local text = preset.TX;
-			local color = TRP3_API.CreateColorFromTable(preset.CO);
+			local color = TRP3.CreateColorFromTable(preset.CO);
 			local callback = OnPresetColorSelected;
 			local buttonDescription = TRP3_MenuTemplates.CreateColorSelectionButton(text, color, callback, color);
 
@@ -278,7 +278,7 @@ end
 
 function TRP3_ColorBrowserMixin:Open(initialColor, acceptCallback, cancelCallback)
 	if not initialColor then
-		initialColor = TRP3_API.Colors.White;
+		initialColor = TRP3.Colors.White;
 	end
 
 	self.acceptCallback = acceptCallback;
@@ -327,7 +327,7 @@ function TRP3_ColorBrowserMixin:Update()
 end
 
 function TRP3_ColorBrowserMixin:GetInitialColor()
-	return self.initialColor or TRP3_API.Colors.White;
+	return self.initialColor or TRP3.Colors.White;
 end
 
 function TRP3_ColorBrowserMixin:GetSelectedColor()
@@ -362,7 +362,7 @@ function TRP3_ColorBrowserSwatchMixin:OnTooltipShow(description)
 end
 
 function TRP3_ColorBrowserSwatchMixin:GetColor()
-	return self.color or TRP3_API.Colors.White;
+	return self.color or TRP3.Colors.White;
 end
 
 function TRP3_ColorBrowserSwatchMixin:SetColor(color)
@@ -375,7 +375,7 @@ end
 -- for *other* people to read generally. As such, we also go one level
 -- above the default (MediumLow) to try and improve the chances that our
 -- suggested colors are actually broadly readable.
-local COLOR_CONTRAST_BACKGROUND = TRP3_API.Colors.Black;
+local COLOR_CONTRAST_BACKGROUND = TRP3.Colors.Black;
 local COLOR_CONTRAST_TARGET = TRP3_ColorContrastOption.MediumLow;
 
 function TRP3_ColorBrowserSwatchMixin:GetReadableColor()
@@ -383,7 +383,7 @@ function TRP3_ColorBrowserSwatchMixin:GetReadableColor()
 	local backgroundColor = COLOR_CONTRAST_BACKGROUND;
 	local targetLevel = COLOR_CONTRAST_TARGET;
 
-	return TRP3_API.GenerateReadableColor(foregroundColor, backgroundColor, targetLevel);
+	return TRP3.GenerateReadableColor(foregroundColor, backgroundColor, targetLevel);
 end
 
 function TRP3_ColorBrowserSwatchMixin:IsColorReadable()
@@ -391,7 +391,7 @@ function TRP3_ColorBrowserSwatchMixin:IsColorReadable()
 	local backgroundColor = COLOR_CONTRAST_BACKGROUND;
 	local targetLevel = COLOR_CONTRAST_TARGET;
 
-	return TRP3_API.IsColorReadable(foregroundColor, backgroundColor, targetLevel);
+	return TRP3.IsColorReadable(foregroundColor, backgroundColor, targetLevel);
 end
 
 function TRP3_ColorBrowserSwatchMixin:ShouldShowTooltip()
@@ -454,7 +454,7 @@ function TRP3_ColorBrowserHexInputMixin:GetInputColor()
 	-- RRGGBB inputs.
 
 	if #text == 6 then
-		color = TRP3_API.ParseColorFromHexString(text);
+		color = TRP3.ParseColorFromHexString(text);
 	end
 
 	return color;

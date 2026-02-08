@@ -1,24 +1,24 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-TRP3_API.companions = {
+TRP3.companions = {
 	player = {},
 	register = {}
 }
 
 -- imports
-local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Events;
-local loc = TRP3_API.loc;
-local registerMenu= TRP3_API.navigation.menu.registerMenu;
-local setPage = TRP3_API.navigation.page.setPage;
+local Globals, Utils, Events = TRP3.globals, TRP3.utils, TRP3_Addon.Events;
+local loc = TRP3.loc;
+local registerMenu= TRP3.navigation.menu.registerMenu;
+local setPage = TRP3.navigation.page.setPage;
 local displayMessage = Utils.message.displayMessage;
 local EMPTY = Globals.empty;
 local tcopy = Utils.table.copy;
-local TYPE_MOUNT = TRP3_API.ui.misc.TYPE_MOUNT;
+local TYPE_MOUNT = TRP3.ui.misc.TYPE_MOUNT;
 
-TRP3_API.navigation.menu.id.COMPANIONS_MAIN = "main_20_companions";
+TRP3.navigation.menu.id.COMPANIONS_MAIN = "main_20_companions";
 
-function TRP3_API.companions.getCompanionNameFromSpellID(spellIDString)
+function TRP3.companions.getCompanionNameFromSpellID(spellIDString)
 	local spellName;
 	local spellID = tonumber(spellIDString);
 
@@ -36,7 +36,7 @@ end
 
 local playerCompanions;
 local PROFILE_DEFAULT_ICON = "INV_Box_PetCarrier_01";
-TRP3_API.companions.PROFILE_DEFAULT_ICON = PROFILE_DEFAULT_ICON;
+TRP3.companions.PROFILE_DEFAULT_ICON = PROFILE_DEFAULT_ICON;
 local DEFAULT_PROFILE = {
 	data = {
 		IC = PROFILE_DEFAULT_ICON,
@@ -53,21 +53,21 @@ local playerProfileAssociation = {};
 local function getCompanionProfileID(companionID)
 	return playerProfileAssociation[companionID];
 end
-TRP3_API.companions.player.getCompanionProfileID = getCompanionProfileID;
+TRP3.companions.player.getCompanionProfileID = getCompanionProfileID;
 
 local function getCompanionProfile(companionID)
 	if playerProfileAssociation[companionID] then
 		return playerCompanions[playerProfileAssociation[companionID]];
 	end
 end
-TRP3_API.companions.player.getCompanionProfile = getCompanionProfile;
+TRP3.companions.player.getCompanionProfile = getCompanionProfile;
 
 local function getCompanionProfileByID(profileID)
 	if playerCompanions[profileID] then
 		return playerCompanions[profileID];
 	end
 end
-TRP3_API.companions.player.getCompanionProfileByID = getCompanionProfileByID;
+TRP3.companions.player.getCompanionProfileByID = getCompanionProfileByID;
 
 local function parsePlayerProfiles(profiles)
 	for profileID, profile in pairs(profiles) do
@@ -95,9 +95,9 @@ local function boundPlayerCompanion(companionID, profileID, targetType)
 	else
 		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
 	end
-	TRP3_API.Log(("%s bounded to profile %s"):format(companionID, profileID));
+	TRP3.Log(("%s bounded to profile %s"):format(companionID, profileID));
 end
-TRP3_API.companions.player.boundPlayerCompanion = boundPlayerCompanion;
+TRP3.companions.player.boundPlayerCompanion = boundPlayerCompanion;
 
 local function unboundPlayerCompanion(companionID, targetType)
 	local profileID = playerProfileAssociation[companionID];
@@ -111,9 +111,9 @@ local function unboundPlayerCompanion(companionID, targetType)
 	else
 		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
 	end
-	TRP3_API.Log(("%s unbounded"):format(companionID));
+	TRP3.Log(("%s unbounded"):format(companionID));
 end
-TRP3_API.companions.player.unboundPlayerCompanion = unboundPlayerCompanion;
+TRP3.companions.player.unboundPlayerCompanion = unboundPlayerCompanion;
 
 -- Check if the profileName is not already used
 local function isProfileNameAvailable(profileName)
@@ -124,7 +124,7 @@ local function isProfileNameAvailable(profileName)
 	end
 	return true;
 end
-TRP3_API.companions.player.isProfileNameAvailable = isProfileNameAvailable;
+TRP3.companions.player.isProfileNameAvailable = isProfileNameAvailable;
 
 -- Duplicate an existing profile
 local function duplicateProfile(duplicatedProfile, profileName)
@@ -137,7 +137,7 @@ local function duplicateProfile(duplicatedProfile, profileName)
 	displayMessage(loc.PR_PROFILE_CREATED:format(Utils.str.color("g")..profileName.."|r"));
 	return profileID;
 end
-TRP3_API.companions.player.duplicateProfile = duplicateProfile;
+TRP3.companions.player.duplicateProfile = duplicateProfile;
 
 -- Creating a new profile using PR_DEFAULT_PROFILE as a template
 local function createProfile(profileName)
@@ -145,7 +145,7 @@ local function createProfile(profileName)
 	playerCompanions[profileID].data.NA = profileName;
 	return profileID;
 end
-TRP3_API.companions.player.createProfile = createProfile;
+TRP3.companions.player.createProfile = createProfile;
 
 -- Edit a profile name
 local function editProfile(profileID, newName)
@@ -153,7 +153,7 @@ local function editProfile(profileID, newName)
 	assert(isProfileNameAvailable(newName), "Unavailable profile name: "..tostring(newName));
 	playerCompanions[profileID]["profileName"] = newName;
 end
-TRP3_API.companions.player.editProfile = editProfile;
+TRP3.companions.player.editProfile = editProfile;
 
 -- Delete a profile
 -- If the deleted profile is the currently selected one, assign the default profile
@@ -170,11 +170,11 @@ local function deleteProfile(profileID, silently)
 		TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED, profileID);
 	end
 end
-TRP3_API.companions.player.deleteProfile = deleteProfile;
+TRP3.companions.player.deleteProfile = deleteProfile;
 
 local registerCompanions;
 
-function TRP3_API.companions.player.getProfiles()
+function TRP3.companions.player.getProfiles()
 	return playerCompanions;
 end
 
@@ -188,7 +188,7 @@ local function getCurrentMountSpellID()
 
 	return spellID;
 end
-TRP3_API.companions.player.getCurrentMountSpellID = getCurrentMountSpellID;
+TRP3.companions.player.getCurrentMountSpellID = getCurrentMountSpellID;
 
 local function getCurrentMountProfile()
 	local currentMountSpellID = getCurrentMountSpellID();
@@ -199,7 +199,7 @@ local function getCurrentMountProfile()
 		end
 	end
 end
-TRP3_API.companions.player.getCurrentMountProfile = getCurrentMountProfile;
+TRP3.companions.player.getCurrentMountProfile = getCurrentMountProfile;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Exchange
@@ -212,7 +212,7 @@ local function getCompanionVersionNumbers(profileID)
 	end
 end
 
-function TRP3_API.companions.player.getCurrentMountQueryLine()
+function TRP3.companions.player.getCurrentMountQueryLine()
 	local currentMountSpellID = getCurrentMountSpellID();
 	if currentMountSpellID then
 		local queryLine = tostring(currentMountSpellID);
@@ -224,7 +224,7 @@ function TRP3_API.companions.player.getCurrentMountQueryLine()
 	end
 end
 
-function TRP3_API.companions.player.getCurrentBattlePetQueryLine()
+function TRP3.companions.player.getCurrentBattlePetQueryLine()
 	local summonedPetID = TRP3_CompanionUtil.GetSummonedCompanionPetID();
 	if summonedPetID then
 		local petInfo = TRP3_CompanionUtil.GetCompanionPetInfo(summonedPetID);
@@ -237,7 +237,7 @@ function TRP3_API.companions.player.getCurrentBattlePetQueryLine()
 	end
 end
 
-function TRP3_API.companions.player.getCurrentPetQueryLine()
+function TRP3.companions.player.getCurrentPetQueryLine()
 	local summonedPet = UnitNameUnmodified("pet");
 	if summonedPet then
 		local queryLine = summonedPet;
@@ -249,7 +249,7 @@ function TRP3_API.companions.player.getCurrentPetQueryLine()
 	end
 end
 
-function TRP3_API.companions.player.getCurrentSecondaryPetQueryLine()
+function TRP3.companions.player.getCurrentSecondaryPetQueryLine()
 	-- Secondary pets are those summoned through the Beast Mastery talent
 	-- "Animal Companion". This talent works by summoning a second pet from
 	-- the first stable slot. The summoned pet currently has no unit token,
@@ -280,7 +280,7 @@ function TRP3_API.companions.player.getCurrentSecondaryPetQueryLine()
 	return queryLine, getCompanionVersionNumbers(profileID);
 end
 
-function TRP3_API.companions.player.getCompanionData(profileID, v)
+function TRP3.companions.player.getCompanionData(profileID, v)
 	local profile = playerCompanions[profileID];
 	local data = {};
 	if profile and profile.data then
@@ -317,11 +317,11 @@ local function registerCreateProfile(profileID)
 		},
 		links = {}
 	};
-	TRP3_API.Log(("Create companion register profile %s"):format(profileID));
+	TRP3.Log(("Create companion register profile %s"):format(profileID));
 end
-TRP3_API.companions.register.registerCreateProfile = registerCreateProfile;
+TRP3.companions.register.registerCreateProfile = registerCreateProfile;
 
-function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID, _, v1, v2)
+function TRP3.companions.register.boundAndCheckCompanion(queryLine, ownerID, _, v1, v2)
 	local companionID, profileID, companionFullID;
 	if queryLine:find("_") then
 		companionID = queryLine:sub(1, queryLine:find('_') - 1);
@@ -348,7 +348,7 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 					otherProfile.links[companionFullID] = nil;
 				end
 				profile.links[companionFullID] = 1;
-				TRP3_API.Log(("Bound %s to profile %s"):format(companionFullID, profileID));
+				TRP3.Log(("Bound %s to profile %s"):format(companionFullID, profileID));
 				if isMount then
 					TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, ownerID, nil);
 				else
@@ -361,7 +361,7 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 			local old = registerProfileAssociation[companionFullID];
 			registerProfileAssociation[companionFullID] = nil;
 			if old and registerCompanions[old] then
-				TRP3_API.Log(("Unbound %s"):format(companionFullID));
+				TRP3.Log(("Unbound %s"):format(companionFullID));
 				registerCompanions[old].links[companionFullID] = nil;
 				if isMount then
 					TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, ownerID, nil);
@@ -373,7 +373,7 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 	end
 end
 
-function TRP3_API.companions.register.saveInformation(profileID, v, data)
+function TRP3.companions.register.saveInformation(profileID, v, data)
 	local profile = registerCompanions[profileID];
 	assert(profile, "Profile does not exists: " .. tostring(profileID));
 	if v == "1" then
@@ -389,27 +389,27 @@ function TRP3_API.companions.register.saveInformation(profileID, v, data)
 
 end
 
-function TRP3_API.companions.register.setProfileData(profileID, profile)
+function TRP3.companions.register.setProfileData(profileID, profile)
 	registerCompanions[profileID] = profile;
 	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "characteristics");
 	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
 end
 
-function TRP3_API.companions.register.getCompanionProfile(companionFullID)
+function TRP3.companions.register.getCompanionProfile(companionFullID)
 	if registerProfileAssociation[companionFullID] and registerCompanions[registerProfileAssociation[companionFullID]] then
 		return registerCompanions[registerProfileAssociation[companionFullID]];
 	end
 end
 
-function TRP3_API.companions.register.companionHasProfile(companionFullID)
+function TRP3.companions.register.companionHasProfile(companionFullID)
 	return registerProfileAssociation[companionFullID];
 end
 
-function TRP3_API.companions.register.getProfiles()
+function TRP3.companions.register.getProfiles()
 	return registerCompanions;
 end
 
-function TRP3_API.companions.register.getAssociationsForProfile(profileID)
+function TRP3.companions.register.getAssociationsForProfile(profileID)
 	local list = {};
 	for companionFullID, id in pairs(registerProfileAssociation) do
 		if id == profileID then
@@ -419,7 +419,7 @@ function TRP3_API.companions.register.getAssociationsForProfile(profileID)
 	return list;
 end
 
-function TRP3_API.companions.register.deleteProfile(profileID, silently)
+function TRP3.companions.register.deleteProfile(profileID, silently)
 	assert(registerCompanions[profileID], "Unknown profile ID: " .. tostring(profileID));
 	wipe(registerCompanions[profileID]);
 	registerCompanions[profileID] = nil;
@@ -434,7 +434,7 @@ function TRP3_API.companions.register.deleteProfile(profileID, silently)
 	end
 end
 
-function TRP3_API.companions.register.getUnitMount(ownerID, unitType)
+function TRP3.companions.register.getUnitMount(ownerID, unitType)
 	-- Inner 'select' here is to skip the leading 'continuationToken' return.
 	local auraSlots = { select(2, C_UnitAuras.GetAuraSlots(unitType, "HELPFUL")) };
 
@@ -456,7 +456,7 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 
 	if not TRP3_Companions then
 		TRP3_Companions = {};
@@ -475,9 +475,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	parseRegisterProfiles(registerCompanions);
 
 	registerMenu({
-		id = TRP3_API.navigation.menu.id.COMPANIONS_MAIN,
+		id = TRP3.navigation.menu.id.COMPANIONS_MAIN,
 		text = loc.REG_COMPANIONS,
-		onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PROFILES) end,
+		onSelected = function() setPage(TRP3.navigation.page.id.COMPANIONS_PROFILES) end,
 		closeable = true,
 	});
 

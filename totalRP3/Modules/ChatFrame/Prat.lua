@@ -5,9 +5,6 @@ if not Prat then
 	return;
 end
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 Prat:AddModuleToLoad(function()
 	local PRAT_MODULE = Prat:RequestModuleName("Total RP 3")
 	local pratModule = Prat:NewModule(PRAT_MODULE);
@@ -39,7 +36,7 @@ Prat:AddModuleToLoad(function()
 
 	-- Runs before Prat add the message to the chat frames
 	function pratModule:Prat_PreAddMessage(_, message, _, event)
-		if TRP3_API.chat.disabledByOOC() then return; end
+		if TRP3.chat.disabledByOOC() then return; end
 
 		-- Secret lockdown is in effect, can't do anything with the information
 		if not canaccessvalue(message.GUID) then return; end
@@ -48,25 +45,25 @@ Prat:AddModuleToLoad(function()
 		if not message.GUID or not C_PlayerInfo.GUIDIsPlayer(message.GUID) then return; end
 
 		-- If the message has no player, we don't have anything to do with this
-		if not TRP3_API.utils.str.emptyToNil(message.PLAYER) then return; end
+		if not TRP3.utils.str.emptyToNil(message.PLAYER) then return; end
 
 		-- Do not do any modification if the channel is not handled by TRP3 or customizations has been disabled
 		-- for that channel in the settings
-		if not TRP3_API.chat.isChannelHandled(event) or not TRP3_API.chat.configIsChannelUsed(event) then return; end
+		if not TRP3.chat.isChannelHandled(event) or not TRP3.chat.configIsChannelUsed(event) then return; end
 
 		-- Retrieve all the player info from the message GUID
 		local _, _, _, _, _, name, realm = GetPlayerInfoByGUID(message.GUID);
 
 		-- Calling our unitInfoToID() function to get a "Player-Realm" formatted string (handles cases where realm is nil)
-		local unitID = TRP3_API.utils.str.unitInfoToID(name, realm);
+		local unitID = TRP3.utils.str.unitInfoToID(name, realm);
 		local characterName = unitID;
 
 		-- Extract the color if present used by Prat so we use it by default;
 		-- can be nil.
-		local characterColor = TRP3_API.ParseColorFromHexMarkup(message.PLAYER);
+		local characterColor = TRP3.ParseColorFromHexMarkup(message.PLAYER);
 
 		-- Character name is without the server name is they are from the same realm or if the option to remove realm info is enabled
-		if realm == TRP3_API.globals.player_realm_id or TRP3_API.configuration.getValue("remove_realm") then
+		if realm == TRP3.globals.player_realm_id or TRP3.configuration.getValue("remove_realm") then
 			characterName = name;
 
 			message.sS = ""
@@ -75,14 +72,14 @@ Prat:AddModuleToLoad(function()
 		end
 
 		-- Get the unit color and name
-		local customizedName = TRP3_API.chat.getFullnameForUnitUsingChatMethod(unitID);
+		local customizedName = TRP3.chat.getFullnameForUnitUsingChatMethod(unitID);
 
 		if customizedName then
 			characterName = customizedName;
 		end
 
 		-- We retrieve the custom color if the option for custom colored names in chat is enabled
-		if TRP3_API.chat.configShowNameCustomColors() then
+		if TRP3.chat.configShowNameCustomColors() then
 			local player = AddOn_TotalRP3.Player.CreateFromCharacterID(unitID);
 			local customColor = player:GetCustomColorForDisplay(unitID);
 
@@ -96,17 +93,17 @@ Prat:AddModuleToLoad(function()
 			characterName = characterColor:WrapTextInColorCode(characterName);
 		end
 
-		if TRP3_API.configuration.getValue("chat_show_icon") then
-			local info = TRP3_API.utils.getCharacterInfoTab(unitID);
+		if TRP3.configuration.getValue("chat_show_icon") then
+			local info = TRP3.utils.getCharacterInfoTab(unitID);
 			if info and info.characteristics and info.characteristics.IC then
-				characterName = TRP3_API.utils.str.icon(info.characteristics.IC, 15) .. " " .. characterName;
+				characterName = TRP3.utils.str.icon(info.characteristics.IC, 15) .. " " .. characterName;
 			end
 		end
 
 		-- Check if this message was flagged as containing a 's at the beggning.
 		-- To avoid having a space between the name of the player and the 's we previously removed the 's
 		-- from the message. We now need to insert it after the player's name, without a space.
-		if TRP3_API.chat.getOwnershipNameID() == message.GUID then
+		if TRP3.chat.getOwnershipNameID() == message.GUID then
 			characterName = characterName .. "'s";
 		end
 

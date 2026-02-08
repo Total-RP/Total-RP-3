@@ -18,7 +18,7 @@ TRP3_CVarConstants = {
 TRP3_CVarCacheMixin = {};
 
 function TRP3_CVarCacheMixin:OnLoad()
-	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.callbacks = TRP3.InitCallbackRegistry(self);
 	self.cachable = {};
 	self.cvarValueCache = {};
 

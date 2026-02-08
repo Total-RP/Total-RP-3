@@ -5,7 +5,7 @@ local Directory = {};
 AddOn_TotalRP3.Directory = Directory;
 
 -- Public accessor
-TRP3_API.register = {
+TRP3.register = {
 	inits = {},
 	player = {},
 	ui = {},
@@ -13,28 +13,28 @@ TRP3_API.register = {
 	NOTIFICATION_ID_NEW_CHARACTER = "add_character",
 };
 
-TRP3_API.register.MENU_LIST_ID = "main_30_register";
-TRP3_API.register.MENU_LIST_ID_TAB = "main_31_";
+TRP3.register.MENU_LIST_ID = "main_30_register";
+TRP3.register.MENU_LIST_ID_TAB = "main_31_";
 
 -- imports
-local Ellyb = TRP3_API.Ellyb;
-local Globals = TRP3_API.globals;
-local Utils = TRP3_API.utils;
-local loc = TRP3_API.loc;
+local Ellyb = TRP3.Ellyb;
+local Globals = TRP3.globals;
+local Utils = TRP3.utils;
+local loc = TRP3.loc;
 local buildZoneText = Utils.str.buildZoneText;
 local getUnitID = Utils.str.getUnitID;
-local Config = TRP3_API.configuration;
+local Config = TRP3.configuration;
 local registerConfigKey = Config.registerConfigKey;
 local getConfigValue = Config.getValue;
 local Events = TRP3_Addon.Events;
-local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
-local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
-local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
-local getPlayerCurrentProfileID, isProfileNameAvailable, createProfile, selectProfile = TRP3_API.profile.getPlayerCurrentProfileID, TRP3_API.profile.isProfileNameAvailable, TRP3_API.profile.createProfile, TRP3_API.profile.selectProfile;
+local registerMenu, selectMenu = TRP3.navigation.menu.registerMenu, TRP3.navigation.menu.selectMenu;
+local registerPage, setPage = TRP3.navigation.page.registerPage, TRP3.navigation.page.setPage;
+local getCurrentContext, getCurrentPageID = TRP3.navigation.page.getCurrentContext, TRP3.navigation.page.getCurrentPageID;
+local getPlayerCurrentProfileID, isProfileNameAvailable, createProfile, selectProfile = TRP3.profile.getPlayerCurrentProfileID, TRP3.profile.isProfileNameAvailable, TRP3.profile.createProfile, TRP3.profile.selectProfile;
 local showCharacteristicsTab, showAboutTab, showMiscTab, showNotesTab;
-local get = TRP3_API.profile.getData;
-local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
-local toast = TRP3_API.ui.tooltip.toast;
+local get = TRP3.profile.getData;
+local showTextInputPopup = TRP3.popup.showTextInputPopup;
+local toast = TRP3.ui.tooltip.toast;
 
 -- Saved variables references
 local profiles, characters;
@@ -43,7 +43,7 @@ local profiles, characters;
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.register.registerInfoTypes = {
+TRP3.register.registerInfoTypes = {
 	CHARACTERISTICS = "characteristics",
 	ABOUT = "about",
 	MISC = "misc",
@@ -51,7 +51,7 @@ TRP3_API.register.registerInfoTypes = {
 	CHARACTER = "character",
 }
 
-local registerInfoTypes = TRP3_API.register.registerInfoTypes;
+local registerInfoTypes = TRP3.register.registerInfoTypes;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tools
@@ -60,13 +60,13 @@ local registerInfoTypes = TRP3_API.register.registerInfoTypes;
 local function getProfileOrNil(profileID)
 	return profiles[profileID];
 end
-TRP3_API.register.getProfileOrNil = getProfileOrNil;
+TRP3.register.getProfileOrNil = getProfileOrNil;
 
 local function getProfile(profileID)
 	assert(profiles[profileID], "Unknown profile ID: " .. tostring(profileID));
 	return getProfileOrNil(profileID);
 end
-TRP3_API.register.getProfile = getProfile;
+TRP3.register.getProfile = getProfile;
 
 local function deleteProfile(profileID, dontFireEvents)
 	assert(profiles[profileID], "Unknown profile ID: " .. tostring(profileID));
@@ -103,7 +103,7 @@ local function deleteProfile(profileID, dontFireEvents)
 	end
 end
 
-TRP3_API.register.deleteProfile = deleteProfile;
+TRP3.register.deleteProfile = deleteProfile;
 
 local function deleteCharacter(unitID)
 	assert(characters[unitID], "Unknown unitID: " .. tostring(unitID));
@@ -114,27 +114,27 @@ local function deleteCharacter(unitID)
 	characters[unitID] = nil;
 end
 
-TRP3_API.register.deleteCharacter = deleteCharacter;
+TRP3.register.deleteCharacter = deleteCharacter;
 
 local function isUnitIDKnown(unitID)
 	assert(unitID, "Nil unitID");
 	return characters[unitID] ~= nil;
 end
 
-TRP3_API.register.isUnitIDKnown = isUnitIDKnown;
+TRP3.register.isUnitIDKnown = isUnitIDKnown;
 
 local function hasProfile(unitID)
 	assert(isUnitIDKnown(unitID), "Unknown character: " .. tostring(unitID));
 	return characters[unitID].profileID;
 end
 
-TRP3_API.register.hasProfile = hasProfile;
+TRP3.register.hasProfile = hasProfile;
 
 local function profileExists(unitID)
 	return hasProfile(unitID) and profiles[characters[unitID].profileID];
 end
 
-TRP3_API.register.profileExists = profileExists;
+TRP3.register.profileExists = profileExists;
 
 local function createUnitIDProfile(unitID)
 	assert(characters[unitID].profileID, "UnitID don't have a profileID: " .. unitID);
@@ -144,28 +144,28 @@ local function createUnitIDProfile(unitID)
 	return profiles[characters[unitID].profileID];
 end
 
-TRP3_API.register.createUnitIDProfile = createUnitIDProfile;
+TRP3.register.createUnitIDProfile = createUnitIDProfile;
 
 local function getUnitIDProfile(unitID)
 	assert(profileExists(unitID), "No profile for character: " .. tostring(unitID));
 	return profiles[characters[unitID].profileID], characters[unitID].profileID;
 end
 
-TRP3_API.register.getUnitIDProfile = getUnitIDProfile;
+TRP3.register.getUnitIDProfile = getUnitIDProfile;
 
 local function getUnitIDProfileID(unitID)
 	return characters[unitID] and characters[unitID].profileID;
 end
-TRP3_API.register.getUnitIDProfileID = getUnitIDProfileID;
+TRP3.register.getUnitIDProfileID = getUnitIDProfileID;
 
 local function getUnitIDCharacter(unitID)
 	assert(isUnitIDKnown(unitID), "Unknown character: " .. tostring(unitID));
 	return characters[unitID];
 end
 
-TRP3_API.register.getUnitIDCharacter = getUnitIDCharacter;
+TRP3.register.getUnitIDCharacter = getUnitIDCharacter;
 
-function TRP3_API.register.isUnitKnown(targetType)
+function TRP3.register.isUnitKnown(targetType)
 	return isUnitIDKnown(getUnitID(targetType));
 end
 
@@ -174,39 +174,39 @@ end
 -- @param unitID Unit ID of the player to test
 --
 local function unitIDIsFilteredForMatureContent(unitID)
-	if not TRP3_API.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end ;
+	if not TRP3.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end ;
 	local profile = getUnitIDProfile(unitID);
 	local profileID = getUnitIDProfileID(unitID);
 	-- Check if the profile has been flagged as containing mature content, that the option to filter such content is enabled
 	-- and that the profile is not in the pink list.
-	return profile.hasMatureContent and getConfigValue("register_mature_filter") and not (TRP3_API.register.mature_filter.isProfileSafeListed(profileID))
+	return profile.hasMatureContent and getConfigValue("register_mature_filter") and not (TRP3.register.mature_filter.isProfileSafeListed(profileID))
 end
 
-TRP3_API.register.unitIDIsFilteredForMatureContent = unitIDIsFilteredForMatureContent;
+TRP3.register.unitIDIsFilteredForMatureContent = unitIDIsFilteredForMatureContent;
 
 local function profileIDISFilteredForMatureContent (profileID)
-	if not TRP3_API.register.mature_filter then return false end ;
+	if not TRP3.register.mature_filter then return false end ;
 
 	local profile = getProfileOrNil(profileID);
 
-	return profile and profile.hasMatureContent and not TRP3_API.register.mature_filter.isProfileSafeListed(profileID);
+	return profile and profile.hasMatureContent and not TRP3.register.mature_filter.isProfileSafeListed(profileID);
 end
 
-TRP3_API.register.profileIDISFilteredForMatureContent = profileIDISFilteredForMatureContent;
+TRP3.register.profileIDISFilteredForMatureContent = profileIDISFilteredForMatureContent;
 
 ---
 -- Check if the content of the profile of the unit ID is flagged as containing mature content
 -- @param unitID Unit ID of the player to test
 --
 local function unitIDIsFlaggedForMatureContent(unitID)
-	if not TRP3_API.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end ;
+	if not TRP3.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end ;
 	local profile = getUnitIDProfile(unitID);
 	-- Check if the profile has been flagged as containing mature content, that the option to filter such content is enabled
 	-- and that the profile is not in the pink list.
 	return profile.hasMatureContent
 end
 
-TRP3_API.register.unitIDIsFlaggedForMatureContent = unitIDIsFlaggedForMatureContent;
+TRP3.register.unitIDIsFlaggedForMatureContent = unitIDIsFlaggedForMatureContent;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Main data management
@@ -218,7 +218,7 @@ TRP3_API.register.unitIDIsFlaggedForMatureContent = unitIDIsFlaggedForMatureCont
 
 --- Raises error if unknown unitName
 -- Link a unitID to a profileID. This link is bidirectional.
-function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
+function TRP3.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 	local character = getUnitIDCharacter(unitID);
 	local oldProfileID = character.profileID;
 	character.profileID = currentProfileID;
@@ -257,7 +257,7 @@ local function SanitizeRoleplayExperience(experience)
 end
 
 --- Raises error if unknown unitName
-function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, msp, extended, trialAccount, extendedVersion, roleplayExperience, classID)
+function TRP3.register.saveClientInformation(unitID, client, clientVersion, msp, extended, trialAccount, extendedVersion, roleplayExperience, classID)
 	local character = getUnitIDCharacter(unitID);
 	character.client = Utils.str.sanitize(client);
 	character.clientVersion = Utils.str.sanitizeVersion(clientVersion);
@@ -283,36 +283,36 @@ local function saveCharacterInformation(unitID, race, class, gender, faction, ti
 		profile.zone = zone;
 	end
 end
-TRP3_API.register.saveCharacterInformation = saveCharacterInformation;
+TRP3.register.saveCharacterInformation = saveCharacterInformation;
 
 local function sanitizeFullProfile(profileID, data)
 	if not data or not data.player then return false end
 	local somethingWasSanitizedInsideProfile = false;
-	if data.player.characteristics and TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTERISTICS, profileID, data.player.characteristics) then
+	if data.player.characteristics and TRP3.register.sanitizeProfile(registerInfoTypes.CHARACTERISTICS, profileID, data.player.characteristics) then
 		somethingWasSanitizedInsideProfile = true;
 	end
-	if data.player.character and TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTER, profileID, data.player.character) then
+	if data.player.character and TRP3.register.sanitizeProfile(registerInfoTypes.CHARACTER, profileID, data.player.character) then
 		somethingWasSanitizedInsideProfile = true;
 	end
-	if data.player.misc and TRP3_API.register.sanitizeProfile(registerInfoTypes.MISC, profileID, data.player.misc) then
+	if data.player.misc and TRP3.register.sanitizeProfile(registerInfoTypes.MISC, profileID, data.player.misc) then
 		somethingWasSanitizedInsideProfile = true;
 	end
 	return somethingWasSanitizedInsideProfile;
 end
-TRP3_API.register.sanitizeFullProfile = sanitizeFullProfile;
+TRP3.register.sanitizeFullProfile = sanitizeFullProfile;
 
-function TRP3_API.register.sanitizeProfile(informationType, profileID, data)
+function TRP3.register.sanitizeProfile(informationType, profileID, data)
 	local somethingWasSanitizedInsideProfile = false;
 	if informationType == registerInfoTypes.CHARACTERISTICS then
-		if TRP3_API.register.ui.sanitizeCharacteristics(profileID, data) then
+		if TRP3.register.ui.sanitizeCharacteristics(profileID, data) then
 			somethingWasSanitizedInsideProfile = true;
 		end
 	elseif informationType == registerInfoTypes.CHARACTER then
-		if TRP3_API.dashboard.sanitizeCharacter(profileID, data) then
+		if TRP3.dashboard.sanitizeCharacter(profileID, data) then
 			somethingWasSanitizedInsideProfile = true;
 		end
 	elseif informationType == registerInfoTypes.MISC then
-		if TRP3_API.register.ui.sanitizeMisc(profileID, data) then
+		if TRP3.register.ui.sanitizeMisc(profileID, data) then
 			somethingWasSanitizedInsideProfile = true;
 		end
 	end
@@ -320,24 +320,24 @@ function TRP3_API.register.sanitizeProfile(informationType, profileID, data)
 end
 
 --- Raises error if unknown unitID or unit hasn't profile ID
-function TRP3_API.register.saveInformation(unitID, informationType, data)
+function TRP3.register.saveInformation(unitID, informationType, data)
 	local profileID = getUnitIDProfileID(unitID);
 	local profile = getUnitIDProfile(unitID);
 	if profile[informationType] then
 		wipe(profile[informationType]);
 	end
 
-	TRP3_API.register.sanitizeProfile(informationType, profileID, data);
+	TRP3.register.sanitizeProfile(informationType, profileID, data);
 	profile[informationType] = data;
 	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), informationType);
 end
 
 --- Raises error if KNOWN unitID
-function TRP3_API.register.addCharacter(unitID)
+function TRP3.register.addCharacter(unitID)
 	assert(unitID and unitID:find('-'), "Malformed unitID");
 	assert(not isUnitIDKnown(unitID), "Already known character: " .. tostring(unitID));
 	characters[unitID] = {};
-	TRP3_API.Log("Added to the register: " .. unitID);
+	TRP3.Log("Added to the register: " .. unitID);
 end
 
 -- GETTERS
@@ -350,7 +350,7 @@ local function getUnitIDCurrentProfile(unitID)
 	end
 end
 
-TRP3_API.register.getUnitIDCurrentProfile = getUnitIDCurrentProfile;
+TRP3.register.getUnitIDCurrentProfile = getUnitIDCurrentProfile;
 
 local function getCharacterInfoTab(unitID)
 	if unitID == Globals.player_id then
@@ -360,16 +360,16 @@ local function getCharacterInfoTab(unitID)
 	end
 	return {};
 end
-TRP3_API.register.getUnitIDCurrentProfileSafe = getCharacterInfoTab;
+TRP3.register.getUnitIDCurrentProfileSafe = getCharacterInfoTab;
 
 --- Raises error if unknown unitID
-function TRP3_API.register.shouldUpdateInformation(unitID, infoType, version)
+function TRP3.register.shouldUpdateInformation(unitID, infoType, version)
 	--- Raises error if unit hasn't profile ID or no profile exists
 	local profile = getUnitIDProfile(unitID);
 	return not profile[infoType] or not profile[infoType].v or profile[infoType].v ~= version;
 end
 
-function TRP3_API.register.getCharacterList()
+function TRP3.register.getCharacterList()
 	return characters;
 end
 
@@ -381,7 +381,7 @@ function Directory.getCharacterDataForCharacterId(characterID)
 end
 
 --- Raises error if unknown unitID
-function TRP3_API.register.getUnitIDCharacter(unitID)
+function TRP3.register.getUnitIDCharacter(unitID)
 	if unitID == Globals.player_id then
 		return Globals.player_character;
 	end
@@ -389,11 +389,11 @@ function TRP3_API.register.getUnitIDCharacter(unitID)
 	return characters[unitID];
 end
 
-function TRP3_API.register.getProfileList()
+function TRP3.register.getProfileList()
 	return profiles;
 end
 
-function TRP3_API.register.insertProfile(profileID, profileData)
+function TRP3.register.insertProfile(profileID, profileData)
 	profiles[profileID] = profileData;
 end
 
@@ -401,42 +401,42 @@ local function getUnitRPNameWithID(unitID, unitName)
 	unitName = unitName or unitID;
 	if unitID then
 		if unitID == Globals.player_id then
-			unitName = TRP3_API.register.getPlayerCompleteName(true);
+			unitName = TRP3.register.getPlayerCompleteName(true);
 		elseif isUnitIDKnown(unitID) and profileExists(unitID) then
 			local profile = getUnitIDProfile(unitID);
 			if profile.characteristics then
-				unitName = TRP3_API.register.getCompleteName(profile.characteristics, unitName, true);
+				unitName = TRP3.register.getCompleteName(profile.characteristics, unitName, true);
 			end
 		end
 	end
 	return unitName;
 end
-TRP3_API.register.getUnitRPNameWithID = getUnitRPNameWithID;
+TRP3.register.getUnitRPNameWithID = getUnitRPNameWithID;
 
-function TRP3_API.register.getUnitRPName(targetType)
+function TRP3.register.getUnitRPName(targetType)
 	local unitName = UnitName(targetType);
 	local unitID = getUnitID(targetType);
 	return getUnitRPNameWithID(unitID, unitName);
 end
 
-TRP3_API.r.name = TRP3_API.register.getUnitRPName;
+TRP3.r.name = TRP3.register.getUnitRPName;
 
-function TRP3_API.register.getUnitRPFirstName(targetType)
+function TRP3.register.getUnitRPFirstName(targetType)
 	local unitID = getUnitID(targetType);
 	if unitID then
 		local player = AddOn_TotalRP3.Player.static.CreateFromCharacterID(unitID);
-		return player:GetFirstName() or TRP3_API.register.getUnitRPName(targetType);
+		return player:GetFirstName() or TRP3.register.getUnitRPName(targetType);
 	end
-	return TRP3_API.register.getUnitRPName(targetType);
+	return TRP3.register.getUnitRPName(targetType);
 end
 
-function TRP3_API.register.getUnitRPLastName(targetType)
+function TRP3.register.getUnitRPLastName(targetType)
 	local unitID = getUnitID(targetType);
 	if unitID then
 		local player = AddOn_TotalRP3.Player.static.CreateFromCharacterID(unitID);
-		return player:GetLastName() or TRP3_API.register.getUnitRPName(targetType);
+		return player:GetLastName() or TRP3.register.getUnitRPName(targetType);
 	end
-	return TRP3_API.register.getUnitRPName(targetType);
+	return TRP3.register.getUnitRPName(targetType);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -499,9 +499,9 @@ end
 local function tutorialProvider()
 	if tabGroup then
 		if tabGroup.current == 2 then
-			return TRP3_API.register.ui.aboutTutorialProvider();
+			return TRP3.register.ui.aboutTutorialProvider();
 		elseif tabGroup.current == 3 then
-			return TRP3_API.register.ui.miscTutorialProvider();
+			return TRP3.register.ui.miscTutorialProvider();
 		end
 	end
 end
@@ -511,7 +511,7 @@ local function createTabBar()
 	frame:SetSize(485, 30);
 	frame:SetPoint("TOPLEFT", 17, 0);
 	frame:SetFrameLevel(1);
-	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
+	tabGroup = TRP3.ui.frame.createTabPanel(frame,
 		{
 			{ loc.REG_PLAYER_CHARACTERISTICS, 1, 150 },
 			{ loc.REG_PLAYER_ABOUT, 2, 110 },
@@ -540,7 +540,7 @@ local function createTabBar()
 	-- Confirmation callback
 		function(callback)
 			if getCurrentContext() and getCurrentContext().isEditMode then
-				TRP3_API.popup.showConfirmPopup(loc.REG_PLAYER_CHANGE_CONFIRM,
+				TRP3.popup.showConfirmPopup(loc.REG_PLAYER_CHANGE_CONFIRM,
 					function()
 						callback();
 					end);
@@ -549,7 +549,7 @@ local function createTabBar()
 			end
 		end);
 
-	TRP3_API.register.player.tabGroup = tabGroup;
+	TRP3.register.player.tabGroup = tabGroup;
 end
 
 local function showDefaultTab()
@@ -580,11 +580,11 @@ local function showTabs()
 	end
 end
 
-function TRP3_API.register.ui.getSelectedTabIndex()
+function TRP3.register.ui.getSelectedTabIndex()
 	return tabGroup.current;
 end
 
-function TRP3_API.register.ui.isTabSelected(infoType)
+function TRP3.register.ui.isTabSelected(infoType)
 	return (infoType == registerInfoTypes.CHARACTERISTICS and tabGroup.current == 1)
 		or (infoType == registerInfoTypes.ABOUT and tabGroup.current == 2)
 		or (infoType == registerInfoTypes.MISC and tabGroup.current == 3)
@@ -603,7 +603,7 @@ local function cleanupCharacters()
 		end
 	end
 	for unitID, character in pairs(characters) do
-		if not character.profileID and not TRP3_API.register.isIDIgnored(unitID) then
+		if not character.profileID and not TRP3.register.isIDIgnored(unitID) then
 			wipe(character)
 			characters[unitID] = nil
 		end
@@ -611,10 +611,10 @@ local function cleanupCharacters()
 end
 
 local function cleanupCompanions()
-	local companionIDToInfo = TRP3_API.utils.str.companionIDToInfo;
-	local deleteCompanionProfile = TRP3_API.companions.register.deleteProfile;
+	local companionIDToInfo = TRP3.utils.str.companionIDToInfo;
+	local deleteCompanionProfile = TRP3.companions.register.deleteProfile;
 
-	local companionProfiles = TRP3_API.companions.register.getProfiles();
+	local companionProfiles = TRP3.companions.register.getProfiles();
 
 	for companionProfileID, companionProfile in pairs(companionProfiles) do
 		for companionFullID, _ in pairs(companionProfile.links) do
@@ -624,14 +624,14 @@ local function cleanupCompanions()
 			end
 		end
 		if TableIsEmpty(companionProfile.links) then
-			TRP3_API.Log("Purging companion " .. companionProfileID .. ", no more characters linked to it.");
+			TRP3.Log("Purging companion " .. companionProfileID .. ", no more characters linked to it.");
 			deleteCompanionProfile(companionProfileID, true);
 		end
 	end
 end
 
 local function cleanupPlayerRelations()
-	for _, myProfile in pairs(TRP3_API.profile.getProfiles()) do
+	for _, myProfile in pairs(TRP3.profile.getProfiles()) do
 		for profileID, _ in pairs(myProfile.relation or {}) do
 			if not profiles[profileID] then
 				myProfile.relation[profileID] = nil;
@@ -651,14 +651,14 @@ local function cleanupProfiles()
 		end
 	end
 
-	TRP3_API.Log("Purging profiles with no data")
+	TRP3.Log("Purging profiles with no data")
 	for profileID, profile in pairs(profiles) do
 		if not profile.characteristics or next(profile.characteristics) == nil then
 			deleteProfile(profileID, true);
 		end
 	end
 
-	TRP3_API.Log("Purging unbound MSP profiles")
+	TRP3.Log("Purging unbound MSP profiles")
 	for profileID, profile in pairs(profiles) do
 		if profile.msp and next(profile.link) == nil then
 			deleteProfile(profileID, true);
@@ -668,10 +668,10 @@ local function cleanupProfiles()
 	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
 		return;
 	end
-	TRP3_API.Log(("Purging profiles older than %s day(s)"):format(getConfigValue("register_auto_purge_mode") / 86400));
+	TRP3.Log(("Purging profiles older than %s day(s)"):format(getConfigValue("register_auto_purge_mode") / 86400));
 	-- First, get a tab with all profileID with which we have a relation or on which we have notes
 	local protectedProfileIDs = {};
-	for _, profile in pairs(TRP3_API.profile.getProfiles()) do
+	for _, profile in pairs(TRP3.profile.getProfiles()) do
 		for profileID, _ in pairs(profile.relation or {}) do
 			protectedProfileIDs[profileID] = true;
 		end
@@ -679,14 +679,14 @@ local function cleanupProfiles()
 			protectedProfileIDs[profileID] = true;
 		end
 	end
-	TRP3_API.Log("Protected profiles: " .. CountTable(protectedProfileIDs));
+	TRP3.Log("Protected profiles: " .. CountTable(protectedProfileIDs));
 	local profilesToPurge = {};
 	for profileID, profile in pairs(profiles) do
-		if TRP3_API.profile.isDefaultProfile(profileID) or (not protectedProfileIDs[profileID] and (not profile.time or time() - profile.time > getConfigValue("register_auto_purge_mode"))) then
+		if TRP3.profile.isDefaultProfile(profileID) or (not protectedProfileIDs[profileID] and (not profile.time or time() - profile.time > getConfigValue("register_auto_purge_mode"))) then
 			tinsert(profilesToPurge, profileID);
 		end
 	end
-	TRP3_API.Log("Profiles to purge: " .. CountTable(profilesToPurge));
+	TRP3.Log("Profiles to purge: " .. CountTable(profilesToPurge));
 	for _, profileID in pairs(profilesToPurge) do
 		deleteProfile(profileID, true);
 	end
@@ -694,7 +694,7 @@ end
 
 local function cleanupMyProfiles()
 	-- Get the player's profiles and sanitize them, removing all invalid codes manually inserted
-	for profileID, profile in pairs(TRP3_API.profile.getProfiles()) do
+	for profileID, profile in pairs(TRP3.profile.getProfiles()) do
 		sanitizeFullProfile(profileID, profile);
 	end
 end
@@ -709,11 +709,11 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.register.init()
-	showCharacteristicsTab = TRP3_API.register.ui.showCharacteristicsTab;
-	showAboutTab = TRP3_API.register.ui.showAboutTab;
-	showMiscTab = TRP3_API.register.ui.showMiscTab;
-	showNotesTab = TRP3_API.register.ui.showNotesTab;
+function TRP3.register.init()
+	showCharacteristicsTab = TRP3.register.ui.showCharacteristicsTab;
+	showAboutTab = TRP3.register.ui.showAboutTab;
+	showMiscTab = TRP3.register.ui.showMiscTab;
+	showNotesTab = TRP3.register.ui.showNotesTab;
 
 	-- Init save variables
 	if not TRP3_Register then
@@ -751,7 +751,7 @@ function TRP3_API.register.init()
 	end);
 
 	-- Listen to the mouse over event
-	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "UPDATE_MOUSEOVER_UNIT", function() onMouseOver(); end);
+	TRP3.RegisterCallback(TRP3.GameEvents, "UPDATE_MOUSEOVER_UNIT", function() onMouseOver(); end);
 
 	registerMenu({
 		id = "main_10_player",
@@ -779,8 +779,8 @@ function TRP3_API.register.init()
 		isChildOf = "main_10_player",
 	};
 	registerMenu(currentPlayerMenu);
-	local refreshMenu = TRP3_API.navigation.menu.rebuildMenu;
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, profileID, dataType)
+	local refreshMenu = TRP3.navigation.menu.rebuildMenu;
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, profileID, dataType)
 		onInformationUpdated(profileID, dataType);
 
 		local menuItemID;
@@ -789,15 +789,15 @@ function TRP3_API.register.init()
 		if unitID == Globals.player_id and (not dataType or dataType == "characteristics") then
 			menuItemID = "main_12_player_character";
 			menuItemText = get("player/characteristics/FN") or Globals.player;
-		elseif TRP3_API.register.getProfileOrNil(profileID) then
+		elseif TRP3.register.getProfileOrNil(profileID) then
 			local player = AddOn_TotalRP3.Player.CreateFromProfileID(profileID);
 
-			menuItemID = TRP3_API.register.MENU_LIST_ID_TAB .. profileID;
+			menuItemID = TRP3.register.MENU_LIST_ID_TAB .. profileID;
 			menuItemText = player:GetFirstName() or player:GetName();
 		end
 
-		if menuItemID and menuItemText and TRP3_API.navigation.menu.isMenuRegistered(menuItemID) then
-			local menuItem = TRP3_API.navigation.menu.getMenuItem(menuItemID);
+		if menuItemID and menuItemText and TRP3.navigation.menu.isMenuRegistered(menuItemID) then
+			local menuItem = TRP3.navigation.menu.getMenuItem(menuItemID);
 			menuItem.text = menuItemText;
 			refreshMenu();
 		end
@@ -825,12 +825,12 @@ function TRP3_API.register.init()
 		{ loc.CO_REGISTER_AUTO_PURGE_1:format(30), 86400 * 30 },
 	}
 
-	if TRP3_API.globals.DEBUG_MODE then
+	if TRP3.globals.DEBUG_MODE then
 		table.insert(AUTO_PURGE_VALUES, { loc.CO_REGISTER_AUTO_PURGE_0, false });
 	end
 
 	-- Build configuration page
-	TRP3_API.register.CONFIG_STRUCTURE = {
+	TRP3.register.CONFIG_STRUCTURE = {
 		id = "main_config_directory",
 		menuText = loc.CO_REGISTER,
 		pageText = loc.CO_REGISTER,
@@ -846,29 +846,29 @@ function TRP3_API.register.init()
 			}
 		}
 	};
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 		cleanupPlayerRelations();
 		cleanupProfiles();
 		cleanupCharacters();
 		cleanupCompanions();
 		cleanupMyProfiles();
-		Config.registerConfigurationPage(TRP3_API.register.CONFIG_STRUCTURE);
+		Config.registerConfigurationPage(TRP3.register.CONFIG_STRUCTURE);
 	end);
 
 	-- Initialization
-	TRP3_API.register.inits.characteristicsInit();
-	TRP3_API.register.inits.aboutInit();
-	TRP3_API.register.inits.glanceInit();
-	TRP3_API.register.inits.miscInit();
-	TRP3_API.register.inits.notesInit();
-	TRP3_API.register.inits.relationsInit();
+	TRP3.register.inits.characteristicsInit();
+	TRP3.register.inits.aboutInit();
+	TRP3.register.inits.glanceInit();
+	TRP3.register.inits.miscInit();
+	TRP3.register.inits.notesInit();
+	TRP3.register.inits.relationsInit();
 
-	TRP3_API.register.inits.dataExchangeInit();
-	wipe(TRP3_API.register.inits);
-	TRP3_API.register.inits = nil; -- Prevent init function to be called again, and free them from memory
+	TRP3.register.inits.dataExchangeInit();
+	wipe(TRP3.register.inits);
+	TRP3.register.inits = nil; -- Prevent init function to be called again, and free them from memory
 
 	TRP3_ProfileReportButton:SetScript("OnClick", function()
-		local context = TRP3_API.navigation.page.getCurrentContext();
+		local context = TRP3.navigation.page.getCurrentContext();
 		local characterID = getFirstCharacterIDFromProfile(context.profile) or UNKNOWN;
 		local reportText = loc.REG_REPORT_PLAYER_OPEN_URL_160:format(characterID);
 		if context.profile.time then
@@ -878,7 +878,7 @@ function TRP3_API.register.init()
 		Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", reportText, nil, loc.COPY_SYSTEM_MESSAGE);
 	end)
 
-	TRP3_API.ui.tooltip.setTooltipAll(TRP3_ProfileReportButton, "RIGHT", 0, 5,  loc.REG_REPORT_PLAYER_PROFILE, loc.REG_REPORT_PLAYER_PROFILE_TT)
+	TRP3.ui.tooltip.setTooltipAll(TRP3_ProfileReportButton, "RIGHT", 0, 5,  loc.REG_REPORT_PLAYER_PROFILE, loc.REG_REPORT_PLAYER_PROFILE_TT)
 
 	createTabBar();
 end

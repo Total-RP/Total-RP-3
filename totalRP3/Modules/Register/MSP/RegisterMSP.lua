@@ -13,18 +13,18 @@ local function GetOrCreateTable(t, key)
 end
 
 local function onStart()
-	local loc = TRP3_API.loc;
+	local loc = TRP3.loc;
 
 	-- Check for already loaded MSP addon
 	if msp_RPAddOn then
-		TRP3_API.popup.showAlertPopup(loc.REG_MSP_ALERT:format(msp_RPAddOn));
+		TRP3.popup.showAlertPopup(loc.REG_MSP_ALERT:format(msp_RPAddOn));
 		-- Provoke error to cancel module activation
 		error(("Conflict with another MSP addon: %s"):format(msp_RPAddOn));
 	end
 
-	local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Events;
-	local get, getCompleteName = TRP3_API.profile.getData, TRP3_API.register.getCompleteName;
-	local isIgnored = TRP3_API.register.isIDIgnored;
+	local Globals, Utils, Events = TRP3.globals, TRP3.utils, TRP3_Addon.Events;
+	local get, getCompleteName = TRP3.profile.getData, TRP3.register.getCompleteName;
+	local isIgnored = TRP3.register.isIDIgnored;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- LibMSP support code
@@ -133,21 +133,21 @@ local function onStart()
 		msp.my['PV'] = nil;
 		if dataTab.MI then
 			for _, miscData in pairs(dataTab.MI) do
-				local miscType = TRP3_API.GetMiscInfoTypeFromData(miscData);
+				local miscType = TRP3.GetMiscInfoTypeFromData(miscData);
 
-				if miscType == TRP3_API.MiscInfoType.Motto then
+				if miscType == TRP3.MiscInfoType.Motto then
 					msp.my['MO'] = miscData.VA;
-				elseif miscType == TRP3_API.MiscInfoType.House then
+				elseif miscType == TRP3.MiscInfoType.House then
 					msp.my['NH'] = miscData.VA;
-				elseif miscType == TRP3_API.MiscInfoType.Nickname then
+				elseif miscType == TRP3.MiscInfoType.Nickname then
 					msp.my['NI'] = miscData.VA;
-				elseif miscType == TRP3_API.MiscInfoType.Pronouns then
+				elseif miscType == TRP3.MiscInfoType.Pronouns then
 					msp.my['PN'] = miscData.VA;
-				elseif miscType == TRP3_API.MiscInfoType.GuildName then
+				elseif miscType == TRP3.MiscInfoType.GuildName then
 					msp.my['PG'] = miscData.VA;
-				elseif miscType == TRP3_API.MiscInfoType.GuildRank then
+				elseif miscType == TRP3.MiscInfoType.GuildRank then
 					msp.my['PR'] = miscData.VA;
-				elseif miscType == TRP3_API.MiscInfoType.VoiceReference then
+				elseif miscType == TRP3.MiscInfoType.VoiceReference then
 					msp.my['PV'] = miscData.VA;
 				end
 			end
@@ -212,10 +212,10 @@ local function onStart()
 	-- Exchange
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local addCharacter, profileExists = TRP3_API.register.addCharacter, TRP3_API.register.profileExists;
-	local isUnitIDKnown, getUnitIDCharacter = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCharacter;
-	local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
-	local hasProfile, saveCurrentProfileID = TRP3_API.register.hasProfile, TRP3_API.register.saveCurrentProfileID;
+	local addCharacter, profileExists = TRP3.register.addCharacter, TRP3.register.profileExists;
+	local isUnitIDKnown, getUnitIDCharacter = TRP3.register.isUnitIDKnown, TRP3.register.getUnitIDCharacter;
+	local getUnitIDProfile = TRP3.register.getUnitIDProfile;
+	local hasProfile, saveCurrentProfileID = TRP3.register.hasProfile, TRP3.register.saveCurrentProfileID;
 	local emptyToNil, unitIDToInfo = Utils.str.emptyToNil, Utils.str.unitIDToInfo;
 
 	local SUPPORTED_FIELDS = {
@@ -291,15 +291,15 @@ local function onStart()
 	end
 
 	local MISC_INFO_FIELDS = {
-		MO = Mixin(TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Motto), {
+		MO = Mixin(TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.Motto), {
 			formatter = function(value) return string.format([["%s"]], value); end
 		}),
-		NH = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.House),
-		NI = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Nickname),
-		PN = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.Pronouns),
-		PG = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.GuildName),
-		PR = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.GuildRank),
-		PV = TRP3_API.GetMiscTypeInfo(TRP3_API.MiscInfoType.VoiceReference),
+		NH = TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.House),
+		NI = TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.Nickname),
+		PN = TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.Pronouns),
+		PG = TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.GuildName),
+		PR = TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.GuildRank),
+		PV = TRP3.GetMiscTypeInfo(TRP3.MiscInfoType.VoiceReference),
 	};
 
 	local function updateMiscInfoField(profile, field, value)
@@ -339,14 +339,14 @@ local function onStart()
 	end
 
 	local function LoadRegisterProfile(characterID, char)
-		if not TRP3_API.register.isUnitIDKnown(characterID) then
+		if not TRP3.register.isUnitIDKnown(characterID) then
 			return;
-		elseif not TRP3_API.register.profileExists(characterID) then
+		elseif not TRP3.register.profileExists(characterID) then
 			return;
 		end
 
-		local character = TRP3_API.register.getUnitIDCharacter(characterID);
-		local profile = TRP3_API.register.getUnitIDProfile(characterID);
+		local character = TRP3.register.getUnitIDCharacter(characterID);
+		local profile = TRP3.register.getUnitIDProfile(characterID);
 
 		-- We only copy the bare minimum fields that are likely to be sent for
 		-- tooltip requests.
@@ -356,7 +356,7 @@ local function onStart()
 			do
 				local hideTitle = true;
 				local defaultName = (string.split("-", characterID));
-				local completeName = TRP3_API.register.getCompleteName(profile.characteristics, defaultName, hideTitle)
+				local completeName = TRP3.register.getCompleteName(profile.characteristics, defaultName, hideTitle)
 
 				if profile.characteristics.CH ~= nil and profile.characteristics.CH ~= "" then
 					char.field.NA = string.format("|cff%s%s|r", profile.characteristics.CH, completeName);
@@ -393,21 +393,21 @@ local function onStart()
 			-- Misc Info
 			if profile.characteristics.MI ~= nil then
 				for _, miscData in ipairs(profile.characteristics.MI) do
-					local miscType = TRP3_API.GetMiscInfoTypeFromData(miscData);
+					local miscType = TRP3.GetMiscInfoTypeFromData(miscData);
 
-					if miscType == TRP3_API.MiscInfoType.Motto then
+					if miscType == TRP3.MiscInfoType.Motto then
 						char.field.MO = TRP3_StringUtil.DequoteString(miscData.VA or "");
-					elseif miscType == TRP3_API.MiscInfoType.House then
+					elseif miscType == TRP3.MiscInfoType.House then
 						char.field.NH = miscData.VA;
-					elseif miscType == TRP3_API.MiscInfoType.Nickname then
+					elseif miscType == TRP3.MiscInfoType.Nickname then
 						char.field.NI = miscData.VA;
-					elseif miscType == TRP3_API.MiscInfoType.Pronouns then
+					elseif miscType == TRP3.MiscInfoType.Pronouns then
 						char.field.PN = miscData.VA;
-					elseif miscType == TRP3_API.MiscInfoType.GuildName then
+					elseif miscType == TRP3.MiscInfoType.GuildName then
 						char.field.PG = miscData.VA;
-					elseif miscType == TRP3_API.MiscInfoType.GuildRank then
+					elseif miscType == TRP3.MiscInfoType.GuildRank then
 						char.field.PR = miscData.VA;
-					elseif miscType == TRP3_API.MiscInfoType.VoiceReference then
+					elseif miscType == TRP3.MiscInfoType.VoiceReference then
 						char.field.PV = miscData.VA;
 					end
 				end
@@ -451,7 +451,7 @@ local function onStart()
 
 		if outstandingHelloRequests[senderID] then
 			outstandingHelloRequests[senderID] = nil;
-			TRP3_API.r.sendMSPQuery(senderID);
+			TRP3.r.sendMSPQuery(senderID);
 		end
 
 		if not isIgnored(senderID) and data.VA ~= "" and not string.find(data.VA, "TotalRP3") then
@@ -626,9 +626,9 @@ local function onStart()
 				profile.characteristics["CH"] = color;
 			end
 
-			TRP3_API.register.ui.sanitizeCharacteristics(character.profileID, profile.characteristics);
-			TRP3_API.dashboard.sanitizeCharacter(character.profileID, profile.character);
-			TRP3_API.register.ui.sanitizeMisc(character.profileID, profile.misc);
+			TRP3.register.ui.sanitizeCharacteristics(character.profileID, profile.characteristics);
+			TRP3.dashboard.sanitizeCharacter(character.profileID, profile.character);
+			TRP3.register.ui.sanitizeMisc(character.profileID, profile.misc);
 
 			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
 		end
@@ -642,7 +642,7 @@ local function onStart()
 	msp.my['TR'] = tostring(AddOn_TotalRP3.Player.GetCurrentUser():GetAccountType());
 
 	-- Init others vernum
-	for _, profile in pairs(TRP3_API.register.getProfileList()) do
+	for _, profile in pairs(TRP3.register.getProfileList()) do
 		if profile.msp and profile.mspver and profile.link then
 			for fieldID, version in pairs(profile.mspver) do
 				for ownerID, _ in pairs(profile.link) do
@@ -659,7 +659,7 @@ local function onStart()
 	updateCharacterData();
 	msp:Update();
 
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 		if unitID == Globals.player_id then
 			if not dataType or dataType == "about" or dataType == "characteristics" or dataType == "character" or dataType == "misc" then
 				onProfileChanged();
@@ -669,15 +669,15 @@ local function onStart()
 			end
 		end
 	end);
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.MOUSE_OVER_CHANGED, function(_, unitID, targetMode)
-		TRP3_API.r.sendMSPQuery(unitID, targetMode);
+	TRP3.RegisterCallback(TRP3_Addon, Events.MOUSE_OVER_CHANGED, function(_, unitID, targetMode)
+		TRP3.r.sendMSPQuery(unitID, targetMode);
 	end);
 end
 
-function TRP3_API.r.sendMSPQuery(name, targetMode)
+function TRP3.r.sendMSPQuery(name, targetMode)
 	if msp_RPAddOn ~= "Total RP 3" then
 		return;
-	elseif not name or name == TRP3_API.globals.player_id or TRP3_API.register.isIDIgnored(name) then
+	elseif not name or name == TRP3.globals.player_id or TRP3.register.isIDIgnored(name) then
 		return;
 	elseif targetMode and targetMode ~= AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
 		return;
@@ -719,4 +719,4 @@ local MODULE_STRUCTURE = {
 	["minVersion"] = 51,
 };
 
-TRP3_API.module.registerModule(MODULE_STRUCTURE);
+TRP3.module.registerModule(MODULE_STRUCTURE);

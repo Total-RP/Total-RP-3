@@ -1,31 +1,28 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
+local Ellyb = TRP3.Ellyb;
 
 -- Lua imports
 local assert = assert;
 
 -- Ellyb imports
-local YELLOW = TRP3_API.Colors.Yellow;
+local YELLOW = TRP3.Colors.Yellow;
 
 -- Total RP 3 imports
-local loc = TRP3_API.loc;
-local tcopy = TRP3_API.utils.table.copy;
-local Utils = TRP3_API.utils;
+local loc = TRP3.loc;
+local tcopy = TRP3.utils.table.copy;
+local Utils = TRP3.utils;
 local Events = TRP3_Addon.Events;
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
-	local ProfilesChatLinkModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_PLAYER_PROFILE, "PLAYER_PROFILE");
+	local ProfilesChatLinkModule = TRP3.ChatLinks:InstantiateModule(loc.CL_PLAYER_PROFILE, "PLAYER_PROFILE");
 
 	--- Get a copy of the data for the link, using the information provided when using ProfilesChatLinkModule:InsertLink
 	function ProfilesChatLinkModule:GetLinkData(profileID, canBeImported)
 		Ellyb.Assertions.isType(profileID, "string", "profileID");
 
-		local profile = TRP3_API.profile.getProfileByID(profileID);
+		local profile = TRP3.profile.getProfileByID(profileID);
 
 		local tooltipData = {
 			profile = {},
@@ -44,19 +41,19 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		assert(tooltipData.profile, "Invalid tooltipData");
 
 		local profile = tooltipData.profile;
-		local info = TRP3_API.profile.getData("player", profile);
+		local info = TRP3.profile.getData("player", profile);
 
-		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
+		local tooltipLines = TRP3.ChatLinkTooltipLines();
 
 		local customColor = YELLOW;
 		if info.characteristics.CH then
-			customColor = TRP3_API.CreateColorFromHexString(info.characteristics.CH);
+			customColor = TRP3.CreateColorFromHexString(info.characteristics.CH);
 		end
 
-		tooltipLines:SetTitle(customColor(Utils.str.icon(info.characteristics.IC or TRP3_InterfaceIcons.ProfileDefault, 20) .. " " .. TRP3_API.register.getCompleteName(info.characteristics, profile.profileName, true)));
+		tooltipLines:SetTitle(customColor(Utils.str.icon(info.characteristics.IC or TRP3_InterfaceIcons.ProfileDefault, 20) .. " " .. TRP3.register.getCompleteName(info.characteristics, profile.profileName, true)));
 
 		if info.characteristics.FT then
-			tooltipLines:AddLine("< " .. info.characteristics.FT .. " >", TRP3_API.Colors.Orange);
+			tooltipLines:AddLine("< " .. info.characteristics.FT .. " >", TRP3.Colors.Orange);
 		end
 		if info.character.CU and info.character.CU ~= "" then
 			tooltipLines:AddLine(" ");
@@ -84,13 +81,13 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		local profile = data.profile;
 		local profileName = profile.profileName;
 		local i = 1;
-		while not TRP3_API.profile.isProfileNameAvailable(profileName) and i < 500 do
+		while not TRP3.profile.isProfileNameAvailable(profileName) and i < 500 do
 			i = i + 1;
 			profileName = profileName .. " " .. i;
 		end
-		TRP3_API.profile.duplicateProfile(profile, profileName);
-		TRP3_API.navigation.openMainFrame();
-		TRP3_API.navigation.page.setPage("player_profiles", {});
+		TRP3.profile.duplicateProfile(profile, profileName);
+		TRP3.navigation.openMainFrame();
+		TRP3.navigation.page.setPage("player_profiles", {});
 		TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILES_LOADED);
 	end
 
@@ -100,12 +97,12 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	function OpenProfileButton:OnAnswerCommandReceived(profileData)
 		local profile, profileID = profileData.profile, profileData.profileID;
 		profile.link = {};
-		TRP3_API.register.insertProfile(profileID, profile.player)
+		TRP3.register.insertProfile(profileID, profile.player)
 		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
 
-		TRP3_API.register.openPageByProfileID(profileID);
-		TRP3_API.navigation.openMainFrame();
+		TRP3.register.openPageByProfileID(profileID);
+		TRP3.navigation.openMainFrame();
 	end
 
-	TRP3_API.ProfilesChatLinkModule = ProfilesChatLinkModule;
+	TRP3.ProfilesChatLinkModule = ProfilesChatLinkModule;
 end);

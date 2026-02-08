@@ -1,8 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 local AceDB = LibStub:GetLibrary("AceDB-3.0");
 
@@ -45,7 +44,7 @@ function ConditionContext:__init(condition, option)
 end
 
 local function CreateConditionContext(condition, option)
-	return TRP3_API.CreateObject(ConditionContext, condition, option);
+	return TRP3.CreateObject(ConditionContext, condition, option);
 end
 
 local ActionContext = CreateFromMixins(BaseContext);
@@ -60,7 +59,7 @@ function ActionContext:Apply(...)
 end
 
 local function CreateActionContext(action, option)
-	return TRP3_API.CreateObject(ActionContext, action, option);
+	return TRP3.CreateObject(ActionContext, action, option);
 end
 
 TRP3_Automation = TRP3_Addon:NewModule("Automation", "AceConsole-3.0");
@@ -97,7 +96,7 @@ function TRP3_Automation:OnInitialize()
 		TRP3_SavedAutomation.actions = nil;
 	end
 
-	TRP3_API.slash.registerCommand({
+	TRP3.slash.registerCommand({
 		id = "set",
 		helpLine = " " .. L.SLASH_CMD_SET_HELP,
 		handler = GenerateClosure(self.OnFieldSetCommand, self),
@@ -441,7 +440,7 @@ end
 
 TRP3_Automation:OnLoad();
 
-TRP3_API.module.registerModule({
+TRP3.module.registerModule({
 	id = "trp3_automation",
 	name = L.AUTOMATION_MODULE_NAME,
 	description = L.AUTOMATION_MODULE_DESCRIPTION,

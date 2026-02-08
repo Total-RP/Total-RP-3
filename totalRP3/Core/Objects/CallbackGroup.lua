@@ -12,12 +12,12 @@ function CallbackGroup:__init()
 end
 
 function CallbackGroup:AddCallback(registry, event, callback, owner, ...)
-	local registrable = TRP3_API.CreateCallback(registry, event, callback, owner, ...);
+	local registrable = TRP3.CreateCallback(registry, event, callback, owner, ...);
 	table.insert(self.registrables, registrable);
 end
 
 function CallbackGroup:RegisterCallback(registry, event, callback, owner, ...)
-	local registrable = TRP3_API.RegisterCallback(registry, event, callback, owner, ...);
+	local registrable = TRP3.RegisterCallback(registry, event, callback, owner, ...);
 	table.insert(self.registrables, registrable);
 end
 
@@ -45,6 +45,6 @@ function CallbackGroup:Unregister()
 	end
 end
 
-function TRP3_API.CreateCallbackGroup()
-	return TRP3_API.CreateObject(CallbackGroup);
+function TRP3.CreateCallbackGroup()
+	return TRP3.CreateObject(CallbackGroup);
 end

@@ -1,11 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
+local Ellyb = TRP3.Ellyb;
 
 --region Ellyb imports
 local Tooltips = Ellyb.Tooltips;
@@ -42,7 +37,7 @@ MapPoiMixins.CoalescedMapPinMixin = CoalescedMapPinMixin;
 -- The grouped coalesced map pins have uses categories to group the content of the markers under the cursor
 local GroupedCoalescedMapPinMixin = {};
 
-local WHITE = TRP3_API.Colors.White;
+local WHITE = TRP3.Colors.White;
 local TOOLTIP_CATEGORY_SEPARATOR = [[|TInterface\Common\UI-TooltipDivider-Transparent:8:128:0:0:8:8:0:128:0:8:255:255:255|t]];
 
 --- Custom sorting function that compares entries.
@@ -181,7 +176,7 @@ function AnimatedPinMixin:OnLoad()
 			self:Hide();
 			C_Timer.After(AddOn_TotalRP3.Map.getDistanceFromMapCenterFactor(poiInfo.position), function()
 				self:Show();
-				TRP3_API.ui.misc.playAnimation(self.Bounce);
+				TRP3.ui.misc.playAnimation(self.Bounce);
 			end);
 		end
 	end)

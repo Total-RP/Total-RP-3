@@ -29,7 +29,7 @@ do
 	for id, atlases in pairs(TRP3_InterfaceAtlases) do
 		local name = GetFirstValidAtlas(atlases);
 
-		if not name and TRP3_API.globals.DEBUG_MODE then
+		if not name and TRP3.globals.DEBUG_MODE then
 			securecallfunction(error, string.format("Invalid interface atlas %q: No valid atlas found", id));
 		end
 

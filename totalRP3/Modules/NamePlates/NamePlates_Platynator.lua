@@ -9,7 +9,7 @@
 
 
 local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 TRP3_Platynator = {};
 
 function TRP3_Platynator:OnModuleInitialize()
@@ -73,7 +73,7 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 			-- If full title is empty on characters or pets, we give an empty string to the title text
 			-- (so it doesn't get replaced by the guild)
 			if not overrideSubtext then
-				local targetType = TRP3_API.ui.misc.getTargetType(unitToken);
+				local targetType = TRP3.ui.misc.getTargetType(unitToken);
 				if targetType ~= AddOn_TotalRP3.Enums.UNIT_TYPE.NPC then
 					overrideSubtext = "";
 				end
@@ -132,7 +132,7 @@ end
 -- Module Registration
 --
 
-TRP3_API.module.registerModule({
+TRP3.module.registerModule({
 	id = "trp3_platynator",
 	name = L.PLATYNATOR_NAMEPLATES_MODULE_NAME,
 	description = L.PLATYNATOR_NAMEPLATES_MODULE_DESCRIPTION,

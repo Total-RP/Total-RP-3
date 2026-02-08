@@ -1,9 +1,9 @@
 local DEFAULT_LOCALE = "enUS";
 local currentLocale = DEFAULT_LOCALE;
 
-function TRP3_API.utils.resources.getMatureFilterDictionary()
+function TRP3.utils.resources.getMatureFilterDictionary()
 
-	currentLocale = TRP3_API.utils.GetPreferredLocale();
+	currentLocale = TRP3.utils.GetPreferredLocale();
 	if not dictionary[currentLocale] then
 		currentLocale = DEFAULT_LOCALE;
 	end

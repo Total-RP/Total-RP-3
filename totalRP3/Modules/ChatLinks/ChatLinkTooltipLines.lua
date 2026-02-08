@@ -1,12 +1,9 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
+local Ellyb = TRP3.Ellyb;
 
 ---@class ChatLinkTooltipLines
-local ChatLinkTooltipLines, _private = TRP3_API.Ellyb.Class("ChatLinkTooltipLines");
+local ChatLinkTooltipLines, _private = TRP3.Ellyb.Class("ChatLinkTooltipLines");
 
 ---@param optional title string
 function ChatLinkTooltipLines:initialize(title)
@@ -29,7 +26,7 @@ function ChatLinkTooltipLines:AddLine(text, color, size)
 	Ellyb.Assertions.isType(text, "string", "text");
 
 	if not color then
-		color = TRP3_API.Colors.White;
+		color = TRP3.Colors.White;
 	end
 	local r, g, b = color:GetRGB();
 	tinsert(_private[self].lines, {
@@ -52,10 +49,10 @@ function ChatLinkTooltipLines:AddDoubleLine(textLeft, textRight, colorLeft, colo
 	Ellyb.Assertions.isType(textRight, "string", "textRight");
 
 	if not colorLeft then
-		colorLeft = TRP3_API.Colors.White;
+		colorLeft = TRP3.Colors.White;
 	end
 	if not colorRight then
-		colorRight = TRP3_API.Colors.White;
+		colorRight = TRP3.Colors.White;
 	end
 
 	local rLeft, gLeft, bLeft = colorLeft:GetRGB();
@@ -78,4 +75,4 @@ function ChatLinkTooltipLines:GetRaw()
 	return _private[self];
 end
 
-TRP3_API.ChatLinkTooltipLines = ChatLinkTooltipLines;
+TRP3.ChatLinkTooltipLines = ChatLinkTooltipLines;

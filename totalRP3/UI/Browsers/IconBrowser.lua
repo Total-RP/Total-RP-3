@@ -35,7 +35,7 @@ local IconBrowserSearchTask = {};
 ---@param model TRP3.AbstractIconBrowserModel
 ---@protected
 function IconBrowserSearchTask:__init(query, model)
-	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.callbacks = TRP3.InitCallbackRegistry(self);
 	self.state = "pending";
 	self.ticker = nil;
 	self.model = model;
@@ -120,7 +120,7 @@ end
 ---@param query string
 ---@param model TRP3.AbstractIconBrowserModel
 local function CreateIconBrowserSearchTask(query, model)
-	return TRP3_API.CreateObject(IconBrowserSearchTask, query, model);
+	return TRP3.CreateObject(IconBrowserSearchTask, query, model);
 end
 
 -- Icon Browser Data Models
@@ -145,7 +145,7 @@ local IconBrowserModel = {};
 
 ---@protected
 function IconBrowserModel:__init()
-	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.callbacks = TRP3.InitCallbackRegistry(self);
 end
 
 ---@return integer count
@@ -176,7 +176,7 @@ function IconBrowserModel:GetIconIndex(name)
 end
 
 local function CreateIconBrowserModel()
-	return TRP3_API.CreateObject(IconBrowserModel);
+	return TRP3.CreateObject(IconBrowserModel);
 end
 
 --- IconBrowserFilterModel is a proxy model that implements asynchronous
@@ -194,7 +194,7 @@ local IconBrowserFilterModel = {};
 ---@param source TRP3.AbstractIconBrowserModel
 ---@protected
 function IconBrowserFilterModel:__init(source)
-	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.callbacks = TRP3.InitCallbackRegistry(self);
 	self.source = source;
 	self.sourceIndices = {};
 	self.searchQuery = "";
@@ -359,7 +359,7 @@ end
 
 ---@param source TRP3.AbstractIconBrowserModel
 local function CreateIconBrowserFilterModel(source)
-	return TRP3_API.CreateObject(IconBrowserFilterModel, source);
+	return TRP3.CreateObject(IconBrowserFilterModel, source);
 end
 
 --- IconBrowserSelectionModel is a proxy model that relocates the currently
@@ -373,7 +373,7 @@ local IconBrowserSelectionModel = {};
 
 ---@protected
 function IconBrowserSelectionModel:__init(source)
-	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.callbacks = TRP3.InitCallbackRegistry(self);
 	self.source = source;
 	self.source.RegisterCallback(self, "OnModelUpdated", "OnSourceModelUpdated");
 	self.selectedIconName = nil;
@@ -475,7 +475,7 @@ end
 
 ---@param source TRP3.AbstractIconBrowserModel
 local function CreateIconBrowserSelectionModel(source)
-	return TRP3_API.CreateObject(IconBrowserSelectionModel, source);
+	return TRP3.CreateObject(IconBrowserSelectionModel, source);
 end
 
 --- Creates a data provider that displays the contents of an icon data model
@@ -529,7 +529,7 @@ end
 TRP3_IconBrowserMixin = {};
 
 function TRP3_IconBrowserMixin:OnLoad()
-	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.callbacks = TRP3.InitCallbackRegistry(self);
 	self.baseModel = CreateIconBrowserModel();
 	self.selectionModel = CreateIconBrowserSelectionModel(self.baseModel);
 	self.filterModel = CreateIconBrowserFilterModel(self.selectionModel);

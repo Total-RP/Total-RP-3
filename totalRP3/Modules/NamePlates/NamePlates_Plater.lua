@@ -2,8 +2,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 local Plater;
 
 local PlaterAddonName = "Plater";
@@ -49,7 +48,7 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 	if not plateFrame.PlateConfig or plateFrame.PlateConfig.show_guild_name then
 		local currentPlayer = AddOn_TotalRP3.Player.GetCurrentUser();
 		local customGuildName = displayInfo.guildName or plateFrame.playerGuildName;
-		local playerCustomGuildTable = currentPlayer:GetMiscFieldByType(TRP3_API.MiscInfoType.GuildName);
+		local playerCustomGuildTable = currentPlayer:GetMiscFieldByType(TRP3.MiscInfoType.GuildName);
 		local playerCustomGuild = playerCustomGuildTable and playerCustomGuildTable.value or Plater.PlayerGuildName;
 		local sameGuild = customGuildName == playerCustomGuild;
 
@@ -76,7 +75,7 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 
 	if displayInfo.icon and plateFrame.TRP3Icon and not displayInfo.shouldHide then
 		plateFrame.TRP3Icon:ClearAllPoints();
-		plateFrame.TRP3Icon:SetTexture(TRP3_API.utils.getIconTexture(displayInfo.icon));
+		plateFrame.TRP3Icon:SetTexture(TRP3.utils.getIconTexture(displayInfo.icon));
 		plateFrame.TRP3Icon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
 		plateFrame.TRP3Icon:SetPoint("RIGHT", plateFrame.CurrentUnitNameString, "LEFT", -4, 0);
 		plateFrame.TRP3Icon:Show();
@@ -128,10 +127,10 @@ function TRP3_PlaterNamePlates:RegisterModTable(modTable)
 	self.modTable = modTable;
 
 	-- Grabbing the color config from the Plater mod settings
-	self.guildNameColor = TRP3_API.CreateColor(unpack(self.modTable.config.guildNameColor));
-	self.guildMemberColor = TRP3_API.CreateColor(unpack(self.modTable.config.guildMemberColor)); -- name color for members of your guild
+	self.guildNameColor = TRP3.CreateColor(unpack(self.modTable.config.guildNameColor));
+	self.guildMemberColor = TRP3.CreateColor(unpack(self.modTable.config.guildMemberColor)); -- name color for members of your guild
 
-	self.fullTitleColor = TRP3_API.CreateColor(unpack(self.modTable.config.fullTitleColor));
+	self.fullTitleColor = TRP3.CreateColor(unpack(self.modTable.config.fullTitleColor));
 	self.useFullTitleColor = self.modTable.config.useFullTitleColor;
 
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
@@ -162,7 +161,7 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 
 	-- Check if the friendly nameplates module is enabled within Plater
 	if not Plater.db.profile.plate_config.friendlyplayer.module_enabled then
-		return TRP3_API.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
+		return TRP3.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	end
 
 	-- Check if the script exists and has the same revision before importing it, to avoid flooding the recycle bin
@@ -212,7 +211,7 @@ end
 -- Module Registration
 --
 
-TRP3_API.module.registerModule({
+TRP3.module.registerModule({
 	id = "trp3_plater_nameplates",
 	name = L.PLATER_NAMEPLATES_MODULE_NAME,
 	description = L.PLATER_NAMEPLATES_MODULE_DESCRIPTION,

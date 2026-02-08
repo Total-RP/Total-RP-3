@@ -1,31 +1,28 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
-TRP3_API.dashboard = {
+TRP3.dashboard = {
 	NOTIF_CONFIG_PREFIX = "notification_"
 };
 
 -- imports
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
-local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
-local getProfiles = TRP3_API.profile.getProfiles;
-local Utils = TRP3_API.utils;
+local getPlayerCurrentProfileID = TRP3.profile.getPlayerCurrentProfileID;
+local getProfiles = TRP3.profile.getProfiles;
+local Utils = TRP3.utils;
 local color = Utils.str.color;
-local registerMenu, registerPage = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.page.registerPage;
-local setPage = TRP3_API.navigation.page.setPage;
+local registerMenu, registerPage = TRP3.navigation.menu.registerMenu, TRP3.navigation.page.registerPage;
+local setPage = TRP3.navigation.page.setPage;
 
 -- Total RP 3 imports
-local loc = TRP3_API.loc;
+local loc = TRP3.loc;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local get, getDefaultProfile = TRP3_API.profile.getData, TRP3_API.profile.getDefaultProfile;
+local get, getDefaultProfile = TRP3.profile.getData, TRP3.profile.getDefaultProfile;
 
 getDefaultProfile().player.character = {
 	v = 1,
@@ -37,7 +34,7 @@ getDefaultProfile().player.character = {
 -- STATUS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.dashboard.switchStatus()
+function TRP3.dashboard.switchStatus()
 	local player = AddOn_TotalRP3.Player.GetCurrentUser();
 	local status = player:GetRoleplayStatus();
 
@@ -48,12 +45,12 @@ function TRP3_API.dashboard.switchStatus()
 	end
 end
 
-function TRP3_API.dashboard.isPlayerIC()
+function TRP3.dashboard.isPlayerIC()
 	local player = AddOn_TotalRP3.Player.GetCurrentUser();
 	return player:IsInCharacter();
 end
 
-function TRP3_API.dashboard.getCharacterExchangeData()
+function TRP3.dashboard.getCharacterExchangeData()
 	return get("player/character");
 end
 
@@ -70,10 +67,10 @@ local VALID_DEFAULT_FIELDS = {
 
 ---@param structure table
 ---@return boolean
-function TRP3_API.dashboard.sanitizeCharacter(profileID, structure)
+function TRP3.dashboard.sanitizeCharacter(profileID, structure)
 	local somethingWasSanitized = false;
 
-	if TRP3_API.profile.isDefaultProfile(profileID) then
+	if TRP3.profile.isDefaultProfile(profileID) then
 		for fieldID, _ in pairs(structure) do
 			if not tContains(VALID_DEFAULT_FIELDS, fieldID) then
 				structure[fieldID] = nil;
@@ -102,7 +99,7 @@ end
 
 local DASHBOARD_PAGE_ID = "dashboard";
 
-TRP3_API.dashboard.init = function()
+TRP3.dashboard.init = function()
 
 	local TUTORIAL_STRUCTURE = {
 		{
@@ -111,7 +108,7 @@ TRP3_API.dashboard.init = function()
 			},
 			button = {
 				x = -50, y = 0, anchor = "RIGHT",
-				text = loc.DB_TUTO_1:format(TRP3_API.globals.player_id),
+				text = loc.DB_TUTO_1:format(TRP3.globals.player_id),
 				textWidth = 425,
 				arrow = "LEFT"
 			}
@@ -121,7 +118,7 @@ TRP3_API.dashboard.init = function()
 	registerMenu({
 		id = "main_00_dashboard",
 		align = "CENTER",
-		text = TRP3_API.globals.addon_name,
+		text = TRP3.globals.addon_name,
 		onSelected = function() setPage(DASHBOARD_PAGE_ID); end,
 	});
 
@@ -133,7 +130,7 @@ TRP3_API.dashboard.init = function()
 end
 
 local function profileSelected(profileID)
-	TRP3_API.profile.selectProfile(profileID);
+	TRP3.profile.selectProfile(profileID);
 end
 
 local function getPlayerProfilesAsList(currentProfileID)
@@ -149,9 +146,9 @@ local function getPlayerProfilesAsList(currentProfileID)
 	return list;
 end
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 	-- Register slash command for IC/OOC status control.
-	TRP3_API.slash.registerCommand({
+	TRP3.slash.registerCommand({
 		id = "status",
 		helpLine = " " .. loc.SLASH_CMD_STATUS_USAGE,
 		handler = function(subcommand)
@@ -168,33 +165,33 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			elseif subcommand == "ooc" then
 				currentUser:SetRoleplayStatus(TRP3_Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER);
 			elseif subcommand == "toggle" then
-				TRP3_API.dashboard.switchStatus();
+				TRP3.dashboard.switchStatus();
 			else
-				TRP3_API.utils.message.displayMessage(loc.SLASH_CMD_STATUS_HELP);
+				TRP3.utils.message.displayMessage(loc.SLASH_CMD_STATUS_HELP);
 			end
 		end,
 	});
 
-	if TRP3_API.toolbar then
+	if TRP3.toolbar then
 
 		local Button_TRP3_Open = {
 			id = "aa_trp3_a",
 			icon = TRP3_InterfaceIcons.DirectorySection,
 			configText = loc.LAUNCHER_ACTION_OPEN,
-			tooltip = TRP3_API.globals.addon_name,
-			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.LAUNCHER_ACTION_OPEN),
-			onClick = function() TRP3_API.navigation.switchMainFrame(); end,
+			tooltip = TRP3.globals.addon_name,
+			tooltipSub = TRP3.FormatShortcutWithInstruction("CLICK", loc.LAUNCHER_ACTION_OPEN),
+			onClick = function() TRP3.navigation.switchMainFrame(); end,
 			visible = 1
 		}
-		TRP3_API.toolbar.toolbarAddButton(Button_TRP3_Open);
+		TRP3.toolbar.toolbarAddButton(Button_TRP3_Open);
 
 		-- away/dnd
 		local status1Text = loc.TB_STATUS..": "..color("r")..loc.TB_DND_MODE;
-		local status1SubText = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_GO_TO_MODE:format(loc.TB_NORMAL_MODE));
+		local status1SubText = TRP3.FormatShortcutWithInstruction("CLICK", loc.TB_GO_TO_MODE:format(loc.TB_NORMAL_MODE));
 		local status2Text = loc.TB_STATUS..": "..color("o")..loc.TB_AFK_MODE;
-		local status2SubText = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_GO_TO_MODE:format(loc.TB_NORMAL_MODE));
+		local status2SubText = TRP3.FormatShortcutWithInstruction("CLICK", loc.TB_GO_TO_MODE:format(loc.TB_NORMAL_MODE));
 		local status3Text = loc.TB_STATUS..": "..color("g")..loc.TB_NORMAL_MODE;
-		local status3SubText = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_GO_TO_MODE:format(loc.TB_AFK_MODE)) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_GO_TO_MODE:format(loc.TB_DND_MODE));
+		local status3SubText = TRP3.FormatShortcutWithInstruction("LCLICK", loc.TB_GO_TO_MODE:format(loc.TB_AFK_MODE)) .. "\n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.TB_GO_TO_MODE:format(loc.TB_DND_MODE));
 		local Button_Status = {
 			id = "aa_trp3_d",
 			icon = TRP3_InterfaceIcons.ModeNormal,
@@ -231,14 +228,14 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				PlaySound(TRP3_InterfaceSounds.ButtonClick);
 			end,
 		};
-		TRP3_API.toolbar.toolbarAddButton(Button_Status);
+		TRP3.toolbar.toolbarAddButton(Button_Status);
 
 		-- Toolbar RP status
 		local RP_ICON, OOC_ICON = TRP3_InterfaceIcons.ToolbarStatusIC, TRP3_InterfaceIcons.ToolbarStatusOOC;
 		local rpTextOn = loc.TB_RPSTATUS_ON;
 		local rpTextOff = loc.TB_RPSTATUS_OFF;
-		local rpText2 = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_RPSTATUS_TO_ON) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_SWITCH_PROFILE);
-		local rpText3 = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_RPSTATUS_TO_OFF) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_SWITCH_PROFILE);
+		local rpText2 = TRP3.FormatShortcutWithInstruction("LCLICK", loc.TB_RPSTATUS_TO_ON) .. "\n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.TB_SWITCH_PROFILE);
+		local rpText3 = TRP3.FormatShortcutWithInstruction("LCLICK", loc.TB_RPSTATUS_TO_OFF) .. "\n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.TB_SWITCH_PROFILE);
 
 		local Button_RPStatus = {
 			id = "aa_trp3_rpstatus",
@@ -285,7 +282,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 						end
 					end);
 				else
-					TRP3_API.dashboard.switchStatus();
+					TRP3.dashboard.switchStatus();
 					PlaySound(TRP3_InterfaceSounds.ButtonClick);
 				end
 			end,
@@ -294,7 +291,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			end,
 			visible = 1
 		};
-		TRP3_API.toolbar.toolbarAddButton(Button_RPStatus);
+		TRP3.toolbar.toolbarAddButton(Button_RPStatus);
 
 		if not TRP3_ClientFeatures.Transmogrification then
 			-- Show / hide helmet
@@ -302,8 +299,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			local helmetOnIcon = TRP3_InterfaceIcons.ToolbarHelmetOn;
 			local helmTextOn = loc.TB_SWITCH_HELM_ON;
 			local helmTextOff = loc.TB_SWITCH_HELM_OFF;
-			local helmText2 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_HELM_1);
-			local helmText3 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_HELM_2);
+			local helmText2 = TRP3.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_HELM_1);
+			local helmText3 = TRP3.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_HELM_2);
 
 			local Button_Helmet = {
 				id = "aa_trp3_b",
@@ -334,15 +331,15 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					TRP3_MainTooltip:Hide();
 				end,
 			};
-			TRP3_API.toolbar.toolbarAddButton(Button_Helmet);
+			TRP3.toolbar.toolbarAddButton(Button_Helmet);
 
 			-- Show/hide cloak
 			local cloakOnIcon = TRP3_InterfaceIcons.ToolbarCloakOff;
 			local cloakOffIcon = TRP3_InterfaceIcons.ToolbarCloakOn;
 			local capeTextOn =  loc.TB_SWITCH_CAPE_ON;
 			local capeTextOff = loc.TB_SWITCH_CAPE_OFF;
-			local capeText2 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_CAPE_1);
-			local capeText3 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_CAPE_2);
+			local capeText2 = TRP3.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_CAPE_1);
+			local capeText3 = TRP3.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_CAPE_2);
 			local Button_Cape = {
 				id = "aa_trp3_c",
 				icon = cloakOnIcon,
@@ -372,13 +369,13 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					TRP3_MainTooltip:Hide();
 				end,
 			};
-			TRP3_API.toolbar.toolbarAddButton(Button_Cape);
+			TRP3.toolbar.toolbarAddButton(Button_Cape);
 		end
 	end
 
-	TRP3_API.configuration.registerConfigKey("secret_party", false);
-	TRP3_API.configuration.registerHandler("secret_party", function()
-		if TRP3_API.configuration.getValue("secret_party") then
+	TRP3.configuration.registerConfigKey("secret_party", false);
+	TRP3.configuration.registerHandler("secret_party", function()
+		if TRP3.configuration.getValue("secret_party") then
 			TRP3_PartyTimeLeft:Show();
 			TRP3_PartyTimeRight:Show();
 		else
@@ -386,11 +383,11 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			TRP3_PartyTimeRight:Hide();
 		end
 	end);
-	TRP3_API.slash.registerCommand({
+	TRP3.slash.registerCommand({
 		id = "partytime",
 		handler = function()
-			local oldValue = TRP3_API.configuration.getValue("secret_party");
-			TRP3_API.configuration.setValue("secret_party", oldValue == false);
+			local oldValue = TRP3.configuration.getValue("secret_party");
+			TRP3.configuration.setValue("secret_party", oldValue == false);
 		end,
 	});
 end);

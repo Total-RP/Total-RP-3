@@ -43,7 +43,7 @@ function TRP3_ToolbarFrameMixin:OnDragStop()
 end
 
 function TRP3_ToolbarFrameMixin:OnRoleplayStatusChanged()
-	local configuredVisibility = TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.Visibility);
+	local configuredVisibility = TRP3.configuration.getValue(TRP3_ToolbarConfigKeys.Visibility);
 
 	if configuredVisibility == TRP3_ToolbarVisibilityOption.OnlyShowInCharacter then
 		self:UpdateFrameVisibility();
@@ -91,7 +91,7 @@ function TRP3_ToolbarFrameMixin:UpdateButtons()
 
 	if #buttons > 0 then
 		local direction = GridLayoutMixin.Direction.TopLeftToBottomRight;
-		local stride = TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.ButtonStride);
+		local stride = TRP3.configuration.getValue(TRP3_ToolbarConfigKeys.ButtonStride);
 		local spacingX = 0;
 		local spacingY = 0;
 
@@ -139,7 +139,7 @@ function TRP3_ToolbarFrameMixin:Toggle()
 end
 
 function TRP3_ToolbarFrameMixin:UpdateFrameVisibility(forcedVisibility)
-	local configuredVisibility = TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.Visibility);
+	local configuredVisibility = TRP3.configuration.getValue(TRP3_ToolbarConfigKeys.Visibility);
 	local shouldShow;
 
 	if forcedVisibility ~= nil then
@@ -158,8 +158,8 @@ function TRP3_ToolbarFrameMixin:UpdateFrameVisibility(forcedVisibility)
 end
 
 function TRP3_ToolbarFrameMixin:UpdateTitleBar()
-	self.TitleBar.Text:SetText(TRP3_API.globals.addon_name);
-	self.TitleBar:SetShown(not TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.HideTitle));
+	self.TitleBar.Text:SetText(TRP3.globals.addon_name);
+	self.TitleBar:SetShown(not TRP3.configuration.getValue(TRP3_ToolbarConfigKeys.HideTitle));
 end
 
 function TRP3_ToolbarFrameMixin:LoadPosition()
@@ -171,9 +171,9 @@ end
 
 function TRP3_ToolbarFrameMixin:SavePosition()
 	local anchor, _, _, x, y = self:GetPoint(1);
-	TRP3_API.configuration.setValue(TRP3_ToolbarConfigKeys.AnchorPoint, anchor);
-	TRP3_API.configuration.setValue(TRP3_ToolbarConfigKeys.AnchorOffsetX, x);
-	TRP3_API.configuration.setValue(TRP3_ToolbarConfigKeys.AnchorOffsetY, y);
+	TRP3.configuration.setValue(TRP3_ToolbarConfigKeys.AnchorPoint, anchor);
+	TRP3.configuration.setValue(TRP3_ToolbarConfigKeys.AnchorOffsetX, x);
+	TRP3.configuration.setValue(TRP3_ToolbarConfigKeys.AnchorOffsetY, y);
 end
 
 function TRP3_ToolbarFrameMixin:Layout()

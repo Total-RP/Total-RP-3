@@ -1,22 +1,22 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-TRP3_API.module = {};
+TRP3.module = {};
 
 -- imports
-local Globals = TRP3_API.globals;
-local loc = TRP3_API.loc;
+local Globals = TRP3.globals;
+local loc = TRP3.loc;
 local MODULE_REGISTRATION = {};
 local MODULE_ACTIVATION;
 local hasBeenInit = false;
-local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
-local registerMenu = TRP3_API.navigation.menu.registerMenu;
-local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
+local setTooltipForSameFrame, setTooltipAll = TRP3.ui.tooltip.setTooltipForSameFrame, TRP3.ui.tooltip.setTooltipAll;
+local registerMenu = TRP3.navigation.menu.registerMenu;
+local registerPage, setPage = TRP3.navigation.page.registerPage, TRP3.navigation.page.setPage;
 local initModule;
 local startModule;
 local onModuleStarted;
 
-TRP3_API.module.status = {
+TRP3.module.status = {
 	MISSING_DEPENDENCY = 0,
 	OUT_TO_DATE_TRP3 = 1,
 	ERROR_ON_INIT = 2,
@@ -25,9 +25,9 @@ TRP3_API.module.status = {
 	OK = 5,
 	CONFLICTED = 6,
 };
-local MODULE_STATUS = TRP3_API.module.status;
+local MODULE_STATUS = TRP3.module.status;
 
-function TRP3_API.module.isModuleLoaded(moduleID)
+function TRP3.module.isModuleLoaded(moduleID)
 	return MODULE_REGISTRATION[moduleID] and MODULE_REGISTRATION[moduleID].status == MODULE_STATUS.OK;
 end
 
@@ -43,7 +43,7 @@ end
 -- autoEnable : Should the module be enabled by default ? If nil equals true.
 -- onInit : A callback triggered before Total RP 3 initialization.
 -- onStart : A callback triggered after Total RP 3 initialization.
-TRP3_API.module.registerModule = function(moduleStructure)
+TRP3.module.registerModule = function(moduleStructure)
 
 	assert(moduleStructure, "Module structure can't be nil");
 	assert(moduleStructure.id, "Illegal module structure. Module id: " .. moduleStructure.id);
@@ -64,14 +64,14 @@ TRP3_API.module.registerModule = function(moduleStructure)
 
 	MODULE_REGISTRATION[moduleStructure.id] = moduleStructure;
 
-	TRP3_API.Log("Module registered: " .. moduleStructure.id);
+	TRP3.Log("Module registered: " .. moduleStructure.id);
 end
 
 --- Initializing modules.
 -- This is called at the START of the TRP3 loading sequence.
 -- The onInit callback from any REGISTERED & ENABLED & DEPENDENCIES module is fired.
 -- The onInit is run on a secure environment. If there is any error, the error is silent and will be store into the structure.
-TRP3_API.module.initModules = function()
+TRP3.module.initModules = function()
 	for _, module in pairs(MODULE_REGISTRATION) do
 		initModule(module);
 	end
@@ -81,7 +81,7 @@ end
 -- This is called at the END of the TRP3 loading sequence.
 -- The onStart callback from any REGISTERED & ENABLED & DEPENDENCIES module is fired, only if previous onInit ran without error (if onInit was defined).
 -- onStart is run on a secure environment. If there is any error, the error is silent and will be store into the structure.
-TRP3_API.module.startModules = function()
+TRP3.module.startModules = function()
 	for _, module in pairs(MODULE_REGISTRATION) do
 		startModule(module);
 	end
@@ -341,10 +341,10 @@ local function getModuleTooltip(module)
 end
 
 local function GetSuggestedBorderColor(status)
-	local RED_BORDER_COLOR = TRP3_API.CreateColor(0.6, 0.1, 0.1);
-	local GREEN_BORDER_COLOR = TRP3_API.CreateColor(0.1, 0.8, 0.1);
-	local GREY_BORDER_COLOR = TRP3_API.CreateColor(0.5, 0.5, 0.5);
-	local GOLD_BORDER_COLOR = TRP3_API.CreateColor(1, 0.675, 0.125);
+	local RED_BORDER_COLOR = TRP3.CreateColor(0.6, 0.1, 0.1);
+	local GREEN_BORDER_COLOR = TRP3.CreateColor(0.1, 0.8, 0.1);
+	local GREY_BORDER_COLOR = TRP3.CreateColor(0.5, 0.5, 0.5);
+	local GOLD_BORDER_COLOR = TRP3.CreateColor(1, 0.675, 0.125);
 
 	local STATUS_BORDER_COLORS = {
 		[MODULE_STATUS.MISSING_DEPENDENCY] = GREY_BORDER_COLOR,
@@ -385,7 +385,7 @@ end
 local function moduleHotReload(frame, value)
 	local module = frame.module;
 
-	TRP3_API.Log("Hot reloading module: " .. module.id)
+	TRP3.Log("Hot reloading module: " .. module.id)
 	module.status = MODULE_STATUS.OK
 	if MODULE_ACTIVATION[module.id] == nil then
 		MODULE_ACTIVATION[module.id] = true;
@@ -475,7 +475,7 @@ function onModuleStarted()
 		previous = frame;
 		frame:Init(module);
 		local actionButton = frame.Action;
-		setTooltipAll(actionButton, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+		setTooltipAll(actionButton, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 		actionButton:SetScript("OnMouseDown", onActionClicked);
 		i = i + 1;
 	end
@@ -485,7 +485,7 @@ end
 -- Get the saved module activation reference.
 -- Check the modules dependencies, if any.
 -- Once this method has been fired, all future registration are refused !
-TRP3_API.module.init = function()
+TRP3.module.init = function()
 	assert(TRP3_Configuration, "TRP3_Configuration should be set. Problem in the include sequence ?");
 	hasBeenInit = true; -- Refuse all future registration
 	if not TRP3_Configuration.MODULE_ACTIVATION then
@@ -549,7 +549,7 @@ TRP3_API.module.init = function()
 	moduleInit();
 
 	-- Resizing
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
 		TRP3_ConfigurationModule.ScrollFrame.Content:SetSize(containerWidth - 55, 50);
 	end);
 end

@@ -1,9 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 local ChatLinksManager = {};
 
 ---@type ChatLink[]
@@ -39,4 +36,4 @@ function ChatLinksManager:GetReceivedLinkForIdentifier(linkIdentifier)
 	return openedChatLinks[linkIdentifier];
 end
 
-TRP3_API.ChatLinksManager = ChatLinksManager;
+TRP3.ChatLinksManager = ChatLinksManager;

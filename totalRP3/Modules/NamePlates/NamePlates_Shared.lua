@@ -6,17 +6,17 @@ TRP3_NamePlatesUtil = {};
 TRP3_NamePlatesUtil.OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15:15|t";
 
 function TRP3_NamePlatesUtil.GenerateCroppedNameText(name)
-	return TRP3_API.utils.str.crop(name, TRP3_NamePlatesSettings.MaximumNameLength);
+	return TRP3.utils.str.crop(name, TRP3_NamePlatesSettings.MaximumNameLength);
 end
 
 function TRP3_NamePlatesUtil.GenerateCroppedTitleText(fullTitle)
 	fullTitle = string.gsub(fullTitle, "%s+", " ");
-	fullTitle = TRP3_API.utils.str.crop(fullTitle, TRP3_NamePlatesSettings.MaximumTitleLength);
+	fullTitle = TRP3.utils.str.crop(fullTitle, TRP3_NamePlatesSettings.MaximumTitleLength);
 	return fullTitle;
 end
 
 function TRP3_NamePlatesUtil.GenerateCroppedGuildName(guildName)
-	return TRP3_API.utils.str.crop(guildName, TRP3_NamePlatesSettings.MaximumGuildNameLength);
+	return TRP3.utils.str.crop(guildName, TRP3_NamePlatesSettings.MaximumGuildNameLength);
 end
 
 function TRP3_NamePlatesUtil.GetPreferredIconSize()
@@ -34,7 +34,7 @@ function TRP3_NamePlatesUtil.PrependRoleplayStatusToText(text, roleplayStatus)
 	if preferredStyle == TRP3_OOCIndicatorStyle.Icon then
 		return string.join(" ", TRP3_NamePlatesUtil.OOC_ICON, text);
 	else
-		return string.format("|cffff0000[%1$s]|r %2$s", TRP3_API.loc.CM_OOC, text);
+		return string.format("|cffff0000[%1$s]|r %2$s", TRP3.loc.CM_OOC, text);
 	end
 end
 
@@ -48,18 +48,18 @@ function TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(fontstring, rolep
 	if preferredStyle == TRP3_OOCIndicatorStyle.Icon then
 		fontstring:SetFormattedText("%s %s", TRP3_NamePlatesUtil.OOC_ICON, fontstring:GetText());
 	else
-		fontstring:SetFormattedText("|cffff0000[%1$s]|r %2$s", TRP3_API.loc.CM_OOC, fontstring:GetText());
+		fontstring:SetFormattedText("|cffff0000[%1$s]|r %2$s", TRP3.loc.CM_OOC, fontstring:GetText());
 	end
 end
 
 function TRP3_NamePlatesUtil.GetUnitCharacterID(unitToken)
-	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
+	local unitType = TRP3.ui.misc.getTargetType(unitToken);
 	local characterID;
 
 	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
-		characterID = TRP3_API.utils.str.getUnitID(unitToken);
+		characterID = TRP3.utils.str.getUnitID(unitToken);
 	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
-		characterID = TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType);
+		characterID = TRP3.ui.misc.getCompanionFullID(unitToken, unitType);
 	end
 
 	if characterID and string.find(characterID, UNKNOWNOBJECT, 1, true) == 1 then
@@ -71,7 +71,7 @@ function TRP3_NamePlatesUtil.GetUnitCharacterID(unitToken)
 end
 
 function TRP3_NamePlatesUtil.SyncNameOnlyModeState()
-	TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(TRP3_API.configuration.getValue("NamePlates_EnableNameOnlyMode"));
+	TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(TRP3.configuration.getValue("NamePlates_EnableNameOnlyMode"));
 end
 
 function TRP3_NamePlatesUtil.IsNameOnlyModeEnabled()

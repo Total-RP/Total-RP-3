@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 
 local function IsRoleplayStatus(status)
@@ -26,7 +26,7 @@ local function GetRoleplayExperienceButtonText(selection)
 	local status = selection:GetData();
 	local text = MenuUtil.GetElementText(selection);
 
-	local icon = TRP3_API.GetRoleplayExperienceIcon(status);
+	local icon = TRP3.GetRoleplayExperienceIcon(status);
 	if icon and C_Texture.GetAtlasInfo(icon) then
 		text = string.join(" ", "|A:" .. icon .. ":16:16|a ", text);
 	elseif icon and GetFileIDFromPath(icon) then
@@ -114,9 +114,9 @@ local function GenerateXPStatusMenu(_, rootDescription)
 	};
 
 	for _, level in ipairs(levels) do
-		local text = TRP3_API.GetRoleplayExperienceText(level);
-		local icon = TRP3_API.GetRoleplayExperienceIcon(level) or "";
-		local tooltipText = TRP3_API.GetRoleplayExperienceTooltipText(level);
+		local text = TRP3.GetRoleplayExperienceText(level);
+		local icon = TRP3.GetRoleplayExperienceIcon(level) or "";
+		local tooltipText = TRP3.GetRoleplayExperienceTooltipText(level);
 
 		local elementDescription = rootDescription:CreateRadio(text, IsRoleplayExperienceLevel, SetRoleplayExperienceLevel, level);
 		TRP3_MenuUtil.AttachTexture(elementDescription, icon);
@@ -146,7 +146,7 @@ function TRP3_DashboardStatusPanelMixin:OnShow()
 end
 
 function TRP3_DashboardStatusPanelMixin:OnRegisterDataUpdated(_, characterID, _, dataType)
-	if characterID ~= TRP3_API.globals.player_id then
+	if characterID ~= TRP3.globals.player_id then
 		return;
 	elseif dataType and dataType ~= "character" then
 		return;

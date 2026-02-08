@@ -50,7 +50,7 @@ function TRP3_HTMLFrameMixin:SetRichText(text, options)
 	local noBrackets = options and not options.enableLinkColoring or false;
 	local defaultLinkType = options and options.defaultLinkType or "external";
 
-	local html = TRP3_API.utils.str.toHTML(text, noColor, noBrackets, defaultLinkType);
+	local html = TRP3.utils.str.toHTML(text, noColor, noBrackets, defaultLinkType);
 	self:SetHTML(html);
 end
 

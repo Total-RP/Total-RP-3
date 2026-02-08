@@ -1,9 +1,9 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-	local loc = TRP3_API.loc;
-	local setupMovableFrame = TRP3_API.ui.frame.setupMove;
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+	local loc = TRP3.loc;
+	local setupMovableFrame = TRP3.ui.frame.setupMove;
 
 	local frame = TRP3_CurrentlyFrame;
 
@@ -12,7 +12,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	local updateCurrentlyText = TRP3_FunctionUtil.Debounce(0.5, function()
 		local editBox = frame.CurrentlyText.scroll.text;
 		local multiLine = true;
-		local text = TRP3_API.utils.str.sanitize(editBox:GetText(), multiLine);
+		local text = TRP3.utils.str.sanitize(editBox:GetText(), multiLine);
 
 		AddOn_TotalRP3.Player.GetCurrentUser():SetCurrentlyText(text);
 	end);
@@ -39,22 +39,22 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		PlaySound(TRP3_InterfaceSounds.WindowOpen);
 		frame.CurrentlyText.scroll.text:SetFocus();
 	end
-	TRP3_API.r.toggleCurrentlyFrame = toggleCurrentlyFrame;
+	TRP3.r.toggleCurrentlyFrame = toggleCurrentlyFrame;
 
 	frame.Title:SetText(loc.CURRENTLY_TITLE);
 	frame.CurrentlyText.scroll.text:HookScript("OnTextChanged", onCurrentlyChanged);
 
 	setupMovableFrame(frame);
 
-	if TRP3_API.toolbar then
+	if TRP3.toolbar then
 		-- Create a toolbar button to show/hide the Currently frame.
-		TRP3_API.toolbar.toolbarAddButton({
+		TRP3.toolbar.toolbarAddButton({
 			id = "bb_trp3_currently",
 			icon = TRP3_InterfaceIcons.ToolbarCurrently,
 			text = loc.CURRENTLY_TITLE,
 			configText = loc.CURRENTLY_TITLE,
 			tooltip = loc.CURRENTLY_TITLE,
-			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CURRENTLY_BUTTON_TT),
+			tooltipSub = TRP3.FormatShortcutWithInstruction("CLICK", loc.CURRENTLY_BUTTON_TT),
 			onClick = function()
 				toggleCurrentlyFrame();
 			end,
@@ -63,7 +63,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	-- Register a slash command, so if people disable the toolbar button
 	-- or toolbar module the frame can still be called.
-	TRP3_API.slash.registerCommand({
+	TRP3.slash.registerCommand({
 		id = "currently",
 		helpLine = " " .. loc.CURRENTLY_COMMAND_HELP,
 		handler = toggleCurrentlyFrame

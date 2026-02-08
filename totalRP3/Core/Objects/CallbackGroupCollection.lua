@@ -35,7 +35,7 @@ end
 function CallbackGroupCollection:CreateGroup(key)
 	assert(not self.groups[key], "attempted to create a duplicate callback group");
 
-	local group = TRP3_API.CreateCallbackGroup();
+	local group = TRP3.CreateCallbackGroup();
 	self.groups[key] = group;
 	return group;
 end
@@ -83,6 +83,6 @@ function CallbackGroupCollection:UnregisterGroup(key)
 	group:Unregister();
 end
 
-function TRP3_API.CreateCallbackGroupCollection()
-	return TRP3_API.CreateObject(CallbackGroupCollection);
+function TRP3.CreateCallbackGroupCollection()
+	return TRP3.CreateObject(CallbackGroupCollection);
 end

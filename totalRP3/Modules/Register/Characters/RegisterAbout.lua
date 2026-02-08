@@ -1,28 +1,25 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 -- imports
-local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Events;
+local Globals, Utils, Events = TRP3.globals, TRP3.utils, TRP3_Addon.Events;
 local stEtN = Utils.str.emptyToNil;
-local get = TRP3_API.profile.getData;
+local get = TRP3.profile.getData;
 local tcopy = Utils.table.copy;
-local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
-local showIfMouseOver = TRP3_API.ui.frame.showIfMouseOverFrame;
-local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
-local setupListBox = TRP3_API.ui.listbox.setupListBox;
-local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
-local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
-local setupIconButton = TRP3_API.ui.frame.setupIconButton;
-local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
-local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
-local hasProfile, getProfile = TRP3_API.register.hasProfile, TRP3_API.register.getProfile;
-local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
+local getDefaultProfile = TRP3.profile.getDefaultProfile;
+local showIfMouseOver = TRP3.ui.frame.showIfMouseOverFrame;
+local createRefreshOnFrame = TRP3.ui.frame.createRefreshOnFrame;
+local setupListBox = TRP3.ui.listbox.setupListBox;
+local setTooltipAll = TRP3.ui.tooltip.setTooltipAll;
+local getCurrentContext = TRP3.navigation.page.getCurrentContext;
+local setupIconButton = TRP3.ui.frame.setupIconButton;
+local isUnitIDKnown = TRP3.register.isUnitIDKnown;
+local getUnitIDProfile = TRP3.register.getUnitIDProfile;
+local hasProfile, getProfile = TRP3.register.hasProfile, TRP3.register.getProfile;
+local getConfigValue, registerConfigKey, registerHandler = TRP3.configuration.getValue, TRP3.configuration.registerConfigKey, TRP3.configuration.registerHandler;
 
 -- Total RP 3 imports
-local loc = TRP3_API.loc;
+local loc = TRP3.loc;
 
 -- Config keys
 local CONFIG_REGISTER_ABOUT_P_SIZE = "config_register_about_p_size";
@@ -34,7 +31,7 @@ local defaultFontParameters;
 local refreshTemplate2EditDisplay, saveInDraft, template2SaveToDraft; -- Function reference
 
 local showIconBrowser = function(callback, selectedIcon)
-	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback, nil, nil, selectedIcon});
+	TRP3.popup.showPopup(TRP3.popup.ICONS, nil, {callback, nil, nil, selectedIcon});
 end;
 
 local function CreateFontFamily(fontName, inherits)
@@ -77,7 +74,7 @@ local function setupHTMLFonts(frame)
 end
 
 local function setToolbarTextFrameScript(toolbar, frame)
-	frame:SetScript("OnEditFocusGained", function() TRP3_API.ui.text.changeToolbarTextFrame(toolbar, frame) end);
+	frame:SetScript("OnEditFocusGained", function() TRP3.ui.text.changeToolbarTextFrame(toolbar, frame) end);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -105,12 +102,12 @@ getDefaultProfile().player.about = {
 local draftData;
 
 local function setConsultBkg(bkg)
-	TRP3_API.ui.frame.setBackdropToBackground(TRP3_RegisterAbout, bkg);
+	TRP3.ui.frame.setBackdropToBackground(TRP3_RegisterAbout, bkg);
 end
 
 local function setEditBkg(bkg)
 	draftData.BK = bkg;
-	TRP3_API.ui.frame.setBackdropToBackground(TRP3_RegisterAbout, bkg);
+	TRP3.ui.frame.setBackdropToBackground(TRP3_RegisterAbout, bkg);
 end
 
 local function selectMusic(music)
@@ -125,7 +122,7 @@ end
 ---@param frame Frame The frame the icon belongs to.
 ---@param frameData Frame The draftData frame that holds all the info.
 local function pasteCopiedIcon(frame, frameData)
-	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIcons.Default;
+	local icon = TRP3.GetLastCopiedIcon() or TRP3_InterfaceIcons.Default;
 	frameData.IC = icon;
 	setupIconButton(frame, icon);
 end
@@ -217,7 +214,7 @@ local function showTemplate2(dataTab)
 
 		local icon = frame.Icon;
 		local text = frame.Text;
-		TRP3_API.ui.frame.setBackdropToBackground(frame, frameTab.BK);
+		TRP3.ui.frame.setBackdropToBackground(frame, frameTab.BK);
 		frame.Icon:SetIconTexture(frameTab.IC);
 
 		setupHTMLFonts(text);
@@ -262,7 +259,7 @@ local template2EditFrames = {};
 local function setTemplate2EditBkg(bkg, frame)
 	frame = frame:GetParent();
 	assert(frame.frameData, "No frameData in the frame ...");
-	TRP3_API.ui.frame.setBackdropToBackground(frame, bkg);
+	TRP3.ui.frame.setBackdropToBackground(frame, bkg);
 	frame.frameData.BK = bkg;
 end
 
@@ -307,16 +304,16 @@ local function createTemplate2Frame(frameIndex)
 			setTemplate2EditBkg(imageInfo and imageInfo.id or nil, BackgroundButton);
 		end
 
-		TRP3_API.popup.ShowBackgroundBrowser(OnBackgroundSelected, frame.frameData.BK);
+		TRP3.popup.ShowBackgroundBrowser(OnBackgroundSelected, frame.frameData.BK);
 	end);
 
 	_G[frame:GetName().."Delete"]:SetScript("OnClick", template2DeleteFrame);
 	_G[frame:GetName().."Delete"]:SetText(loc.CM_REMOVE);
 	_G[frame:GetName().."Up"]:SetScript("OnClick", template2UpFrame);
 	_G[frame:GetName().."Down"]:SetScript("OnClick", template2DownFrame);
-	setTooltipAll(_G[frame:GetName().."Up"], "RIGHT", 0, 5, loc.REG_PLAYER_REORDER, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.CM_MOVE_UP));
-	setTooltipAll(_G[frame:GetName().."Down"], "RIGHT", 0, 5, loc.REG_PLAYER_REORDER, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.CM_MOVE_DOWN));
-	setTooltipAll(_G[frame:GetName().."Icon"], "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	setTooltipAll(_G[frame:GetName().."Up"], "RIGHT", 0, 5, loc.REG_PLAYER_REORDER, TRP3.FormatShortcutWithInstruction("LCLICK", loc.CM_MOVE_UP));
+	setTooltipAll(_G[frame:GetName().."Down"], "RIGHT", 0, 5, loc.REG_PLAYER_REORDER, TRP3.FormatShortcutWithInstruction("LCLICK", loc.CM_MOVE_DOWN));
+	setTooltipAll(_G[frame:GetName().."Icon"], "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, _G["TRP3_RegisterAbout_Template2_Edit"..frameIndex.."TextScrollText"]);
 	tinsert(template2EditFrames, frame);
 	return frame;
@@ -361,8 +358,8 @@ function refreshTemplate2EditDisplay()
 			elseif button == "RightButton" then
 				local icon = frameData.IC or TRP3_InterfaceIcons.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
+					description:CreateButton(loc.UI_ICON_COPY, TRP3.SetLastCopiedIcon, icon);
+					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3.popup.showCopyDropdownPopup({icon}); end);
 					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(_G[frame:GetName().."Icon"], frameData); end);
 				end);
 			end
@@ -379,7 +376,7 @@ function refreshTemplate2EditDisplay()
 			_G[frame:GetName().."Down"]:Show();
 		end
 
-		TRP3_API.ui.frame.setBackdropToBackground(frame, frameData.BK);
+		TRP3.ui.frame.setBackdropToBackground(frame, frameData.BK);
 
 		frame:Show();
 		previous = frame;
@@ -416,17 +413,17 @@ local TEMPLATE3_ICON_HISTORY = TRP3_InterfaceIcons.HistorySection;
 
 local function setTemplate3PhysBkg(bkg)
 	draftData.T3.PH.BK = bkg;
-	TRP3_API.ui.frame.setBackdropToBackground(TRP3_RegisterAbout_Edit_Template3_Phys, bkg);
+	TRP3.ui.frame.setBackdropToBackground(TRP3_RegisterAbout_Edit_Template3_Phys, bkg);
 end
 
 local function setTemplate3PsyBkg(bkg)
 	draftData.T3.PS.BK = bkg;
-	TRP3_API.ui.frame.setBackdropToBackground(TRP3_RegisterAbout_Edit_Template3_Psy, bkg);
+	TRP3.ui.frame.setBackdropToBackground(TRP3_RegisterAbout_Edit_Template3_Psy, bkg);
 end
 
 local function setTemplate3HistBkg(bkg)
 	draftData.T3.HI.BK = bkg;
-	TRP3_API.ui.frame.setBackdropToBackground(TRP3_RegisterAbout_Edit_Template3_Hist, bkg);
+	TRP3.ui.frame.setBackdropToBackground(TRP3_RegisterAbout_Edit_Template3_Hist, bkg);
 end
 
 local function onPhisIconSelected(icon)
@@ -503,7 +500,7 @@ local function showTemplate3(dataTab)
 			text.html = Utils.str.toHTML(data.TX or "")
 			text:SetText(text.html);
 
-			TRP3_API.ui.frame.setBackdropToBackground(frame, data.BK);
+			TRP3.ui.frame.setBackdropToBackground(frame, data.BK);
 			frame:Show();
 		else
 			frame:Hide();
@@ -540,7 +537,7 @@ local function getOptimizedData()
 	return dataToSend;
 end
 
-function TRP3_API.register.player.getAboutExchangeData()
+function TRP3.register.player.getAboutExchangeData()
 	return getOptimizedData();
 end
 
@@ -644,16 +641,16 @@ local function setEditTemplate(value)
 	_G["TRP3_RegisterAbout_Edit_Template"..value]:Show();
 
 	if value == 1 then
-		TRP3_API.ui.text.changeToolbarTextFrame(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
+		TRP3.ui.text.changeToolbarTextFrame(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
 	elseif value == 2 then
-		TRP3_API.ui.text.changeToolbarTextFrame(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Template2_Edit1TextScrollText);
+		TRP3.ui.text.changeToolbarTextFrame(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Template2_Edit1TextScrollText);
 	else
-		TRP3_API.ui.text.changeToolbarTextFrame(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText);
+		TRP3.ui.text.changeToolbarTextFrame(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText);
 	end
 
 	draftData.TE = value;
 	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
-	TRP3_API.navigation.delayedRefresh();
+	TRP3.navigation.delayedRefresh();
 end
 
 local function save()
@@ -733,7 +730,7 @@ local function showAboutTab()
 	getCurrentContext().isEditMode = false;
 	refreshDisplay();
 end
-TRP3_API.register.ui.showAboutTab = showAboutTab;
+TRP3.register.ui.showAboutTab = showAboutTab;
 
 local function onEdit()
 	if draftData then
@@ -745,7 +742,7 @@ local function onEdit()
 	PlaySound(TRP3_InterfaceSounds.ButtonClick);
 end
 
-function TRP3_API.register.ui.shouldShowAboutTab(profile)
+function TRP3.register.ui.shouldShowAboutTab(profile)
 	if profile and profile.about then
 		local dataTab = profile.about;
 		return (dataTab.TE == 1 and shouldShowTemplate1(dataTab))
@@ -766,7 +763,7 @@ end
 
 local function onMusicEditSelected(value)
 	if value == 1 then
-		TRP3_API.popup.showPopup(TRP3_API.popup.MUSICS, nil, {onMusicSelected});
+		TRP3.popup.showPopup(TRP3.popup.MUSICS, nil, {onMusicSelected});
 	elseif value == 2 and draftData.MU then
 		draftData.MU = nil;
 		selectMusic(draftData.MU);
@@ -911,7 +908,7 @@ local function createTutorialStructures()
 end
 
 
-function TRP3_API.register.ui.aboutTutorialProvider()
+function TRP3.register.ui.aboutTutorialProvider()
 	local context = getCurrentContext();
 	if context and context.isEditMode and draftData then
 		if draftData.TE == 1 then
@@ -928,9 +925,9 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-	if TRP3_API.target then
-		TRP3_API.target.registerButton({
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+	if TRP3.target then
+		TRP3.target.registerButton({
 			id = "aa_player_b_music",
 			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			configText = loc.TF_CHAR_THEME,
@@ -947,7 +944,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			adapter = function(buttonStructure, unitID)
 				local theme = getUnitIDTheme(unitID);
 				if theme then
-					buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TF_CHAR_THEME_PLAY:format(Utils.music.getTitle(theme))) .. "\n" ..  TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_ABOUT_MUSIC_STOP);
+					buttonStructure.tooltipSub = TRP3.FormatShortcutWithInstruction("LCLICK", loc.TF_CHAR_THEME_PLAY:format(Utils.music.getTitle(theme))) .. "\n" ..  TRP3.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_ABOUT_MUSIC_STOP);
 				end
 			end,
 			tooltip = loc.TF_CHAR_THEME,
@@ -956,7 +953,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	end
 end);
 
-function TRP3_API.register.inits.aboutInit()
+function TRP3.register.inits.aboutInit()
 	createTutorialStructures();
 
 	-- UI
@@ -968,20 +965,20 @@ function TRP3_API.register.inits.aboutInit()
 			setEditBkg(imageInfo and imageInfo.id or nil);
 		end
 
-		TRP3_API.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.BK);
+		TRP3.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.BK);
 	end);
 
 	setupListBox(TRP3_RegisterAbout_Edit_TemplateField, {{"Template 1", 1}, {"Template 2", 2}, {"Template 3", 3}}, setEditTemplate, nil, 150, true);
-	setTooltipAll(TRP3_RegisterAbout_Edit_Template3_PhysIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	setTooltipAll(TRP3_RegisterAbout_Edit_Template3_PhysIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			showIconBrowser(onPhisIconSelected, draftData.T3.PH.IC);
 		elseif button == "RightButton" then
 			local icon = draftData.T3.PH.IC or TEMPLATE3_ICON_PHYSICAL;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() onPhisIconSelected(TRP3_API.GetLastCopiedIcon()); end);
+				description:CreateButton(loc.UI_ICON_COPY, TRP3.SetLastCopiedIcon, icon);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3.popup.showCopyDropdownPopup({icon}); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() onPhisIconSelected(TRP3.GetLastCopiedIcon()); end);
 			end);
 		end
 	end);
@@ -992,7 +989,7 @@ function TRP3_API.register.inits.aboutInit()
 			setTemplate3PhysBkg(imageInfo and imageInfo.id or nil);
 		end
 
-		TRP3_API.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.T3.PH.BK);
+		TRP3.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.T3.PH.BK);
 	end);
 
 	TRP3_RegisterAbout_Edit_Template3_PsyBkg:SetText(loc.UI_BKG_BUTTON);
@@ -1001,7 +998,7 @@ function TRP3_API.register.inits.aboutInit()
 			setTemplate3PsyBkg(imageInfo and imageInfo.id or nil);
 		end
 
-		TRP3_API.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.T3.PS.BK);
+		TRP3.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.T3.PS.BK);
 	end);
 
 	TRP3_RegisterAbout_Edit_Template3_HistBkg:SetText(loc.UI_BKG_BUTTON);
@@ -1010,33 +1007,33 @@ function TRP3_API.register.inits.aboutInit()
 			setTemplate3HistBkg(imageInfo and imageInfo.id or nil);
 		end
 
-		TRP3_API.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.T3.HI.BK);
+		TRP3.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.T3.HI.BK);
 	end);
 
-	setTooltipAll(TRP3_RegisterAbout_Edit_Template3_PsyIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	setTooltipAll(TRP3_RegisterAbout_Edit_Template3_PsyIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	TRP3_RegisterAbout_Edit_Template3_PsyIcon:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			showIconBrowser(onPsychoIconSelected, draftData.T3.PS.IC);
 		elseif button == "RightButton" then
 			local icon = draftData.T3.PS.IC or TEMPLATE3_ICON_PSYCHO;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() onPsychoIconSelected(TRP3_API.GetLastCopiedIcon()); end);
+				description:CreateButton(loc.UI_ICON_COPY, TRP3.SetLastCopiedIcon, icon);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3.popup.showCopyDropdownPopup({icon}); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() onPsychoIconSelected(TRP3.GetLastCopiedIcon()); end);
 			end);
 		end
 	end);
 
-	setTooltipAll(TRP3_RegisterAbout_Edit_Template3_HistIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	setTooltipAll(TRP3_RegisterAbout_Edit_Template3_HistIcon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
 			showIconBrowser(onHistoIconSelected, draftData.T3.HI.IC);
 		elseif button == "RightButton" then
 			local icon = draftData.T3.HI.IC or TEMPLATE3_ICON_HISTORY;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() onHistoIconSelected(TRP3_API.GetLastCopiedIcon()); end);
+				description:CreateButton(loc.UI_ICON_COPY, TRP3.SetLastCopiedIcon, icon);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3.popup.showCopyDropdownPopup({icon}); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() onHistoIconSelected(TRP3.GetLastCopiedIcon()); end);
 			end);
 		end
 	end);
@@ -1047,7 +1044,7 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_Edit_CancelButton:SetScript("OnClick", showAboutTab);
 
 	TRP3_RegisterAbout_AboutPanel_Empty:SetText(loc.REG_PLAYER_ABOUT_EMPTY);
-	TRP3_API.ui.text.setupToolbar(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
+	TRP3.ui.text.setupToolbar(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
 
 	TRP3_RegisterAbout_Edit_Template3_PhysTitle:SetText(loc.REG_PLAYER_PHYSICAL);
 	TRP3_RegisterAbout_Edit_Template3_PsyTitle:SetText(loc.REG_PLAYER_PSYCHO);
@@ -1083,11 +1080,11 @@ function TRP3_API.register.inits.aboutInit()
 	registerHandler(CONFIG_REGISTER_ABOUT_H2_SIZE, updateAllAboutTemplateFonts);
 	registerHandler(CONFIG_REGISTER_ABOUT_H3_SIZE, updateAllAboutTemplateFonts);
 
-	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc.CO_REGISTER_ABOUT_SETTINGS,
 	});
-	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigSlider",
 		title = loc.CO_REGISTER_ABOUT_P_SIZE,
 		help = loc.CO_REGISTER_ABOUT_P_SIZE_TT:format(defaultFontParameters.p.size),
@@ -1097,7 +1094,7 @@ function TRP3_API.register.inits.aboutInit()
 		step = 1,
 		integer = true,
 	});
-	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigSlider",
 		title = loc.CO_REGISTER_ABOUT_H3_SIZE,
 		help = loc.CO_REGISTER_ABOUT_H3_SIZE_TT:format(defaultFontParameters.h3.size),
@@ -1107,7 +1104,7 @@ function TRP3_API.register.inits.aboutInit()
 		step = 1,
 		integer = true,
 	});
-	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigSlider",
 		title = loc.CO_REGISTER_ABOUT_H2_SIZE,
 		help = loc.CO_REGISTER_ABOUT_H2_SIZE_TT:format(defaultFontParameters.h2.size),
@@ -1117,7 +1114,7 @@ function TRP3_API.register.inits.aboutInit()
 		step = 1,
 		integer = true,
 	});
-	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigSlider",
 		title = loc.CO_REGISTER_ABOUT_H1_SIZE,
 		help = loc.CO_REGISTER_ABOUT_H1_SIZE_TT:format(defaultFontParameters.h1.size),
@@ -1135,18 +1132,18 @@ function TRP3_API.register.inits.aboutInit()
 		Utils.music.stopMusic();
 	end);
 
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, profileID, dataType)
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, profileID, dataType)
 		if dataType == "about" and unitID and unitID ~= Globals.player_id then
 			onAboutReceived(profileID);
 		end
 	end);
 
 	-- Resizing
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function()
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function()
 		ResizeTemplateViews();
 	end);
 
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.REGISTER_PROFILE_OPENED, function()
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.REGISTER_PROFILE_OPENED, function()
 		TRP3_RegisterAbout_AboutPanel_Scroll.ScrollBar:ScrollToBegin();
 		TRP3_RegisterAbout_Edit_Template2_Scroll.ScrollBar:ScrollToBegin();
 	end);

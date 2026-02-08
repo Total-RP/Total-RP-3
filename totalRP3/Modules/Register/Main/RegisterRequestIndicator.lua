@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 TRP3_RegisterRequestIndicatorMixin = {};
 
@@ -11,7 +11,7 @@ local CallbackGroup = {
 };
 
 function TRP3_RegisterRequestIndicatorMixin:OnLoad()
-	self.callbacks = TRP3_API.CreateCallbackGroupCollection();
+	self.callbacks = TRP3.CreateCallbackGroupCollection();
 	self.callbacks:AddCallback(CallbackGroup.Dynamic, TRP3_Addon, "REGISTER_REQUEST_STATE_CHANGED", "OnRegisterRequestStateChanged", self);
 	self.callbacks:AddCallback(CallbackGroup.Static, TRP3_Addon, "PAGE_OPENED", "OnPageOpened", self);
 	self.callbacks:RegisterGroup(CallbackGroup.Static);
@@ -100,11 +100,11 @@ function TRP3_RegisterRequestIndicatorMixin:IsEnabledFromNavigationContext(pageI
 end
 
 function TRP3_RegisterRequestIndicatorMixin:UpdateShownState()
-	local pageID = TRP3_API.navigation.page.getCurrentPageID();
-	local context = TRP3_API.navigation.page.getCurrentContext();
+	local pageID = TRP3.navigation.page.getCurrentPageID();
+	local context = TRP3.navigation.page.getCurrentContext();
 
 	if self:IsEnabledFromNavigationContext(pageID, context) then
-		local shouldShow = TRP3_API.register.HasActiveRequest(context.unitID);
+		local shouldShow = TRP3.register.HasActiveRequest(context.unitID);
 		self:ApplyShownState(shouldShow);
 	else
 		self:Hide();
@@ -112,8 +112,8 @@ function TRP3_RegisterRequestIndicatorMixin:UpdateShownState()
 end
 
 function TRP3_RegisterRequestIndicatorMixin:UpdateDynamicCallbacks()
-	local pageID = TRP3_API.navigation.page.getCurrentPageID();
-	local context = TRP3_API.navigation.page.getCurrentContext();
+	local pageID = TRP3.navigation.page.getCurrentPageID();
+	local context = TRP3.navigation.page.getCurrentContext();
 
 	if self:IsEnabledFromNavigationContext(pageID, context) then
 		self.callbacks:RegisterGroup(CallbackGroup.Dynamic);

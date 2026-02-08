@@ -1,9 +1,9 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-TRP3_API.flyway.patches = {};
+TRP3.flyway.patches = {};
 
-local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
+local Globals, Utils = TRP3.globals, TRP3.utils;
 
 local function SafeGet(t, k, ...)
 	if t == nil then
@@ -20,7 +20,7 @@ local function SafeGet(t, k, ...)
 end
 
 -- Delete notification system
-TRP3_API.flyway.patches["3"] = function()
+TRP3.flyway.patches["3"] = function()
 	if TRP3_Characters then
 		for _, character in pairs(TRP3_Characters) do
 			if 	character.notifications then
@@ -31,23 +31,23 @@ TRP3_API.flyway.patches["3"] = function()
 	end
 end
 
-TRP3_API.flyway.patches["4"] = function()
+TRP3.flyway.patches["4"] = function()
 	if TRP3_Configuration and TRP3_Configuration["register_mature_filter"] and TRP3_Configuration["register_mature_filter"] == "0" then
 		TRP3_Configuration["register_mature_filter"] = false;
 	end
 end
 
-TRP3_API.flyway.patches["5"] = function()
+TRP3.flyway.patches["5"] = function()
 	-- Sanitize existing profiles
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
-		local sanitizeFullProfile = TRP3_API.register.sanitizeFullProfile;
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
+		local sanitizeFullProfile = TRP3.register.sanitizeFullProfile;
 		for profileID, profile in pairs(TRP3_Register.profiles) do
 			sanitizeFullProfile(profileID, profile);
 		end
 	end)
 end
 
-TRP3_API.flyway.patches["6"] = function()
+TRP3.flyway.patches["6"] = function()
 	if not TRP3_Profiles then return end
 	-- Run through all the profiles and upgrade the personality traits
 	-- structure to upscale the values and copy them to a new field.
@@ -82,7 +82,7 @@ TRP3_API.flyway.patches["6"] = function()
 end
 
 -- Patches potentially badly created profiles from chat links
-TRP3_API.flyway.patches["7"] = function()
+TRP3.flyway.patches["7"] = function()
 	if not (TRP3_Register and TRP3_Register.profiles) then return end
 	for _, profile in pairs(TRP3_Register.profiles) do
 		if not profile.link then
@@ -92,7 +92,7 @@ TRP3_API.flyway.patches["7"] = function()
 end
 
 -- Remove voting feature
-TRP3_API.flyway.patches["8"] = function()
+TRP3.flyway.patches["8"] = function()
 	if not TRP3_Profiles then return end
 	for _, profile in pairs(TRP3_Profiles) do
 		if profile.about then
@@ -102,15 +102,15 @@ TRP3_API.flyway.patches["8"] = function()
 end
 
 -- Reset glance bar coordinates
-TRP3_API.flyway.patches["9"] = function()
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
-		if TRP3_API.register.resetGlanceBar then
-			TRP3_API.register.resetGlanceBar();
+TRP3.flyway.patches["9"] = function()
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
+		if TRP3.register.resetGlanceBar then
+			TRP3.register.resetGlanceBar();
 		end
 	end)
 end
 
-TRP3_API.flyway.patches["10"] = function()
+TRP3.flyway.patches["10"] = function()
 	-- Migrate contrast settings to the new common one
 	if TRP3_Configuration then
 		if TRP3_Configuration["chat_color_contrast"] or TRP3_Configuration["tooltip_char_contrast"] then
@@ -139,13 +139,13 @@ TRP3_API.flyway.patches["10"] = function()
 	end
 end
 
-TRP3_API.flyway.patches["11"] = function()
+TRP3.flyway.patches["11"] = function()
 	-- This patch used to add the Roleplay Language (LC) field, however this
 	-- has been removed as of 2021/04.
 end
 
 -- Migrate from register from "BlackList" to "BlockList" and "WhiteList" to "SafeList" naming conventions.
-TRP3_API.flyway.patches["12"] = function()
+TRP3.flyway.patches["12"] = function()
 	if TRP3_Register and TRP3_Register.blackList then
 		TRP3_Register.blockList = TRP3_Register.blackList;
 		TRP3_Register.blackList = nil;
@@ -156,7 +156,7 @@ TRP3_API.flyway.patches["12"] = function()
 	end
 end
 
-TRP3_API.flyway.patches["13"] = function()
+TRP3.flyway.patches["13"] = function()
 	-- Migrate the toolbar show on login setting to the new display conditions
 	if TRP3_Configuration then
 		if TRP3_Configuration["toolbar_show_on_login"] then
@@ -169,7 +169,7 @@ TRP3_API.flyway.patches["13"] = function()
 	end
 end
 
-TRP3_API.flyway.patches["14"] = function()
+TRP3.flyway.patches["14"] = function()
 	-- Add a new "ID" field to all Misc. Info fields which will be used
 	-- in preference to name lookups going forward. This won't be applied
 	-- to the register - we'll just let that update passively.
@@ -183,13 +183,13 @@ TRP3_API.flyway.patches["14"] = function()
 
 		if miscInfo then
 			for _, miscData in ipairs(miscInfo) do
-				miscData.ID = TRP3_API.GetMiscInfoTypeFromData(miscData);
+				miscData.ID = TRP3.GetMiscInfoTypeFromData(miscData);
 			end
 		end
 	end
 end
 
-TRP3_API.flyway.patches["15"] = function()
+TRP3.flyway.patches["15"] = function()
 	-- Migrate contrast setting to a more flexible level system. This just
 	-- deletes the old setting; the old system had a tendency to white out
 	-- colors in quite a nasty manner however with our new levels it should
@@ -201,7 +201,7 @@ TRP3_API.flyway.patches["15"] = function()
 	end
 end
 
-TRP3_API.flyway.patches["16"] = function()
+TRP3.flyway.patches["16"] = function()
 	-- Migrate minimap settings to launcher settings.
 
 	if TRP3_Configuration then
@@ -266,7 +266,7 @@ TRP3_API.flyway.patches["16"] = function()
 	TRP3_Configuration["NamePlates_CustomizeFirstName"] = nil;
 end
 
-TRP3_API.flyway.patches["17"] = function()
+TRP3.flyway.patches["17"] = function()
 	-- Check all non-custom Misc. Info fields
 	-- Names not matching localized or non-localized preset name are turned into custom fields
 
@@ -279,15 +279,15 @@ TRP3_API.flyway.patches["17"] = function()
 
 		if miscInfo then
 			for _, miscData in ipairs(miscInfo) do
-				if miscData.ID ~= TRP3_API.MiscInfoType.Custom then
-					miscData.ID = TRP3_API.GetMiscInfoTypeByName(miscData.NA);
+				if miscData.ID ~= TRP3.MiscInfoType.Custom then
+					miscData.ID = TRP3.GetMiscInfoTypeByName(miscData.NA);
 				end
 			end
 		end
 	end
 end
 
-TRP3_API.flyway.patches["18"] = function()
+TRP3.flyway.patches["18"] = function()
 	-- Modify default profile ID to include an identifier
 
 	if not TRP3_Profiles or not TRP3_Configuration then
@@ -307,7 +307,7 @@ TRP3_API.flyway.patches["18"] = function()
 	end
 end
 
-TRP3_API.flyway.patches["19"] = function()
+TRP3.flyway.patches["19"] = function()
 	-- Modify default profile ID to be OOC.
 
 	if not TRP3_Profiles or not TRP3_Configuration then
@@ -320,12 +320,12 @@ TRP3_API.flyway.patches["19"] = function()
 
 		if character then
 			character.RP = AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
-			character.v = TRP3_API.utils.math.incrementNumber(character.v or 1, 2);
+			character.v = TRP3.utils.math.incrementNumber(character.v or 1, 2);
 		end
 	end
 end
 
-TRP3_API.flyway.patches["20"] = function()
+TRP3.flyway.patches["20"] = function()
 	-- Roleplay experience is now a global setting and should be removed
 	-- from all player-owned profiles. Register profiles will retain the
 	-- XP field as they're expected to passively shed it as resynchronization
@@ -340,12 +340,12 @@ TRP3_API.flyway.patches["20"] = function()
 
 		if character then
 			character.XP = nil;
-			character.v = TRP3_API.utils.math.incrementNumber(character.v or 1, 2);
+			character.v = TRP3.utils.math.incrementNumber(character.v or 1, 2);
 		end
 	end
 end
 
-TRP3_API.flyway.patches["21"] = function()
+TRP3.flyway.patches["21"] = function()
 	-- First handles the following:
 	-- About changes were always marked as unread, which is fine 9/10 of the
 	-- time. However due to an incorrect check in `onAboutReceived` we also
@@ -361,7 +361,7 @@ TRP3_API.flyway.patches["21"] = function()
 	local profileList = TRP3_Register.profiles;
 	for profileID, profile in pairs(profileList) do
 		-- Don't check default profiles
-		if not TRP3_API.profile.isDefaultProfile(profileID) then
+		if not TRP3.profile.isDefaultProfile(profileID) then
 			-- Handle the wrong about unread situation first.
 			local aboutData = profile.about;
 
@@ -417,7 +417,7 @@ TRP3_API.flyway.patches["21"] = function()
 	end
 end
 
-TRP3_API.flyway.patches["22"] = function()
+TRP3.flyway.patches["22"] = function()
 	-- v22 kills off support for the PS VA field on transmission.
 
 	if not TRP3_Profiles then
@@ -436,7 +436,7 @@ TRP3_API.flyway.patches["22"] = function()
 	end
 end
 
-TRP3_API.flyway.patches["23"] = function()
+TRP3.flyway.patches["23"] = function()
 	-- v23 adds a "default" locale that isn't sticky and will correctly follow
 	-- client locale if the user for some reason changes language.
 	--
@@ -447,12 +447,12 @@ TRP3_API.flyway.patches["23"] = function()
 		return;
 	end
 
-	if TRP3_Configuration[TRP3_LocaleConstants.LocaleConfigKey] == TRP3_API.GetDefaultLocale() then
+	if TRP3_Configuration[TRP3_LocaleConstants.LocaleConfigKey] == TRP3.GetDefaultLocale() then
 		TRP3_Configuration[TRP3_LocaleConstants.LocaleConfigKey] = TRP3_LocaleConstants.DefaultLocaleCode;
 	end
 end
 
-TRP3_API.flyway.patches["24"] = function()
+TRP3.flyway.patches["24"] = function()
 	-- v23 converts CustomizeFullTitles (TRP3_NamePlatesSettings) to use CustomizeSubText
 
 	if TRP3_Configuration then

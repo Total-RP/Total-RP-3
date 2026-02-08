@@ -1,20 +1,17 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 -- imports
-local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local loc = TRP3_API.loc;
+local Globals, Utils = TRP3.globals, TRP3.utils;
+local loc = TRP3.loc;
 local unitIDToInfo, unitInfoToID = Utils.str.unitIDToInfo, Utils.str.unitInfoToID;
-local get = TRP3_API.profile.getData;
-local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
-local getUnitIDCurrentProfile, getUnitRPName, getUnitRPFirstName, getUnitRPLastName = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.getUnitRPName, TRP3_API.register.getUnitRPFirstName, TRP3_API.register.getUnitRPLastName;
-local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
+local get = TRP3.profile.getData;
+local IsUnitIDKnown = TRP3.register.isUnitIDKnown;
+local getUnitIDCurrentProfile, getUnitRPName, getUnitRPFirstName, getUnitRPLastName = TRP3.register.getUnitIDCurrentProfile, TRP3.register.getUnitRPName, TRP3.register.getUnitRPFirstName, TRP3.register.getUnitRPLastName;
+local getConfigValue, registerConfigKey, registerHandler = TRP3.configuration.getValue, TRP3.configuration.registerConfigKey, TRP3.configuration.registerHandler;
 local handleCharacterMessage, hooking;
 
-TRP3_API.chat = {};
+TRP3.chat = {};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config
@@ -26,7 +23,7 @@ local POSSIBLE_CHANNELS;
 local function isChannelHandled(channel)
 	return tContains(POSSIBLE_CHANNELS, channel);
 end
-TRP3_API.chat.isChannelHandled = isChannelHandled;
+TRP3.chat.isChannelHandled = isChannelHandled;
 
 local CONFIG_NAME_METHOD = "chat_name";
 local CONFIG_DISABLE_OOC = "chat_disable_ooc";
@@ -46,7 +43,7 @@ local CONFIG_SHOW_ICON = "chat_show_icon";
 local CONFIG_SHOW_OOC = "chat_show_ooc";
 local CONFIG_NPCSPEECH_REPLACEMENT = "chat_npcspeech_replacement";
 
-local OOC_INDICATOR_TEXT = TRP3_API.Colors.Red("<" .. loc.CM_OOC .. "> ");
+local OOC_INDICATOR_TEXT = TRP3.Colors.Red("<" .. loc.CM_OOC .. "> ");
 
 local function configNoYelledEmote()
 	return getConfigValue(CONFIG_YELL_NO_EMOTE);
@@ -55,7 +52,7 @@ end
 local function disabledByOOC()
 	return getConfigValue(CONFIG_DISABLE_OOC) and get("player/character/RP") == 2
 end
-TRP3_API.chat.disabledByOOC = disabledByOOC;
+TRP3.chat.disabledByOOC = disabledByOOC;
 
 local function configNameMethod()
 	return getConfigValue(CONFIG_NAME_METHOD);
@@ -64,21 +61,21 @@ end
 local function configShowNameCustomColors()
 	return getConfigValue(CONFIG_NAME_COLOR);
 end
-TRP3_API.chat.configShowNameCustomColors = configShowNameCustomColors;
+TRP3.chat.configShowNameCustomColors = configShowNameCustomColors;
 
 local function configIsChannelUsed(channel)
 	return getConfigValue(CONFIG_USAGE .. channel);
 end
-TRP3_API.chat.configIsChannelUsed = configIsChannelUsed;
+TRP3.chat.configIsChannelUsed = configIsChannelUsed;
 
 local function configDoHandleNPCTalk()
 	return getConfigValue(CONFIG_NPC_TALK);
 end
 
 local function configNPCTalkPrefix()
-	return getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX);
+	return getConfigValue(TRP3.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX);
 end
-TRP3_API.chat.configNPCTalkPrefix = configNPCTalkPrefix;
+TRP3.chat.configNPCTalkPrefix = configNPCTalkPrefix;
 
 local function configDoEmoteDetection()
 	return getConfigValue(CONFIG_EMOTE);
@@ -97,11 +94,11 @@ local function configOOCDetectionPattern()
 end
 
 local function configOOCDetectionColor()
-	return TRP3_API.CreateColorFromHexString(getConfigValue(CONFIG_OOC_COLOR));
+	return TRP3.CreateColorFromHexString(getConfigValue(CONFIG_OOC_COLOR));
 end
-TRP3_API.chat.getOOCDetectionColor = configOOCDetectionColor;
-TRP3_API.chat.getEmoteDetectionColor = function() return TRP3_API.GetChatTypeColor("EMOTE") end;
-TRP3_API.chat.getSpeechDetectionColor = function() return TRP3_API.GetChatTypeColor("SAY") end;
+TRP3.chat.getOOCDetectionColor = configOOCDetectionColor;
+TRP3.chat.getEmoteDetectionColor = function() return TRP3.GetChatTypeColor("EMOTE") end;
+TRP3.chat.getSpeechDetectionColor = function() return TRP3.GetChatTypeColor("SAY") end;
 
 local function configDoSpeechDetection()
 	return getConfigValue(CONFIG_SPEECH);
@@ -280,33 +277,33 @@ local function createConfigPage()
 		});
 	end
 
-	TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
+	TRP3.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
 end
 
 -- Advanced settings
-tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+tinsert(TRP3.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	inherit = "TRP3_ConfigH1",
 	title = loc.CO_CHAT_MAIN_NPC,
 });
 
 -- NPC talks
-TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK = "chat_npc_talk";
-TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK] = true;
-tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+TRP3.ADVANCED_SETTINGS_KEYS.NPC_TALK = "chat_npc_talk";
+TRP3.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3.ADVANCED_SETTINGS_KEYS.NPC_TALK] = true;
+tinsert(TRP3.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	inherit = "TRP3_ConfigCheck",
 	title = loc.CO_CHAT_MAIN_NPC_USE,
-	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK,
+	configKey = TRP3.ADVANCED_SETTINGS_KEYS.NPC_TALK,
 });
 
 -- NPC talks pattern
-TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX = "npc_talk_prefix";
-TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX] = "|| ";
-tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+TRP3.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX = "npc_talk_prefix";
+TRP3.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX] = "|| ";
+tinsert(TRP3.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	inherit = "TRP3_ConfigEditBox",
 	title = loc.CO_CHAT_MAIN_NPC_PREFIX,
-	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX,
+	configKey = TRP3.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX,
 	help = loc.CO_CHAT_MAIN_NPC_PREFIX_TT,
-	dependentOnOptions = { TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK },
+	dependentOnOptions = { TRP3.ADVANCED_SETTINGS_KEYS.NPC_TALK },
 });
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -321,7 +318,7 @@ local function getCharacterInfoTab(unitID)
 	end
 	return {};
 end
-TRP3_API.utils.getCharacterInfoTab = getCharacterInfoTab;
+TRP3.utils.getCharacterInfoTab = getCharacterInfoTab;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Emote and OOC detection
@@ -371,14 +368,14 @@ local function detectEmoteAndOOC(message, isEmote)
 
 	do -- Emote/OOC/Speech replacement
 		if configDoEmoteDetection() then
-			local color = TRP3_API.chat.getEmoteDetectionColor();
+			local color = TRP3.chat.getEmoteDetectionColor();
 			message = message:gsub(configEmoteDetectionPattern(), function(content)
 				return color:WrapTextInColorCode(content);
 			end);
 		end
 
 		if configDoOOCDetection() then
-			local color = TRP3_API.chat.getOOCDetectionColor();
+			local color = TRP3.chat.getOOCDetectionColor();
 			message = message:gsub(configOOCDetectionPattern(), function(content)
 				return color:WrapTextInColorCode(content);
 			end);
@@ -386,7 +383,7 @@ local function detectEmoteAndOOC(message, isEmote)
 
 		-- Only apply speech detections on emotes (excluding NPC non-emote speech)
 		if isEmote and configDoSpeechDetection() then
-			local color = TRP3_API.chat.getSpeechDetectionColor();
+			local color = TRP3.chat.getSpeechDetectionColor();
 			message = message:gsub('%b""', function(content)
 				return color:WrapTextInColorCode(content);
 			end);
@@ -396,7 +393,7 @@ local function detectEmoteAndOOC(message, isEmote)
 	message = UnprotectMessageContents(message, protections);
 	return message;
 end
-TRP3_API.chat.detectEmoteAndOOC = detectEmoteAndOOC;
+TRP3.chat.detectEmoteAndOOC = detectEmoteAndOOC;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NPC talk detection
@@ -423,7 +420,7 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 
 	-- If it's the player's emote, look in his own pet profiles
 	if (senderID == Globals.player_id) then
-		for _, profile in pairs(TRP3_API.companions.player.getProfiles()) do
+		for _, profile in pairs(TRP3.companions.player.getProfiles()) do
 			if (profile.data and profile.data.NA == innerName) then
 				petProfile = profile;
 				name = innerName;
@@ -432,10 +429,10 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 		end
 		-- If it's another player's emote, look in the register for a matching pet profile from that player
 	else
-		for _, profile in pairs(TRP3_API.companions.register.getProfiles()) do
+		for _, profile in pairs(TRP3.companions.register.getProfiles()) do
 			local isMaster = false;
 			for companionFullID, _ in pairs(profile.links) do
-				if (TRP3_API.utils.str.companionIDToInfo(companionFullID) == senderID) then
+				if (TRP3.utils.str.companionIDToInfo(companionFullID) == senderID) then
 					isMaster = true;
 					break
 				end
@@ -455,8 +452,8 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 		local customColor = petProfile.data.NH;
 
 		if customColor then
-			customColor = TRP3_API.CreateColorFromHexString(customColor);
-			customColor = TRP3_API.GenerateReadableColor(customColor, TRP3_API.Colors.Black);
+			customColor = TRP3.CreateColorFromHexString(customColor);
+			customColor = TRP3.GenerateReadableColor(customColor, TRP3.Colors.Black);
 			nameColor = customColor;
 		end
 	end
@@ -491,7 +488,7 @@ local function handleNPCEmote(message, senderID)
 		local content;
 
 		if message:find(talkType) then
-			chatColor = TRP3_API.GetChatTypeColor(talkChannel);
+			chatColor = TRP3.GetChatTypeColor(talkChannel);
 			name = message:sub(4, message:find(talkType) - 2); -- Isolate the name
 			content = message:sub(name:len() + 5);
 
@@ -506,7 +503,7 @@ local function handleNPCEmote(message, senderID)
 	end
 
 	-- If none was found, we default to emote
-	chatColor = TRP3_API.GetChatTypeColor("MONSTER_EMOTE");
+	chatColor = TRP3.GetChatTypeColor("MONSTER_EMOTE");
 	message = chatColor:WrapTextInColorCode(message:sub(4));
 	message = message:gsub("%[.-%]", function(name) return wrapNameInColorForNPCEmote(name, senderID, chatColor); end);
 
@@ -521,15 +518,15 @@ end
 -- So we are able to flag messages as needing their player name's to be modified
 local npcMessageId, npcMessageName, ownershipNameId, emoteStartingWithACommaID;
 
-function TRP3_API.chat.getNPCMessageID()
+function TRP3.chat.getNPCMessageID()
 	return npcMessageId;
 end
 
-function TRP3_API.chat.getNPCMessageName()
+function TRP3.chat.getNPCMessageName()
 	return npcMessageName;
 end
 
-function TRP3_API.chat.getOwnershipNameID()
+function TRP3.chat.getOwnershipNameID()
 	return ownershipNameId;
 end
 
@@ -553,7 +550,7 @@ function handleCharacterMessage(_, event, message, ...)
 
 			if message == " " then
 				-- Colorize emote and OOC (it's an NPC emote, the content is in the name)
-				npcMessageName = TRP3_API.chat.detectEmoteAndOOC(npcMessageName, true);
+				npcMessageName = TRP3.chat.detectEmoteAndOOC(npcMessageName, true);
 			else
 				isEmote = false;
 			end
@@ -584,7 +581,7 @@ function handleCharacterMessage(_, event, message, ...)
 
 	-- Colorize emote and OOC
 	if message ~= " " then
-		message = TRP3_API.chat.detectEmoteAndOOC(message, isEmote);
+		message = TRP3.chat.detectEmoteAndOOC(message, isEmote);
 	end
 
 	return false, message, ...;
@@ -617,18 +614,18 @@ local function getFullnameUsingChatMethod(info)
 	end
 
 	if characterName then
-		characterName = TRP3_API.utils.str.crop(characterName, cropSize);
+		characterName = TRP3.utils.str.crop(characterName, cropSize);
 	end
 
 	return characterName;
 end
-TRP3_API.chat.getFullnameUsingChatMethod = getFullnameUsingChatMethod;
+TRP3.chat.getFullnameUsingChatMethod = getFullnameUsingChatMethod;
 
 local function getFullnameForUnitUsingChatMethod(unitID)
 	local info = getCharacterInfoTab(unitID);
 	return getFullnameUsingChatMethod(info);
 end
-TRP3_API.chat.getFullnameForUnitUsingChatMethod = getFullnameForUnitUsingChatMethod;
+TRP3.chat.getFullnameForUnitUsingChatMethod = getFullnameForUnitUsingChatMethod;
 
 -- This is our custom function for the SenderNameFilter function that will replace player's names with their full RP names
 -- and use their custom colors.
@@ -677,7 +674,7 @@ function Utils.customGetColoredName(event, _, _, unitID, _, _, _, _, _, _, _, _,
 	end
 
 	-- Retrieve the character full RP name (if not default profile)
-	local hasNonDefaultProfile = player:GetProfileID() and TRP3_API.profile.isDefaultProfile(player:GetProfileID()) == false;
+	local hasNonDefaultProfile = player:GetProfileID() and TRP3.profile.isDefaultProfile(player:GetProfileID()) == false;
 	if hasNonDefaultProfile then
 		local customizedName = getFullnameForUnitUsingChatMethod(unitID);
 
@@ -688,7 +685,7 @@ function Utils.customGetColoredName(event, _, _, unitID, _, _, _, _, _, _, _, _,
 
 	if TRP3_CVarCache:GetCVarNumber(TRP3_CVarConstants.ChatClassColorOverride) ~= 1 then
 		local _, englishClass = GetPlayerInfoByGUID(GUID);
-		characterColor = TRP3_API.GetClassDisplayColor(englishClass);
+		characterColor = TRP3.GetClassDisplayColor(englishClass);
 	end
 
 	if configShowNameCustomColors() then
@@ -844,4 +841,4 @@ local MODULE_STRUCTURE = {
 	["minVersion"] = 3,
 };
 
-TRP3_API.module.registerModule(MODULE_STRUCTURE);
+TRP3.module.registerModule(MODULE_STRUCTURE);

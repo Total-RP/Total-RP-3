@@ -1,21 +1,18 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
-local loc = TRP3_API.loc;
-local Globals = TRP3_API.globals;
-local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
-local hasProfile = TRP3_API.register.hasProfile;
-local openMainFrame = TRP3_API.navigation.openMainFrame;
-local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local loc = TRP3.loc;
+local Globals = TRP3.globals;
+local isUnitIDKnown = TRP3.register.isUnitIDKnown;
+local hasProfile = TRP3.register.hasProfile;
+local openMainFrame = TRP3.navigation.openMainFrame;
+local getCurrentContext = TRP3.navigation.page.getCurrentContext;
+local setTooltipForSameFrame = TRP3.ui.tooltip.setTooltipForSameFrame;
 
 local GetCurrentUser = AddOn_TotalRP3.Player.GetCurrentUser;
-local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
-local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
-local getConfigValue = TRP3_API.configuration.getValue;
+local getPlayerCurrentProfile = TRP3.profile.getPlayerCurrentProfile;
+local getPlayerCurrentProfileID = TRP3.profile.getPlayerCurrentProfileID;
+local getConfigValue = TRP3.configuration.getValue;
 
 local function displayNotes(context)
 
@@ -84,9 +81,9 @@ local function showNotesTab()
 	displayNotes(context);
 	TRP3_RegisterNotes:Show();
 end
-TRP3_API.register.ui.showNotesTab = showNotesTab;
+TRP3.register.ui.showNotesTab = showNotesTab;
 
-function TRP3_API.register.inits.notesInit()
+function TRP3.register.inits.notesInit()
 
 	if not TRP3_Notes then
 		TRP3_Notes = {};
@@ -103,15 +100,15 @@ function TRP3_API.register.inits.notesInit()
 	TRP3_RegisterNotesViewAccount:RegisterCallback("OnTextChanged", onAccountNotesChanged, {});
 	TRP3_RegisterNotesViewProfile:RegisterCallback("OnTextChanged", onProfileNotesChanged, {});
 
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-		if not TRP3_API.target then
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+		if not TRP3.target then
 			-- Target bar module disabled.
 			return;
 		end
 
-		local openPageByUnitID = TRP3_API.register.openPageByUnitID;
+		local openPageByUnitID = TRP3.register.openPageByUnitID;
 		local openNotesTab = TRP3_TabBar_Tab_5:GetScript("OnClick");    -- This was a quick workaround for RP.IO, is there a better option ?
-		TRP3_API.target.registerButton({
+		TRP3.target.registerButton({
 			id = "za_notes",
 			configText = loc.REG_NOTES_PROFILE,
 			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
@@ -124,7 +121,7 @@ function TRP3_API.register.inits.notesInit()
 				openNotesTab();
 			end,
 			tooltip = loc.REG_NOTES_PROFILE,
-			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_NOTES_PROFILE_TT),
+			tooltipSub = TRP3.FormatShortcutWithInstruction("CLICK", loc.REG_NOTES_PROFILE_TT),
 			icon = TRP3_InterfaceIcons.TargetNotes,
 		});
 	end)

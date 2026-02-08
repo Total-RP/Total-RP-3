@@ -1,15 +1,14 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 TRP3_LauncherUtil.RegisterAction({
 	id = "trp3:open",
 	name = L.LAUNCHER_ACTION_OPEN,
 
 	Activate = function()
-		TRP3_API.navigation.switchMainFrame();
+		TRP3.navigation.switchMainFrame();
 	end,
 });
 
@@ -18,8 +17,8 @@ TRP3_LauncherUtil.RegisterAction({
 	name = L.LAUNCHER_ACTION_TOOLBAR,
 
 	Activate = function()
-		if TRP3_API.toolbar then
-			TRP3_API.toolbar.switch();
+		if TRP3.toolbar then
+			TRP3.toolbar.switch();
 		end
 	end,
 });
@@ -46,8 +45,8 @@ TRP3_LauncherUtil.RegisterAction({
 	name = L.LAUNCHER_ACTION_SETTINGS,
 
 	Activate = function()
-		TRP3_API.navigation.openMainFrame();
-		TRP3_API.navigation.menu.selectMenu("main_90_config");
+		TRP3.navigation.openMainFrame();
+		TRP3.navigation.menu.selectMenu("main_90_config");
 	end,
 });
 
@@ -56,8 +55,8 @@ TRP3_LauncherUtil.RegisterAction({
 	name = L.LAUNCHER_ACTION_DIRECTORY,
 
 	Activate = function()
-		TRP3_API.navigation.openMainFrame();
-		TRP3_API.navigation.menu.selectMenu("main_30_register");
+		TRP3.navigation.openMainFrame();
+		TRP3.navigation.menu.selectMenu("main_30_register");
 	end,
 });
 
@@ -66,8 +65,8 @@ TRP3_LauncherUtil.RegisterAction({
 	name = L.LAUNCHER_ACTION_PROFILES,
 
 	Activate = function()
-		TRP3_API.navigation.openMainFrame();
-		TRP3_API.navigation.menu.selectMenu("main_11_profiles");
+		TRP3.navigation.openMainFrame();
+		TRP3.navigation.menu.selectMenu("main_11_profiles");
 	end,
 });
 
@@ -76,8 +75,8 @@ TRP3_LauncherUtil.RegisterAction({
 	name = L.LAUNCHER_ACTION_PLAYER,
 
 	Activate = function()
-		TRP3_API.navigation.openMainFrame();
-		TRP3_API.navigation.menu.selectMenu("main_12_player_character");
+		TRP3.navigation.openMainFrame();
+		TRP3.navigation.menu.selectMenu("main_12_player_character");
 	end,
 });
 

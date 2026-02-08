@@ -1,10 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type
-local _, TRP3_API = ...;
-
-TRP3_API.ui = {
+TRP3.ui = {
 	tooltip = {},
 	listbox = {},
 	list = {},
@@ -14,9 +11,9 @@ TRP3_API.ui = {
 }
 
 -- imports
-local globals = TRP3_API.globals;
-local loc = TRP3_API.loc;
-local getUnitID = TRP3_API.utils.str.getUnitID;
+local globals = TRP3.globals;
+local loc = TRP3.loc;
+local getUnitID = TRP3.utils.str.getUnitID;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -79,7 +76,7 @@ local tiledBackgrounds = {
 	[52] = { bgFile = "interface\\glues\\characterselect\\glueannouncementpopupbackground", tile = true, tileSize = 256 },
 };
 
-function TRP3_API.ui.frame.getTiledBackground(index)
+function TRP3.ui.frame.getTiledBackground(index)
 	local backgroundInfo = tiledBackgrounds[index];
 
 	if not backgroundInfo then
@@ -89,7 +86,7 @@ function TRP3_API.ui.frame.getTiledBackground(index)
 	return backgroundInfo.bgFile;
 end
 
-function TRP3_API.ui.frame.setBackdropToBackground(frame, index)
+function TRP3.ui.frame.setBackdropToBackground(frame, index)
 	local backgroundInfo = tiledBackgrounds[index];
 
 	if not backgroundInfo then
@@ -105,12 +102,12 @@ function TRP3_API.ui.frame.setBackdropToBackground(frame, index)
 	backdropInfo.tile = backgroundInfo.tile;
 	backdropInfo.tileSize = backgroundInfo.tileSize;
 
-	local borderColor = TRP3_API.CreateColor(frame:GetBackdropBorderColor());
+	local borderColor = TRP3.CreateColor(frame:GetBackdropBorderColor());
 	frame:SetBackdrop(backdropInfo);
 	frame:SetBackdropBorderColor(borderColor:GetRGBA());
 end
 
-function TRP3_API.ui.frame.getTiledBackgroundList()
+function TRP3.ui.frame.getTiledBackgroundList()
 	local tab = {};
 	for index, info in ipairs(tiledBackgrounds) do
 		if GetFileIDFromPath(info.bgFile) then
@@ -120,7 +117,7 @@ function TRP3_API.ui.frame.getTiledBackgroundList()
 	return tab;
 end
 
-function TRP3_API.ui.frame.showIfMouseOverFrame(frame, frameOver)
+function TRP3.ui.frame.showIfMouseOverFrame(frame, frameOver)
 	assert(frame and frameOver, "Frames can't be nil");
 	if MouseIsOver(frameOver) then
 		frame:Show();
@@ -129,7 +126,7 @@ function TRP3_API.ui.frame.showIfMouseOverFrame(frame, frameOver)
 	end
 end
 
-function TRP3_API.ui.frame.createRefreshOnFrame(frame, time, callback)
+function TRP3.ui.frame.createRefreshOnFrame(frame, time, callback)
 	assert(frame and time and callback, "Argument must be not nil");
 	frame.refreshTimer = 1000;
 	frame:SetScript("OnUpdate", function(_, elapsed)
@@ -145,7 +142,7 @@ end
 -- Drop down
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.ui.listbox.displayDropDown(ownerRegion, rootMenuItems, onClickFunction)
+function TRP3.ui.listbox.displayDropDown(ownerRegion, rootMenuItems, onClickFunction)
 	local function OnButtonClick(elementData)
 		if onClickFunction then
 			local value = elementData[2];
@@ -186,10 +183,10 @@ function TRP3_API.ui.listbox.displayDropDown(ownerRegion, rootMenuItems, onClick
 end
 
 --- Setup a drop down menu for a clickable (Button ...)
-function TRP3_API.ui.listbox.setupDropDownMenu(hasClickFrame, values, callback, _, _, rightClick)
+function TRP3.ui.listbox.setupDropDownMenu(hasClickFrame, values, callback, _, _, rightClick)
 	hasClickFrame:SetScript("OnClick", function(_, button)
 		if (rightClick and button ~= "RightButton") or (not rightClick and button ~= "LeftButton") then return; end
-		TRP3_API.ui.listbox.displayDropDown(hasClickFrame, values, callback);
+		TRP3.ui.listbox.displayDropDown(hasClickFrame, values, callback);
 	end);
 end
 
@@ -198,7 +195,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Setup a ListBox. When the player choose a value, it triggers the function passing the value of the selected element
-function TRP3_API.ui.listbox.setupListBox(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth)
+function TRP3.ui.listbox.setupListBox(dropdown, rootMenuItems, onClickFunction, defaultText, dropdownWidth)
 	local function IsSelectedElement(elementData)
 		local value = elementData[2];
 		return dropdown.selectedValue == value;
@@ -269,7 +266,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Handle the mouse wheel for the frame in order to slide the slider
-TRP3_API.ui.list.handleMouseWheel = function(frame, slider)
+TRP3.ui.list.handleMouseWheel = function(frame, slider)
 	frame:SetScript("OnMouseWheel",function(_, delta)
 		if slider:IsEnabled() then
 			local mini,maxi = slider:GetMinMaxValues();
@@ -310,7 +307,7 @@ end
 -- 			- A decorate function, which will receive 3 arguments : a widget and an ID. Decorate will be called on every couple "widget from widgetTab" and "id from dataTab".
 --- 	dataTab, all the possible values
 --- 	slider, the slider :3
-TRP3_API.ui.list.initList = function(infoTab, dataTab, slider)
+TRP3.ui.list.initList = function(infoTab, dataTab, slider)
 	assert(infoTab and dataTab and slider, "Error : no argument can be nil.");
 	assert(infoTab.widgetTab, "Error : no widget tab in infoTab.");
 	assert(infoTab.decorate, "Error : no decorate function in infoTab.");
@@ -396,7 +393,7 @@ local function refreshTooltip(Frame)
 		TRP3_MainTooltip:Show();
 	end
 end
-TRP3_API.ui.tooltip.refresh = refreshTooltip;
+TRP3.ui.tooltip.refresh = refreshTooltip;
 TRP3_RefreshTooltipForFrame = refreshTooltip; -- For XML integration without too much perf' issue
 TRP3_HideTooltipForFrame = function(self) TRP3_TooltipUtil.HideTooltip(self); end;
 
@@ -426,15 +423,15 @@ local function setTooltipForFrame(Frame, GenFrame, GenFrameAnch, GenFrameX, GenF
 		end
 	end
 end
-TRP3_API.ui.tooltip.setTooltipForFrame = setTooltipForFrame;
+TRP3.ui.tooltip.setTooltipForFrame = setTooltipForFrame;
 
 -- Setup the frame tooltip (position and text)
 -- The tooltip can be shown by using refreshTooltip(Frame)
-TRP3_API.ui.tooltip.setTooltipForSameFrame = function(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
+TRP3.ui.tooltip.setTooltipForSameFrame = function(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
 	setTooltipForFrame(Frame, Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText);
 end
 
-TRP3_API.ui.tooltip.setTooltipAnchorForFrame = function(Frame, GenFrameAnch, GenFrameX, GenFrameY)
+TRP3.ui.tooltip.setTooltipAnchorForFrame = function(Frame, GenFrameAnch, GenFrameX, GenFrameY)
 	if Frame then
 		Frame.GenFrameX = GenFrameX;
 		Frame.GenFrameY = GenFrameY;
@@ -447,7 +444,7 @@ TRP3_API.ui.tooltip.setTooltipAnchorForFrame = function(Frame, GenFrameAnch, Gen
 end
 
 -- Setup the frame tooltip and add the Enter and Leave scripts
-TRP3_API.ui.tooltip.setTooltipAll = function(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
+TRP3.ui.tooltip.setTooltipAll = function(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
 	Frame:SetScript("OnEnter", tooltipSimpleOnEnter);
 	Frame:SetScript("OnLeave", tooltipSimpleOnLeave);
 	setTooltipForFrame(Frame, Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText);
@@ -458,13 +455,13 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- TODO (10.0): Remove the following backwards compatibility aliases.
-TRP3_API.ui.misc.TYPE_CHARACTER = TRP3_Enums.UNIT_TYPE.CHARACTER;
-TRP3_API.ui.misc.TYPE_PET = TRP3_Enums.UNIT_TYPE.PET;
-TRP3_API.ui.misc.TYPE_BATTLE_PET = TRP3_Enums.UNIT_TYPE.BATTLE_PET;
-TRP3_API.ui.misc.TYPE_MOUNT = TRP3_Enums.UNIT_TYPE.MOUNT;
-TRP3_API.ui.misc.TYPE_NPC = TRP3_Enums.UNIT_TYPE.NPC;
+TRP3.ui.misc.TYPE_CHARACTER = TRP3_Enums.UNIT_TYPE.CHARACTER;
+TRP3.ui.misc.TYPE_PET = TRP3_Enums.UNIT_TYPE.PET;
+TRP3.ui.misc.TYPE_BATTLE_PET = TRP3_Enums.UNIT_TYPE.BATTLE_PET;
+TRP3.ui.misc.TYPE_MOUNT = TRP3_Enums.UNIT_TYPE.MOUNT;
+TRP3.ui.misc.TYPE_NPC = TRP3_Enums.UNIT_TYPE.NPC;
 
-function TRP3_API.ui.misc.isTargetTypeACompanion(unitType)
+function TRP3.ui.misc.isTargetTypeACompanion(unitType)
 	return unitType == TRP3_Enums.UNIT_TYPE.BATTLE_PET or unitType == TRP3_Enums.UNIT_TYPE.PET;
 end
 
@@ -490,7 +487,7 @@ end
 
 ---
 -- Returns target type as first return value and boolean isMine as second.
-function TRP3_API.ui.misc.getTargetType(unitType)
+function TRP3.ui.misc.getTargetType(unitType)
 	if UnitIsPlayer(unitType) then
 		return TRP3_Enums.UNIT_TYPE.CHARACTER, getUnitID(unitType) == globals.player_id;
 	elseif TRP3_CompanionUtil.IsCompanionPetUnit(unitType) then
@@ -498,7 +495,7 @@ function TRP3_API.ui.misc.getTargetType(unitType)
 	elseif IsPetUnit(unitType) then
 		return TRP3_Enums.UNIT_TYPE.PET, UnitIsOwnerOrControllerOfUnit("player", unitType);
 	end
-	if TRP3_API.utils.str.getUnitNPCID(unitType) then
+	if TRP3.utils.str.getUnitNPCID(unitType) then
 		return TRP3_Enums.UNIT_TYPE.NPC, false;
 	end
 end
@@ -592,9 +589,9 @@ local function getCompanionOwner(unitType, targetType)
 		return string.join("-", ownerName, ownerRealm);
 	end
 end
-TRP3_API.ui.misc.getCompanionOwner = getCompanionOwner;
+TRP3.ui.misc.getCompanionOwner = getCompanionOwner;
 
-function TRP3_API.ui.misc.getCompanionShortID(unitToken, unitType)
+function TRP3.ui.misc.getCompanionShortID(unitToken, unitType)
 	local shortID;
 
 	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.BATTLE_PET then
@@ -606,8 +603,8 @@ function TRP3_API.ui.misc.getCompanionShortID(unitToken, unitType)
 	return shortID;
 end
 
-function TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType)
-	local shortID = TRP3_API.ui.misc.getCompanionShortID(unitToken, unitType);
+function TRP3.ui.misc.getCompanionFullID(unitToken, unitType)
+	local shortID = TRP3.ui.misc.getCompanionShortID(unitToken, unitType);
 
 	if not canaccessvalue(shortID) then
 		return;
@@ -656,7 +653,7 @@ function TRP3_ToastFrameMixin:CancelFadeTimer()
 	end
 end
 
-function TRP3_API.ui.tooltip.toast(text, duration)
+function TRP3.ui.tooltip.toast(text, duration)
 	local toastFrame = TRP3_Toast;
 
 	if not toastFrame then
@@ -679,7 +676,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 ---@param icon string|EllybTexture
-function TRP3_API.ui.frame.setupIconButton(self, icon)
+function TRP3.ui.frame.setupIconButton(self, icon)
 	assert(self, "Frame is nil");
 	assert(self.Icon or (self:GetName() and _G[self:GetName() .. "Icon"]), "Frame must have a Icon");
 
@@ -696,7 +693,7 @@ end
 -- Editboxes
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.ui.frame.setupEditBoxesNavigation(tabEditBoxes)
+function TRP3.ui.frame.setupEditBoxesNavigation(tabEditBoxes)
 	local maxBound = # tabEditBoxes;
 	local minBound = 1;
 	for index, editbox in pairs(tabEditBoxes) do
@@ -785,7 +782,7 @@ local function tabBar_selectTab(tabGroup, index)
 	ExecuteFrameScript(tabGroup.tabs[index], "OnClick");
 end
 
-function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback, confirmCallback)
+function TRP3.ui.frame.createTabPanel(tabBar, data, callback, confirmCallback)
 	assert(tabBar, "The tabBar can't be nil");
 
 	local tabGroup = {};
@@ -829,7 +826,7 @@ end
 -- Textures tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.ui.misc.getUnitTexture = function(race, gender)
+TRP3.ui.misc.getUnitTexture = function(race, gender)
 	local raceToken = race;
 	local genderToken = (gender == 3) and "Female" or "Male";
 
@@ -883,7 +880,7 @@ end
 
 local function onColorTagSelected(red, green, blue, frame)
 	local cursorIndex = frame:GetCursorPosition();
-	local tag = ("{col:%s}"):format(TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque());
+	local tag = ("{col:%s}"):format(TRP3.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque());
 	insertTag(tag .. "{/col}", cursorIndex, frame);
 	frame:SetCursorPosition(cursorIndex + tag:len());
 	frame:SetFocus();
@@ -927,12 +924,12 @@ local function onContainerTagClicked(button, frame, isP)
 		tinsert(values, {loc.CM_CENTER, 1});
 		tinsert(values, {loc.CM_RIGHT, 2});
 	end
-	TRP3_API.ui.listbox.displayDropDown(button, values, function(alignIndex, mouseButton)
+	TRP3.ui.listbox.displayDropDown(button, values, function(alignIndex, mouseButton)
 		insertContainerTag(alignIndex, mouseButton, frame);
 	end);
 end
 
-function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, parentPoint)
+function TRP3.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, parentPoint)
 	toolbar.title:SetText(loc.REG_PLAYER_ABOUT_TAGS);
 	toolbar.image:SetText(loc.CM_IMAGE);
 	toolbar.icon:SetText(loc.CM_ICON);
@@ -949,8 +946,8 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 	toolbar.p:SetScript("OnClick", function(button) if toolbar.textFrame then onContainerTagClicked(button, toolbar.textFrame, true) end end);
 	toolbar.icon:SetScript("OnClick", function()
 		if toolbar.textFrame then
-			TRP3_API.popup.showPopup(
-				TRP3_API.popup.ICONS,
+			TRP3.popup.showPopup(
+				TRP3.popup.ICONS,
 				{parent = parentFrame, point = point, parentPoint = parentPoint},
 				{function(icon) onIconTagSelected(icon, toolbar.textFrame) end});
 		end
@@ -958,10 +955,10 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 	toolbar.color:SetScript("OnClick", function()
 		if toolbar.textFrame then
 			if IsShiftKeyDown() or (getConfigValue and getConfigValue("default_color_picker")) then
-				TRP3_API.popup.showDefaultColorPicker({function(red, green, blue) onColorTagSelected(red, green, blue, toolbar.textFrame) end});
+				TRP3.popup.showDefaultColorPicker({function(red, green, blue) onColorTagSelected(red, green, blue, toolbar.textFrame) end});
 			else
-				TRP3_API.popup.showPopup(
-					TRP3_API.popup.COLORS,
+				TRP3.popup.showPopup(
+					TRP3.popup.COLORS,
 					{parent = parentFrame, point = point, parentPoint = parentPoint},
 					{function(red, green, blue) onColorTagSelected(red, green, blue, toolbar.textFrame) end});
 			end
@@ -969,8 +966,8 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 	end);
 	toolbar.image:SetScript("OnClick", function()
 		if toolbar.textFrame then
-			TRP3_API.popup.showPopup(
-				TRP3_API.popup.IMAGES,
+			TRP3.popup.showPopup(
+				TRP3.popup.IMAGES,
 				{parent = parentFrame, point = point, parentPoint = parentPoint},
 				{function(image) onImageTagSelected(image, toolbar.textFrame) end});
 		end
@@ -978,7 +975,7 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 	toolbar.link:SetScript("OnClick", function() if toolbar.textFrame then onLinkTagClicked(toolbar.textFrame) end end);
 end
 
-function TRP3_API.ui.text.changeToolbarTextFrame(toolbar, textFrame)
+function TRP3.ui.text.changeToolbarTextFrame(toolbar, textFrame)
 	toolbar.textFrame = textFrame;
 end
 
@@ -986,7 +983,7 @@ end
 -- Sounds
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.ui.misc.playUISound(pathToSound, url)
+function TRP3.ui.misc.playUISound(pathToSound, url)
 	if url then
 		PlaySoundFile(pathToSound, "SFX");
 	else
@@ -994,7 +991,7 @@ function TRP3_API.ui.misc.playUISound(pathToSound, url)
 	end
 end
 
-function TRP3_API.ui.misc.playSoundKit(soundID, channel)
+function TRP3.ui.misc.playSoundKit(soundID, channel)
 	local _, handlerID = PlaySound(soundID, channel or "SFX");
 	return handlerID;
 end
@@ -1010,13 +1007,13 @@ local function playAnimation(animationGroup, callback)
 		animationGroup:SetScript("OnFinished", callback)
 	end
 end
-TRP3_API.ui.misc.playAnimation = playAnimation;
+TRP3.ui.misc.playAnimation = playAnimation;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Hovered frames
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPosition, x, y, noStrataChange, parent)
+function TRP3.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPosition, x, y, noStrataChange, parent)
 	x = x or 0;
 	y = y or 0;
 	frame:ClearAllPoints();
@@ -1065,7 +1062,7 @@ end
 -- Resize button
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.ui.frame.initResize(resizeButton)
+function TRP3.ui.frame.initResize(resizeButton)
 	resizeButton.resizableFrame = resizeButton.resizableFrame or resizeButton:GetParent();
 	assert(resizeButton.minWidth, "minWidth key is not set.");
 	assert(resizeButton.minHeight, "minHeight key is not set.");
@@ -1107,7 +1104,7 @@ end
 -- Move frame
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.ui.frame.setupMove(frame)
+function TRP3.ui.frame.setupMove(frame)
 	frame:RegisterForDrag("LeftButton");
 	frame:SetScript("OnDragStart", function(self)
 		self:StartMoving();

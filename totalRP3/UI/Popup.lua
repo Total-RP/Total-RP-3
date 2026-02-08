@@ -2,13 +2,13 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 -- Public accessor
-TRP3_API.popup = {};
+TRP3.popup = {};
 
 -- imports
-local Ellyb = TRP3_API.Ellyb;
-local loc = TRP3_API.loc;
-local initList = TRP3_API.ui.list.initList;
-local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
+local Ellyb = TRP3.Ellyb;
+local loc = TRP3.loc;
+local initList = TRP3.ui.list.initList;
+local handleMouseWheel = TRP3.ui.list.handleMouseWheel;
 local getImageList, getImageListSize;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
@@ -161,7 +161,7 @@ StaticPopupDialogs["TRP3_INPUT_NUMBER"] = {
 local POPUP_HEAD = "Total RP 3\n \n";
 
 -- Show a simple alert with a OK button.
-function TRP3_API.popup.showAlertPopup(text)
+function TRP3.popup.showAlertPopup(text)
 	StaticPopupDialogs["TRP3_INFO"].text = POPUP_HEAD..text;
 	local dialog = StaticPopup_Show("TRP3_INFO");
 	if dialog then
@@ -170,7 +170,7 @@ function TRP3_API.popup.showAlertPopup(text)
 	end
 end
 
-function TRP3_API.popup.showConfirmPopup(text, onAccept, onCancel)
+function TRP3.popup.showConfirmPopup(text, onAccept, onCancel)
 	text = string.gsub(text, "%%", "%%%%");
 	StaticPopupDialogs["TRP3_CONFIRM"].text = POPUP_HEAD..text.."\n\n";
 	StaticPopupDialogs["TRP3_CONFIRM"].trp3onAccept = onAccept;
@@ -182,7 +182,7 @@ function TRP3_API.popup.showConfirmPopup(text, onAccept, onCancel)
 	end
 end
 
-function TRP3_API.popup.showYesNoPopup(text, onAccept, onCancel)
+function TRP3.popup.showYesNoPopup(text, onAccept, onCancel)
 	text = string.gsub(text, "%%", "%%%%");
 	StaticPopupDialogs["TRP3_YES_NO"].text = POPUP_HEAD..text.."\n\n";
 	StaticPopupDialogs["TRP3_YES_NO"].trp3onAccept = onAccept;
@@ -194,7 +194,7 @@ function TRP3_API.popup.showYesNoPopup(text, onAccept, onCancel)
 	end
 end
 
-function TRP3_API.popup.showCustomYesNoPopup(text, yesText, noText, onAccept, onCancel)
+function TRP3.popup.showCustomYesNoPopup(text, yesText, noText, onAccept, onCancel)
 	text = string.gsub(text, "%%", "%%%%");
 	StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].button1 = yesText;
 	StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].button2 = noText;
@@ -208,7 +208,7 @@ function TRP3_API.popup.showCustomYesNoPopup(text, yesText, noText, onAccept, on
 	end
 end
 
-function TRP3_API.popup.showTextInputPopup(text, onAccept, onCancel, default)
+function TRP3.popup.showTextInputPopup(text, onAccept, onCancel, default)
 	text = string.gsub(text, "%%", "%%%%");
 	StaticPopupDialogs["TRP3_INPUT_TEXT"].text = POPUP_HEAD..text.."\n\n";
 	StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onAccept = onAccept;
@@ -222,7 +222,7 @@ function TRP3_API.popup.showTextInputPopup(text, onAccept, onCancel, default)
 	end
 end
 
-function TRP3_API.popup.showNumberInputPopup(text, onAccept, onCancel, default)
+function TRP3.popup.showNumberInputPopup(text, onAccept, onCancel, default)
 	text = string.gsub(text, "%%", "%%%%");
 	StaticPopupDialogs["TRP3_INPUT_NUMBER"].text = POPUP_HEAD..text.."\n\n";
 	StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onAccept = onAccept;
@@ -267,16 +267,16 @@ end
 ---@param customShortcutInstructions string A custom text for the copy and paste shortcut instructions.
 ---@overload fun(url: string)
 ---@overload fun(url: string, customText: string)
-function TRP3_API.popup.showCopyDropdownPopup(copyTexts, customText, customShortcutInstructions)
+function TRP3.popup.showCopyDropdownPopup(copyTexts, customText, customShortcutInstructions)
 	if type(copyTexts) ~= "table" or #copyTexts == 0 then return end
 	local popupText = customText and (customText .. "\n\n") or "";
 	if not customShortcutInstructions then
 		customShortcutInstructions = loc.COPY_DROPDOWN_POPUP_TEXT;
 	end
-	local copyShortcut = TRP3_API.FormatShortcut("CTRL-C", TRP3_API.ShortcutType.System);
-	local pasteShortcut = TRP3_API.FormatShortcut("CTRL-V", TRP3_API.ShortcutType.System);
+	local copyShortcut = TRP3.FormatShortcut("CTRL-C", TRP3.ShortcutType.System);
+	local pasteShortcut = TRP3.FormatShortcut("CTRL-V", TRP3.ShortcutType.System);
 
-	popupText = popupText .. customShortcutInstructions:format(TRP3_API.Colors.Orange(copyShortcut), TRP3_API.Colors.Orange(pasteShortcut));
+	popupText = popupText .. customShortcutInstructions:format(TRP3.Colors.Orange(copyShortcut), TRP3.Colors.Orange(pasteShortcut));
 	local popup = GetOrCreateCopyTextPopup();
 	popup.Text:SetText(popupText);
 	popup.CopyText:SetText(copyTexts[1]);
@@ -286,7 +286,7 @@ function TRP3_API.popup.showCopyDropdownPopup(copyTexts, customText, customShort
 		for i, text in ipairs(copyTexts) do
 			copyTextsTable[i] = {text, text};
 		end
-		TRP3_API.ui.listbox.setupDropDownMenu(popup.DropdownButton, copyTextsTable, function(copyText)
+		TRP3.ui.listbox.setupDropDownMenu(popup.DropdownButton, copyTextsTable, function(copyText)
 			popup.CopyText:SetText(copyText);
 			popup.CopyText:SetFocus();
 			popup.CopyText:HighlightText();
@@ -316,7 +316,7 @@ end
 local function hidePopups()
 	TRP3_PopupsFrame:Hide();
 end
-TRP3_API.popup.hidePopups = hidePopups;
+TRP3.popup.hidePopups = hidePopups;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Icon browser
@@ -347,7 +347,7 @@ local function showIconBrowser(onSelectCallback, onCancelCallback, scale, select
 	});
 end
 
-function TRP3_API.popup.hideIconBrowser()
+function TRP3.popup.hideIconBrowser()
 	TRP3_IconBrowser.Close();
 end
 
@@ -380,11 +380,11 @@ local function ShowBackgroundBrowser(onSelectCallback, onCancelCallback, scale, 
 	});
 end
 
-function TRP3_API.popup.ShowBackgroundBrowser(callback, selectedImageID)
-	TRP3_API.popup.showPopup(TRP3_API.popup.BACKGROUNDS, nil, {callback, nil, nil, selectedImageID});
+function TRP3.popup.ShowBackgroundBrowser(callback, selectedImageID)
+	TRP3.popup.showPopup(TRP3.popup.BACKGROUNDS, nil, {callback, nil, nil, selectedImageID});
 end;
 
-function TRP3_API.popup.HideBackgroundBrowser()
+function TRP3.popup.HideBackgroundBrowser()
 	TRP3_BackgroundBrowser.Close();
 end
 
@@ -446,12 +446,12 @@ local function decorateCompanion(button, index)
 
 	if TRP3_CompanionUtil.CanRenameCompanionPets() and (name == speciesName) then
 		button.RenameWarning:Show();
-		tooltipText = tooltipText .. "|n|n" .. TRP3_API.loc.UI_COMPANION_BROWSER_RENAME_WARNING;
+		tooltipText = tooltipText .. "|n|n" .. TRP3.loc.UI_COMPANION_BROWSER_RENAME_WARNING;
 	else
 		button.RenameWarning:Hide();
 	end
 
-	TRP3_API.ui.tooltip.setTooltipAll(button, "RIGHT", 0, 0, tooltipTitle, tooltipText);
+	TRP3.ui.tooltip.setTooltipAll(button, "RIGHT", 0, 0, tooltipTitle, tooltipText);
 	button.index = index;
 end
 
@@ -559,7 +559,7 @@ local function initCompanionBrowser()
 	TRP3_CompanionBrowserFilterBoxText:SetText(loc.UI_FILTER);
 end
 
-function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback, companionType)
+function TRP3.popup.showCompanionBrowser(onSelectCallback, onCancelCallback, companionType)
 	currentCompanionType = companionType or TRP3_Enums.UNIT_TYPE.BATTLE_PET;
 	if currentCompanionType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
 		TRP3_CompanionBrowserTitle:SetText(loc.REG_COMPANION_BROWSER_BATTLE);
@@ -591,7 +591,7 @@ function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback,
 	TRP3_CompanionBrowserFilterBox:SetFocus();
 end
 
-function TRP3_API.popup.showPetBrowser(profileID, onSelectCallback, onCancelCallback)
+function TRP3.popup.showPetBrowser(profileID, onSelectCallback, onCancelCallback)
 	local frame = AddOn_TotalRP3.Ui.GetPetBrowserFrame();
 	if not frame then
 		return;
@@ -636,19 +636,19 @@ end
 
 local function ShowColorBrowser(callback, r8, g8, b8)
 	local function OnAccept(color)
-		TRP3_API.popup.hidePopups();
+		TRP3.popup.hidePopups();
 		callback(color:GetRGBAsBytes());
 	end
 
 	local function OnCancel()
-		TRP3_API.popup.hidePopups();
+		TRP3.popup.hidePopups();
 	end
 
-	local initialColor = TRP3_API.CreateColorFromBytes(r8 or 255, g8 or 255, b8 or 255);
+	local initialColor = TRP3.CreateColorFromBytes(r8 or 255, g8 or 255, b8 or 255);
 	TRP3_ColorBrowser:Open(initialColor, OnAccept, OnCancel);
 end
 
-function TRP3_API.popup.showDefaultColorPicker(popupArgs)
+function TRP3.popup.showDefaultColorPicker(popupArgs)
 	local setColor, r, g, b = unpack(popupArgs);
 
 	local function OnColorChanged()
@@ -763,8 +763,8 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.popup.init()
-	getImageList, getImageListSize = TRP3_API.utils.resources.getImageList, TRP3_API.utils.resources.getImageListSize;
+function TRP3.popup.init()
+	getImageList, getImageListSize = TRP3.utils.resources.getImageList, TRP3.utils.resources.getImageListSize;
 
 	initCompanionBrowser();
 	initImageBrowser();
@@ -776,48 +776,48 @@ end
 
 local tostring, type, unpack = tostring, type, unpack;
 
-TRP3_API.popup.IMAGES = "images";
-TRP3_API.popup.ICONS = "icons";
-TRP3_API.popup.COLORS = "colors";
-TRP3_API.popup.MUSICS = "musics";
-TRP3_API.popup.COMPANIONS = "companions";
-TRP3_API.popup.PETS = "pets";
-TRP3_API.popup.BACKGROUNDS = "backgrounds";
+TRP3.popup.IMAGES = "images";
+TRP3.popup.ICONS = "icons";
+TRP3.popup.COLORS = "colors";
+TRP3.popup.MUSICS = "musics";
+TRP3.popup.COMPANIONS = "companions";
+TRP3.popup.PETS = "pets";
+TRP3.popup.BACKGROUNDS = "backgrounds";
 
 local POPUP_STRUCTURE = {
-	[TRP3_API.popup.IMAGES] = {
+	[TRP3.popup.IMAGES] = {
 		frame = TRP3_ImageBrowser,
 		showMethod = showImageBrowser,
 	},
-	[TRP3_API.popup.COLORS] = {
+	[TRP3.popup.COLORS] = {
 		frame = TRP3_ColorBrowser,
 		disableCloseOnEscape = true,  -- Handled by the browser itself.
 		showMethod = ShowColorBrowser,
 	},
-	[TRP3_API.popup.ICONS] = {
+	[TRP3.popup.ICONS] = {
 		frame = TRP3_IconBrowserFrame,
 		showMethod = showIconBrowser,
 	},
-	[TRP3_API.popup.MUSICS] = {
+	[TRP3.popup.MUSICS] = {
 		frame = TRP3_MusicBrowser,
 		showMethod = function(callback) TRP3_MusicBrowser:Open(callback) end,
 	},
-	[TRP3_API.popup.COMPANIONS] = {
+	[TRP3.popup.COMPANIONS] = {
 		frame = TRP3_CompanionBrowser,
-		showMethod = TRP3_API.popup.showCompanionBrowser,
+		showMethod = TRP3.popup.showCompanionBrowser,
 	},
-	[TRP3_API.popup.PETS] = AddOn_TotalRP3.Ui.IsPetBrowserEnabled() and {
+	[TRP3.popup.PETS] = AddOn_TotalRP3.Ui.IsPetBrowserEnabled() and {
 		frame = AddOn_TotalRP3.Ui.GetPetBrowserFrame(),
-		showMethod = TRP3_API.popup.showPetBrowser,
+		showMethod = TRP3.popup.showPetBrowser,
 	} or nil,
-	[TRP3_API.popup.BACKGROUNDS] = {
+	[TRP3.popup.BACKGROUNDS] = {
 		frame = TRP3_BackgroundBrowserFrame,
 		showMethod = ShowBackgroundBrowser,
 	},
 }
-TRP3_API.popup.POPUPS = POPUP_STRUCTURE;
+TRP3.popup.POPUPS = POPUP_STRUCTURE;
 
-function TRP3_API.popup.showPopup(popupID, popupPosition, popupArgs)
+function TRP3.popup.showPopup(popupID, popupPosition, popupArgs)
 	assert(popupID and POPUP_STRUCTURE[popupID], "Unknown popupID: " .. tostring(popupID));
 	assert(popupPosition == nil or type(popupPosition) == "table", "PopupPosition must be a table or be nil");
 	assert(popupArgs == nil or type(popupArgs) == "table", "PopupArgs must be a table or be nil");

@@ -1,9 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 -- Create a new MapDataProvider for Total RP 3
 -- MapDataProviders are the new way since Battle for Azeroth to offer points of interest on the map
 ---@type MapCanvasDataProviderMixin|{GetMap:fun():MapCanvasMixin}
@@ -48,6 +45,6 @@ function TRP3_MapDataProvider:OnHide()
 	self:RemoveAllData();
 end
 
-TRP3_API.MapDataProvider = TRP3_MapDataProvider;
+TRP3.MapDataProvider = TRP3_MapDataProvider;
 
 WorldMapFrame:AddDataProvider(TRP3_MapDataProvider);

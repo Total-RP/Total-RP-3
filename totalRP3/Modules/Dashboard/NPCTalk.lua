@@ -1,15 +1,12 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type
-local _, TRP3_API = ...;
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-
-	local loc = TRP3_API.loc;
-	local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-	local setupMovableFrame = TRP3_API.ui.frame.setupMove;
-	local setupListBox = TRP3_API.ui.listbox.setupListBox;
+	local loc = TRP3.loc;
+	local setTooltipForSameFrame = TRP3.ui.tooltip.setTooltipForSameFrame;
+	local setupMovableFrame = TRP3.ui.frame.setupMove;
+	local setupListBox = TRP3.ui.listbox.setupListBox;
 
 	local frame = TRP3_NPCTalkFrame;
 	---@type Button
@@ -47,7 +44,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	--- @param message string
 	--- @return string
 	local function constructMessage(NPCName, channel, message)
-		return strconcat(TRP3_API.chat.configNPCTalkPrefix(), NPCName or "", " ", getChannelActionString(channel), message or "");
+		return strconcat(TRP3.chat.configNPCTalkPrefix(), NPCName or "", " ", getChannelActionString(channel), message or "");
 	end
 
 	local function sendNPCTalk()
@@ -68,9 +65,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	local MAX_CHARACTERS_PER_MESSAGES = 254;
 	local WARNING_NUMBER_OF_CHARACTERS = 239;
-	local NORMAL_COLOR = TRP3_API.CreateColor(1.0000, 1.0000, 1.0000, 1.0000);
-	local WARNING_COLOR = TRP3_API.CreateColor(1.0000, 0.4902, 0.0392, 1.0000);
-	local ERROR_COLOR = TRP3_API.CreateColor(0.7686, 0.1216, 0.2314, 1.0000);
+	local NORMAL_COLOR = TRP3.CreateColor(1.0000, 1.0000, 1.0000, 1.0000);
+	local WARNING_COLOR = TRP3.CreateColor(1.0000, 0.4902, 0.0392, 1.0000);
+	local ERROR_COLOR = TRP3.CreateColor(0.7686, 0.1216, 0.2314, 1.0000);
 
 	local function checkCharactersLimit()
 
@@ -107,8 +104,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		local channelTypes = {};
 
 		for channelLabel, channelName in pairs(CHANNEL_TYPES) do
-			local channelColor = TRP3_API.GetChatTypeColor(channelName);
-			tinsert(channelTypes, { TRP3_API.Colors.Yellow(loc.NPC_TALK_CHANNEL) .. channelColor(_G[channelLabel]), channelName});
+			local channelColor = TRP3.GetChatTypeColor(channelName);
+			tinsert(channelTypes, { TRP3.Colors.Yellow(loc.NPC_TALK_CHANNEL) .. channelColor(_G[channelLabel]), channelName});
 		end
 
 		-- Set the dropdown for the channels
@@ -148,7 +145,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			frame.Name:SetFocus();
 		end
 	end
-	TRP3_API.r.toggleNPCTalkFrame = toggleNPCTalkFrame;
+	TRP3.r.toggleNPCTalkFrame = toggleNPCTalkFrame;
 
 	SendButton:SetScript("OnClick", sendNPCTalk);
 	frame.MessageText.scroll.text:SetScript("OnEnterPressed", sendNPCTalk);
@@ -165,20 +162,20 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	setTooltipForSameFrame(frame.Name.help, "RIGHT", 0, 5, loc.NPC_TALK_NAME, loc.NPC_TALK_NAME_TT);
 
-	TRP3_API.Ellyb.EditBoxes.setupTabKeyNavigation(frame.Name, frame.MessageText.scroll.text);
+	TRP3.Ellyb.EditBoxes.setupTabKeyNavigation(frame.Name, frame.MessageText.scroll.text);
 
 	setupMovableFrame(frame);
 
 
-	if TRP3_API.toolbar then
+	if TRP3.toolbar then
 
 		-- Create a button for the toolbar to show/hide the NPC Talk frame
-		TRP3_API.toolbar.toolbarAddButton({
+		TRP3.toolbar.toolbarAddButton({
 			id = "bb_trp3_npctalk",
 			icon = TRP3_InterfaceIcons.ToolbarNPCTalk,
 			configText = loc.NPC_TALK_TITLE,
 			tooltip = loc.NPC_TALK_TITLE,
-			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.NPC_TALK_BUTTON_TT),
+			tooltipSub = TRP3.FormatShortcutWithInstruction("CLICK", loc.NPC_TALK_BUTTON_TT),
 			onClick = function()
 				toggleNPCTalkFrame();
 			end,
@@ -187,7 +184,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	-- We also register a slash command, so people who disable the toolbar button
 	-- or the toolbar module entirely can still access the feature
-	TRP3_API.slash.registerCommand({
+	TRP3.slash.registerCommand({
 		id = "npc_speech",
 		helpLine = " " .. loc.NPC_TALK_COMMAND_HELP,
 		handler = toggleNPCTalkFrame

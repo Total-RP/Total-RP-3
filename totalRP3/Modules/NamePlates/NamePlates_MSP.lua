@@ -4,7 +4,7 @@
 TRP3_MSPNamePlates = {};
 
 function TRP3_MSPNamePlates:OnLoad()
-	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_ENTERING_WORLD", self.OnEnterWorld, self);
+	TRP3.RegisterCallback(TRP3.GameEvents, "PLAYER_ENTERING_WORLD", self.OnEnterWorld, self);
 end
 
 function TRP3_MSPNamePlates:OnEnterWorld()

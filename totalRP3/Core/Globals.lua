@@ -1,9 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
 local faction, faction_loc = UnitFactionGroup("player");
@@ -13,11 +10,11 @@ local Player = AddOn_TotalRP3.Player.GetCurrentUser();
 local currentDate = date("*t");
 
 -- Public accessor
-TRP3_API.r = {};
-TRP3_API.formats = {
+TRP3.r = {};
+TRP3.formats = {
 	dropDownElements = "%s: |cff00ff00%s"
 };
-TRP3_API.globals = {
+TRP3.globals = {
 	--@debug@
 	DEBUG_MODE = true,
 	--@end-debug@
@@ -87,18 +84,18 @@ TRP3_OOCIndicatorStyle = {
 local emptyMeta = {
 	__newindex = function(_, _, _) end
 };
-setmetatable(TRP3_API.globals.empty, emptyMeta);
+setmetatable(TRP3.globals.empty, emptyMeta);
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Globals build
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.globals.build = function()
+TRP3.globals.build = function()
 	local fullName = UnitNameUnmodified("player");
 	local realm = GetRealmName():gsub("[%s%-%.]*", "");
-	TRP3_API.globals.player_realm_id = realm;
-	TRP3_API.globals.player_id = fullName .. "-" .. realm;
-	TRP3_API.globals.player_icon = TRP3_API.ui.misc.getUnitTexture(race, UnitSex("player"));
+	TRP3.globals.player_realm_id = realm;
+	TRP3.globals.player_id = fullName .. "-" .. realm;
+	TRP3.globals.player_icon = TRP3.ui.misc.getUnitTexture(race, UnitSex("player"));
 end
 
-TRP3_API.globals.addon = TRP3_Addon;
+TRP3.globals.addon = TRP3_Addon;

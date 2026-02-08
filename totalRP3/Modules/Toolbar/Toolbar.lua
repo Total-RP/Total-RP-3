@@ -1,20 +1,20 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Utils = TRP3_API.utils;
-local loc = TRP3_API.loc;
+local Utils = TRP3.utils;
+local loc = TRP3.loc;
 local color = Utils.str.color;
 
 local CONFIG_CONTENT_PREFIX = "toolbar_content_";
 
 local function onStart()
 	-- Public accessor
-	TRP3_API.toolbar = {};
+	TRP3.toolbar = {};
 
 	local LDBObjects = {};
 
 	-- imports
-	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
+	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3.configuration.getValue, TRP3.configuration.registerConfigKey, TRP3.configuration.registerHandler, TRP3.configuration.setValue;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Toolbar Logic
@@ -46,7 +46,7 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
-	local OBJECT_NAME_FORMAT = TRP3_API.globals.addon_name_short .. " — %s";
+	local OBJECT_NAME_FORMAT = TRP3.globals.addon_name_short .. " — %s";
 
 	---
 	-- Register a Databroker plugin using a button structure
@@ -76,7 +76,7 @@ local function onStart()
 						tooltip:AddLine(" ");
 
 						for _, instruction in ipairs(buttonStructure.tooltipInstructions) do
-							local text = TRP3_API.FormatShortcutWithInstruction(instruction[1], instruction[2]);
+							local text = TRP3.FormatShortcutWithInstruction(instruction[1], instruction[2]);
 							tooltip:AddLine(text);
 						end
 					end
@@ -109,7 +109,7 @@ local function onStart()
 
 	-- Add a new button to the toolbar. The toolbar layout is automatically handled.
 	-- Button structure :
-	function TRP3_API.toolbar.toolbarAddButton(buttonStructure)
+	function TRP3.toolbar.toolbarAddButton(buttonStructure)
 		assert(not loaded, "All button must be registered on addon load. You're too late !");
 		assert(buttonStructure and buttonStructure.id, "Usage: button structure containing 'id' field");
 		assert(not buttonStructures[buttonStructure.id], "The toolbar button with id "..buttonStructure.id.." already exists.");
@@ -117,7 +117,7 @@ local function onStart()
 		registerDatabrokerButton(buttonStructure);
 	end
 
-	function TRP3_API.toolbar.updateToolbarButton(button, buttonStructure)  -- luacheck: no unused
+	function TRP3.toolbar.updateToolbarButton(button, buttonStructure)  -- luacheck: no unused
 		button:Update();
 	end
 
@@ -137,7 +137,7 @@ local function onStart()
 	-- of *just* relying on periodic updates and a few hand-selected callbacks.
 
 	C_Timer.NewTicker(0.5, RefreshToolbarButtons);
-	TRP3_API.RegisterCallback(TRP3_Addon, "ROLEPLAY_STATUS_CHANGED", RefreshToolbarButtons);
+	TRP3.RegisterCallback(TRP3_Addon, "ROLEPLAY_STATUS_CHANGED", RefreshToolbarButtons);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Position
@@ -147,7 +147,7 @@ local function onStart()
 	registerConfigKey(TRP3_ToolbarConfigKeys.AnchorOffsetX, 0);
 	registerConfigKey(TRP3_ToolbarConfigKeys.AnchorOffsetY, -30);
 
-	function TRP3_API.toolbar.reset()
+	function TRP3.toolbar.reset()
 		setConfigValue(TRP3_ToolbarConfigKeys.AnchorPoint, "TOP");
 		setConfigValue(TRP3_ToolbarConfigKeys.AnchorOffsetX, 0);
 		setConfigValue(TRP3_ToolbarConfigKeys.AnchorOffsetY, -30);
@@ -159,7 +159,7 @@ local function onStart()
 	-- INIT & TRP3 toolbar content
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 		loaded = true;
 
 		registerConfigKey(TRP3_ToolbarConfigKeys.Visibility, TRP3_ToolbarVisibilityOption.AlwaysShow);
@@ -174,11 +174,11 @@ local function onStart()
 		}, BuildToolbar);
 
 		-- Build configuration page
-		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
 			title = loc.CO_TOOLBAR_CONTENT,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigDropDown",
 			widgetName = "TRP3_ConfigToolbarVisibility",
 			title = loc.CO_TOOLBAR_VISIBILITY,
@@ -191,7 +191,7 @@ local function onStart()
 			configKey = TRP3_ToolbarConfigKeys.Visibility,
 			listCancel = true,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
 			title = loc.CO_TOOLBAR_ICON_SIZE,
 			configKey = TRP3_ToolbarConfigKeys.ButtonExtent,
@@ -200,7 +200,7 @@ local function onStart()
 			step = 1,
 			integer = true,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
 			title = loc.CO_TOOLBAR_MAX,
 			help = loc.CO_TOOLBAR_MAX_TT,
@@ -210,14 +210,14 @@ local function onStart()
 			step = 1,
 			integer = true,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = loc.CO_TOOLBAR_HIDE_TITLE,
 			help = loc.CO_TOOLBAR_HIDE_TITLE_HELP,
 			configKey = TRP3_ToolbarConfigKeys.HideTitle,
 		});
 
-		tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
 			title = loc.CO_BARFRAME_BUTTONSVISIBILITY,
 		});
@@ -236,20 +236,20 @@ local function onStart()
 				BuildToolbar();
 			end);
 			button.visible = getConfigValue(configKey);
-			tinsert(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE.elements, {
+			tinsert(TRP3.configuration.CONFIG_TOOLBAR_PAGE.elements, {
 				inherit = "TRP3_ConfigCheck",
 				title = button.configText or buttonID,
 				configKey = configKey,
 			});
 		end
 
-		TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_TOOLBAR_PAGE);
+		TRP3.configuration.registerConfigurationPage(TRP3.configuration.CONFIG_TOOLBAR_PAGE);
 
 		TRP3_ToolbarFrame:Init();
 		BuildToolbar();
 	end);
 
-	function TRP3_API.toolbar.switch()
+	function TRP3.toolbar.switch()
 		TRP3_ToolbarFrame:Toggle();
 	end
 end
@@ -263,4 +263,4 @@ local MODULE_STRUCTURE = {
 	["minVersion"] = 3,
 };
 
-TRP3_API.module.registerModule(MODULE_STRUCTURE);
+TRP3.module.registerModule(MODULE_STRUCTURE);

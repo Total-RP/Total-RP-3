@@ -1,10 +1,10 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Ellyb = TRP3_API.Ellyb;
+local Ellyb = TRP3.Ellyb;
 
 -- Public accessor
-TRP3_API.navigation = {
+TRP3.navigation = {
 	menu = {
 		id = {}
 	},
@@ -14,7 +14,7 @@ TRP3_API.navigation = {
 };
 
 -- imports
-local loc = TRP3_API.loc;
+local loc = TRP3.loc;
 local selectMenu, unregisterMenu;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -134,7 +134,7 @@ local function rebuildMenu()
 		end
 	end
 end
-TRP3_API.navigation.menu.rebuildMenu = rebuildMenu;
+TRP3.navigation.menu.rebuildMenu = rebuildMenu;
 
 -- Register a menu structure
 -- Automatically refresh the menu display
@@ -144,7 +144,7 @@ local function registerMenu(menuStructure)
 	menuStructures[menuStructure.id] = menuStructure;
 	rebuildMenu();
 end
-TRP3_API.navigation.menu.registerMenu = registerMenu;
+TRP3.navigation.menu.registerMenu = registerMenu;
 
 -- Unregister a menu structure.
 -- Automatically refresh the menu display
@@ -159,7 +159,7 @@ function unregisterMenu(menuId)
 	menuStructures[menuId] = nil;
 	rebuildMenu();
 end
-TRP3_API.navigation.menu.unregisterMenu = unregisterMenu;
+TRP3.navigation.menu.unregisterMenu = unregisterMenu;
 
 -- Set a menu or submenu as selected
 selectMenu = function(menuId)
@@ -169,9 +169,9 @@ selectMenu = function(menuId)
 	if menuStructures[menuId].onSelected then
 		menuStructures[menuId].onSelected();
 	end
-	TRP3_API.popup.hidePopups();
+	TRP3.popup.hidePopups();
 end
-TRP3_API.navigation.menu.selectMenu = selectMenu;
+TRP3.navigation.menu.selectMenu = selectMenu;
 
 -- Use to access and change menu properties.
 -- Any properties can be changed but rebuildMenu must be called in order to apply these changes.
@@ -179,9 +179,9 @@ local function getMenuItem(menuId)
 	assert(menuStructures[menuId], "Unknown menuId "..menuId);
 	return menuStructures[menuId];
 end
-TRP3_API.navigation.menu.getMenuItem = getMenuItem;
+TRP3.navigation.menu.getMenuItem = getMenuItem;
 
-TRP3_API.navigation.menu.isMenuRegistered = function(menuID)
+TRP3.navigation.menu.isMenuRegistered = function(menuID)
 	return menuStructures[menuID] ~= nil;
 end
 
@@ -201,11 +201,11 @@ local function registerPage(pageStructure)
 	assert(not pageStructures[pageStructure.id], "The page with id "..(pageStructure.id).." has already been registered.");
 	pageStructures[pageStructure.id] = pageStructure;
 end
-TRP3_API.navigation.page.registerPage = registerPage;
+TRP3.navigation.page.registerPage = registerPage;
 
 local function setPage(pageId, context)
 	Ellyb.Assertions.isType(pageId, "string", "pageId");
-	TRP3_API.Logf("setPage: %s", pageId);
+	TRP3.Logf("setPage: %s", pageId);
 
 	assert(pageStructures[pageId], "Unknown pageId "..pageId);
 	assert(context == nil or type(context) == "table", "Context must be a table or nil.");
@@ -247,23 +247,23 @@ local function setPage(pageId, context)
 
 	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.PAGE_OPENED, pageId, context);
 end
-TRP3_API.navigation.page.setPage = setPage;
+TRP3.navigation.page.setPage = setPage;
 
 local function getCurrentContext()
 	return currentContext;
 end
-TRP3_API.navigation.page.getCurrentContext = getCurrentContext;
+TRP3.navigation.page.getCurrentContext = getCurrentContext;
 
 local function getCurrentPageID()
 	return currentPageId;
 end
-TRP3_API.navigation.page.getCurrentPageID = getCurrentPageID;
+TRP3.navigation.page.getCurrentPageID = getCurrentPageID;
 
-TRP3_API.navigation.openMainFrame = function()
+TRP3.navigation.openMainFrame = function()
 	TRP3_MainFrame:Show();
 	TRP3_MainFrame:Raise();
 
-	if not TRP3_API.configuration.getValue("secret_party") then
+	if not TRP3.configuration.getValue("secret_party") then
 		TRP3_PartyTimeLeft:Hide();
 		TRP3_PartyTimeRight:Hide();
 	end
@@ -276,10 +276,10 @@ local function switchMainFrame()
 		TRP3_MainFrame:Hide();
 		PlaySound(TRP3_InterfaceSounds.MainWindowClose);
 	else
-		TRP3_API.navigation.openMainFrame();
+		TRP3.navigation.openMainFrame();
 	end
 end
-TRP3_API.navigation.switchMainFrame = switchMainFrame;
+TRP3.navigation.switchMainFrame = switchMainFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tutorial frame
@@ -305,7 +305,7 @@ local function buttonOnLeave(button)
 	TRP3_TutorialTooltip.ArrowGlowLEFT:Hide();
 	TRP3_TutorialTooltip:Hide();
 end
-TRP3_API.navigation.hideTutorialTooltip = buttonOnLeave;
+TRP3.navigation.hideTutorialTooltip = buttonOnLeave;
 
 local function buttonOnEnter(button)
 	if button.box then
@@ -338,7 +338,7 @@ local function buttonOnEnter(button)
 	TRP3_TutorialTooltip.Text:SetText(button.text);
 	TRP3_TutorialTooltip:Show();
 end
-TRP3_API.navigation.showTutorialTooltip = buttonOnEnter;
+TRP3.navigation.showTutorialTooltip = buttonOnEnter;
 
 local function configureButton(button)
 	button:SetSize(46, 46);
@@ -415,7 +415,7 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.navigation.init = function()
+TRP3.navigation.init = function()
 	TRP3_MainTutorialButton:SetScript("OnClick", function(self)
 		if TRP3_TutorialFrame:IsShown() then
 			TRP3_TutorialFrame:Hide();
@@ -423,12 +423,12 @@ TRP3_API.navigation.init = function()
 			showTutorial(self.provider());
 		end
 	end);
-	TRP3_API.ui.tooltip.setTooltipAll(TRP3_MainTutorialButton, "RIGHT", 0, 5, loc.UI_TUTO_BUTTON, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_TUTO_BUTTON_TT));
+	TRP3.ui.tooltip.setTooltipAll(TRP3_MainTutorialButton, "RIGHT", 0, 5, loc.UI_TUTO_BUTTON, TRP3.FormatShortcutWithInstruction("LCLICK", loc.UI_TUTO_BUTTON_TT));
 	local closeAllButton = GetOrCreateCloseAllButton();
 	closeAllButton:SetText(loc.UI_CLOSE_ALL);
 	closeAllButton:SetScript("OnClick", function(self)
 		closeAll(self.parentMenu);
 	end);
 
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_TUTORIAL_REFRESH, onTutorialRefresh);
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_TUTORIAL_REFRESH, onTutorialRefresh);
 end

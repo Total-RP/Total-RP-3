@@ -1,9 +1,9 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local loc = TRP3_API.loc;
+local loc = TRP3.loc;
 
-TRP3_API.module.registerModule({
+TRP3.module.registerModule({
 	["name"] = "TinyTooltip",
 	["id"] = "trp3_tinytooltip",
 	["description"] = loc.MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION:format("TinyTooltip"),
@@ -13,7 +13,7 @@ TRP3_API.module.registerModule({
 
 		-- Check if the add-on TinyTooltip is installed
 		if not TinyTooltip then
-			return TRP3_API.module.status.MISSING_DEPENDENCY,  loc.MO_ADDON_NOT_INSTALLED:format("TinyTooltip");
+			return TRP3.module.status.MISSING_DEPENDENCY,  loc.MO_ADDON_NOT_INSTALLED:format("TinyTooltip");
 		end
 
 		-- List of the tooltips we want to be customized by TinyTooltips
@@ -28,7 +28,7 @@ TRP3_API.module.registerModule({
 		}
 
 		-- Wait for the add-on to be fully loaded so all the tooltips are available
-		TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
+		TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 
 			-- Get the LibEvent used by TinyTooltip
 			local LibEvent = LibStub:GetLibrary("LibEvent.7000");

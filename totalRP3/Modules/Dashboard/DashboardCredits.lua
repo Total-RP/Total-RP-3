@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 local CreditRole =
 {
@@ -148,7 +148,7 @@ function TRP3_DashboardUtil.GenerateCredits()
 	do  -- Header
 		local WEBSITE_LINK = string.format("{link*%1$s*%2$s}", "http://totalrp3.info", L.CREDITS_WEBSITE_LINK_TEXT);
 		local DISCORD_LINK = string.format("{link*%1$s*%2$s}", "http://discord.totalrp3.info", L.CREDITS_DISCORD_LINK_TEXT);
-		local VERSION_TEXT = string.format(L.CREDITS_VERSION_TEXT, TRP3_API.utils.str.sanitizeVersion(TRP3_API.globals.version_display));
+		local VERSION_TEXT = string.format(L.CREDITS_VERSION_TEXT, TRP3.utils.str.sanitizeVersion(TRP3.globals.version_display));
 
 		local lines = {};
 

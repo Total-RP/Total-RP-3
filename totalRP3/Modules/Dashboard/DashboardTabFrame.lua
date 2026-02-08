@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 local DashboardTabs = {
 	Changelog = 1,
@@ -27,7 +27,7 @@ function TRP3_DashboardTabFrameMixin:OnInitialize()
 		self:OnTabSelected(tab);
 	end
 
-	self.tabs = TRP3_API.ui.frame.createTabPanel(self.TabBar, tabs, OnTabSelected);
+	self.tabs = TRP3.ui.frame.createTabPanel(self.TabBar, tabs, OnTabSelected);
 	self.tabs:SelectTab(1);
 end
 

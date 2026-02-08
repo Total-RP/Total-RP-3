@@ -1,11 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
+local Ellyb = TRP3.Ellyb;
 
 --- A MapScanner is module that can be used to scan for things on the map.
 --- Create a new MapScanner and override the methods to define the behavior for your MapScanner.
@@ -28,7 +23,7 @@ function MapScanner:initialize(scanID)
 	_private[self].scanID = scanID;
 	_private[self].scanData = {};
 
-	TRP3_API.MapScannersManager.register(self);
+	TRP3.MapScannersManager.register(self);
 end
 
 function MapScanner:GetID()

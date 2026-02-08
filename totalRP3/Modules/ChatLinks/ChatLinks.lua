@@ -1,12 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
-
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
+local Ellyb = TRP3.Ellyb;
 
 ---@class TRP3_ChatLinks
 --- # Chat links API
@@ -17,17 +11,17 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 --- - requesting the original sender of the link for the tooltip data that should be displayed.
 --- - keeping a list of links send and their data.
 local ChatLinks = {};
-TRP3_API.ChatLinks = ChatLinks;
+TRP3.ChatLinks = ChatLinks;
 
 --region Total RP 3 imports
-local ChatLinkModule = TRP3_API.ChatLinkModule;
-local loc = TRP3_API.loc;
+local ChatLinkModule = TRP3.ChatLinkModule;
+local loc = TRP3.loc;
 --endregion
 
 local LINK_CODE = "addon:totalrp3";
 local LINK_LENGTHS = LINK_CODE:len();
 
-local LINK_COLOR = TRP3_API.Colors.Yellow;
+local LINK_COLOR = TRP3.Colors.Yellow;
 local CHAT_LINKS_PROTOCOL_REQUEST_PREFIX = "CTLK_R"; -- Request data about a link clicked
 local CHAT_LINKS_PROTOCOL_DATA_PREFIX = "CTLK_D"; -- Send data bout a link sent
 
@@ -45,8 +39,8 @@ ChatLinks.FORMAT = {
 		SMALL = "SMALL",
 	},
 	COLORS = {
-		YELLOW = TRP3_API.Colors.Yellow,
-		WHITE = TRP3_API.Colors.White,
+		YELLOW = TRP3.Colors.Yellow,
+		WHITE = TRP3.Colors.White,
 	}
 }
 
@@ -74,12 +68,12 @@ function ChatLinks:GetModuleByID(moduleID)
 	return chatLinksModules[moduleID];
 end
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
 	---@param link ChatLink
 	function ChatLinks.storeLink(link)
 		Ellyb.Assertions.isInstanceOf(link, "ChatLink", "link");
-		local linkIdentifier = TRP3_API.Ellyb.Strings.generateUniqueName(sentLinks, link:GetIdentifier());
+		local linkIdentifier = TRP3.Ellyb.Strings.generateUniqueName(sentLinks, link:GetIdentifier());
 		link:SetIdentifier(linkIdentifier);
 		sentLinks[linkIdentifier] = link;
 	end
@@ -146,7 +140,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		hideActionButtons();
 
 		TRP3_RefTooltip.sender = sender;
-		TRP3_RefTooltip:SetText(tooltipContent.title, TRP3_API.Colors.White:GetRGB());
+		TRP3_RefTooltip:SetText(tooltipContent.title, TRP3.Colors.White:GetRGB());
 
 		if tooltipContent.lines then
 			for _, line in ipairs(tooltipContent.lines) do
@@ -206,7 +200,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				-- That's not supported for now, so we'll remove the hyperlink escape sequence from the chatframe editbox text
 				local activeChatFrame = ChatFrameUtil.GetActiveWindow();
 				if activeChatFrame and activeChatFrame.chatFrame and activeChatFrame.chatFrame.editBox then
-					activeChatFrame.chatFrame.editBox:SetText(TRP3_API.utils.str.sanitize(activeChatFrame.chatFrame.editBox:GetText()));
+					activeChatFrame.chatFrame.editBox:SetText(TRP3.utils.str.sanitize(activeChatFrame.chatFrame.editBox:GetText()));
 				end
 			else
 				local linkContent = link:sub(LINK_LENGTHS + 2);
@@ -229,7 +223,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	-- Register command prefix when requested for tooltip data for an item
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, function(identifier, sender)
-		local link = TRP3_API.ChatLinksManager:GetSentLinkForIdentifier(identifier);
+		local link = TRP3.ChatLinksManager:GetSentLinkForIdentifier(identifier);
 		if not link then
 			AddOn_TotalRP3.Communications.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, UNKNOWN_LINK, sender);
 			return
@@ -243,7 +237,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			customData = link:GetIdentifier(),
 			size = link:GetContentSize(), -- Indicates the size of the content
 			moduleName = link:GetModuleName(), -- Module name, shown in the tooltip
-			v = TRP3_API.globals.version, -- The TRP3 version is sent so that a warning is shown if version differs while clicking action buttons
+			v = TRP3.globals.version, -- The TRP3 version is sent so that a warning is shown if version differs while clicking action buttons
 		}, sender, nil, nil, true);
 	end);
 
@@ -267,7 +261,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		Ellyb.Assertions.isType(linkType, "string", "linkType");
 		Ellyb.Assertions.isType(callback, "function", "callback");
 
-		TRP3_API.popup.showCustomYesNoPopup(loc.CL_MAKE_IMPORTABLE_SIMPLER:format("|cnGREEN_FONT_COLOR:" .. linkType .. "|r"),
+		TRP3.popup.showCustomYesNoPopup(loc.CL_MAKE_IMPORTABLE_SIMPLER:format("|cnGREEN_FONT_COLOR:" .. linkType .. "|r"),
 			loc.CL_MAKE_IMPORTABLE_BUTTON_TEXT,
 			loc.CL_MAKE_NON_IMPORTABLE,
 			function()
@@ -281,8 +275,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	function ChatLinks:CheckVersions(callback)
 		Ellyb.Assertions.isType(callback, "function", "callback");
 
-		if TRP3_RefTooltip.itemData.v ~= TRP3_API.globals.version then
-			TRP3_API.popup.showConfirmPopup(TRP3_API.loc.CL_VERSIONS_DIFFER, callback);
+		if TRP3_RefTooltip.itemData.v ~= TRP3.globals.version then
+			TRP3.popup.showConfirmPopup(TRP3.loc.CL_VERSIONS_DIFFER, callback);
 		else
 			callback();
 		end

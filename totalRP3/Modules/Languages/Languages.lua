@@ -1,20 +1,16 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local AddOn_TotalRP3 = AddOn_TotalRP3;
-local Ellyb = TRP3_API.Ellyb
+local Ellyb = TRP3.Ellyb
 local Languages = {};
 AddOn_TotalRP3.Languages = Languages;
 
----@type TRP3_API;
-local _, TRP3_API = ...;
-
 -- Imports
-local loc = TRP3_API.loc;
-local Globals = TRP3_API.globals;
+local loc = TRP3.loc;
+local Globals = TRP3.globals;
 local GetNumLanguages, GetLanguageByIndex, GetDefaultLanguage = GetNumLanguages, GetLanguageByIndex, GetDefaultLanguage;
 
-local Configuration = TRP3_API.configuration;
+local Configuration = TRP3.configuration;
 
 local LAST_LANGUAGE_USED = "chat_last_language_used";
 
@@ -62,7 +58,7 @@ function Languages.setLanguage(language)
 	end
 
 	Ellyb.Assertions.isInstanceOf(language, AddOn_TotalRP3.Language, "language")
-	TRP3_API.Log("Setting language " .. language:GetName());
+	TRP3.Log("Setting language " .. language:GetName());
 
 	saveSelectedLanguageToCharacterData(language);
 
@@ -79,7 +75,7 @@ function Languages.setLanguageByID(languageID)
 	local language = Languages.getLanguageByID(languageID)
 	if not language then
 		language = Languages.getDefaultLanguage()
-		TRP3_API.Log("Trying to set a language that is not known by this character, going back to default language: " .. language);
+		TRP3.Log("Trying to set a language that is not known by this character, going back to default language: " .. language);
 	end
 	Languages.setLanguage(language)
 end
@@ -113,8 +109,8 @@ function Languages.getSavedLanguage()
 	end
 end
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-	if not TRP3_API.toolbar then return end;
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+	if not TRP3.toolbar then return end;
 
 	local languagesButton = {
 		id = "ww_trp3_languages",
@@ -127,7 +123,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				local currentLanguage = Languages.getCurrentLanguage();
 				buttonStructure.currentLanguageID = currentLanguage:GetID();
 				buttonStructure.tooltip = loc.TB_LANGUAGE .. ": " .. currentLanguage:GetName();
-				buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_LANGUAGES_TT):format(Languages.selectNextLanguage():GetName()) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_LANGUAGE_DROPDOWN_TT);
+				buttonStructure.tooltipSub = TRP3.FormatShortcutWithInstruction("LCLICK", loc.TB_LANGUAGES_TT):format(Languages.selectNextLanguage():GetName()) .. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.TB_LANGUAGE_DROPDOWN_TT);
 				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or TRP3_InterfaceIcons.ToolbarLanguage;
 			end
 			buttonStructure.text = buttonStructure.tooltip;
@@ -138,7 +134,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 					description:CreateTitle(loc.TB_LANGUAGE);
 					for _, language in ipairs(Languages.getAvailableLanguages()) do
 						if language:IsActive() then
-							description:CreateButton(language:GetIcon():GenerateString(15) .. " " .. TRP3_API.Colors.Green(language:GetName()));
+							description:CreateButton(language:GetIcon():GenerateString(15) .. " " .. TRP3.Colors.Green(language:GetName()));
 						else
 							description:CreateButton(language:GetIcon():GenerateString(15) .. " " .. language:GetName(), Languages.setLanguageByID, language:GetID());
 						end
@@ -149,7 +145,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			end
 		end,
 	};
-	TRP3_API.toolbar.toolbarAddButton(languagesButton);
+	TRP3.toolbar.toolbarAddButton(languagesButton);
 
 	local function checkCurrentLanguageAndRestoreSavedState()
 		local savedLanguage = Languages.getSavedLanguage()
@@ -159,7 +155,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		if not savedLanguage:IsKnown() then
 			local defaultLanguage = Languages.getDefaultLanguage()
 			Languages.setLanguage(defaultLanguage)
-			TRP3_API.utils.message.displayMessage(loc.LANG_CHANGE_CAUSED_REVERT_TO_DEFAULT:format(defaultLanguage:GetName(), savedLanguage:GetName()))
+			TRP3.utils.message.displayMessage(loc.LANG_CHANGE_CAUSED_REVERT_TO_DEFAULT:format(defaultLanguage:GetName(), savedLanguage:GetName()))
 		else
 			if Languages.getCurrentLanguage() ~= savedLanguage then
 				Languages.setLanguage(savedLanguage)
@@ -168,22 +164,22 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	end
 
 	-- Listen to events related to language changes and check that we are still able to speak the saved language
-	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "LANGUAGE_LIST_CHANGED", checkCurrentLanguageAndRestoreSavedState)
+	TRP3.RegisterCallback(TRP3.GameEvents, "LANGUAGE_LIST_CHANGED", checkCurrentLanguageAndRestoreSavedState)
 
 	if NeutralPlayerSelectFaction then
-		TRP3_API.RegisterCallback(TRP3_API.GameEvents, "NEUTRAL_FACTION_SELECT_RESULT", checkCurrentLanguageAndRestoreSavedState)
+		TRP3.RegisterCallback(TRP3.GameEvents, "NEUTRAL_FACTION_SELECT_RESULT", checkCurrentLanguageAndRestoreSavedState)
 	end
 
 	-- If workaround for language reset is enabled, try to restore saved language when loading screen ended
-	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "LOADING_SCREEN_DISABLED", function()
-		if Configuration.getValue(TRP3_API.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET) then
+	TRP3.RegisterCallback(TRP3.GameEvents, "LOADING_SCREEN_DISABLED", function()
+		if Configuration.getValue(TRP3.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET) then
 			checkCurrentLanguageAndRestoreSavedState()
 		end
 	end)
 
 	-- If the option to remember last language used is enabled, try to restore saved language after entering world
-	if Configuration.getValue(TRP3_API.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED) then
-		TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_ENTERING_WORLD", checkCurrentLanguageAndRestoreSavedState)
+	if Configuration.getValue(TRP3.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED) then
+		TRP3.RegisterCallback(TRP3.GameEvents, "PLAYER_ENTERING_WORLD", checkCurrentLanguageAndRestoreSavedState)
 		-- We have to wait a little for everything to be fully loaded before trying to restore previously selected language
 		C_Timer.After(1, checkCurrentLanguageAndRestoreSavedState)
 	end
@@ -191,28 +187,28 @@ end);
 
 
 -- Advanced settings
-tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+tinsert(TRP3.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	inherit = "TRP3_ConfigH1",
 	title = loc.CO_ADVANCED_LANGUAGES,
 });
 
 -- Remember last language used
-TRP3_API.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED = "chat_language_remember_last_used";
-TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED] = true;
-tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+TRP3.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED = "chat_language_remember_last_used";
+TRP3.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED] = true;
+tinsert(TRP3.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	inherit = "TRP3_ConfigCheck",
 	title = loc.CO_ADVANCED_LANGUAGES_REMEMBER,
 	help = loc.CO_ADVANCED_LANGUAGES_REMEMBER_TT,
-	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED,
+	configKey = TRP3.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED,
 });
 
 -- Workaround for language resetting
 -- Remember last language used
-TRP3_API.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET = "chat_language_enabled_workaround_for_language_reset";
-TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET] = true;
-tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+TRP3.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET = "chat_language_enabled_workaround_for_language_reset";
+TRP3.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET] = true;
+tinsert(TRP3.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	inherit = "TRP3_ConfigCheck",
 	title = loc.CO_ADVANCED_LANGUAGE_WORKAROUND,
 	help = loc.CO_ADVANCED_LANGUAGE_WORKAROUND_TT,
-	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET,
+	configKey = TRP3.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET,
 });

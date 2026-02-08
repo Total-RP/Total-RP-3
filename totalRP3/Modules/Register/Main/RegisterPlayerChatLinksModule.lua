@@ -1,29 +1,26 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
+local Ellyb = TRP3.Ellyb;
 
 -- Lua imports
 local assert = assert;
 
 -- Total RP 3 imports
-local loc = TRP3_API.loc;
-local tcopy = TRP3_API.utils.table.copy;
-local Utils = TRP3_API.utils;
+local loc = TRP3.loc;
+local tcopy = TRP3.utils.table.copy;
+local Utils = TRP3.utils;
 local Events = TRP3_Addon.Events;
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 
-	local RegisterPlayerChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_DIRECTORY_PLAYER_PROFILE, "DIR_PLAYER_PROFILE");
+	local RegisterPlayerChatLinksModule = TRP3.ChatLinks:InstantiateModule(loc.CL_DIRECTORY_PLAYER_PROFILE, "DIR_PLAYER_PROFILE");
 
 	--- Get a copy of the data for the link, using the information provided when using RegisterChatLinkModule:InsertLink
 	function RegisterPlayerChatLinksModule:GetLinkData(profileID, canBeImported)
 		Ellyb.Assertions.isType(profileID, "string", "profileID");
 
-		local profile = TRP3_API.register.getProfile(profileID);
-		local linkText = TRP3_API.register.getCompleteName(profile.characteristics, UNKNOWN, true);
+		local profile = TRP3.register.getProfile(profileID);
+		local linkText = TRP3.register.getCompleteName(profile.characteristics, UNKNOWN, true);
 
 		local tooltipData = {
 			profile = {},
@@ -43,27 +40,27 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 		local profile = tooltipData.profile;
 
-		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
+		local tooltipLines = TRP3.ChatLinkTooltipLines();
 
-		local customColor = TRP3_API.Colors.Yellow;
+		local customColor = TRP3.Colors.Yellow;
 		if profile.characteristics and profile.characteristics.CH then
-			customColor = TRP3_API.CreateColorFromHexString(profile.characteristics.CH);
+			customColor = TRP3.CreateColorFromHexString(profile.characteristics.CH);
 		end
 
-		tooltipLines:SetTitle(customColor(Utils.str.icon(profile.characteristics.IC or TRP3_InterfaceIcons.ProfileDefault, 20) .. " " .. TRP3_API.register.getCompleteName(profile.characteristics, profile.profileName, true)));
+		tooltipLines:SetTitle(customColor(Utils.str.icon(profile.characteristics.IC or TRP3_InterfaceIcons.ProfileDefault, 20) .. " " .. TRP3.register.getCompleteName(profile.characteristics, profile.profileName, true)));
 
 		if profile.characteristics and profile.characteristics.FT then
-			tooltipLines:AddLine("< " .. profile.characteristics.FT .. " >", TRP3_API.Colors.Orange);
+			tooltipLines:AddLine("< " .. profile.characteristics.FT .. " >", TRP3.Colors.Orange);
 		end
 		if profile.character and profile.character.CU and profile.character.CU ~= "" then
 			tooltipLines:AddLine(" ");
 			tooltipLines:AddLine(loc.DB_STATUS_CURRENTLY .. ": ");
-			tooltipLines:AddLine(profile.character.CU, TRP3_API.Colors.Yellow);
+			tooltipLines:AddLine(profile.character.CU, TRP3.Colors.Yellow);
 		end
 		if profile.character and profile.character.CO and profile.character.CO ~= "" then
 			tooltipLines:AddLine(" ");
 			tooltipLines:AddLine(loc.DB_STATUS_CURRENTLY_OOC .. ": ");
-			tooltipLines:AddLine(profile.character.CO, TRP3_API.Colors.Yellow);
+			tooltipLines:AddLine(profile.character.CO, TRP3.Colors.Yellow);
 		end
 
 		return tooltipLines;
@@ -75,11 +72,11 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	function OpenProfileButton:OnAnswerCommandReceived(profileData)
 		local profile, profileID = profileData.profile, profileData.profileID;
 		profile.link = {};
-		TRP3_API.register.insertProfile(profileID, profile)
+		TRP3.register.insertProfile(profileID, profile)
 		TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
 
-		TRP3_API.register.openPageByProfileID(profileID);
-		TRP3_API.navigation.openMainFrame();
+		TRP3.register.openPageByProfileID(profileID);
+		TRP3.navigation.openMainFrame();
 		TRP3_RefTooltip:Hide();
 	end
 
@@ -87,7 +84,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	local ImportRegisterPlayerProfileButton = RegisterPlayerChatLinksModule:NewActionButton("IMPORT_REG_PROFILE", loc.CL_IMPORT_PROFILE, "REG_P_I_Q", "REG_P_I_A");
 
 	function ImportRegisterPlayerProfileButton:IsVisible(tooltipData)
-		return tooltipData.profile and tooltipData.profile.link and tooltipData.profile.link[TRP3_API.globals.player_id];
+		return tooltipData.profile and tooltipData.profile.link and tooltipData.profile.link[TRP3.globals.player_id];
 	end
 
 	function ImportRegisterPlayerProfileButton:OnAnswerCommandReceived(profileData)
@@ -97,18 +94,18 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			profileName = profile.characteristics.FN;
 		end
 		local i = 1;
-		while not TRP3_API.profile.isProfileNameAvailable(profileName) and i < 500 do
+		while not TRP3.profile.isProfileNameAvailable(profileName) and i < 500 do
 			i = i + 1;
 			profileName = profileName .. " " .. i;
 		end
-		TRP3_API.profile.duplicateProfile({
+		TRP3.profile.duplicateProfile({
 			player = profile
 		}, profileName);
-		TRP3_API.navigation.openMainFrame();
-		TRP3_API.navigation.page.setPage("player_profiles", {});
+		TRP3.navigation.openMainFrame();
+		TRP3.navigation.page.setPage("player_profiles", {});
 		TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILES_LOADED);
 	end
 
-	TRP3_API.RegisterPlayerChatLinksModule = RegisterPlayerChatLinksModule;
+	TRP3.RegisterPlayerChatLinksModule = RegisterPlayerChatLinksModule;
 
 end);

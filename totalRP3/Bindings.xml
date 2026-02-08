@@ -4,19 +4,19 @@
 -->
 <Bindings>
 	<Binding name="TRP3_TOGGLE" category="BINDING_HEADER_TRP3">
-		TRP3_API.navigation.switchMainFrame();
+		TRP3.navigation.switchMainFrame();
 	</Binding>
 	<Binding name="TRP3_TOOLBAR_TOGGLE" category="BINDING_HEADER_TRP3">
-		if TRP3_API.toolbar then
-			TRP3_API.toolbar.switch();
+		if TRP3.toolbar then
+			TRP3.toolbar.switch();
 		end
 	</Binding>
 	<Binding name="TRP3_OPEN_TARGET_PROFILE" category="BINDING_HEADER_TRP3">
 		if UnitExists("target") then
-			TRP3_API.slash.openProfile("target");
+			TRP3.slash.openProfile("target");
 		end
 	</Binding>
 	<Binding name="TRP3_TOGGLE_CHARACTER_STATUS" category="BINDING_HEADER_TRP3">
-		TRP3_API.dashboard.switchStatus();
+		TRP3.dashboard.switchStatus();
 	</Binding>
 </Bindings>

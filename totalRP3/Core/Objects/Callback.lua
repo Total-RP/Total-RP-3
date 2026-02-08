@@ -14,7 +14,7 @@
 local Callback = {};
 
 function Callback:__init(registry, event, callback, owner, ...)
-	assert(TRP3_API.IsEventValid(registry, event), "attempted to create a registration for an invalid callback event");
+	assert(TRP3.IsEventValid(registry, event), "attempted to create a registration for an invalid callback event");
 
 	if callback == nil then
 		callback = event;
@@ -27,7 +27,7 @@ function Callback:__init(registry, event, callback, owner, ...)
 	self.registry = registry;
 	self.event = event;
 	self.owner = owner;
-	self.closure = TRP3_API.GenerateCallbackClosure(callback, owner, ...);
+	self.closure = TRP3.GenerateCallbackClosure(callback, owner, ...);
 end
 
 function Callback:Invoke(...)
@@ -42,11 +42,11 @@ function Callback:Unregister()
 	self.registry.UnregisterCallback(self.owner, self.event);
 end
 
-function TRP3_API.CreateCallback(registry, event, callback, owner, ...)
-	return TRP3_API.CreateObject(Callback, registry, event, callback, owner, ...);
+function TRP3.CreateCallback(registry, event, callback, owner, ...)
+	return TRP3.CreateObject(Callback, registry, event, callback, owner, ...);
 end
 
-function TRP3_API.IsEventValid(registry, event)
+function TRP3.IsEventValid(registry, event)
 	if registry.IsEventValid then
 		return registry:IsEventValid(event);
 	else
@@ -54,17 +54,17 @@ function TRP3_API.IsEventValid(registry, event)
 	end
 end
 
-function TRP3_API.RegisterCallback(registry, event, callback, owner, ...)
-	local registration = TRP3_API.CreateCallback(registry, event, callback, owner, ...);
+function TRP3.RegisterCallback(registry, event, callback, owner, ...)
+	local registration = TRP3.CreateCallback(registry, event, callback, owner, ...);
 	registration:Register();
 	return registration;
 end
 
-function TRP3_API.UnregisterCallback(registry, event, owner)
+function TRP3.UnregisterCallback(registry, event, owner)
 	registry.UnregisterCallback(owner, event);
 end
 
-function TRP3_API.UnregisterAllCallbacks(registry, owner)
+function TRP3.UnregisterAllCallbacks(registry, owner)
 	registry.UnregisterAllCallbacks(owner);
 end
 
@@ -100,7 +100,7 @@ local CallbackMethodClosureFactories =
 	function(m, o, a, b, c, d) return function(_, ...) return o[m](o, a, b, c, d, ...); end; end,
 };
 
-function TRP3_API.GenerateCallbackClosure(callback, ...)
+function TRP3.GenerateCallbackClosure(callback, ...)
 	local factories;
 
 	if type(callback) == "string" then

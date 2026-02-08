@@ -1,9 +1,9 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local Ellyb = TRP3_API.Ellyb;
+local Ellyb = TRP3.Ellyb;
 
-local Globals = TRP3_API.globals;
+local Globals = TRP3.globals;
 
 local module = AddOn_TotalRP3.MSP or {};
 
@@ -30,7 +30,7 @@ function module.SerializeField(field, ...)
 	local ok, result = pcall(serializer, ...);
 	if not ok then
 		local err = result or "<nil error>";
-		TRP3_API.Logf("Error serializing field %q: %s", field, err);
+		TRP3.Logf("Error serializing field %q: %s", field, err);
 		return nil;
 	end
 
@@ -53,7 +53,7 @@ function module.DeserializeField(field, value)
 	local ok, result = pcall(deserializer, value);
 	if not ok then
 		local err = result or "<nil error>";
-		TRP3_API.Logf("Error deserializing field %q: %s", field, err);
+		TRP3.Logf("Error deserializing field %q: %s", field, err);
 		return nil;
 	end
 
@@ -157,11 +157,11 @@ module.TryRegisterField("PS", {
 				-- We'll strip " and ] from the names for simplicity if present.
 				local leftName = trait.LT:gsub("[%]=]", "");
 				local leftIcon = trait.LI or TRP3_InterfaceIcons.Default;
-				local leftColor = trait.LC or TRP3_API.MiscColors.PersonalityTraitColorLeft:GetRGBTable();
+				local leftColor = trait.LC or TRP3.MiscColors.PersonalityTraitColorLeft:GetRGBTable();
 
 				local rightName = trait.RT:gsub("[%]=]", "");
 				local rightIcon = trait.RI or TRP3_InterfaceIcons.Default;
-				local rightColor = trait.RC or TRP3_API.MiscColors.PersonalityTraitColorRight:GetRGBTable();
+				local rightColor = trait.RC or TRP3.MiscColors.PersonalityTraitColorRight:GetRGBTable();
 
 				table.insert(out, PS_CUSTOM_FORMAT:format(
 					value,
@@ -209,13 +209,13 @@ module.TryRegisterField("PS", {
 				elseif key == "left-icon" then
 					struct.LI = value;
 				elseif key == "left-color" then
-					struct.LC = TRP3_API.CreateColorFromHexString(value):GetRGBTable();
+					struct.LC = TRP3.CreateColorFromHexString(value):GetRGBTable();
 				elseif key == "right-name" then
 					struct.RT = value;
 				elseif key == "right-icon" then
 					struct.RI = value;
 				elseif key == "right-color" then
-					struct.RC = TRP3_API.CreateColorFromHexString(value):GetRGBTable();
+					struct.RC = TRP3.CreateColorFromHexString(value):GetRGBTable();
 				end
 			end
 
@@ -235,9 +235,9 @@ module.TryRegisterField("PS", {
 			elseif struct.LT and struct.RT then
 				-- It's custom, default any missing fields.
 				struct.LI = struct.LI or TRP3_InterfaceIcons.Default;
-				struct.LC = struct.LC or TRP3_API.MiscColors.PersonalityTraitColorLeft:GetRGBTable();
+				struct.LC = struct.LC or TRP3.MiscColors.PersonalityTraitColorLeft:GetRGBTable();
 				struct.RI = struct.RI or TRP3_InterfaceIcons.Default;
-				struct.RC = struct.RC or TRP3_API.MiscColors.PersonalityTraitColorRight:GetRGBTable();
+				struct.RC = struct.RC or TRP3.MiscColors.PersonalityTraitColorRight:GetRGBTable();
 			end
 
 			-- Only register traits that are valid. If the ID or custom names

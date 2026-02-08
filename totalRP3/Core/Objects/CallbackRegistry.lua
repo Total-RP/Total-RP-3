@@ -14,7 +14,7 @@ local CallbackHandler = LibStub:GetLibrary("CallbackHandler-1.0");
 --    function registry.UnregisterAllCallbacks(owner) end
 --
 -- Note that these must be called with "." syntax. This is handled for you
--- automatically if you use the 'TRP3_API.RegisterCallback' utility API or the
+-- automatically if you use the 'TRP3.RegisterCallback' utility API or the
 -- Callback prototype.
 --
 -- Registries may additionally provide any of the following optional methods
@@ -49,7 +49,7 @@ local function OnCallbackEventUnused(_, registry, event)
 	end
 end
 
-function TRP3_API.InitCallbackRegistry(registry)
+function TRP3.InitCallbackRegistry(registry)
 	local RegisterCallback = "RegisterCallback";
 	local UnregisterCallback = "UnregisterCallback";
 	local UnregisterAllCallbacks = "UnregisterAllCallbacks";
@@ -63,13 +63,13 @@ function TRP3_API.InitCallbackRegistry(registry)
 	return callbacks;
 end
 
-function TRP3_API.InitCallbackRegistryWithEvents(registry, events)
-	local callbacks = TRP3_API.InitCallbackRegistry(registry);
-	TRP3_API.AddCallbackEventTableValidator(registry, events);
+function TRP3.InitCallbackRegistryWithEvents(registry, events)
+	local callbacks = TRP3.InitCallbackRegistry(registry);
+	TRP3.AddCallbackEventTableValidator(registry, events);
 	return callbacks;
 end
 
-function TRP3_API.AddCallbackEventValidator(registry, validator)
+function TRP3.AddCallbackEventValidator(registry, validator)
 	local super = registry.IsEventValid or nop;
 
 	local function IsEventValid(self, event)
@@ -79,7 +79,7 @@ function TRP3_API.AddCallbackEventValidator(registry, validator)
 	registry.IsEventValid = IsEventValid;
 end
 
-function TRP3_API.AddCallbackEventTableValidator(registry, events)
+function TRP3.AddCallbackEventTableValidator(registry, events)
 	-- The 'events' table may either be an array of event names or a key/value
 	-- mapping where the value represents the event name.
 
@@ -89,7 +89,7 @@ function TRP3_API.AddCallbackEventTableValidator(registry, events)
 		return events[event] ~= nil;
 	end
 
-	TRP3_API.AddCallbackEventValidator(registry, IsEventValid);
+	TRP3.AddCallbackEventValidator(registry, IsEventValid);
 end
 
 -- Standalone callback registries can be created through the following functions
@@ -98,20 +98,20 @@ end
 local CallbackRegistry = {};
 
 function CallbackRegistry:__init()
-	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.callbacks = TRP3.InitCallbackRegistry(self);
 end
 
 function CallbackRegistry:TriggerEvent(event, ...)
-	assert(TRP3_API.IsEventValid(self, event), "attempted to trigger an invalid callback event");
+	assert(TRP3.IsEventValid(self, event), "attempted to trigger an invalid callback event");
 	self.callbacks:Fire(event, ...);
 end
 
-function TRP3_API.CreateCallbackRegistry()
-	return TRP3_API.CreateObject(CallbackRegistry);
+function TRP3.CreateCallbackRegistry()
+	return TRP3.CreateObject(CallbackRegistry);
 end
 
-function TRP3_API.CreateCallbackRegistryWithEvents(events)
-	local registry = TRP3_API.CreateCallbackRegistry();
-	TRP3_API.AddCallbackEventTableValidator(registry, events);
+function TRP3.CreateCallbackRegistryWithEvents(events)
+	local registry = TRP3.CreateCallbackRegistry();
+	TRP3.AddCallbackEventTableValidator(registry, events);
 	return registry;
 end

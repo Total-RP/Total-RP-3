@@ -1,26 +1,23 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 -- Public access
-TRP3_API.importer = {};
+TRP3.importer = {};
 
 -- imports
-local loc = TRP3_API.loc;
-local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
-local initList = TRP3_API.ui.list.initList;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local isProfileNameAvailable = TRP3_API.profile.isProfileNameAvailable;
-local tcopy = TRP3_API.utils.table.copy;
-local duplicateProfile = TRP3_API.profile.duplicateProfile;
+local loc = TRP3.loc;
+local handleMouseWheel = TRP3.ui.list.handleMouseWheel;
+local initList = TRP3.ui.list.initList;
+local setTooltipForSameFrame = TRP3.ui.tooltip.setTooltipForSameFrame;
+local isProfileNameAvailable = TRP3.profile.isProfileNameAvailable;
+local tcopy = TRP3.utils.table.copy;
+local duplicateProfile = TRP3.profile.duplicateProfile;
 
 local profiles = {};
 
 local addOns = {};
 
-TRP3_API.importer.addAddOn = function(addOnName, API)
+TRP3.importer.addAddOn = function(addOnName, API)
 	if
 	type(API.isAvailable) == "function" and
 	type(API.addOnVersion) == "function" and
@@ -28,18 +25,18 @@ TRP3_API.importer.addAddOn = function(addOnName, API)
 	type(API.getFormatedProfile) == "function" and
 	type(API.listAvailableProfiles) == "function" and
 	type(API.getImportableData) == "function" then
-		TRP3_API.Log("Importer: API registered "..addOnName);
+		TRP3.Log("Importer: API registered "..addOnName);
 		addOns[addOnName] = API;
 	else
 		print("An API for the addon " .. addOnName .. " tried to register itself in the importer module, but misses some of the required functions.");
 	end
 end
 
-TRP3_API.importer.charactersProfilesAvailable = function()
+TRP3.importer.charactersProfilesAvailable = function()
 	return TableHasAnyEntries(addOns);
 end
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- LOGIC
@@ -121,9 +118,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		-- it will be displayed as "will be imported". If not, it will be greyed out.
 		for key, value in pairs(importableData) do
 			if profile.info[key] then
-				tooltip = tooltip .. TRP3_API.Colors.Green(value) .. "\n";
+				tooltip = tooltip .. TRP3.Colors.Green(value) .. "\n";
 			else
-				tooltip = tooltip .. TRP3_API.Colors.Grey(value) .. "\n";
+				tooltip = tooltip .. TRP3.Colors.Grey(value) .. "\n";
 			end
 		end
 

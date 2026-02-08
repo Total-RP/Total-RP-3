@@ -200,8 +200,8 @@ function TRP3_NamePlatesRequestMixin:SubmitNow()
 		return;
 	end
 
-	TRP3_API.r.sendQuery(self.characterID);
-	TRP3_API.r.sendMSPQuery(self.characterID);
+	TRP3.r.sendQuery(self.characterID);
+	TRP3.r.sendMSPQuery(self.characterID);
 
 	-- If the user has an MSP-based external nameplate addon installed then
 	-- we directly send out requests for a limited set of fields in order to

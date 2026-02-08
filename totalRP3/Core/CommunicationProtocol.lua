@@ -1,11 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
-
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
+local Ellyb = TRP3.Ellyb;
 
 -- AddOn imports
 local Chomp = AddOn_Chomp;
@@ -34,8 +29,8 @@ local PRIORITIES = {
 local VALID_CHANNELS = {"PARTY", "RAID", "GUILD", "BATTLEGROUND", "WHISPER", "CHANNEL"};
 local VALID_PRIORITIES = {"HIGH", "MEDIUM", "LOW"};
 
-local subSystemsDispatcher = TRP3_API.CreateCallbackRegistry();
-local subSystemsOnProgressDispatcher = TRP3_API.CreateCallbackRegistry();
+local subSystemsDispatcher = TRP3.CreateCallbackRegistry();
+local subSystemsOnProgressDispatcher = TRP3.CreateCallbackRegistry();
 local internalMessageIDToChompSessionIDMatching = {};
 
 --[[ Deprecated ]] local function CTLToChompPriority(priority)
@@ -72,11 +67,11 @@ local function extractMessageTokenFromData(data)
 end
 
 local function registerSubSystemPrefix(prefix, callback)
-	return TRP3_API.RegisterCallback(subSystemsDispatcher, prefix, function(_, ...) callback(...); end);
+	return TRP3.RegisterCallback(subSystemsDispatcher, prefix, function(_, ...) callback(...); end);
 end
 
 local function registerMessageTokenProgressHandler(messageToken, sender, onProgressCallback)
-	return TRP3_API.RegisterCallback(subSystemsOnProgressDispatcher, tostring(messageToken), function(_, receivedSender, ...)
+	return TRP3.RegisterCallback(subSystemsOnProgressDispatcher, tostring(messageToken), function(_, receivedSender, ...)
 		if receivedSender == sender then
 			onProgressCallback(receivedSender, ...)
 		end
@@ -96,7 +91,7 @@ local function sendObject(prefix, object, channel, target, priority, messageToke
 	Ellyb.Assertions.isType(prefix, "string", "prefix");
 	Ellyb.Assertions.isOneOf(channel, VALID_CHANNELS, "channel");
 
-	if not TRP3_API.register.isIDIgnored(target) then
+	if not TRP3.register.isIDIgnored(target) then
 
 		if priority == nil then
 			priority = "LOW";
@@ -129,7 +124,7 @@ local function sendObject(prefix, object, channel, target, priority, messageToke
 			}
 		);
 	else
-		TRP3_API.Logf("[sendObject] target '%s' is ignored", target);
+		TRP3.Logf("[sendObject] target '%s' is ignored", target);
 		return false;
 	end
 end

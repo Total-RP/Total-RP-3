@@ -14,19 +14,19 @@ end
 
 local function onStart()
 	-- Public accessor
-	TRP3_API.target = {};
+	TRP3.target = {};
 
 	-- imports
-	local Utils, Events, Globals = TRP3_API.utils, TRP3_Addon.Events, TRP3_API.globals;
+	local Utils, Events, Globals = TRP3.utils, TRP3_Addon.Events, TRP3.globals;
 	local EMPTY = Globals.empty;
-	local loc = TRP3_API.loc;
+	local loc = TRP3.loc;
 	local isPlayerIC, isUnitIDKnown, getUnitIDCurrentProfile, hasProfile, isIDIgnored;
-	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
+	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3.configuration.getValue, TRP3.configuration.registerConfigKey, TRP3.configuration.registerHandler, TRP3.configuration.setValue;
 	local getUnitID, unitIDToInfo, companionIDToInfo = Utils.str.getUnitID, Utils.str.unitIDToInfo, Utils.str.companionIDToInfo;
-	local setTooltipForSameFrame, mainTooltip, refreshTooltip = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_MainTooltip, TRP3_API.ui.tooltip.refresh;
-	local get = TRP3_API.profile.getData;
+	local setTooltipForSameFrame, mainTooltip, refreshTooltip = TRP3.ui.tooltip.setTooltipForSameFrame, TRP3_MainTooltip, TRP3.ui.tooltip.refresh;
+	local get = TRP3.profile.getData;
 
-	local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
+	local originalGetTargetType, getCompanionFullID = TRP3.ui.misc.getTargetType, TRP3.ui.misc.getCompanionFullID;
 	local getCompanionRegisterProfile, getCompanionProfile, companionHasProfile, isCurrentMine;
 	local TRP3_Enums = AddOn_TotalRP3.Enums;
 
@@ -68,7 +68,7 @@ local function onStart()
 			tooltipAnchor = "BOTTOM";
 			anchorMargin = -5;
 		end
-		TRP3_API.ui.tooltip.setTooltipAnchorForFrame(targetButton, tooltipAnchor, 0, anchorMargin);
+		TRP3.ui.tooltip.setTooltipAnchorForFrame(targetButton, tooltipAnchor, 0, anchorMargin);
 	end
 
 	local function createButton(index)
@@ -196,7 +196,7 @@ local function onStart()
 		assert(not targetButtons[targetButton.id], "Already registered button id: " .. targetButton.id);
 		targetButtons[targetButton.id] = targetButton;
 	end
-	TRP3_API.target.registerButton = registerButton;
+	TRP3.target.registerButton = registerButton;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Display logic
@@ -270,7 +270,7 @@ local function onStart()
 		if currentTargetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
 			currentTargetID = getUnitID("target");
 		elseif currentTargetType == TRP3_Enums.UNIT_TYPE.NPC then
-			currentTargetID = TRP3_API.utils.str.getUnitNPCID("target");
+			currentTargetID = TRP3.utils.str.getUnitNPCID("target");
 		else
 			currentTargetID = getCompanionFullID("target", currentTargetType);
 		end
@@ -293,7 +293,7 @@ local function onStart()
 	end
 	reposition();
 
-	function TRP3_API.target.reset()
+	function TRP3.target.reset()
 		setConfigValue(CONFIG_TARGET_POS_A, "BOTTOM");
 		setConfigValue(CONFIG_TARGET_POS_X, 0);
 		setConfigValue(CONFIG_TARGET_POS_Y, 200);
@@ -342,7 +342,7 @@ local function onStart()
 	-- Config
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 		loaded = true;
 
 		-- Config
@@ -350,11 +350,11 @@ local function onStart()
 		registerConfigKey(CONFIG_TARGET_ICON_SIZE, 30);
 		registerConfigHandler({CONFIG_TARGET_USE, CONFIG_TARGET_ICON_SIZE}, onTargetChanged);
 
-		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
 			title = loc.CO_TARGETFRAME,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigDropDown",
 			widgetName = "TRP3_ConfigTarget_Usage",
 			title = loc.CO_TARGETFRAME_USE,
@@ -368,7 +368,7 @@ local function onStart()
 			listWidth = nil,
 			listCancel = true,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
 			title = loc.CO_TARGETFRAME_ICON_SIZE,
 			configKey = CONFIG_TARGET_ICON_SIZE,
@@ -377,7 +377,7 @@ local function onStart()
 			step = 1,
 			integer = true,
 		});
-		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigButton",
 			title = loc.CO_MINIMAP_BUTTON_RESET,
 			text = loc.CO_MINIMAP_BUTTON_RESET_BUTTON,
@@ -390,7 +390,7 @@ local function onStart()
 			end,
 		});
 
-		tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
+		tinsert(TRP3.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
 			title = loc.CO_BARFRAME_BUTTONSVISIBILITY,
 		});
@@ -409,40 +409,40 @@ local function onStart()
 				onTargetChanged();
 			end);
 			button.visible = getConfigValue(configKey);
-			tinsert(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
+			tinsert(TRP3.configuration.CONFIG_TARGETFRAME_PAGE.elements, {
 				inherit = "TRP3_ConfigCheck",
 				title = button.configText or buttonID,
 				configKey = configKey,
 			});
 		end
 
-		TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_TARGETFRAME_PAGE);
+		TRP3.configuration.registerConfigurationPage(TRP3.configuration.CONFIG_TARGETFRAME_PAGE);
 	end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Init
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
-	getUnitIDCurrentProfile = TRP3_API.register.getUnitIDCurrentProfile;
-	hasProfile = TRP3_API.register.hasProfile
-	isPlayerIC = TRP3_API.dashboard.isPlayerIC;
-	isIDIgnored = TRP3_API.register.isIDIgnored;
-	getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
-	getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
-	companionHasProfile = TRP3_API.companions.register.companionHasProfile;
+	isUnitIDKnown = TRP3.register.isUnitIDKnown;
+	getUnitIDCurrentProfile = TRP3.register.getUnitIDCurrentProfile;
+	hasProfile = TRP3.register.hasProfile
+	isPlayerIC = TRP3.dashboard.isPlayerIC;
+	isIDIgnored = TRP3.register.isIDIgnored;
+	getCompanionProfile = TRP3.companions.player.getCompanionProfile;
+	getCompanionRegisterProfile = TRP3.companions.register.getCompanionProfile;
+	companionHasProfile = TRP3.companions.register.companionHasProfile;
 
-	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_TARGET_CHANGED", function() onTargetChanged(); end);
-	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_MOUNT_DISPLAY_CHANGED", function() onTargetChanged(); end);
-	TRP3_API.RegisterCallback(TRP3_API.GameEvents, "PLAYER_ENTERING_WORLD", function() onTargetChanged(); end);
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_ABOUT_READ, function() onTargetChanged(); end);
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
+	TRP3.RegisterCallback(TRP3.GameEvents, "PLAYER_TARGET_CHANGED", function() onTargetChanged(); end);
+	TRP3.RegisterCallback(TRP3.GameEvents, "PLAYER_MOUNT_DISPLAY_CHANGED", function() onTargetChanged(); end);
+	TRP3.RegisterCallback(TRP3.GameEvents, "PLAYER_ENTERING_WORLD", function() onTargetChanged(); end);
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_ABOUT_READ, function() onTargetChanged(); end);
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
 		if (not unitID or (currentTargetID == unitID)) and (not dataType or dataType == "characteristics" or dataType == "about") then
 			onTargetChanged();
 		end
 	end);
 
-	TRP3_API.RegisterCallback(TRP3_Addon, "ROLEPLAY_STATUS_CHANGED", function() onTargetChanged(); end);
+	TRP3.RegisterCallback(TRP3_Addon, "ROLEPLAY_STATUS_CHANGED", function() onTargetChanged(); end);
 
 	RegisterStateDriver(ui_TargetFrame, "forcehide", "[petbattle] 1;0");
 end
@@ -457,4 +457,4 @@ local MODULE_STRUCTURE = {
 	["minVersion"] = 3,
 };
 
-TRP3_API.module.registerModule(MODULE_STRUCTURE);
+TRP3.module.registerModule(MODULE_STRUCTURE);

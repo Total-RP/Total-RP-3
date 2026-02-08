@@ -1,8 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 -- Launcher module
 --
@@ -25,9 +24,9 @@ function TRP3_Launcher:OnLoad()
 	self.object = nil;
 	self.objectName = "Total RP 3";
 
-	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.callbacks = TRP3.InitCallbackRegistry(self);
 
-	self.events = TRP3_API.CreateCallbackGroup();
+	self.events = TRP3.CreateCallbackGroup();
 
 	self:SetEnabledState(false);
 end
@@ -48,7 +47,7 @@ function TRP3_Launcher:OnInitialize()
 
 	self:LoadBindings(TRP3_LauncherSettings.GetSavedBindings());
 
-	self.events:AddCallback(TRP3_API.GameEvents, "ADDONS_UNLOADING", self.OnUninitialize, self);
+	self.events:AddCallback(TRP3.GameEvents, "ADDONS_UNLOADING", self.OnUninitialize, self);
 	self.events:AddCallback(TRP3_Addon, "CONFIGURATION_CHANGED", self.OnConfigurationChanged, self);
 end
 
@@ -87,7 +86,7 @@ function TRP3_Launcher:OnClick(_, buttonName)
 end
 
 function TRP3_Launcher:OnTooltipShow(tooltip)
-	tooltip:AddLine("Total RP 3", TRP3_API.Colors.White:GetRGB());
+	tooltip:AddLine("Total RP 3", TRP3.Colors.White:GetRGB());
 
 	local bindings = GetKeysArray(self.bindings);
 	TRP3_BindingUtil.SortBindings(bindings);
@@ -96,7 +95,7 @@ function TRP3_Launcher:OnTooltipShow(tooltip)
 		local actionID = self.bindings[binding];
 		local action = self.actions[actionID];
 		if action then
-			local instruction = TRP3_API.FormatShortcutWithInstruction(binding, action.name);
+			local instruction = TRP3.FormatShortcutWithInstruction(binding, action.name);
 			tooltip:AddLine(instruction);
 		end
 	end
@@ -104,7 +103,7 @@ function TRP3_Launcher:OnTooltipShow(tooltip)
 	local owner = tooltip:GetOwner();
 
 	if owner and owner:HasScript("OnDragStart") and owner:GetScript("OnDragStart") then
-		tooltip:AddLine(TRP3_API.FormatShortcutWithInstruction("DRAGDROP", L.MM_SHOW_HIDE_MOVE));
+		tooltip:AddLine(TRP3.FormatShortcutWithInstruction("DRAGDROP", L.MM_SHOW_HIDE_MOVE));
 	end
 end
 
@@ -178,7 +177,7 @@ TRP3_Launcher:OnLoad();
 
 -- Module registration
 
-TRP3_API.module.registerModule({
+TRP3.module.registerModule({
 	id = "trp3_launcher",
 	name = L.LAUNCHER_MODULE_NAME,
 	description = L.LAUNCHER_MODULE_DESCRIPTION,

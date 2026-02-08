@@ -2,37 +2,37 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 -- imports
-local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_Addon.Events;
-local loc = TRP3_API.loc;
-local registerPage = TRP3_API.navigation.page.registerPage;
-local companionIDToInfo = TRP3_API.utils.str.companionIDToInfo;
+local Globals, Utils, Events = TRP3.globals, TRP3.utils, TRP3_Addon.Events;
+local loc = TRP3.loc;
+local registerPage = TRP3.navigation.page.registerPage;
+local companionIDToInfo = TRP3.utils.str.companionIDToInfo;
 
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
-local setupIconButton = TRP3_API.ui.frame.setupIconButton;
-local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
-local hidePopups = TRP3_API.popup.hidePopups;
+local setTooltipForSameFrame = TRP3.ui.tooltip.setTooltipForSameFrame;
+local getCurrentContext = TRP3.navigation.page.getCurrentContext;
+local setupIconButton = TRP3.ui.frame.setupIconButton;
+local getCurrentPageID = TRP3.navigation.page.getCurrentPageID;
+local hidePopups = TRP3.popup.hidePopups;
 local displayConsult;
 local tcopy, EMPTY = Utils.table.copy, Globals.empty;
 local stEtN = Utils.str.emptyToNil;
-local isUnitIDKnown, hasProfile, getUnitProfile = TRP3_API.register.isUnitIDKnown, TRP3_API.register.hasProfile, TRP3_API.register.getProfile;
-local getCompleteName, openPageByUnitID = TRP3_API.register.getCompleteName;
-local deleteProfile = TRP3_API.companions.register.deleteProfile;
-local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
-local getCompanionProfileID = TRP3_API.companions.player.getCompanionProfileID;
+local isUnitIDKnown, hasProfile, getUnitProfile = TRP3.register.isUnitIDKnown, TRP3.register.hasProfile, TRP3.register.getProfile;
+local getCompleteName, openPageByUnitID = TRP3.register.getCompleteName;
+local deleteProfile = TRP3.companions.register.deleteProfile;
+local showConfirmPopup = TRP3.popup.showConfirmPopup;
+local getCompanionProfileID = TRP3.companions.player.getCompanionProfileID;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.navigation.page.id.COMPANIONS_PAGE = "companions_page";
-local COMPANIONS_PAGE_ID = TRP3_API.navigation.page.id.COMPANIONS_PAGE;
+TRP3.navigation.page.id.COMPANIONS_PAGE = "companions_page";
+local COMPANIONS_PAGE_ID = TRP3.navigation.page.id.COMPANIONS_PAGE;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Peek management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local setupGlanceButton = TRP3_API.register.setupGlanceButton;
+local setupGlanceButton = TRP3.register.setupGlanceButton;
 
 local function refreshIfNeeded()
 	if getCurrentPageID() == COMPANIONS_PAGE_ID then
@@ -72,12 +72,12 @@ local function applyPeekSlot(slot, ic, ac, ti, tx, swap, companionFullID, profil
 		local _, companionID = companionIDToInfo(companionFullID);
 		profileID = getCompanionProfileID(companionID);
 	end
-	local dataTab = TRP3_API.companions.player.getCompanionProfileByID(profileID) or {};
+	local dataTab = TRP3.companions.player.getCompanionProfileByID(profileID) or {};
 	applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx, swap);
 	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, companionFullID, profileID, "misc");
 	refreshIfNeeded();
 end
-TRP3_API.companions.player.applyPeekSlot = applyPeekSlot;
+TRP3.companions.player.applyPeekSlot = applyPeekSlot;
 
 local function swapGlanceSlot(from, to, companionFullID, profileID)
 	TRP3_AtFirstGlanceEditor:Hide();
@@ -85,7 +85,7 @@ local function swapGlanceSlot(from, to, companionFullID, profileID)
 		local _, companionID = companionIDToInfo(companionFullID);
 		profileID = getCompanionProfileID(companionID);
 	end
-	local dataTab = TRP3_API.companions.player.getCompanionProfileByID(profileID) or {};
+	local dataTab = TRP3.companions.player.getCompanionProfileByID(profileID) or {};
 	if not dataTab.PE then
 		return;
 	end
@@ -98,7 +98,7 @@ local function swapGlanceSlot(from, to, companionFullID, profileID)
 	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
 	refreshIfNeeded();
 end
-TRP3_API.companions.player.swapGlanceSlot = swapGlanceSlot;
+TRP3.companions.player.swapGlanceSlot = swapGlanceSlot;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Edit Mode
@@ -115,7 +115,7 @@ end
 
 local function onNameColorSelected(red, green, blue)
 	if red and green and blue then
-		local hexa = TRP3_API.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
+		local hexa = TRP3.CreateColorFromBytes(red, green, blue):GenerateHexColorOpaque();
 		draftData.NH = hexa;
 	else
 		draftData.NH = nil;
@@ -123,12 +123,12 @@ local function onNameColorSelected(red, green, blue)
 end
 
 local function setBkg(frame, bkg)
-	TRP3_API.ui.frame.setBackdropToBackground(frame, bkg);
+	TRP3.ui.frame.setBackdropToBackground(frame, bkg);
 end
 
 local function setEditBkg(frame, bkg)
 	draftData.BK = bkg;
-	TRP3_API.ui.frame.setBackdropToBackground(frame, bkg);
+	TRP3.ui.frame.setBackdropToBackground(frame, bkg);
 end
 
 local function saveInformation()
@@ -174,12 +174,12 @@ local function displayEdit()
 	TRP3_CompanionsPageInformationEdit_About_TextScrollText:SetText(draftData.TX or "");
 
 	if draftData.NH then
-		TRP3_CompanionsPageInformationEdit_NamePanel_NameColor.setColor(TRP3_API.CreateColorFromHexString(draftData.NH):GetRGBAsBytes());
+		TRP3_CompanionsPageInformationEdit_NamePanel_NameColor.setColor(TRP3.CreateColorFromHexString(draftData.NH):GetRGBAsBytes());
 	else
 		TRP3_CompanionsPageInformationEdit_NamePanel_NameColor.setColor(nil, nil, nil);
 	end
 
-	TRP3_API.navigation.delayedRefresh();
+	TRP3.navigation.delayedRefresh();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -190,7 +190,7 @@ function displayConsult(context)
 	local dataTab = context.profile.data or Globals.empty;
 
 	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetText(dataTab.NA or UNKNOWN);
-	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetReadableTextColor(TRP3_API.CreateColorFromHexString(dataTab.NH or "ffffff"));
+	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetReadableTextColor(TRP3.CreateColorFromHexString(dataTab.NH or "ffffff"));
 	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetFixedColor(true);
 	TRP3_CompanionsPageInformationConsult_NamePanel_Title:SetText((string.gsub(dataTab.TI or "", "%s+", " ")));
 	TRP3_CompanionsPageInformationConsult_NamePanel.Icon:SetIconTexture(dataTab.IC or TRP3_InterfaceIcons.ProfileDefault);
@@ -324,7 +324,7 @@ local function createTabBar()
 	frame:SetSize(400, 30);
 	frame:SetPoint("TOPLEFT", 17, 0);
 	frame:SetFrameLevel(1);
-	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
+	tabGroup = TRP3.ui.frame.createTabPanel(frame,
 	{
 		{loc.REG_COMPANION_INFO, 1, 150}
 	},
@@ -360,7 +360,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local showIconBrowser = function(callback, selectedIcon)
-	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback, nil, nil, selectedIcon});
+	TRP3.popup.showPopup(TRP3.popup.ICONS, nil, {callback, nil, nil, selectedIcon});
 end;
 
 -- Tutorial
@@ -393,8 +393,8 @@ local function createTutorialStructure()
 	}
 end
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
-	openPageByUnitID = TRP3_API.register.openPageByUnitID;
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
+	openPageByUnitID = TRP3.register.openPageByUnitID;
 
 	createTutorialStructure();
 
@@ -412,7 +412,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		end
 	});
 
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, _, profileID, dataType)
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, _, profileID, dataType)
 		onInformationUpdated(profileID, dataType);
 	end);
 
@@ -424,13 +424,13 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 			showIconBrowser(onPlayerIconSelected, draftData.IC);
 		elseif button == "RightButton" then
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, draftData.IC);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftData.IC}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(TRP3_API.GetLastCopiedIcon()); end);
+				description:CreateButton(loc.UI_ICON_COPY, TRP3.SetLastCopiedIcon, draftData.IC);
+				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3.popup.showCopyDropdownPopup({draftData.IC}); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(TRP3.GetLastCopiedIcon()); end);
 			end);
 		end
 	end);
-	setTooltipForSameFrame(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, "RIGHT", 0, 5, loc.REG_COMPANION_ICON, loc.REG_COMPANION_ICON_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
+	setTooltipForSameFrame(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, "RIGHT", 0, 5, loc.REG_COMPANION_ICON, loc.REG_COMPANION_ICON_TT .. "\n\n" .. TRP3.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameColor.onSelection = onNameColorSelected;
 
@@ -439,13 +439,13 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_CompanionsPageInformationConsult_About:SetTitleText(loc.REG_PLAYER_ABOUT);
 	TRP3_CompanionsPageInformationConsult_About_Empty:SetText(loc.REG_PLAYER_ABOUT_EMPTY);
 	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, TRP3_InterfaceIcons.Gears);
-	setTooltipForSameFrame(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
+	setTooltipForSameFrame(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 	TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton:SetScript("OnMouseDown", onActionClick);
 
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationEdit_NamePanel_NameColor, "RIGHT", 0, 5, loc.REG_COMPANION_NAME_COLOR, loc.REG_COMPANION_NAME_COLOR_TT
-	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
+	.. "|n|n" .. TRP3.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_COLOR_TT_SELECT)
+	.. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_COLOR_TT_OPTIONS)
+	.. "|n" .. TRP3.FormatShortcutWithInstruction("SHIFT-CLICK", loc.REG_PLAYER_COLOR_TT_DEFAULTPICKER));
 	TRP3_CompanionsPageInformationEdit_NamePanel:SetTitleText(loc.REG_PLAYER_NAMESTITLES);
 	TRP3_CompanionsPageInformationEdit_About:SetTitleText(loc.REG_PLAYER_ABOUT);
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameFieldText:SetText(loc.REG_COMPANION_NAME);
@@ -459,16 +459,16 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 			setEditBkg(TRP3_CompanionsPageInformationEdit_About, imageInfo and imageInfo.id or nil);
 		end
 
-		TRP3_API.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.BK);
+		TRP3.popup.ShowBackgroundBrowser(OnBackgroundSelected, draftData.BK);
 	end);
 
-	TRP3_API.ui.text.setupToolbar(TRP3_CompanionsPageInformationEdit_About_Toolbar, TRP3_CompanionsPageInformationEdit_About_TextScrollText);
+	TRP3.ui.text.setupToolbar(TRP3_CompanionsPageInformationEdit_About_Toolbar, TRP3_CompanionsPageInformationEdit_About_TextScrollText);
 
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationConsult_GlanceHelp, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG
-	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("DCLICK", loc.REG_PLAYER_GLANCE_CONFIG_TOGGLE)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_GLANCE_CONFIG_PRESETS)
-	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("DRAGDROP", loc.REG_PLAYER_GLANCE_CONFIG_REORDER));
+	.. "|n|n" .. TRP3.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_GLANCE_CONFIG_EDIT)
+	.. "|n" .. TRP3.FormatShortcutWithInstruction("DCLICK", loc.REG_PLAYER_GLANCE_CONFIG_TOGGLE)
+	.. "|n" .. TRP3.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_GLANCE_CONFIG_PRESETS)
+	.. "|n" .. TRP3.FormatShortcutWithInstruction("DRAGDROP", loc.REG_PLAYER_GLANCE_CONFIG_REORDER));
 
 	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetFontObject("p", GameFontNormal);
 	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetFontObject("h1", GameFontNormalHuge3);
@@ -481,19 +481,19 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	for index=1,5,1 do
 		-- DISPLAY
 		local button = _G["TRP3_CompanionsPageInformationConsult_GlanceSlot" .. index];
-		button:SetScript("OnClick", TRP3_API.register.glance.onGlanceSlotClick);
-		button:SetScript("OnDoubleClick", TRP3_API.register.glance.onGlanceDoubleClick);
+		button:SetScript("OnClick", TRP3.register.glance.onGlanceSlotClick);
+		button:SetScript("OnDoubleClick", TRP3.register.glance.onGlanceDoubleClick);
 		button:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		button:RegisterForDrag("LeftButton");
-		button:SetScript("OnDragStart", TRP3_API.register.glance.onGlanceDragStart);
-		button:SetScript("OnDragStop", TRP3_API.register.glance.onGlanceDragStop);
+		button:SetScript("OnDragStart", TRP3.register.glance.onGlanceDragStart);
+		button:SetScript("OnDragStop", TRP3.register.glance.onGlanceDragStop);
 		button.slot = tostring(index);
 	end
 
 	createTabBar();
 
 	-- Resizing
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
+	TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_, containerWidth)
 		TRP3_CompanionsPageInformationConsult_About_ScrollText:SetSize(containerWidth - 75, 5);
 		TRP3_CompanionsPageInformationConsult_About_ScrollText:SetText(TRP3_CompanionsPageInformationConsult_About_ScrollText.html or "");
 		TRP3_CompanionsPageInformationEdit_About_TextScrollText:SetSize(containerWidth - 85, 5);

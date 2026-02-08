@@ -1,5 +1,6 @@
-local TRP3_API = select(2, ...);
-local Ellyb = TRP3_API.Ellyb;
+---@class TRP3
+local TRP3 = select(2, ...);
+local Ellyb = TRP3.Ellyb;
 
 ---@class Ellyb_Locale
 local Locale = Ellyb.Class("Locale");

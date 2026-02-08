@@ -113,7 +113,7 @@ end
 
 function TRP3_HTMLScrollFrameMixin:GetTextColor(textType)
 	local r, g, b = self.ScrollChild:GetTextColor(textType);
-	return TRP3_API.CreateColor(r, g, b);
+	return TRP3.CreateColor(r, g, b);
 end
 
 function TRP3_HTMLScrollFrameMixin:SetTextColor(textType, color)

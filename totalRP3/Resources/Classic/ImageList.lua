@@ -3184,11 +3184,11 @@ local IMAGES = {
 local pairs, tinsert = pairs, tinsert;
 local size = #IMAGES;
 
-function TRP3_API.utils.resources.getImageListSize()
+function TRP3.utils.resources.getImageListSize()
 	return size;
 end
 
-function TRP3_API.utils.resources.getImageList(filter)
+function TRP3.utils.resources.getImageList(filter)
 	if filter == nil or filter:len() == 0 then
 		return IMAGES;
 	end

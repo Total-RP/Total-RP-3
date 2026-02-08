@@ -13,7 +13,7 @@ function TRP3_ColorSwatchMixin:OnShow()
 end
 
 function TRP3_ColorSwatchMixin:GetColor()
-	return TRP3_API.CreateColor(self.Color:GetVertexColor());
+	return TRP3.CreateColor(self.Color:GetVertexColor());
 end
 
 function TRP3_ColorSwatchMixin:GetColorRGB()

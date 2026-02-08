@@ -1,12 +1,11 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 -- Misc. Info Field Utilities
 
-TRP3_API.MiscInfoType = {
+TRP3.MiscInfoType = {
 	Custom = 1,
 	House = 2,
 	Nickname = 3,
@@ -21,78 +20,78 @@ TRP3_API.MiscInfoType = {
 };
 
 local MiscInfoTypeData = {
-	[TRP3_API.MiscInfoType.Custom] = {
-		type = TRP3_API.MiscInfoType.Custom,
+	[TRP3.MiscInfoType.Custom] = {
+		type = TRP3.MiscInfoType.Custom,
 		englishName = "Name",
 		localizedName = L.CM_NAME,
 		icon = TRP3_InterfaceIcons.Default,
 		shownOnTooltip = false,
 	},
-	[TRP3_API.MiscInfoType.House] = {
-		type = TRP3_API.MiscInfoType.House,
+	[TRP3.MiscInfoType.House] = {
+		type = TRP3.MiscInfoType.House,
 		englishName = "House name",
 		localizedName = L.REG_PLAYER_MSP_HOUSE,
 		icon = TRP3_InterfaceIcons.MiscInfoHouse,
 		shownOnTooltip = false,
 	},
-	[TRP3_API.MiscInfoType.Nickname] = {
-		type = TRP3_API.MiscInfoType.Nickname,
+	[TRP3.MiscInfoType.Nickname] = {
+		type = TRP3.MiscInfoType.Nickname,
 		englishName = "Nickname",
 		localizedName = L.REG_PLAYER_MSP_NICK,
 		icon = TRP3_InterfaceIcons.MiscInfoNickname,
 		shownOnTooltip = false,
 	},
-	[TRP3_API.MiscInfoType.Motto] = {
-		type = TRP3_API.MiscInfoType.Motto,
+	[TRP3.MiscInfoType.Motto] = {
+		type = TRP3.MiscInfoType.Motto,
 		englishName = "Motto",
 		localizedName = L.REG_PLAYER_MSP_MOTTO,
 		icon = TRP3_InterfaceIcons.MiscInfoMotto,
 		shownOnTooltip = false,
 	},
-	[TRP3_API.MiscInfoType.FacialFeatures] = {
-		type = TRP3_API.MiscInfoType.FacialFeatures,
+	[TRP3.MiscInfoType.FacialFeatures] = {
+		type = TRP3.MiscInfoType.FacialFeatures,
 		englishName = "Facial features",
 		localizedName = L.REG_PLAYER_TRP2_TRAITS,
 		icon = TRP3_InterfaceIcons.MiscInfoTraits,
 		shownOnTooltip = false,
 	},
-	[TRP3_API.MiscInfoType.Piercings] = {
-		type = TRP3_API.MiscInfoType.Piercings,
+	[TRP3.MiscInfoType.Piercings] = {
+		type = TRP3.MiscInfoType.Piercings,
 		englishName = "Piercings",
 		localizedName = L.REG_PLAYER_TRP2_PIERCING,
 		icon = TRP3_InterfaceIcons.MiscInfoPiercings,
 		shownOnTooltip = false,
 	},
-	[TRP3_API.MiscInfoType.Pronouns] = {
-		type = TRP3_API.MiscInfoType.Pronouns,
+	[TRP3.MiscInfoType.Pronouns] = {
+		type = TRP3.MiscInfoType.Pronouns,
 		englishName = "Pronouns",
 		localizedName = L.REG_PLAYER_MISC_PRESET_PRONOUNS,
 		icon = TRP3_InterfaceIcons.MiscInfoPronouns,
 		shownOnTooltip = true,
 	},
-	[TRP3_API.MiscInfoType.GuildName] = {
-		type = TRP3_API.MiscInfoType.GuildName,
+	[TRP3.MiscInfoType.GuildName] = {
+		type = TRP3.MiscInfoType.GuildName,
 		englishName = "Guild name",
 		localizedName = L.REG_PLAYER_MISC_PRESET_GUILD_NAME,
 		icon = TRP3_InterfaceIcons.MiscInfoGuildName,
 		shownOnTooltip = true,
 	},
-	[TRP3_API.MiscInfoType.GuildRank] = {
-		type = TRP3_API.MiscInfoType.GuildRank,
+	[TRP3.MiscInfoType.GuildRank] = {
+		type = TRP3.MiscInfoType.GuildRank,
 		englishName = "Guild rank",
 		localizedName = L.REG_PLAYER_MISC_PRESET_GUILD_RANK,
 		icon = TRP3_InterfaceIcons.MiscInfoGuildRank,
 		shownOnTooltip = true,
 	},
-	[TRP3_API.MiscInfoType.Tattoos] = {
-		type = TRP3_API.MiscInfoType.Tattoos,
+	[TRP3.MiscInfoType.Tattoos] = {
+		type = TRP3.MiscInfoType.Tattoos,
 		englishName = "Tattoos",
 		localizedName = L.REG_PLAYER_TRP2_TATTOO,
 		icon = TRP3_InterfaceIcons.MiscInfoTattoos,
 		shownOnTooltip = false,
 	},
-	[TRP3_API.MiscInfoType.VoiceReference] = {
-		type = TRP3_API.MiscInfoType.VoiceReference,
+	[TRP3.MiscInfoType.VoiceReference] = {
+		type = TRP3.MiscInfoType.VoiceReference,
 		englishName = "Voice reference",
 		localizedName = L.REG_PLAYER_MISC_PRESET_VOICE_REFERENCE,
 		icon = TRP3_InterfaceIcons.MiscInfoVoiceReference,
@@ -101,7 +100,7 @@ local MiscInfoTypeData = {
 };
 
 local function CreateMiscFieldInfo(miscType, miscData)
-	local typeInfo = MiscInfoTypeData[miscType] or MiscInfoTypeData[TRP3_API.MiscInfoType.Custom];
+	local typeInfo = MiscInfoTypeData[miscType] or MiscInfoTypeData[TRP3.MiscInfoType.Custom];
 
 	return {
 		type = miscType,
@@ -112,9 +111,9 @@ local function CreateMiscFieldInfo(miscType, miscData)
 	};
 end
 
-function TRP3_API.GetMiscFieldByType(miscInfo, desiredType)
+function TRP3.GetMiscFieldByType(miscInfo, desiredType)
 	for _, miscData in ipairs(miscInfo) do
-		local miscType = TRP3_API.GetMiscInfoTypeFromData(miscData);
+		local miscType = TRP3.GetMiscInfoTypeFromData(miscData);
 
 		if miscType == desiredType then
 			return CreateMiscFieldInfo(miscType, miscData);
@@ -124,37 +123,37 @@ function TRP3_API.GetMiscFieldByType(miscInfo, desiredType)
 	return nil;
 end
 
-function TRP3_API.GetMiscFieldFromData(miscData)
-	local miscType = TRP3_API.GetMiscInfoTypeFromData(miscData);
+function TRP3.GetMiscFieldFromData(miscData)
+	local miscType = TRP3.GetMiscInfoTypeFromData(miscData);
 	return CreateMiscFieldInfo(miscType, miscData);
 end
 
-function TRP3_API.GetMiscFields(miscInfo)
+function TRP3.GetMiscFields(miscInfo)
 	local fields = {};
 
 	for _, miscData in ipairs(miscInfo) do
-		local miscType = TRP3_API.GetMiscInfoTypeFromData(miscData);
+		local miscType = TRP3.GetMiscInfoTypeFromData(miscData);
 		table.insert(fields, CreateMiscFieldInfo(miscType, miscData));
 	end
 
 	return fields;
 end
 
-function TRP3_API.GetMiscInfoTypeByName(miscName)
+function TRP3.GetMiscInfoTypeByName(miscName)
 	for miscType, typeInfo in pairs(MiscInfoTypeData) do
 		if miscName == typeInfo.englishName or miscName == typeInfo.localizedName then
 			return miscType;
 		end
 	end
 
-	return TRP3_API.MiscInfoType.Custom;
+	return TRP3.MiscInfoType.Custom;
 end
 
-function TRP3_API.GetMiscInfoTypeFromData(miscData)
-	return miscData.ID or TRP3_API.GetMiscInfoTypeByName(miscData.NA);
+function TRP3.GetMiscInfoTypeFromData(miscData)
+	return miscData.ID or TRP3.GetMiscInfoTypeByName(miscData.NA);
 end
 
-function TRP3_API.GetMiscTypeInfo(miscType)
+function TRP3.GetMiscTypeInfo(miscType)
 	local shallow = true;
 	return CopyTable(MiscInfoTypeData[miscType], shallow);
 end
@@ -170,7 +169,7 @@ local RoleplayExperienceIcons = {
 	},
 };
 
-function TRP3_API.GetRoleplayExperienceIcon(experience)
+function TRP3.GetRoleplayExperienceIcon(experience)
 	local iconInfo = RoleplayExperienceIcons[experience];
 	local iconTexture;
 
@@ -185,8 +184,8 @@ function TRP3_API.GetRoleplayExperienceIcon(experience)
 	return iconTexture;
 end
 
-function TRP3_API.GetRoleplayExperienceIconMarkup(experience)
-	local iconTexture = TRP3_API.GetRoleplayExperienceIcon(experience);
+function TRP3.GetRoleplayExperienceIconMarkup(experience)
+	local iconTexture = TRP3.GetRoleplayExperienceIcon(experience);
 	local iconMarkup;
 
 	if iconTexture ~= nil then
@@ -200,7 +199,7 @@ function TRP3_API.GetRoleplayExperienceIconMarkup(experience)
 	return iconMarkup;
 end
 
-function TRP3_API.GetRoleplayExperienceText(experience)
+function TRP3.GetRoleplayExperienceText(experience)
 	if experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
 		return L.DB_STATUS_XP_NEWCOMER;
 	elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
@@ -212,7 +211,7 @@ function TRP3_API.GetRoleplayExperienceText(experience)
 	end
 end
 
-function TRP3_API.GetRoleplayExperienceTooltipText(experience)
+function TRP3.GetRoleplayExperienceTooltipText(experience)
 	if experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.NEWCOMER then
 		return L.DB_STATUS_XP_NEWCOMER_TT;
 	elseif experience == AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.VETERAN then
@@ -235,7 +234,7 @@ function TRP3_ProfileUtil.SerializeProfile(addonVersion, profileID, profileData)
 	local headers = {
 		{ key = "Name", value = profileData.profileName },
 		{ key = "Exported", value = date("%Y-%m-%d %H:%M:%S") },
-		{ key = "AddOn-Version", value = TRP3_API.globals.version_display },
+		{ key = "AddOn-Version", value = TRP3.globals.version_display },
 	};
 
 	serializedData = TRP3_EncodingUtil.EncodePEM(label, data, headers);
@@ -247,7 +246,7 @@ function TRP3_ProfileUtil.DeserializeProfile(serializedData)
 
 	-- Exports that begin with an "^1" are AceSerializer-based exports.
 	if string.find(serializedData, "^^1") then
-		ok, packedData = pcall(TRP3_API.utils.serial.deserialize, serializedData);
+		ok, packedData = pcall(TRP3.utils.serial.deserialize, serializedData);
 
 		if not ok then
 			return nil, L.PR_IMPORT_ERROR_DESERIALIZE_ACE;

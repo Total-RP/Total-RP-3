@@ -1,13 +1,10 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 TRP3_HyperLinkedMixin = {};
 
 function TRP3_HyperLinkedMixin:OnHyperlinkClick(url)
-	TRP3_API.Ellyb.Popups:OpenURL(url, TRP3_API.loc.UI_LINK_WARNING, nil, TRP3_API.loc.COPY_SYSTEM_MESSAGE);
+	TRP3.Ellyb.Popups:OpenURL(url, TRP3.loc.UI_LINK_WARNING, nil, TRP3.loc.COPY_SYSTEM_MESSAGE);
 end
 
 function TRP3_HyperLinkedMixin:OnHyperlinkEnter(link, text)

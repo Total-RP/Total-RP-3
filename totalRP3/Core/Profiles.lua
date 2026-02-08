@@ -1,20 +1,17 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type TRP3_API
-local _, TRP3_API = ...;
-
 -- Public accessor
-TRP3_API.profile = {};
+TRP3.profile = {};
 
 -- imports
-local Globals, Events, Utils = TRP3_API.globals, TRP3_Addon.Events, TRP3_API.utils;
-local loc = TRP3_API.loc;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local registerPage = TRP3_API.navigation.page.registerPage;
-local displayMessage = TRP3_API.utils.message.displayMessage;
+local Globals, Events, Utils = TRP3.globals, TRP3_Addon.Events, TRP3.utils;
+local loc = TRP3.loc;
+local setTooltipForSameFrame = TRP3.ui.tooltip.setTooltipForSameFrame;
+local registerPage = TRP3.navigation.page.registerPage;
+local displayMessage = TRP3.utils.message.displayMessage;
 local getPlayerCurrentProfile;
-local getConfigValue = TRP3_API.configuration.getValue;
+local getConfigValue = TRP3.configuration.getValue;
 
 -- Saved variables references
 local profiles, character, characters;
@@ -35,7 +32,7 @@ local PROFILEMANAGER_ACTIONS = {
 
 -- Return the default profile.
 -- Note that this profile is never directly linked to a character, only duplicated !
-TRP3_API.profile.getDefaultProfile = function()
+TRP3.profile.getDefaultProfile = function()
 	return PR_DEFAULT_PROFILE;
 end
 
@@ -57,7 +54,7 @@ local function getData(fieldPath, profileRef)
 		end
 	end
 end
-TRP3_API.profile.getData = getData;
+TRP3.profile.getData = getData;
 
 -- Get data from a profile in a XPATH way.
 -- Example : "player/misc/PE" is equivalent to currentProfile.player.misc.PE but in a nil safe way.
@@ -65,14 +62,14 @@ TRP3_API.profile.getData = getData;
 local function getDataDefault(fieldPath, ifNilValue, profileRef)
 	return getData(fieldPath, profileRef) or ifNilValue;
 end
-TRP3_API.profile.getDataDefault = getDataDefault;
+TRP3.profile.getDataDefault = getDataDefault;
 
 local function getProfiles()
 	return profiles;
 end
-TRP3_API.profile.getProfiles = getProfiles;
+TRP3.profile.getProfiles = getProfiles;
 
-function TRP3_API.profile.getProfileByID(profileID)
+function TRP3.profile.getProfileByID(profileID)
 	assert(profiles[profileID], "Unknown profile ID " .. tostring(profileID));
 	return profiles[profileID];
 end
@@ -92,7 +89,7 @@ local function isProfileNameAvailable(profileName)
 	end
 	return true;
 end
-TRP3_API.profile.isProfileNameAvailable = isProfileNameAvailable;
+TRP3.profile.isProfileNameAvailable = isProfileNameAvailable;
 
 -- Duplicate an existing profile
 local function duplicateProfile(duplicatedProfile, profileName, isDefaultProfile)
@@ -108,13 +105,13 @@ local function duplicateProfile(duplicatedProfile, profileName, isDefaultProfile
 	displayMessage(loc.PR_PROFILE_CREATED:format(Utils.str.color("g")..profileName.."|r"));
 	return profileID;
 end
-TRP3_API.profile.duplicateProfile = duplicateProfile;
+TRP3.profile.duplicateProfile = duplicateProfile;
 
 -- Creating a new profile using PR_DEFAULT_PROFILE as a template
 local function createProfile(profileName, isDefaultProfile)
 	return duplicateProfile(PR_DEFAULT_PROFILE, profileName, isDefaultProfile);
 end
-TRP3_API.profile.createProfile = createProfile;
+TRP3.profile.createProfile = createProfile;
 
 -- Just internally switch the current profile structure. That's all.
 local function selectProfile(profileID)
@@ -128,7 +125,7 @@ local function selectProfile(profileID)
 	TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILES_LOADED, currentProfile);
 	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, profileID);
 end
-TRP3_API.profile.selectProfile = selectProfile;
+TRP3.profile.selectProfile = selectProfile;
 
 -- Edit a profile name
 local function editProfile(profileID, newName)
@@ -148,14 +145,14 @@ local function deleteProfile(profileID)
 	displayMessage(loc.PR_PROFILE_DELETED:format(Utils.str.color("g")..profileName.."|r"));
 end
 
-function TRP3_API.profile.getPlayerCurrentProfileID()
+function TRP3.profile.getPlayerCurrentProfileID()
 	return currentProfileId;
 end
 
 function getPlayerCurrentProfile()
 	return currentProfile;
 end
-TRP3_API.profile.getPlayerCurrentProfile = getPlayerCurrentProfile;
+TRP3.profile.getPlayerCurrentProfile = getPlayerCurrentProfile;
 
 local function updateDefaultProfile()
 	-- We replace the profile ID every login session so multiple characters don't get linked to the same profile ID
@@ -166,7 +163,7 @@ local function updateDefaultProfile()
 
 	profiles[newProfileID] = profiles[oldProfileID];
 	profiles[oldProfileID] = nil;
-	TRP3_API.configuration.setValue("default_profile_id", newProfileID);
+	TRP3.configuration.setValue("default_profile_id", newProfileID);
 
 	local profileDefault = profiles[newProfileID];
 
@@ -178,10 +175,10 @@ local function updateDefaultProfile()
 	profileCharacteristics.RA = Globals.player_race_loc;
 	profileCharacteristics.CL = Globals.player_class_loc;
 	profileCharacteristics.FN = Globals.player;
-	profileCharacteristics.IC = TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
+	profileCharacteristics.IC = TRP3.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
 end
 
-function TRP3_API.profile.isDefaultProfile(profileID)
+function TRP3.profile.isDefaultProfile(profileID)
 	if not profileID then return false end
 	return string.sub(profileID, -1) == "*";
 end
@@ -198,7 +195,7 @@ local function decorateProfileList(widget, id)
 	local mainText = profile.profileName;
 
 	if id == currentProfileId then
-		widget:SetBorderColor(TRP3_API.CreateColor(0.1, 0.8, 0.1));
+		widget:SetBorderColor(TRP3.CreateColor(0.1, 0.8, 0.1));
 		widget.CurrentText:Show();
 	else
 		widget:SetBorderColor(TRP3_BACKDROP_COLOR_CREAMY_BROWN);
@@ -212,7 +209,7 @@ local function decorateProfileList(widget, id)
 	local i = 0;
 	for characterID, characterInfo in pairs(characters) do
 		if characterInfo.profileID == id then
-			local charactName, charactRealm = TRP3_API.utils.str.unitIDToInfo(characterID);
+			local charactName, charactRealm = TRP3.utils.str.unitIDToInfo(characterID);
 			listText = listText.."- |cff00ff00"..charactName.." ( "..charactRealm.." )|r\n";
 			i = i + 1;
 		end
@@ -272,14 +269,14 @@ end
 
 local function uiCheckNameAvailability(profileName)
 	if not isProfileNameAvailable(profileName) then
-		TRP3_API.ui.tooltip.toast(loc.PR_PROFILEMANAGER_ALREADY_IN_USE:format(Utils.str.color("r")..profileName.."|r"), 3);
+		TRP3.ui.tooltip.toast(loc.PR_PROFILEMANAGER_ALREADY_IN_USE:format(Utils.str.color("r")..profileName.."|r"), 3);
 		return false;
 	end
 	return true;
 end
 
 local function uiCreateProfile()
-	TRP3_API.popup.showTextInputPopup(loc.PR_PROFILEMANAGER_CREATE_POPUP,
+	TRP3.popup.showTextInputPopup(loc.PR_PROFILEMANAGER_CREATE_POPUP,
 	function(newName)
 		if newName and #newName ~= 0 then
 			if not uiCheckNameAvailability(newName) then return end
@@ -294,7 +291,7 @@ end
 
 -- Promps profile delete confirmation
 local function uiDeleteProfile(profileID)
-	TRP3_API.popup.showConfirmPopup(loc.PR_PROFILEMANAGER_DELETE_WARNING:format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
+	TRP3.popup.showConfirmPopup(loc.PR_PROFILEMANAGER_DELETE_WARNING:format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
 	function()
 		deleteProfile(profileID);
 		uiInitProfileList();
@@ -302,7 +299,7 @@ local function uiDeleteProfile(profileID)
 end
 
 local function uiEditProfile(profileID)
-	TRP3_API.popup.showTextInputPopup(
+	TRP3.popup.showTextInputPopup(
 	loc.PR_PROFILEMANAGER_EDIT_POPUP:format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
 	function(newName)
 		if newName and #newName ~= 0 then
@@ -325,7 +322,7 @@ local function uiSelectProfile(profileID)
 end
 
 local function uiDuplicateProfile(profileID)
-	TRP3_API.popup.showTextInputPopup(
+	TRP3.popup.showTextInputPopup(
 	loc.PR_PROFILEMANAGER_DUPP_POPUP:format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
 	function(newName)
 		if newName and #newName ~= 0 then
@@ -400,7 +397,7 @@ end
 -- Character
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.profile.getPlayerCharacter()
+function TRP3.profile.getPlayerCharacter()
 	return character;
 end
 
@@ -428,7 +425,7 @@ local function createTutorialStructure()
 end
 
 
-function TRP3_API.profile.init()
+function TRP3.profile.init()
 	createTutorialStructure();
 
 	-- Saved structures
@@ -446,8 +443,8 @@ function TRP3_API.profile.init()
 	end
 	character = characters[Globals.player_id];
 
-	TRP3_API.configuration.registerConfigKey("default_profile_id", "");
-	TRP3_API.configuration.registerConfigKey("roleplay_experience", AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL);
+	TRP3.configuration.registerConfigKey("default_profile_id", "");
+	TRP3.configuration.registerConfigKey("roleplay_experience", AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.CASUAL);
 
 	-- Creating the default profile
 	if getConfigValue("default_profile_id") == "" or not profiles[getConfigValue("default_profile_id")] then
@@ -458,7 +455,7 @@ function TRP3_API.profile.init()
 				break;
 			end
 		end
-		TRP3_API.configuration.setValue("default_profile_id", createProfile(loc.PR_DEFAULT_PROFILE_NAME, true));
+		TRP3.configuration.setValue("default_profile_id", createProfile(loc.PR_DEFAULT_PROFILE_NAME, true));
 	else
 		updateDefaultProfile();
 	end
@@ -509,8 +506,8 @@ function TRP3_API.profile.init()
 
 	local function OnListElementClick(button)
 		if IsShiftKeyDown() then
-			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_PLAYER_PROFILE, function(canBeImported)
-				TRP3_API.ProfilesChatLinkModule:InsertLink(button.profileID, canBeImported);
+			TRP3.ChatLinks:OpenMakeImportablePrompt(loc.CL_PLAYER_PROFILE, function(canBeImported)
+				TRP3.ProfilesChatLinkModule:InsertLink(button.profileID, canBeImported);
 			end);
 		else
 			if currentProfileId ~= button.profileID then
@@ -538,7 +535,7 @@ function TRP3_API.profile.init()
 		frame = TRP3_ProfileManager,
 		onPagePostShow = function()
 			tabGroup:SelectTab(1);
-			if TRP3_API.importer.charactersProfilesAvailable() then
+			if TRP3.importer.charactersProfilesAvailable() then
 				tabGroup:SetTabVisible(2, true);
 			else
 				tabGroup:SetTabVisible(2, false);
@@ -557,7 +554,7 @@ function TRP3_API.profile.init()
 	frame:SetPoint("TOPLEFT", 17, 0);
 	frame:SetFrameLevel(1);
 
-	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
+	tabGroup = TRP3.ui.frame.createTabPanel(frame,
 		{
 			{loc.PR_PROFILEMANAGER_TITLE, "list", 175},
 			{loc.PR_IMPORT_CHAR_TAB, "characterImporter", 175},
@@ -578,9 +575,9 @@ function TRP3_API.profile.init()
 	);
 	tabGroup:SelectTab(1);
 
-	local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
+	local getCurrentPageID = TRP3.navigation.page.getCurrentPageID;
 
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_PROFILES_LOADED, function()
+	TRP3.RegisterCallback(TRP3_Addon, Events.REGISTER_PROFILES_LOADED, function()
 		if getCurrentPageID() == "player_profiles" then
 			if tabGroup.current == 1 then
 				uiInitProfileList();  -- Force refresh
@@ -591,7 +588,7 @@ function TRP3_API.profile.init()
 	-- Export/Import
 	local exportWarningText = IsMacClient() and loc.PR_EXPORT_WARNING_MAC or loc.PR_EXPORT_WARNING_WINDOWS;
 	TRP3_ProfileExport.title:SetText(loc.PR_EXPORT_PROFILE);
-	TRP3_ProfileExport.warning:SetText(TRP3_API.Colors.Red(loc.PR_EXPORT_WARNING_TITLE) .. "\n" .. exportWarningText);
+	TRP3_ProfileExport.warning:SetText(TRP3.Colors.Red(loc.PR_EXPORT_WARNING_TITLE) .. "\n" .. exportWarningText);
 	TRP3_ProfileImport.title:SetText(loc.PR_IMPORT_PROFILE);
 	TRP3_ProfileImport.content.title:SetText(loc.PR_IMPORT_PROFILE_TT);
 	TRP3_ProfileImport.save:SetText(loc.PR_IMPORT);
@@ -615,9 +612,9 @@ function TRP3_API.profile.init()
 					-- Misc info ID conversion
 					if data.player and data.player.characteristics and data.player.characteristics.MI then
 						for _, miscData in ipairs(data.player.characteristics.MI) do
-							if not miscData.ID or miscData.ID ~= TRP3_API.MiscInfoType.Custom then
+							if not miscData.ID or miscData.ID ~= TRP3.MiscInfoType.Custom then
 								-- Adding ID from name if ID missing, or setting a preset to custom if renamed
-								miscData.ID = TRP3_API.GetMiscInfoTypeByName(miscData.NA);
+								miscData.ID = TRP3.GetMiscInfoTypeByName(miscData.NA);
 							end
 						end
 					end
@@ -628,9 +625,9 @@ function TRP3_API.profile.init()
 			end
 
 			if version ~= Globals.version then
-				TRP3_API.popup.showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING_2:format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
+				TRP3.popup.showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING_2:format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
 			else
-				TRP3_API.popup.showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING:format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
+				TRP3.popup.showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING:format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
 			end
 		else
 			Utils.message.displayMessage(string.format(loc.PR_IMPORT_ERROR, errorOrProfileID), 2);
@@ -648,7 +645,7 @@ function TRP3_API.profile.init()
 
 	Mixin(TRP3_ProfileImport.content.scroll.text, TRP3_EscapeSanitizedEditBoxMixin);
 
-	TRP3_API.slash.registerCommand({
+	TRP3.slash.registerCommand({
 		id = "profile",
 		helpLine = " " .. loc.PR_SLASH_SWITCH_HELP,
 		handler = function(...)

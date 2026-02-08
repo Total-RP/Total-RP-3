@@ -1,8 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 TRP3_AutomationUtil.RegisterAction({
 	id = "trp3:rpstatus",
@@ -74,8 +73,8 @@ TRP3_AutomationUtil.RegisterAction({
 	end,
 
 	Apply = function(_, profileID)
-		if TRP3_API.profile.getPlayerCurrentProfileID() ~= profileID then
-			TRP3_API.profile.selectProfile(profileID);
+		if TRP3.profile.getPlayerCurrentProfileID() ~= profileID then
+			TRP3.profile.selectProfile(profileID);
 		end
 	end,
 });
@@ -100,7 +99,7 @@ TRP3_AutomationUtil.RegisterAction({
 	end,
 
 	Apply = function(context, enabled)
-		if TRP3_API.IsLocationBroadcastEnabled() == enabled then
+		if TRP3.IsLocationBroadcastEnabled() == enabled then
 			return;  -- Already in the desired state.
 		end
 
@@ -112,7 +111,7 @@ TRP3_AutomationUtil.RegisterAction({
 			enabledText = L.AUTOMATION_ACTION_MAP_SCANS_BROADCAST_DISABLED;
 		end
 
-		TRP3_API.SetLocationBroadcastEnabled(enabled);
+		TRP3.SetLocationBroadcastEnabled(enabled);
 		context:Print(enabledText);
 	end,
 });

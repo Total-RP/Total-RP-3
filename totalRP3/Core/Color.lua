@@ -147,7 +147,7 @@ function ColorCache:Acquire(r, g, b, a)
 		assert(b >= 0 and b <= 1, "invalid color component: b");
 		assert(a >= 0 and a <= 1, "invalid color component: a");
 
-		color = TRP3_API.SetObjectPrototype({ r = r, g = g, b = b, a = a }, Color);
+		color = TRP3.SetObjectPrototype({ r = r, g = g, b = b, a = a }, Color);
 		self.cache[key] = color;
 	end
 
@@ -159,39 +159,39 @@ end
 -- The following utility functions are for creating colors with methods
 -- inherited from our prototype.
 
-function TRP3_API.ApplyColorPrototype(color)
-	return TRP3_API.SetObjectPrototype(color, Color);
+function TRP3.ApplyColorPrototype(color)
+	return TRP3.SetObjectPrototype(color, Color);
 end
 
-function TRP3_API.CreateColor(r, g, b, a)
+function TRP3.CreateColor(r, g, b, a)
 	return ColorCache:Acquire(r, g, b, a or 1);
 end
 
-function TRP3_API.CreateColorFromBytes(r, g, b, a)
+function TRP3.CreateColorFromBytes(r, g, b, a)
 	return ColorCache:Acquire(r / 255, g / 255, b / 255, a and (a / 255) or 1);
 end
 
-function TRP3_API.CreateColorFromTable(t)
+function TRP3.CreateColorFromTable(t)
 	return ColorCache:Acquire(t.r, t.g, t.b, t.a or 1);
 end
 
-function TRP3_API.CreateColorFromHSLA(h, s, l, a)
+function TRP3.CreateColorFromHSLA(h, s, l, a)
 	local r, g, b = ConvertHSLToRGB(h, s, l);
 	return ColorCache:Acquire(r, g, b, a or 1);
 end
 
-function TRP3_API.CreateColorFromHSVA(h, s, v, a)
+function TRP3.CreateColorFromHSVA(h, s, v, a)
 	local r, g, b = C_ColorUtil.ConvertHSVToRGB(h, s, v);
 	return ColorCache:Acquire(r, g, b, a or 1);
 end
 
-function TRP3_API.CreateColorFromHWBA(h, w, b, a)
+function TRP3.CreateColorFromHWBA(h, w, b, a)
 	local r, g, b = ConvertHWBToRGB(h, w, b);  -- luacheck: no redefined
 	return ColorCache:Acquire(r, g, b, a or 1);
 end
 
-function TRP3_API.CreateColorFromName(name)
-	local color = TRP3_API.ParseColorFromName(name);
+function TRP3.CreateColorFromName(name)
+	local color = TRP3.ParseColorFromName(name);
 
 	if not color then
 		error("attempted to create a color from an invalid color name");
@@ -200,8 +200,8 @@ function TRP3_API.CreateColorFromName(name)
 	return color;
 end
 
-function TRP3_API.CreateColorFromHexString(str)
-	local color = TRP3_API.ParseColorFromHexString(str);
+function TRP3.CreateColorFromHexString(str)
+	local color = TRP3.ParseColorFromHexString(str);
 
 	if not color then
 		error("attempted to create a color from an invalid hexadecimal color string");
@@ -210,8 +210,8 @@ function TRP3_API.CreateColorFromHexString(str)
 	return color;
 end
 
-function TRP3_API.CreateColorFromHexMarkup(str)
-	local color = TRP3_API.ParseColorFromHexMarkup(str);
+function TRP3.CreateColorFromHexMarkup(str)
+	local color = TRP3.ParseColorFromHexMarkup(str);
 
 	if not color then
 		error("attempted to create a color from an invalid color markup string");
@@ -220,8 +220,8 @@ function TRP3_API.CreateColorFromHexMarkup(str)
 	return color;
 end
 
-function TRP3_API.CreateColorFromString(str)
-	local color = TRP3_API.ParseColorFromName(str) or TRP3_API.ParseColorFromHexString(str) or TRP3_API.ParseColorFromHexMarkup(str);
+function TRP3.CreateColorFromString(str)
+	local color = TRP3.ParseColorFromName(str) or TRP3.ParseColorFromHexString(str) or TRP3.ParseColorFromHexMarkup(str);
 
 	if not color then
 		error("attempted to create a color from an invalid color string");
@@ -230,22 +230,22 @@ function TRP3_API.CreateColorFromString(str)
 	return color;
 end
 
-function TRP3_API.GetChatTypeColor(chatType)
+function TRP3.GetChatTypeColor(chatType)
 	local chatTypeInfo = ChatTypeInfo[chatType];
-	return chatTypeInfo and TRP3_API.CreateColorFromTable(chatTypeInfo) or nil;
+	return chatTypeInfo and TRP3.CreateColorFromTable(chatTypeInfo) or nil;
 end
 
-function TRP3_API.GetClassBaseColor(classToken)
+function TRP3.GetClassBaseColor(classToken)
 	local classColor = RAID_CLASS_COLORS[classToken];
-	return classColor and TRP3_API.CreateColorFromTable(classColor) or nil;
+	return classColor and TRP3.CreateColorFromTable(classColor) or nil;
 end
 
-function TRP3_API.GetClassDisplayColor(classToken)
+function TRP3.GetClassDisplayColor(classToken)
 	local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classToken] or RAID_CLASS_COLORS[classToken];
-	return classColor and TRP3_API.CreateColorFromTable(classColor) or nil;
+	return classColor and TRP3.CreateColorFromTable(classColor) or nil;
 end
 
-function TRP3_API.GenerateBlendedColor(colorA, colorB)
+function TRP3.GenerateBlendedColor(colorA, colorB)
 	local r, g, b, a = colorA:GetRGBA();
 
 	if a < 1 then
@@ -258,10 +258,10 @@ function TRP3_API.GenerateBlendedColor(colorA, colorB)
 		a = 1;
 	end
 
-	return TRP3_API.CreateColor(r, g, b, a);
+	return TRP3.CreateColor(r, g, b, a);
 end
 
-function TRP3_API.GenerateInterpolatedColor(colorA, colorB, ratio)
+function TRP3.GenerateInterpolatedColor(colorA, colorB, ratio)
 	local h1, s1, l1, a1 = colorA:GetHSLA();
 	local h2, s2, l2, a2 = colorB:GetHSLA();
 
@@ -275,7 +275,7 @@ function TRP3_API.GenerateInterpolatedColor(colorA, colorB, ratio)
 	local lt = Lerp(l1, l2, ratio);
 	local at = Lerp(a1, a2, ratio);
 
-	return TRP3_API.CreateColorFromHSLA(ht, st, lt, at);
+	return TRP3.CreateColorFromHSLA(ht, st, lt, at);
 end
 
 -- Color parsing utilities
@@ -284,12 +284,12 @@ end
 -- values can't represent a color. This differs from the constructor functions
 -- which will error in such cases.
 
-function TRP3_API.ParseColorFromName(name)
+function TRP3.ParseColorFromName(name)
 	local key = string.upper(name);
-	return TRP3_API.NamedColors[key];
+	return TRP3.NamedColors[key];
 end
 
-function TRP3_API.ParseColorFromHexString(str)
+function TRP3.ParseColorFromHexString(str)
 	if type(str) ~= "string" then
 		return nil;
 	end
@@ -331,10 +331,10 @@ function TRP3_API.ParseColorFromHexString(str)
 		a = (a * 16) + a;
 	end
 
-	return TRP3_API.CreateColorFromBytes(r, g, b, a);
+	return TRP3.CreateColorFromBytes(r, g, b, a);
 end
 
-function TRP3_API.ParseColorFromHexMarkup(str)
+function TRP3.ParseColorFromHexMarkup(str)
 	if type(str) ~= "string" then
 		return nil;
 	end
@@ -350,11 +350,11 @@ function TRP3_API.ParseColorFromHexMarkup(str)
 	g = tonumber(g, 16);
 	b = tonumber(b, 16);
 
-	return TRP3_API.CreateColorFromBytes(r, g, b, a);
+	return TRP3.CreateColorFromBytes(r, g, b, a);
 end
 
-function TRP3_API.ParseColorFromString(str)
-	return TRP3_API.ParseColorFromName(str) or TRP3_API.ParseColorFromHexString(str) or TRP3_API.ParseColorFromHexMarkup(str);
+function TRP3.ParseColorFromString(str)
+	return TRP3.ParseColorFromName(str) or TRP3.ParseColorFromHexString(str) or TRP3.ParseColorFromHexMarkup(str);
 end
 
 -- Color conversion utilities
@@ -493,13 +493,13 @@ local function CalculateLightnessContrast(foregroundYs, backgroundYs)
 	return Lc * 100;
 end
 
-function TRP3_API.GenerateContrastingColor(backgroundColor)
+function TRP3.GenerateContrastingColor(backgroundColor)
 	local Ys = CalculateLuminance(backgroundColor:GetRGB());
 
 	if Ys >= 0.38 then
-		return TRP3_API.CreateColor(0, 0, 0);
+		return TRP3.CreateColor(0, 0, 0);
 	else
-		return TRP3_API.CreateColor(1, 1, 1);
+		return TRP3.CreateColor(1, 1, 1);
 	end
 end
 
@@ -521,14 +521,14 @@ end
 
 local function ProcessTargetContrastOption(targetContrast)
 	if targetContrast == TRP3_ColorContrastOption.UseConfiguredLevel then
-		local targetLevel = TRP3_API.configuration.getValue("color_contrast_level");
+		local targetLevel = TRP3.configuration.getValue("color_contrast_level");
 		targetContrast = ColorContrastLevels[targetLevel];
 	end
 
 	return targetContrast or 0;
 end
 
-function TRP3_API.GenerateReadableColor(foregroundColor, backgroundColor, targetContrast)
+function TRP3.GenerateReadableColor(foregroundColor, backgroundColor, targetContrast)
 	targetContrast = ProcessTargetContrastOption(targetContrast);
 
 	if targetContrast == 0 then
@@ -542,7 +542,7 @@ function TRP3_API.GenerateReadableColor(foregroundColor, backgroundColor, target
 	end
 
 	local BgR, BgG, BgB = backgroundColor:GetRGB();
-	local FgR, FgG, FgB = TRP3_API.GenerateBlendedColor(foregroundColor, backgroundColor):GetRGB();
+	local FgR, FgG, FgB = TRP3.GenerateBlendedColor(foregroundColor, backgroundColor):GetRGB();
 	local FgH, FgS, FgL = ConvertRGBToHSL(FgR, FgG, FgB);
 
 	local BgYs = CalculateLuminance(BgR, BgG, BgB);
@@ -584,12 +584,12 @@ function TRP3_API.GenerateReadableColor(foregroundColor, backgroundColor, target
 		FgL = (BgYs >= 0.38 and 0 or 1);
 	end
 
-	readableColor = TRP3_API.CreateColorFromHSLA(FgH, FgS, FgL);
+	readableColor = TRP3.CreateColorFromHSLA(FgH, FgS, FgL);
 	ReadableColorCache:Set(targetContrast, backgroundColor, foregroundColor, readableColor);
 	return readableColor;
 end
 
-function TRP3_API.IsColorReadable(foregroundColor, backgroundColor, targetContrast)
+function TRP3.IsColorReadable(foregroundColor, backgroundColor, targetContrast)
 	targetContrast = ProcessTargetContrastOption(targetContrast);
 
 	if targetContrast == 0 then
@@ -597,7 +597,7 @@ function TRP3_API.IsColorReadable(foregroundColor, backgroundColor, targetContra
 	end
 
 	local BgYs = CalculateLuminance(backgroundColor:GetRGB());
-	local FgYs = CalculateLuminance(TRP3_API.GenerateBlendedColor(foregroundColor, backgroundColor):GetRGB());
+	local FgYs = CalculateLuminance(TRP3.GenerateBlendedColor(foregroundColor, backgroundColor):GetRGB());
 	local FgLc = CalculateLightnessContrast(FgYs, BgYs);
 
 	return math.abs(FgLc) >= targetContrast;

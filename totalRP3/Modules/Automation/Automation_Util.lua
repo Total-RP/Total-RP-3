@@ -1,12 +1,11 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 local hasRegisteredSettings;
 
-TRP3_AutomationEvents = TRP3_API.CreateCallbackRegistryWithEvents({
+TRP3_AutomationEvents = TRP3.CreateCallbackRegistryWithEvents({
 	"OnProfileChanged",   -- Triggers when the current profile changes.
 	"OnProfileModified",  -- Triggers when a profile is edited.
 	"OnProfileDeleted",   -- Triggers when a profile is deleted.
@@ -213,7 +212,7 @@ local SETTINGS_MENU_ID = "main_42_customization_automation";
 
 function TRP3_AutomationUtil.OpenSettingsPage()
 	if hasRegisteredSettings then
-		TRP3_API.navigation.page.setPage(SETTINGS_PAGE_ID);
+		TRP3.navigation.page.setPage(SETTINGS_PAGE_ID);
 	end
 end
 
@@ -222,17 +221,17 @@ function TRP3_AutomationUtil.RegisterSettingsPage()
 		return;
 	end
 
-	TRP3_API.navigation.page.registerPage({
+	TRP3.navigation.page.registerPage({
 		id = SETTINGS_PAGE_ID,
 		templateName = "TRP3_AutomationSettingsTemplate",
 		frameName = "TRP3_AutomationSettingsFrame",
 	});
 
-	TRP3_API.navigation.menu.registerMenu({
+	TRP3.navigation.menu.registerMenu({
 		id = SETTINGS_MENU_ID,
 		text = L.AUTOMATION_MODULE_NAME,
 		isChildOf = "main_40_customization",
-		onSelected = function() TRP3_API.navigation.page.setPage(SETTINGS_PAGE_ID); end,
+		onSelected = function() TRP3.navigation.page.setPage(SETTINGS_PAGE_ID); end,
 	});
 
 	hasRegisteredSettings = true;

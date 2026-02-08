@@ -10,17 +10,17 @@ function TRP3_ToolbarUtil.GetFormattedTooltipTitle(elementData)
 end
 
 function TRP3_ToolbarUtil.GetToolbarAnchor()
-	local point = TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.AnchorPoint);
+	local point = TRP3.configuration.getValue(TRP3_ToolbarConfigKeys.AnchorPoint);
 	local relativeTo = UIParent;
 	local relativePoint = point;
-	local offsetX = TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.AnchorOffsetX);
-	local offsetY = TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.AnchorOffsetY);
+	local offsetX = TRP3.configuration.getValue(TRP3_ToolbarConfigKeys.AnchorOffsetX);
+	local offsetY = TRP3.configuration.getValue(TRP3_ToolbarConfigKeys.AnchorOffsetY);
 
 	return AnchorUtil.CreateAnchor(point, relativeTo, relativePoint, offsetX, offsetY);
 end
 
 function TRP3_ToolbarUtil.GetToolbarButtonExtent()
-	local configuredExtent = TRP3_API.configuration.getValue(TRP3_ToolbarConfigKeys.ButtonExtent);
+	local configuredExtent = TRP3.configuration.getValue(TRP3_ToolbarConfigKeys.ButtonExtent);
 	local extraExtent = TRP3_ToolbarConstants.ButtonExtraExtent;
 
 	return configuredExtent + extraExtent;

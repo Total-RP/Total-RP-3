@@ -2,8 +2,9 @@
 --- Ellypse's modifications to make middleclass available to Ellyb
 ------------------------------------------------------------------------------------------------------------------------
 
-local TRP3_API = select(2, ...);
-local Ellyb = TRP3_API.Ellyb;
+---@class TRP3
+local TRP3 = select(2, ...);
+local Ellyb = TRP3.Ellyb;
 
 if Ellyb.middleclass then
 	return

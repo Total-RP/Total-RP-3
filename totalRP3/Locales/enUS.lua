@@ -1655,5 +1655,5 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 BINDING_HEADER_TRP3 = "Total RP 3";
 
-TRP3_API.loc = TRP3_API.Ellyb.Localization(L);
-TRP3_API.loc:RegisterNewLocale("enUS", "English", L);
+TRP3.loc = TRP3.Ellyb.Localization(L);
+TRP3.loc:RegisterNewLocale("enUS", "English", L);

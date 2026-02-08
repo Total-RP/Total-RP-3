@@ -1,14 +1,14 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
+TRP3.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 
 	if not xrpSaved then
 		return;
 	end
 
-	local tcopy, getDefaultProfile = TRP3_API.utils.table.copy, TRP3_API.profile.getDefaultProfile;
-	local loc = TRP3_API.loc;
+	local tcopy, getDefaultProfile = TRP3.utils.table.copy, TRP3.profile.getDefaultProfile;
+	local loc = TRP3.loc;
 
 	local XRP = {};
 
@@ -39,7 +39,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 		for name, profile in pairs(xrpSaved.profiles) do
 			if name == "Default" then
-				name = TRP3_API.globals.player_id;
+				name = TRP3.globals.player_id;
 			end
 			local profileName = XRP.addOnVersion().."-"..name;
 			profilesList[profileName] = { name = name };
@@ -83,7 +83,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		profile.player.characteristics.WE = importedProfile.AW;
 		if importedProfile.MO then
 			tinsert(profile.player.characteristics.MI, {
-				ID = TRP3_API.MiscInfoType.Motto,
+				ID = TRP3.MiscInfoType.Motto,
 				NA = loc.REG_PLAYER_MSP_MOTTO;
 				VA = "\"" .. importedProfile.MO .. "\"";
 				IC = TRP3_InterfaceIcons.MiscInfoMotto;
@@ -91,7 +91,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		end
 		if importedProfile.NI then
 			tinsert(profile.player.characteristics.MI, {
-				ID = TRP3_API.MiscInfoType.Nickname,
+				ID = TRP3.MiscInfoType.Nickname,
 				NA = loc.REG_PLAYER_MSP_NICK;
 				VA = importedProfile.NI;
 				IC = TRP3_InterfaceIcons.MiscInfoNickname;
@@ -99,7 +99,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		end
 		if importedProfile.NH then
 			tinsert(profile.player.characteristics.MI, {
-				ID = TRP3_API.MiscInfoType.House,
+				ID = TRP3.MiscInfoType.House,
 				NA = loc.REG_PLAYER_MSP_HOUSE;
 				VA = importedProfile.NH;
 				IC = TRP3_InterfaceIcons.MiscInfoHouse;
@@ -107,7 +107,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		end
 		if importedProfile.PN then
 			tinsert(profile.player.characteristics.MI, {
-				ID = TRP3_API.MiscInfoType.Pronouns,
+				ID = TRP3.MiscInfoType.Pronouns,
 				NA = loc.REG_PLAYER_MISC_PRESET_PRONOUNS;
 				VA = importedProfile.PN;
 				IC = TRP3_InterfaceIcons.MiscInfoPronouns;
@@ -115,7 +115,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		end
 		if importedProfile.PG then
 			tinsert(profile.player.characteristics.MI, {
-				ID = TRP3_API.MiscInfoType.GuildName,
+				ID = TRP3.MiscInfoType.GuildName,
 				NA = loc.REG_PLAYER_MISC_PRESET_GUILD_NAME;
 				VA = importedProfile.PG;
 				IC = TRP3_InterfaceIcons.MiscInfoGuildName;
@@ -123,7 +123,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		end
 		if importedProfile.PR then
 			tinsert(profile.player.characteristics.MI, {
-				ID = TRP3_API.MiscInfoType.GuildRank,
+				ID = TRP3.MiscInfoType.GuildRank,
 				NA = loc.REG_PLAYER_MISC_PRESET_GUILD_RANK;
 				VA = importedProfile.PR;
 				IC = TRP3_InterfaceIcons.MiscInfoGuildRank;
@@ -131,7 +131,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		end
 		if importedProfile.PV then
 			tinsert(profile.player.characteristics.MI, {
-				ID = TRP3_API.MiscInfoType.VoiceReference,
+				ID = TRP3.MiscInfoType.VoiceReference,
 				NA = loc.REG_PLAYER_MISC_PRESET_VOICE_REFERENCE;
 				VA = importedProfile.PV;
 				IC = TRP3_InterfaceIcons.MiscInfoVoiceReference;
@@ -160,5 +160,5 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		return importableData;
 	end
 
-	TRP3_API.importer.addAddOn(XRP.addOnVersion(), XRP);
+	TRP3.importer.addAddOn(XRP.addOnVersion(), XRP);
 end);

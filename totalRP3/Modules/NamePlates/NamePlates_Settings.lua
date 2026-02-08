@@ -1,8 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local TRP3_API = select(2, ...);
-local L = TRP3_API.loc;
+local L = TRP3.loc;
 
 -- Global cache of all nameplate settings. This is to eliminate the nested
 -- function calls for each individual settings query multipled by the number
@@ -56,8 +55,8 @@ local DefaultSettings = {
 	MaximumGuildNameLength = 30,
 	PreferredOOCIndicator = TRP3_OOCIndicatorStyle.Text,
 	ShowTargetUnit = true,
-	TooltipFullTitleColor = TRP3_API.Colors.White:GenerateHexColor(),
-	TooltipGuildNameColor = TRP3_API.Colors.Yellow:GenerateHexColor(),
+	TooltipFullTitleColor = TRP3.Colors.White:GenerateHexColor(),
+	TooltipGuildNameColor = TRP3.Colors.Yellow:GenerateHexColor(),
 };
 
 local function MapSettingToConfigKey(field)
@@ -73,7 +72,7 @@ function TRP3_NamePlatesUtil.LoadSettings()
 	local settings = {};
 
 	for field in pairs(DefaultSettings) do
-		settings[field] = TRP3_API.configuration.getValue(MapSettingToConfigKey(field));
+		settings[field] = TRP3.configuration.getValue(MapSettingToConfigKey(field));
 	end
 
 	TRP3_NamePlatesSettings = settings;
@@ -99,10 +98,10 @@ end
 
 function TRP3_NamePlatesUtil.RegisterSettings()
 	for key, default in pairs(DefaultSettings) do
-		TRP3_API.configuration.registerConfigKey(MapSettingToConfigKey(key), default);
+		TRP3.configuration.registerConfigKey(MapSettingToConfigKey(key), default);
 	end
 
-	TRP3_API.configuration.registerConfigurationPage({
+	TRP3.configuration.registerConfigurationPage({
 		id = "main_config_nameplates",
 		menuText = L.NAMEPLATES_NAME,
 		pageText = L.NAMEPLATES_CONFIG_PAGE_TEXT,
@@ -239,7 +238,7 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				inherit = "TRP3_ConfigDropDown",
 				title = L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR,
 				listContent = {
-					{ L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. TRP3_API.Colors.Red(L.CM_OOC), TRP3_OOCIndicatorStyle.Text },
+					{ L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. TRP3.Colors.Red(L.CM_OOC), TRP3_OOCIndicatorStyle.Text },
 					{ L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. TRP3_NamePlatesUtil.OOC_ICON, TRP3_OOCIndicatorStyle.Icon },
 				},
 				configKey = MapSettingToConfigKey("PreferredOOCIndicator"),
