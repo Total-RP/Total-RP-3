@@ -56,6 +56,11 @@ end
 ---Will set the language currently spoken by the player using a language ID
 ---@param language Language
 function Languages.setLanguage(language)
+	if TRP3_API.utils.IsInCombatInstance() then
+		-- Touching languages while in an instance risks locking down chat during encounters
+		return;
+	end
+	
 	Ellyb.Assertions.isInstanceOf(language, AddOn_TotalRP3.Language, "language")
 	TRP3_API.Log("Setting language " .. language:GetName());
 
