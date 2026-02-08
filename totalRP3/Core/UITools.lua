@@ -1103,10 +1103,6 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 	end);
 end
 
---TRP3_ResizeShadowFrame:SetScript("OnUpdate", function(self)
---	TRP3_ResizeShadowFrame.text:SetText(string.format("|cnGREEN_FONT_COLOR:%d x %d|r", self:GetSize()));
---end);
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Move frame
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
