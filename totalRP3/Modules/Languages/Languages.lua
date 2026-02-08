@@ -60,7 +60,7 @@ function Languages.setLanguage(language)
 		-- Touching languages while in an instance risks locking down chat during encounters
 		return;
 	end
-	
+
 	Ellyb.Assertions.isInstanceOf(language, AddOn_TotalRP3.Language, "language")
 	TRP3_API.Log("Setting language " .. language:GetName());
 
