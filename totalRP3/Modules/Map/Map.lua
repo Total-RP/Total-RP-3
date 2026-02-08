@@ -42,7 +42,7 @@ end
 
 ---@return number mapID @ The ID of the zone where the player currently is
 function Map.getPlayerMapID()
-	return C_Map.GetBestMapForUnit("player") or -1;
+	return C_Map.GetBestMapForUnit("player") or 946; -- If GetBestMapForUnit returns nil, use the cosmic map ID.
 end
 
 ---@return number, number x, y @ Returns the X and Y coordinates of the player for the current map, or nil if we could not get their coordinates
