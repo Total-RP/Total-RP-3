@@ -230,21 +230,15 @@ function TRP3_ProfileUtil.SerializeProfile(addonVersion, profileID, profileData)
 	local packedData = { addonVersion, profileID, profileData };
 	local serializedData;
 
-	if TRP3_EncodingUtil.IsPEMEncodingSupported() then
-		local label = "TRP3 PROFILE";
-		local data = TRP3_EncodingUtil.CompressString(C_EncodingUtil.SerializeCBOR(packedData));
-		local headers = {
-			{ key = "Name", value = profileData.profileName },
-			{ key = "Exported", value = date("%Y-%m-%d %H:%M:%S") },
-			{ key = "AddOn-Version", value = TRP3_API.globals.version_display },
-		};
+	local label = "TRP3 PROFILE";
+	local data = TRP3_EncodingUtil.CompressString(C_EncodingUtil.SerializeCBOR(packedData));
+	local headers = {
+		{ key = "Name", value = profileData.profileName },
+		{ key = "Exported", value = date("%Y-%m-%d %H:%M:%S") },
+		{ key = "AddOn-Version", value = TRP3_API.globals.version_display },
+	};
 
-		serializedData = TRP3_EncodingUtil.EncodePEM(label, data, headers);
-	else
-		-- Legacy path via AceSerializer without compression or encoding.
-		serializedData = TRP3_API.utils.serial.serialize(packedData);
-	end
-
+	serializedData = TRP3_EncodingUtil.EncodePEM(label, data, headers);
 	return serializedData;
 end
 
@@ -258,7 +252,7 @@ function TRP3_ProfileUtil.DeserializeProfile(serializedData)
 		if not ok then
 			return nil, L.PR_IMPORT_ERROR_DESERIALIZE_ACE;
 		end
-	elseif TRP3_EncodingUtil.IsPEMEncodingSupported() then
+	else
 		local decodedLabel, decodedData;
 		ok, decodedLabel, decodedData = pcall(TRP3_EncodingUtil.DecodePEM, serializedData);
 
