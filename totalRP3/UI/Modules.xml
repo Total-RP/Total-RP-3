@@ -91,22 +91,4 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</ScrollFrame>
 		</Frames>
 	</Frame>
-
-	<Include file="ModuleManagement.lua"/>
-	<Include file="Flyway\Flyway.lua"/>
-	<Include file="Flyway\FlywayPatches.lua"/>
-	<Include file="Dashboard\Dashboard.xml"/>
-	<Include file="Map\Map.xml"/>
-	<Include file="Register\Register.xml"/>
-	<Include file="Languages\Languages.xml"/>
-	<Include file="ChatFrame\ChatFrame.xml"/>
-	<Include file="TargetFrame\TargetFrame.xml"/>
-	<Include file="Toolbar\Toolbar.xml"/>
-	<Include file="Importer\Importer.xml"/>
-	<Include file="TooltipSkins\TooltipSkins.xml"/>
-	<Include file="ChatLinks\ChatLinks.xml"/>
-	<Include file="UnitPopups\UnitPopups.xml"/>
-	<Include file="NamePlates\NamePlates.xml"/>
-	<Include file="Automation\Automation.xml"/>
-	<Include file="Launcher\Launcher.xml"/>
 </Ui>

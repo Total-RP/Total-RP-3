@@ -270,8 +270,6 @@ local function uiInitProfileList()
 	TRP3_ProfileManager.list.ScrollBox:SetDataProvider(provider, ScrollBoxConstants.RetainScrollPosition);
 end
 
-local showTextInputPopup, showConfirmPopup = TRP3_API.popup.showTextInputPopup, TRP3_API.popup.showConfirmPopup;
-
 local function uiCheckNameAvailability(profileName)
 	if not isProfileNameAvailable(profileName) then
 		TRP3_API.ui.tooltip.toast(loc.PR_PROFILEMANAGER_ALREADY_IN_USE:format(Utils.str.color("r")..profileName.."|r"), 3);
@@ -281,7 +279,7 @@ local function uiCheckNameAvailability(profileName)
 end
 
 local function uiCreateProfile()
-	showTextInputPopup(loc.PR_PROFILEMANAGER_CREATE_POPUP,
+	TRP3_API.popup.showTextInputPopup(loc.PR_PROFILEMANAGER_CREATE_POPUP,
 	function(newName)
 		if newName and #newName ~= 0 then
 			if not uiCheckNameAvailability(newName) then return end
@@ -296,7 +294,7 @@ end
 
 -- Promps profile delete confirmation
 local function uiDeleteProfile(profileID)
-	showConfirmPopup(loc.PR_PROFILEMANAGER_DELETE_WARNING:format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
+	TRP3_API.popup.showConfirmPopup(loc.PR_PROFILEMANAGER_DELETE_WARNING:format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
 	function()
 		deleteProfile(profileID);
 		uiInitProfileList();
@@ -304,7 +302,7 @@ local function uiDeleteProfile(profileID)
 end
 
 local function uiEditProfile(profileID)
-	showTextInputPopup(
+	TRP3_API.popup.showTextInputPopup(
 	loc.PR_PROFILEMANAGER_EDIT_POPUP:format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
 	function(newName)
 		if newName and #newName ~= 0 then
@@ -327,7 +325,7 @@ local function uiSelectProfile(profileID)
 end
 
 local function uiDuplicateProfile(profileID)
-	showTextInputPopup(
+	TRP3_API.popup.showTextInputPopup(
 	loc.PR_PROFILEMANAGER_DUPP_POPUP:format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
 	function(newName)
 		if newName and #newName ~= 0 then
@@ -630,9 +628,9 @@ function TRP3_API.profile.init()
 			end
 
 			if version ~= Globals.version then
-				showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING_2:format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
+				TRP3_API.popup.showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING_2:format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
 			else
-				showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING:format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
+				TRP3_API.popup.showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING:format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
 			end
 		else
 			Utils.message.displayMessage(string.format(loc.PR_IMPORT_ERROR, errorOrProfileID), 2);
