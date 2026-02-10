@@ -582,18 +582,19 @@ local function writeTooltipForCharacter(targetID, targetType)
 	end
 
 	if showIcons() then
-		local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
-		local DND_ICON = "|TInterface\\FriendsFrame\\StatusIcon-DnD:15:15|t";
-		local PVP_ICON = "|TInterface\\GossipFrame\\BattleMasterGossipIcon:15:15|t";
-
 		-- AFK / DND status
-		if UnitIsAFK(targetType) then
+		local targetAFK = UnitIsAFK(targetType);
+		local targetDND = UnitIsDND(targetType);
+		if canaccessvalue(targetAFK) and targetAFK then
+			local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
 			rightIcons = strconcat(rightIcons, AFK_ICON);
-		elseif UnitIsDND(targetType) then
+		elseif canaccessvalue(targetDND) and targetDND then
+			local DND_ICON = "|TInterface\\FriendsFrame\\StatusIcon-DnD:15:15|t";
 			rightIcons = strconcat(rightIcons, DND_ICON);
 		end
 		-- PVP icon
 		if UnitIsPVP(targetType) then -- Icone PVP
+			local PVP_ICON = "|TInterface\\GossipFrame\\BattleMasterGossipIcon:15:15|t";
 			rightIcons = strconcat(rightIcons, PVP_ICON);
 		end
 		-- Beginner icon / volunteer icon

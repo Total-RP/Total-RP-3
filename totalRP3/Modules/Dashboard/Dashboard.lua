@@ -201,11 +201,17 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			text = status3Text,
 			configText = loc.CO_TOOLBAR_CONTENT_STATUS,
 			onModelUpdate = function(buttonStructure)
-				if UnitIsDND("player") then
+				local playerAFK = UnitIsAFK("player");
+
+				-- Restrictions in place, can't alter the button
+				if not canaccessvalue(playerAFK) then return; end
+
+				local playerDND = UnitIsDND("player");
+				if playerDND then
 					buttonStructure.tooltip  = status1Text;
 					buttonStructure.tooltipSub  = status1SubText;
 					buttonStructure.icon = TRP3_InterfaceIcons.ModeDND;
-				elseif UnitIsAFK("player") then
+				elseif playerAFK then
 					buttonStructure.tooltip  = status2Text;
 					buttonStructure.tooltipSub  = status2SubText;
 					buttonStructure.icon = TRP3_InterfaceIcons.ModeAFK;
@@ -217,9 +223,15 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				buttonStructure.text = buttonStructure.tooltip;
 			end,
 			onClick = function(_, _, button)
-				if UnitIsAFK("player") then
+				local playerAFK = UnitIsAFK("player");
+
+				-- Restrictions in place, can't use the button
+				if not canaccessvalue(playerAFK) then return; end
+
+				local playerDND = UnitIsDND("player");
+				if playerAFK then
 					C_ChatInfo.SendChatMessage("","AFK");
-				elseif UnitIsDND("player") then
+				elseif playerDND then
 					C_ChatInfo.SendChatMessage("","DND");
 				else
 					if button == "LeftButton" then
