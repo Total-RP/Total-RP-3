@@ -239,9 +239,9 @@ function Utils.str.buildZoneText()
 end
 
 local escapes = {
-	["|c........"] = "", -- color start
-	["|cn[^:]+:"] = "", -- 10.0 color start
-	["|r"] = "", -- color end
+	["|[cC]........"] = "", -- color start
+	["|[cC][nN][^:]+:"] = "", -- 10.0 color start
+	["|[rR]"] = "", -- color end
 	["|H.-|h(.-)|h"] = "%1", -- links
 	["|T.-|t"] = "", -- textures
 	["|A.-|a"] = "", -- atlas textures
