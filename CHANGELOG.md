@@ -1,3 +1,9 @@
+# Changelog version 3.2.4
+
+## Fixed
+
+- Disabled AFK/DND status toolbar button and tooltip icons during encounters to prevent issues.
+
 # Changelog version 3.2.3
 
 ## Fixed
