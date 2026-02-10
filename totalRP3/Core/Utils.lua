@@ -242,11 +242,11 @@ local escapes = {
 	["|[cC]........"] = "", -- color start
 	["|[cC][nN][^:]+:"] = "", -- 10.0 color start
 	["|[rR]"] = "", -- color end
-	["|H.-|h(.-)|h"] = "%1", -- links
-	["|T.-|t"] = "", -- textures
-	["|A.-|a"] = "", -- atlas textures
-	["|K.-|k"] = "", -- protected strings
-	["|W(.-)|w"] = "%1", -- word wrapping
+	["|[Hh].-|[Hh](.-)|[Hh]"] = "%1", -- links
+	["|[Tt].-|[Tt]"] = "", -- textures
+	["|[Aa].-|[Aa]"] = "", -- atlas textures
+	["|[Kk].-|[Kk]"] = "", -- protected strings
+	["|[Ww](.-)|[Ww]"] = "%1", -- word wrapping
 }
 function Utils.str.sanitize(text, multiLine)
 	if not text then return end
