@@ -4,7 +4,6 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	<Include file="IconBrowser.lua"/>
 
 	<AnimationGroup name="TRP3_IconBrowserPulseAnimGroupTemplate" looping="REPEAT" setToFinalAlpha="true" virtual="true">
 		<Alpha fromAlpha="1" toAlpha="0.75" duration="1" smoothing="IN" order="1"/>
@@ -62,25 +61,19 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Frame name="TRP3_IconBrowserEmptyStateTemplate" mixin="TRP3_IconBrowserEmptyStateMixin" hidden="true" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Title" inherits="GameFontNormalHuge" text="L.UI_FILTER_NO_RESULTS_FOUND_TITLE">
+				<FontString parentKey="Title" inherits="GameFontNormalHuge" text="TRP3_L_UI_FILTER_NO_RESULTS_FOUND_TITLE">
 					<Anchors>
 						<Anchor point="BOTTOM" relativePoint="CENTER" y="3"/>
 						<Anchor point="LEFT"/>
 						<Anchor point="RIGHT"/>
 					</Anchors>
-					<Scripts>
-						<OnLoad function="TRP3_LocalizeTextOnAddOnLoaded"/>
-					</Scripts>
 				</FontString>
-				<FontString parentKey="Text" inherits="GameFontHighlight" text="L.UI_FILTER_NO_RESULTS_FOUND_TEXT">
+				<FontString parentKey="Text" inherits="GameFontHighlight" text="TRP3_L_UI_FILTER_NO_RESULTS_FOUND_TEXT">
 					<Anchors>
 						<Anchor point="TOP" relativePoint="CENTER" y="-3"/>
 						<Anchor point="LEFT"/>
 						<Anchor point="RIGHT"/>
 					</Anchors>
-					<Scripts>
-						<OnLoad function="TRP3_LocalizeTextOnAddOnLoaded"/>
-					</Scripts>
 				</FontString>
 			</Layer>
 		</Layers>
@@ -131,13 +124,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Anchors>
 					<TexCoords left="0.0625" right="0.812" top="0" bottom="0.75"/>
 				</Texture>
-				<FontString parentKey="Text" inherits="GameFontHighlightSmall" text="L.UI_ICON_BROWSER_SEARCHING">
+				<FontString parentKey="Text" inherits="GameFontHighlightSmall" text="TRP3_L_UI_ICON_BROWSER_SEARCHING">
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
-					<Scripts>
-						<OnLoad function="TRP3_LocalizeTextOnAddOnLoaded"/>
-					</Scripts>
 				</FontString>
 			</Layer>
 		</Layers>
@@ -258,15 +248,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						</Texture>
 					</Layer>
 					<Layer level="OVERLAY">
-						<FontString parentKey="Text" inherits="GameFontNormal" text="L.UI_ICON_BROWSER" wordwrap="false">
+						<FontString parentKey="Text" inherits="GameFontNormal" text="TRP3_L_UI_ICON_BROWSER" wordwrap="false">
 							<Anchors>
 								<Anchor point="TOP" x="0" y="-5"/>
 								<Anchor point="LEFT" x="60"/>
 								<Anchor point="RIGHT" x="-60"/>
 							</Anchors>
-							<Scripts>
-								<OnLoad function="TRP3_LocalizeTextOnAddOnLoaded"/>
-							</Scripts>
 						</FontString>
 					</Layer>
 				</Layers>
