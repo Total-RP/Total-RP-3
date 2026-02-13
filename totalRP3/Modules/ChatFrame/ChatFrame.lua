@@ -797,6 +797,11 @@ function hooking()
 			};
 
 			text = string.gsub(text, "%%x.[fl]?", tokens);
+			if text == textBeforeParse then
+				textBeforeParse = nil;
+				parsedEditBox = nil;
+				return;
+			end
 			editBox:SetText(text);
 		end
 	end
