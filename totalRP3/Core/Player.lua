@@ -75,8 +75,10 @@ function Player:GetFullName()
 		local firstName = characteristics.FN;
 		local lastName = characteristics.LN;
 
-		if firstName then
-			return string.join(" ", firstName, lastName or "");
+		if lastName and lastName ~= "" then
+			return string.join(" ", firstName, lastName);
+		else
+			return firstName;
 		end
 	end
 end
