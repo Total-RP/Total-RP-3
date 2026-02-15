@@ -180,7 +180,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_IconBrowserFrame" mixin="TRP3_IconBrowserMixin" parent="TRP3_PopupsFrame" hidden="true" enableMouse="true" toplevel="true">
+	<Frame name="TRP3_IconBrowserFrame" mixin="TRP3_IconBrowserMixin" parent="UIParent" enableMouse="true" toplevel="true">
 		<Size x="425" y="420"/>
 		<Anchors>
 			<Anchor point="CENTER"/>
@@ -194,6 +194,11 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="RIGHT" x="-12"/>
 				</Anchors>
 			</EditBox>
+			<DropdownButton parentKey="FilterDropdown" inherits="WowStyle1FilterDropdownTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" relativeKey="$parent.SearchBox" relativePoint="LEFT" x="-10" y="1"/>
+				</Anchors>
+			</DropdownButton>
 			<Frame parentKey="Content">
 				<Anchors>
 					<Anchor point="TOP" relativeKey="$parent.SearchBox" relativePoint="BOTTOM" y="-5"/>

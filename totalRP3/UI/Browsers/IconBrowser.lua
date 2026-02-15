@@ -34,12 +34,13 @@ local IconBrowserSearchTask = {};
 ---@param query string
 ---@param model TRP3.AbstractIconBrowserModel
 ---@protected
-function IconBrowserSearchTask:__init(query, model)
+function IconBrowserSearchTask:__init(query, tags, model)
 	self.callbacks = TRP3_API.InitCallbackRegistry(self);
 	self.state = "pending";
 	self.ticker = nil;
 	self.model = model;
 	self.query = query;
+	self.tags = tags;
 	self.found = 0;
 	self.searched = 0;
 	self.total = model:GetIconCount();
@@ -98,7 +99,7 @@ function IconBrowserSearchTask:OnUpdate()
 		local offset = 1;
 		local plain = true;
 
-		if iconName and string.find(iconName, query, offset, plain) then
+		if iconName and LRPM12:IconHack(iconIndex, self.tags) and string.find(iconName, query, offset, plain) then
 			found = found + 1;
 			results[found] = iconIndex;
 		end
@@ -119,8 +120,8 @@ end
 
 ---@param query string
 ---@param model TRP3.AbstractIconBrowserModel
-local function CreateIconBrowserSearchTask(query, model)
-	return TRP3_API.CreateObject(IconBrowserSearchTask, query, model);
+local function CreateIconBrowserSearchTask(query, tags, model)
+	return TRP3_API.CreateObject(IconBrowserSearchTask, query, tags, model);
 end
 
 -- Icon Browser Data Models
@@ -198,6 +199,7 @@ function IconBrowserFilterModel:__init(source)
 	self.source = source;
 	self.sourceIndices = {};
 	self.searchQuery = "";
+	self.searchTags = {};
 	self.searchTask = nil;
 
 	self.source.RegisterCallback(self, "OnModelUpdated", "OnSourceModelUpdated");
@@ -206,7 +208,7 @@ end
 function IconBrowserFilterModel:GetIconCount()
 	local count;
 
-	if self:HasSearchQuery() then
+	if self:HasSearchQuery() or self:IsAnyTagFiltered() then
 		count = #self.sourceIndices;
 	else
 		count = self.source:GetIconCount();
@@ -241,7 +243,7 @@ end
 function IconBrowserFilterModel:GetSourceIndex(proxyIndex)
 	local sourceIndex;
 
-	if self:HasSearchQuery() then
+	if self:HasSearchQuery() or self:IsAnyTagFiltered() then
 		sourceIndex = self.sourceIndices[proxyIndex];
 	else
 		sourceIndex = proxyIndex;
@@ -253,7 +255,7 @@ end
 function IconBrowserFilterModel:GetProxyIndex(sourceIndex)
 	local proxyIndex;
 
-	if self:HasSearchQuery() then
+	if self:HasSearchQuery() or self:IsAnyTagFiltered() then
 		-- Inefficient but quick implementation; assuming this is never going
 		-- to be called and just providing it to satisfy the interface.
 		proxyIndex = tInvert(self.sourceIndices)[sourceIndex];
@@ -270,6 +272,29 @@ end
 
 function IconBrowserFilterModel:GetSearchQuery()
 	return self.searchQuery;
+end
+
+function IconBrowserFilterModel:SetTagFiltered(tag, filtered)
+	if filtered then
+		tInsertUnique(self.searchTags, tag);
+	else
+		tDeleteItem(self.searchTags, tag);
+	end
+
+	self:RebuildModel();
+end
+
+function IconBrowserFilterModel:IsTagFiltered(tag)
+	return tContains(self.searchTags, tag);
+end
+
+function IconBrowserFilterModel:IsAnyTagFiltered()
+	return #self.searchTags ~= 0;
+end
+
+function IconBrowserFilterModel:ClearTagFilters()
+	self.searchTags = {};
+	self:RebuildModel();
 end
 
 ---@return TRP3.IconBrowserSearchProgress
@@ -327,7 +352,7 @@ function IconBrowserFilterModel:RebuildModel()
 
 	local query = self:GetSearchQuery();
 
-	if query == "" then
+	if query == "" and not self:IsAnyTagFiltered() then
 		self.callbacks:Fire("OnModelUpdated");
 		return;
 	end
@@ -350,7 +375,7 @@ function IconBrowserFilterModel:RebuildModel()
 		self.callbacks:Fire("OnModelUpdated");
 	end
 
-	self.searchTask = CreateIconBrowserSearchTask(query, self.source);
+	self.searchTask = CreateIconBrowserSearchTask(query, self.searchTags, self.source);
 	self.searchTask.RegisterCallback(self, "OnStateChanged", OnStateChanged);
 	self.searchTask.RegisterCallback(self, "OnProgressChanged", OnProgressChanged);
 	self.searchTask.RegisterCallback(self, "OnResultsChanged", OnResultsChanged);
@@ -557,6 +582,29 @@ function TRP3_IconBrowserMixin:OnLoad()
 
 	self.CloseButton:SetScript("OnClick", function() self:OnCloseButtonClicked(); end);
 	self.SearchBox:HookScript("OnTextChanged", TRP3_FunctionUtil.Debounce(0.25, function() self:OnFilterTextChanged(); end));
+
+	local function SetTagFiltered(tag, filtered)
+		self.filterModel:SetTagFiltered(tag, filtered);
+	end
+
+	local function IsTagFiltered(tag)
+		return self.filterModel:IsTagFiltered(tag);
+	end
+
+	self.FilterDropdown:SetIsDefaultCallback(function()
+		return not self.filterModel:IsAnyTagFiltered();
+	end);
+
+	self.FilterDropdown:SetDefaultCallback(function()
+		self.filterModel:ClearTagFilters();
+	end);
+
+	self.FilterDropdown:SetupMenu(function(dropdown, rootDescription)
+		rootDescription:SetGridMode(MenuConstants.VerticalGridDirection, 4);
+		for key, tag in pairs(LRPM12.IconCategory) do
+			rootDescription:CreateCheckbox(key, function() return IsTagFiltered(tag); end, function() SetTagFiltered(tag, not IsTagFiltered(tag)); end);
+		end
+	end);
 end
 
 function TRP3_IconBrowserMixin:OnShow()
