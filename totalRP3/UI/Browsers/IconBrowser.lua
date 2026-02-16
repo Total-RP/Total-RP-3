@@ -493,6 +493,12 @@ function IconBrowserSelectionModel:GetIconInfo(index)
 end
 
 function IconBrowserSelectionModel:EnumerateIcons(options)
+	-- Enumeration over the selection model requires some trickery due to
+	-- our reordering of the icons. First call to the iterator should yield
+	-- the selected icon (if any), and all subsequent calls should then
+	-- invoke the source iterator and transform the index, skipping over the
+	-- selection when we find it.
+
 	local iterator = self.source:EnumerateIcons(options);
 	local hasEnumeratedSelection = (self.selectedIconSourceIndex == nil);
 
