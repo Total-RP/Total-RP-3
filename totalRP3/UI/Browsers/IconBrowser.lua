@@ -274,6 +274,12 @@ function IconBrowserFilterModel:IsApplyingAnyFilter()
 	return self:HasSearchQuery() or self:IsFilteringAnyCategory();
 end
 
+function IconBrowserFilterModel:ClearAllFilters()
+	self.searchQuery = "";
+	self.searchCategories = {};
+	self:RebuildModel();
+end
+
 function IconBrowserFilterModel:ClearSearchQuery()
 	self:SetSearchQuery("");
 end
@@ -623,11 +629,8 @@ function TRP3_IconBrowserMixin:OnLoad()
 end
 
 function TRP3_IconBrowserMixin:OnShow()
-	self.filterModel:ClearSearchQuery();
 	self.SearchBox.Instructions:SetTextColor(0.6, 0.6, 0.6);
-	self.SearchBox:SetText("");
 	self.SearchBox:SetFocus(true);
-	self.Content.ScrollBox:ScrollToBegin();
 	PlaySound(TRP3_InterfaceSounds.BrowserOpen);
 	self.callbacks:Fire("OnOpened");
 end
@@ -657,6 +660,14 @@ end
 function TRP3_IconBrowserMixin:OnIconButtonClicked(button)
 	local iconInfo = button:GetElementData();
 	self.callbacks:Fire("OnIconSelected", iconInfo);
+
+	-- Selecting an icon should reset all filtering state. Canceling out of
+	-- the window doesn't - this is to let people go and find an icon name
+	-- from somewhere else if they want.
+
+	self.filterModel:ClearAllFilters();
+	self.SearchBox:SetText("");
+	self.Content.ScrollBox:ScrollToBegin();
 	PlaySound(TRP3_InterfaceSounds.PopupClose);
 	self:Hide();
 end
