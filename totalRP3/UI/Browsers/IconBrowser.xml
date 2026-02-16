@@ -4,6 +4,7 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="IconBrowserConstants.lua"/>
 	<Include file="IconBrowser.lua"/>
 
 	<AnimationGroup name="TRP3_IconBrowserPulseAnimGroupTemplate" looping="REPEAT" setToFinalAlpha="true" virtual="true">
@@ -187,11 +188,22 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Anchors>
 		<Frames>
 			<Button parentKey="CloseButton" inherits="UIPanelCloseButtonDefaultAnchors"/>
+			<DropdownButton parentKey="FilterDropdown" inherits="WowStyle1FilterDropdownTemplate">
+				<KeyValues>
+					<KeyValue key="menuPoint" value="TOPLEFT" type="string"/>
+					<KeyValue key="menuRelativePoint" value="TOPRIGHT" type="string"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOP" y="-33"/>
+					<Anchor point="RIGHT" x="-12"/>
+				</Anchors>
+			</DropdownButton>
 			<EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" autoFocus="false">
 				<Size x="200" y="22"/>
 				<Anchors>
 					<Anchor point="TOP" y="-30"/>
-					<Anchor point="RIGHT" x="-12"/>
+					<Anchor point="LEFT" x="20"/>
+					<Anchor point="RIGHT" relativeKey="$parent.FilterDropdown" relativePoint="LEFT" x="-10"/>
 				</Anchors>
 			</EditBox>
 			<Frame parentKey="Content">

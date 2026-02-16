@@ -3,6 +3,7 @@
 
 local TRP3_API = select(2, ...);
 local L = TRP3_API.L;
+local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 
 local function SetCustomClassColor(player, field, data)
 	local hexColorString = string.match(data, "^#?(%x%x%x%x%x%x)$");
@@ -16,7 +17,7 @@ local function SetCustomClassColor(player, field, data)
 end
 
 local function SetCustomIcon(player, field, data)
-	local iconIndex = LibStub:GetLibrary("LibRPMedia-1.0"):GetIconIndexByName(data);
+	local iconIndex = LRPM12:GetIconIndexByName(data);
 
 	if iconIndex then
 		player:SetCustomIcon(data);

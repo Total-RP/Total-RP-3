@@ -143,6 +143,7 @@ stds.wow = {
 			},
 		},
 
+		"assertsafe",
 		"date",
 		"floor",
 		"format",
@@ -422,7 +423,7 @@ stds.wow = {
 				"ScaleTo100",
 			},
 		},
-		
+
 		Enum = {
 			fields = {
 				HouseSettingFlags = {

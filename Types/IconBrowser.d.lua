@@ -14,9 +14,9 @@ function AbstractIconBrowserModel:GetIconIndex(name) end
 ---@return TRP3.IconBrowserModelItem? data
 function AbstractIconBrowserModel:GetIconInfo(index) end
 
----@param index integer
----@return string? name
-function AbstractIconBrowserModel:GetIconName(index) end
+---@param options table?
+---@return TRP3.IconModelItemIterator
+function AbstractIconBrowserModel:EnumerateIcons(options) end
 
 ---@param owner TRP3.CallbackOwner
 ---@param event "OnModelUpdated"

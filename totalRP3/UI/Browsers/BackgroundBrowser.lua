@@ -341,11 +341,8 @@ function TRP3_BackgroundBrowserMixin:OnLoad()
 end
 
 function TRP3_BackgroundBrowserMixin:OnShow()
-	self.filterModel:ClearSearchQuery();
 	self.SearchBox.Instructions:SetTextColor(0.6, 0.6, 0.6);
-	self.SearchBox:SetText("");
 	self.SearchBox:SetFocus(true);
-	self.Content.ScrollBox:ScrollToBegin();
 	PlaySound(TRP3_InterfaceSounds.BrowserOpen);
 	self.callbacks:Fire("OnOpened");
 end
@@ -371,6 +368,13 @@ end
 function TRP3_BackgroundBrowserMixin:OnImageButtonClicked(button)
 	local imageInfo = button:GetElementData();
 	self.callbacks:Fire("OnImageSelected", imageInfo);
+
+	-- Selecting a background should reset all filtering state. Canceling
+	-- doesn't for parity with the icon browser.
+
+	self.filterModel:ClearSearchQuery();
+	self.SearchBox:SetText("");
+	self.Content.ScrollBox:ScrollToBegin();
 	PlaySound(TRP3_InterfaceSounds.PopupClose);
 	self:Hide();
 end

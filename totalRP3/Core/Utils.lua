@@ -4,7 +4,7 @@
 ---@type TRP3_API
 local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
-local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
+local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 
 -- TRP3 imports
 local Globals = TRP3_API.globals;
@@ -821,7 +821,10 @@ function Utils.music.getTitle(musicURL)
 	local musicTitle;
 
 	if type(musicURL) == "number" then
-		musicName = LibRPMedia:GetMusicNameByFile(musicURL);
+		local musicInfo = LRPM12:GetMusicInfoByFile(musicURL);
+		if musicInfo then
+			musicName = musicInfo.names[1];
+		end
 	end
 
 	if not musicName then
@@ -834,7 +837,11 @@ end
 
 function Utils.music.convertPathToID(musicURL)
 	assert(musicURL, "Music path can't be nil.")
-	return LibRPMedia:GetMusicFileByName(musicURL);
+	local musicInfo = LRPM12:GetMusicInfoByName(musicURL);
+
+	if musicInfo then
+		return musicInfo.file;
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
