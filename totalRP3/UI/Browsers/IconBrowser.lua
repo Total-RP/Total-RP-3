@@ -2,6 +2,7 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
+local L = TRP3_API.loc;
 
 -- Icon Browser Search Task
 ------------------------------------------------------------------------------
@@ -616,177 +617,9 @@ function TRP3_IconBrowserMixin:OnLoad()
 
 	self.CloseButton:SetScript("OnClick", function() self:OnCloseButtonClicked(); end);
 	self.SearchBox:HookScript("OnTextChanged", TRP3_FunctionUtil.Debounce(0.25, function() self:OnFilterTextChanged(); end));
-
-	local function ApplyCategoryFilter(category)
-		if self.filterModel:IsFilteringCategory(category) then
-			self.filterModel:RemoveCategoryFilter(category);
-		else
-			self.filterModel:AddCategoryFilter(category);
-		end
-	end
-
-	local function IsCategoryFiltered(tag)
-		return self.filterModel:IsFilteringCategory(tag);
-	end
-
-	self.FilterDropdown:SetIsDefaultCallback(function()
-		return not self.filterModel:IsFilteringAnyCategory();
-	end);
-
-	self.FilterDropdown:SetDefaultCallback(function()
-		self.filterModel:ClearCategoryFilters();
-	end);
-
-	self.FilterDropdown:SetupMenu(function(dropdown, rootDescription)
-		local function CreateCategoryCheckbox(parent, title, category)
-			return parent:CreateCheckbox(title, function() return IsCategoryFiltered(category); end, function() ApplyCategoryFilter(category); end);
-		end
-
-		local function AddCategoryRadio(parent, title, category)
-			return parent:CreateRadio(title, function() return IsCategoryFiltered(category); end, function() ApplyCategoryFilter(category); end);
-		end
-
-		local classes = rootDescription:CreateButton("Classes");
-		CreateCategoryCheckbox(classes, TRP3_API.ClassColors.WARRIOR:WrapTextInColorCode("Warrior"), LRPM12.IconCategory.Warrior);
-		CreateCategoryCheckbox(classes, TRP3_API.ClassColors.PALADIN:WrapTextInColorCode("Paladin"), LRPM12.IconCategory.Paladin);
-		CreateCategoryCheckbox(classes, TRP3_API.ClassColors.HUNTER:WrapTextInColorCode("Hunter"), LRPM12.IconCategory.Hunter);
-		CreateCategoryCheckbox(classes, TRP3_API.ClassColors.ROGUE:WrapTextInColorCode("Rogue"), LRPM12.IconCategory.Rogue);
-		CreateCategoryCheckbox(classes, TRP3_API.ClassColors.PRIEST:WrapTextInColorCode("Priest"), LRPM12.IconCategory.Priest);
-		CreateCategoryCheckbox(classes, TRP3_API.ClassColors.DEATHKNIGHT:WrapTextInColorCode("DeathKnight"), LRPM12.IconCategory.DeathKnight);
-		CreateCategoryCheckbox(classes, TRP3_API.ClassColors.SHAMAN:WrapTextInColorCode("Shaman"), LRPM12.IconCategory.Shaman);
-		CreateCategoryCheckbox(classes, TRP3_API.ClassColors.MAGE:WrapTextInColorCode("Mage"), LRPM12.IconCategory.Mage);
-		CreateCategoryCheckbox(classes, TRP3_API.ClassColors.WARLOCK:WrapTextInColorCode("Warlock"), LRPM12.IconCategory.Warlock);
-		CreateCategoryCheckbox(classes, TRP3_API.ClassColors.MONK:WrapTextInColorCode("Monk"), LRPM12.IconCategory.Monk);
-		CreateCategoryCheckbox(classes, TRP3_API.ClassColors.DRUID:WrapTextInColorCode("Druid"), LRPM12.IconCategory.Druid);
-		CreateCategoryCheckbox(classes, TRP3_API.ClassColors.DEMONHUNTER:WrapTextInColorCode("DemonHunter"), LRPM12.IconCategory.DemonHunter);
-		CreateCategoryCheckbox(classes, TRP3_API.ClassColors.EVOKER:WrapTextInColorCode("Evoker"), LRPM12.IconCategory.Evoker);
-
-		local races = rootDescription:CreateButton("Races");
-		races:CreateTitle("Alliance");
-		CreateCategoryCheckbox(races, "Human", LRPM12.IconCategory.Human);
-		CreateCategoryCheckbox(races, "Dwarf", LRPM12.IconCategory.Dwarf);
-		CreateCategoryCheckbox(races, "NightElf", LRPM12.IconCategory.NightElf);
-		CreateCategoryCheckbox(races, "Gnome", LRPM12.IconCategory.Gnome);
-		CreateCategoryCheckbox(races, "Draenei", LRPM12.IconCategory.Draenei);
-		CreateCategoryCheckbox(races, "Worgen", LRPM12.IconCategory.Worgen);
-		CreateCategoryCheckbox(races, "VoidElf", LRPM12.IconCategory.VoidElf);
-		CreateCategoryCheckbox(races, "DarkIronDwarf", LRPM12.IconCategory.DarkIronDwarf);
-		CreateCategoryCheckbox(races, "LightforgedDraenei", LRPM12.IconCategory.LightforgedDraenei);
-		CreateCategoryCheckbox(races, "KulTiran", LRPM12.IconCategory.KulTiran);
-		CreateCategoryCheckbox(races, "Mechagnome", LRPM12.IconCategory.Mechagnome);
-
-		races:CreateTitle("Horde");
-		CreateCategoryCheckbox(races, "Horde", LRPM12.IconCategory.Horde);
-		CreateCategoryCheckbox(races, "Orc", LRPM12.IconCategory.Orc);
-		CreateCategoryCheckbox(races, "Undead", LRPM12.IconCategory.Undead);
-		CreateCategoryCheckbox(races, "Tauren", LRPM12.IconCategory.Tauren);
-		CreateCategoryCheckbox(races, "Troll", LRPM12.IconCategory.Troll);
-		CreateCategoryCheckbox(races, "BloodElf", LRPM12.IconCategory.BloodElf);
-		CreateCategoryCheckbox(races, "Goblin", LRPM12.IconCategory.Goblin);
-		CreateCategoryCheckbox(races, "MagharOrc", LRPM12.IconCategory.MagharOrc);
-		CreateCategoryCheckbox(races, "Nightborne", LRPM12.IconCategory.Nightborne);
-		CreateCategoryCheckbox(races, "HighmountainTauren", LRPM12.IconCategory.HighmountainTauren);
-		CreateCategoryCheckbox(races, "ZandalariTroll", LRPM12.IconCategory.ZandalariTroll);
-		CreateCategoryCheckbox(races, "Vulpera", LRPM12.IconCategory.Vulpera);
-
-		races:CreateTitle("Neutral");
-		CreateCategoryCheckbox(races, "Pandaren", LRPM12.IconCategory.Pandaren);
-		CreateCategoryCheckbox(races, "Dracthyr", LRPM12.IconCategory.Dracthyr);
-		CreateCategoryCheckbox(races, "Earthen", LRPM12.IconCategory.Earthen);
-		CreateCategoryCheckbox(races, "Haranir", LRPM12.IconCategory.Haranir);
-
-		local weapons = rootDescription:CreateButton("Weapons");
-		CreateCategoryCheckbox(weapons, "All Weapons", LRPM12.IconCategory.Weapon);
-		CreateCategoryCheckbox(weapons, "Melee Weapons", LRPM12.IconCategory.MeleeWeapon);
-		CreateCategoryCheckbox(weapons, "Ranged Weapons", LRPM12.IconCategory.RangedWeapon);
-		weapons:CreateDivider();
-		CreateCategoryCheckbox(weapons, "Axe", LRPM12.IconCategory.Axe);
-		CreateCategoryCheckbox(weapons, "Dagger", LRPM12.IconCategory.Dagger);
-		CreateCategoryCheckbox(weapons, "Mace", LRPM12.IconCategory.Mace);
-		CreateCategoryCheckbox(weapons, "Polearm", LRPM12.IconCategory.Polearm);
-		CreateCategoryCheckbox(weapons, "Staff", LRPM12.IconCategory.Staff);
-		CreateCategoryCheckbox(weapons, "Sword", LRPM12.IconCategory.Sword);
-		CreateCategoryCheckbox(weapons, "FistWeapon", LRPM12.IconCategory.FistWeapon);
-		CreateCategoryCheckbox(weapons, "Warglaive", LRPM12.IconCategory.Warglaive);
-		CreateCategoryCheckbox(weapons, "Ammo", LRPM12.IconCategory.Ammo);
-		CreateCategoryCheckbox(weapons, "Bow", LRPM12.IconCategory.Bow);
-		CreateCategoryCheckbox(weapons, "Crossbow", LRPM12.IconCategory.Crossbow);
-		CreateCategoryCheckbox(weapons, "Gun", LRPM12.IconCategory.Gun);
-		CreateCategoryCheckbox(weapons, "Thrown", LRPM12.IconCategory.Thrown);
-		CreateCategoryCheckbox(weapons, "Wand", LRPM12.IconCategory.Wand);
-		CreateCategoryCheckbox(weapons, "OffHand", LRPM12.IconCategory.OffHand);
-		CreateCategoryCheckbox(weapons, "Shield", LRPM12.IconCategory.Shield);
-
-		local armor = rootDescription:CreateButton("Armor");
-		CreateCategoryCheckbox(armor, "All Armor", LRPM12.IconCategory.Armor);
-		CreateCategoryCheckbox(armor, "Cloth Armor", LRPM12.IconCategory.ClothArmor);
-		CreateCategoryCheckbox(armor, "Leather Armor", LRPM12.IconCategory.LeatherArmor);
-		CreateCategoryCheckbox(armor, "Mail Armor", LRPM12.IconCategory.MailArmor);
-		CreateCategoryCheckbox(armor, "Plate Armor", LRPM12.IconCategory.PlateArmor);
-		armor:CreateDivider();
-		CreateCategoryCheckbox(armor, "Back", LRPM12.IconCategory.Back);
-		CreateCategoryCheckbox(armor, "Chest", LRPM12.IconCategory.Chest);
-		CreateCategoryCheckbox(armor, "Feet", LRPM12.IconCategory.Feet);
-		CreateCategoryCheckbox(armor, "Hands", LRPM12.IconCategory.Hands);
-		CreateCategoryCheckbox(armor, "Head", LRPM12.IconCategory.Head);
-		CreateCategoryCheckbox(armor, "Legs", LRPM12.IconCategory.Legs);
-		CreateCategoryCheckbox(armor, "Shirt", LRPM12.IconCategory.Shirt);
-		CreateCategoryCheckbox(armor, "Shoulder", LRPM12.IconCategory.Shoulder);
-		CreateCategoryCheckbox(armor, "Tabard", LRPM12.IconCategory.Tabard);
-		CreateCategoryCheckbox(armor, "Waist", LRPM12.IconCategory.Waist);
-		CreateCategoryCheckbox(armor, "Wrist", LRPM12.IconCategory.Wrist);
-		CreateCategoryCheckbox(armor, "Jewelry", LRPM12.IconCategory.Jewelry);
-		CreateCategoryCheckbox(armor, "Necklace", LRPM12.IconCategory.Necklace);
-		CreateCategoryCheckbox(armor, "Ring", LRPM12.IconCategory.Ring);
-		CreateCategoryCheckbox(armor, "Trinket", LRPM12.IconCategory.Trinket);
-
-		local magic = rootDescription:CreateButton("Magic Schools");
-		CreateCategoryCheckbox(magic, "Arcane", LRPM12.IconCategory.Arcane);
-		CreateCategoryCheckbox(magic, "Fire", LRPM12.IconCategory.Fire);
-		CreateCategoryCheckbox(magic, "Frost", LRPM12.IconCategory.Frost);
-		CreateCategoryCheckbox(magic, "Holy", LRPM12.IconCategory.Holy);
-		CreateCategoryCheckbox(magic, "Nature", LRPM12.IconCategory.Nature);
-		CreateCategoryCheckbox(magic, "Shadow", LRPM12.IconCategory.Shadow);
-		CreateCategoryCheckbox(magic, "Fel", LRPM12.IconCategory.Fel);
-		CreateCategoryCheckbox(magic, "Void", LRPM12.IconCategory.Void);
-
-		local factions = rootDescription:CreateButton("Factions");
-		CreateCategoryCheckbox(factions, "All Factions", LRPM12.IconCategory.Faction);
-		CreateCategoryCheckbox(factions, "Alliance", LRPM12.IconCategory.Alliance);
-		CreateCategoryCheckbox(factions, "Horde", LRPM12.IconCategory.Horde);
-
-		local professions = rootDescription:CreateButton("Professions");
-		CreateCategoryCheckbox(professions, "All Professions", LRPM12.IconCategory.Professions);
-		CreateCategoryCheckbox(professions, "Alchemy", LRPM12.IconCategory.Alchemy);
-		CreateCategoryCheckbox(professions, "Archaeology", LRPM12.IconCategory.Archaeology);
-		CreateCategoryCheckbox(professions, "Blacksmithing", LRPM12.IconCategory.Blacksmithing);
-		CreateCategoryCheckbox(professions, "Cooking", LRPM12.IconCategory.Cooking);
-		CreateCategoryCheckbox(professions, "Enchanting", LRPM12.IconCategory.Enchanting);
-		CreateCategoryCheckbox(professions, "Engineering", LRPM12.IconCategory.Engineering);
-		CreateCategoryCheckbox(professions, "FirstAid", LRPM12.IconCategory.FirstAid);
-		CreateCategoryCheckbox(professions, "Herbalism", LRPM12.IconCategory.Herbalism);
-		CreateCategoryCheckbox(professions, "Inscription", LRPM12.IconCategory.Inscription);
-		CreateCategoryCheckbox(professions, "Jewelcrafting", LRPM12.IconCategory.Jewelcrafting);
-		CreateCategoryCheckbox(professions, "Leatherworking", LRPM12.IconCategory.Leatherworking);
-		CreateCategoryCheckbox(professions, "Mining", LRPM12.IconCategory.Mining);
-		CreateCategoryCheckbox(professions, "Skinning", LRPM12.IconCategory.Skinning);
-		CreateCategoryCheckbox(professions, "Tailoring", LRPM12.IconCategory.Tailoring);
-		CreateCategoryCheckbox(professions, "Fishing", LRPM12.IconCategory.Fishing);
-
-		local items = rootDescription:CreateButton("Items");
-		CreateCategoryCheckbox(items, "All Items", LRPM12.IconCategory.Item);
-		CreateCategoryCheckbox(items, "Mount", LRPM12.IconCategory.Mount);
-		CreateCategoryCheckbox(items, "Pet", LRPM12.IconCategory.Pet);
-		CreateCategoryCheckbox(items, "TradeGoods", LRPM12.IconCategory.TradeGoods);
-		CreateCategoryCheckbox(items, "Potion", LRPM12.IconCategory.Potion);
-		CreateCategoryCheckbox(items, "Food", LRPM12.IconCategory.Food);
-		CreateCategoryCheckbox(items, "Drink", LRPM12.IconCategory.Drink);
-
-		rootDescription:CreateDivider();
-		CreateCategoryCheckbox(rootDescription, "Spells and Abilities", LRPM12.IconCategory.Ability);
-		CreateCategoryCheckbox(rootDescription, "Achievements", LRPM12.IconCategory.Achievement);
-		CreateCategoryCheckbox(rootDescription, "Housing", LRPM12.IconCategory.Housing);
-	end);
+	self.FilterDropdown:SetIsDefaultCallback(function() return not self.filterModel:IsFilteringAnyCategory(); end);
+	self.FilterDropdown:SetDefaultCallback(function() self.filterModel:ClearCategoryFilters(); end);
+	self.FilterDropdown:SetupMenu(function(dropdown, rootDescription) self:SetupFilterDropdown(dropdown, rootDescription); end);
 end
 
 function TRP3_IconBrowserMixin:OnShow()
@@ -826,6 +659,228 @@ end
 
 function TRP3_IconBrowserMixin:SetSelectedIcon(iconName)
 	self.selectionModel:SetSelectedIcon(iconName);
+end
+
+function TRP3_IconBrowserMixin:SetupFilterDropdown(_dropdown, rootDescription)
+	local function CreateCategoryCheckbox(parent, title, category)
+		local function ToggleCategorySelection()
+			if self.filterModel:IsFilteringCategory(category) then
+				self.filterModel:RemoveCategoryFilter(category);
+			else
+				self.filterModel:AddCategoryFilter(category);
+			end
+		end
+
+		local function IsCategorySelected()
+			return self.filterModel:IsFilteringCategory(category);
+		end
+
+		if not assertsafe(category, "attempted to create checkbox for an unknown filter category") then
+			return;
+		end
+
+		return parent:CreateCheckbox(title, IsCategorySelected, ToggleCategorySelection);
+	end
+
+	local function CreateClassMenu(parent)
+		-- Ordered by the same nonsense Blizzard uses for all their class dropdowns (class IDs).
+		local menu = parent:CreateButton(L.ICON_CATEGORY_CLASSES);
+		CreateCategoryCheckbox(menu, TRP3_API.ClassColors.WARRIOR:WrapTextInColorCode(L.CM_CLASS_WARRIOR), LRPM12.IconCategory.Warrior);
+		CreateCategoryCheckbox(menu, TRP3_API.ClassColors.PALADIN:WrapTextInColorCode(L.CM_CLASS_PALADIN), LRPM12.IconCategory.Paladin);
+		CreateCategoryCheckbox(menu, TRP3_API.ClassColors.HUNTER:WrapTextInColorCode(L.CM_CLASS_HUNTER), LRPM12.IconCategory.Hunter);
+		CreateCategoryCheckbox(menu, TRP3_API.ClassColors.ROGUE:WrapTextInColorCode(L.CM_CLASS_ROGUE), LRPM12.IconCategory.Rogue);
+		CreateCategoryCheckbox(menu, TRP3_API.ClassColors.PRIEST:WrapTextInColorCode(L.CM_CLASS_PRIEST), LRPM12.IconCategory.Priest);
+		CreateCategoryCheckbox(menu, TRP3_API.ClassColors.DEATHKNIGHT:WrapTextInColorCode(L.CM_CLASS_DEATHKNIGHT), LRPM12.IconCategory.DeathKnight);
+		CreateCategoryCheckbox(menu, TRP3_API.ClassColors.SHAMAN:WrapTextInColorCode(L.CM_CLASS_SHAMAN), LRPM12.IconCategory.Shaman);
+		CreateCategoryCheckbox(menu, TRP3_API.ClassColors.MAGE:WrapTextInColorCode(L.CM_CLASS_MAGE), LRPM12.IconCategory.Mage);
+		CreateCategoryCheckbox(menu, TRP3_API.ClassColors.WARLOCK:WrapTextInColorCode(L.CM_CLASS_WARLOCK), LRPM12.IconCategory.Warlock);
+		CreateCategoryCheckbox(menu, TRP3_API.ClassColors.MONK:WrapTextInColorCode(L.CM_CLASS_MONK), LRPM12.IconCategory.Monk);
+		CreateCategoryCheckbox(menu, TRP3_API.ClassColors.DRUID:WrapTextInColorCode(L.CM_CLASS_DRUID), LRPM12.IconCategory.Druid);
+		CreateCategoryCheckbox(menu, TRP3_API.ClassColors.DEMONHUNTER:WrapTextInColorCode(L.CM_CLASS_DEMONHUNTER), LRPM12.IconCategory.DemonHunter);
+		CreateCategoryCheckbox(menu, TRP3_API.ClassColors.EVOKER:WrapTextInColorCode(L.CM_CLASS_EVOKER), LRPM12.IconCategory.Evoker);
+		return menu;
+	end
+
+	local function CreateAllianceRaceMenu(parent)
+		-- Ordered by appearance on character creation.
+		parent:CreateTitle(L.ICON_CATEGORY_ALLIANCE);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_HUMAN, LRPM12.IconCategory.Human);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_DWARF, LRPM12.IconCategory.Dwarf);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_NIGHT_ELF, LRPM12.IconCategory.NightElf);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_GNOME, LRPM12.IconCategory.Gnome);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_DRAENEI, LRPM12.IconCategory.Draenei);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_WORGEN, LRPM12.IconCategory.Worgen);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_VOID_ELF, LRPM12.IconCategory.VoidElf);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_LIGHTFORGED_DRAENEI, LRPM12.IconCategory.LightforgedDraenei);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_DARK_IRON_DWARF, LRPM12.IconCategory.DarkIronDwarf);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_KUL_TIRAN, LRPM12.IconCategory.KulTiran);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_MECHAGNOME, LRPM12.IconCategory.Mechagnome);
+	end
+
+	local function CreateHordeRaceMenu(parent)
+		-- Ordered by appearance on character creation.
+		parent:CreateTitle(L.ICON_CATEGORY_HORDE);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_ORC, LRPM12.IconCategory.Orc);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_UNDEAD, LRPM12.IconCategory.Undead);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_TAUREN, LRPM12.IconCategory.Tauren);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_TROLL, LRPM12.IconCategory.Troll);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_BLOOD_ELF, LRPM12.IconCategory.BloodElf);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_GOBLIN, LRPM12.IconCategory.Goblin);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_NIGHTBORNE, LRPM12.IconCategory.Nightborne);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_HIGHMOUNTAIN_TAUREN, LRPM12.IconCategory.HighmountainTauren);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_MAGHAR_ORC, LRPM12.IconCategory.MagharOrc);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_ZANDALARI_TROLL, LRPM12.IconCategory.ZandalariTroll);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_VULPERA, LRPM12.IconCategory.Vulpera);
+	end
+
+	local function CreateNeutralRaceMenu(parent)
+		-- Ordered by vibe.
+		parent:CreateTitle(L.ICON_CATEGORY_NEUTRAL);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_PANDAREN, LRPM12.IconCategory.Pandaren);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_DRACTHYR, LRPM12.IconCategory.Dracthyr);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_EARTHEN, LRPM12.IconCategory.Earthen);
+		CreateCategoryCheckbox(parent, L.ICON_CATEGORY_HARANIR, LRPM12.IconCategory.Haranir);
+	end
+
+	local function CreateRaceMenu(parent)
+		local menu = parent:CreateButton(L.ICON_CATEGORY_RACES);
+		local faction = UnitFactionGroup("player");
+
+		if faction == "Alliance" then
+			CreateAllianceRaceMenu(menu);
+			CreateNeutralRaceMenu(menu);
+			CreateHordeRaceMenu(menu);
+		elseif faction == "Horde" then
+			CreateHordeRaceMenu(menu);
+			CreateNeutralRaceMenu(menu);
+			CreateAllianceRaceMenu(menu);
+		else
+			CreateNeutralRaceMenu(menu);
+			CreateAllianceRaceMenu(menu);
+			CreateHordeRaceMenu(menu);
+		end
+
+		return menu;
+	end
+
+	local function CreateWeaponMenu(parent)
+		local menu = parent:CreateButton(L.ICON_CATEGORY_WEAPONS);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_ALL_WEAPONS, LRPM12.IconCategory.Weapon);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_MELEE_WEAPONS, LRPM12.IconCategory.MeleeWeapon);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_RANGED_WEAPONS, LRPM12.IconCategory.RangedWeapon);
+		menu:CreateDivider();
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_AMMO, LRPM12.IconCategory.Ammo);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_AXE, LRPM12.IconCategory.Axe);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_BOW, LRPM12.IconCategory.Bow);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_CROSSBOW, LRPM12.IconCategory.Crossbow);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_DAGGER, LRPM12.IconCategory.Dagger);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_FIST_WEAPON, LRPM12.IconCategory.FistWeapon);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_GUN, LRPM12.IconCategory.Gun);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_MACE, LRPM12.IconCategory.Mace);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_POLEARM, LRPM12.IconCategory.Polearm);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_STAFF, LRPM12.IconCategory.Staff);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_SWORD, LRPM12.IconCategory.Sword);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_THROWN, LRPM12.IconCategory.Thrown);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_WAND, LRPM12.IconCategory.Wand);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_WARGLAIVE, LRPM12.IconCategory.Warglaive);
+		return menu;
+	end
+
+	local function CreateArmorMenu(parent)
+		local menu = parent:CreateButton(L.ICON_CATEGORY_ARMOR);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_ALL_ARMOR, LRPM12.IconCategory.Armor);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_CLOTH_ARMOR, LRPM12.IconCategory.ClothArmor);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_LEATHER_ARMOR, LRPM12.IconCategory.LeatherArmor);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_MAIL_ARMOR, LRPM12.IconCategory.MailArmor);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_PLATE_ARMOR, LRPM12.IconCategory.PlateArmor);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_JEWELRY, LRPM12.IconCategory.Jewelry);
+		menu:CreateDivider();
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_BACK, LRPM12.IconCategory.Back);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_CHEST, LRPM12.IconCategory.Chest);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_FEET, LRPM12.IconCategory.Feet);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_HANDS, LRPM12.IconCategory.Hands);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_HEAD, LRPM12.IconCategory.Head);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_LEGS, LRPM12.IconCategory.Legs);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_NECKLACE, LRPM12.IconCategory.Necklace);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_OFF_HAND, LRPM12.IconCategory.OffHand);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_RING, LRPM12.IconCategory.Ring);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_SHIELD, LRPM12.IconCategory.Shield);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_SHIRT, LRPM12.IconCategory.Shirt);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_SHOULDER, LRPM12.IconCategory.Shoulder);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_TABARD, LRPM12.IconCategory.Tabard);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_TRINKET, LRPM12.IconCategory.Trinket);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_WAIST, LRPM12.IconCategory.Waist);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_WRIST, LRPM12.IconCategory.Wrist);
+		return menu;
+	end
+
+	local function CreateMagicMenu(parent)
+		local menu = parent:CreateButton(L.ICON_CATEGORY_MAGIC_SCHOOLS);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_ARCANE, LRPM12.IconCategory.Arcane);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_FEL, LRPM12.IconCategory.Fel);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_FIRE, LRPM12.IconCategory.Fire);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_FROST, LRPM12.IconCategory.Frost);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_HOLY, LRPM12.IconCategory.Holy);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_NATURE, LRPM12.IconCategory.Nature);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_SHADOW, LRPM12.IconCategory.Shadow);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_VOID, LRPM12.IconCategory.Void);
+		return menu;
+	end
+
+	local function CreateFactionMenu(parent)
+		local menu = parent:CreateButton(L.ICON_CATEGORY_FACTIONS);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_ALL_FACTIONS, LRPM12.IconCategory.Faction);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_ALLIANCE, LRPM12.IconCategory.Alliance);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_HORDE, LRPM12.IconCategory.Horde);
+		return menu;
+	end
+
+	local function CreateProfessionMenu(parent)
+		local menu = parent:CreateButton(L.ICON_CATEGORY_PROFESSIONS);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_ALL_PROFESSIONS, LRPM12.IconCategory.Professions);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_ALCHEMY, LRPM12.IconCategory.Alchemy);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_ARCHAEOLOGY, LRPM12.IconCategory.Archaeology);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_BLACKSMITHING, LRPM12.IconCategory.Blacksmithing);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_COOKING, LRPM12.IconCategory.Cooking);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_ENCHANTING, LRPM12.IconCategory.Enchanting);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_ENGINEERING, LRPM12.IconCategory.Engineering);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_FIRST_AID, LRPM12.IconCategory.FirstAid);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_FISHING, LRPM12.IconCategory.Fishing);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_HERBALISM, LRPM12.IconCategory.Herbalism);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_INSCRIPTION, LRPM12.IconCategory.Inscription);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_JEWELCRAFTING, LRPM12.IconCategory.Jewelcrafting);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_LEATHERWORKING, LRPM12.IconCategory.Leatherworking);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_MINING, LRPM12.IconCategory.Mining);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_SKINNING, LRPM12.IconCategory.Skinning);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_TAILORING, LRPM12.IconCategory.Tailoring);
+		return menu;
+	end
+
+	local function CreateItemMenu(parent)
+		local menu = parent:CreateButton(L.ICON_CATEGORY_ITEMS);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_ALL_ITEMS, LRPM12.IconCategory.Item);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_DRINK, LRPM12.IconCategory.Drink);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_FOOD, LRPM12.IconCategory.Food);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_MOUNT, LRPM12.IconCategory.Mount);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_PET, LRPM12.IconCategory.Pet);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_POTION, LRPM12.IconCategory.Potion);
+		CreateCategoryCheckbox(menu, L.ICON_CATEGORY_TRADE_GOODS, LRPM12.IconCategory.TradeGoods);
+		return menu;
+	end
+
+	CreateCategoryCheckbox(rootDescription, L.ICON_CATEGORY_SPELLS_AND_ABILITIES, LRPM12.IconCategory.Ability);
+	CreateCategoryCheckbox(rootDescription, L.ICON_CATEGORY_ACHIEVEMENTS, LRPM12.IconCategory.Achievement);
+	CreateCategoryCheckbox(rootDescription, L.ICON_CATEGORY_HOUSING, LRPM12.IconCategory.Housing);
+	rootDescription:CreateDivider();
+
+	CreateClassMenu(rootDescription);
+	CreateRaceMenu(rootDescription);
+	CreateWeaponMenu(rootDescription);
+	CreateArmorMenu(rootDescription);
+	CreateMagicMenu(rootDescription);
+	CreateFactionMenu(rootDescription);
+	CreateProfessionMenu(rootDescription);
+	CreateItemMenu(rootDescription);
 end
 
 TRP3_IconBrowserButtonMixin = {};
