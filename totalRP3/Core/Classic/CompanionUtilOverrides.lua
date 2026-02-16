@@ -1,16 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
--- This should be converted to an [AllowLoadGameType ...] directive when supported
--- on all clients.
---
--- While the collections journal wasn't introduced until Mists, it was added
--- into Cataclysm and then Wrath (CN) as part of Classic.
-
-if LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_WRATH_OF_THE_LICH_KING then
-	return;
-end
-
 local cachedSummonedMountID = nil;
 local staticCompanionPetsByID = {};
 local staticCompanionPetsByCreatureID = {};

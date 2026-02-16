@@ -153,27 +153,6 @@ StaticPopupDialogs["TRP3_INPUT_NUMBER"] = {
 	hasEditBox = true,
 };
 
-
----@type Frame
-local CopyTextPopup = TRP3_StaticPopUpCopyDropdown;
-CopyTextPopup.Button.Text:SetText(CLOSE);
-Ellyb.EditBoxes.makeReadOnly(CopyTextPopup.CopyText);
-Ellyb.EditBoxes.selectAllTextOnFocus(CopyTextPopup.CopyText);
-Ellyb.EditBoxes.looseFocusOnEscape(CopyTextPopup.CopyText);
--- Clear global variable
-_G["TRP3_StaticPopUpCopyDropdown"] = nil;
-
-CopyTextPopup.CopyText:HookScript("OnEnterPressed",	function() CopyTextPopup:Hide() end);
-CopyTextPopup.CopyText:HookScript("OnEscapePressed", function() CopyTextPopup:Hide() end);
-CopyTextPopup.CopyText:HookScript("OnKeyDown", function(_, key)
-	if key == "C" and IsControlKeyDown() then
-		local systemInfo = ChatTypeInfo["SYSTEM"];
-		UIErrorsFrame:AddMessage(loc.COPY_SYSTEM_MESSAGE, systemInfo.r, systemInfo.g, systemInfo.b);
-		PlaySound(TRP3_InterfaceSounds.PopupClose);
-		CopyTextPopup:Hide();
-	end
-end);
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Static popups methods
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -257,6 +236,31 @@ function TRP3_API.popup.showNumberInputPopup(text, onAccept, onCancel, default)
 	end
 end
 
+local function GetOrCreateCopyTextPopup()
+	local popup = TRP3_StaticPopUpCopyDropdown;
+
+	if not popup then
+		popup = CreateFrame("Frame", "TRP3_StaticPopUpCopyDropdown", UIParent, "TRP3_StaticPopUpCopyDropdownTemplate");
+		popup.Button.Text:SetText(CLOSE);
+		Ellyb.EditBoxes.makeReadOnly(popup.CopyText);
+		Ellyb.EditBoxes.selectAllTextOnFocus(popup.CopyText);
+		Ellyb.EditBoxes.looseFocusOnEscape(popup.CopyText);
+
+		popup.CopyText:HookScript("OnEnterPressed",	function() popup:Hide() end);
+		popup.CopyText:HookScript("OnEscapePressed", function() popup:Hide() end);
+		popup.CopyText:HookScript("OnKeyDown", function(_, key)
+			if key == "C" and IsControlKeyDown() then
+				local systemInfo = ChatTypeInfo["SYSTEM"];
+				UIErrorsFrame:AddMessage(loc.COPY_SYSTEM_MESSAGE, systemInfo.r, systemInfo.g, systemInfo.b);
+				PlaySound(TRP3_InterfaceSounds.PopupClose);
+				popup:Hide();
+			end
+		end);
+	end
+
+	return popup;
+end
+
 --- Open a popup with an autofocused text field to let the user copy the a text selected via dropdown
 ---@param copyTexts table The text we want to let the user copy
 ---@param customText string A custom text to display, instead of the default hint to copy the URL
@@ -273,25 +277,26 @@ function TRP3_API.popup.showCopyDropdownPopup(copyTexts, customText, customShort
 	local pasteShortcut = TRP3_API.FormatShortcut("CTRL-V", TRP3_API.ShortcutType.System);
 
 	popupText = popupText .. customShortcutInstructions:format(TRP3_API.Colors.Orange(copyShortcut), TRP3_API.Colors.Orange(pasteShortcut));
-	CopyTextPopup.Text:SetText(popupText);
-	CopyTextPopup.CopyText:SetText(copyTexts[1]);
+	local popup = GetOrCreateCopyTextPopup();
+	popup.Text:SetText(popupText);
+	popup.CopyText:SetText(copyTexts[1]);
 	if #copyTexts > 1 then
-		CopyTextPopup.DropdownButton:Show();
+		popup.DropdownButton:Show();
 		local copyTextsTable = {};
 		for i, text in ipairs(copyTexts) do
 			copyTextsTable[i] = {text, text};
 		end
-		TRP3_API.ui.listbox.setupDropDownMenu(CopyTextPopup.DropdownButton, copyTextsTable, function(copyText)
-			CopyTextPopup.CopyText:SetText(copyText);
-			CopyTextPopup.CopyText:SetFocus();
-			CopyTextPopup.CopyText:HighlightText();
+		TRP3_API.ui.listbox.setupDropDownMenu(popup.DropdownButton, copyTextsTable, function(copyText)
+			popup.CopyText:SetText(copyText);
+			popup.CopyText:SetFocus();
+			popup.CopyText:HighlightText();
 		end, 0, false, false);
 	else
-		CopyTextPopup.DropdownButton:Hide();
+		popup.DropdownButton:Hide();
 	end
-	CopyTextPopup:SetHeight(120 + CopyTextPopup.Text:GetHeight());
-	CopyTextPopup:Show();
-	CopyTextPopup.CopyText:SetFocus();
+	popup:SetHeight(120 + popup.Text:GetHeight());
+	popup:Show();
+	popup.CopyText:SetFocus();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

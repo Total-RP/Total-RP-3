@@ -5,27 +5,8 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
-	<Include file="Backdrop.xml"/>
-	<Include file="LocalizedText.xml"/>
-	<Include file="ScrollingEditBox.xml"/>
-	<Include file="FocusRegion.xml"/>
-	<Include file="GroupBox.xml"/>
-	<Include file="TabSystem.xml"/>
-	<Include file="RegionResizeTemplate.xml"/>
-	<Include file="FontUtil.lua"/>
-	<Include file="TextUtil.lua"/>
-	<Include file="ColorSwatch.xml"/>
-	<Include file="RefreshSpinner.xml"/>
-	<Include file="Tooltip\Tooltip.xml"/>
-	<Include file="Widgets.lua"/>
-	<Include file="Menu\Menu.xml"/>
-	<Include file="IconTemplates.xml"/>
-	<Include file="Sidebar\Sidebar.xml"/>
-	<Include file="HTML\HTML.xml"/>
-	<Include file="Scroll\Scroll.xml"/>
-	<Include file="ProfileManager\ProfileManager.xml"/>
-
 	<GameTooltip name="TRP3_TooltipTemplate" mixin="TRP3_TooltipMixin" inherits="GameTooltipTemplate" virtual="true"/>
+	<GameTooltip name="TRP3_MainTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="TRP3_TooltipTemplate"/>
 
 	<!-- Common close button  -->
 	<Button name="TRP3_CloseButton" inherits="UIPanelCloseButton" virtual="true">
@@ -894,7 +875,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_StaticPopUpCopyDropdown" hidden="true" parent="UIParent" frameStrata="FULLSCREEN_DIALOG" enableMouse="true">
+	<Frame name="TRP3_StaticPopUpCopyDropdownTemplate" hidden="true" frameStrata="FULLSCREEN_DIALOG" enableMouse="true" virtual="true">
 		<Anchors>
 			<Anchor point="CENTER" y="30" />
 		</Anchors>
@@ -1070,4 +1051,20 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</EditBox>
 
 	<EditBox name="TRP3_EscapeSanitizedEditBoxTemplate" mixin="TRP3_EscapeSanitizedEditBoxMixin" virtual="true"/>
+
+	<Frame name="TRP3_ResizeShadowFrame" parent="UIParent" frameStrata="FULLSCREEN" hidden="true" resizable="true" mixin="TRP3_ResizeShadowFrameMixin" inherits="TRP3_TooltipBackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="text" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+					<Color b="1.0" r="1.0" g="1.0"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnUpdate method="OnUpdate"/>
+		</Scripts>
+	</Frame>
 </Ui>

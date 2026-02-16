@@ -365,3 +365,9 @@ end
 function TRP3_EscapeSanitizedEditBoxMixin:SetText(text)
 	SetEditBoxTextUnhooked(self, (string.gsub(text, "|", "||")));
 end
+
+TRP3_ResizeShadowFrameMixin = {};
+
+function TRP3_ResizeShadowFrameMixin:OnUpdate()
+	self.text:SetText(string.format("|cnGREEN_FONT_COLOR:%d x %d|r", self:GetSize()));
+end
