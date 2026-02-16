@@ -138,7 +138,7 @@ end
 ---@field atlas TRP3.AtlasElementID?
 ---@field selected boolean
 
----@alias TRP3.IconModelItemIterator fun(): (integer, TRP3.IconBrowserModelItem)?
+---@alias TRP3.IconModelItemIterator fun(): integer?, TRP3.IconBrowserModelItem
 ---@alias TRP3.IconBrowserCategorySelections { [integer]: boolean }
 
 --- IconBrowserModel is a basic model that sources icons from LibRPMedia.
@@ -237,7 +237,21 @@ function IconBrowserFilterModel:GetIconInfo(proxyIndex)
 end
 
 function IconBrowserFilterModel:EnumerateIcons(options)
-	return self.source:EnumerateIcons(options);
+	local iterator = self.source:EnumerateIcons(options);
+
+	local function GetNextIcon()
+		local sourceIndex, iconInfo = iterator();
+
+		if sourceIndex then
+			local proxyIndex = self:GetProxyIndex(sourceIndex);
+
+			if proxyIndex then
+				return proxyIndex, iconInfo;
+			end
+		end
+	end
+
+	return GetNextIcon;
 end
 
 function IconBrowserFilterModel:GetSourceModel()
@@ -400,9 +414,9 @@ function IconBrowserFilterModel:RebuildModel()
 		categoryPredicate = LRPM12:GenerateIconCategoryPredicate(GetKeysArray(self.searchCategories));
 	end
 
-	---@param iconIndex integer
+	---@param _proxyIndex integer
 	---@param iconInfo TRP3.IconBrowserModelItem
-	local function DoesIconMatchFilters(iconIndex, iconInfo)
+	local function DoesIconMatchFilters(_proxyIndex, iconInfo)
 		local iconName = TRP3_StringUtil.GenerateSearchableString(iconInfo.name);
 		local offset = 1;
 		local plain = true;
@@ -411,7 +425,9 @@ function IconBrowserFilterModel:RebuildModel()
 			return false;
 		end
 
-		if categoryPredicate ~= nil and not categoryPredicate(iconIndex) then
+		-- The category predicate requires the raw index of the icon from the
+		-- source-most model, not the proxy index that we're supplied.
+		if categoryPredicate ~= nil and not categoryPredicate(iconInfo.index) then
 			return false;
 		end
 
@@ -477,7 +493,36 @@ function IconBrowserSelectionModel:GetIconInfo(index)
 end
 
 function IconBrowserSelectionModel:EnumerateIcons(options)
-	return self.source:EnumerateIcons(options);
+	local iterator = self.source:EnumerateIcons(options);
+	local hasEnumeratedSelection = (self.selectedIconSourceIndex == nil);
+
+	local function GetNextIcon()
+		local sourceIndex;
+		local proxyIndex;
+		local iconInfo;
+
+		if not hasEnumeratedSelection then
+			proxyIndex = 1;
+			iconInfo = self:GetIconInfo(proxyIndex);
+			hasEnumeratedSelection = true;
+		else
+			sourceIndex, iconInfo = iterator();
+
+			if sourceIndex == self.selectedIconSourceIndex then
+				sourceIndex, iconInfo = iterator();
+			end
+
+			if sourceIndex ~= nil then
+				proxyIndex = self:GetProxyIndex(sourceIndex);
+			end
+		end
+
+		if proxyIndex ~= nil then
+			return proxyIndex, iconInfo;
+		end
+	end
+
+	return GetNextIcon;
 end
 
 function IconBrowserSelectionModel:GetSourceModel()
