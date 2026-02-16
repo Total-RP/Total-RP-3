@@ -33,6 +33,7 @@ local LANGUAGES_ICONS = {
 	[181] = Icon(TRP3_InterfaceIcons.LanguageShalassian), -- Shalassian
 	[285] = Icon(TRP3_InterfaceIcons.LanguageVulpera), -- Vulpera
 	[9] = Icon(TRP3_InterfaceIcons.LanguageTitan), -- Titan (Earthen)
+	[309] = Icon(TRP3_InterfaceIcons.LanguageHarani), -- Hara'ni
 
 	-- Funsies
 	[37] = Icon(TRP3_InterfaceIcons.LanguageGnomishBinary), -- Gnome binary (Brewfest beer)
