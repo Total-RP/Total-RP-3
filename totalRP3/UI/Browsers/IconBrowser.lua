@@ -1,7 +1,7 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
+local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 
 -- Icon Browser Search Task
 ------------------------------------------------------------------------------
@@ -14,6 +14,8 @@ local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
 ---@field searched integer
 ---@field total integer
 
+---@alias TRP3.IconBrowserSearchPredicate fun(iconIndex: integer, iconInfo: TRP3.IconBrowserModelItem): boolean)
+
 --- IconBrowserSearchTask is a single-shot object that performs an
 --- asynchronous name-based search against a model to provide a filtered
 --- list of icon indices.
@@ -22,28 +24,28 @@ local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
 ---@field private callbacks TRP3.CallbackDispatcher
 ---@field private state "pending" | "running" | "finished"
 ---@field private ticker unknown
----@field private model TRP3.AbstractIconBrowserModel
----@field private query string
+---@field private predicate TRP3.IconBrowserSearchPredicate
 ---@field private found integer
 ---@field private searched integer
+---@field private iterator TRP3.IconModelItemIterator
 ---@field private total integer
 ---@field private step integer
 ---@field private results integer[]
 local IconBrowserSearchTask = {};
 
----@param query string
+---@param predicate TRP3.IconBrowserSearchPredicate
 ---@param model TRP3.AbstractIconBrowserModel
 ---@protected
-function IconBrowserSearchTask:__init(query, tags, model)
+function IconBrowserSearchTask:__init(predicate, model)
 	self.callbacks = TRP3_API.InitCallbackRegistry(self);
 	self.state = "pending";
 	self.ticker = nil;
-	self.model = model;
-	self.query = query;
-	self.tags = tags;
+	self.predicate = predicate;
 	self.found = 0;
 	self.searched = 0;
+	self.iterator = model:EnumerateIcons({ reuseTable = {} });
 	self.total = model:GetIconCount();
+
 	-- On small data sets do only 5% of the set per tick to avoid UI flicker.
 	self.step = math.min(500, math.ceil(model:GetIconCount() / 20));
 	self.results = {};
@@ -67,10 +69,6 @@ function IconBrowserSearchTask:Finish()
 	self.callbacks:Fire("OnStateChanged", self.state);
 end
 
-function IconBrowserSearchTask:GetQuery()
-	return self.query;
-end
-
 ---@return TRP3.IconBrowserSearchProgress
 function IconBrowserSearchTask:GetProgress()
 	return { found = self.found, searched = self.searched, total = self.total };
@@ -86,31 +84,32 @@ end
 
 ---@private
 function IconBrowserSearchTask:OnUpdate()
-	local query = self.query;
-	local model = self.model;
+	local predicate = self.predicate;
 	local found = self.found;
 	local results = self.results;
 
-	local i = self.searched + 1;
-	local j = math.min(self.searched + self.step, self.total);
+	local visited = self.searched;
+	local limit = math.min(self.searched + self.step, self.total);
 
-	for iconIndex = i, j do
-		local iconName = TRP3_StringUtil.GenerateSearchableString(model:GetIconName(iconIndex));
-		local offset = 1;
-		local plain = true;
-
-		if iconName and LRPM12:IconHack(iconIndex, self.tags) and string.find(iconName, query, offset, plain) then
+	for iconIndex, iconInfo in self.iterator do
+		if predicate(iconIndex, iconInfo) then
 			found = found + 1;
 			results[found] = iconIndex;
 		end
+
+		visited = visited + 1;
+
+		if visited > limit then
+			break;
+		end
 	end
 
-	if i == 1 or self.found ~= found then
+	if self.searched == 0 or self.found ~= found then
 		self.found = found;
 		self.callbacks:Fire("OnResultsChanged", self.results);
 	end
 
-	self.searched = j;
+	self.searched = limit;
 	self.callbacks:Fire("OnProgressChanged", self:GetProgress());
 
 	if self.searched >= self.total then
@@ -118,10 +117,10 @@ function IconBrowserSearchTask:OnUpdate()
 	end
 end
 
----@param query string
+---@param predicate TRP3.IconBrowserSearchPredicate
 ---@param model TRP3.AbstractIconBrowserModel
-local function CreateIconBrowserSearchTask(query, tags, model)
-	return TRP3_API.CreateObject(IconBrowserSearchTask, query, tags, model);
+local function CreateIconBrowserSearchTask(predicate, model)
+	return TRP3_API.CreateObject(IconBrowserSearchTask, predicate, model);
 end
 
 -- Icon Browser Data Models
@@ -136,7 +135,10 @@ end
 ---@field type "atlas" | "file"
 ---@field file TRP3.FileID?
 ---@field atlas TRP3.AtlasElementID?
----@field selected boolean?
+---@field selected boolean
+
+---@alias TRP3.IconModelItemIterator fun(): (integer, TRP3.IconBrowserModelItem)?
+---@alias TRP3.IconBrowserCategorySelections { [integer]: boolean }
 
 --- IconBrowserModel is a basic model that sources icons from LibRPMedia.
 ---
@@ -151,19 +153,19 @@ end
 
 ---@return integer count
 function IconBrowserModel:GetIconCount()
-	return LibRPMedia:GetNumIcons();
+	return LRPM12:GetNumIcons();
 end
 
 ---@param index integer
 ---@return TRP3.IconBrowserModelItem? data
 function IconBrowserModel:GetIconInfo(index)
-	return LibRPMedia:GetIconDataByIndex(index);
+	return LRPM12:GetIconInfoByIndex(index);
 end
 
----@param index integer
----@return string? name
-function IconBrowserModel:GetIconName(index)
-	return LibRPMedia:GetIconDataByIndex(index, "name");
+---@param options table?
+---@return fun() iterator
+function IconBrowserModel:EnumerateIcons(options)
+	return LRPM12:EnumerateIcons(options);
 end
 
 ---@param name string
@@ -173,7 +175,7 @@ function IconBrowserModel:GetIconIndex(name)
 		return nil;
 	end
 
-	return LibRPMedia:GetIconIndexByName(name);
+	return LRPM12:GetIconIndexByName(name);
 end
 
 local function CreateIconBrowserModel()
@@ -188,6 +190,7 @@ end
 ---@field private source TRP3.AbstractIconBrowserModel
 ---@field private sourceIndices integer[]
 ---@field private searchQuery string
+---@field private searchCategories { [integer]: true }
 ---@field private searchTask TRP3.IconBrowserSearchTask?
 ---@field private searchProgress TRP3.IconBrowserSearchProgress
 local IconBrowserFilterModel = {};
@@ -199,7 +202,7 @@ function IconBrowserFilterModel:__init(source)
 	self.source = source;
 	self.sourceIndices = {};
 	self.searchQuery = "";
-	self.searchTags = {};
+	self.searchCategories = {};
 	self.searchTask = nil;
 
 	self.source.RegisterCallback(self, "OnModelUpdated", "OnSourceModelUpdated");
@@ -208,7 +211,7 @@ end
 function IconBrowserFilterModel:GetIconCount()
 	local count;
 
-	if self:HasSearchQuery() or self:IsAnyTagFiltered() then
+	if self:IsApplyingAnyFilter() then
 		count = #self.sourceIndices;
 	else
 		count = self.source:GetIconCount();
@@ -232,8 +235,8 @@ function IconBrowserFilterModel:GetIconInfo(proxyIndex)
 	return self.source:GetIconInfo(self:GetSourceIndex(proxyIndex));
 end
 
-function IconBrowserFilterModel:GetIconName(proxyIndex)
-	return self.source:GetIconName(self:GetSourceIndex(proxyIndex));
+function IconBrowserFilterModel:EnumerateIcons(options)
+	return self.source:EnumerateIcons(options);
 end
 
 function IconBrowserFilterModel:GetSourceModel()
@@ -243,7 +246,7 @@ end
 function IconBrowserFilterModel:GetSourceIndex(proxyIndex)
 	local sourceIndex;
 
-	if self:HasSearchQuery() or self:IsAnyTagFiltered() then
+	if self:IsApplyingAnyFilter() then
 		sourceIndex = self.sourceIndices[proxyIndex];
 	else
 		sourceIndex = proxyIndex;
@@ -255,7 +258,7 @@ end
 function IconBrowserFilterModel:GetProxyIndex(sourceIndex)
 	local proxyIndex;
 
-	if self:HasSearchQuery() or self:IsAnyTagFiltered() then
+	if self:IsApplyingAnyFilter() then
 		-- Inefficient but quick implementation; assuming this is never going
 		-- to be called and just providing it to satisfy the interface.
 		proxyIndex = tInvert(self.sourceIndices)[sourceIndex];
@@ -266,6 +269,10 @@ function IconBrowserFilterModel:GetProxyIndex(sourceIndex)
 	return proxyIndex;
 end
 
+function IconBrowserFilterModel:IsApplyingAnyFilter()
+	return self:HasSearchQuery() or self:IsFilteringAnyCategory();
+end
+
 function IconBrowserFilterModel:ClearSearchQuery()
 	self:SetSearchQuery("");
 end
@@ -274,27 +281,33 @@ function IconBrowserFilterModel:GetSearchQuery()
 	return self.searchQuery;
 end
 
-function IconBrowserFilterModel:SetTagFiltered(tag, filtered)
-	if filtered then
-		tInsertUnique(self.searchTags, tag);
-	else
-		tDeleteItem(self.searchTags, tag);
+function IconBrowserFilterModel:ClearCategoryFilters()
+	if self:IsFilteringAnyCategory() then
+		self.searchCategories = {};
+		self:RebuildModel();
 	end
-
-	self:RebuildModel();
 end
 
-function IconBrowserFilterModel:IsTagFiltered(tag)
-	return tContains(self.searchTags, tag);
+function IconBrowserFilterModel:AddCategoryFilter(category)
+	if self.searchCategories[category] == nil then
+		self.searchCategories[category] = true;
+		self:RebuildModel();
+	end
 end
 
-function IconBrowserFilterModel:IsAnyTagFiltered()
-	return #self.searchTags ~= 0;
+function IconBrowserFilterModel:RemoveCategoryFilter(category)
+	if self.searchCategories[category] ~= nil then
+		self.searchCategories[category] = nil;
+		self:RebuildModel();
+	end
 end
 
-function IconBrowserFilterModel:ClearTagFilters()
-	self.searchTags = {};
-	self:RebuildModel();
+function IconBrowserFilterModel:IsFilteringCategory(category)
+	return self.searchCategories[category] == true;
+end
+
+function IconBrowserFilterModel:IsFilteringAnyCategory()
+	return next(self.searchCategories) ~= nil;
 end
 
 ---@return TRP3.IconBrowserSearchProgress
@@ -350,9 +363,7 @@ function IconBrowserFilterModel:RebuildModel()
 		self.searchTask = nil;
 	end
 
-	local query = self:GetSearchQuery();
-
-	if query == "" and not self:IsAnyTagFiltered() then
+	if not self:IsApplyingAnyFilter() then
 		self.callbacks:Fire("OnModelUpdated");
 		return;
 	end
@@ -375,7 +386,32 @@ function IconBrowserFilterModel:RebuildModel()
 		self.callbacks:Fire("OnModelUpdated");
 	end
 
-	self.searchTask = CreateIconBrowserSearchTask(query, self.searchTags, self.source);
+	local query = self:GetSearchQuery();
+	local categoryPredicate;
+
+	if self:IsFilteringAnyCategory() then
+		categoryPredicate = LRPM12:GenerateIconCategoryPredicate(GetKeysArray(self.searchCategories));
+	end
+
+	---@param iconIndex integer
+	---@param iconInfo TRP3.IconBrowserModelItem
+	local function DoesIconMatchFilters(iconIndex, iconInfo)
+		local iconName = TRP3_StringUtil.GenerateSearchableString(iconInfo.name);
+		local offset = 1;
+		local plain = true;
+
+		if not string.find(iconName, query, offset, plain) then
+			return false;
+		end
+
+		if categoryPredicate ~= nil and not categoryPredicate(iconIndex) then
+			return false;
+		end
+
+		return true;
+	end
+
+	self.searchTask = CreateIconBrowserSearchTask(DoesIconMatchFilters, self.source);
 	self.searchTask.RegisterCallback(self, "OnStateChanged", OnStateChanged);
 	self.searchTask.RegisterCallback(self, "OnProgressChanged", OnProgressChanged);
 	self.searchTask.RegisterCallback(self, "OnResultsChanged", OnResultsChanged);
@@ -433,10 +469,8 @@ function IconBrowserSelectionModel:GetIconInfo(index)
 	return iconInfo;
 end
 
----@param index integer
----@return string? name
-function IconBrowserSelectionModel:GetIconName(index)
-	return self.source:GetIconName(self:GetSourceIndex(index));
+function IconBrowserSelectionModel:EnumerateIcons(options)
+	return self.source:EnumerateIcons(options);
 end
 
 function IconBrowserSelectionModel:GetSourceModel()
@@ -583,26 +617,30 @@ function TRP3_IconBrowserMixin:OnLoad()
 	self.CloseButton:SetScript("OnClick", function() self:OnCloseButtonClicked(); end);
 	self.SearchBox:HookScript("OnTextChanged", TRP3_FunctionUtil.Debounce(0.25, function() self:OnFilterTextChanged(); end));
 
-	local function SetTagFiltered(tag, filtered)
-		self.filterModel:SetTagFiltered(tag, filtered);
+	local function ApplyCategoryFilter(category)
+		if self.filterModel:IsFilteringCategory(category) then
+			self.filterModel:RemoveCategoryFilter(category);
+		else
+			self.filterModel:AddCategoryFilter(category);
+		end
 	end
 
-	local function IsTagFiltered(tag)
-		return self.filterModel:IsTagFiltered(tag);
+	local function IsCategoryFiltered(tag)
+		return self.filterModel:IsFilteringCategory(tag);
 	end
 
 	self.FilterDropdown:SetIsDefaultCallback(function()
-		return not self.filterModel:IsAnyTagFiltered();
+		return not self.filterModel:IsFilteringAnyCategory();
 	end);
 
 	self.FilterDropdown:SetDefaultCallback(function()
-		self.filterModel:ClearTagFilters();
+		self.filterModel:ClearCategoryFilters();
 	end);
 
 	self.FilterDropdown:SetupMenu(function(dropdown, rootDescription)
 		rootDescription:SetGridMode(MenuConstants.VerticalGridDirection, 4);
-		for key, tag in pairs(LRPM12.IconCategory) do
-			rootDescription:CreateCheckbox(key, function() return IsTagFiltered(tag); end, function() SetTagFiltered(tag, not IsTagFiltered(tag)); end);
+		for key, category in pairs(LRPM12.IconCategory) do
+			rootDescription:CreateCheckbox(key, function() return IsCategoryFiltered(category); end, function() ApplyCategoryFilter(category); end);
 		end
 	end);
 end
