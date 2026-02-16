@@ -187,18 +187,24 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Anchors>
 		<Frames>
 			<Button parentKey="CloseButton" inherits="UIPanelCloseButtonDefaultAnchors"/>
+			<DropdownButton parentKey="FilterDropdown" inherits="WowStyle1FilterDropdownTemplate">
+				<KeyValues>
+					<KeyValue key="menuPoint" value="TOPLEFT" type="string"/>
+					<KeyValue key="menuRelativePoint" value="TOPRIGHT" type="string"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOP" y="-33"/>
+					<Anchor point="RIGHT" x="-12"/>
+				</Anchors>
+			</DropdownButton>
 			<EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" autoFocus="false">
 				<Size x="200" y="22"/>
 				<Anchors>
 					<Anchor point="TOP" y="-30"/>
-					<Anchor point="RIGHT" x="-12"/>
+					<Anchor point="LEFT" x="20"/>
+					<Anchor point="RIGHT" relativeKey="$parent.FilterDropdown" relativePoint="LEFT" x="-10"/>
 				</Anchors>
 			</EditBox>
-			<DropdownButton parentKey="FilterDropdown" inherits="WowStyle1FilterDropdownTemplate">
-				<Anchors>
-					<Anchor point="RIGHT" relativeKey="$parent.SearchBox" relativePoint="LEFT" x="-10" y="1"/>
-				</Anchors>
-			</DropdownButton>
 			<Frame parentKey="Content">
 				<Anchors>
 					<Anchor point="TOP" relativeKey="$parent.SearchBox" relativePoint="BOTTOM" y="-5"/>

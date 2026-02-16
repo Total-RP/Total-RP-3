@@ -618,7 +618,7 @@ function TRP3_IconBrowserMixin:OnLoad()
 	self.CloseButton:SetScript("OnClick", function() self:OnCloseButtonClicked(); end);
 	self.SearchBox:HookScript("OnTextChanged", TRP3_FunctionUtil.Debounce(0.25, function() self:OnFilterTextChanged(); end));
 	self.FilterDropdown:SetIsDefaultCallback(function() return not self.filterModel:IsFilteringAnyCategory(); end);
-	self.FilterDropdown:SetDefaultCallback(function() self.filterModel:ClearCategoryFilters(); end);
+	self.FilterDropdown:SetDefaultCallback(function() self:OnFilterDropdownResetClicked(); end);
 	self.FilterDropdown:SetupMenu(function(dropdown, rootDescription) self:SetupFilterDropdown(dropdown, rootDescription); end);
 end
 
@@ -643,6 +643,10 @@ end
 
 function TRP3_IconBrowserMixin:OnFilterTextChanged()
 	self.filterModel:SetSearchQuery(self.SearchBox:GetText());
+end
+
+function TRP3_IconBrowserMixin:OnFilterDropdownResetClicked()
+	self.filterModel:ClearCategoryFilters();
 end
 
 function TRP3_IconBrowserMixin:OnIconButtonInitialized(button, iconInfo)
