@@ -267,10 +267,6 @@ function TRP3_PlaterNamePlates:OnModuleInitialize()
 	if not AddOnUtil.IsAddOnEnabledForCurrentCharacter(PlaterAddonName) then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	end
-
-	if self.PlaterMod then
-		Plater.RecompileScript(self.PlaterMod);
-	end
 end
 
 function TRP3_PlaterNamePlates:OnModuleEnable()
@@ -298,7 +294,6 @@ end
 function TRP3_PlaterNamePlates:OnModuleDisable()
 	TRP3_NamePlates.UnregisterCallback(self, "OnNamePlateDataUpdated");
 	self.PlaterMod.Enabled = false;
-	self.firstRun = true;
 end
 
 --
