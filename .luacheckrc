@@ -938,5 +938,6 @@ stds.wow = {
 		"WOW_PROJECT_MAINLINE",
 		"YELLOW_FONT_COLOR",
 		"YES",
+		"COLOR",
 	},
 };
