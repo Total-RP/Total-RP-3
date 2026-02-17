@@ -285,21 +285,7 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 
 	self.Enabled = true;
 
-	-- Check if the script exists and has the same revision before importing it, to avoid flooding the recycle bin
-	local scriptType = "hook";
-	local scriptDB = Plater.GetScriptDB(scriptType);
-
-	local noOverwrite = true;
-	for i=1, #scriptDB do
-		local script = scriptDB[i];
-		if script.Name == platerScriptObject.Name then
-			if script.Revision < platerScriptObject.Revision then
-				noOverwrite = false;
-				break;
-			end
-		end
-	end
-
+	local noOverwrite = false;
 	Plater.AddScript(platerScriptObject, noOverwrite);
 	Plater.RecompileScript(platerScriptObject);
 	Plater.ForceTickOnAllNameplates();
