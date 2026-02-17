@@ -43,7 +43,7 @@ local platerScriptObject = {
 	PlaterCore = Plater and Plater.CoreVersion or 1,
 	Prio = 99,
 	Author = "The TotalRP3 Team",
-	Revision = 1,
+	Revision = 850,
 	Time = time(),
 	Options = {
 		{
