@@ -4,12 +4,132 @@
 
 local TRP3_API = select(2, ...);
 local L = TRP3_API.loc;
-local Plater;
 
 local PlaterAddonName = "Plater";
 
--- The import string for our Plater mod
-local importString = "1w13VTTnq4)x6tPaPfu)GuYfypSfpx4TeNGqN9uaJOLoLimArbrQSM9G(BFhfTKTtmgqrtJqSpZJ8UVV7(4jrGyTGhi4R1wP62BI6Zwj3cnkPfmcU9LgqWFsR)BbpsWV9gVBtFwPUTp7g32Ap(iHIvHrmwkvWPIvbjHr00iAsIGhJzPRDJUPBBZNUsRR)ANSTqWtWTj4mXQ0aIGpZbO5qvDLTsQQ(xPTsxl4LD15oR(SZ2Qlwl3OGp2)h9z(NQY(SATTp7Ih(1IIRRnFEPzW4sTSako7dJ07dFSpZH8HnpgOpxvJ0OuMd9z2NG69XD8PfSDTyUlLkdS3nuxCWENSEBC)Y11xPl6uW8kJZZzi2Xdl4tvU(meVqXre1aQYZ7Z6WsXYIDglAXtCUl1ppKJZ3NUF46XACHhCiAOVAEFkgVkOF5UMc87PfwOBVdP1zEs6ll4HNEe8L)8uc)CA29z)YoA7VFCa5VfESYGlD1UdDkgmMEBBh4vjwbp1DRabouBrlCHhB1DnEZCL0y8MBLnpuvS7hTAf4TAEU5WZ2IG0BjllR(M3eQZ1DokSpaMgiFWcTVB5CbN8nwCiuMdHbK0nmiKHGsN)m0ACTMvbbecjedBrHRt5PVGRBC9lxqxnmUzTBQYkCaXFcVGmPRsvCHwPBnxk3akb)VKQoCSZxDo8dxW2PBd4xDgRE7KwW57OiGYLCNJLJnJ79QG79y5(QTYhbZ9Ee9GYNV5GjxWV46lV(wKQRc3JXGdXOlzdzzeHd8zrAWS4KuAs6mgjzwuIO8tuQlkOZvrIf0KzHPmkDwmlknAYFSZVDKcVLRFFmj3FKDmXxR0Ldk8(Sh9bVEi4Ulo17NxBDy8089ky7gO9emMXIjmcs7yk(xiXXOyhJxKscsdsIjucjoiLYCEICzWvlojJ9j5DJZdVw6eKglfLGsP)NjhBhs8qbi(TIYYoLADLvbNsy6En4GZ)Fz5RIXpG00bs6B7shNGxPkdz04isCk(zCelDxNa7rjOCLgolIghgG)hp1JqpbHHKecHfrqJXZCCF71K)9rNIQXxCYaRlYMtPsz75F8o(3zGfNSe8BJG9odm2CM6vdsKjw89b)nA9ut53RDdUriRX3mBGDYUCFsYFsBW3TKj3OFgxTQgN6llo4oPdanT6Yk14HgMZAfI)7d";
+local platerHooks = {
+	["Initialization"] = [[
+		function(modTable)
+			if not AddOnUtil.IsAddOnEnabledForCurrentCharacter("totalRP3") then
+				return;
+			end
+
+			if not TRP3_PlaterNamePlates then
+				EventUtil.ContinueOnAddOnLoaded("totalRP3", function()
+					TRP3_PlaterNamePlates:RegisterModTable(modTable);
+				end);
+			else
+				TRP3_PlaterNamePlates:RegisterModTable(modTable);
+			end
+		end
+	]],
+	["Nameplate Added"] = [[
+		function(self, unitId, unitFrame, envTable, modTable)
+			if not AddOnUtil.IsAddOnEnabledForCurrentCharacter("totalRP3") or not TRP3_NamePlates then
+				return;
+			end
+
+			TRP3_NamePlates:UpdateNamePlateForUnit(unitId);
+		end
+	]]
+};
+
+local platerScriptObject = {
+	Enabled = true,
+	Name = "TotalRP3 Nameplates",
+	Icon = 236685,
+	Desc = "RP Names for Plater Nameplates",
+	UID = "0x642efce2108b6e25",
+	PlaterCore = Plater and Plater.CoreVersion or 1,
+	Prio = 99,
+	Author = "The Total RP 3 Team",
+	Revision = 850,
+	Time = time(),
+	Options = {
+		{
+			Type = 5,
+			Name = "guildColors",
+			Value = "Guild Name Color Customization",
+			Key = "guildColorsLabel",
+			Icon = "Interface\\AddOns\\Plater\\images\\option_label",
+			Desc = COLOR,
+		},
+		{
+			Type = 1,
+			Name = "Guild Name Color",
+			Value = {
+				0.2274509966373444,
+				1,
+				0.1607843190431595,
+				1,
+			},
+			Key = "guildNameColor",
+			Icon = "Interface\\AddOns\\Plater\\images\\option_color",
+			Desc = "Color of the guild name on nameplates",
+		},
+		{
+			Type = 1,
+			Name = "Guild Member Color",
+			Value = {
+				0.3686274588108063,
+				0.8901961445808411,
+				1,
+				1,
+			},
+			Key = "guildMemberColor",
+			Icon = "Interface\\AddOns\\Plater\\images\\option_color",
+			Desc = "Color for the guild name of fellow guild members",
+		},
+		{
+			Type = 5,
+			Name = "fullTitleColors",
+			Value = "RP Title Color Customization",
+			Key = "fullTitleColorsLabel",
+			Icon = "Interface\\AddOns\\Plater\\images\\option_label",
+			Desc = "",
+		},
+		{
+			Type = 1,
+			Name = "RP Title Color",
+			Value = {
+				0.917647123336792,
+				0.8823530077934265,
+				0.8784314393997192,
+				1,
+			},
+			Key = "fullTitleColor",
+			Icon = "Interface\\AddOns\\Plater\\images\\option_color",
+			Desc = "Color of player titles on nameplates",
+		},
+		{
+			Type = 4,
+			Name = "Use Custom Color for RP Title",
+			Value = true,
+			Key = "useFullTitleColor",
+			Icon = "Interface\\AddOns\\Plater\\images\\option_bool",
+			Desc = "Enable to use the color chosen above instead of the RP profile color",
+		},
+	},
+	OptionsValues = {},
+	LoadConditions = {
+		class = {},
+		spec = {},
+		race = {},
+		talent = {},
+		pvptalent = {},
+		group = {},
+		role = {},
+		affix = {},
+		encounter_ids = {},
+		map_ids = {},
+	},
+	Hooks = CopyTable(platerHooks),
+	HooksTemp = {},
+	LastHookEdited = "",
+	url = "",
+	version = -1,
+	semver = "",
+};
 
 TRP3_PlaterNamePlates = {};
 
@@ -121,7 +241,7 @@ end
 
 --- Called from within the Plater mod to make this module aware of it and it's inner workings
 function TRP3_PlaterNamePlates:RegisterModTable(modTable)
-	if not modTable then
+	if not modTable or not self.Enabled then
 		return nil;
 	end
 
@@ -147,10 +267,6 @@ function TRP3_PlaterNamePlates:OnModuleInitialize()
 	if not AddOnUtil.IsAddOnEnabledForCurrentCharacter(PlaterAddonName) then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	end
-
-	if self.PlaterMod then
-		Plater.RecompileScript(self.PlaterMod);
-	end
 end
 
 function TRP3_PlaterNamePlates:OnModuleEnable()
@@ -158,46 +274,19 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	end
 
-	Plater = _G.Plater;
-
 	-- Check if the friendly nameplates module is enabled within Plater
 	if not Plater.db.profile.plate_config.friendlyplayer.module_enabled then
 		return TRP3_API.module.status.CONFLICTED, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	end
 
-	-- Check if the script exists and has the same revision before importing it, to avoid flooding the recycle bin
-	local scriptObject;
-	local scriptType = "hook";
-	local scriptDB = Plater.GetScriptDB(scriptType);
-	local newScriptTable = Plater.DecompressData(importString, "print");
-	local newScript = Plater.BuildScriptObjectFromIndexTable(newScriptTable, scriptType);
+	self.Enabled = true;
 
-	for i=1, #scriptDB do
-		local script = scriptDB[i];
-		if script.Name == newScript.Name then
-			if script.Revision == newScript.Revision then
-				scriptObject = script;
-				break;
-			end
-		end
-	end
-
-	if not scriptObject then
-		local success, scriptAdded = Plater.ImportScriptString(importString);
-
-		if not success or not scriptAdded then
-			return false, L.PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR;
-		end
-
-		scriptObject = scriptAdded;
-	end
-
-	scriptObject.Enabled = true;
-
-	Plater.RecompileScript(scriptObject);
+	local noOverwrite = false;
+	Plater.AddScript(platerScriptObject, noOverwrite);
+	Plater.RecompileScript(platerScriptObject);
 	Plater.ForceTickOnAllNameplates();
 
-	self.PlaterMod = scriptObject;
+	self.PlaterMod = platerScriptObject;
 	self.firstRun = true;
 end
 
@@ -205,7 +294,6 @@ end
 function TRP3_PlaterNamePlates:OnModuleDisable()
 	TRP3_NamePlates.UnregisterCallback(self, "OnNamePlateDataUpdated");
 	self.PlaterMod.Enabled = false;
-	self.firstRun = true;
 end
 
 --
