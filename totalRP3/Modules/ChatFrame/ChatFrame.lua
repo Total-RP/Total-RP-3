@@ -640,7 +640,7 @@ function Utils.customGetColoredName(event, _, _, unitID, _, _, _, _, _, _, _, _,
 	end
 
 	-- Do not change stuff if the customizations are disabled for this channel or the GUID is invalid (WIM…), use the default function
-	if not isChannelHandled(event) or not configIsChannelUsed(event) or not GUID or not Utils.guid.isAPlayerGUID(GUID) then
+	if not isChannelHandled(event) or not configIsChannelUsed(event) or not GUID or not canaccessvalue(GUID) or not Utils.guid.isAPlayerGUID(GUID) then
 		return;
 	end ;
 
