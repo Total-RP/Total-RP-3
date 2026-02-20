@@ -1,3 +1,15 @@
+# Changelog version 3.3.0
+
+## Added
+
+- Added tag filters in the icon browser. Those tags are approximated based on names and not fully accurate, but should help looking for icons within a specific theme.
+- Added Haranir icons for default profile and language.
+
+## Fixed
+
+- Fixed an issue with profile exchange after a recent build (notably in PvP, once Blizzard fixes the issue causing it to apply everywhere).
+- Fixed an issue with the Plater mod initialization not executing at the correct time, causing a Lua error.
+
 # Changelog version 3.2.4
 
 ## Fixed
