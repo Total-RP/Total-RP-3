@@ -52,7 +52,7 @@ local platerScriptObject = {
 			Value = "Guild Name Color Customization",
 			Key = "guildColorsLabel",
 			Icon = "Interface\\AddOns\\Plater\\images\\option_label",
-			Desc = COLOR
+			Desc = COLOR,
 		},
 		{
 			Type = 1,
@@ -121,14 +121,14 @@ local platerScriptObject = {
 		role = {},
 		affix = {},
 		encounter_ids = {},
-		map_ids = {}
+		map_ids = {},
 	},
 	Hooks = CopyTable(platerHooks),
 	HooksTemp = {},
 	LastHookEdited = "",
 	url = "",
 	version = -1,
-	semver = ""
+	semver = "",
 };
 
 TRP3_PlaterNamePlates = {};
