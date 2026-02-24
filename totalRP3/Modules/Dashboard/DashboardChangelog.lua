@@ -2,6 +2,19 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.3.1
+
+## Added
+
+- Added 84 images and 2 backgrounds from patches 12.0.0 and 12.0.1.
+- Added class, race, faction and gender conditionals for automation. See our [Macro conditionals](https://github.com/Total-RP/Total-RP-3/wiki/Macro-conditionals) article for more info.
+
+## Fixed
+
+- Fixed remaining issues with profile exchange and tooltips in PvP instances.
+- Fixed an issue with ElvUI chat being unable to display chat messages during encounters.
+- Restored functionality for the AFK/DND status toolbar button during encounters. Tooltip icons remain disabled.
+
 # Changelog version 3.3.0
 
 ## Added
