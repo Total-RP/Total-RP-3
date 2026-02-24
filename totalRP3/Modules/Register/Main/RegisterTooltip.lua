@@ -523,6 +523,22 @@ local function SetProgressSpinnerShown(tooltip, shown)
 	end
 end
 
+local function CanAccessUnitTarget(unitToken)
+	local targetToken = unitToken .. "-target";
+
+	if not UnitExists(targetToken) then
+		return false;
+	end
+
+	-- Some unit APIs disallow compound tokens while in PvP with a hard error
+	-- rather than just nil/default returns.
+	if C_RestrictedActions.IsAddOnRestrictionActive(Enum.AddOnRestrictionType.PvPMatch) then
+		return false;
+	end
+
+	return true;
+end
+
 --- The complete character's tooltip writing sequence.
 local function writeTooltipForCharacter(targetID, targetType)
 	local info = getCharacterInfoTab(targetID);
@@ -815,11 +831,12 @@ local function writeTooltipForCharacter(targetID, targetType)
 	-- Target
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	if showTarget() and UnitExists(targetType .. "target") then
-		local name = UnitName(targetType .. "target");
-		local targetTargetID = getUnitID(targetType .. "target");
+	if showTarget() and CanAccessUnitTarget(targetType) then
+		local targetToken = targetType .. "-target";
+		local name = UnitName(targetToken);
+		local targetTargetID = getUnitID(targetToken);
 		if targetTargetID then
-			local unitType = TRP3_API.ui.misc.getTargetType(targetType .. "target");
+			local unitType = TRP3_API.ui.misc.getTargetType(targetToken);
 
 			local targetClassColor;
 			if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.BATTLE_PET or unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
@@ -844,7 +861,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 			else
 				---@type Player
 				local targetTarget = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetTargetID)
-				local _, targetEnglishClass = UnitClass(targetType .. "target");
+				local _, targetEnglishClass = UnitClass(targetToken);
 				local targetInfo = getCharacterInfoTab(targetTargetID);
 				targetClassColor = targetEnglishClass and TRP3_API.GetClassDisplayColor(targetEnglishClass) or TRP3_API.Colors.White;
 
