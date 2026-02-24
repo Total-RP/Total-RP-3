@@ -171,7 +171,7 @@ TRP3_AutomationUtil.RegisterAction({
 	end,
 
 	Apply = function(context, enabled)
-		if TRP3_CVarCache:GetCVarBool(TRP3_CVarConstants.NamePlateShowFriends) == enabled then
+		if TRP3_CVarCache:GetCVarBool(TRP3_CVarConstants.NamePlateShowFriendlyPlayers) == enabled then
 			return;  -- Already in the desired state.
 		end
 
@@ -183,7 +183,7 @@ TRP3_AutomationUtil.RegisterAction({
 			enabledText = L.AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS_DISABLED;
 		end
 
-		C_CVar.SetCVar(TRP3_CVarConstants.NamePlateShowFriends, enabled and "1" or "0");
+		C_CVar.SetCVar(TRP3_CVarConstants.NamePlateShowFriendlyPlayers, enabled and "1" or "0");
 		context:Print(enabledText);
 	end,
 });
