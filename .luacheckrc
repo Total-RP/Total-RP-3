@@ -357,6 +357,12 @@ stds.wow = {
 			},
 		},
 
+		C_RestrictedActions = {
+			fields = {
+				"IsAddOnRestrictionActive",
+			},
+		},
+
 		C_Secrets = {
 			fields = {
 				"ShouldUnitIdentityBeSecret",
@@ -426,6 +432,12 @@ stds.wow = {
 
 		Enum = {
 			fields = {
+				AddOnRestrictionType = {
+					fields = {
+						"PvPMatch",
+					},
+				},
+
 				HouseSettingFlags = {
 					fields = {
 						"HouseAccessAnyone",
