@@ -156,3 +156,88 @@ TRP3_AutomationUtil.RegisterCondition({
 		return inAlternateForm;
 	end,
 });
+
+local function GetActivePlayerLocation()
+	return PlayerLocation:CreateFromUnit("player");
+end
+
+TRP3_AutomationUtil.RegisterCondition({
+	id = "trp3:race",
+	tokens = { "race" },
+
+	Evaluate = function(context)
+		local currentRaceID = C_PlayerInfo.GetRace(GetActivePlayerLocation());
+		local desiredRaceID = tonumber(context.option);
+
+		if desiredRaceID then
+			return currentRaceID == desiredRaceID;
+		end
+
+		local currentRaceInfo = C_CreatureInfo.GetRaceInfo(currentRaceID);
+		local desiredRaceName = context.option;
+
+		if currentRaceInfo then
+			return TRP3_StringUtil.IsExactOrSubstringMatch(currentRaceInfo.raceName, desiredRaceName)
+				or TRP3_StringUtil.IsExactOrSubstringMatch(currentRaceInfo.clientFileString, desiredRaceName);
+		end
+
+		return false;
+	end,
+});
+
+TRP3_AutomationUtil.RegisterCondition({
+	id = "trp3:class",
+	tokens = { "class" },
+
+	Evaluate = function(context)
+		local currentClassName, currentClassFile, currentClassID = C_PlayerInfo.GetClass(GetActivePlayerLocation());
+		local desiredClassID = tonumber(context.option);
+
+		if desiredClassID then
+			return currentClassID == desiredClassID;
+		end
+
+		local desiredClassName = context.option;
+
+		return TRP3_StringUtil.IsExactOrSubstringMatch(currentClassName, desiredClassName)
+			or TRP3_StringUtil.IsExactOrSubstringMatch(currentClassFile, desiredClassName);
+	end,
+});
+
+TRP3_AutomationUtil.RegisterCondition({
+	id = "trp3:faction",
+	tokens = { "faction" },
+
+	Evaluate = function(context)
+		local currentFactionInfo = C_CreatureInfo.GetFactionInfo(C_PlayerInfo.GetRace(GetActivePlayerLocation()));
+		local desiredFactionName = context.option;
+
+		if currentFactionInfo then
+			return TRP3_StringUtil.IsExactOrSubstringMatch(currentFactionInfo.name, desiredFactionName)
+				or TRP3_StringUtil.IsExactOrSubstringMatch(currentFactionInfo.groupTag, desiredFactionName);
+		end
+
+		return false;
+	end,
+});
+
+local GetLocaleInvariantSex = EnumUtil.GenerateNameTranslation(Enum.UnitSex);
+
+TRP3_AutomationUtil.RegisterCondition({
+	id = "trp3:sex",
+	tokens = { "bodytype", "gender", "sex" },
+
+	Evaluate = function(context)
+		local currentSexID = C_PlayerInfo.GetSex(GetActivePlayerLocation());
+		local desiredSexID = tonumber(context.option);
+
+		if desiredSexID then
+			return currentSexID == desiredSexID;
+		end
+
+		local currentSexName = GetLocaleInvariantSex(currentSexID);
+		local desiredSexName = context.option;
+
+		return TRP3_StringUtil.IsExactOrSubstringMatch(currentSexName, desiredSexName);
+	end,
+});

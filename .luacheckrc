@@ -243,6 +243,14 @@ stds.wow = {
 			},
 		},
 
+		C_CreatureInfo = {
+			fields = {
+				"GetClassInfo",
+				"GetFactionInfo",
+				"GetRaceInfo",
+			},
+		},
+
 		C_CVar = {
 			fields = {
 				"GetCVar",
@@ -346,6 +354,9 @@ stds.wow = {
 		C_PlayerInfo = {
 			fields = {
 				"GetAlternateFormInfo",
+				"GetClass",
+				"GetRace",
+				"GetSex",
 				"GUIDIsPlayer",
 			},
 		},
@@ -449,6 +460,19 @@ stds.wow = {
 						"LeftCenter",
 					},
 				},
+
+				UnitSex = {
+					fields = {
+						"Male",
+						"Female",
+					},
+				}
+			},
+		},
+
+		EnumUtil = {
+			fields = {
+				"GenerateNameTranslation",
 			},
 		},
 
@@ -503,6 +527,12 @@ stds.wow = {
 			fields = {
 				"SetPoint",
 				"SetSize",
+			},
+		},
+
+		PlayerLocation = {
+			fields = {
+				"CreateFromUnit",
 			},
 		},
 
