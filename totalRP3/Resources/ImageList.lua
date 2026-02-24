@@ -448,6 +448,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_DarkwellStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_DelvesStart",
 		width = 128,
 		height = 128
@@ -528,6 +533,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_Midnight",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_MoonkinFestival",
 		width = 128,
 		height = 128
@@ -589,6 +599,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_RaidCrucibleOfStormsStart",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_RiftOfAlnStart",
 		width = 128,
 		height = 128
 	},
@@ -674,6 +689,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_VaultOfTheIncarnatesStart",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_Voidspire",
 		width = 128,
 		height = 128
 	},
@@ -801,6 +821,11 @@ local IMAGES = {
 		width = 512,
 		height = 256
 	},
+	{
+		url = "Interface\\Credits\\CreditsScreenKeyArt11Midnight",
+		width = 512,
+		height = 256
+	},
 	--endregion
 	--region DressUpFrame
 	{
@@ -845,6 +870,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Goblin1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Haranir1",
 		width = 256,
 		height = 256
 	},
@@ -1655,11 +1685,19 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Darkwell",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-DawnOfTheInfinite",
 		width = 256,
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-DeepwindGorge",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-DomanaarArena",
 		width = 256,
 		height = 256
 	}, {
@@ -1815,7 +1853,19 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Lightbloom",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Love",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-MagistersTerrace-Midnight",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-MaisaraHills",
 		width = 256,
 		height = 256
 	}, {
@@ -1835,6 +1885,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Midnight",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-MistsOfTirnaScithe",
 		width = 256,
 		height = 256
@@ -1844,6 +1898,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-MogushanVaults",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-MurderRow",
 		width = 256,
 		height = 256
 	}, {
@@ -1864,6 +1922,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-NetherBattlegrounds",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-NexusPointXenas",
 		width = 256,
 		height = 256
 	}, {
@@ -1915,7 +1977,15 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-ProveYourWorth",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-ReturntoKarazhan",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-RiftOfAln",
 		width = 256,
 		height = 256
 	}, {
@@ -2215,6 +2285,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Voidspire",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Waterworks",
 		width = 256,
 		height = 256
@@ -2224,6 +2298,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-WellofEternity",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-WindrunnerSpire",
 		width = 256,
 		height = 256
 	}, {
@@ -2458,11 +2536,23 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Darkwell",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DarkwellQ",
+		width = 512,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DEADMINES",
 		width = 256,
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DIREMAUL",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DomanaarArena",
 		width = 256,
 		height = 128
 	}, {
@@ -2690,6 +2780,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Lightbloom",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-LOVE",
 		width = 256,
 		height = 128
@@ -2699,6 +2793,14 @@ local IMAGES = {
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-MAGISTERSTERRACE",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-MagistersTerrace-Midnight",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-MaisaraHills",
 		width = 256,
 		height = 128
 	}, {
@@ -2750,6 +2852,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-MurderRow",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-NAXXRAMAS",
 		width = 256,
 		height = 128
@@ -2781,6 +2887,10 @@ local IMAGES = {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-NerubarPalaceWing3Q",
 		width = 512,
 		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-NexusPointXenas",
+		width = 256,
+		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-NightmareofShekzeer",
 		width = 256,
@@ -2826,6 +2936,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-ProveYourWorth",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-RAGEFIRECHASM",
 		width = 256,
 		height = 128
@@ -2847,6 +2961,10 @@ local IMAGES = {
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-ReturntoKarazhan",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-RiftOfAln",
 		width = 256,
 		height = 128
 	}, {
@@ -3202,6 +3320,14 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Voidspire",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-VoidspireQ",
+		width = 512,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-WAILINGCAVERNS",
 		width = 256,
 		height = 128
@@ -3227,6 +3353,10 @@ local IMAGES = {
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-WellofEternity",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-WindrunnerSpire",
 		width = 256,
 		height = 128
 	}, {
@@ -3265,12 +3395,22 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_AssaultOnQuelDanas",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_BastionArena",
 		width = 512,
 		height = 288
 	},
 	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadingScreen_BastionBlizzconDEMO",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Battleground_Voidstorm",
 		width = 512,
 		height = 288
 	},
@@ -3325,7 +3465,47 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Dungeon_Lightbloom",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Dungeon_MagistersTerrace",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Dungeon_MaisaraHills",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Dungeon_MurderRow",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Dungeon_ProveYourWorth",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Dungeon_VoidPylon",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Dungeon_VoidscarArena",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Dungeon_Waterworks",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Dungeon_WindrunnerSpire",
 		width = 512,
 		height = 288
 	},
@@ -3470,6 +3650,36 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Raid_Casino",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Raid_Darkwell",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Raid_ManaforgeOmega",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Raid_RiftOfAln",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Raid_UndermineArena",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Raid_Voidspire",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_RookeryDungeon",
 		width = 512,
 		height = 288
@@ -3501,21 +3711,6 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_SpiresofAscension",
-		width = 512,
-		height = 288
-	},
-	{
-		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Raid_Casino",
-		width = 512,
-		height = 288
-	},
-	{
-		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Raid_ManaforgeOmega",
-		width = 512,
-		height = 288
-	},
-	{
-		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Raid_UndermineArena",
 		width = 512,
 		height = 288
 	},
@@ -3575,12 +3770,32 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Zone_Arcantina",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Zone_Harandar",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Zone_Karesh",
 		width = 512,
 		height = 288
 	},
 	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Zone_Undermine",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Zone_Voidstorm",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Zone_Zulaman",
 		width = 512,
 		height = 288
 	},
@@ -3615,6 +3830,18 @@ local IMAGES = {
 		url = "Interface\\Housing\\UIMinimapHousingIndoor",
 		width = 512,
 		height = 512
+	},
+	--endregion
+	--region Models
+	{
+		url = "Interface\\Glues\\Models\\UI_Earthen\\UI_Earthen_BG01",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Glues\\Models\\UI_Haranir\\UI_Haranir_BG01",
+		width = 512,
+		height = 256
 	},
 	--endregion
 	--region Pet Battles
@@ -5057,24 +5284,14 @@ local IMAGES = {
 		height = 128
 	},
 	{
-		url = "Interface\\QuestionFrame\\answer-ManyRadiantEchoes",
-		width = 256,
-		height = 128
-	},
-	{
-		url = "Interface\\QuestionFrame\\answer-RadiantDiscord",
-		width = 256,
-		height = 128
-	},
-	{
-		url = "Interface\\QuestionFrame\\answer-RadiantEcho",
-		width = 256,
-		height = 128
-	},
-	{
-		url = "Interface\\QuestionFrame\\answer-Wax-large",
+		url = "Interface\\QuestionFrame\\answer-Abundance-large",
 		width = 512,
 		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-AbundantHarvest",
+		width = 256,
+		height = 128
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-AlchemyCauldron01-large",
@@ -5095,6 +5312,11 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-AlchemyCauldron04-large",
 		width = 512,
 		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Arcantina",
+		width = 256,
+		height = 128
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-ArgusRift",
@@ -5172,6 +5394,41 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-Endeavor-EversongWoods",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Endeavor-ForbiddenReach",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Endeavor-KunlaiSummit",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Endeavor-Mechagon",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Endeavor-Netherstorm",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Endeavor-Niffen",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Endeavor-Valsharah",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-Frostfire-BloodmaulCompound",
 		width = 512,
 		height = 256
@@ -5217,6 +5474,46 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-LegendsOfTheHarandar",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-LegendsOfTheHaranir-Bowl-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-LegendsOfTheHaranir-Brazier-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-LegendsOfTheHaranir-Charm-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-LegendsOfTheHaranir-CrystalBall-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-LegendsOfTheHaranir-Lantern-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-LegendsOfTheHaranir-Spear-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-LegendsOfTheHaranir-Staff-large",
+		width = 512,
+		height = 256
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-LevelUp",
 		width = 256,
 		height = 128
@@ -5242,7 +5539,22 @@ local IMAGES = {
 		height = 256
 	},
 	{
-		url = "Interface\\QuestionFrame\\answer-Quest",
+		url = "Interface\\QuestionFrame\\answer-ManyRadiantEchoes",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-MidnightHousing",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-MidnightWorldBoss",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-MidnightWorldQuest",
 		width = 256,
 		height = 128
 	},
@@ -5312,6 +5624,31 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-Prey",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answers-PvP",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Quest",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-RadiantDiscord",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-RadiantEcho",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-Raid",
 		width = 256,
 		height = 128
@@ -5328,6 +5665,36 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-SlayEnemies",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-SilvermoonCourt-BloodKnights",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-SilvermoonCourt-Contribution-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-SilvermoonCourt-Farstriders",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-SilvermoonCourt-Magisters",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-SilvermoonCourt-Rogues",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Soiree",
 		width = 256,
 		height = 128
 	},
@@ -5355,6 +5722,26 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-StablesHorde",
 		width = 512,
 		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-StormarionAssault-BlackEye",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-StormarionAssault-ChockPylon",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-StormarionAssault-ShadowTradeMercenaries",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-StormarionAssault-TheBarricadeOfLight",
+		width = 256,
+		height = 128
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-Talador-ShattrathCityGroup",
@@ -5435,6 +5822,11 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-UndermineCartel-Venture",
 		width = 256,
 		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Wax-large",
+		width = 512,
+		height = 256
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-WorkshopAlliance",
