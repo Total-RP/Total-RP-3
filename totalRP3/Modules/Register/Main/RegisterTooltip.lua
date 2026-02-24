@@ -583,12 +583,12 @@ local function writeTooltipForCharacter(targetID, targetType)
 
 	if showIcons() then
 		-- AFK / DND status
-		local targetAFK = UnitIsAFK(targetType);
-		local targetDND = UnitIsDND(targetType);
-		if canaccessvalue(targetAFK) and targetAFK then
+		local targetAFK = TRP3_API.utils.IsUnitAFK(targetType);
+		local targetDND = TRP3_API.utils.IsUnitDND(targetType);
+		if targetAFK then
 			local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
 			rightIcons = strconcat(rightIcons, AFK_ICON);
-		elseif canaccessvalue(targetDND) and targetDND then
+		elseif targetDND then
 			local DND_ICON = "|TInterface\\FriendsFrame\\StatusIcon-DnD:15:15|t";
 			rightIcons = strconcat(rightIcons, DND_ICON);
 		end

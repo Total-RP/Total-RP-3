@@ -974,3 +974,19 @@ function Utils.IsInCombatInstance()
 	local inInstance, instanceType = IsInInstance();
 	return inInstance and instanceType ~= "neighborhood" and instanceType ~= "interior";
 end
+
+function Utils.IsUnitAFK(unit)
+	if unit == "player" then
+		return IsChatAFK();
+	else
+		return scrubsecretvalues(UnitIsAFK(unit));
+	end
+end
+
+function Utils.IsUnitDND(unit)
+	if unit == "player" then
+		return IsChatDND();
+	else
+		return scrubsecretvalues(UnitIsDND(unit));
+	end
+end
