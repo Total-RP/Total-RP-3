@@ -679,6 +679,7 @@ stds.wow = {
 		"ScrollingEdit_OnCursorChanged",
 		"ScrollingEdit_OnLoad",
 		"ScrollingEdit_OnTextChanged",
+		"scrubsecretvalues",
 		"SearchBoxTemplate_OnTextChanged",
 		"SecondsFormatter",
 		"SecondsFormatterMixin",
