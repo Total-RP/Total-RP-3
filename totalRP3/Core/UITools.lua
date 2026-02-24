@@ -77,6 +77,8 @@ local tiledBackgrounds = {
 	[50] = { bgFile = "interface\\credits\\creditsscreenbackground9dragonflight", tile = true, tileSize = 512 },
 	[51] = { bgFile = "interface\\credits\\creditsscreenbackground10thewarwithin", tile = true, tileSize = 512 },
 	[52] = { bgFile = "interface\\glues\\characterselect\\glueannouncementpopupbackground", tile = true, tileSize = 256 },
+	[53] = { bgFile = "interface\\credits\\creditsscreenbackground11midnight", tile = true, tileSize = 512 },
+	[54] = { bgFile = "interface\\framegeneral\\uiframemidnightbackground", tile = true, tileSize = 256 },
 };
 
 function TRP3_API.ui.frame.getTiledBackground(index)
