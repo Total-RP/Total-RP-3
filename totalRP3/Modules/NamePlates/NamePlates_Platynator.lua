@@ -52,7 +52,7 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 	if not unitToken then return; end;
 
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
-	local shouldShow = nameplate.UnitFrame and ShouldShowName(nameplate.UnitFrame);
+	local shouldShow = UnitShouldDisplayName(unitToken);
 
 	if displayInfo and displayInfo.shouldHide then
 		Platynator.API.SetUnitTextOverride(unitToken, "", "");
