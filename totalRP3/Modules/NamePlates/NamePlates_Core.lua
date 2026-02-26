@@ -3,6 +3,7 @@
 
 local TRP3_API = select(2, ...);
 local L = TRP3_API.loc;
+local isIDIgnored = TRP3_API.register.isIDIgnored;
 
 local displayInfoPool = {};
 local playerCharacterPool = setmetatable({}, { __mode = "kv" });
@@ -164,6 +165,10 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 	local displayInfo = GetOrCreateDisplayInfo(unitToken);
 	displayInfo.isPlayerUnit = true;
 
+	if characterID and isIDIgnored(characterID) then
+		return displayInfo;
+	end
+
 	if characterID and TRP3_API.register.isUnitIDKnown(characterID) then
 		local player = GetOrCreatePlayerFromCharacterID(characterID);
 		local classToken = UnitClassBase(unitToken);
@@ -273,6 +278,11 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 	end
 
 	local owner, companionID = TRP3_API.utils.str.companionIDToInfo(companionFullID);
+
+	if owner and isIDIgnored(owner) then
+		return displayInfo;
+	end
+
 	local profile;
 
 	if owner == TRP3_API.globals.player_id then
