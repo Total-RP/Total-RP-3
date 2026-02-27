@@ -170,7 +170,6 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 	end
 
 	local player = GetOrCreatePlayerFromCharacterID(characterID);
-	local classToken = UnitClassBase(unitToken);
 
 	-- Don't customize default profile nameplates
 	if TRP3_API.profile.isDefaultProfile(player:GetProfileID()) then
@@ -216,6 +215,7 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 		end
 
 		if displayInfo.shouldColorHealth or displayInfo.shouldColorName then
+			local classToken = UnitClassBase(unitToken);
 			displayInfo.color = GetCharacterColorForDisplay(player, classToken);
 
 			if not displayInfo.color then
