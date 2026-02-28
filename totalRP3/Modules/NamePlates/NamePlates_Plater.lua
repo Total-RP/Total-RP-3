@@ -134,7 +134,7 @@ local platerScriptObject = {
 TRP3_PlaterNamePlates = {};
 
 function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayInfo)
-	if nameplate:IsForbidden() or not nameplate:IsShown() or not displayInfo then
+	if nameplate:IsForbidden() or not nameplate:IsShown() then
 		return;
 	end
 
@@ -145,6 +145,14 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 	end
 
 	local plateFrame = unitFrame.PlateFrame;
+
+	if not displayInfo then
+		-- Plate isn't customized, hide the icon if it exists
+		if plateFrame.TRP3Icon then
+			plateFrame.TRP3Icon:Hide();
+		end
+		return;
+	end
 
 	-- Set the display name to the unit's RP name
 	local showServerName = false;
