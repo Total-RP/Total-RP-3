@@ -582,16 +582,18 @@ function TRP3_NamePlates:UpdateAllNamePlates()
 end
 
 function TRP3_NamePlates:UpdateNamePlateForUnit(unitToken)
-	local nameplate = C_NamePlate.GetNamePlateForUnit(unitToken);
+	local includeForbidden = false;
+	local nameplate = C_NamePlate.GetNamePlateForUnit(unitToken, includeForbidden);
 
-	if nameplate and not nameplate:IsForbidden() then
+	if nameplate then
 		local displayInfo = self:GetUnitDisplayInfo(unitToken);
 		self.callbacks:Fire("OnNamePlateDataUpdated", nameplate, unitToken, displayInfo);
 	end
 end
 
 function TRP3_NamePlates:UpdateNamePlateTargetUnit()
-	local nameplate = C_NamePlate.GetNamePlateForUnit("target");
+	local includeForbidden = false;
+	local nameplate = C_NamePlate.GetNamePlateForUnit("target", includeForbidden);
 	local unitToken = nameplate and TRP3_NamePlatesUtil.GetNameplateUnit(nameplate) or nil;
 
 	self.namePlateTargetToken = unitToken;
