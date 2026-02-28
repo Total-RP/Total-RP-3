@@ -265,7 +265,8 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 			end
 		end
 
-		do  -- OOC Guild Membership
+		-- OOC Guild Membership
+		if TRP3_NamePlatesUtil.IsGuildNameEnabled() then
 			local originalGuildName, originalGuildRank = GetGuildInfo(unitToken);
 
 			if originalGuildName and originalGuildName ~= "" then
