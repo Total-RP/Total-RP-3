@@ -164,92 +164,95 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 	local displayInfo = GetOrCreateDisplayInfo(unitToken);
 	displayInfo.isPlayerUnit = true;
 
-	if characterID and TRP3_API.register.isUnitIDKnown(characterID) then
-		local player = GetOrCreatePlayerFromCharacterID(characterID);
-		local classToken = UnitClassBase(unitToken);
+	if not characterID or not TRP3_API.register.isUnitIDKnown(characterID) or TRP3_API.register.isIDIgnored(characterID) then
+		-- No profile or player ignored, don't customize
+		return displayInfo;
+	end
 
-		-- Don't customize default profile nameplates
-		if TRP3_API.profile.isDefaultProfile(player:GetProfileID()) then
-			return displayInfo;
+	local player = GetOrCreatePlayerFromCharacterID(characterID);
+
+	-- Don't customize default profile nameplates
+	if TRP3_API.profile.isDefaultProfile(player:GetProfileID()) then
+		return displayInfo;
+	end
+
+	displayInfo.isRoleplayUnit = true;
+
+	do  -- Names/Titles
+		if TRP3_NamePlatesSettings.CustomizeNames == TRP3_NamePlateUnitNameDisplayMode.FirstName then
+			displayInfo.name = player:GetFirstName();  -- May be nil or empty.
+		elseif TRP3_NamePlatesSettings.CustomizeNames == TRP3_NamePlateUnitNameDisplayMode.OriginalName then
+			displayInfo.name = player:GetName();  -- Should never be nil or empty.
 		end
 
-		displayInfo.isRoleplayUnit = true;
-
-		do  -- Names/Titles
-			if TRP3_NamePlatesSettings.CustomizeNames == TRP3_NamePlateUnitNameDisplayMode.FirstName then
-				displayInfo.name = player:GetFirstName();  -- May be nil or empty.
-			elseif TRP3_NamePlatesSettings.CustomizeNames == TRP3_NamePlateUnitNameDisplayMode.OriginalName then
-				displayInfo.name = player:GetName();  -- Should never be nil or empty.
-			end
-
-			if not displayInfo.name or displayInfo.name == "" then
-				displayInfo.name = player:GetRoleplayingName();
-			end
-
-			if TRP3_NamePlatesSettings.CustomizeTitles then
-				local prefix = player:GetTitle();
-
-				if prefix then
-					displayInfo.name = strjoin(" ", prefix, displayInfo.name);
-				end
-			end
-
-			if TRP3_NamePlatesUtil.IsFullTitleEnabled() then
-				displayInfo.fullTitle = player:GetFullTitle();
-				displayInfo.fullTitleUncropped = displayInfo.fullTitle;
-			end
-
-			displayInfo.nameUncropped = displayInfo.name;
+		if not displayInfo.name or displayInfo.name == "" then
+			displayInfo.name = player:GetRoleplayingName();
 		end
 
-		do  -- Colors
-			if TRP3_NamePlatesSettings.CustomizeHealthColors then
-				displayInfo.shouldColorHealth = true;
-			end
+		if TRP3_NamePlatesSettings.CustomizeTitles then
+			local prefix = player:GetTitle();
 
-			if TRP3_NamePlatesSettings.CustomizeNameColors then
-				displayInfo.shouldColorName = true;
-			end
-
-			if displayInfo.shouldColorHealth or displayInfo.shouldColorName then
-				displayInfo.color = GetCharacterColorForDisplay(player, classToken);
-
-				if not displayInfo.color then
-					displayInfo.shouldColorHealth = nil;
-					displayInfo.shouldColorName = nil;
-				end
+			if prefix then
+				displayInfo.name = strjoin(" ", prefix, displayInfo.name);
 			end
 		end
 
-		do  -- Additional Indicators
-			if TRP3_NamePlatesSettings.CustomizeIcons then
-				displayInfo.icon = player:GetCustomIcon();
-			end
-
-			if TRP3_NamePlatesSettings.CustomizeRoleplayStatus then
-				displayInfo.roleplayStatus = player:GetRoleplayStatus();
-			end
+		if TRP3_NamePlatesUtil.IsFullTitleEnabled() then
+			displayInfo.fullTitle = player:GetFullTitle();
+			displayInfo.fullTitleUncropped = displayInfo.fullTitle;
 		end
 
-		do  -- Guild Membership
-			if TRP3_NamePlatesUtil.IsGuildNameEnabled() then
-				local customGuildInfo = player:GetCustomGuildMembership();
-				local customGuildName = customGuildInfo.name and string.trim(customGuildInfo.name) or nil;
-				local customGuildRank = customGuildInfo.rank and string.trim(customGuildInfo.rank) or nil;
+		displayInfo.nameUncropped = displayInfo.name;
+	end
 
-				local originalGuildName, originalGuildRank = GetGuildInfo(unitToken);
+	do  -- Colors
+		if TRP3_NamePlatesSettings.CustomizeHealthColors then
+			displayInfo.shouldColorHealth = true;
+		end
 
-				if customGuildName and customGuildName ~= "" and TRP3_NamePlatesSettings.CustomizeGuild then
-					displayInfo.guildName = TRP3_NamePlatesUtil.GenerateCroppedGuildName(customGuildName);
-					displayInfo.guildNameUncropped = customGuildName;
-					displayInfo.guildRank = customGuildRank or L.DEFAULT_GUILD_RANK;
-					displayInfo.guildIsCustom = true;
-				elseif originalGuildName and originalGuildName ~= "" then
-					displayInfo.guildName = TRP3_NamePlatesUtil.GenerateCroppedGuildName(originalGuildName);
-					displayInfo.guildNameUncropped = originalGuildName;
-					displayInfo.guildRank = originalGuildRank;
-					displayInfo.guildIsCustom = false;
-				end
+		if TRP3_NamePlatesSettings.CustomizeNameColors then
+			displayInfo.shouldColorName = true;
+		end
+
+		if displayInfo.shouldColorHealth or displayInfo.shouldColorName then
+			local classToken = UnitClassBase(unitToken);
+			displayInfo.color = GetCharacterColorForDisplay(player, classToken);
+
+			if not displayInfo.color then
+				displayInfo.shouldColorHealth = nil;
+				displayInfo.shouldColorName = nil;
+			end
+		end
+	end
+
+	do  -- Additional Indicators
+		if TRP3_NamePlatesSettings.CustomizeIcons then
+			displayInfo.icon = player:GetCustomIcon();
+		end
+
+		if TRP3_NamePlatesSettings.CustomizeRoleplayStatus then
+			displayInfo.roleplayStatus = player:GetRoleplayStatus();
+		end
+	end
+
+	do  -- Guild Membership
+		if TRP3_NamePlatesUtil.IsGuildNameEnabled() then
+			local customGuildInfo = player:GetCustomGuildMembership();
+			local customGuildName = customGuildInfo.name and string.trim(customGuildInfo.name) or nil;
+			local customGuildRank = customGuildInfo.rank and string.trim(customGuildInfo.rank) or nil;
+
+			local originalGuildName, originalGuildRank = GetGuildInfo(unitToken);
+
+			if customGuildName and customGuildName ~= "" and TRP3_NamePlatesSettings.CustomizeGuild then
+				displayInfo.guildName = TRP3_NamePlatesUtil.GenerateCroppedGuildName(customGuildName);
+				displayInfo.guildNameUncropped = customGuildName;
+				displayInfo.guildRank = customGuildRank or L.DEFAULT_GUILD_RANK;
+				displayInfo.guildIsCustom = true;
+			elseif originalGuildName and originalGuildName ~= "" then
+				displayInfo.guildName = TRP3_NamePlatesUtil.GenerateCroppedGuildName(originalGuildName);
+				displayInfo.guildNameUncropped = originalGuildName;
+				displayInfo.guildRank = originalGuildRank;
+				displayInfo.guildIsCustom = false;
 			end
 		end
 	end
@@ -273,6 +276,11 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 	end
 
 	local owner, companionID = TRP3_API.utils.str.companionIDToInfo(companionFullID);
+
+	if owner and TRP3_API.register.isIDIgnored(owner) then
+		return displayInfo;
+	end
+
 	local profile;
 
 	if owner == TRP3_API.globals.player_id then
