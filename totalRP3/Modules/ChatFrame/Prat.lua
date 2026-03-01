@@ -14,18 +14,14 @@ Prat:AddModuleToLoad(function()
 	if Prat.RequestModuleName then
 		local PRAT_MODULE = Prat:RequestModuleName("Total RP 3");
 		pratModule = Prat:NewModule(PRAT_MODULE);
-		local PL = pratModule.PL;
-	
-		PL:AddLocale(PRAT_MODULE, "enUS", {
+		pratModule.PL:AddLocale(PRAT_MODULE, "enUS", {
 			module_name = "Total RP 3",
 			module_desc = "Total RP 3 customizations for Prat",
 		});
 	-- Modern Prat API
 	else
 		pratModule = Prat:NewModule("Total RP 3");
-		local PL = pratModule.PL;
-	
-		PL:AddLocale("enUS", {
+		pratModule.PL:AddLocale("enUS", {
 			module_name = "Total RP 3",
 			module_desc = "Total RP 3 customizations for Prat",
 		});
