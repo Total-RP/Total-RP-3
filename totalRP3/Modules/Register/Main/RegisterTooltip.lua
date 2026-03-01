@@ -1591,7 +1591,7 @@ local function onModuleInit()
 	registerConfigKey(ConfigKeys.HIDE_ON_MODIFIER, "ALT");
 	registerConfigKey(ConfigKeys.CHARACT_MAIN_SIZE, 16);
 	registerConfigKey(ConfigKeys.CHARACT_SUB_SIZE, 12);
-	registerConfigKey(ConfigKeys.CHARACT_TER_SIZE, 10);
+	registerConfigKey(ConfigKeys.CHARACT_TER_SIZE, 12);
 	registerConfigKey(ConfigKeys.CHARACT_ICONS, true);
 	registerConfigKey(ConfigKeys.CHARACT_FT, true);
 	registerConfigKey(ConfigKeys.CHARACT_RACECLASS, true);
