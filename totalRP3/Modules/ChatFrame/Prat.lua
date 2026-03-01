@@ -9,14 +9,30 @@ end
 local _, TRP3_API = ...;
 
 Prat:AddModuleToLoad(function()
-	local PRAT_MODULE = Prat:RequestModuleName("Total RP 3")
-	local pratModule = Prat:NewModule(PRAT_MODULE);
-	local PL = pratModule.PL;
+	local pratModule
+	-- Legacy Prat API
+	if Prat.RequestModuleName then
+		local PRAT_MODULE = Prat:RequestModuleName("Total RP 3");
+		pratModule = Prat:NewModule(PRAT_MODULE);
+		local PL = pratModule.PL;
+	
+		PL:AddLocale(PRAT_MODULE, "enUS", {
+			module_name = "Total RP 3",
+			module_desc = "Total RP 3 customizations for Prat",
+		});
+	-- Modern Prat API
+	else
+		pratModule = Prat:NewModule("Total RP 3");
+		local PL = pratModule.PL;
+	
+		PL:AddLocale("enUS", {
+			module_name = "Total RP 3",
+			module_desc = "Total RP 3 customizations for Prat",
+		});
 
-	PL:AddLocale(PRAT_MODULE, "enUS", {
-		module_name = "Total RP 3",
-		module_desc = "Total RP 3 customizations for Prat",
-	});
+		if not pratModule:IsEnabled() then return; end
+	end
+
 
 	Prat:SetModuleOptions(pratModule, {
 		name = "Total RP 3",
@@ -31,7 +47,7 @@ Prat:AddModuleToLoad(function()
 	});
 
 	-- Enable Total RP 3's module by default
-	Prat:SetModuleDefaults(pratModule.name, {
+	Prat:SetModuleDefaults(pratModule, {
 		profile = {
 			on = true,
 		},
@@ -115,10 +131,10 @@ Prat:AddModuleToLoad(function()
 	end
 
 	function pratModule:OnModuleEnable()
-		Prat.RegisterChatEvent(pratModule, "Prat_PreAddMessage");
+		Prat.RegisterChatEvent(self, Prat.Events.PRE_ADDMESSAGE);
 	end
 
 	function pratModule:OnModuleDisable()
-		Prat.UnregisterChatEvent(pratModule, "Prat_PreAddMessage");
+		Prat.UnregisterChatEvent(self, Prat.Events.PRE_ADDMESSAGE);
 	end
 end);
