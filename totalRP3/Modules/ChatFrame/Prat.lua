@@ -9,7 +9,7 @@ end
 local _, TRP3_API = ...;
 
 Prat:AddModuleToLoad(function()
-	local pratModule
+	local pratModule;
 	-- Legacy Prat API
 	if Prat.RequestModuleName then
 		local PRAT_MODULE = Prat:RequestModuleName("Total RP 3");
