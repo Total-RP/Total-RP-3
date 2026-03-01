@@ -386,6 +386,7 @@ local function companionProfileSelectionList(characterID, targetType, buttonClic
 		ownerID = characterID;
 		if ownerID == Globals.player_id then
 			companionID = tostring(getCurrentMountSpellID());
+			targetType = TRP3_Enums.UNIT_TYPE.MOUNT;
 		else
 			companionFullID = TRP3_API.companions.register.getUnitMount(characterID, "target");
 		end
