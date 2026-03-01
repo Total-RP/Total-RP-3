@@ -34,7 +34,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		helpLine = " frames",
 		handler = function(arg1)
 			if arg1 then
-				arg1 = strlower(arg1);
+				arg1 = string.lower(arg1);
 			end
 			TRP3_Addon:TriggerEvent(TRP3_Addon.Events.RESET_FRAME_POSITION, arg1);
 		end
