@@ -72,6 +72,7 @@ function TRP3_MainFrameLayoutMixin:OnLoad()
 	TRP3_MainFrameMixin.OnLoad(self);
 	self.windowLayout = nil;  -- Aliases configuration table; set during addon load.
 	TRP3_Addon.RegisterCallback(self, "WORKFLOW_ON_FINISH", "OnLayoutLoaded");
+	TRP3_Addon.RegisterCallback(self, "RESET_FRAME_POSITION", "OnResetFramePosition");
 end
 
 function TRP3_MainFrameLayoutMixin:OnLayoutLoaded()
@@ -110,6 +111,15 @@ function TRP3_MainFrameLayoutMixin:SaveLayout()
 	self.windowLayout.w = width;
 	self.windowLayout.h = height;
 	LibWindow.SavePosition(self);
+end
+
+function TRP3_MainFrameLayoutMixin:OnResetFramePosition(_, target)
+	if target and target ~= "mainframe" then
+		return;
+	end
+
+	TRP3_API.configuration.resetValue("window_layout");
+	self:OnLayoutLoaded();
 end
 
 TRP3_MainFrameResizeButtonMixin = {};

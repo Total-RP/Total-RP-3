@@ -159,6 +159,14 @@ local function onStart()
 	-- INIT & TRP3 toolbar content
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.RESET_FRAME_POSITION, function(_, target)
+		if target and target ~= "toolbar" then
+			return;
+		end
+
+		TRP3_API.toolbar.reset();
+	end);
+
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 		loaded = true;
 
