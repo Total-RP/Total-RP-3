@@ -31,7 +31,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	-- Slash command to reset frames
 	TRP3_API.slash.registerCommand({
 		id = "reset",
-		helpLine = " frames",
+		helpLine = " mainframe | toolbar | glancebar | targetframe | leave blank to reset all",
 		handler = function(arg1)
 			if arg1 then
 				arg1 = string.lower(arg1);
