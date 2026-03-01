@@ -58,8 +58,6 @@ function TRP3_API.InitCallbackRegistry(registry)
 	callbacks.OnUsed = OnCallbackEventUsed;
 	callbacks.OnUnused = OnCallbackEventUnused;
 
-	TRP3_DebugUtil.AddToEventTraceWindow(callbacks);
-
 	return callbacks;
 end
 

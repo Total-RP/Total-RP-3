@@ -194,6 +194,3 @@ AddOn_TotalRP3.Communications = {
 	extractMessageTokenFromData = extractMessageTokenFromData,
 	PRIORITIES = PRIORITIES,
 }
-
-TRP3_DebugUtil.RemoveFromEventTraceWindow(subSystemsDispatcher.callbacks);
-TRP3_DebugUtil.RemoveFromEventTraceWindow(subSystemsOnProgressDispatcher.callbacks);
