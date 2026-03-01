@@ -4,6 +4,7 @@
 TRP3_CVarConstants = {
 	ChatClassColorOverride = "chatClassColorOverride",
 	ColorblindMode = "colorblindMode",
+	NamePlateSize = "nameplateSize",
 	NamePlateShowFriendlyNPCs = "nameplateShowFriendlyNpcs",
 	NamePlateShowFriendlyPlayers = "nameplateShowFriendlyPlayers",
 	NamePlateShowOnlyNameForFriendlyPlayerUnits = "nameplateShowOnlyNameForFriendlyPlayerUnits",

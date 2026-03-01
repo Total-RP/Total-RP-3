@@ -1497,7 +1497,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_ACTIVE_QUERY = "Automatically fetch profiles",
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP = "If checked, automatically fetches roleplay profiles for units with nameplates attached.",
 	NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK = "Use class color by default",
-	NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP = "If checked, this enables the use of class colors for names and health bars as a fallback for units that do not have a custom class color in their profile.|n|nUnits that do not have roleplay profiles are unaffected by this setting and will not be class-colored.",
+	NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP = "If checked, this enables the use of class colors for names and health bars as a fallback for units that do not have a custom class color in their profile.",
 	NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY = "Hide bars on |cff449fe0Blizzard|r friendly player nameplates",
 	NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP = "If checked, this enables the use of name-only mode for |cff449fe0Blizzard|r friendly player nameplates.|n|nIn this mode, all friendly player nameplates will have their health bars hidden, including those with or without roleplay profiles.",
 	NAMEPLATES_CONFIG_UNIT_STATE_SHOW = "Customize",
@@ -1594,7 +1594,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	LAUNCHER_ACTION_PLAYER = "Open current profile page",
 
 	CO_MODULES_SUPPORTS_HOTRELOAD = "This module supports hot reload.",
-	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, |cffa8deffPlater|r, and |cffc69b6dPlatynator|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
+	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r, |cffa8deffPlater|r, and |cffc69b6dPlatynator|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
 	PLATER_NAMEPLATES_MODULE_NAME = "Plater Nameplates",
 	PLATER_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Plater nameplates.",
 	PLATER_NAMEPLATES_WARN_OUTDATED_MODULE = "|cffa8deffPlater|r Nameplates is outdated.",
