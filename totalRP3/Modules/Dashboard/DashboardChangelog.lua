@@ -2,6 +2,26 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.3.2
+
+## Changed
+
+- Nameplates from ignored characters and their pets are no longer customized.
+- The `/trp3 reset` command has been changed to enable reset of individual frames, or include the main frame when resetting all frames.
+  - See `/trp3 help` for the new command options.
+- Currently/OOC tooltip text size is now bigger by default to be more readable on higher resolutions.
+
+## Fixed
+
+- Fixed multiple issues with Blizzard nameplates customization:
+  - Fixed nameplate title/guild text sometimes attaching to the wrong units.
+  - Fixed non-RP units nameplates missing guild text and class color when the relevant settings were enabled.
+  - Fixed nameplates not refreshing when enabling/disabled text-only mode.
+  - Fixed title and guild text size not updating with the nameplate size.
+- Fixed nameplate icons sometimes attaching to the wrong units when using Plater.
+- Fixed mount profiles not being marked properly as such when creating them from the toolbar button.
+- Fixed Prat support (for an upcoming update). Thanks to QartemisT.
+
 # Changelog version 3.3.1
 
 ## Added
@@ -89,78 +109,6 @@ local CHANGELOG_TEXT = [[
 
 - Fixed an issue with slider values sometimes displaying a lot of decimals.
 - Fixed an issue with the target frame still displaying if a character's profile is deleted from the directory but a new profile cannot be retrieved on them.
-
-# Changelog version 3.1.5
-
-## Fixed
-
-- Fixed players in houses replying to every scan instead of just their neighborhood scan.
-
-# Changelog version 3.1.4
-
-## Changed
-
-- The map scan has been adjusted in neighborhoods:
-  - Scanning the neighborhood map is only possible while inside a neighborhood, and will only show players in that specific neighborhood.
-  - Players inside houses will also respond to the scan, but only if the house is set to allow "Anyone" in.
-
-## Fixed
-
-- Fixed chat issues when using ElvUI or WIM.
-- Housing zones will no longer count as instances for the "Hide in instance" settings for nameplates, tooltips and unit popups.
-
-# Changelog version 3.1.3
-
-## Added
-
-- Added 160 icons, 72 musics and 35 images from patch 11.2.7.
-
-## Fixed
-
-- Fixed %xt/%xf tokens not working after patch 11.2.7.
-- Fixed addon detection for compatibility modules sometimes failing.
-
-# Changelog version 3.1.2
-
-## Changed
-
-- The profile directory has received some changes:
-  - The relation column will now sort by relation order rather than alphabetically, and None relation will always sort to the bottom.
-  - The guild and realm columns have been added (only visible if the window is wide enough to display them).
-  - The profile type column has been removed.
-  - The entire line can now be hovered and clicked rather than only a portion of it.
-- Glances will no longer display leading/trailing spaces and excess newlines.
-- The dice roll broadcast line can now be right-clicked to see the sender's character name.
-- Dice rolls broadcast to a target will not show if sent in quick succession. This doesn't apply to party/raid broadcast.
-
-## Fixed
-
-- Fixed Enter/Escape not working on popups requiring an input.
-
-# Changelog version 3.1.1
-
-## Fixed
-
-- Profiles with notes or relations are once again protected from auto-purge.
-
-# Changelog version 3.1.0
-
-## Added
-
-- Added an indicator on the main profile view when the profile is currently getting received.
-- Added 485 icons, 12 images and 94 musics from patch 11.2.
-
-## Changed
-
-- Changed the format of profile exports to allow bigger profiles to be exported, and avoid issues with data becoming invalid after copy/pasting the exports on some platforms.
-  - Older profile exports can still be imported as before.
-
-## Fixed
-
-- Restore settings to enable/disable buttons on the target frame.
-- Toolbar and target frame are now hidden properly when starting a pet battle.
-- Fixed some issues with companion profiles in Classic.
-- Fixed a bug when pressing the Alt key while a chat link tooltip is open but still currently receiving data.
 ]];
 
 function TRP3_DashboardUtil.GenerateChangelog()

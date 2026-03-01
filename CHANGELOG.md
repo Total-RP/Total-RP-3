@@ -1,3 +1,23 @@
+# Changelog version 3.3.2
+
+## Changed
+
+- Nameplates from ignored characters and their pets are no longer customized.
+- The `/trp3 reset` command has been changed to enable reset of individual frames, or include the main frame when resetting all frames.
+  - See `/trp3 help` for the new command options.
+- Currently/OOC tooltip text size is now bigger by default to be more readable on higher resolutions.
+
+## Fixed
+
+- Fixed multiple issues with Blizzard nameplates customization:
+  - Fixed nameplate title/guild text sometimes attaching to the wrong units.
+  - Fixed non-RP units nameplates missing guild text and class color when the relevant settings were enabled.
+  - Fixed nameplates not refreshing when enabling/disabled text-only mode.
+  - Fixed title and guild text size not updating with the nameplate size.
+- Fixed nameplate icons sometimes attaching to the wrong units when using Plater.
+- Fixed mount profiles not being marked properly as such when creating them from the toolbar button.
+- Fixed Prat support (for an upcoming update). Thanks to QartemisT.
+
 # Changelog version 3.3.1
 
 ## Added
