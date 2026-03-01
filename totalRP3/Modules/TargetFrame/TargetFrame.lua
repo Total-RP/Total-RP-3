@@ -288,6 +288,7 @@ local function onStart()
 	registerConfigKey(CONFIG_TARGET_POS_Y, 200);
 
 	local function reposition()
+		ui_TargetFrame:ClearAllPoints();
 		ui_TargetFrame:SetPoint(getConfigValue(CONFIG_TARGET_POS_A), UIParent, getConfigValue(CONFIG_TARGET_POS_A),
 			getConfigValue(CONFIG_TARGET_POS_X), getConfigValue(CONFIG_TARGET_POS_Y));
 	end
@@ -297,6 +298,7 @@ local function onStart()
 		setConfigValue(CONFIG_TARGET_POS_A, "BOTTOM");
 		setConfigValue(CONFIG_TARGET_POS_X, 0);
 		setConfigValue(CONFIG_TARGET_POS_Y, 200);
+		reposition();
 	end
 
 	ui_TargetFrame:RegisterForDrag("LeftButton");
@@ -341,6 +343,14 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Config
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.RESET_FRAME_POSITION, function(_, target)
+		if target and target ~= "targetframe" then
+			return;
+		end
+
+		TRP3_API.target.reset();
+	end);
 
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
 		loaded = true;
