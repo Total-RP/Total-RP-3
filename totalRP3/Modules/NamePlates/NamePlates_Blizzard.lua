@@ -355,16 +355,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 		local hasHealthBarOverlap = NamePlateSetupOptions.unitNameInsideHealthBar and not TRP3_NamePlatesUtil.IsNameOnlyModeEnabled() or not displayInfo.isPlayerUnit;
 
 		if displayInfo.shouldColorName and not hasHealthBarOverlap then
-			local color = displayInfo.color;
-			if UnitIsUnit(unitToken, "mouseover") then
-				local r = Saturate(color.r * 1.25);
-				local g = Saturate(color.g * 1.25);
-				local b = Saturate(color.b * 1.25);
-
-				overrideColor = TRP3_API.CreateColor(r, g, b);
-			else
-				overrideColor = TRP3_API.CreateColor(color:GetRGB());
-			end
+			overrideColor = displayInfo.color;
 		end
 	end
 
