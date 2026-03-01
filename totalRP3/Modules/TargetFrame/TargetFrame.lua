@@ -345,7 +345,7 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.RESET_FRAME_POSITION, function(_, target)
-		if target and target ~= "target" then
+		if target and target ~= "targetframe" then
 			return;
 		end
 
