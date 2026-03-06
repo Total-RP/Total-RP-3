@@ -25,8 +25,6 @@ Prat:AddModuleToLoad(function()
 			module_name = "Total RP 3",
 			module_desc = "Total RP 3 customizations for Prat",
 		});
-
-		if not pratModule:IsEnabled() then return; end
 	end
 
 
