@@ -184,7 +184,10 @@ function TRP3_SidebarLogoMixin:Update()
 	local isSeriousDay = TRP3_API.globals.serious_day;
 	local isSeriousTime = TRP3_API.configuration.getValue("secret_party");
 
-	if isSeriousDay or isSeriousTime then
+	if isSeriousDay then
+		self:SetTexture([[Interface\AddOns\totalRP3\Resources\UI\ui-sidebar-logo-void]]);
+		self:SetVertexColor(1, 1, 1, 1);
+	elseif isSeriousTime then
 		self:SetTexture([[Interface\AddOns\totalRP3\Resources\UI\ui-sidebar-logo-alt]]);
 		self:SetVertexColor(1, 1, 1, 1);
 	else

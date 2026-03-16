@@ -487,17 +487,15 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	}
 
 	if TRP3_API.globals.serious_day then
-		registerConfigKey("AF_STUFF_2025", true);
+		registerConfigKey("AF_STUFF_2026", true);
 		tinsert(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL.elements, 2, {
 			inherit = "TRP3_ConfigCheck",
 			title = TRP3_API.utils.Rainbowify("Enable April Fools' joke"),
 			help = "Disable this option to remove this year's April Fools' joke.",
-			configKey = "AF_STUFF_2025",
+			configKey = "AF_STUFF_2026",
 			callback = function()
-				TRP3_MainFrame.Spinner:SetShown(Config.getValue("AF_STUFF_2025"));
 			end
 		});
-		TRP3_MainFrame.Spinner:SetShown(Config.getValue("AF_STUFF_2025"));
 	end
 end);
 
