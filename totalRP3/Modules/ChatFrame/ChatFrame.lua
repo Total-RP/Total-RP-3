@@ -529,6 +529,10 @@ function TRP3_API.chat.getNPCMessageName()
 	return npcMessageName;
 end
 
+function TRP3_API.chat.setNPCMessageName(name)
+	npcMessageName = name;
+end
+
 function TRP3_API.chat.getOwnershipNameID()
 	return ownershipNameId;
 end
