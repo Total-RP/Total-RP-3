@@ -897,13 +897,13 @@ local function onStart()
 		replaceBar();
 	end
 
-TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.RESET_FRAME_POSITION, function(_, target)
-	if target and target ~= "glancebar" then
-		return;
-	end
+	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.RESET_FRAME_POSITION, function(_, target)
+		if target and target ~= "glancebar" then
+			return;
+		end
 
-	TRP3_API.register.resetGlanceBar();
-end);
+		TRP3_API.register.resetGlanceBar();
+	end);
 
 	-- Config must be built on WORKFLOW_ON_LOADED or else the TargetFrame module could be not yet loaded.
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
