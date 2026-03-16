@@ -901,7 +901,7 @@ local function onStart()
 		if target and target ~= "glancebar" then
 			return;
 		end
-	
+
 		TRP3_API.register.resetGlanceBar();
 	end);
 
