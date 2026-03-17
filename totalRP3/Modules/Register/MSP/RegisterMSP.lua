@@ -17,7 +17,7 @@ local function onStart()
 
 	-- Check for already loaded MSP addon
 	if msp_RPAddOn then
-		TRP3_API.popup.showAlertPopup(loc.REG_MSP_ALERT:format(msp_RPAddOn));
+		TRP3_API.popup.showAlertPopup("|A:icons_64x64_important:45:45|a|n|n" .. loc.REG_MSP_ALERT:format(msp_RPAddOn));
 		-- Provoke error to cancel module activation
 		error(("Conflict with another MSP addon: %s"):format(msp_RPAddOn));
 	end
