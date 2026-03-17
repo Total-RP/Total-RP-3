@@ -1046,15 +1046,6 @@ Local visto pela última vez: |cff00ff00%s|r]=],
 	["REG_LIST_PETS_TOOLTIP2"] = "Foi visto com",
 	["REG_LIST_REALMONLY"] = "Apenas neste reino",
 	["REG_LOCATION_DIFFERENT_WAR_MODE"] = "Modo de guerra diferente",
-	["REG_MSP_ALERT"] = [=[|cffff0000AVISO
-
-Você não pode ter simultaneamente mais de um addon usando o Protocolo Mary Sue, pois entrariam em conflito.|r
-
-Atualmente carregado: |cff00ff00%s
-
-|cffff9900Logo o suporte a PMS para o Total RP3 será desativado.|r
-
-Se você não quer que TRP3 seja seu addon de PMS e não quer mais ver este alerta, você pode desativar o módulo de Protocolo Mary Sue nas Opções do TRP3 -> Status de módulo.]=],
 	["REG_NOTES_PROFILE"] = "Anotações",
 	["REG_NOTES_PROFILE_TT"] = "Abra a janela de anotações para o personagem alvo.",
 	["REG_PLAYER"] = "Personagem",

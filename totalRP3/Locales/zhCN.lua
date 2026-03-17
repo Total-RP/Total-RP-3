@@ -1031,15 +1031,6 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	["REG_LIST_PETS_TOOLTIP2"] = "已经被发现和……在一起",
 	["REG_LIST_REALMONLY"] = "仅限本服务器",
 	["REG_LOCATION_DIFFERENT_WAR_MODE"] = "不同的战争模式",
-	["REG_MSP_ALERT"] = [=[|cffff0000警告
-
-在玛丽苏协议（MSP）下，你不能同时拥有多于一个插件，因为他们会互相冲突。|r
-
-当前已载入：|cff00ff00%s
-
-|cffff9900因此，TRP3的MSP支持将被禁用。|r
-
-如果你不想让TRP3作为你的MSP插件并不想再次看到这类警告，你可以禁用TRP3设置当中的玛丽苏协议。]=],
 	["REG_NOTES_PROFILE"] = "笔记",
 	["REG_NOTES_PROFILE_TT"] = "打开对目标角色的笔记窗口。",
 	["REG_PLAYER"] = "角色",

@@ -81,6 +81,7 @@ local function showNotesTab()
 	assert(context.profile, "No profile in context");
 	context.isEditMode = false;
 	TRP3_ProfileReportButton:Hide();
+	TRP3_MSPWarningButton:Hide();
 	displayNotes(context);
 	TRP3_RegisterNotes:Show();
 end

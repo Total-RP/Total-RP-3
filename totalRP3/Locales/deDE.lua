@@ -897,15 +897,6 @@ Wo zuletzt gesehen: |cff00ff00%s|r]=],
 	["REG_LIST_PETS_TOOLTIP2"] = "Wurde gesehen mit",
 	["REG_LIST_REALMONLY"] = "Nur dieser Realm",
 	["REG_LOCATION_DIFFERENT_WAR_MODE"] = "Anderer Kriegsmodus",
-	["REG_MSP_ALERT"] = [=[|cffff0000WARNUNG
-
-Du kannst nicht mehrere Addons nutzen, die das Mary Sue Protocol (MSP) nutzen, da das zu Fehlern führen kann!|r
-
-Aktuell geladen: |cff00ff00%s
-
-|cffff9900Deshalb wir der MSP Support für Total RP3 deaktiviert.|r
-
-Wenn du TRP3 nicht als dein MSP Addon nutzen und diese Meldung nicht noch einmal sehen willst, kannst du das Mary Sue Protocol Modul in den TRP3 Einstellungen unter Modul Status deaktivieren.]=],
 	["REG_NOTES_PROFILE"] = "Notizen",
 	["REG_NOTES_PROFILE_TT"] = "Öffnet das Notizen Fenster für den anvisierten Charakter.",
 	["REG_PLAYER"] = "Charakter",

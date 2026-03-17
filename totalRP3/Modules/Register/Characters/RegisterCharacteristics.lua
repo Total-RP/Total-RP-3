@@ -1363,9 +1363,13 @@ local function refreshDisplay()
 
 	-- IsSelf ?
 	TRP3_RegisterCharact_NamePanel_EditButton:Hide();
-	TRP3_ProfileReportButton:Hide()
+	TRP3_ProfileReportButton:Hide();
+	TRP3_MSPWarningButton:Hide();
 	if context.isPlayer then
 		TRP3_RegisterCharact_NamePanel_EditButton:Show();
+		if msp_RPAddOn ~= "Total RP 3" then
+			TRP3_MSPWarningButton:Show();
+		end
 	else
 		assert(context.profileID, "No profileID in context");
 		TRP3_RegisterCharact_ActionButton:Show();

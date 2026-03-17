@@ -803,15 +803,6 @@ Opcionalmente, puede rellenar la razón de ser ignorado abajo. Esta nota es pers
 	["REG_LIST_PETS_TOOLTIP2"] = "Se ha visto con",
 	["REG_LIST_REALMONLY"] = "Sólo en este reino",
 	["REG_LOCATION_DIFFERENT_WAR_MODE"] = "Modo de Guerra distinto",
-	["REG_MSP_ALERT"] = [=[|cffff0000ADVERTENCIA
-
-No se puede tener más de un addon utilizando el Protocolo Mary Sue, ya que podrían entrar en conflicto.|r
-
-Actualmente cargado: |cff00ff00%s
-
-|cffff9900Por lo tanto, se desactivará el apoyo PMS para el Total RP3|r
-
-Si no quieres que el TRP3 sea tu PMS y no quieres ver esta alerta de nuevo, puedes desactivarlo en el módulo Protocolo Mary Sue en ajustes de Total RP3 en -> Estado del módulo.]=],
 	["REG_NOTES_PROFILE"] = "Notas",
 	["REG_NOTES_PROFILE_TT"] = "Abre la ventana de notas para el personaje objetivo.",
 	["REG_PLAYER"] = "Personaje",

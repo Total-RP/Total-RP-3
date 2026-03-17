@@ -558,6 +558,7 @@ local function showDefaultTab()
 	TRP3_RegisterMisc:Hide();
 	TRP3_RegisterNotes:Hide();
 	TRP3_ProfileReportButton:Hide();
+	TRP3_MSPWarningButton:SetShown(msp_RPAddOn ~= "Total RP 3");
 
 	tabGroup:SetAllTabsVisible(false);
 
@@ -878,7 +879,11 @@ function TRP3_API.register.init()
 		Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", reportText, nil, loc.COPY_SYSTEM_MESSAGE);
 	end)
 
-	TRP3_API.ui.tooltip.setTooltipAll(TRP3_ProfileReportButton, "RIGHT", 0, 5,  loc.REG_REPORT_PLAYER_PROFILE, loc.REG_REPORT_PLAYER_PROFILE_TT)
+	TRP3_API.ui.tooltip.setTooltipAll(TRP3_ProfileReportButton, "RIGHT", 0, 5,  loc.REG_REPORT_PLAYER_PROFILE, loc.REG_REPORT_PLAYER_PROFILE_TT);
+
+	if msp_RPAddOn and msp_RPAddOn ~= "Total RP 3" then
+		TRP3_API.ui.tooltip.setTooltipAll(TRP3_MSPWarningButton, "RIGHT", 0, 5,  "", loc.REG_MSP_ALERT:format(msp_RPAddOn));
+	end
 
 	createTabBar();
 end

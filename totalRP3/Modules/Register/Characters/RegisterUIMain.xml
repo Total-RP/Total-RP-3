@@ -122,6 +122,18 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Layers>
 				<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD"/>
 			</Button>
+			<Button name="TRP3_MSPWarningButton">
+				<Size x="30" y="30"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" y="-2" x="-5"/>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<Texture atlas="icons_64x64_important"/>
+					</Layer>
+				</Layers>
+				<HighlightTexture atlas="icons_64x64_important" alphaMode="ADD"/>
+			</Button>
 			<Frame parentKey="RequestIndicator" inherits="TRP3_RegisterRequestIndicatorTemplate" frameLevel="1000" fixedFrameLevel="true" hidden="true">
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
