@@ -132,7 +132,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<Texture atlas="icons_64x64_important"/>
 					</Layer>
 				</Layers>
-				<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD"/>
+				<HighlightTexture atlas="icons_64x64_important" alphaMode="ADD"/>
 			</Button>
 			<Frame parentKey="RequestIndicator" inherits="TRP3_RegisterRequestIndicatorTemplate" frameLevel="1000" fixedFrameLevel="true" hidden="true">
 				<Anchors>
