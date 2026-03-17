@@ -586,7 +586,16 @@ local function writeTooltipForCharacter(targetID, targetType)
 		completeName = crop(completeName, TRP3_TooltipCroppingConstants.Name);
 	end
 
-	completeName = color:WrapTextInColorCode(completeName);
+	if Globals.serious_day and getConfigValue("AF_STUFF_2026") then
+		local check = string.lower(string.sub(string.gsub(profileID, "[^%w]+", ""), -1))
+		if check == "" or tonumber(check, 36) % 2 == 0 then
+			completeName = TRP3_API.utils.Voidify(completeName);
+		else
+			completeName = TRP3_API.utils.Lightify(completeName);
+		end
+	else
+		completeName = color:WrapTextInColorCode(completeName);
+	end
 
 	-- OOC
 	if info.character and info.character.RP ~= 1 then

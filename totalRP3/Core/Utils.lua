@@ -916,6 +916,71 @@ local function Oldgodify(text)
 end
 TRP3_API.utils.Oldgodify = Oldgodify;
 
+local function VoidCharacterColor(value, max)
+	-- 0.3 0.4 0.9 / 0.4 0.6 1 / 0.4 0.35 0.9
+	local movedValue = value - 1;    -- screw Lua lmao
+	local half = (max - 1) / 2;
+	if movedValue < half then
+		return TRP3_API.CreateColor(0.3 + 0.1 * movedValue / half, 0.4 + 0.2 * movedValue / half, 0.9 + 0.1 * movedValue / half)
+	elseif movedValue ~= max - 1 then
+		return TRP3_API.CreateColor(0.4, 0.4 + 0.2 * (2 * half - movedValue) / half, 0.9 + 0.1 * (2 * half - movedValue) / half)
+	else
+		return TRP3_API.CreateColor(0.4, 0.35, 0.9)
+	end
+end
+
+local function Voidify(text)
+	local finalText = ""
+	local i = 1
+
+	local characterCount = 0;
+	for _ in string.gmatch(text, "([%z\1-\127\194-\244][\128-\191]*)") do
+		characterCount = characterCount + 1
+	end
+
+	for character in string.gmatch(text, "([%z\1-\127\194-\244][\128-\191]*)") do
+		---@type Color
+		local color = VoidCharacterColor(i, characterCount)
+		color = TRP3_API.GenerateReadableColor(color, TRP3_API.Colors.Black);
+		finalText = finalText .. color:WrapTextInColorCode(character)
+		i = i + 1
+	end
+	return finalText
+end
+TRP3_API.utils.Voidify = Voidify;
+
+local function LightCharacterColor(value, max)
+	-- 1 0.8 0.25 / 1 1 0.6 / 1 0.8 0.25
+	local movedValue = value - 1;    -- screw Lua lmao
+	local third = (max - 1) / 3;
+	local ratio = 0;
+	if movedValue < third then
+		ratio = third - movedValue
+	elseif movedValue > 2 * third then
+		ratio = movedValue - 2 * third
+	end
+	return TRP3_API.CreateColor(1, 1 - 0.2 * ratio / third, 0.6 - 0.35 * ratio / third)
+end
+
+local function Lightify(text)
+	local finalText = ""
+	local i = 1
+
+	local characterCount = 0;
+	for _ in string.gmatch(text, "([%z\1-\127\194-\244][\128-\191]*)") do
+		characterCount = characterCount + 1
+	end
+
+	for character in string.gmatch(text, "([%z\1-\127\194-\244][\128-\191]*)") do
+		---@type Color
+		local color = LightCharacterColor(i, characterCount)
+		finalText = finalText .. color:WrapTextInColorCode(character)
+		i = i + 1
+	end
+	return finalText
+end
+TRP3_API.utils.Lightify = Lightify;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Settings
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
