@@ -596,6 +596,7 @@ local function refreshConsultDisplay(context)
 	TRP3_RegisterAbout_AboutPanel.isMine = context.isPlayer;
 
 	TRP3_ProfileReportButton:Hide();
+	TRP3_MSPWarningButton:Hide();
 	if not context.isPlayer then
 		if dataTab ~= Globals.empty then
 			dataTab.read = true;
@@ -604,6 +605,8 @@ local function refreshConsultDisplay(context)
 		if context.profile and context.profile.link then
 			TRP3_ProfileReportButton:Show();
 		end
+	elseif msp_RPAddOn ~= "Total RP 3" then
+		TRP3_MSPWarningButton:Show();
 	end
 
 	assert(type(dataTab) == "table", "Error: Nil about data or not a table.");

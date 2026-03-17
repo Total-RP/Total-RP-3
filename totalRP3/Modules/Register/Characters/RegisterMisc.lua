@@ -438,8 +438,13 @@ local function showMiscTab()
 	displayRPStyle(context);
 	displayCurrently(context);
 	TRP3_ProfileReportButton:Hide();
-	if not context.isPlayer and context.profile and context.profile.link then
-		TRP3_ProfileReportButton:Show();
+	TRP3_MSPWarningButton:Hide();
+	if not context.isPlayer then
+		if context.profile and context.profile.link then
+			TRP3_ProfileReportButton:Show();
+		end
+	elseif msp_RPAddOn ~= "Total RP 3" then
+		TRP3_MSPWarningButton:Show();
 	end
 end
 TRP3_API.register.ui.showMiscTab = showMiscTab;
