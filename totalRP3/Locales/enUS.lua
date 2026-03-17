@@ -362,9 +362,9 @@ The |cnGREEN_FONT_COLOR:note only filter|r will filter the character profile lis
 	REG_COMPANION_NAME_COLOR_TT = "Your companion's name color.",
 	REG_MSP_ALERT = [[|cnWARNING_FONT_COLOR:WARNING
 
-You can only run a single addon utilising the Mary Sue Protocol.
+Profiles from different RP addons can be viewed using a single one. The addons cannot function properly while enabled at the same time.
 
-MSP support in Total RP 3 will be disabled while |cnGREEN_FONT_COLOR:%s|r is loaded.|r]],
+Your Total RP 3 profile will not be shared with other players while |cnGREEN_FONT_COLOR:%s|r is loaded.|r]],
 	REG_COMPANION_PAGE_TUTO_C_1 = "Consult",
 	REG_COMPANION_PAGE_TUTO_E_1 = "This is |cnGREEN_FONT_COLOR:your companion main information|r.|n|nAll of this information will appear on |cnGREEN_FONT_COLOR:your companion's tooltip|r.",
 	REG_COMPANION_PAGE_TUTO_E_2 = [[|cnGREEN_FONT_COLOR:Background:|r

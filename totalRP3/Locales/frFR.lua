@@ -1066,15 +1066,11 @@ La |cnGREEN_FONT_COLOR:dernière colonne|r affiche divers indicateurs (ignoré .
 	["REG_LIST_PETS_TOOLTIP2"] = "A été vu avec",
 	["REG_LIST_REALMONLY"] = "Ce royaume uniquement",
 	["REG_LOCATION_DIFFERENT_WAR_MODE"] = "Mode Guerre différent du votre",
-	["REG_MSP_ALERT"] = [=[|cffff0000ATTENTION
+	["REG_MSP_ALERT"] = [[|cnWARNING_FONT_COLOR:ATTENTION
 
-Vous ne pouvez avoir simultanément plus d'un addon utilisant le Mary Sue Protocol, car cela créerait un conflit.|r
+Un seul addon RP est nécessaire pour voir les profils de différents addons. Ces addons ne peuvent pas fonctionner correctement lorsqu'ils sont activés en même temps.
 
-Actuellement chargé: |cff00ff00%s
-
-|cffff9900En conséquence, le support MSP pour Total RP3 sera désactivé.|r
-
-Si vous ne souhaitez pas que TRP3 soit votre addon MSP et ne voulez plus voir cette alerte à nouveau, vous pouvez désactiver le module Mary Sue Protocol dans les paramètres TRP3 -> Statut des modules.]=],
+Votre profil Total RP 3 ne sera pas partagé avec les autres joueurs tant que |cnGREEN_FONT_COLOR:%s|r est activé.|r]],
 	["REG_NOTES_PROFILE"] = "Notes",
 	["REG_NOTES_PROFILE_TT"] = "Ouvre l'onglet de notes pour le personnage ciblé.",
 	["REG_PLAYER"] = "Personnage",

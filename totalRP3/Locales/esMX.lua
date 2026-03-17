@@ -395,15 +395,6 @@ Tus perfiles, los de tus compañeros y configuración se acumulará temporalment
 	["REG_LIST_PETS_TOOLTIP"] = "Se ha visto en",
 	["REG_LIST_PETS_TOOLTIP2"] = "Se ha visto con",
 	["REG_LIST_REALMONLY"] = "Sólo en este reino",
-	["REG_MSP_ALERT"] = [=[|cffff0000ADVERTENCIA
-
-No se puede tener más de un addon utilizando el Protocolo Mary Sue, ya que podrían entrar en conflicto.|r
-
-Actualmente cargado: |cff00ff00%s
-
-|cffff9900Por lo tanto, se desactivará el apoyo PMS para el Total RP3|r
-
-Si no quieres que el TRP3 sea tu PMS y no quieres ver esta alerta de nuevo, puedes desactivarlo en el módulo Protocolo Mary Sue en ajustes de Total RP3 en -> Estado del módulo.]=],
 	["REG_PLAYER"] = "Personaje",
 	["REG_PLAYER_ABOUT"] = "Acerca de",
 	["REG_PLAYER_ABOUT_ADD_FRAME"] = "Añadir un marco",
