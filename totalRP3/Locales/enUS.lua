@@ -362,7 +362,8 @@ The |cnGREEN_FONT_COLOR:note only filter|r will filter the character profile lis
 	REG_COMPANION_NAME_COLOR_TT = "Your companion's name color.",
 	REG_MSP_ALERT = [[|cnWARNING_FONT_COLOR:WARNING
 
-Profiles from different RP addons can be viewed using a single one. The addons cannot function properly while enabled at the same time.
+Profiles from different RP addons can be viewed using a single one.
+The addons cannot function properly while enabled at the same time.
 
 Your Total RP 3 profile will not be shared with other players while |cnGREEN_FONT_COLOR:%s|r is loaded.|r]],
 	REG_COMPANION_PAGE_TUTO_C_1 = "Consult",

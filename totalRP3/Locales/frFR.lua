@@ -1068,7 +1068,8 @@ La |cnGREEN_FONT_COLOR:dernière colonne|r affiche divers indicateurs (ignoré .
 	["REG_LOCATION_DIFFERENT_WAR_MODE"] = "Mode Guerre différent du votre",
 	["REG_MSP_ALERT"] = [[|cnWARNING_FONT_COLOR:ATTENTION
 
-Un seul addon RP est nécessaire pour voir les profils de différents addons. Ces addons ne peuvent pas fonctionner correctement lorsqu'ils sont activés en même temps.
+Un seul addon RP est nécessaire pour voir les profils de différents addons.
+Ces addons ne peuvent pas fonctionner correctement lorsqu'ils sont activés en même temps.
 
 Votre profil Total RP 3 ne sera pas partagé avec les autres joueurs tant que |cnGREEN_FONT_COLOR:%s|r est activé.|r]],
 	["REG_NOTES_PROFILE"] = "Notes",
