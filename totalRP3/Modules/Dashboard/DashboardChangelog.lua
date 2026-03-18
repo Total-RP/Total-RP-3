@@ -2,6 +2,14 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.3.3
+
+## Changed
+
+- TRP profiles will no longer be shared with other TRP users while another RP addon is running at the same time, as it would lead to display issues for other players.
+- The Prat module can now be enabled without needing a /reload if it was previously disabled.
+- Added method for other addons to customize text in NPC emotes.
+
 # Changelog version 3.3.2
 
 ## Changed
