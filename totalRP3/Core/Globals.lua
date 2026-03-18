@@ -34,7 +34,7 @@ TRP3_API.globals = {
 	addon_name_me = "Total RP 3",
 	addon_id_length = 15,
 
-	version = 156,
+	version = 157,
 
 	--@debug@
 	version_display = "-dev",
