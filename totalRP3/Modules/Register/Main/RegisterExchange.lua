@@ -601,7 +601,7 @@ function TRP3_API.slash.openProfile(...)
 		end
 
 		-- If no realm has been entered, we use the player's realm automatically
-		if not characterToOpen:find("-") then
+		if characterToOpen and not characterToOpen:find("-") then
 			characterToOpen = characterToOpen .. "-" .. TRP3_API.globals.player_realm_id;
 		end
 	else
@@ -612,6 +612,11 @@ function TRP3_API.slash.openProfile(...)
 			displayMessage(loc.PR_SLASH_OPEN_EXAMPLE);
 			return
 		end
+	end
+
+	if not characterToOpen then
+		-- Probably tried to use a unit token in a secret environment, nothing we can do.
+		return;
 	end
 
 	sendQuery(characterToOpen);
