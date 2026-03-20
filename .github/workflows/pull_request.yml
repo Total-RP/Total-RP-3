@@ -6,9 +6,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-python@v4
-      - uses: actions/setup-ruby@v1
-      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
 
@@ -30,10 +34,11 @@ jobs:
         with:
           args: -dz
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: totalRP3-PR-${{ github.event.number }}
           path: .release/
+          archive: true
           include-hidden-files: true
 
       - name: Send Webhook Notification
