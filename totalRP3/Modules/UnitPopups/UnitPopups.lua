@@ -36,6 +36,12 @@ end
 local function GetUnitCompanionProfileInfo(unitToken)
 	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
 	local companionFullID = TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType);
+
+	if not companionFullID then
+		-- Wild battle pet
+		return nil;
+	end
+
 	local owner, companionID = TRP3_API.utils.str.companionIDToInfo(companionFullID);
 	local profileType, profileID;
 
