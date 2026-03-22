@@ -298,6 +298,11 @@ end
 
 --- Send vernum request to the player
 local function sendQuery(unitID)
+	if msp_RPAddOn and msp_RPAddOn ~= "Total RP 3" then
+		-- To avoid issues with profiles flickering between TRP and another MSP profile, we disable sending queries if using a different MSP addon
+		return;
+	end
+
 	if unitID and unitID ~= Globals.player_id and not isIDIgnored(unitID) and checkCooldown(unitID, LAST_QUERY) then
 		LAST_QUERY[unitID] = GetTime();
 		LAST_QUERY_STAT[unitID] = LAST_QUERY[unitID];
@@ -318,9 +323,8 @@ end
 -- This is received when another player has "mouseovered" you.
 -- His main query is to receive your vernum tab. But you can already read his tab to query information.
 local function incomingVernumQuery(structure, senderID, sendBack)
-	if msp_RPAddOn ~= "Total RP 3" then
+	if msp_RPAddOn and msp_RPAddOn ~= "Total RP 3" then
 		-- To avoid issues with profiles flickering between TRP and another MSP profile, we disable replying to vernum queries if using a different MSP addon
-		-- This will still allow people to query others' profiles (which can be useful for companion profiles)
 		return;
 	end
 

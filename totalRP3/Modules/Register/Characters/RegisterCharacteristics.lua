@@ -1367,7 +1367,7 @@ local function refreshDisplay()
 	TRP3_MSPWarningButton:Hide();
 	if context.isPlayer then
 		TRP3_RegisterCharact_NamePanel_EditButton:Show();
-		if msp_RPAddOn ~= "Total RP 3" then
+		if msp_RPAddOn and msp_RPAddOn ~= "Total RP 3" then
 			TRP3_MSPWarningButton:Show();
 		end
 	else

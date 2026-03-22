@@ -675,7 +675,7 @@ local function onStart()
 end
 
 function TRP3_API.r.sendMSPQuery(name, targetMode)
-	if msp_RPAddOn ~= "Total RP 3" then
+	if msp_RPAddOn and msp_RPAddOn ~= "Total RP 3" then
 		return;
 	elseif not name or name == TRP3_API.globals.player_id or TRP3_API.register.isIDIgnored(name) then
 		return;
