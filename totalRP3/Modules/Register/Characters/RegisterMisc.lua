@@ -443,7 +443,7 @@ local function showMiscTab()
 		if context.profile and context.profile.link then
 			TRP3_ProfileReportButton:Show();
 		end
-	elseif msp_RPAddOn ~= "Total RP 3" then
+	elseif msp_RPAddOn and msp_RPAddOn ~= "Total RP 3" then
 		TRP3_MSPWarningButton:Show();
 	end
 end
