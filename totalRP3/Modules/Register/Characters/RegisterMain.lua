@@ -558,7 +558,7 @@ local function showDefaultTab()
 	TRP3_RegisterMisc:Hide();
 	TRP3_RegisterNotes:Hide();
 	TRP3_ProfileReportButton:Hide();
-	TRP3_MSPWarningButton:SetShown(msp_RPAddOn ~= "Total RP 3");
+	TRP3_MSPWarningButton:SetShown(msp_RPAddOn and msp_RPAddOn ~= "Total RP 3");
 
 	tabGroup:SetAllTabsVisible(false);
 
