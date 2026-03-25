@@ -1360,7 +1360,7 @@ local function show(targetType, targetID, targetMode)
 				TRP3_API.ui.tooltip.setTooltipDefaultAnchor(TRP3_CharacterTooltip, UIParent);
 				placeTooltipOnCursor(TRP3_CharacterTooltip);
 			elseif getAnchoredFrame() == GameTooltip and getConfigValue(ConfigKeys.CHARACT_HIDE_ORIGINAL) then
-				if GameTooltip:GetOwner() ~= nil and GameTooltip:GetNumPoints() > 0 then
+				if GameTooltip:GetOwner() ~= nil and GameTooltip:GetPoint(1) ~= nil and canaccessvalue(GameTooltip:GetPoint(1)) then
 					TRP3_CharacterTooltip:SetOwner(UIParent, "ANCHOR_NONE");
 					TRP3_CharacterTooltip:SetPoint(GameTooltip:GetPoint(1));
 				else
