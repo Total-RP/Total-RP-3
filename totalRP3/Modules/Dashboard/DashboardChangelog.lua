@@ -2,6 +2,15 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.3.4
+
+## Fixed
+
+- Fixed an issue with tooltips not working after entering an instance. The TRP tooltip may not display in the same position as the game tooltip as a result.
+- Fixed an error when right-clicking a wild battle pet.
+- Fixed an error when trying to open a target's profile in instances using `/trp3 open` without a name. The command will just silently fail in that case.
+- Fixed an error preventing profile transfers if the MSP module was disabled.
+
 # Changelog version 3.3.3
 
 ## Changed
