@@ -272,6 +272,30 @@ local PROFILE_NOTES_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-ico
 local WALKUP_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-walkup:15:15|t";
 local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 15);
 
+local function onIgnoredActionSelected(value, unitID)
+	if value == "remove" then
+		unignoreID(unitID);
+		refreshList();
+	elseif value == "edit" then
+		TRP3_API.register.ignoreIDConfirm(unitID); 
+	end
+end
+
+local function onIgnoredActions(button, unitID)
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+		description:CreateTitle(unitID);
+		
+		description:CreateButton(loc.CM_EDIT, function()
+			TRP3_API.register.ignoreIDConfirm(unitID); 
+		end);
+		
+		description:CreateButton(loc.REG_LIST_IGNORE_REMOVE, function()
+			unignoreID(unitID);
+			refreshList();
+		end);
+	end);
+end
+
 local function onLineClicked(self, button)
 	if currentMode == MODE_CHARACTER then
 		assert(self:GetParent().id, "No profileID on line.");
@@ -307,8 +331,9 @@ local function onLineClicked(self, button)
 		end
 	elseif currentMode == MODE_IGNORE then
 		assert(self:GetParent().id, "No unitID on line.");
-		unignoreID(self:GetParent().id);
-		refreshList();
+		if button == "RightButton" then
+			onIgnoredActions(self, self:GetParent().id);
+		end
 	end
 end
 
@@ -906,7 +931,7 @@ local function decorateIgnoredLine(line, unitID)
 	line.Realm:SetText("");
 	line.Select:Hide();
 	setTooltipForSameFrame(line.ClickName, "TOPLEFT", 0, 5, unitID, loc.REG_LIST_IGNORE_TT:format(getIgnoredList()[unitID])
-	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("CLICK", loc.REG_LIST_IGNORE_REMOVE));
+	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.CM_OPTIONS));
 	setTooltipForSameFrame(line.ClickRelation);
 	setTooltipForSameFrame(line.ClickGuild);
 	setTooltipForSameFrame(line.ClickRealm);
