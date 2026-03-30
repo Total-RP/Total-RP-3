@@ -272,15 +272,6 @@ local PROFILE_NOTES_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-ico
 local WALKUP_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-walkup:15:15|t";
 local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 15);
 
-local function onIgnoredActionSelected(value, unitID)
-	if value == "remove" then
-		unignoreID(unitID);
-		refreshList();
-	elseif value == "edit" then
-		TRP3_API.register.ignoreIDConfirm(unitID); 
-	end
-end
-
 local function onIgnoredActions(button, unitID)
 	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 		description:CreateTitle(unitID);
