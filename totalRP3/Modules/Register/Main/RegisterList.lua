@@ -276,11 +276,16 @@ local function onIgnoredActions(button, unitID)
 	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 		description:CreateTitle(unitID);
 		description:CreateButton(loc.CM_EDIT, function()
-			TRP3_API.register.ignoreIDConfirm(unitID);
+			TRP3_API.register.ignoreIDConfirm(unitID); 
 		end);
+
 		description:CreateButton(loc.REG_LIST_IGNORE_REMOVE, function()
-			unignoreID(unitID);
-			refreshList();
+			local confirmMessage = string.format(loc.REG_LIST_IGNORE_REMOVE, unitID);
+
+			showConfirmPopup(confirmMessage, function()
+				unignoreID(unitID);
+				refreshList();
+			end);
 		end);
 	end);
 end
