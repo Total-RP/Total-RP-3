@@ -275,11 +275,9 @@ local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\reso
 local function onIgnoredActions(button, unitID)
 	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 		description:CreateTitle(unitID);
-		
 		description:CreateButton(loc.CM_EDIT, function()
-			TRP3_API.register.ignoreIDConfirm(unitID); 
+			TRP3_API.register.ignoreIDConfirm(unitID);
 		end);
-		
 		description:CreateButton(loc.REG_LIST_IGNORE_REMOVE, function()
 			unignoreID(unitID);
 			refreshList();
