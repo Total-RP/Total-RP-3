@@ -280,7 +280,7 @@ local function onIgnoredActions(button, unitID)
 		end);
 
 		description:CreateButton(loc.REG_LIST_IGNORE_REMOVE, function()
-			local confirmMessage = string.format(loc.REG_LIST_IGNORE_REMOVE, unitID);
+			local confirmMessage = string.join(" - ",loc.REG_LIST_IGNORE_REMOVE, unitID);
 
 			showConfirmPopup(confirmMessage, function()
 				unignoreID(unitID);
@@ -948,7 +948,12 @@ local function getIgnoredLines()
 	TRP3_RegisterListHeaderGuildTT:Disable();
 	TRP3_RegisterListHeaderRealmTT:Disable();
 
-	return GetKeysArray(getIgnoredList());
+	local ignoredArray = GetKeysArray(getIgnoredList());
+	table.sort(ignoredArray, function(a, b)
+		return a:lower() < b:lower();
+	end);
+
+	return ignoredArray;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
