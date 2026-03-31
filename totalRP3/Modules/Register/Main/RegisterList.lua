@@ -949,9 +949,7 @@ local function getIgnoredLines()
 	TRP3_RegisterListHeaderRealmTT:Disable();
 
 	local ignoredArray = GetKeysArray(getIgnoredList());
-	table.sort(ignoredArray, function(a, b)
-		return a:lower() < b:lower();
-	end);
+	table.sort(ignoredArray, TRP3_StringUtil.SortCompareStrings);
 
 	return ignoredArray;
 end
