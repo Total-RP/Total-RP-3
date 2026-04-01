@@ -587,7 +587,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 	end
 
 	if Globals.serious_day and getConfigValue("AF_STUFF_2026") then
-		local check = string.lower(string.sub(string.gsub(profileID, "[^%w]+", ""), -1))
+		local check = string.lower(string.sub(string.gsub(profileID or "", "[^%w]+", ""), -1))
 		if check == "" or tonumber(check, 36) % 2 == 0 then
 			completeName = TRP3_API.utils.Voidify(completeName);
 		else
