@@ -319,32 +319,37 @@ local swapChannelsByIndex = ChatConfigChannelSettings_SwapChannelsByIndex or C_C
 --- This is so the user always have the channels they actually use first and that the broadcast channel
 --- is never taking the General or Trade chat position.
 local function moveBroadcastChannelToTheBottomOfTheList(forceMove)
-	if getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST) and (forceMove or helloWorlded) then
-		local broadcastChannelIndex = GetChannelName(config_BroadcastChannel());
-		if broadcastChannelIndex == nil then return end
+	-- Swapping channels currently taints leading to nasty errors during secret chat situations. Unfortunately we have no choice but to disable it for now...
+	if true then return; end
 
-		-- Get the index of the last channel
-		local lastChannelIndex = 0;
-		for index = broadcastChannelIndex, Constants.ChatFrameConstants.MaxChatChannels do
-			local shortcut = C_ChatInfo.GetChannelShortcut(index);
-			if shortcut and shortcut ~= "" then
-				lastChannelIndex = index;
-			end
-		end
-
-		-- No need to move, the broadcast channel is already the last one
-		if broadcastChannelIndex == lastChannelIndex then
-			return;
-		end
-
-		-- Bubble the broadcast channel up to the last position
-		for index = broadcastChannelIndex, lastChannelIndex - 1 do
-			swapChannelsByIndex(index, index + 1);
-		end
-		TRP3_API.Log("Moved broadcast channel from position " .. broadcastChannelIndex .. " to " .. lastChannelIndex .. ".");
-
-		hideBroadcastChannelFromChatFrame();
+	if not (getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST) and (forceMove or helloWorlded)) then
+		return;
 	end
+
+	local broadcastChannelIndex = GetChannelName(config_BroadcastChannel());
+	if broadcastChannelIndex == nil then return end
+
+	-- Get the index of the last channel
+	local lastChannelIndex = 0;
+	for index = broadcastChannelIndex, Constants.ChatFrameConstants.MaxChatChannels do
+		local shortcut = C_ChatInfo.GetChannelShortcut(index);
+		if shortcut and shortcut ~= "" then
+			lastChannelIndex = index;
+		end
+	end
+
+	-- No need to move, the broadcast channel is already the last one
+	if broadcastChannelIndex == lastChannelIndex then
+		return;
+	end
+
+	-- Bubble the broadcast channel up to the last position
+	for index = broadcastChannelIndex, lastChannelIndex - 1 do
+		swapChannelsByIndex(index, index + 1);
+	end
+	TRP3_API.Log("Moved broadcast channel from position " .. broadcastChannelIndex .. " to " .. lastChannelIndex .. ".");
+
+	hideBroadcastChannelFromChatFrame();
 end
 
 --- Return true if the channel list is ready for the broadcast channel to join.
@@ -395,10 +400,9 @@ Comm.broadcast.init = function()
 	-- Then, launch the loop
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		if TRP3_ClientFeatures.ChannelBroadcasts then
-			-- Currently have to comment those as they taint chat channel settings leading to errors in encounters
-			--TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_UI_UPDATE", function() moveBroadcastChannelToTheBottomOfTheList(); end);
-			--TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_COUNT_UPDATE", function() moveBroadcastChannelToTheBottomOfTheList(); end);
-			--TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_CHANNEL_JOIN", function() moveBroadcastChannelToTheBottomOfTheList(); end);
+			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_UI_UPDATE", function() moveBroadcastChannelToTheBottomOfTheList(); end);
+			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_COUNT_UPDATE", function() moveBroadcastChannelToTheBottomOfTheList(); end);
+			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_CHANNEL_JOIN", function() moveBroadcastChannelToTheBottomOfTheList(); end);
 		end
 
 		if config_UseBroadcast() then
