@@ -472,7 +472,7 @@ local function onStart()
 			local color = false;
 			for _, field in ipairs(SUPPORTED_FIELDS) do
 				if profile.mspver[field] ~= msp.char[senderID].ver[field]
-				or msp.ttAll[field] and profile.mspver.TT ~= msp.char[senderID].ver.TT
+				or msp.ttAll[field] and (not msp.char[senderID].ver.TT or profile.mspver.TT ~= msp.char[senderID].ver.TT)
 				then
 					-- Save version
 					profile.mspver[field] = msp.char[senderID].ver[field];
