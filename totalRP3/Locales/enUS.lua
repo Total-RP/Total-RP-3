@@ -703,6 +703,7 @@ Possible status:
 	TF_IGNORE_TT = "Hide this character's profile and no longer share your profile or map location with them.",
 	TF_IGNORE_CONFIRM = "Are you sure you want to ignore this player?|n|n|cnWARNING_FONT_COLOR:%s|r|n|nYou can optionally enter the reason below. This is a personal note that serves as a reminder.",
 	TF_IGNORE_NO_REASON = "No reason",
+	TF_IGNORE_REMOVE_CONFIRM = "Are you sure you want to stop ignoring this player?|n|n|cnGREEN_FONT_COLOR:%s|r",
 	TB_LANGUAGE = "Language",
 	TB_LANGUAGES_TT = "Change to next language (%s)",
 	TB_LANGUAGE_DROPDOWN_TT = "Open language dropdown",

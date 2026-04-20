@@ -280,7 +280,7 @@ local function onIgnoredActions(button, unitID)
 		end);
 
 		description:CreateButton(loc.REG_LIST_IGNORE_REMOVE, function()
-			local confirmMessage = string.join(" - ",loc.REG_LIST_IGNORE_REMOVE, unitID);
+			local confirmMessage = string.format(loc.TF_IGNORE_REMOVE_CONFIRM, unitID);
 
 			showConfirmPopup(confirmMessage, function()
 				unignoreID(unitID);
