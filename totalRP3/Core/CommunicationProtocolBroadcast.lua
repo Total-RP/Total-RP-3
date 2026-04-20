@@ -395,9 +395,10 @@ Comm.broadcast.init = function()
 	-- Then, launch the loop
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		if TRP3_ClientFeatures.ChannelBroadcasts then
-			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_UI_UPDATE", function() moveBroadcastChannelToTheBottomOfTheList(); end);
-			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_COUNT_UPDATE", function() moveBroadcastChannelToTheBottomOfTheList(); end);
-			TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_CHANNEL_JOIN", function() moveBroadcastChannelToTheBottomOfTheList(); end);
+			-- Currently have to comment those as they taint chat channel settings leading to errors in encounters
+			--TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_UI_UPDATE", function() moveBroadcastChannelToTheBottomOfTheList(); end);
+			--TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHANNEL_COUNT_UPDATE", function() moveBroadcastChannelToTheBottomOfTheList(); end);
+			--TRP3_API.RegisterCallback(TRP3_API.GameEvents, "CHAT_MSG_CHANNEL_JOIN", function() moveBroadcastChannelToTheBottomOfTheList(); end);
 		end
 
 		if config_UseBroadcast() then
