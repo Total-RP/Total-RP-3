@@ -1473,7 +1473,7 @@ local function GetCurrentTooltipUnit()
 	local unitToken;
 
 	if GameTooltip:IsShown() then
-		local unitToken = GetTooltipUnitToken(GameTooltip);
+		unitToken = GetTooltipUnitToken(GameTooltip);
 		if not canaccessvalue(unitToken) or type(unitToken) == nil then
 			unitToken = "none";
 		end
