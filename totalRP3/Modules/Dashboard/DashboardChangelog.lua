@@ -2,6 +2,21 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.3.5
+
+## Added
+
+- Added 118 icons and 2 musics from patch 12.0.5.
+
+## Changed
+- Right-clicking on an entry in the TRP ignore list will now display a menu to edit the reason or remove from the list, rather than immediately remove. Thanks to keyboardturner for the change.
+
+## Fixed
+
+- Temporarily disabled the option to force the broadcast channel (xtensionxtooltip2) to the bottom of the channel list to resolve some chat errors during encounters/PvP.
+- Disabled TRP chat tokens during encounters/PvP to prevent errors.
+- Fixed a rare issue preventing from requesting specific RP profiles from other addons.
+
 # Changelog version 3.3.4
 
 ## Fixed
