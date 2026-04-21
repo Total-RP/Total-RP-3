@@ -1460,15 +1460,21 @@ local function GetWorldCursorUnit()
 	end
 end
 
+local function GetTooltipUnitToken(tooltip)
+	if tooltip:IsTooltipType(Enum.TooltipDataType.Unit) then
+		local tooltipData = tooltip:GetPrimaryTooltipData();
+		local guid = tooltipData.guid;
+		local unitToken = guid and UnitTokenFromGUID(guid);
+		return unitToken;
+	end
+end
+
 local function GetCurrentTooltipUnit()
 	local unitToken;
 
 	if GameTooltip:IsShown() then
-		local tooltipUnit = GameTooltip:GetUnit();
-		if canaccessvalue(tooltipUnit) then
-			unitToken = select(2, tooltipUnit);
-		end
-		if type(unitToken) == nil then
+		local unitToken = GetTooltipUnitToken(GameTooltip);
+		if not canaccessvalue(unitToken) or type(unitToken) == nil then
 			unitToken = "none";
 		end
 	end
@@ -1518,7 +1524,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		hooksecurefunc(GameTooltip, "SetWorldCursor", NotifyTooltipUnitChanged);
 	end
 	GameTooltip:HookScript("OnShow", function()
-		if not GameTooltip:GetUnit() then
+		local unitToken = GetTooltipUnitToken(GameTooltip);
+		if not unitToken or not canaccessvalue(unitToken) then
 			TRP3_CharacterTooltip:Hide();
 			TRP3_CompanionTooltip:Hide();
 		end
@@ -1561,10 +1568,9 @@ local function onModuleInit()
 			GameTooltip:SetUnit(unitToken);
 			GameTooltip:Show();
 		elseif GameTooltip:IsShown() then
-			local unitToken = "none";
-			local tooltipUnit = GameTooltip:GetUnit();
-			if canaccessvalue(tooltipUnit) then
-				unitToken = select(2, tooltipUnit) or unitToken;
+			local unitToken = GetTooltipUnitToken(GameTooltip);
+			if not canaccessvalue(unitToken) or not unitToken then
+				unitToken = "none"
 			end
 			ShowUnitTooltip(unitToken);
 		end
