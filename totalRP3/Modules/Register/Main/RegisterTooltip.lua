@@ -1570,7 +1570,7 @@ local function onModuleInit()
 		elseif GameTooltip:IsShown() then
 			local unitToken = GetTooltipUnitToken(GameTooltip);
 			if not canaccessvalue(unitToken) or not unitToken then
-				unitToken = "none"
+				unitToken = "none";
 			end
 			ShowUnitTooltip(unitToken);
 		end
