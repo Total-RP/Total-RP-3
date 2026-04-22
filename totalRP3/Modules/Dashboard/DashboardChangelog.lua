@@ -2,6 +2,12 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.3.6
+
+## Fixed
+
+- Fixed tooltip issue in instances.
+
 # Changelog version 3.3.5
 
 ## Added
