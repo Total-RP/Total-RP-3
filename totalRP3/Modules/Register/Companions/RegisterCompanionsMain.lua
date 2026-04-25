@@ -51,13 +51,16 @@ local DEFAULT_PROFILE = {
 local playerProfileAssociation = {};
 
 local function getCompanionProfileID(companionID)
-	return playerProfileAssociation[companionID];
+	if canaccessvalue(companionID) then
+		return playerProfileAssociation[companionID];
+	end
 end
 TRP3_API.companions.player.getCompanionProfileID = getCompanionProfileID;
 
 local function getCompanionProfile(companionID)
-	if playerProfileAssociation[companionID] then
-		return playerCompanions[playerProfileAssociation[companionID]];
+	local companionProfileID = getCompanionProfileID(companionID)
+	if companionProfileID then
+		return playerCompanions[companionProfileID];
 	end
 end
 TRP3_API.companions.player.getCompanionProfile = getCompanionProfile;
