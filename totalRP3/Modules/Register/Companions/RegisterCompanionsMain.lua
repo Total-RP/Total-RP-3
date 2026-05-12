@@ -242,7 +242,7 @@ end
 
 function TRP3_API.companions.player.getCurrentPetQueryLine()
 	local summonedPet = UnitNameUnmodified("pet");
-	if summonedPet then
+	if canaccessvalue(summonedPet) and summonedPet then
 		local queryLine = summonedPet;
 		if getCompanionProfileID(summonedPet) then
 			local profileID =  getCompanionProfileID(summonedPet);
@@ -270,7 +270,7 @@ function TRP3_API.companions.player.getCurrentSecondaryPetQueryLine()
 		petName = select(2, GetStablePetInfo(FIRST_STABLE_SLOT));
 	end
 
-	if not petName or petName == UNKNOWNOBJECT then
+	if not petName or not canaccessvalue(petName) or petName == UNKNOWNOBJECT then
 		return nil, nil, nil;
 	end
 
