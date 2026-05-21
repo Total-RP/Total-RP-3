@@ -40,6 +40,7 @@ externals:
     url: https://www.townlong-yak.com/addons.git/taintless
     commit: default
   totalRP3/Libs/UTF8: https://repos.curseforge.com/wow/utf8/trunk
+  totalRP3/Libs/LibChatFilter: https://github.com/Ghostopheles/LibChatFilter
 
 manual-changelog:
   filename: CHANGELOG.md

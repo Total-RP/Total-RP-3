@@ -14,6 +14,8 @@ local getUnitIDCurrentProfile, getUnitRPName, getUnitRPFirstName, getUnitRPLastN
 local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 local handleCharacterMessage, hooking;
 
+local LibChatFilter = LibStub:GetLibrary("LibChatFilter");
+
 TRP3_API.chat = {};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -790,39 +792,23 @@ function hooking()
 		end
 	end
 
-	local function ParseTokens(editBox, send)
-		local text = editBox:GetText();
-		if text and send == 1 then
-			textBeforeParse = text;
-			parsedEditBox = editBox;
-			local player = AddOn_TotalRP3.Player.GetCurrentUser();
-			local tokens = {
-				["%xtf"] = GetTokenSafe(getUnitRPFirstName("target"), TARGET_TOKEN_NOT_FOUND),
-				["%xtl"] = GetTokenSafe(getUnitRPLastName("target"), TARGET_TOKEN_NOT_FOUND),
-				["%xff"] = GetTokenSafe(getUnitRPFirstName("focus"), FOCUS_TOKEN_NOT_FOUND),
-				["%xfl"] = GetTokenSafe(getUnitRPLastName("focus"), FOCUS_TOKEN_NOT_FOUND),
-				["%xpf"] = GetTokenSafe(player:GetFirstName(), ""),
-				["%xpl"] = GetTokenSafe(player:GetLastName(), ""),
-				["%xt"] = GetTokenSafe(getUnitRPName("target"), TARGET_TOKEN_NOT_FOUND),
-				["%xf"] = GetTokenSafe(getUnitRPName("focus"), FOCUS_TOKEN_NOT_FOUND),
-				["%xp"] = GetTokenSafe(player:GetFullName(), ""),
-			};
-			text = string.gsub(text, "%%x.[fl]?", tokens);
-			editBox:SetText(text);
-		end
+	local function ParseTokens(text, context)
+		local player = AddOn_TotalRP3.Player.GetCurrentUser();
+		local tokens = {
+			["%xtf"] = GetTokenSafe(getUnitRPFirstName("target"), TARGET_TOKEN_NOT_FOUND),
+			["%xtl"] = GetTokenSafe(getUnitRPLastName("target"), TARGET_TOKEN_NOT_FOUND),
+			["%xff"] = GetTokenSafe(getUnitRPFirstName("focus"), FOCUS_TOKEN_NOT_FOUND),
+			["%xfl"] = GetTokenSafe(getUnitRPLastName("focus"), FOCUS_TOKEN_NOT_FOUND),
+			["%xpf"] = GetTokenSafe(player:GetFirstName(), ""),
+			["%xpl"] = GetTokenSafe(player:GetLastName(), ""),
+			["%xt"] = GetTokenSafe(getUnitRPName("target"), TARGET_TOKEN_NOT_FOUND),
+			["%xf"] = GetTokenSafe(getUnitRPName("focus"), FOCUS_TOKEN_NOT_FOUND),
+			["%xp"] = GetTokenSafe(player:GetFullName(), ""),
+		};
+		text = string.gsub(text, "%%x.[fl]?", tokens);
+		return text;
 	end
-	for i = 1, Constants.ChatFrameConstants.MaxChatWindows do
-		hooksecurefunc(_G["ChatFrame" .. i .. "EditBox"], "ParseText", ParseTokens);
-	end
-
-	-- Restore the text without substitution before it's stored in the chat history
-	hooksecurefunc(ChatFrameUtil, "SubstituteChatMessageBeforeSend", function()
-		if parsedEditBox and textBeforeParse then
-			parsedEditBox:SetText(textBeforeParse);
-			parsedEditBox = nil;
-			textBeforeParse = nil;
-		end
-	end);
+	LibChatFilter.RegisterTransform(ParseTokens);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
