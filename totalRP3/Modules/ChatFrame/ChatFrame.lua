@@ -734,7 +734,6 @@ function Utils.customGetColoredName(event, _, _, unitID, _, _, _, _, _, _, _, _,
 	return characterName;
 end
 
-local textBeforeParse, parsedEditBox;
 function hooking()
 	for _, channel in pairs(POSSIBLE_CHANNELS) do
 		ChatFrameUtil.RemoveMessageEventFilter(channel, handleCharacterMessage);
@@ -792,7 +791,7 @@ function hooking()
 		end
 	end
 
-	local function ParseTokens(text, context)
+	local function ParseTokens(text)
 		local player = AddOn_TotalRP3.Player.GetCurrentUser();
 		local tokens = {
 			["%xtf"] = GetTokenSafe(getUnitRPFirstName("target"), TARGET_TOKEN_NOT_FOUND),
