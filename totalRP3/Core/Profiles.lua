@@ -170,14 +170,6 @@ local function updateDefaultProfile()
 
 	local profileDefault = profiles[newProfileID];
 
-	-- The default profile is assigned a brand new ID every login. A note on the
-	-- default profile is keyed by its own (old) ID, so move it onto the new ID to keep the self-note from being orphaned.
-
-	if profileDefault.notes and oldProfileID ~= newProfileID and profileDefault.notes[oldProfileID] ~= nil then
-		profileDefault.notes[newProfileID] = profileDefault.notes[oldProfileID];
-		profileDefault.notes[oldProfileID] = nil;
-	end
-
 	-- Updating profile name in case of addon locale change
 	profileDefault.profileName = loc.PR_DEFAULT_PROFILE_NAME;
 
@@ -618,7 +610,6 @@ function TRP3_API.profile.init()
 
 				-- A note on your own profile is keyed by the profile's own ID, which is the
 				-- source profile's ID here, not this destination slot's ID. Re-key it onto the slot's ID so the self-note isn't orphaned
-				
 				local sourceProfileID = errorOrProfileID;
 				if data.notes and sourceProfileID and sourceProfileID ~= profileID and data.notes[sourceProfileID] ~= nil then
 					data.notes[profileID] = data.notes[sourceProfileID];
