@@ -602,7 +602,7 @@ function TRP3_API.profile.init()
 		local code = TRP3_ProfileImport.content.scroll.text:GetText();
 		local version, errorOrOldProfileID, data = TRP3_ProfileUtil.DeserializeProfile(string.trim(code));
 
-		if version ~= nil then
+		if version ~= nil and data ~= nil then
 			local import = function()
 				data.profileName = profiles[currentProfileID].profileName;
 				profiles[currentProfileID] = nil;
