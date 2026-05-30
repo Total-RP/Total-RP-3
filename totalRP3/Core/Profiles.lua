@@ -605,7 +605,7 @@ function TRP3_API.profile.init()
 		if version ~= nil then
 			local import = function()
 				data.profileName = profiles[currentProfileID].profileName;
-				wipe(profiles[currentProfileID]);
+				profiles[currentProfileID] = nil;
 				local destinationProfileID = currentProfileID;
 				if not profiles[errorOrOldProfileID] then
 					destinationProfileID = errorOrOldProfileID;
