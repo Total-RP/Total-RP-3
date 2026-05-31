@@ -20,129 +20,288 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="TRP3_ProfileManager" inherits="TRP3_ProfileManagerTemplate" hidden="true"/>
 
-	<Frame name="TRP3_ProfileExport" parentKey="export" parent="TRP3_ProfileManager" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
-		<Size x="400" y="300"/>
-
-		<Anchors>
-			<Anchor point="CENTER" x="0" y="0"/>
-		</Anchors>
-
+	<!-- Template for choice buttons -->
+	<Button name="TRP3_ChoiceButtonTemplate" virtual="true">
+		<Size x="180" y="120"/>
 		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background" inherits="TRP3_UIFrameMediumFillTextureTemplate"/>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture parentKey="Border" inherits="TRP3_UIFrameMediumEdgeTextureTemplate"/>
+			</Layer>
+			<Layer level="HIGHLIGHT">
+				<Texture parentKey="Highlight" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-md-glow" alphaMode="ADD">
+					<TextureSliceMargins left="32" top="32" right="32" bottom="32"/>
+					<TextureSliceMode mode="Tiled"/>
+					<Color r="0.92" g="0.68" b="0"/>
+				</Texture>
+			</Layer>
 			<Layer level="OVERLAY">
-				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
-					<Size x="0" y="30"/>
+				<FontString parentKey="Text" inherits="GameFontHighlightLarge" justifyH="MIDDLE" wordwrap="false">
+					<Size y="20"/>
 					<Anchors>
-						<Anchor point="TOP" x="0" y="-10"/>
-						<Anchor point="RIGHT" x="-10" y="0"/>
-						<Anchor point="LEFT" x="10" y="0"/>
+						<Anchor point="BOTTOM" y="20"/>
 					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
-				</FontString>
-				<FontString parentKey="warning" inherits="GameFontNormalSmall" justifyH="LEFT">
-					<Anchors>
-						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title"/>
-						<Anchor point="RIGHT" x="-30" y="0"/>
-						<Anchor point="LEFT" x="30" y="0"/>
-					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
 			</Layer>
 		</Layers>
-
 		<Frames>
-			<Button parentKey="Close" inherits="TRP3_RedButtonCloseArtTemplate">
-				<Size x="24" y="24"/>
+			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
+				<Size x="48" y="48"/>
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						self:GetParent():Hide();
-					</OnClick>
-				</Scripts>
-			</Button>
-
-			<Frame parentKey="content" inherits="TRP3_TextArea">
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT">
-							<Anchors>
-								<Anchor point="TOPLEFT" x="10" y="12"/>
-								<Anchor point="TOPRIGHT" x="0" y="12"/>
-							</Anchors>
-							<Color r="0.95" g="0.75" b="0.1"/>
-						</FontString>
-					</Layer>
-				</Layers>
-				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.warning" x="0" y="-25"/>
-					<Anchor point="RIGHT" x="-30" y="0"/>
-					<Anchor point="LEFT" x="20" y="0"/>
-					<Anchor point="BOTTOM" x="0" y="30"/>
+					<Anchor point="TOP" y="-20"/>
 				</Anchors>
 			</Frame>
 		</Frames>
-	</Frame>
+	</Button>
 
-	<Frame parentKey="import" name="TRP3_ProfileImport" parent="TRP3_ProfileManager" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
-		<Size x="400" y="300"/>
-
+	<Frame name="TRP3_ProfileCreateDialog" parent="TRP3_ProfileManager" frameStrata="HIGH" enableMouse="true" hidden="true">
 		<Anchors>
-			<Anchor point="CENTER" x="0" y="0"/>
+			<Anchor point="TOPLEFT"/>
+			<Anchor point="BOTTOMRIGHT"/>
 		</Anchors>
-
-		<Layers>
-			<Layer level="OVERLAY">
-				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
-					<Size x="0" y="30"/>
-					<Anchors>
-						<Anchor point="TOP" x="0" y="-10"/>
-						<Anchor point="RIGHT" x="-10" y="0"/>
-						<Anchor point="LEFT" x="10" y="0"/>
-					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
-				</FontString>
-			</Layer>
-		</Layers>
-
 		<Frames>
-			<Button parentKey="Close" inherits="TRP3_RedButtonCloseArtTemplate">
-				<Size x="24" y="24"/>
-				<Anchors>
-					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						self:GetParent():Hide();
-					</OnClick>
-				</Scripts>
-			</Button>
+			<Frame parentKey="Backdrop" inherits="TRP3_OverlayBackdropTemplate" setAllPoints="true" useParentLevel="true"/>
 
-			<Button parentKey="save" inherits="TRP3_CommonButton">
+			<!-- Profile Create frames holder -->
+			<Frame parentKey="Frames">
+				<Size x="400" y="200"/>
+				<KeyValues>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+				</KeyValues>
 				<Anchors>
-					<Anchor point="BOTTOM" x="0" y="20"/>
+					<Anchor point="CENTER"/>
 				</Anchors>
-			</Button>
+				<Frames>
+					<Button parentKey="CloseButton" inherits="TRP3_RedButtonCloseArtTemplate">
+						<Size x="24" y="24"/>
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+						</Anchors>
+					</Button>
 
-			<Frame parentKey="content" inherits="TRP3_TextArea">
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString parentKey="title" inherits="GameFontNormalSmall" justifyH="LEFT">
-							<Anchors>
-								<Anchor point="TOPLEFT" x="10" y="12"/>
-								<Anchor point="TOPRIGHT" x="0" y="12"/>
-							</Anchors>
-							<Color r="0.95" g="0.75" b="0.1"/>
-						</FontString>
-					</Layer>
-				</Layers>
-				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-21"/>
-					<Anchor point="RIGHT" x="-30" y="0"/>
-					<Anchor point="LEFT" x="20" y="0"/>
-					<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="$parent.save" x="0" y="5"/>
-				</Anchors>
+					<!-- Choices frame (Blank and import button options) -->
+					<Frame parentKey="ChoicesFrame" hidden="true">
+						<Anchors>
+							<Anchor point="TOPLEFT"/>
+							<Anchor point="BOTTOMRIGHT"/>
+						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="Title" inherits="GameFontHighlightLarge" wordwrap="false">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="0" y="-20"/>
+										<Anchor point="TOPRIGHT" x="0" y="-20"/>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Frame parentKey="Backdrop" inherits="TRP3_BrowserDialogBackdropTemplate" setAllPoints="true" useParentLevel="true">
+								<KeyValues>
+									<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+								</KeyValues>
+							</Frame>
+
+							<Button parentKey="BlankProfile" inherits="TRP3_ChoiceButtonTemplate">
+								<Anchors>
+									<Anchor point="RIGHT" relativePoint="CENTER"/>
+								</Anchors>
+							</Button>
+
+							<Button parentKey="ImportProfile" inherits="TRP3_ChoiceButtonTemplate">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="CENTER"/>
+								</Anchors>
+							</Button>
+						</Frames>
+					</Frame>
+
+					<!-- Import frame (Inputbox with import button) -->
+					<Frame parentKey="ImportFrame" hidden="true">
+						<Anchors>
+							<Anchor point="TOPLEFT"/>
+							<Anchor point="BOTTOMRIGHT"/>
+						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="Title" inherits="GameFontHighlightLarge" wordwrap="false">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="0" y="-20"/>
+										<Anchor point="TOPRIGHT" x="0" y="-20"/>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Frame parentKey="Backdrop" inherits="TRP3_BrowserDialogBackdropTemplate" setAllPoints="true" useParentLevel="true">
+								<KeyValues>
+									<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+								</KeyValues>
+							</Frame>
+
+							<Button parentKey="ImportButton" inherits="TRP3_CommonButton" motionScriptsWhileDisabled="true">
+								<Size x="150" y="22"/>
+								<Anchors>
+									<Anchor point="BOTTOM" y="20"/>
+								</Anchors>
+								<Layers>
+									<Layer level="OVERLAY">
+										<Texture parentKey="WarningIcon" atlas="services-icon-warning" useAtlasSize="false" hidden="true">
+										<Size x="22" y="22"/>
+											<Anchors>
+												<Anchor point="RIGHT" relativePoint="LEFT" x="-10"/>
+											</Anchors>
+										</Texture>
+									</Layer>
+								</Layers>
+							</Button>
+
+							<Frame parentKey="Content" inherits="TRP3_TooltipBackdropTemplate">
+								<KeyValues>
+									<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.Title" relativePoint="BOTTOM" y="-10" />
+									<Anchor point="LEFT" x="10"/>
+									<Anchor point="RIGHT" x="-10"/>
+									<Anchor point="BOTTOM" relativeKey="$parent.ImportButton" relativePoint="TOP" y="10" />
+								</Anchors>
+								<Layers>
+									<Layer level="OVERLAY">
+										<FontString parentKey="Text" inherits="GameFontNormalSmall" justifyH="LEFT">
+											<Anchors>
+												<Anchor point="TOP" y="-15"/>
+												<Anchor point="LEFT" x="15"/>
+												<Anchor point="RIGHT" x="-15"/>
+											</Anchors>
+											<Color r="0.95" g="0.95" b="0.95"/>
+										</FontString>
+									</Layer>
+								</Layers>
+								<Frames>
+									<Frame parentKey="ImportText" inherits="TRP3_InsetScrollingEditBoxTemplate">
+										<Anchors>
+											<Anchor point="TOP" relativeKey="$parent.Text" relativePoint="BOTTOM" y="-10"/>
+											<Anchor point="LEFT" x="10"/>
+											<Anchor point="RIGHT" x="-10"/>
+											<Anchor point="BOTTOM" y="10"/>
+										</Anchors>
+									</Frame>
+								</Frames>
+							</Frame>
+						</Frames>
+					</Frame>
+
+					<!-- Export frame (Read-only inputbox with profile data) -->
+					<Frame parentKey="ExportFrame" hidden="true">
+						<Anchors>
+							<Anchor point="TOPLEFT"/>
+							<Anchor point="BOTTOMRIGHT"/>
+						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="Title" inherits="GameFontHighlightLarge" wordwrap="false">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="0" y="-20"/>
+										<Anchor point="TOPRIGHT" x="0" y="-20"/>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Frame parentKey="Backdrop" inherits="TRP3_BrowserDialogBackdropTemplate" setAllPoints="true" useParentLevel="true">
+								<KeyValues>
+									<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+								</KeyValues>
+							</Frame>
+
+							<Frame parentKey="Content" inherits="TRP3_TooltipBackdropTemplate">
+								<KeyValues>
+									<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+								</KeyValues>
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.Title" relativePoint="BOTTOM" y="-10"/>
+									<Anchor point="LEFT" x="10"/>
+									<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
+								</Anchors>
+								<Layers>
+									<Layer level="OVERLAY">
+										<FontString parentKey="Warning" inherits="GameFontNormalSmall" justifyH="LEFT">
+											<Anchors>
+												<Anchor point="TOP" y="-15"/>
+												<Anchor point="LEFT" x="15"/>
+												<Anchor point="RIGHT" x="-15"/>
+											</Anchors>
+											<Color r="0.95" g="0.95" b="0.95"/>
+										</FontString>
+									</Layer>
+								</Layers>
+								<Frames>
+									<Frame parentKey="ExportText" inherits="TRP3_InsetScrollingEditBoxTemplate">
+										<Anchors>
+											<Anchor point="TOP" relativeKey="$parent.Warning" relativePoint="BOTTOM" y="-10"/>
+											<Anchor point="BOTTOM" y="10"/>
+											<Anchor point="LEFT" x="10"/>
+											<Anchor point="RIGHT" x="-10"/>
+										</Anchors>
+									</Frame>
+								</Frames>
+							</Frame>
+						</Frames>
+					</Frame>
+
+					<!-- Finalize frame (Name + icon with confirm button) -->
+					<Frame parentKey="FinalizeFrame" hidden="true">
+						<Anchors>
+							<Anchor point="TOPLEFT"/>
+							<Anchor point="BOTTOMRIGHT"/>
+						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="Title" inherits="GameFontHighlightLarge" wordwrap="false">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="0" y="-20"/>
+										<Anchor point="TOPRIGHT" x="0" y="-20"/>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Frame parentKey="Backdrop" inherits="TRP3_BrowserDialogBackdropTemplate" setAllPoints="true" useParentLevel="true">
+								<KeyValues>
+									<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_GREY" type="global"/>
+								</KeyValues>
+							</Frame>
+
+							<Button parentKey="Icon" inherits="TRP3_BorderedIconButtonTemplate">
+								<Size x="55" y="55"/>
+								<Anchors>
+									<Anchor point="LEFT" x="20" y="-10"/>
+								</Anchors>
+							</Button>
+
+							<EditBox parentKey="Name" inherits="TRP3_TitledHelpEditBox">
+								<Size x="0" y="18"/>
+								<Anchors>
+									<Anchor point="TOPLEFT" x="15" y="-4" relativeKey="$parent.Icon" relativePoint="TOPRIGHT"/>
+									<Anchor point="RIGHT" x="-20"/>
+								</Anchors>
+							</EditBox>
+
+							<Button parentKey="ConfirmButton" inherits="TRP3_CommonButton" motionScriptsWhileDisabled="true">
+								<Size x="150" y="22"/>
+								<Anchors>
+									<Anchor point="BOTTOM" y="20"/>
+								</Anchors>
+							</Button>
+						</Frames>
+					</Frame>
+
+				</Frames>		
 			</Frame>
+
 		</Frames>
 	</Frame>
 </Ui>

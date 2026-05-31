@@ -703,6 +703,7 @@ stds.wow = {
 		"ReloadUI",
 		"RemoveChatWindowChannel",
 		"ResetCursor",
+		"RunNextFrame",
 		"RoundToSignificantDigits",
 		"SafePack",
 		"Saturate",

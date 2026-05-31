@@ -151,12 +151,12 @@ end
 TRP3_API.companions.player.createProfile = createProfile;
 
 -- Edit a profile name
-local function editProfile(profileID, newName)
+local function RenameProfile(profileID, newName)
 	assert(playerCompanions[profileID], "Unknown profile: "..tostring(profileID));
 	assert(isProfileNameAvailable(newName), "Unavailable profile name: "..tostring(newName));
 	playerCompanions[profileID]["profileName"] = newName;
 end
-TRP3_API.companions.player.editProfile = editProfile;
+TRP3_API.companions.player.renameProfile = RenameProfile;
 
 -- Delete a profile
 -- If the deleted profile is the currently selected one, assign the default profile

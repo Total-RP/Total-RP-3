@@ -42,7 +42,7 @@ function TRP3_ScrollingEditBoxMixin:OnLoad()
 end
 
 function TRP3_ScrollingEditBoxMixin:OnChar(char)
-	if self.readOnly then
+	if self:IsReadOnly() then
 		local cursorPosition = self.EditBox:GetUTF8CursorPosition();
 		self.EditBox:SetText(self.currentInputText);
 		self.EditBox:SetCursorPosition(cursorPosition - strlenutf8(char));
@@ -55,10 +55,14 @@ end
 
 function TRP3_ScrollingEditBoxMixin:OnEditFocusGained()
 	self:TriggerEvent("OnEditFocusGained");
+	if self.highlightOnFocus then
+		RunNextFrame(function() self.EditBox:HighlightText(); end);
+	end
 end
 
 function TRP3_ScrollingEditBoxMixin:OnEditFocusLost()
 	self:TriggerEvent("OnEditFocusLost");
+	self.EditBox:HighlightText(0, 0);
 end
 
 function TRP3_ScrollingEditBoxMixin:OnEscapePressed()
@@ -87,7 +91,7 @@ function TRP3_ScrollingEditBoxMixin:ClearFocus()
 end
 
 function TRP3_ScrollingEditBoxMixin:ClearText()
-	self.EditBox:ClearText();
+    self.ScrollFrame:ClearText();
 end
 
 function TRP3_ScrollingEditBoxMixin:GetFontHeight()
@@ -95,15 +99,19 @@ function TRP3_ScrollingEditBoxMixin:GetFontHeight()
 end
 
 function TRP3_ScrollingEditBoxMixin:GetInputText()
-	return self.EditBox:GetInputText();
+	local text = self.EditBox:GetInputText();
+	if self.escapeSanitized then
+		text = string.gsub(text, "||", "|");
+	end
+	return text;
 end
 
 function TRP3_ScrollingEditBoxMixin:IsReadOnly()
-	return self.readOnlyText ~= nil;
+	return self.readOnly ~= nil;
 end
 
 function TRP3_ScrollingEditBoxMixin:SetDefaultText(defaultText)
-	self.EditBox:SetDefaultText(defaultText);
+    self.EditBox:ApplyDefaultText(defaultText);
 end
 
 function TRP3_ScrollingEditBoxMixin:SetDefaultTextColor(color)
@@ -130,7 +138,19 @@ function TRP3_ScrollingEditBoxMixin:SetFontObject(fontName)
 	self.EditBox:SetFontObject(fontName);
 end
 
+function TRP3_ScrollingEditBoxMixin:SetEscapeSanitized(enabled)
+    self.escapeSanitized = enabled;
+end
+
+function TRP3_ScrollingEditBoxMixin:SetHighlightOnFocus(enabled)
+    self.highlightOnFocus = enabled;
+end
+
 function TRP3_ScrollingEditBoxMixin:SetText(text)
+	if self.escapeSanitized then
+		text = string.gsub(text, "|", "||");
+	end
+	self.currentInputText = text;
 	self.EditBox:SetText(text);
 end
 

@@ -713,22 +713,29 @@ Possible status:
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	PR_PROFILEMANAGER_TITLE = "Character profiles",
-	PR_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile (Character info, inventory, quest log, applied states...) will be destroyed!",
+	PR_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete profile |W%s|w?|n|n|cnWARNING_FONT_COLOR:This will permanently erase all information linked to the profile.|r",
 	PR_PROFILE = "Profile",
 	PR_PROFILES = "Profiles",
 	PR_PROFILE_CREATED = "Profile %s created.",
+	PR_PROFILE_DUPLICATED = "Profile %1$s duplicated to %2$s.",
+	PR_PROFILE_RENAMED = "Profile %1$s renamed to %2$s.",
 	PR_CREATE_PROFILE = "Create profile",
+	PR_CREATE_PROFILE_TT = "Create a |cnGREEN_FONT_COLOR:blank profile|r or |cnGREEN_FONT_COLOR:import one from a previous export|r.",
+	PR_CREATE_PROFILE_CHOICE = "Blank profile",
+	PR_CREATE_PROFILE_CHOICE_TT = "Create a new profile |cnGREEN_FONT_COLOR:from scratch|r.",
+	PR_FINALIZE_PROFILE = "Create blank profile",
 	PR_PROFILE_DELETED = "Profile %s deleted.",
-	PR_PROFILE_HELP = "A profile contains all information about a |cnGREEN_FONT_COLOR:\"character\"|r as a |cnGREEN_FONT_COLOR:roleplay character|r.|n|nA real |cnGREEN_FONT_COLOR:\"WoW character\"|r can be linked to only one profile at a time, but can switch from one to another whenever you want.|n|nYou can also link several |cnGREEN_FONT_COLOR:\"WoW characters\"|r to the same |cnGREEN_FONT_COLOR:profile|r!",
-	PR_PROFILE_DETAIL = "This profile is currently linked to these WoW characters",
+	PR_PROFILE_HELP = "A profile contains all information about a |cnGREEN_FONT_COLOR:\"character\"|r as a |cnGREEN_FONT_COLOR:roleplay character|r.|n|nA real |cnGREEN_FONT_COLOR:\"WoW character\"|r can be linked to only one profile at a time, but can switch between them whenever you want.|n|nYou can also link several |cnGREEN_FONT_COLOR:\"WoW characters\"|r to the same |cnGREEN_FONT_COLOR:profile|r!",
+	PR_PROFILE_DETAIL = "This profile is currently linked to the following WoW characters",
 	PR_DELETE_PROFILE = "Delete profile",
 	PR_DUPLICATE_PROFILE = "Duplicate profile",
-	PR_UNUSED_PROFILE = "This profile is currently not linked to any WoW character.",
-	PR_PROFILE_LOADED = "The profile %s is loaded.",
-	PR_PROFILEMANAGER_CREATE_POPUP = "Please enter a name for the new profile.\nThe name cannot be empty.",
-	PR_PROFILEMANAGER_DUPP_POPUP = "Please enter a name for the new profile.\nThe name cannot be empty.\n\nThis duplication will not change the character's links to %s.",
-	PR_PROFILEMANAGER_EDIT_POPUP = "Please enter a new name for this profile %s.\nThe name cannot be empty.\n\nChanging the name will not change any link between this profile and your characters.",
-	PR_PROFILEMANAGER_ALREADY_IN_USE = "The profile name %s is not available.",
+	PR_EMPTYNAME_PROFILE = "Empty profile name.",
+	PR_UNUSED_PROFILE = "This profile is not currently linked to any WoW character.",
+	PR_PROFILE_LOADED = "Profile %s is loaded.",
+	PR_PROFILEMANAGER_CREATE_POPUP = "Please enter a name for the new profile.|nThe name cannot be empty.",
+	PR_PROFILEMANAGER_DUPP_POPUP = "Please enter a name for the new profile.|nThe name cannot be empty.|n|nThis duplication will not change the character's links to %s.",
+	PR_PROFILEMANAGER_EDIT_POPUP = "Please enter a new name for this profile %s.|nThe name cannot be empty.|n|nChanging the name will not change any link between this profile and your characters.",
+	PR_PROFILEMANAGER_ALREADY_IN_USE = "The profile name %s is unavailable.",
 	PR_PROFILEMANAGER_COUNT = "%s WoW |4character:characters; linked to this profile.",
 	PR_PROFILEMANAGER_ACTIONS = "Actions",
 	PR_PROFILEMANAGER_SWITCH = "Select profile",
@@ -774,19 +781,25 @@ Link a pet/mount to an existing profile or create a new one:
 	PR_IMPORT_WILL_BE_IMPORTED = "Will be imported",
 	PR_IMPORT_EMPTY = "No importable profile",
 	PR_PROFILE_MANAGEMENT_TITLE = "Profile management",
-	PR_EXPORT_IMPORT_TITLE = "Export/import profile",
-	PR_EXPORT_IMPORT_HELP = [[You can export and import profiles using the options in the dropdown menu.
+	PR_PROFILE_OPTIONS = "Profile options",
+	PR_PROFILE_OPTIONS_HELP = [[You can rename, duplicate, export, and delete profiles using the options in the dropdown menu.
 
-Use the |cnGREEN_FONT_COLOR:Export profile|r option to generate a chunk of text that contains the serialized profile data. You can copy the text using Control-C (or Command-C on a Mac) and paste it somewhere else as a backup.
+|cnGREEN_FONT_COLOR:Rename profile|r option allows you to rename the selected profile.
 
-|cnWARNING_FONT_COLOR:Note that some advanced text editors, such as Microsoft Word, reformat special characters such as quotation marks, which changes the data. Use a simpler text editor such as Notepad.|r
+|cnGREEN_FONT_COLOR:Duplicate profile|r option allows you to create a duplicate of the selected profile with a new name.
 
-Use the |cnGREEN_FONT_COLOR:Import profile|r option to paste data from a previous export into an existing profile. The existing data in that profile will be replaced by the pasted data. You cannot import data directly into the currently selected profile.]],
+|cnGREEN_FONT_COLOR:Export profile|r option generates a chunk of text containing the serialized profile data. You can copy (%s) and paste it somewhere else as a backup.
+
+We strongly recommend that you |cnGREEN_FONT_COLOR:copy the exported data below into a simple text editor|r, such as Notepad, that does |cnWARNING_FONT_COLOR:not alter special characters|r.
+
+|cnGREEN_FONT_COLOR:Delete profile|r option allows you to remove the selected profile.]],
 	PR_EXPORT_PROFILE = "Export profile",
 	PR_IMPORT_PROFILE = "Import profile",
-	PR_EXPORT_NAME = "Serial for profile %s (size %0.2f kB)",
-	PR_EXPORT_TOO_LARGE = "This profile is too large and can't be exported.\n\nSize of profile: %0.2f kB\nMax: 20 kB",
-	PR_IMPORT_PROFILE_TT = "Paste a profile serial here",
+	PR_IMPORT_PROFILE_CHOICE_TT = "Import a profile |cnGREEN_FONT_COLOR:from a previous export|r.",
+	PR_PROFILE_IMPORTED = "Profile %s imported.",
+	PR_EXPORT_NAME = "Profile %s serial (size: %0.2f kB)",
+	PR_EXPORT_TOO_LARGE = "This profile is too large to be exported.|n|nProfile size: %0.2f kB|nMax allowed: 20 kB",
+	PR_IMPORT_PROFILE_TT = "Paste (%s) a profile serial here.",
 	PR_IMPORT = "Import",
 	PR_IMPORT_ERROR = "Failed to import profile: %s",
 	PR_IMPORT_ERROR_DESERIALIZE_ACE = "Failed to deserialize Ace data",
@@ -794,17 +807,19 @@ Use the |cnGREEN_FONT_COLOR:Import profile|r option to paste data from a previou
 	PR_IMPORT_ERROR_PEM_LABEL = "PEM block has an invalid header",
 	PR_IMPORT_ERROR_DECOMPRESS = "Failed to decompress PEM data",
 	PR_IMPORT_ERROR_DESERIALIZE_CBOR = "Failed to deserialize CBOR data",
+	PR_IMPORT_EMPTY_SERIAL = "Empty profile serial.",
 	PR_PROFILEMANAGER_IMPORT_WARNING = "Replace all the content of profile %s with this imported data?",
-	PR_PROFILEMANAGER_IMPORT_WARNING_2 = "Warning: this profile serial has been made from an older version of TRP3.\nThis can bring incompatibilities.\n\nReplacing all the content of profile %s with this imported data?",
-	PR_SLASH_SWITCH_HELP = "Switch to another profile using its name.",
-	PR_SLASH_EXAMPLE = "|cffffff00Command usage:|r |cffcccccc/trp3 profile Millidan Foamrage|r |cffffff00to switch to Millidan Foamrage's profile.|r",
-	PR_SLASH_NOT_FOUND = "|cffff0000Could not find a profile named|r |cffffff00%s|r|cffff0000.|r",
-	PR_SLASH_OPEN_HELP = "Open a character's profile using its in-game name, or your target's profile if no name is provided.",
-	PR_SLASH_OPEN_EXAMPLE = "|cffffff00Command usage:|r |cffcccccc/trp3 open|r |cffffff00to open your target's profile or |cffcccccc/trp3 open CharacterName-RealmName|r |cffffff00to open that character's profile.|r",
-	PR_SLASH_OPEN_WAITING = "|cffffff00Requesting profile, please wait...|r",
-	PR_SLASH_OPEN_ABORTING = "|cffffff00Aborted profile request.|r",
+	PR_PROFILEMANAGER_IMPORT_WARNING_2 = "This profile serial was created using |cnGREEN_FONT_COLOR:an older version of TRP3|r.|n|n|cnWARNING_FONT_COLOR:This may cause incompatibilities.|r|n|nReplace all the content of profile %s with this imported data?",
+	PR_PROFILEMANAGER_IMPORT_WARNING_3 = "This profile serial was created using |cnGREEN_FONT_COLOR:an older version of TRP3|r.|n|n|cnWARNING_FONT_COLOR:This may cause incompatibilities.|r",
+	PR_SLASH_SWITCH_HELP = "Switch to another profile by its name.",
+	PR_SLASH_EXAMPLE = "Usage: |cnGREEN_FONT_COLOR:/trp3 profile Millidan Foamrage|r to switch to Millidan Foamrage's profile.",
+	PR_SLASH_NOT_FOUND = "|cnWARNING_FONT_COLOR:Could not find a profile named |cnGREEN_FONT_COLOR:%s|r.|r",
+	PR_SLASH_OPEN_HELP = "Open a character's profile by its in-game name, or your target's profile if no name is provided.",
+	PR_SLASH_OPEN_EXAMPLE = "Usage: |cnGREEN_FONT_COLOR:/trp3 open|r to open your target's profile, or |cnGREEN_FONT_COLOR:/trp3 open CharacterName-RealmName|r to open that character's profile.|r",
+	PR_SLASH_OPEN_WAITING = "Requesting profile. Please wait...",
+	PR_SLASH_OPEN_ABORTING = "Profile request aborted.",
 	PR_DEFAULT_PROFILE_NAME = "Default profile",
-	PR_DEFAULT_PROFILE_WARNING = "Create a new profile\nor link to an existing one in Profiles\nto edit your character's information.",
+	PR_DEFAULT_PROFILE_WARNING = "Create a new profile|nor link to an existing one in Profiles|nto edit your character's information.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- DASHBOARD
@@ -1328,13 +1343,8 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	CO_TOOLTIP_PREFERRED_OOC_INDICATOR = "Preferred OOC indicator",
 	CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT = "Text: ",
 	CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON = "Icon: ",
-	PR_EXPORT_WARNING_TITLE = "Warning:",
-	PR_EXPORT_WARNING_WINDOWS = [[Please note that some advanced text editing tools like Microsoft Word or Discord will reformat special characters like quotes, altering the content of the data.
-
-If you are planning on copying the text below inside a document, please use simpler text editing tools that do not automatically change characters, like Notepad.]],
-	PR_EXPORT_WARNING_MAC = [[Please note that some advanced text editing tools like Text Edit or Discord will reformat special characters like quotes, altering the content of the data.
-
-If you are planning on copying the text below inside a document, please use simpler text editing tools that do not automatically change characters (in Text Edit go to Format > Make Plain Text before pasting)]],
+	PR_EXPORT_WARNING_TITLE = "Warning",
+	PR_EXPORT_WARNING = "We strongly recommend that you |cnGREEN_FONT_COLOR:copy the exported data below into a simple text editor|r, such as Notepad, that does |cnWARNING_FONT_COLOR:not alter special characters|r.",
 	CL_DIRECTORY_PLAYER_PROFILE = "Directory player profile",
 	CL_DIRECTORY_COMPANION_PROFILE = "Directory companion profile",
 	CL_CONTENT_SIZE = [[Size: %s]],
@@ -1430,6 +1440,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 	COPY_DROPDOWN_POPUP_TEXT = "Copy with %1$s. Paste with %2$s.\nThis frame will close upon copy.",
 	COPY_SYSTEM_MESSAGE = "Copied to clipboard.",
+	PASTE_SYSTEM_MESSAGE = "Pasted from clipboard.",
 	UNIT_POPUPS_MODULE_NAME = "Unit Popups",
 	UNIT_POPUPS_MODULE_DESCRIPTION = "Adds integration with right-click menus on unit frames and player names in chat frames.",
 	UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER = "Roleplay Options",
