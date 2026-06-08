@@ -807,7 +807,9 @@ function hooking()
 		text = string.gsub(text, "%%x.[fl]?", tokens);
 		return text;
 	end
-	LibChatFilter.RegisterTransform(ParseTokens);
+	local stage = LibChatFilter.Stage.TRANSFORM;
+	local track = LibChatFilter.Track.SEND; -- only modifying the text being sent, not the chat history
+	LibChatFilter.RegisterMutator(ParseTokens, stage, track);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
