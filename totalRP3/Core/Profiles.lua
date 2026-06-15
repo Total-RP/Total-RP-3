@@ -598,29 +598,38 @@ function TRP3_API.profile.init()
 	TRP3_ProfileImport.content.title:SetText(loc.PR_IMPORT_PROFILE_TT);
 	TRP3_ProfileImport.save:SetText(loc.PR_IMPORT);
 	TRP3_ProfileImport.save:SetScript("OnClick", function()
-		local profileID = TRP3_ProfileImport.profileID;
+		local currentProfileID = TRP3_ProfileImport.profileID;
 		local code = TRP3_ProfileImport.content.scroll.text:GetText();
-		local version, errorOrProfileID, data = TRP3_ProfileUtil.DeserializeProfile(string.trim(code));
+		local version, errorOrOldProfileID, data = TRP3_ProfileUtil.DeserializeProfile(string.trim(code));
 
-		if version ~= nil then
+		if version ~= nil and data ~= nil then
 			local import = function()
-				data.profileName = profiles[profileID].profileName;
-				wipe(profiles[profileID]);
-				profiles[profileID] = data;
+				data.profileName = profiles[currentProfileID].profileName;
+				profiles[currentProfileID] = nil;
+				local destinationProfileID = currentProfileID;
+				if not profiles[errorOrOldProfileID] then
+					destinationProfileID = errorOrOldProfileID;
+				end
+				profiles[destinationProfileID] = data;
 
-				if data then
-					-- Converting old music paths to new ID system
-					if data.player and data.player.about and data.player.about.MU and type(data.player.about.MU) == "string" then
-						profiles[profileID].player.about.MU = Utils.music.convertPathToID(data.player.about.MU);
-					end
+				-- A note on your own profile is keyed by the profile's own ID, which is the
+				-- source profile's ID here, not this destination slot's ID. Re-key it onto the slot's ID so the self-note isn't orphaned
+				if destinationProfileID ~= errorOrOldProfileID and data.notes and data.notes[errorOrOldProfileID] and not data.notes[destinationProfileID] then
+					data.notes[destinationProfileID] = data.notes[errorOrOldProfileID];
+					data.notes[errorOrOldProfileID] = nil;
+				end
 
-					-- Misc info ID conversion
-					if data.player and data.player.characteristics and data.player.characteristics.MI then
-						for _, miscData in ipairs(data.player.characteristics.MI) do
-							if not miscData.ID or miscData.ID ~= TRP3_API.MiscInfoType.Custom then
-								-- Adding ID from name if ID missing, or setting a preset to custom if renamed
-								miscData.ID = TRP3_API.GetMiscInfoTypeByName(miscData.NA);
-							end
+				-- Converting old music paths to new ID system
+				if data.player and data.player.about and data.player.about.MU and type(data.player.about.MU) == "string" then
+					profiles[destinationProfileID].player.about.MU = Utils.music.convertPathToID(data.player.about.MU);
+				end
+
+				-- Misc info ID conversion
+				if data.player and data.player.characteristics and data.player.characteristics.MI then
+					for _, miscData in ipairs(data.player.characteristics.MI) do
+						if not miscData.ID or miscData.ID ~= TRP3_API.MiscInfoType.Custom then
+							-- Adding ID from name if ID missing, or setting a preset to custom if renamed
+							miscData.ID = TRP3_API.GetMiscInfoTypeByName(miscData.NA);
 						end
 					end
 				end
@@ -630,12 +639,12 @@ function TRP3_API.profile.init()
 			end
 
 			if version ~= Globals.version then
-				showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING_2:format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
+				showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING_2:format(Utils.str.color("g") .. profiles[currentProfileID].profileName .. "|r"), import);
 			else
-				showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING:format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
+				showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING:format(Utils.str.color("g") .. profiles[currentProfileID].profileName .. "|r"), import);
 			end
 		else
-			Utils.message.displayMessage(string.format(loc.PR_IMPORT_ERROR, errorOrProfileID), 2);
+			Utils.message.displayMessage(string.format(loc.PR_IMPORT_ERROR, errorOrOldProfileID), 2);
 		end
 	end);
 
