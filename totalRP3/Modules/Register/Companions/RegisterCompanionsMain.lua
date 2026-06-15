@@ -51,13 +51,16 @@ local DEFAULT_PROFILE = {
 local playerProfileAssociation = {};
 
 local function getCompanionProfileID(companionID)
-	return playerProfileAssociation[companionID];
+	if canaccessvalue(companionID) then
+		return playerProfileAssociation[companionID];
+	end
 end
 TRP3_API.companions.player.getCompanionProfileID = getCompanionProfileID;
 
 local function getCompanionProfile(companionID)
-	if playerProfileAssociation[companionID] then
-		return playerCompanions[playerProfileAssociation[companionID]];
+	local companionProfileID = getCompanionProfileID(companionID)
+	if companionProfileID then
+		return playerCompanions[companionProfileID];
 	end
 end
 TRP3_API.companions.player.getCompanionProfile = getCompanionProfile;
@@ -239,7 +242,7 @@ end
 
 function TRP3_API.companions.player.getCurrentPetQueryLine()
 	local summonedPet = UnitNameUnmodified("pet");
-	if summonedPet then
+	if canaccessvalue(summonedPet) and summonedPet then
 		local queryLine = summonedPet;
 		if getCompanionProfileID(summonedPet) then
 			local profileID =  getCompanionProfileID(summonedPet);
@@ -267,7 +270,7 @@ function TRP3_API.companions.player.getCurrentSecondaryPetQueryLine()
 		petName = select(2, GetStablePetInfo(FIRST_STABLE_SLOT));
 	end
 
-	if not petName or petName == UNKNOWNOBJECT then
+	if not petName or not canaccessvalue(petName) or petName == UNKNOWNOBJECT then
 		return nil, nil, nil;
 	end
 
