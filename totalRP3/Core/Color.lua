@@ -164,14 +164,14 @@ function TRP3_API.ApplyColorPrototype(color)
 end
 
 function TRP3_API.CreateColor(r, g, b, a)
-	if a == nil then
+	if issecretvalue(a) or not a then
 		a = 1;
 	end
 	return ColorCache:Acquire(r, g, b, a);
 end
 
 function TRP3_API.CreateColorFromBytes(r, g, b, a)
-	if a == nil then
+	if issecretvalue(a) or not a then
 		a = 255;
 	end
 	return ColorCache:Acquire(r / 255, g / 255, b / 255, a and (a / 255) or 1);
@@ -179,7 +179,7 @@ end
 
 function TRP3_API.CreateColorFromTable(t)
 	local a = t.a;
-	if a == nil then
+	if issecretvalue(a) or not a then
 		a = 1;
 	end
 	return ColorCache:Acquire(t.r, t.g, t.b, a);
@@ -187,7 +187,7 @@ end
 
 function TRP3_API.CreateColorFromHSLA(h, s, l, a)
 	local r, g, b = ConvertHSLToRGB(h, s, l);
-	if a == nil then
+	if issecretvalue(a) or not a then
 		a = 1;
 	end
 	return ColorCache:Acquire(r, g, b, a);
@@ -195,7 +195,7 @@ end
 
 function TRP3_API.CreateColorFromHSVA(h, s, v, a)
 	local r, g, b = C_ColorUtil.ConvertHSVToRGB(h, s, v);
-	if a == nil then
+	if issecretvalue(a) or not a then
 		a = 1;
 	end
 	return ColorCache:Acquire(r, g, b, a);
@@ -203,7 +203,7 @@ end
 
 function TRP3_API.CreateColorFromHWBA(h, w, b, a)
 	local r, g, b = ConvertHWBToRGB(h, w, b);  -- luacheck: no redefined
-	if a == nil then
+	if issecretvalue(a) or not a then
 		a = 1;
 	end
 	return ColorCache:Acquire(r, g, b, a);
