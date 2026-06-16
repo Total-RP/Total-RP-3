@@ -138,6 +138,10 @@ end
 local ColorCache = { cache = setmetatable({}, { __mode = "kv" }) };
 
 function ColorCache:Acquire(r, g, b, a)
+	if not canaccessvalue(a) then
+		a = 1;
+	end
+
 	local key = string.format("#%02x%02x%02x%02x", a * 255, r * 255, g * 255, b * 255);
 	local color = self.cache[key];
 
