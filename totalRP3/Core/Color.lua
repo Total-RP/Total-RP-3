@@ -138,6 +138,10 @@ end
 local ColorCache = { cache = setmetatable({}, { __mode = "kv" }) };
 
 function ColorCache:Acquire(r, g, b, a)
+	if issecretvalue(a) then
+		a = 1;
+	end
+
 	local key = string.format("#%02x%02x%02x%02x", a * 255, r * 255, g * 255, b * 255);
 	local color = self.cache[key];
 
@@ -164,49 +168,30 @@ function TRP3_API.ApplyColorPrototype(color)
 end
 
 function TRP3_API.CreateColor(r, g, b, a)
-	if issecretvalue(a) or not a then
-		a = 1;
-	end
-	return ColorCache:Acquire(r, g, b, a);
+	return ColorCache:Acquire(r, g, b, a or 1);
 end
 
 function TRP3_API.CreateColorFromBytes(r, g, b, a)
-	if issecretvalue(a) or not a then
-		a = 255;
-	end
 	return ColorCache:Acquire(r / 255, g / 255, b / 255, a and (a / 255) or 1);
 end
 
 function TRP3_API.CreateColorFromTable(t)
-	local a = t.a;
-	if issecretvalue(a) or not a then
-		a = 1;
-	end
-	return ColorCache:Acquire(t.r, t.g, t.b, a);
+	return ColorCache:Acquire(t.r, t.g, t.b, t.a or 1);
 end
 
 function TRP3_API.CreateColorFromHSLA(h, s, l, a)
 	local r, g, b = ConvertHSLToRGB(h, s, l);
-	if issecretvalue(a) or not a then
-		a = 1;
-	end
-	return ColorCache:Acquire(r, g, b, a);
+	return ColorCache:Acquire(r, g, b, a or 1);
 end
 
 function TRP3_API.CreateColorFromHSVA(h, s, v, a)
 	local r, g, b = C_ColorUtil.ConvertHSVToRGB(h, s, v);
-	if issecretvalue(a) or not a then
-		a = 1;
-	end
-	return ColorCache:Acquire(r, g, b, a);
+	return ColorCache:Acquire(r, g, b, a or 1);
 end
 
 function TRP3_API.CreateColorFromHWBA(h, w, b, a)
 	local r, g, b = ConvertHWBToRGB(h, w, b);  -- luacheck: no redefined
-	if issecretvalue(a) or not a then
-		a = 1;
-	end
-	return ColorCache:Acquire(r, g, b, a);
+	return ColorCache:Acquire(r, g, b, a or 1);
 end
 
 function TRP3_API.CreateColorFromName(name)
