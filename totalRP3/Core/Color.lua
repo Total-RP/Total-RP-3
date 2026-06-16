@@ -138,7 +138,7 @@ end
 local ColorCache = { cache = setmetatable({}, { __mode = "kv" }) };
 
 function ColorCache:Acquire(r, g, b, a)
-	if issecretvalue(a) then
+	if not canaccessvalue(a) then
 		a = 1;
 	end
 
