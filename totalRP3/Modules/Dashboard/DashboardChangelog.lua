@@ -2,6 +2,22 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.3.7
+
+## Added
+
+- Added 71 icons and 12 musics from patch 12.0.7.
+
+## Changed
+
+- Imported profiles will now reuse their IDs if possible, to avoid losing profile-specific notes as well as others losing notes and relations.
+
+## Fixed
+
+- Fixed conflicts with other chat addons (Chattery, Languages) when parsing chat tokens.
+- Fixed an error with pets in instances.
+- Fixed an error with nameplate colors in instances.
+
 # Changelog version 3.3.6
 
 ## Fixed
