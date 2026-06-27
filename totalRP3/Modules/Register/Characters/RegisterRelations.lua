@@ -47,6 +47,8 @@ local DEFAULT_RELATIONS = {
 local ACTIONS = {
 	DELETE = "DEL",
 	EDIT = "EDT",
+	MOVE_UP = "MUP",
+	MOVE_DOWN = "MDN",
 };
 
 --getRelationList function should get relations stored in config, or default relations if none are stored
@@ -255,6 +257,38 @@ end
 
 local updateRelationsList;
 
+-- Moves a relation up (delta = -1) or down (delta = 1) in the display order,
+-- then renumbers all orders to keep them consecutive.
+local function moveRelation(relationID, delta)
+	local sortedRelations = getRelationList(true);
+
+	local index;
+	for i, relation in ipairs(sortedRelations) do
+		if relation.id == relationID then
+			index = i;
+			break;
+		end
+	end
+	if not index then
+		return;
+	end
+
+	local targetIndex = index + delta;
+	-- The first position is reserved for the default "None" relation.
+	if targetIndex < 2 or targetIndex > #sortedRelations then
+		return;
+	end
+
+	sortedRelations[index], sortedRelations[targetIndex] = sortedRelations[targetIndex], sortedRelations[index];
+	-- Entries are references into the stored relation list, so renumbering
+	-- them here updates the saved configuration directly.
+	for i, relation in ipairs(sortedRelations) do
+		relation.order = i - 1;
+	end
+
+	updateRelationsList();
+end
+
 local function onActionSelected(selectedAction)
 	local action = selectedAction:sub(1, 3);
 	local relationID = selectedAction:sub(4);
@@ -262,6 +296,10 @@ local function onActionSelected(selectedAction)
 	local originalRelation = (getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_" .. relation.id));
 	if action == ACTIONS.EDIT then
 		TRP3_API.register.relation.showEditor(relation.id);
+	elseif action == ACTIONS.MOVE_UP then
+		moveRelation(relationID, -1);
+	elseif action == ACTIONS.MOVE_DOWN then
+		moveRelation(relationID, 1);
 	elseif not relation.inUse and action == ACTIONS.DELETE then
 		TRP3_API.popup.showConfirmPopup(loc.CO_RELATIONS_DELETE_WARNING:format(originalRelation), function()
 			local relationList = getRelationList();
@@ -283,8 +321,9 @@ local widgetsList = {};
 function updateRelationsList()
 	local relations = getRelationList(true);
 
+	local relationCount = #relations;
 	local widgetCount = 1;
-	for _, relation in ipairs(relations) do
+	for index, relation in ipairs(relations) do
 		local widget = widgetsList[widgetCount];
 		if not widget then
 			widget = CreateFrame("Frame", nil, TRP3_RelationsList.ScrollFrame.Content, "TRP3_ConfigurationRelationsFrame");
@@ -307,6 +346,12 @@ function updateRelationsList()
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(widget.Actions, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 		widget.Actions:SetScript("OnMouseDown", function(button)
 			TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+				local moveUpOption = description:CreateButton(loc.CM_MOVE_UP, onActionSelected, ACTIONS.MOVE_UP..relation.id);
+				-- Index 1 is the default "None" relation, which stays locked at the top.
+				moveUpOption:SetEnabled(index > 2);
+				local moveDownOption = description:CreateButton(loc.CM_MOVE_DOWN, onActionSelected, ACTIONS.MOVE_DOWN..relation.id);
+				moveDownOption:SetEnabled(index < relationCount);
+				description:CreateDivider();
 				description:CreateButton(loc.CO_RELATIONS_MENU_EDIT, onActionSelected, ACTIONS.EDIT..relation.id);
 				checkRelationUse();
 				if relation.inUse then
