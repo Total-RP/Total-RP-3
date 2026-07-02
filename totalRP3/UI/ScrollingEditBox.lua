@@ -91,7 +91,7 @@ function TRP3_ScrollingEditBoxMixin:ClearFocus()
 end
 
 function TRP3_ScrollingEditBoxMixin:ClearText()
-    self.ScrollFrame:ClearText();
+	self.ScrollFrame:ClearText();
 end
 
 function TRP3_ScrollingEditBoxMixin:GetFontHeight()
@@ -111,7 +111,7 @@ function TRP3_ScrollingEditBoxMixin:IsReadOnly()
 end
 
 function TRP3_ScrollingEditBoxMixin:SetDefaultText(defaultText)
-    self.EditBox:ApplyDefaultText(defaultText);
+	self.EditBox:ApplyDefaultText(defaultText);
 end
 
 function TRP3_ScrollingEditBoxMixin:SetDefaultTextColor(color)
@@ -139,11 +139,11 @@ function TRP3_ScrollingEditBoxMixin:SetFontObject(fontName)
 end
 
 function TRP3_ScrollingEditBoxMixin:SetEscapeSanitized(enabled)
-    self.escapeSanitized = enabled;
+	self.escapeSanitized = enabled;
 end
 
 function TRP3_ScrollingEditBoxMixin:SetHighlightOnFocus(enabled)
-    self.highlightOnFocus = enabled;
+	self.highlightOnFocus = enabled;
 end
 
 function TRP3_ScrollingEditBoxMixin:SetText(text)

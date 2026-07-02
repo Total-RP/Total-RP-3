@@ -363,38 +363,38 @@ end
 local function UiInitProfileList()
 	wipe(profileListID);
 	local defaultProfileID = getConfigValue("default_profile_id");
-    local profileSearch = Utils.str.emptyToNil(TRP3_ProfileManager.list.SearchBox:GetText());
-    local searchMode = profileSearch ~= nil;
+	local profileSearch = Utils.str.emptyToNil(TRP3_ProfileManager.list.SearchBox:GetText());
+	local searchMode = profileSearch ~= nil;
 
 	-- Build filtered profile list
-    for profileID, _ in pairs(profiles) do
-        local shouldAdd = profileID ~= defaultProfileID;
+	for profileID, _ in pairs(profiles) do
+		local shouldAdd = profileID ~= defaultProfileID;
 
-        if shouldAdd and searchMode then
-            local profileName = profiles[profileID].profileName:lower();
-            shouldAdd = string.find(profileName, profileSearch:lower(), 1, true);
-        end
+		if shouldAdd and searchMode then
+			local profileName = profiles[profileID].profileName:lower();
+			shouldAdd = string.find(profileName, profileSearch:lower(), 1, true);
+		end
 
-        if shouldAdd then
-            tinsert(profileListID, profileID);
-        end
-    end
+		if shouldAdd then
+			tinsert(profileListID, profileID);
+		end
+	end
 
-    -- Sort profiles alphabetically
-    table.sort(profileListID, ProfileSortingByProfileName);
+	-- Sort profiles alphabetically
+	table.sort(profileListID, ProfileSortingByProfileName);
 
-    -- Handle empty state display
-    local isEmpty = #profileListID == 0;
-    TRP3_ProfileManager.list.ScrollBox.EmptyText:SetShown(searchMode and isEmpty);
+	-- Handle empty state display
+	local isEmpty = #profileListID == 0;
+	TRP3_ProfileManager.list.ScrollBox.EmptyText:SetShown(searchMode and isEmpty);
 
-    -- Add default profile at top when not searching
-    if not searchMode then
-        tinsert(profileListID, 1, defaultProfileID);
-    end
+	-- Add default profile at top when not searching
+	if not searchMode then
+		tinsert(profileListID, 1, defaultProfileID);
+	end
 
-    -- Update scrollbox
-    local provider = CreateDataProvider(profileListID);
-    TRP3_ProfileManager.list.ScrollBox:SetDataProvider(provider, ScrollBoxConstants.RetainScrollPosition);
+	-- Update scrollbox
+	local provider = CreateDataProvider(profileListID);
+	TRP3_ProfileManager.list.ScrollBox:SetDataProvider(provider, ScrollBoxConstants.RetainScrollPosition);
 end
 
 local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
@@ -426,10 +426,10 @@ local profileIcon;
 --- SetupChoicesFrame prepares the Choices frame from the Profile Create flow.
 local function SetupChoicesFrame()
 	local frames = TRP3_ProfileCreateDialog.Frames;
-    local choicesFrame = frames.ChoicesFrame;
+	local choicesFrame = frames.ChoicesFrame;
 
-    choicesFrame.Title:SetText(loc.PR_CREATE_PROFILE);
-    frames:SetHeight(200);
+	choicesFrame.Title:SetText(loc.PR_CREATE_PROFILE);
+	frames:SetHeight(200);
 
 	forceClose, profileIcon, chosenProfile = false, nil, nil;
 
@@ -441,10 +441,10 @@ end
 --- SetupImportFrame prepares the Import frame from the Profile Create flow.
 local function SetupImportFrame()
 	local frames = TRP3_ProfileCreateDialog.Frames;
-    local importFrame = frames.ImportFrame;
+	local importFrame = frames.ImportFrame;
 
-    importFrame.Title:SetText(loc.PR_IMPORT_PROFILE);
-    frames:SetHeight(400);
+	importFrame.Title:SetText(loc.PR_IMPORT_PROFILE);
+	frames:SetHeight(400);
 
 	-- Show import and profile creation frame
 	importFrame:Show();
@@ -513,15 +513,15 @@ local function SetupFinalizeFrame(creationOption, profileName)
 	FinalizeFrame.Icon:SetShown(showIcon);
 
 	if showIcon then
-        FinalizeFrame.Name:SetPoint("TOPLEFT", FinalizeFrame.Icon, "TOPRIGHT", 15, -4);
-        -- Initialize and set up icon only when needed
+		FinalizeFrame.Name:SetPoint("TOPLEFT", FinalizeFrame.Icon, "TOPRIGHT", 15, -4);
+		-- Initialize and set up icon only when needed
 		profileIcon = profileIcon or TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
 		setupIconButton(FinalizeFrame.Icon, profileIcon);
 		FinalizeFrame.ConfirmButton:SetText(loc.PR_CREATE_PROFILE);
-    else
-        FinalizeFrame.Name:SetPoint("TOPLEFT", FinalizeFrame.Icon, "TOPLEFT", 0, -4);
+	else
+		FinalizeFrame.Name:SetPoint("TOPLEFT", FinalizeFrame.Icon, "TOPLEFT", 0, -4);
 		FinalizeFrame.ConfirmButton:SetText(loc.PR_PROFILEMANAGER_RENAME);
-    end
+	end
 
 	FinalizeFrame.Name:SetText(name);
 	frames:SetHeight(150);
@@ -552,19 +552,19 @@ local function CloseProfileFlow()
 	local frames = TRP3_ProfileCreateDialog.Frames;
 	PlaySound(TRP3_InterfaceSounds.PopupClose);
 
-    -- Handle different visible frames
-    if frames.ExportFrame:IsVisible() then
-        -- Just close export and parent
-        frames.ExportFrame:Hide();
-        TRP3_ProfileCreateDialog:Hide();
-    elseif frames.ImportFrame:IsVisible() then
-        -- Clean up import frame
-        frames.ImportFrame:Hide();
-        frames.ImportFrame.Content.ImportText:ClearText();
-    elseif frames.FinalizeFrame:IsVisible() then
-        -- Clean up finalize frame
-        frames.FinalizeFrame:Hide();
-    end
+	-- Handle different visible frames
+	if frames.ExportFrame:IsVisible() then
+		-- Just close export and parent
+		frames.ExportFrame:Hide();
+		TRP3_ProfileCreateDialog:Hide();
+	elseif frames.ImportFrame:IsVisible() then
+		-- Clean up import frame
+		frames.ImportFrame:Hide();
+		frames.ImportFrame.Content.ImportText:ClearText();
+	elseif frames.FinalizeFrame:IsVisible() then
+		-- Clean up finalize frame
+		frames.FinalizeFrame:Hide();
+	end
 
 	-- If we're on the choices frame, or on forceClose we exit out fully.
 	if frames.ChoicesFrame:IsVisible() or forceClose then
@@ -591,21 +591,21 @@ end
 ---@return boolean valid Whether the evaluated profile name is valid.
 local function EvaluateProfileName()
 	local finalizeFrame = TRP3_ProfileCreateDialog.Frames.FinalizeFrame;
-    local profileName = finalizeFrame.Name:GetText();
-    local confirmButton = finalizeFrame.ConfirmButton;
+	local profileName = finalizeFrame.Name:GetText();
+	local confirmButton = finalizeFrame.ConfirmButton;
 
 	confirmButton:Enable();
-    if profileName == "" then
-        confirmButton:Disable();
-        setTooltipForSameFrame(confirmButton, "RIGHT", 0, 5, loc.PR_CREATE_PROFILE, loc.PR_EMPTYNAME_PROFILE);
-        return false;
-    end
+	if profileName == "" then
+		confirmButton:Disable();
+		setTooltipForSameFrame(confirmButton, "RIGHT", 0, 5, loc.PR_CREATE_PROFILE, loc.PR_EMPTYNAME_PROFILE);
+		return false;
+	end
 
-    if not IsProfileNameAvailable(profileName) then
-        confirmButton:Disable();
-        setTooltipForSameFrame(confirmButton, "RIGHT", 0, 5, loc.PR_CREATE_PROFILE, loc.PR_DUPLICATE_PROFILE);
-        return false;
-    end
+	if not IsProfileNameAvailable(profileName) then
+		confirmButton:Disable();
+		setTooltipForSameFrame(confirmButton, "RIGHT", 0, 5, loc.PR_CREATE_PROFILE, loc.PR_DUPLICATE_PROFILE);
+		return false;
+	end
 
 	setTooltipForSameFrame(confirmButton);
 	return true;
@@ -617,8 +617,8 @@ local function ProcessProfileData(data, creationOption)
 	chosenProfile = data;
 
 	-- Clean up Import
-    TRP3_ProfileCreateDialog.Frames.ImportFrame:Hide();
-    TRP3_ProfileCreateDialog.Frames.ImportFrame.Content.ImportText:ClearText();
+	TRP3_ProfileCreateDialog.Frames.ImportFrame:Hide();
+	TRP3_ProfileCreateDialog.Frames.ImportFrame.Content.ImportText:ClearText();
 
 	-- Build up Finalize
 	profileIcon = data.player.characteristics.IC or TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
@@ -630,47 +630,47 @@ end
 ---@return boolean valid Whether the evaluated import data is valid.
 local function EvaluateImportData(forceImport)
 	local importFrame = TRP3_ProfileCreateDialog.Frames.ImportFrame;
-    local importButton = importFrame.ImportButton;
+	local importButton = importFrame.ImportButton;
 
 	-- Set defaults: Warning icon hidden, confirm button enabled.
-    importButton.WarningIcon:Hide();
-    setTooltipForSameFrame(importButton.WarningIcon);
-    importButton:Enable();
+	importButton.WarningIcon:Hide();
+	setTooltipForSameFrame(importButton.WarningIcon);
+	importButton:Enable();
 
-    -- Get import serial code
-    local code = importFrame.Content.ImportText:GetInputText();
-    if code == "" then
-        importButton:Disable();
-        setTooltipForSameFrame(importButton, "RIGHT", 0, 5, loc.PR_IMPORT, loc.PR_IMPORT_EMPTY_SERIAL);
-        return false;
-    end
+	-- Get import serial code
+	local code = importFrame.Content.ImportText:GetInputText();
+	if code == "" then
+		importButton:Disable();
+		setTooltipForSameFrame(importButton, "RIGHT", 0, 5, loc.PR_IMPORT, loc.PR_IMPORT_EMPTY_SERIAL);
+		return false;
+	end
 
-    -- Deserialize the serial code
+	-- Deserialize the serial code
 	local version, data;
-    version, errorOrOldProfileID, data = TRP3_ProfileUtil.DeserializeProfile(string.trim(code));
-    if version == nil or not data then
-        importButton:Disable();
-        setTooltipForSameFrame(importButton, "RIGHT", 0, 5, loc.PR_IMPORT, errorOrOldProfileID);
-        return false;
-    end
+	version, errorOrOldProfileID, data = TRP3_ProfileUtil.DeserializeProfile(string.trim(code));
+	if version == nil or not data then
+		importButton:Disable();
+		setTooltipForSameFrame(importButton, "RIGHT", 0, 5, loc.PR_IMPORT, errorOrOldProfileID);
+		return false;
+	end
 
 	local valid = true;
 
 	-- Check version compatibility
 	if version ~= Globals.version then
-        -- Export came from a different TRP version!
-        importButton.WarningIcon:Show();
-        setTooltipAll(importButton.WarningIcon, "RIGHT", 0, 5, "Warning", loc.PR_PROFILEMANAGER_IMPORT_WARNING_3);
+		-- Export came from a different TRP version!
+		importButton.WarningIcon:Show();
+		setTooltipAll(importButton.WarningIcon, "RIGHT", 0, 5, "Warning", loc.PR_PROFILEMANAGER_IMPORT_WARNING_3);
 		valid = false;
-    end
+	end
 
 	-- Set no tooltip if all is well.
 	setTooltipForSameFrame(importButton);
 
-    -- Import valid data automatically or if manually forced (button).
-    if valid or forceImport then
-        ProcessProfileData(data, chosenOption);
-    end
+	-- Import valid data automatically or if manually forced (button).
+	if valid or forceImport then
+		ProcessProfileData(data, chosenOption);
+	end
 
 	return valid;
 end
