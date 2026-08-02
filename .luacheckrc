@@ -520,7 +520,6 @@ stds.wow = {
 			}
 		},
 
-
 		Menu = {
 			fields = {
 				"ModifyMenu",
@@ -579,9 +578,9 @@ stds.wow = {
 		},
 
 		TimerunningUtil = {
-		    fields = {
-                "AddSmallIcon",
-            },
+			fields = {
+				"AddSmallIcon",
+			},
 		},
 
 		"AbbreviateLargeNumbers",
