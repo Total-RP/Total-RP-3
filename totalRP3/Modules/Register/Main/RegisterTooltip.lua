@@ -1461,11 +1461,18 @@ local function GetWorldCursorUnit()
 end
 
 local function GetTooltipUnitToken(tooltip)
-	if tooltip:IsTooltipType(Enum.TooltipDataType.Unit) then
+	if tooltip.IsTooltipType and tooltip:IsTooltipType(Enum.TooltipDataType.Unit) then
+		-- Retail
 		local tooltipData = tooltip:GetPrimaryTooltipData();
 		local guid = tooltipData.guid;
 		local unitToken = guid and UnitTokenFromGUID(guid);
 		return unitToken;
+	else
+		-- Classic
+		local tooltipUnit = GameTooltip:GetUnit();
+		if tooltipUnit then
+			return select(2, tooltipUnit);
+		end
 	end
 end
 
