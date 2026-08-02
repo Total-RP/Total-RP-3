@@ -514,6 +514,13 @@ stds.wow = {
 			},
 		},
 
+		InputUtil = {
+			fields = {
+				"IsMouseOver",
+			}
+		},
+
+
 		Menu = {
 			fields = {
 				"ModifyMenu",
