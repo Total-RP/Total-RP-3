@@ -2,6 +2,10 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.3.8
+
+- Classic versions are now fully supported again, bringing them all improvements made since version 3.1.2, including Platynator support and tag search in the icon browser.
+
 # Changelog version 3.3.7
 
 ## Added
