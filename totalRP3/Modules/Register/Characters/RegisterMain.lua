@@ -881,6 +881,9 @@ function TRP3_API.register.init()
 
 	TRP3_API.ui.tooltip.setTooltipAll(TRP3_ProfileReportButton, "RIGHT", 0, 5,  loc.REG_REPORT_PLAYER_PROFILE, loc.REG_REPORT_PLAYER_PROFILE_TT);
 
+	TRP3_MSPWarningButton.Icon:SetAtlas(TRP3_InterfaceAtlases.MSPWarning);
+	TRP3_MSPWarningButton.Highlight:SetAtlas(TRP3_InterfaceAtlases.MSPWarning);
+
 	if msp_RPAddOn and msp_RPAddOn ~= "Total RP 3" then
 		TRP3_API.ui.tooltip.setTooltipAll(TRP3_MSPWarningButton, "RIGHT", 0, 5,  "", loc.REG_MSP_ALERT:format(msp_RPAddOn));
 	end

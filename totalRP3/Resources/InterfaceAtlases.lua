@@ -11,6 +11,12 @@ TRP3_InterfaceAtlases = {
 	--
 
 	TargetIgnoreCharacter = { "GM-raidMarker-remove", "common-icon-redx" },
+
+	--
+	-- MSP Warning
+	--
+
+	MSPWarning = { "icons_64x64_important", "services-icon-warning" },
 };
 
 --
