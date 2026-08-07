@@ -1096,3 +1096,272 @@ function TRP3_API.ui.frame.setupMove(frame)
 		self:StopMovingOrSizing();
 	end)
 end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Reorder buttons
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+--- REORDER_DRAG_UPDATE_PERIOD is the rate at which we'll test other
+--- items in the list to update their positions in a drag/drop reorder
+--- operation.
+local REORDER_DRAG_UPDATE_PERIOD = 0.01;
+
+--- REORDER_DRAG_SCROLL_DELTA is the amount of pixels to scroll by when
+--- the cursor is outside of the scroll frame.
+---
+--- Increasing this gives you a faster scroll, but be mindful - it gets
+--- re-checked every time the update period elapses.
+local REORDER_DRAG_SCROLL_DELTA = 1;
+
+local function reorderInfoTestRectangleCoord(y1, y2, cy)
+	if cy >= y2 then
+		return 1;
+	elseif cy <= y1 then
+		return -1;
+	else
+		-- Logically it's impossible at this point for (cx, cy) to be anywhere
+		-- but within bounds of the rectangle.
+		return 0;
+	end
+end
+
+--- reorderInfoQueryCursorIndexPosition calculates out the index of which item
+--- in the character info sheet list that the mouse is presently located over.
+---
+--- If the mouse is not over any item, nil is returned. If the mouse is within
+--- the X coordinate boundaries of the first or last items but above or below
+--- the first or last items in the list, the indices of those items are
+--- returned respectively.
+---@param data table The info data it requires.
+---@param editCharFrame Frame The array of data frames to check.
+local function reorderInfoQueryCursorIndexPosition(data, editCharFrame)
+	-- Grab the cursor position early on, since we don't need to keep
+	-- asking for it in one update.
+	local _, mouseY = GetCursorPosition();
+
+	-- We need to know the total number of characteristics for a bit later.
+	local lastItemIndex = 0;
+	for frameIndex in ipairs(data) do
+		if frameIndex > lastItemIndex then
+			lastItemIndex = frameIndex;
+		end
+	end
+
+	-- Iterate over each of the items and process them in turn.
+	for i = 1, lastItemIndex do
+		local frame = editCharFrame[i];
+
+		local _, bottom, _, height = frame:GetRect();
+		local y1 = bottom;
+		local y2 = bottom + height;
+
+		local frameScale = frame:GetEffectiveScale();
+		local my = mouseY / frameScale;
+
+		local relativeMousePosition = reorderInfoTestRectangleCoord(y1, y2, my);
+		if relativeMousePosition then
+			if relativeMousePosition == 0 then
+				-- You're directly over this item.
+				return i;
+			elseif relativeMousePosition < 0 and i == lastItemIndex then
+				-- The relative index of the last item is lesser, which
+				-- means you've moved your cursor below it.
+				return lastItemIndex;
+			elseif relativeMousePosition > 0 and i == 1 then
+				-- The relative index of the first item is greater, which
+				-- means you've moved your cursor above it.
+				return i;
+			end
+		end
+	end
+end
+
+--- reorderInfoScrollParentTowardCursor updates the vertical scroll position
+--- of the edit character panel, adjusting it so that the position is moving
+--- toward the location of the cursor.
+---@param scrollParent Frame The scrolling parent containing the data frames.
+local function reorderInfoScrollParentTowardCursor(scrollParent)
+	-- Work out our mouse position, calculate to effective scale of the frame.
+	local _, my = GetCursorPosition();
+	local scale = scrollParent:GetEffectiveScale();
+	my = my / scale;
+
+	-- Only adjust positioning if the mouse is outside of the frame bounds
+	-- from a vertical perspective.
+	local _, y1, _, height = scrollParent:GetRect();
+	local y2 = y1 + height;
+	local relativeMousePosition = reorderInfoTestRectangleCoord(y1, y2, my);
+	if not relativeMousePosition or relativeMousePosition == 0 then
+		-- Either you're not within the bounds from an X coordinate perspective
+		-- or you're mousing over the frame.
+		return;
+	end
+
+	-- Work out the center Y coordinate of the frame.
+	local bottom = scrollParent:GetBottom();
+	local center = bottom + height;
+
+	-- If you're above the center then we want to scroll up, otherwise down.
+	local position = scrollParent:GetVerticalScroll();
+	if my > center then
+		position = position - REORDER_DRAG_SCROLL_DELTA;
+	else
+		position = position + REORDER_DRAG_SCROLL_DELTA;
+	end
+
+	scrollParent:SetVerticalScroll(position);
+end
+
+--- reorderInfoFixupPosition adjusts the points on a given frame, altering
+--- the starting with TOP anchor point such that it is made relative to a
+--- different frame.
+---
+--- This operation preserves all other points, as well as the offsets of the
+--- starting with TOP point.
+---@param frame Frame The frame to alter the starting with TOP point on.
+---@param relative Frame The frame to make the starting with TOP point relative to.
+local function reorderInfoFixupPosition(frame, relative)
+	-- We could abstract the positioning into a separate function but
+	-- in this case it should happen infrequently enough.
+	--
+	-- Check the anchor points of the frame and find the TOP point anchor.
+	-- When we do, we'll re-assign that point to the given relative frame
+	-- and preserve all the other attributes.
+	for i = 1, frame:GetNumPoints() do
+		local point, _, relPoint, x, y = frame:GetPoint(i);
+		if point:find("^TOP") and relPoint:find("^BOTTOM") then
+			frame:SetPoint(point, relative, relPoint, x, y);
+			return;
+		end
+	end
+end
+
+--- reorderInfoPerformReorder reorders the character frame info list, moving
+--- the item at a given source index to that of a target index, and updating
+--- the layout of the UI.
+---@param data table The info data it requires.
+---@param editCharFrame Frame The array of data frames to check.
+---@param sourceIndex number The index of the node being moved.
+---@param targetIndex number The index to place the node at.
+---@param editTitle Frame The character edit title.
+---@param addBtn Button The add more button.
+local function reorderInfoPerformReorder(data, editCharFrame, sourceIndex, targetIndex, editTitle, addBtn)
+	-- We'll just do a flat table order change here with a tinsert/tremove.
+	local source = table.remove(data, sourceIndex);
+	table.insert(data, targetIndex, source);
+
+	-- Reorder the frame too. Means we don't need to transfer all the values,
+	-- which fixes issues with icons not persisting correctly when reordering.
+	local sourceFrame = table.remove(editCharFrame, sourceIndex);
+	table.insert(editCharFrame, targetIndex, sourceFrame);
+
+	-- Now fix up all the frames in terms of their referenced indices.
+	local previous = editTitle;
+	for frameIndex in ipairs(data) do
+		local frame = editCharFrame[frameIndex];
+		frame.frameIndex = frameIndex;
+
+		reorderInfoFixupPosition(frame, previous);
+		previous = frame;
+	end
+
+	if addBtn then
+		reorderInfoFixupPosition(addBtn, previous);
+	end
+end
+
+--- onInfoDragUpdate is called when the timer associated with a handle
+--- drag ticks. This is responsible for checking the position of the
+--- mouse relative to items in the list.
+---@param ticker userdata|cbObject The ticker associated with the handle being dragged.
+---@param data table The info data it requires.
+---@param editCharFrame Frame The array of data frames to check.
+---@param scrollParent Frame The scrolling parent containing the data frames.
+---@param editTitle Frame The character edit title.
+---@param addBtn Button The add more button.
+local function onInfoDragUpdate(ticker, data, editCharFrame, scrollParent, editTitle, addBtn)
+	-- Ensure the scroll frame moves with the cursor.
+	reorderInfoScrollParentTowardCursor(scrollParent);
+
+	-- Grab the handle when we tick and, from that, we can get the source
+	-- node.
+	local handle = ticker.handle;
+	local source = handle.node;
+
+	-- Work out the index of the frame to swap with, if any. Skip if the
+	-- source and target are identical, or if there is no target.
+	local targetIndex = reorderInfoQueryCursorIndexPosition(data, editCharFrame);
+	if not targetIndex or targetIndex == source.frameIndex then
+		return;
+	end
+
+	reorderInfoPerformReorder(data, editCharFrame, source.frameIndex, targetIndex, editTitle, addBtn);
+end
+
+--- onInfoDragStart is called when a handle begins being dragged.
+--- This is responsible for starting a ticker to control the reorder operation.
+---@param handle table The handle being dragged by the user.
+---@param data table The info data it requires.
+---@param editCharFrame Frame The array of data frames to check.
+---@param scrollParent Frame The scrolling parent containing the data frames.
+---@param editTitle Frame The character edit title.
+---@param addBtn Button The add more button.
+local function onInfoDragStart(handle, data, editCharFrame, scrollParent, editTitle, addBtn)
+	if handle.infoTicker then
+		handle.infoTicker:Cancel();
+	end
+
+	local ticker = C_Timer.NewTicker(REORDER_DRAG_UPDATE_PERIOD, function(ticker) onInfoDragUpdate(ticker, data, editCharFrame, scrollParent, editTitle, addBtn) end);
+
+	ticker.handle = handle;
+	handle.infoTicker = ticker;
+
+	SetCursor("Interface\\CURSOR\\UI-Cursor-Move");
+	PlaySound(TRP3_InterfaceSounds.DragPickup);
+end
+
+--- onInfoDragStop is called when a handle is no longer being dragged.
+--- This is responsible for stopping the drag/drop operation ticker.
+---@param handle table The handle being dragged by the user.
+local function onInfoDragStop(handle)
+	if not handle.infoTicker then
+		return;
+	end
+
+	handle.infoTicker:Cancel();
+	handle.infoTicker = nil;
+
+	SetCursor(nil);
+	PlaySound(TRP3_InterfaceSounds.DragDrop);
+end
+
+--- setInfoReorderable installs the necessary script handlers to enable
+--- a handle frame to control the drag and drop operations of a given node
+--- frame.
+---@param handle table The frame that, when dragged, will start repositioning the associated node.
+---@param node table The info item to be reordered when the handle is dragged.
+---@param data table The info data it requires.
+---@param editCharFrame table The array of data frames to check.
+---@param scrollParent Frame The scrolling parent containing the data frames.
+---@param editTitle Frame The character edit title.
+---@param addBtn Button The add more button.
+function TRP3_API.ui.list.setInfoReorderable(handle, node, data, editCharFrame, scrollParent, editTitle, addBtn)
+	-- Store a reference to the node that we're controlling on the handle.
+	-- The handle needs this when updating in the drag events.
+	handle.node = node;
+
+	-- This'll hold our drag/drop ticker so we can stop it later. The field
+	-- is initialised here more for documentational purposes.
+	handle.infoTicker = nil;
+
+	handle:EnableMouse(true);
+	handle:RegisterForClicks("AnyDown", "AnyUp");
+
+	-- draftData and the editCharFrame have to be fed in here 
+	-- so the data is always current as soon as the user starts to reorder.
+	handle:SetScript("OnMouseDown", function() onInfoDragStart(handle, data, editCharFrame, scrollParent, editTitle, addBtn) end);
+	handle:SetScript("OnMouseUp", onInfoDragStop);
+
+	-- If the handle stops being shown we should kill the drag.
+	handle:SetScript("OnHide", onInfoDragStop);
+end
