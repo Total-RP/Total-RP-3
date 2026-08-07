@@ -298,6 +298,9 @@ function updateRelationsList()
 				widget:SetPoint("TOP", TRP3_RelationsList.ScrollFrame.Content, "TOP", 0, 0);
 				widget.Actions:Hide();
 			end
+
+			TRP3_API.ui.list.setInfoReorderable(widget.DragButton, widget, widgetsList, TRP3_RelationsList.ScrollFrame.Content, TRP3_RelationsList.ScrollFrame, TRP3_RelationsList.CreateNew);
+
 			widgetsList[widgetCount] = widget;
 		end
 		widget.Title:SetText((getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_"..relation.id)));

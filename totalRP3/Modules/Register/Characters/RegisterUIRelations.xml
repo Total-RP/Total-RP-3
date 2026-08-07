@@ -28,6 +28,16 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
 				</Anchors>
 			</Button>
+			<Button parentKey="DragButton" inherits="TRP3_ReorderButtonTemplate">
+				<Size x="22" y="24"/>
+				<Scripts>
+					<OnEnter function="TRP3_RefreshTooltipForFrame"/>
+					<OnLeave>TRP3_MainTooltip:Hide();</OnLeave>
+				</Scripts>
+				<Anchors>
+					<Anchor point="LEFT" x="-5"/>
+				</Anchors>
+			</Button>
 		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
