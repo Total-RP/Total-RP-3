@@ -278,34 +278,58 @@ local function onActionSelected(selectedAction)
 	end
 end
 
+local noneWidget;
 local widgetsList = {};
+
+local function updateOrderAfterDrag()
+	local relationList = getRelationList();
+	for i, widget in ipairs(widgetsList) do
+		relationList[widget.relationID].order = i + 1;
+	end
+	updateRelationsList();
+end
 
 function updateRelationsList()
 	local relations = getRelationList(true);
+	local movableRelations = CopyTable(relations);
+	table.remove(movableRelations, 1);
 
 	local widgetCount = 1;
 	for _, relation in ipairs(relations) do
-		local widget = widgetsList[widgetCount];
+		local widget;
+		if widgetCount == 1 then
+			widget = noneWidget;
+		else
+			widget = widgetsList[widgetCount - 1];
+		end
 		if not widget then
 			widget = CreateFrame("Frame", nil, TRP3_RelationsList.ScrollFrame.Content, "TRP3_ConfigurationRelationsFrame");
 			widget:ClearAllPoints();
 			widget:SetPoint("LEFT", TRP3_RelationsList.ScrollFrame.Content, "LEFT", 0, 0);
 			widget.Border:SetVertexColor(TRP3_BACKDROP_COLOR_CREAMY_BROWN:GetRGB());
 			widget:SetPoint("RIGHT", TRP3_RelationsList.ScrollFrame.Content, "RIGHT", -20, 0);
-			if widgetCount > 1 then
-				widget:SetPoint("TOP", widgetsList[widgetCount - 1], "BOTTOM", 0, 0);
+			if widgetCount > 2 then
+				widget:SetPoint("TOP", widgetsList[widgetCount - 2], "BOTTOM", 0, 0);
+			elseif widgetCount == 2 then
+				widget:SetPoint("TOP", noneWidget, "BOTTOM", 0, 0);
 			else
 				widget:SetPoint("TOP", TRP3_RelationsList.ScrollFrame.Content, "TOP", 0, 0);
 				widget.Actions:Hide();
+				widget.DragButton:Hide();
 			end
 
-			TRP3_API.ui.list.setInfoReorderable(widget.DragButton, widget, widgetsList, TRP3_RelationsList.ScrollFrame.Content, TRP3_RelationsList.ScrollFrame, TRP3_RelationsList.CreateNew);
-
-			widgetsList[widgetCount] = widget;
+			if widgetCount > 1 then
+				widget.frameIndex = widgetCount - 1;
+				TRP3_API.ui.list.setInfoReorderable(widget.DragButton, widget, movableRelations, widgetsList, TRP3_RelationsList.ScrollFrame, noneWidget, nil, updateOrderAfterDrag);
+				widgetsList[widgetCount - 1] = widget;
+			else
+				noneWidget = widget;
+			end
 		end
 		widget.Title:SetText((getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_"..relation.id)));
 		widget.Text:SetText(GenerateEditDescription(relation.description or loc:GetText("REG_RELATION_" .. relation.id .. "_TT")));
 		setupIconButton(widget.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
+		widget.relationID = relation.id;
 
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(widget.Actions, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 		widget.Actions:SetScript("OnMouseDown", function(button)
@@ -321,13 +345,14 @@ function updateRelationsList()
 				end
 			end);
 		end);
+		
 		widget:Show();
 
 		widgetCount = widgetCount + 1;
 	end
 
-	if widgetCount <= #widgetsList then
-		for i = widgetCount, #widgetsList do
+	if widgetCount - 1 <= #widgetsList then
+		for i = widgetCount - 1, #widgetsList do
 			widgetsList[i]:Hide();
 		end
 	end

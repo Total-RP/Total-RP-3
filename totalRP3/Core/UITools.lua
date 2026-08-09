@@ -1150,7 +1150,7 @@ local function reorderInfoQueryCursorIndexPosition(data, editCharFrame)
 	-- Iterate over each of the items and process them in turn.
 	for i = 1, lastItemIndex do
 		local frame = editCharFrame[i];
-
+		
 		local _, bottom, _, height = frame:GetRect();
 		local y1 = bottom;
 		local y2 = bottom + height;
@@ -1323,7 +1323,7 @@ end
 --- onInfoDragStop is called when a handle is no longer being dragged.
 --- This is responsible for stopping the drag/drop operation ticker.
 ---@param handle table The handle being dragged by the user.
-local function onInfoDragStop(handle)
+local function onInfoDragStop(handle, stopCallback)
 	if not handle.infoTicker then
 		return;
 	end
@@ -1333,6 +1333,10 @@ local function onInfoDragStop(handle)
 
 	SetCursor(nil);
 	PlaySound(TRP3_InterfaceSounds.DragDrop);
+	
+	if stopCallback then
+		stopCallback();
+	end
 end
 
 --- setInfoReorderable installs the necessary script handlers to enable
@@ -1345,7 +1349,7 @@ end
 ---@param scrollParent Frame The scrolling parent containing the data frames.
 ---@param editTitle Frame The character edit title.
 ---@param addBtn Button The add more button.
-function TRP3_API.ui.list.setInfoReorderable(handle, node, data, editCharFrame, scrollParent, editTitle, addBtn)
+function TRP3_API.ui.list.setInfoReorderable(handle, node, data, editCharFrame, scrollParent, editTitle, addBtn, stopCallback)
 	-- Store a reference to the node that we're controlling on the handle.
 	-- The handle needs this when updating in the drag events.
 	handle.node = node;
@@ -1360,8 +1364,8 @@ function TRP3_API.ui.list.setInfoReorderable(handle, node, data, editCharFrame, 
 	-- draftData and the editCharFrame have to be fed in here 
 	-- so the data is always current as soon as the user starts to reorder.
 	handle:SetScript("OnMouseDown", function() onInfoDragStart(handle, data, editCharFrame, scrollParent, editTitle, addBtn) end);
-	handle:SetScript("OnMouseUp", onInfoDragStop);
+	handle:SetScript("OnMouseUp", function() onInfoDragStop(handle, stopCallback) end);
 
 	-- If the handle stops being shown we should kill the drag.
-	handle:SetScript("OnHide", onInfoDragStop);
+	handle:SetScript("OnHide", function() onInfoDragStop(handle, stopCallback) end);
 end
