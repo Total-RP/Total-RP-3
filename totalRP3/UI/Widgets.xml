@@ -1070,7 +1070,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</EditBox>
 
 	<EditBox name="TRP3_EscapeSanitizedEditBoxTemplate" mixin="TRP3_EscapeSanitizedEditBoxMixin" virtual="true"/>
-	
+
 	<!-- Reorder button -->
 	<Button name="TRP3_ReorderButtonTemplate" virtual="true">
 		<Size x="36" y="39"/>
