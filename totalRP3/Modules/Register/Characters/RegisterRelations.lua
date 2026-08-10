@@ -278,18 +278,20 @@ end
 
 local noneWidget;
 local widgetsList = {};
+local movableRelations = {};
 
 local function updateOrderAfterDrag()
 	local relationList = getRelationList();
-	for i, widget in ipairs(widgetsList) do
-		relationList[widget.relationID].order = i + 1;
+	-- Not #widgetsList, as that keeps the surplus widgets hidden by earlier refreshes.
+	for i = 1, #movableRelations do
+		relationList[widgetsList[i].relationID].order = i + 1;
 	end
 	updateRelationsList();
 end
 
 function updateRelationsList()
 	local relations = getRelationList(true);
-	local movableRelations = CopyTable(relations);
+	movableRelations = CopyTable(relations);
 	table.remove(movableRelations, 1);
 
 	local widgetCount = 1;
@@ -318,7 +320,7 @@ function updateRelationsList()
 
 			if widgetCount > 1 then
 				widget.frameIndex = widgetCount - 1;
-				TRP3_API.ui.list.setInfoReorderable(widget.DragButton, widget, movableRelations, widgetsList, TRP3_RelationsList.ScrollFrame, noneWidget, nil, updateOrderAfterDrag);
+				TRP3_API.ui.list.setInfoReorderable(widget.DragButton, widget, function() return movableRelations; end, function() return widgetsList; end, TRP3_RelationsList.ScrollFrame, noneWidget, nil, updateOrderAfterDrag);
 				widgetsList[widgetCount - 1] = widget;
 			else
 				noneWidget = widget;
