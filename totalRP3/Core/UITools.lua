@@ -1150,7 +1150,7 @@ local function reorderInfoQueryCursorIndexPosition(data, editCharFrame)
 	-- Iterate over each of the items and process them in turn.
 	for i = 1, lastItemIndex do
 		local frame = editCharFrame[i];
-	
+
 		local _, bottom, _, height = frame:GetRect();
 		local y1 = bottom;
 		local y2 = bottom + height;
