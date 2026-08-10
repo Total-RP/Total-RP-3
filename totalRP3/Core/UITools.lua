@@ -122,9 +122,11 @@ function TRP3_API.ui.frame.getTiledBackgroundList()
 	return tab;
 end
 
+local IsMouseOverFrame = (InputUtil and InputUtil.IsMouseOver) or MouseIsOver;
+
 function TRP3_API.ui.frame.showIfMouseOverFrame(frame, frameOver)
 	assert(frame and frameOver, "Frames can't be nil");
-	if MouseIsOver(frameOver) then
+	if IsMouseOverFrame(frameOver) then
 		frame:Show();
 	else
 		frame:Hide();

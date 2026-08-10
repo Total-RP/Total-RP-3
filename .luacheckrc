@@ -514,6 +514,12 @@ stds.wow = {
 			},
 		},
 
+		InputUtil = {
+			fields = {
+				"IsMouseOver",
+			}
+		},
+
 		Menu = {
 			fields = {
 				"ModifyMenu",
@@ -572,9 +578,9 @@ stds.wow = {
 		},
 
 		TimerunningUtil = {
-		    fields = {
-                "AddSmallIcon",
-            },
+			fields = {
+				"AddSmallIcon",
+			},
 		},
 
 		"AbbreviateLargeNumbers",
