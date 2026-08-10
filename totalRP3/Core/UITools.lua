@@ -1150,7 +1150,7 @@ local function reorderInfoQueryCursorIndexPosition(data, editCharFrame)
 	-- Iterate over each of the items and process them in turn.
 	for i = 1, lastItemIndex do
 		local frame = editCharFrame[i];
-		
+	
 		local _, bottom, _, height = frame:GetRect();
 		local y1 = bottom;
 		local y2 = bottom + height;
@@ -1333,7 +1333,7 @@ local function onInfoDragStop(handle, stopCallback)
 
 	SetCursor(nil);
 	PlaySound(TRP3_InterfaceSounds.DragDrop);
-	
+
 	if stopCallback then
 		stopCallback();
 	end
@@ -1361,7 +1361,7 @@ function TRP3_API.ui.list.setInfoReorderable(handle, node, data, editCharFrame, 
 	handle:EnableMouse(true);
 	handle:RegisterForClicks("AnyDown", "AnyUp");
 
-	-- draftData and the editCharFrame have to be fed in here 
+	-- draftData and the editCharFrame have to be fed in here
 	-- so the data is always current as soon as the user starts to reorder.
 	handle:SetScript("OnMouseDown", function() onInfoDragStart(handle, data, editCharFrame, scrollParent, editTitle, addBtn) end);
 	handle:SetScript("OnMouseUp", function() onInfoDragStop(handle, stopCallback) end);

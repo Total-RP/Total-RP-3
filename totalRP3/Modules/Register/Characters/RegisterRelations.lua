@@ -336,7 +336,7 @@ function updateRelationsList()
 				description:CreateButton("|cnRED_FONT_COLOR:" ..loc.CO_RELATIONS_MENU_DELETE.. "|r", onActionSelected, ACTIONS.DELETE..relation.id);
 			end);
 		end);
-		
+
 		widget:Show();
 
 		widgetCount = widgetCount + 1;
