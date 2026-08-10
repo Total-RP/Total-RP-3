@@ -156,19 +156,16 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function checkRelationUse()
-	local relationList = getRelationList();
-	for _, relation in pairs(relationList) do
-		relation.inUse = false;
-	end
+local function removeRelationFromProfiles(relationID)
 	local profiles = TRP3_API.profile.getProfiles();
 	for _, profile in pairs(profiles) do
 		local relations = TRP3_API.profile.getData("relation", profile);
-		if not relations then
-			relations = {};
-		end
-		for _, relation in pairs(relations) do
-			getRelationInfo(relation).inUse = true;
+		if relations then
+			for profileID, profileRelationID in pairs(relations) do
+				if profileRelationID == relationID then
+					relations[profileID] = nil;
+				end
+			end
 		end
 	end
 end
@@ -262,9 +259,10 @@ local function onActionSelected(selectedAction)
 	local originalRelation = (getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_" .. relation.id));
 	if action == ACTIONS.EDIT then
 		TRP3_API.register.relation.showEditor(relation.id);
-	elseif not relation.inUse and action == ACTIONS.DELETE then
+	elseif action == ACTIONS.DELETE then
 		TRP3_API.popup.showConfirmPopup(loc.CO_RELATIONS_DELETE_WARNING:format(originalRelation), function()
 			local relationList = getRelationList();
+			removeRelationFromProfiles(relationID);
 			local deletedOrder = relationList[relationID].order;
 			relationList[relationID] = nil;
 			-- Shift relation order to stay consecutive
@@ -335,14 +333,7 @@ function updateRelationsList()
 		widget.Actions:SetScript("OnMouseDown", function(button)
 			TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 				description:CreateButton(loc.CO_RELATIONS_MENU_EDIT, onActionSelected, ACTIONS.EDIT..relation.id);
-				checkRelationUse();
-				if relation.inUse then
-					local deleteOption = description:CreateButton(loc.CO_RELATIONS_MENU_DELETE);
-					deleteOption:SetEnabled(false);
-					TRP3_MenuUtil.SetElementTooltip(deleteOption, loc.CO_RELATIONS_MENU_DELETE_DISABLED_TT);
-				else
-					description:CreateButton("|cnRED_FONT_COLOR:" ..loc.CO_RELATIONS_MENU_DELETE.. "|r", onActionSelected, ACTIONS.DELETE..relation.id);
-				end
+				description:CreateButton("|cnRED_FONT_COLOR:" ..loc.CO_RELATIONS_MENU_DELETE.. "|r", onActionSelected, ACTIONS.DELETE..relation.id);
 			end);
 		end);
 		
@@ -385,7 +376,6 @@ local function saveCurrentRelation()
 		relationToUpdate = {
 			id = newID,
 			order = maxOrder + 1,
-			inUse = false,
 		};
 		relationList[newID] = relationToUpdate;
 	end
