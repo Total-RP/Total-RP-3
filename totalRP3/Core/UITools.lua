@@ -1344,12 +1344,12 @@ end
 --- frame.
 ---@param handle table The frame that, when dragged, will start repositioning the associated node.
 ---@param node table The info item to be reordered when the handle is dragged.
----@param data table The info data it requires.
----@param editCharFrame table The array of data frames to check.
+---@param getData function Returns the info data it requires.
+---@param getFrames function Returns the array of data frames to check.
 ---@param scrollParent Frame The scrolling parent containing the data frames.
 ---@param editTitle Frame The character edit title.
 ---@param addBtn Button The add more button.
-function TRP3_API.ui.list.setInfoReorderable(handle, node, data, editCharFrame, scrollParent, editTitle, addBtn, stopCallback)
+function TRP3_API.ui.list.setInfoReorderable(handle, node, getData, getFrames, scrollParent, editTitle, addBtn, stopCallback)
 	-- Store a reference to the node that we're controlling on the handle.
 	-- The handle needs this when updating in the drag events.
 	handle.node = node;
@@ -1363,7 +1363,7 @@ function TRP3_API.ui.list.setInfoReorderable(handle, node, data, editCharFrame, 
 
 	-- draftData and the editCharFrame have to be fed in here
 	-- so the data is always current as soon as the user starts to reorder.
-	handle:SetScript("OnMouseDown", function() onInfoDragStart(handle, data, editCharFrame, scrollParent, editTitle, addBtn) end);
+	handle:SetScript("OnMouseDown", function() onInfoDragStart(handle, getData(), getFrames(), scrollParent, editTitle, addBtn) end);
 	handle:SetScript("OnMouseUp", function() onInfoDragStop(handle, stopCallback) end);
 
 	-- If the handle stops being shown we should kill the drag.

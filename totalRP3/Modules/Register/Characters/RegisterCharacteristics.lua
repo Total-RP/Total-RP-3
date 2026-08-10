@@ -827,7 +827,7 @@ function setEditDisplay()
 
 			-- Register the drag/drop handlers for reordering. Use the
 			-- icon as our handle, and make it control this frame.
-			TRP3_API.ui.list.setInfoReorderable(frame.DragButton, frame, draftData.MI, miscEditCharFrame, TRP3_RegisterCharact_Edit_CharactPanel_Scroll, TRP3_RegisterCharact_Edit_CharactPanel_Container.MiscTitle, TRP3_RegisterCharact_Edit_MiscAdd);
+			TRP3_API.ui.list.setInfoReorderable(frame.DragButton, frame, function() return draftData.MI; end, function() return miscEditCharFrame; end, TRP3_RegisterCharact_Edit_CharactPanel_Scroll, TRP3_RegisterCharact_Edit_CharactPanel_Container.MiscTitle, TRP3_RegisterCharact_Edit_MiscAdd);
 			setTooltipForSameFrame(frame.Icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 
 			tinsert(miscEditCharFrame, frame);
@@ -947,7 +947,7 @@ function setEditDisplay()
 
 			-- Register the drag/drop handlers for reordering. Use the
 			-- icon as our handle, and make it control this frame.
-			TRP3_API.ui.list.setInfoReorderable(frame.DragButton, frame, draftData.PS, psychoEditCharFrame, TRP3_RegisterCharact_Edit_CharactPanel_Scroll, TRP3_RegisterCharact_Edit_CharactPanel_Container.TraitsTitle, TRP3_RegisterCharact_Edit_PsychoAdd);
+			TRP3_API.ui.list.setInfoReorderable(frame.DragButton, frame, function() return draftData.PS; end, function() return psychoEditCharFrame; end, TRP3_RegisterCharact_Edit_CharactPanel_Scroll, TRP3_RegisterCharact_Edit_CharactPanel_Container.TraitsTitle, TRP3_RegisterCharact_Edit_PsychoAdd);
 
 			tinsert(psychoEditCharFrame, frame);
 		end
