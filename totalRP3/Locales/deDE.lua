@@ -380,7 +380,6 @@ Möglicher Status:
 	["CO_RELATIONS_DESCRIPTION"] = "Beschreibung",
 	["CO_RELATIONS_DESCRIPTION_TT"] = "|cnGREEN_FONT_COLOR:%p|r für den Namen deines Charakters.|n|cnGREEN_FONT_COLOR:%t|r für den Namen des anderen Charakters.",
 	["CO_RELATIONS_MENU_DELETE"] = "Beziehung löschen",
-	["CO_RELATIONS_MENU_DELETE_DISABLED_TT"] = "Du kannst keine Beziehungen löschen, die derzeit mit einem Profil verbunden sind.",
 	["CO_RELATIONS_MENU_EDIT"] = "Beziehung bearbeiten",
 	["CO_RELATIONS_NEW"] = "Neue Beziehung erstellen",
 	["CO_RELATIONS_NEW_COLOR"] = "Beziehungsfarbe",

@@ -425,7 +425,6 @@ Status possíveis:
 	["CO_RELATIONS_DESCRIPTION"] = "Descrição",
 	["CO_RELATIONS_DESCRIPTION_TT"] = "|cnGREEN_FONT_COLOR:%p|r para o nome do seu personagem.|n|cnGREEN_FONT_COLOR:%t|r para o nome do outro personagem.",
 	["CO_RELATIONS_MENU_DELETE"] = "Deletar relação",
-	["CO_RELATIONS_MENU_DELETE_DISABLED_TT"] = "Você não pode deletar relações que estão atualmente associadas com um perfil.",
 	["CO_RELATIONS_MENU_EDIT"] = "Editar relação",
 	["CO_RELATIONS_NEW"] = "Criar nova relação",
 	["CO_RELATIONS_NEW_COLOR"] = "Cor da relação",

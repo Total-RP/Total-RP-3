@@ -417,7 +417,6 @@ Statuts possibles:
 	["CO_RELATIONS_DESCRIPTION"] = "Description",
 	["CO_RELATIONS_DESCRIPTION_TT"] = "|cnGREEN_FONT_COLOR:%p|r pour le nom de votre personnage.|n|cnGREEN_FONT_COLOR:%t|r pour le nom de l'autre personnage.",
 	["CO_RELATIONS_MENU_DELETE"] = "Supprimer relation",
-	["CO_RELATIONS_MENU_DELETE_DISABLED_TT"] = "Vous ne pouvez pas supprimer de relations actuellement associées à un profil.",
 	["CO_RELATIONS_MENU_EDIT"] = "Editer relation",
 	["CO_RELATIONS_NEW"] = "Créer nouvelle relation",
 	["CO_RELATIONS_NEW_COLOR"] = "Couleur de relation",

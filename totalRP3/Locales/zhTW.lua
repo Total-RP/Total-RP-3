@@ -262,7 +262,6 @@ L = {
 	["CO_RELATIONS_DELETE_WARNING"] = "你確定要刪除關係: %s 嗎?",
 	["CO_RELATIONS_DESCRIPTION"] = "描述",
 	["CO_RELATIONS_MENU_DELETE"] = "刪除關係",
-	["CO_RELATIONS_MENU_DELETE_DISABLED_TT"] = "你無法刪除已經與角色資訊綁定的關係",
 	["CO_RELATIONS_MENU_EDIT"] = "編輯關係",
 	["CO_RELATIONS_NEW"] = "創建新的關係",
 	["CO_RELATIONS_NEW_COLOR"] = "關係對應顏色",
