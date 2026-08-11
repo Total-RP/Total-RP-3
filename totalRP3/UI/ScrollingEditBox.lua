@@ -107,7 +107,10 @@ function TRP3_ScrollingEditBoxMixin:GetInputText()
 end
 
 function TRP3_ScrollingEditBoxMixin:IsReadOnly()
-	return self.readOnly ~= nil;
+	if self.readOnly == nil then
+		self.readOnly = true;
+	end
+	return self.readOnly;
 end
 
 function TRP3_ScrollingEditBoxMixin:SetDefaultText(defaultText)
