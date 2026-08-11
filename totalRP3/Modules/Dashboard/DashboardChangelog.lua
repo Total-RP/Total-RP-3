@@ -2,6 +2,12 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.4.1
+
+## Fixed
+
+- Fixed an issue with the Currently/OOC info editboxes not being editable.
+
 # Changelog version 3.4.0
 
 ## Added
