@@ -29,13 +29,13 @@ local CONFIG_REGISTER_ABOUT_P_SIZE = "config_register_about_p_size";
 local CONFIG_REGISTER_ABOUT_H1_SIZE = "config_register_about_h1_size";
 local CONFIG_REGISTER_ABOUT_H2_SIZE = "config_register_about_h2_size";
 local CONFIG_REGISTER_ABOUT_H3_SIZE = "config_register_about_h3_size";
-local CONFIG_REGISTER_ABOUT_DISABLE_CUSTOM_BGS = "config_register_about_disable_custom_bgs";
+local CONFIG_REGISTER_ABOUT_HIGH_CONTRAST = "config_register_about_high_contrast";
 
-local defaultDisableCustomBGs = false;
-local defaultBG = 1;
+local defaultUseHighContrast = false;
+local defaultHighContrastBG = 1;
 
 local function usingHighContrast()
-	return getConfigValue(CONFIG_REGISTER_ABOUT_DISABLE_CUSTOM_BGS);
+	return getConfigValue(CONFIG_REGISTER_ABOUT_HIGH_CONTRAST);
 end
 
 local defaultFontParameters;
@@ -129,7 +129,7 @@ end
 --- sets a frame's backdrop background - respects the high contrast setting
 local function setBackground(frame, bkg)
 	if usingHighContrast() then
-		bkg = defaultBG;
+		bkg = defaultHighContrastBG;
 	end
 	TRP3_API.ui.frame.setBackdropToBackground(frame, bkg);
 end
@@ -1108,7 +1108,7 @@ function TRP3_API.register.inits.aboutInit()
 	registerConfigKey(CONFIG_REGISTER_ABOUT_H1_SIZE, defaultFontParameters.h1.size);
 	registerConfigKey(CONFIG_REGISTER_ABOUT_H2_SIZE, defaultFontParameters.h2.size);
 	registerConfigKey(CONFIG_REGISTER_ABOUT_H3_SIZE, defaultFontParameters.h3.size);
-	registerConfigKey(CONFIG_REGISTER_ABOUT_DISABLE_CUSTOM_BGS, defaultDisableCustomBGs);
+	registerConfigKey(CONFIG_REGISTER_ABOUT_HIGH_CONTRAST, defaultUseHighContrast);
 
 	updateAllAboutTemplateFonts();
 
@@ -1163,9 +1163,9 @@ function TRP3_API.register.inits.aboutInit()
 	});
 	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
-		title = loc.CO_REGISTER_ABOUT_DISABLE_CUSTOM_BGS,
-		help = loc.CO_REGISTER_ABOUT_DISABLE_CUSTOM_BGS_TT:format(tostring(defaultDisableCustomBGs)),
-		configKey = CONFIG_REGISTER_ABOUT_DISABLE_CUSTOM_BGS,
+		title = loc.CO_REGISTER_ABOUT_HIGH_CONTRAST,
+		help = loc.CO_REGISTER_ABOUT_HIGH_CONTRAST_TT:format(tostring(tostring(defaultUseHighContrast))),
+		configKey = CONFIG_REGISTER_ABOUT_HIGH_CONTRAST,
 	});
 
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
