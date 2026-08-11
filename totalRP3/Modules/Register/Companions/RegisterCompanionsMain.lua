@@ -438,6 +438,8 @@ function TRP3_API.companions.register.deleteProfile(profileID, silently)
 end
 
 function TRP3_API.companions.register.getUnitMount(ownerID, unitType)
+	if C_Secrets.ShouldAurasBeSecret() then return; end
+
 	-- Inner 'select' here is to skip the leading 'continuationToken' return.
 	local auraSlots = { select(2, C_UnitAuras.GetAuraSlots(unitType, "HELPFUL")) };
 
