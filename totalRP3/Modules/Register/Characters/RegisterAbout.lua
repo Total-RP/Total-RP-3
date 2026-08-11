@@ -29,6 +29,14 @@ local CONFIG_REGISTER_ABOUT_P_SIZE = "config_register_about_p_size";
 local CONFIG_REGISTER_ABOUT_H1_SIZE = "config_register_about_h1_size";
 local CONFIG_REGISTER_ABOUT_H2_SIZE = "config_register_about_h2_size";
 local CONFIG_REGISTER_ABOUT_H3_SIZE = "config_register_about_h3_size";
+local CONFIG_REGISTER_ABOUT_DISABLE_CUSTOM_BGS = "config_register_about_disable_custom_bgs";
+
+local defaultDisableCustomBGs = false;
+local defaultBG = 1;
+
+local function shouldDisableCustomBgs()
+	return getConfigValue(CONFIG_REGISTER_ABOUT_DISABLE_CUSTOM_BGS);
+end
 
 local defaultFontParameters;
 local refreshTemplate2EditDisplay, saveInDraft, template2SaveToDraft; -- Function reference
@@ -104,8 +112,16 @@ getDefaultProfile().player.about = {
 
 local draftData;
 
+--- sets a frame's backdrop background - respects the "disable custom BGs" config option
+local function setBackground(frame, bkg)
+	if shouldDisableCustomBgs() then
+		bkg = defaultBG;
+	end
+	TRP3_API.ui.frame.setBackdropToBackground(frame, bkg);
+end
+
 local function setConsultBkg(bkg)
-	TRP3_API.ui.frame.setBackdropToBackground(TRP3_RegisterAbout, bkg);
+	setBackground(TRP3_RegisterAbout, bkg);
 end
 
 local function setEditBkg(bkg)
@@ -217,7 +233,7 @@ local function showTemplate2(dataTab)
 
 		local icon = frame.Icon;
 		local text = frame.Text;
-		TRP3_API.ui.frame.setBackdropToBackground(frame, frameTab.BK);
+		setBackground(frame, frameTab.BK);
 		frame.Icon:SetIconTexture(frameTab.IC);
 
 		setupHTMLFonts(text);
@@ -503,7 +519,7 @@ local function showTemplate3(dataTab)
 			text.html = Utils.str.toHTML(data.TX or "")
 			text:SetText(text.html);
 
-			TRP3_API.ui.frame.setBackdropToBackground(frame, data.BK);
+			setBackground(frame, data.BK);
 			frame:Show();
 		else
 			frame:Hide();
@@ -1078,6 +1094,7 @@ function TRP3_API.register.inits.aboutInit()
 	registerConfigKey(CONFIG_REGISTER_ABOUT_H1_SIZE, defaultFontParameters.h1.size);
 	registerConfigKey(CONFIG_REGISTER_ABOUT_H2_SIZE, defaultFontParameters.h2.size);
 	registerConfigKey(CONFIG_REGISTER_ABOUT_H3_SIZE, defaultFontParameters.h3.size);
+	registerConfigKey(CONFIG_REGISTER_ABOUT_DISABLE_CUSTOM_BGS, defaultDisableCustomBGs);
 
 	updateAllAboutTemplateFonts();
 
@@ -1129,6 +1146,12 @@ function TRP3_API.register.inits.aboutInit()
 		max = 30,
 		step = 1,
 		integer = true,
+	});
+	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc.CO_REGISTER_ABOUT_DISABLE_CUSTOM_BGS,
+		help = loc.CO_REGISTER_ABOUT_DISABLE_CUSTOM_BGS_TT:format(tostring(defaultDisableCustomBGs)),
+		configKey = CONFIG_REGISTER_ABOUT_DISABLE_CUSTOM_BGS,
 	});
 
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
