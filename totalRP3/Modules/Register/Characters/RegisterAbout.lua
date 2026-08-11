@@ -29,6 +29,14 @@ local CONFIG_REGISTER_ABOUT_P_SIZE = "config_register_about_p_size";
 local CONFIG_REGISTER_ABOUT_H1_SIZE = "config_register_about_h1_size";
 local CONFIG_REGISTER_ABOUT_H2_SIZE = "config_register_about_h2_size";
 local CONFIG_REGISTER_ABOUT_H3_SIZE = "config_register_about_h3_size";
+local CONFIG_REGISTER_ABOUT_HIGH_CONTRAST = "config_register_about_high_contrast";
+
+local defaultUseHighContrast = false;
+local defaultHighContrastBG = 1;
+
+local function usingHighContrast()
+	return not getCurrentContext().isPlayer and getConfigValue(CONFIG_REGISTER_ABOUT_HIGH_CONTRAST);
+end
 
 local defaultFontParameters;
 local refreshTemplate2EditDisplay, saveInDraft, template2SaveToDraft; -- Function reference
@@ -104,8 +112,30 @@ getDefaultProfile().player.about = {
 
 local draftData;
 
+local function stripColorTagsFromAboutText(text)
+	text = text:gsub("{col:[^}]+}", ""):gsub("{/col}", "");
+	return text;
+end
+
+--- converts about page text into HTML - respects the high contrast setting
+local function convertTextToHTML(text, ...)
+	text = text or "";
+	if usingHighContrast() then
+		text = stripColorTagsFromAboutText(text);
+	end
+	return Utils.str.toHTML(text, ...);
+end
+
+--- sets a frame's backdrop background - respects the high contrast setting
+local function setBackground(frame, bkg)
+	if usingHighContrast() then
+		bkg = defaultHighContrastBG;
+	end
+	TRP3_API.ui.frame.setBackdropToBackground(frame, bkg);
+end
+
 local function setConsultBkg(bkg)
-	TRP3_API.ui.frame.setBackdropToBackground(TRP3_RegisterAbout, bkg);
+	setBackground(TRP3_RegisterAbout, bkg);
 end
 
 local function setEditBkg(bkg)
@@ -145,7 +175,7 @@ end
 local function showTemplate1(dataTab)
 	local templateData = dataTab.T1 or {};
 	if shouldShowTemplate1(dataTab) then
-		local text = Utils.str.toHTML(templateData.TX or "");
+		local text = convertTextToHTML(templateData.TX);
 		TRP3_RegisterAbout_AboutPanel_Template1:SetText(text);
 		TRP3_RegisterAbout_AboutPanel_Template1.html = text;
 	else
@@ -217,13 +247,13 @@ local function showTemplate2(dataTab)
 
 		local icon = frame.Icon;
 		local text = frame.Text;
-		TRP3_API.ui.frame.setBackdropToBackground(frame, frameTab.BK);
+		setBackground(frame, frameTab.BK);
 		frame.Icon:SetIconTexture(frameTab.IC);
 
 		setupHTMLFonts(text);
 
 		-- We'll need to access the HTML later when resizing things.
-		text.html = Utils.str.toHTML(frameTab.TX or "")
+		text.html = convertTextToHTML(frameTab.TX);
 		text:SetText(text.html);
 
 		icon:ClearAllPoints();
@@ -500,10 +530,10 @@ local function showTemplate3(dataTab)
 			title:SetText(icon .. "    " .. titles[i] .. "    " .. icon);
 
 			-- We'll need to access the HTML later when resizing things.
-			text.html = Utils.str.toHTML(data.TX or "")
+			text.html = convertTextToHTML(data.TX);
 			text:SetText(text.html);
 
-			TRP3_API.ui.frame.setBackdropToBackground(frame, data.BK);
+			setBackground(frame, data.BK);
 			frame:Show();
 		else
 			frame:Hide();
@@ -1078,6 +1108,7 @@ function TRP3_API.register.inits.aboutInit()
 	registerConfigKey(CONFIG_REGISTER_ABOUT_H1_SIZE, defaultFontParameters.h1.size);
 	registerConfigKey(CONFIG_REGISTER_ABOUT_H2_SIZE, defaultFontParameters.h2.size);
 	registerConfigKey(CONFIG_REGISTER_ABOUT_H3_SIZE, defaultFontParameters.h3.size);
+	registerConfigKey(CONFIG_REGISTER_ABOUT_HIGH_CONTRAST, defaultUseHighContrast);
 
 	updateAllAboutTemplateFonts();
 
@@ -1129,6 +1160,12 @@ function TRP3_API.register.inits.aboutInit()
 		max = 30,
 		step = 1,
 		integer = true,
+	});
+	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc.CO_REGISTER_ABOUT_HIGH_CONTRAST,
+		help = loc.CO_REGISTER_ABOUT_HIGH_CONTRAST_TT:format(tostring(tostring(defaultUseHighContrast))),
+		configKey = CONFIG_REGISTER_ABOUT_HIGH_CONTRAST,
 	});
 
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
