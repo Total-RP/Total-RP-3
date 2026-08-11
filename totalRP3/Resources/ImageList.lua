@@ -498,6 +498,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_FungarianStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_GreatSeaIslandsCupEnd",
 		width = 128,
 		height = 128
@@ -603,6 +608,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_RaidUltaek",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_RiftOfAlnStart",
 		width = 128,
 		height = 128
@@ -664,6 +674,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_TransmogPopularityContestStart",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_TrollRunStart",
 		width = 128,
 		height = 128
 	},
@@ -874,7 +889,7 @@ local IMAGES = {
 		height = 256
 	},
 	{
-		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Haranir1",
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Harronir1",
 		width = 256,
 		height = 256
 	},
@@ -1717,6 +1732,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-DungeonAltarOfFangs",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Ecodome",
 		width = 256,
 		height = 256
@@ -1905,6 +1924,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-MythicDungeon",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-NecroticWake",
 		width = 256,
 		height = 256
@@ -1978,6 +2001,14 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-ProveYourWorth",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-RaidFungarian",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-RaidUlatek",
 		width = 256,
 		height = 256
 	}, {
@@ -2194,6 +2225,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-ThunderPinnacle",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TideboundGrotto",
 		width = 256,
 		height = 256
 	}, {
@@ -2536,6 +2571,18 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DarkflameCleft",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DarkheartThicket",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DarkmaulCitadel",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Darkwell",
 		width = 256,
 		height = 128
@@ -2543,6 +2590,10 @@ local IMAGES = {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DarkwellQ",
 		width = 512,
 		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DawnOfTheInfinite",
+		width = 256,
+		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DEADMINES",
 		width = 256,
@@ -2556,31 +2607,19 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
-		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DRAKTHARON",
-		width = 256,
-		height = 128
-	}, {
-		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DarkflameCleft",
-		width = 256,
-		height = 128
-	}, {
-		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DarkheartThicket",
-		width = 256,
-		height = 128
-	}, {
-		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DarkmaulCitadel",
-		width = 256,
-		height = 128
-	}, {
-		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DawnOfTheInfinite",
-		width = 256,
-		height = 128
-	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Draenor",
 		width = 256,
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DragonIsles",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DRAKTHARON",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DungeonAltarOfFangs",
 		width = 256,
 		height = 128
 	}, {
@@ -2944,6 +2983,30 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-RaidFungarian-Wing1",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-RaidFungarian-Wing2",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-RaidFungarian-Wing3",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-RaidFungarian-Wing4",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-RaidFungarian",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-RaidUlatek",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-RANDOMDUNGEON",
 		width = 256,
 		height = 128
@@ -2968,19 +3031,23 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
-		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationwing1Q",
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-RiftOfAlnQ",
 		width = 512,
 		height = 256
 	}, {
-		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationwing2Q",
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationWing1Q",
 		width = 512,
 		height = 256
 	}, {
-		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationwing3Q",
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationWing2Q",
 		width = 512,
 		height = 256
 	}, {
-		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationwing4Q",
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationWing3Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationWing4Q",
 		width = 512,
 		height = 256
 	}, {
@@ -3228,6 +3295,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-TideboundGrotto",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-TolDagor",
 		width = 256,
 		height = 128
@@ -3360,6 +3431,22 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-WoD_RaidUlatek_Wing1Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-WoD_RaidUlatek_Wing2Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-WoD_RaidUlatek_Wing3Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-WoD_RaidUlatek_Wing4Q",
+		width = 512,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-ZULAMAN",
 		width = 256,
 		height = 128
@@ -3456,6 +3543,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_DragonIslesContinent",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Dungeon_AltarOfFangs",
 		width = 512,
 		height = 288
 	},
@@ -3560,6 +3652,11 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Lairs_TieboundGrotto",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion09\\Main\\LoadScreen_LifePoolsDungeon",
 		width = 512,
 		height = 288
@@ -3650,12 +3747,22 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_PropHunt",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Raid_Casino",
 		width = 512,
 		height = 288
 	},
 	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Raid_Darkwell",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Raid_Fungarian",
 		width = 512,
 		height = 288
 	},
@@ -3670,12 +3777,32 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Raid_Ulatek",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion10\\Main\\LoadScreen_Raid_UndermineArena",
 		width = 512,
 		height = 288
 	},
 	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Raid_Voidspire",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_RitualSite_BlindingBloom",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_RitualSite_BrokenThrone",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_RitualSite_DaggerspinePoint",
 		width = 512,
 		height = 288
 	},
@@ -3765,6 +3892,16 @@ local IMAGES = {
 		height = 288
 	},
 	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_VoidPortal_Naigtal",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_VoidPortal_Val",
+		width = 512,
+		height = 288
+	},
+	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion08\\Main\\LoadScreen_ZerethMortis",
 		width = 512,
 		height = 288
@@ -3796,6 +3933,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Zone_Zulaman",
+		width = 512,
+		height = 288
+	},
+	{
+		url = "Interface\\GLUES\\LOADINGSCREENS\\Expansion11\\Main\\LoadScreen_Zone_Zulaman2",
 		width = 512,
 		height = 288
 	},
@@ -5176,6 +5318,11 @@ local IMAGES = {
 		width = 512,
 		height = 256
 	},
+	{
+		url = "Interface\\QUESTFRAME\\answer-showdowns",
+		width = 256,
+		height = 128
+	},
 	--endregion
 	--region QuestionFrame
 	{
@@ -5394,6 +5541,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-Endeavor-Amani-Large",
+		width = 512,
+		height = 256
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-Endeavor-EversongWoods",
 		width = 256,
 		height = 128
@@ -5402,6 +5554,11 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-Endeavor-ForbiddenReach",
 		width = 256,
 		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Endeavor-Kobold-Large",
+		width = 512,
+		height = 256
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-Endeavor-KunlaiSummit",
@@ -5422,6 +5579,16 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-Endeavor-Niffen",
 		width = 256,
 		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Endeavor-OhnahranPlains-Large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Endeavor-Tortollan-Large",
+		width = 512,
+		height = 256
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-Endeavor-Valsharah",
@@ -5455,6 +5622,16 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-Gorgrond-PrimalForest",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-HostileActivity",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Housing-Hearthlight-Large",
 		width = 512,
 		height = 256
 	},
@@ -5654,6 +5831,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-RitualSites",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-Shadowmoon-DarktideRoost",
 		width = 512,
 		height = 256
@@ -5824,6 +6006,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-VaultsOfUlatek",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-Wax-large",
 		width = 512,
 		height = 256
@@ -5885,6 +6072,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-ArtifactTEMP",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-DHDevourer",
 		width = 256,
 		height = 128,
 	},
@@ -6390,6 +6582,16 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-lorewalking-lichking",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-lorewalking-loa",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-lorewalking-thrall",
 		width = 256,
 		height = 128
 	},
@@ -7977,6 +8179,78 @@ local IMAGES = {
 		url = "Interface\\Store\\ShopVC17",
 		width = 512,
 		height = 512
+	},
+	--endregion
+	--region Vehicles
+	{
+		url = "Interface\\Vehicles\\SeatIndicator\\Vehicle-AetherSerpent-Seat",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Vehicles\\SeatIndicator\\Vehicle-AllianceAirship",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Vehicles\\SeatIndicator\\Vehicle-Bomber",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Vehicles\\SeatIndicator\\Vehicle-Brutosaur",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Vehicles\\SeatIndicator\\Vehicle-Demolisher",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Vehicles\\SeatIndicator\\Vehicle-ExplorersCamel-Seat",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Vehicles\\SeatIndicator\\Vehicle-ExplorersGyrocopter-Seat",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Vehicles\\SeatIndicator\\Vehicle-GenericMultiseater",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Vehicles\\SeatIndicator\\Vehicle-HordeZeppelin",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Vehicles\\SeatIndicator\\Vehicle-Mammoth",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Vehicles\\SeatIndicator\\Vehicle-Motorcycle",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Vehicles\\SeatIndicator\\Vehicle-Rocket",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Vehicles\\SeatIndicator\\Vehicle-SiegeEngine",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Vehicles\\SeatIndicator\\Vehicle-Yak",
+		width = 128,
+		height = 128
 	},
 	--endregion
 };
