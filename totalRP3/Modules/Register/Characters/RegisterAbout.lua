@@ -113,7 +113,7 @@ getDefaultProfile().player.about = {
 local draftData;
 
 local function stripColorTagsFromAboutText(text)
-	text = text:gsub("{/?col[^}]*}", "");
+	text = text:gsub("{col:[^}]+}", ""):gsub("{/col}", "");
 	return text;
 end
 
