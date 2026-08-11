@@ -34,7 +34,7 @@ local CONFIG_REGISTER_ABOUT_DISABLE_CUSTOM_BGS = "config_register_about_disable_
 local defaultDisableCustomBGs = false;
 local defaultBG = 1;
 
-local function shouldDisableCustomBgs()
+local function usingHighContrast()
 	return getConfigValue(CONFIG_REGISTER_ABOUT_DISABLE_CUSTOM_BGS);
 end
 
@@ -112,9 +112,23 @@ getDefaultProfile().player.about = {
 
 local draftData;
 
---- sets a frame's backdrop background - respects the "disable custom BGs" config option
+local function stripColorTagsFromAboutText(text)
+	text = text:gsub("{/?col[^}]*}", "");
+	return text;
+end
+
+--- converts about page text into HTML - respects the high contrast setting
+local function convertTextToHTML(text, ...)
+	text = text or "";
+	if usingHighContrast() then
+		text = stripColorTagsFromAboutText(text);
+	end
+	return Utils.str.toHTML(text, ...);
+end
+
+--- sets a frame's backdrop background - respects the high contrast setting
 local function setBackground(frame, bkg)
-	if shouldDisableCustomBgs() then
+	if usingHighContrast() then
 		bkg = defaultBG;
 	end
 	TRP3_API.ui.frame.setBackdropToBackground(frame, bkg);
@@ -161,7 +175,7 @@ end
 local function showTemplate1(dataTab)
 	local templateData = dataTab.T1 or {};
 	if shouldShowTemplate1(dataTab) then
-		local text = Utils.str.toHTML(templateData.TX or "");
+		local text = convertTextToHTML(templateData.TX);
 		TRP3_RegisterAbout_AboutPanel_Template1:SetText(text);
 		TRP3_RegisterAbout_AboutPanel_Template1.html = text;
 	else
@@ -239,7 +253,7 @@ local function showTemplate2(dataTab)
 		setupHTMLFonts(text);
 
 		-- We'll need to access the HTML later when resizing things.
-		text.html = Utils.str.toHTML(frameTab.TX or "")
+		text.html = convertTextToHTML(frameTab.TX);
 		text:SetText(text.html);
 
 		icon:ClearAllPoints();
@@ -516,7 +530,7 @@ local function showTemplate3(dataTab)
 			title:SetText(icon .. "    " .. titles[i] .. "    " .. icon);
 
 			-- We'll need to access the HTML later when resizing things.
-			text.html = Utils.str.toHTML(data.TX or "")
+			text.html = convertTextToHTML(data.TX);
 			text:SetText(text.html);
 
 			setBackground(frame, data.BK);
