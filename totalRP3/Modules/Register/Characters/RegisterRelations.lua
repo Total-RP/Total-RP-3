@@ -156,19 +156,16 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function checkRelationUse()
-	local relationList = getRelationList();
-	for _, relation in pairs(relationList) do
-		relation.inUse = false;
-	end
+local function removeRelationFromProfiles(relationID)
 	local profiles = TRP3_API.profile.getProfiles();
 	for _, profile in pairs(profiles) do
 		local relations = TRP3_API.profile.getData("relation", profile);
-		if not relations then
-			relations = {};
-		end
-		for _, relation in pairs(relations) do
-			getRelationInfo(relation).inUse = true;
+		if relations then
+			for profileID, profileRelationID in pairs(relations) do
+				if profileRelationID == relationID then
+					relations[profileID] = nil;
+				end
+			end
 		end
 	end
 end
@@ -262,9 +259,10 @@ local function onActionSelected(selectedAction)
 	local originalRelation = (getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_" .. relation.id));
 	if action == ACTIONS.EDIT then
 		TRP3_API.register.relation.showEditor(relation.id);
-	elseif not relation.inUse and action == ACTIONS.DELETE then
+	elseif action == ACTIONS.DELETE then
 		TRP3_API.popup.showConfirmPopup(loc.CO_RELATIONS_DELETE_WARNING:format(originalRelation), function()
 			local relationList = getRelationList();
+			removeRelationFromProfiles(relationID);
 			local deletedOrder = relationList[relationID].order;
 			relationList[relationID] = nil;
 			-- Shift relation order to stay consecutive
@@ -278,53 +276,76 @@ local function onActionSelected(selectedAction)
 	end
 end
 
+local noneWidget;
 local widgetsList = {};
+local movableRelations = {};
+
+local function updateOrderAfterDrag()
+	local relationList = getRelationList();
+	-- Not #widgetsList, as that keeps the surplus widgets hidden by earlier refreshes.
+	for i = 1, #movableRelations do
+		relationList[widgetsList[i].relationID].order = i + 1;
+	end
+	updateRelationsList();
+end
 
 function updateRelationsList()
 	local relations = getRelationList(true);
+	movableRelations = CopyTable(relations);
+	table.remove(movableRelations, 1);
 
 	local widgetCount = 1;
 	for _, relation in ipairs(relations) do
-		local widget = widgetsList[widgetCount];
+		local widget;
+		if widgetCount == 1 then
+			widget = noneWidget;
+		else
+			widget = widgetsList[widgetCount - 1];
+		end
 		if not widget then
 			widget = CreateFrame("Frame", nil, TRP3_RelationsList.ScrollFrame.Content, "TRP3_ConfigurationRelationsFrame");
 			widget:ClearAllPoints();
 			widget:SetPoint("LEFT", TRP3_RelationsList.ScrollFrame.Content, "LEFT", 0, 0);
 			widget.Border:SetVertexColor(TRP3_BACKDROP_COLOR_CREAMY_BROWN:GetRGB());
 			widget:SetPoint("RIGHT", TRP3_RelationsList.ScrollFrame.Content, "RIGHT", -20, 0);
-			if widgetCount > 1 then
-				widget:SetPoint("TOP", widgetsList[widgetCount - 1], "BOTTOM", 0, 0);
+			if widgetCount > 2 then
+				widget:SetPoint("TOP", widgetsList[widgetCount - 2], "BOTTOM", 0, 0);
+			elseif widgetCount == 2 then
+				widget:SetPoint("TOP", noneWidget, "BOTTOM", 0, 0);
 			else
 				widget:SetPoint("TOP", TRP3_RelationsList.ScrollFrame.Content, "TOP", 0, 0);
 				widget.Actions:Hide();
+				widget.DragButton:Hide();
 			end
-			widgetsList[widgetCount] = widget;
+
+			if widgetCount > 1 then
+				widget.frameIndex = widgetCount - 1;
+				TRP3_API.ui.list.setInfoReorderable(widget.DragButton, widget, function() return movableRelations; end, function() return widgetsList; end, TRP3_RelationsList.ScrollFrame, noneWidget, nil, updateOrderAfterDrag);
+				widgetsList[widgetCount - 1] = widget;
+			else
+				noneWidget = widget;
+			end
 		end
 		widget.Title:SetText((getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_"..relation.id)));
 		widget.Text:SetText(GenerateEditDescription(relation.description or loc:GetText("REG_RELATION_" .. relation.id .. "_TT")));
 		setupIconButton(widget.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
+		widget.relationID = relation.id;
 
 		TRP3_API.ui.tooltip.setTooltipForSameFrame(widget.Actions, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 		widget.Actions:SetScript("OnMouseDown", function(button)
 			TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 				description:CreateButton(loc.CO_RELATIONS_MENU_EDIT, onActionSelected, ACTIONS.EDIT..relation.id);
-				checkRelationUse();
-				if relation.inUse then
-					local deleteOption = description:CreateButton(loc.CO_RELATIONS_MENU_DELETE);
-					deleteOption:SetEnabled(false);
-					TRP3_MenuUtil.SetElementTooltip(deleteOption, loc.CO_RELATIONS_MENU_DELETE_DISABLED_TT);
-				else
-					description:CreateButton("|cnRED_FONT_COLOR:" ..loc.CO_RELATIONS_MENU_DELETE.. "|r", onActionSelected, ACTIONS.DELETE..relation.id);
-				end
+				description:CreateButton("|cnRED_FONT_COLOR:" ..loc.CO_RELATIONS_MENU_DELETE.. "|r", onActionSelected, ACTIONS.DELETE..relation.id);
 			end);
 		end);
+
 		widget:Show();
 
 		widgetCount = widgetCount + 1;
 	end
 
-	if widgetCount <= #widgetsList then
-		for i = widgetCount, #widgetsList do
+	if widgetCount - 1 <= #widgetsList then
+		for i = widgetCount - 1, #widgetsList do
 			widgetsList[i]:Hide();
 		end
 	end
@@ -357,7 +378,6 @@ local function saveCurrentRelation()
 		relationToUpdate = {
 			id = newID,
 			order = maxOrder + 1,
-			inUse = false,
 		};
 		relationList[newID] = relationToUpdate;
 	end

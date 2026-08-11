@@ -430,7 +430,6 @@ Posibles estados:
 	["CO_RELATIONS_DESCRIPTION"] = "Descripción",
 	["CO_RELATIONS_DESCRIPTION_TT"] = "|cnGREEN_FONT_COLOR:%p|r para el nombre de tu personaje.|n|cnGREEN_FONT_COLOR:%t|r para el nombre del otro personaje.",
 	["CO_RELATIONS_MENU_DELETE"] = "Borrar relación",
-	["CO_RELATIONS_MENU_DELETE_DISABLED_TT"] = "No se pueden eliminar relaciones que estén actualmente asociadas a un perfil.",
 	["CO_RELATIONS_MENU_EDIT"] = "Editar relación",
 	["CO_RELATIONS_NEW"] = "Crear nueva relación",
 	["CO_RELATIONS_NEW_COLOR"] = "Color de la relación",
@@ -1549,11 +1548,11 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 	["SLASH_CMD_SET_HELP_EXAMPLE1"] = "Soñando con mariposas",
 	["SLASH_CMD_SET_HELP_EXAMPLE2"] = "Oso feliz; Elfo enfadado",
 	["SLASH_CMD_SET_SUCCESS"] = "Se ha actualizado correctamente el campo %1$q de tu perfil actual.",
-	["SLASH_CMD_STATUS_HELP"] = [=[Uso: |cff00ff00/trp3 status ic || ooc || toggle|r 
-Cambia el estado de tu personaje a la opción especificada: 
+	["SLASH_CMD_STATUS_HELP"] = [=[Uso: |cff00ff00/trp3 status ic || ooc || toggle|r
+Cambia el estado de tu personaje a la opción especificada:
 
-|cffff9900/trp3 status ic|r establecerá tu estado como |cff00ff00en rol|r. 
-|cffff9900/trp3 status ooc|r establecerá tu estado como |cffff0000fuera de rol|r. 
+|cffff9900/trp3 status ic|r establecerá tu estado como |cff00ff00en rol|r.
+|cffff9900/trp3 status ooc|r establecerá tu estado como |cffff0000fuera de rol|r.
 |cffff9900/trp3 status toggle|r cambiará tu estado al opuesto.]=],
 	["SLASH_CMD_STATUS_USAGE"] = "ep || fdp || mostrar/ocultar",
 	["TB_AFK_MODE"] = "Ausente",

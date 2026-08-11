@@ -17,10 +17,20 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
+			<Button parentKey="DragButton" inherits="TRP3_ReorderButtonTemplate">
+				<Size x="22" y="24"/>
+				<Scripts>
+					<OnEnter function="TRP3_RefreshTooltipForFrame"/>
+					<OnLeave>TRP3_MainTooltip:Hide();</OnLeave>
+				</Scripts>
+				<Anchors>
+					<Anchor point="LEFT" x="10"/>
+				</Anchors>
+			</Button>
 			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
 				<Size x="48" y="48"/>
 				<Anchors>
-					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.DragButton" x="0" y="0"/>
 				</Anchors>
 			</Frame>
 			<Button parentKey="Actions" inherits="TRP3_ActionButton">

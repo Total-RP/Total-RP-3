@@ -1070,4 +1070,21 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</EditBox>
 
 	<EditBox name="TRP3_EscapeSanitizedEditBoxTemplate" mixin="TRP3_EscapeSanitizedEditBoxMixin" virtual="true"/>
+
+	<!-- Reorder button -->
+	<Button name="TRP3_ReorderButtonTemplate" virtual="true">
+		<Size x="36" y="39"/>
+		<NormalTexture file="Interface/AddOns/totalRP3/Resources/UI/ui-button-reorder">
+			<TexCoords left="0" right="0.75" top="0" bottom="0.8125"/>
+		</NormalTexture>
+		<PushedTexture file="Interface/AddOns/totalRP3/Resources/UI/ui-button-reorder-down">
+			<TexCoords left="0" right="0.75" top="0" bottom="0.8125"/>
+		</PushedTexture>
+		<HighlightTexture inherits="UIPanelButtonHighlightTexture">
+			<Anchors>
+				<Anchor point="TOPLEFT" x="2" y="-2"/>
+				<Anchor point="BOTTOMRIGHT" x="-2" y="2"/>
+			</Anchors>
+		</HighlightTexture>
+	</Button>
 </Ui>

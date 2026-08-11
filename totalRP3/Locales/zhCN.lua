@@ -416,7 +416,6 @@ L = {
 	["CO_RELATIONS_DESCRIPTION"] = "描述",
 	["CO_RELATIONS_DESCRIPTION_TT"] = "你的角色名字将使用|cnGREEN_FONT_COLOR:%p|r。其他角色名字将使用|n|cnGREEN_FONT_COLOR:%t|r。",
 	["CO_RELATIONS_MENU_DELETE"] = "删除关系",
-	["CO_RELATIONS_MENU_DELETE_DISABLED_TT"] = "你无法删除已经和一个人物卡链接的关系。",
 	["CO_RELATIONS_MENU_EDIT"] = "编辑关系",
 	["CO_RELATIONS_NEW"] = "创建新关系",
 	["CO_RELATIONS_NEW_COLOR"] = "关系颜色",
