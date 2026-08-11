@@ -35,7 +35,7 @@ local defaultUseHighContrast = false;
 local defaultHighContrastBG = 1;
 
 local function usingHighContrast()
-	return getConfigValue(CONFIG_REGISTER_ABOUT_HIGH_CONTRAST);
+	return not getCurrentContext().isPlayer and getConfigValue(CONFIG_REGISTER_ABOUT_HIGH_CONTRAST);
 end
 
 local defaultFontParameters;
