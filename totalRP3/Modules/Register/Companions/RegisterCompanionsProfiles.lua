@@ -15,7 +15,7 @@ local showAlertPopup, showTextInputPopup, showConfirmPopup = TRP3_API.popup.show
 local getProfiles, isProfileNameAvailable = TRP3_API.companions.player.getProfiles, TRP3_API.companions.player.isProfileNameAvailable;
 local createProfile, deleteProfile = TRP3_API.companions.player.createProfile, TRP3_API.companions.player.deleteProfile;
 local duplicateProfile = TRP3_API.companions.player.duplicateProfile;
-local editProfile = TRP3_API.companions.player.editProfile;
+local renameProfile = TRP3_API.companions.player.renameProfile;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCompanionProfile, getCompanionProfileID = TRP3_API.companions.player.getCompanionProfile, TRP3_API.companions.player.getCompanionProfileID;
 local getCompanionProfiles = TRP3_API.companions.player.getProfiles;
@@ -105,14 +105,14 @@ end
 
 local getMenuItem = TRP3_API.navigation.menu.getMenuItem;
 
-local function uiEditProfile(profileID)
+local function uiRenameProfile(profileID)
 	local profile = getProfiles()[profileID];
 	showTextInputPopup(
 	loc.PR_CO_PROFILEMANAGER_EDIT_POPUP:format(Utils.str.color("g") .. profile.profileName .. "|r"),
 	function(newName)
 		if newName and #newName ~= 0 then
 			if not uiCheckNameAvailability(newName) then return end
-			editProfile(profileID, newName);
+			renameProfile(profileID, newName);
 			uiInitProfileList();
 			if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
 				getMenuItem(currentlyOpenedProfilePrefix .. profileID).text = newName;
@@ -245,7 +245,7 @@ local function onActionSelected(value, button)
 	if value == 1 then
 		uiDeleteProfile(profileID);
 	elseif value == 2 then
-		uiEditProfile(profileID);
+		uiRenameProfile(profileID);
 	elseif value == 3 then
 		uiDuplicateProfile(profileID);
 	elseif value == 4 then
