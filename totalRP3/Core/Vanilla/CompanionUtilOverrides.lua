@@ -127,6 +127,8 @@ function TRP3_CompanionUtil.GetMountSpellID(mountID)
 end
 
 local function GetUnitAuraSpells(unitToken, filter)
+	if C_Secrets.ShouldAurasBeSecret() then return; end
+
 	-- Inner 'select' here is to skip the leading 'continuationToken' return.
 	local auraSlots = { select(2, C_UnitAuras.GetAuraSlots(unitToken, filter)) };
 	local appliedAuras = {};

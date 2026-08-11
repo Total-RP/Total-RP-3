@@ -376,6 +376,7 @@ stds.wow = {
 
 		C_Secrets = {
 			fields = {
+				"ShouldAurasBeSecret",
 				"ShouldUnitIdentityBeSecret",
 			},
 		},
