@@ -3,7 +3,7 @@
 
 TRP3_API.flyway = {};
 
-local SCHEMA_VERSION = 24;
+local SCHEMA_VERSION = 25;
 
 if not TRP3_Flyway then
 	TRP3_Flyway = {};
