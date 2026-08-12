@@ -352,7 +352,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 		-- Process color overrides.
 		-- Do not color name when unit name is within the health bar, except when name-only mode is on.
 		-- Companion nameplates don't have a name-only option, so exclude them from the name-only check.
-		local hasHealthBarOverlap = NamePlateSetupOptions.unitNameInsideHealthBar and not TRP3_NamePlatesUtil.IsNameOnlyModeEnabled() or not displayInfo.isPlayerUnit;
+		local hasHealthBarOverlap = NamePlateSetupOptions.unitNameAnchorStyle and not TRP3_NamePlatesUtil.IsNameOnlyModeEnabled() or not displayInfo.isPlayerUnit;
 
 		if displayInfo.shouldColorName and not hasHealthBarOverlap then
 			overrideColor = displayInfo.color;
