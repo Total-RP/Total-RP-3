@@ -165,6 +165,11 @@ function TRP3_BlizzardNamePlates:OnNamePlateUnitCleared(nameplate)
 end
 
 function TRP3_BlizzardNamePlates:OnNamePlateNameOnlyModeChanged()
+	-- Write back the latest CVar state to TRP settings when adjusted from
+	-- the native Blizzard settings interface.
+	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+		TRP3_API.configuration.setValue("NamePlates_EnableNameOnlyMode", C_CVar.GetCVarBool(TRP3_CVarConstants.NamePlateShowOnlyNameForFriendlyPlayerUnits));
+	end
 	self:UpdateAllNamePlates();
 end
 
