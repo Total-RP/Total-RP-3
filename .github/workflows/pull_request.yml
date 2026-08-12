@@ -17,17 +17,28 @@ jobs:
           submodules: recursive
 
       - name: Run Luacheck
+        id: luacheck
         uses: nebularg/actions-luacheck@v1
+        continue-on-error: true
         with:
           args: --no-color -q
           files: $(git ls-files '*.lua' ':!:totalRP3/Libs/Ellyb/Libraries/*' ':!:totalRP3/Libs/TaintLess/*' ':!:totalRP3/Locales/????.lua' ':!:Types/*')
           annotate: warning
 
       - name: Run editorconfig-checker
+        id: editorconfig
         uses: wow-rp-addons/actions-editorconfig-check@v1.0.2
+        continue-on-error: true
         with:
           args: -no-color
           files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3/Libs/Ellyb/Libraries/*' ':!:totalRP3/Libs/TaintLess/*' ':!:totalRP3/Locales/*.lua')
+
+      - name: Check lint results
+        if: steps.luacheck.outcome == 'failure' || steps.editorconfig.outcome == 'failure'
+        run: |
+          echo "Luacheck: ${{ steps.luacheck.outcome }}"
+          echo "editorconfig-checker: ${{ steps.editorconfig.outcome }}"
+          exit 1
 
       - name: Create Package
         uses: BigWigsMods/packager@v2
