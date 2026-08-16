@@ -38,7 +38,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Text" inherits="GameFontHighlightLarge" justifyH="MIDDLE" wordwrap="false">
+				<FontString parentKey="Text" inherits="GameFontHighlightLarge" justifyH="CENTER" wordwrap="false">
 					<Size y="20"/>
 					<Anchors>
 						<Anchor point="BOTTOM" y="20"/>
