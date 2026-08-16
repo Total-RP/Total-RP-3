@@ -1,1 +1,2 @@
 requests~=2.31
+lxml~=6.1
