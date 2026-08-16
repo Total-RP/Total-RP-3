@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - uses: extractions/setup-just@v4
       - uses: actions/setup-python@v6
         with:
           python-version: '3.10'
@@ -21,7 +22,7 @@ jobs:
         run: pip install -r .github/scripts/requirements.txt
 
       - name: Export Translations
-        run: make translations-export
+        run: just translations-export
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
 
