@@ -38,5 +38,5 @@ repos:
         additional_dependencies:
           - lxml~=6.1
         types: [xml]
-        exclude: ^(Types/UI\.xsd|totalRP3/(Bindings\.xml|totalRP3\.xsd))$
+        exclude: ^(totalRP3/Bindings\.xml|.*.xsd)$
         require_serial: true

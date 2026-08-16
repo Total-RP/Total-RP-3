@@ -16,18 +16,24 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Install validation dependencies
+        run: python -m pip install -r .github/scripts/requirements.txt
+
       - name: Run Luacheck
         uses: nebularg/actions-luacheck@v1
         with:
           args: --no-color -q
-          files: $(git ls-files '*.lua' ':!:totalRP3/Libs/Ellyb/Libraries/*' ':!:totalRP3/Libs/TaintLess/*' ':!:totalRP3/Locales/????.lua' ':!:Types/*')
+          files: $(git ls-files '*.lua' ':!:totalRP3/Libs/Ellyb/Libraries/*' ':!:totalRP3/Libs/TaintLess/*' ':!:totalRP3/Locales/????.lua')
           annotate: warning
 
       - name: Run editorconfig-checker
         uses: wow-rp-addons/actions-editorconfig-check@v1.0.2
         with:
           args: -no-color
-          files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3/Libs/Ellyb/Libraries/*' ':!:totalRP3/Libs/TaintLess/*' ':!:totalRP3/Locales/*.lua')
+          files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3/Libs/Ellyb/Libraries/*' ':!:totalRP3/Libs/TaintLess/*' ':!:totalRP3/Locales/????.lua')
+
+      - name: Run XML schema validation
+        run: python .github/scripts/validate_xml.py $(git ls-files '*.xml' ':!:totalRP3/Bindings.xml')
 
       - name: Create Package
         uses: BigWigsMods/packager@v2
