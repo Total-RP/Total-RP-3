@@ -128,7 +128,6 @@ function TRP3_BlizzardNamePlates:OnModuleEnable()
 
 	TRP3_CVarCache.RegisterCallback(self, TRP3_CVarConstants.NamePlateShowOnlyNameForFriendlyPlayerUnits, "OnNamePlateNameOnlyModeChanged");
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
-	TRP3_NamePlatesUtil.SyncNameOnlyModeState();
 
 	-- luacheck: no unused (self)
 	hooksecurefunc(NamePlateDriverFrame, "OnNamePlateCreated", function(_self, nameplate) self:OnNamePlateCreated(nameplate); end);
@@ -165,11 +164,6 @@ function TRP3_BlizzardNamePlates:OnNamePlateUnitCleared(nameplate)
 end
 
 function TRP3_BlizzardNamePlates:OnNamePlateNameOnlyModeChanged()
-	-- Write back the latest CVar state to TRP settings when adjusted from
-	-- the native Blizzard settings interface.
-	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
-		TRP3_API.configuration.setValue("NamePlates_EnableNameOnlyMode", C_CVar.GetCVarBool(TRP3_CVarConstants.NamePlateShowOnlyNameForFriendlyPlayerUnits));
-	end
 	self:UpdateAllNamePlates();
 end
 
