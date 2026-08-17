@@ -233,6 +233,12 @@ stds.wow = {
 			},
 		},
 
+		C_ClassColor = {
+			fields = {
+				"GetClassColor",
+			},
+		},
+
 		C_ColorUtil = {
 			fields = {
 				"ConvertHSLToHSV",

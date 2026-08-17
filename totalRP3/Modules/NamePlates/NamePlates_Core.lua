@@ -160,7 +160,8 @@ local function GetCharacterColorForDisplay(player, classToken)
 	local color = player:GetCustomColorForDisplay();
 
 	if not color and TRP3_NamePlatesSettings.EnableClassColorFallback then
-		color = TRP3_API.GetClassDisplayColor(classToken);
+		-- Class token can be secret; avoid GetClassDisplayColor here.
+		color = C_ClassColor.GetClassColor(classToken);
 	end
 
 	return color;
@@ -261,7 +262,8 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 			local classToken = UnitClassBase(unitToken);
 
 			if TRP3_NamePlatesSettings.EnableClassColorFallback then
-				displayInfo.color = TRP3_API.GetClassDisplayColor(classToken);
+				-- Class token can be secret; avoid GetClassDisplayColor here.
+				displayInfo.color = C_ClassColor.GetClassColor(classToken);
 			end
 		end
 
