@@ -35,13 +35,16 @@ jobs:
           files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3/Libs/Ellyb/Libraries/*' ':!:totalRP3/Libs/TaintLess/*' ':!:totalRP3/Locales/????.lua')
 
       - name: Run XML schema validation
+        id: validate_xml
+        continue-on-error: true
         run: python .github/scripts/validate_xml.py $(git ls-files '*.xml' ':!:totalRP3/Bindings.xml')
 
       - name: Check lint results
-        if: steps.luacheck.outcome == 'failure' || steps.editorconfig.outcome == 'failure'
+        if: steps.luacheck.outcome == 'failure' || steps.editorconfig.outcome == 'failure' || steps.validate_xml.outcome == 'failure'
         run: |
           echo "Luacheck: ${{ steps.luacheck.outcome }}"
           echo "editorconfig-checker: ${{ steps.editorconfig.outcome }}"
+          echo "XML validation: ${{ steps.validate_xml.outcome }}"
           exit 1
 
       - name: Create Package
