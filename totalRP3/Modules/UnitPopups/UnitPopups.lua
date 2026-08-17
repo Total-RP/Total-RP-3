@@ -278,6 +278,15 @@ local function CreateCharacterStatusMenu(menuDescription, contextData)
 		return nil;
 	end
 
+	local name = contextData.name;
+	local server = contextData.server;
+	local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
+
+	-- Gate for FRIEND (clicking on own name in chat frame) to only show for self.
+	if fullName ~= TRP3_API.globals.player_id then
+		return nil;
+	end
+
 	local function IsSelected(status)
 		local player = AddOn_TotalRP3.Player.GetCurrentUser();
 		local roleplayStatus = player:GetRoleplayStatus();
@@ -324,7 +333,7 @@ UnitPopupsModule.MenuEntries = {
 	COMMUNITIES_GUILD_MEMBER = { "OpenCharacterProfile" },
 	COMMUNITIES_MEMBER = { "OpenBattleNetProfile" },
 	COMMUNITIES_WOW_MEMBER = { "OpenCharacterProfile" },
-	FRIEND = { "OpenCharacterProfile" },
+	FRIEND = { "OpenCharacterProfile", "CharacterStatus" },
 	FRIEND_OFFLINE = { "OpenCharacterProfile" },
 	OTHERBATTLEPET = { "OpenCompanionProfile" },
 	OTHERPET = { "OpenCompanionProfile" },
