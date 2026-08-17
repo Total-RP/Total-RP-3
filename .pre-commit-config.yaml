@@ -31,10 +31,12 @@ repos:
         types: [lua]
         require_serial: true
 
-      - id: xmllint
+      - id: xml
         name: check xml
-        entry: xmllint --noout --quiet --schema .github/scripts/ui.xsd
-        language: system
+        entry: python .github/scripts/validate_xml.py
+        language: python
+        additional_dependencies:
+          - lxml~=6.1
         types: [xml]
-        exclude: ^(.github/scripts/ui\.xsd|totalRP3/Bindings\.xml)$
+        exclude: ^(totalRP3/Bindings\.xml|.*.xsd)$
         require_serial: true
