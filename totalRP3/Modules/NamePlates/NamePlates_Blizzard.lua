@@ -381,7 +381,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateHealthBar(nameplate)
 	local overrideColor;
 
 	if displayInfo and displayInfo.shouldColorHealth then
-		overrideColor = TRP3_API.CreateColor(displayInfo.color:GetRGB());
+		overrideColor = displayInfo.color;
 	end
 
 	SetStatusBarWidgetOverrideColor(unitframe.healthBar, overrideColor);
