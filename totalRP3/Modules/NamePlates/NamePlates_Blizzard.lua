@@ -27,12 +27,12 @@ end
 
 local function UpdateFontStringWidgetColor(widget)
 	local desiredColor = widget.TRP3_overrideColor or widget.TRP3_originalColor;
-	CallUnhookedMethod(widget, "SetVertexColor", desiredColor:GetRGBA());
+	CallUnhookedMethod(widget, "SetVertexColor", desiredColor.r, desiredColor.g, desiredColor.b, desiredColor.a);
 end
 
 local function UpdateStatusBarWidgetColor(widget)
 	local desiredColor = widget.TRP3_overrideColor or widget.TRP3_originalColor;
-	CallUnhookedMethod(widget, "SetStatusBarColor", desiredColor:GetRGBA());
+	CallUnhookedMethod(widget, "SetStatusBarColor", desiredColor.r, desiredColor.g, desiredColor.b, desiredColor.a);
 end
 
 local function ProcessWidgetVisibilityChanged(widget)
@@ -45,13 +45,18 @@ local function ProcessFontStringWidgetTextChanged(widget)
 	UpdateFontStringWidgetText(widget);
 end
 
+-- Colors obtained through posthooks may be secret. Don't construct proper
+-- color objects from them - instead, pack into a raw table that we unpack
+-- when applying.
 local function ProcessFontStringWidgetColorChanged(widget)
-	widget.TRP3_originalColor = TRP3_API.CreateColor(widget:GetVertexColor());
+	local r, g, b, a = widget:GetVertexColor();
+	widget.TRP3_originalColor = { r = r, g = g, b = b, a = a };
 	UpdateFontStringWidgetColor(widget);
 end
 
 local function ProcessStatusBarWidgetColorChanged(widget)
-	widget.TRP3_originalColor = TRP3_API.CreateColor(widget:GetStatusBarColor());
+	local r, g, b, a = widget:GetStatusBarColor();
+	widget.TRP3_originalColor = { r = r, g = g, b = b, a = a };
 	UpdateStatusBarWidgetColor(widget);
 end
 
