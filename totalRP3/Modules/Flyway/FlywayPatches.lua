@@ -453,7 +453,7 @@ TRP3_API.flyway.patches["23"] = function()
 end
 
 TRP3_API.flyway.patches["24"] = function()
-	-- v23 converts CustomizeFullTitles (TRP3_NamePlatesSettings) to use CustomizeSubText
+	-- v24 converts CustomizeFullTitles (TRP3_NamePlatesSettings) to use CustomizeSubText
 
 	if TRP3_Configuration then
 		-- If FT was on, convert to FT + GN. If FT was off, 'Nothing' is chosen by default.
@@ -466,5 +466,16 @@ TRP3_API.flyway.patches["24"] = function()
 		end
 
 		TRP3_Configuration["NamePlates_CustomizeFullTitles"] = nil;
+	end
+end
+
+TRP3_API.flyway.patches["25"] = function()
+	-- v25 sets the NamePlateShowOnlyNameForFriendlyPlayerUnits CVar to our NamePlates_EnableNameOnlyMode (as it now persists)
+
+	if TRP3_Configuration then
+		if TRP3_Configuration["NamePlates_EnableNameOnlyMode"] then
+			local value = TRP3_Configuration["NamePlates_EnableNameOnlyMode"] and "1" or "0";
+			C_CVar.SetCVar(TRP3_CVarConstants.NamePlateShowOnlyNameForFriendlyPlayerUnits, value);
+		end
 	end
 end
