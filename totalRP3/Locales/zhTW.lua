@@ -419,7 +419,6 @@ L = {
 	["PR_CREATE_PROFILE"] = "創作角色檔",
 	["PR_DELETE_PROFILE"] = "刪除角色檔",
 	["PR_DUPLICATE_PROFILE"] = "複製角色檔",
-	["PR_EXPORT_IMPORT_TITLE"] = "匯入／匯出檔案",
 	["PR_EXPORT_PROFILE"] = "輸出角色檔",
 	["PR_EXPORT_TOO_LARGE"] = [=[此角色檔容量太大以致於無法輸出。
 

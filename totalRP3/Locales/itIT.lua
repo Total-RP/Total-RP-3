@@ -254,7 +254,6 @@ Questo messaggio apparirà solo una volta per sessione, e si può disattivarlo n
 	["PR_CREATE_PROFILE"] = "Crea profilo",
 	["PR_DELETE_PROFILE"] = "Cancella profilo",
 	["PR_DUPLICATE_PROFILE"] = "Duplica profilo",
-	["PR_EXPORT_IMPORT_TITLE"] = "Esportazione/importazione dei profili",
 	["PR_EXPORT_TOO_LARGE"] = [=[Questo profilo è troppo grande e non può essere esportato.
 
 Grandezza del profilo: %0.2f kB

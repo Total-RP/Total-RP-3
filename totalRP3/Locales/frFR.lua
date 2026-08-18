@@ -856,25 +856,13 @@ ou liez un profil existant dans l'onglet Profils
 pour modifier les informations de votre personnage.]=],
 	["PR_DELETE_PROFILE"] = "Supprimer le profil",
 	["PR_DUPLICATE_PROFILE"] = "Dupliquer le profil",
-	["PR_EXPORT_IMPORT_HELP"] = [=[Vous pouvez exporter et importer vos profils en utilisant les options du menu.
-
-Utilisez l'option |cffffff00Exporter le profil|r pour générer une version sérialisée de votre profil sous forme de texte. Vous pouvez copier le texte en utilisant Contrôle-C (ou Commande-C sur Mac) pour le copier autre part comme sauvegarde. (|cffff0000Veuillez noter que les éditeurs de texte avancés comme Microsoft Word reformattent les caractères comme les guillemets, modifiant ainsi le contenu. Il est recommandé d'utiliser un logiciel d'édition de texte plus simple, comme le Bloc Note.|r)
-
-Utilisez l'option |cffffff00Importer un profil|r pour coller le texte d'un export précédent dans le profil. Les données du profil choisi seront écrasées par les données collées. Vous ne pouvez pas importer un profil directement dans celui actuellement utilisé.]=],
-	["PR_EXPORT_IMPORT_TITLE"] = "Exporter/importer un profil",
 	["PR_EXPORT_NAME"] = "Serial du profil %s (taille %0.2f Ko)",
 	["PR_EXPORT_PROFILE"] = "Exporter le profil",
 	["PR_EXPORT_TOO_LARGE"] = [=[Ce profil est trop gros et ne peut pas être exporté.
 
 Taille du profil : %0.2f Ko
 Taille maximale : 20 Ko]=],
-	["PR_EXPORT_WARNING_MAC"] = [=[Attention: Certains logiciel de traitement de texte ou de messagerie comme Text Edit ou Discord reformattent les caractères spéciaux, comme les apostrophes, modifiant et corrompant le contenu des données.
-
-Si vous comptiez copier ce texte dans un document, il est préférable d'utiliser des outils simples qui ne modifient pas le text (dans Text Edit utiliser le menu Format > Convertir au format Texte avant de coller le text).]=],
 	["PR_EXPORT_WARNING_TITLE"] = "Attention: ",
-	["PR_EXPORT_WARNING_WINDOWS"] = [=[Attention: Certains logiciel de traitement de texte ou de messagerie comme Microsoft Word ou Discord reformattent les caractères spéciaux, comme les apostrophes, modifiant et corrompant le contenu des données.
-
-Si vous comptiez copier ce texte dans un document, il est préférable d'utiliser des outils simples qui ne modifient pas le text, comme le Bloc Note de Windows.]=],
 	["PR_IMPORT"] = "Importer",
 	["PR_IMPORT_CHAR_TAB"] = "Importateur de personnages",
 	["PR_IMPORT_EMPTY"] = "Aucun profil disponible",
