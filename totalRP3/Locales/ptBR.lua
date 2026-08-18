@@ -852,22 +852,13 @@ Conectá-la assim mesmo?]=],
  seu personagem.]=],
 	["PR_DELETE_PROFILE"] = "Deletar perfil",
 	["PR_DUPLICATE_PROFILE"] = "Duplicar perfil",
-	["PR_EXPORT_IMPORT_HELP"] = [=[Você pode exportar e importar perfis usando as opções na lista de opções.
-
-Use a opção |cffffff00Exportar perfil|r para gerar um de texto contendo os dados serializados do perfil. Você pode copiar o texto usando Control-C (ou Command-C em um Mac) e colar em outro lugar como cópia de segurança.
-(|cffff0000Note que algumas ferramentas de edição de texto avançadas como Microsoft Word irão reformatar caracteres especiais como aspas, alterando os dados. Use ferramentas de edição de texto mais simples como o Bloco de Notas.|r)
-
-Use a opção |cffffff00Importar perfil|r para colar dados de uma exportação passada em um perfil existente. Os dados existentes nesse perfil serão substituídos pelos que você colou. Você não pode importar dados diretamente no perfil atualmente selecionado.]=],
-	["PR_EXPORT_IMPORT_TITLE"] = "Exportação/importação de perfil",
 	["PR_EXPORT_NAME"] = "Código de série para o perfil %s (tamanho %0.2f kB)",
 	["PR_EXPORT_PROFILE"] = "Exportação de perfil",
 	["PR_EXPORT_TOO_LARGE"] = [=[Este perfil é muito grande e não pode ser exportado.
 
 Tamanho do perfil: %0.2f kB
 Máximo: 20 kB]=],
-	["PR_EXPORT_WARNING_MAC"] = "Note por favor que algumas ferramentas avançadas de edição de texto como Text Edit ou Discord reformatarão caracteres especiais como citações, alterando o conteúdo dos dados. Se estiver planejando copiar o texto abaixo dentro de um documento, utilize ferramentas de edição de texto mais simples que não alterem automaticamente os caracteres (em Text Edit vá para Format > Fazer texto simples antes de colar).",
 	["PR_EXPORT_WARNING_TITLE"] = "Aviso!! :",
-	["PR_EXPORT_WARNING_WINDOWS"] = "Note que algumas ferramentas avançadas de edição de texto como o Microsoft Word ou Discord reformatarão caracteres especiais como citações, alterando o conteúdo dos dados. Se estiver planejando copiar o texto abaixo dentro de um documento, utilize por favor ferramentas de edição de texto mais simples que não alterem automaticamente os caracteres, como o Bloco de Notas.",
 	["PR_IMPORT"] = "Importar",
 	["PR_IMPORT_CHAR_TAB"] = "Importador de personagens",
 	["PR_IMPORT_EMPTY"] = "Nenhum perfil importável",

@@ -713,21 +713,13 @@ Trotzdem verbinden?]=],
 	["PR_DEFAULT_PROFILE_WARNING"] = "Erstelle ein neues Profil oder verlinke zu einem bereits existierenden Profil in 'Profile' um die Informationen deines Charakters zu bearbeiten.",
 	["PR_DELETE_PROFILE"] = "Profil löschen",
 	["PR_DUPLICATE_PROFILE"] = "Profil kopieren",
-	["PR_EXPORT_IMPORT_HELP"] = [=[Du kannst Profile über die Option im Dropdownmenü exportieren und importieren.
-
-Benutze die |cffffff00Profil exportieren|r Option um eine Textserie zu generieren der die Profildaten enthält. Du kannst den Text über Strg+C (Command+C auf einem Mac) kopieren und es woanders als Sicherung einfügen. (|cffff0000Bitte beachte, dass einige fortgeschrittene Textverarbeitungswerkzeuge wie Microsoft Word Sonderzeichen als Zitate ansehen und die Daten verändern. Verwende daher einfachere Werkzeuge wie Notepad.|r)
-
-Benutze die |cffffff00Profil importieren|r Option um Daten aus einem früheren Export in ein existierendes Profil einzufügen. Die existierenden Daten des Profils werden durch das die neu eingefügten ersetzt. Du kannst die Daten nicht direkt in das derzeit ausgewählte Profil importieren.]=],
-	["PR_EXPORT_IMPORT_TITLE"] = "Profil exportieren/importieren",
 	["PR_EXPORT_NAME"] = "Text für Profil %s (Größe %0.2f kB)",
 	["PR_EXPORT_PROFILE"] = "Profil exportieren",
 	["PR_EXPORT_TOO_LARGE"] = [=[Dieses Profil ist zu groß und kann nicht exportiert werden.
 
 Profilgröße: %0.2f kB
 Max: 20 kB]=],
-	["PR_EXPORT_WARNING_MAC"] = "Bitte achte darauf, dass manche Textverarbeitungsprogramme  wie Text Edit oder Discord manche Zeichen (wie z.B. Anführungszeichen) besonders behandeln und damit den Inhalt verändern. Wenn du vor hast den unteren Text in ein Dokument zu kopieren, benutze bitte ein einfaches Textverarbeitungsprogramme, das keine automatische Zeichenerkennung benutzt. (In Text Edit gehe zu  Format > Nur Text erstellen, vor dem Einfügen.)",
 	["PR_EXPORT_WARNING_TITLE"] = "Warnung:",
-	["PR_EXPORT_WARNING_WINDOWS"] = "Bitte achte darauf, dass manche Textverarbeitungsprogramme  wie Microsoft Word oder Discord manche Zeichen (wie z.B. Anführungszeichen) besonders behandeln und damit den Inhalt verändern. Wenn du vor hast den unteren Text in ein Dokument zu kopieren, benutze bitte ein einfaches Textverarbeitungsprogramme, das keine automatische Zeichenerkennung benutzt, wie zum Beispiel den normalen Windows Editor.",
 	["PR_IMPORT"] = "Importieren",
 	["PR_IMPORT_CHAR_TAB"] = "Charakterimporteur",
 	["PR_IMPORT_EMPTY"] = "Kein importierbares Profil",

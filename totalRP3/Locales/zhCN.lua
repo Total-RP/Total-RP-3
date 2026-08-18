@@ -840,25 +840,13 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	以编辑你的角色信息]=],
 	["PR_DELETE_PROFILE"] = "删除人物卡",
 	["PR_DUPLICATE_PROFILE"] = "复制人物卡",
-	["PR_EXPORT_IMPORT_HELP"] = [=[您可以使用下拉菜单中的选项导出和导入配置文件.
-
-使用  |cffffff00输出资料|r 选择生成包含概要文件序列化数据的一大块文本。您可以使用Ctrl-c(或Mac上的Command-c)复制文本，并将其粘贴到其他地方作为备份。(|cffff0000请注意，一些高级的文本编辑工具，如Microsoft Word，将重新格式化特殊的字符串，例如引号并改变数据。请使用像记事本这样的简单的文本编辑工具|r)
-
-使用 |cffffff00输入资料|r 将之前导出的数据粘贴到现有的文件中. 这个文件中的现有数据将被您所粘贴的数据所替代。您不能直接将数据导入您当前选择的文件。]=],
-	["PR_EXPORT_IMPORT_TITLE"] = "导出/导入数据",
 	["PR_EXPORT_NAME"] = "资料 %s (大小 %0.2f kB)",
 	["PR_EXPORT_PROFILE"] = "导出数据",
 	["PR_EXPORT_TOO_LARGE"] = [=[这个配置文件太大，不能导出.
 
 配置文件的大小: %0.2f kB
 最大: 20 kB]=],
-	["PR_EXPORT_WARNING_MAC"] = [=[请注意，一些例如Text Edit or Discord这样的高级文本编辑工具，将重新格式化的特殊字符，如引号，并改变数据内容。
-
-如果您打算在文档中复制下面的文本，请使用更简单的文本编辑工具，这些工具不会自动更改字符(在文本编辑中，请在粘贴前将格式化为纯文本)]=],
 	["PR_EXPORT_WARNING_TITLE"] = "警告：",
-	["PR_EXPORT_WARNING_WINDOWS"] = [=[请注意，一些高级的文本编辑工具，如Microsoft Word或将重新格式化特殊字符，如引号，并改变数据的内容。
-
-如果您打算在文档中复制下面的文本，请使用更简单的文本编辑工具，这些工具不会自动修改字符，比如记事本。]=],
 	["PR_IMPORT"] = "导入",
 	["PR_IMPORT_CHAR_TAB"] = "导入人物",
 	["PR_IMPORT_EMPTY"] = "没有可导入的资料",

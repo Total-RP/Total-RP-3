@@ -979,25 +979,13 @@ Cambiar el nombre no cambiará ningún vínculo entre este perfil y tus mascotas
 	["PR_DEFAULT_PROFILE_WARNING"] = "Crea un nuevo perfil o enlaza con uno ya existente en Perfiles para editar la información de tu personaje.",
 	["PR_DELETE_PROFILE"] = "Eliminar perfil",
 	["PR_DUPLICATE_PROFILE"] = "Duplicar perfil",
-	["PR_EXPORT_IMPORT_HELP"] = [=[Puedes exportar e importar perfiles usando las opciones en el menú desplegable.
-
-Usa la opción |cffffff00Exportar perfil|r para generar un texto conteniendo la información serializada del perfil. Puedes copiar el texto usando Control+C (o Comando+C en un Mac) y pegarlo en otra parte como seguridad. cffff0000Por favor, ten en cuenta que algunas herramientas de texto avanzadas como Microsoft Word reformateará algunos caracteres especiales como comillas, alterando la información. Utiliza herramientas de texto simples como Notepad.|r)
-
-Usa la opción |cffffff00Importar perfil|r para pegar la información de una exportación previa dentro de un perfil existente. La información existente será reemplazada por las que pegues. No puedes importar información directamente de tu perfil seleccionado.]=],
-	["PR_EXPORT_IMPORT_TITLE"] = "Exportar/importar perfil",
 	["PR_EXPORT_NAME"] = "Serie para el perfil %s (tamaño %0.2f kB)",
 	["PR_EXPORT_PROFILE"] = "Exportar perfil",
 	["PR_EXPORT_TOO_LARGE"] = [=[El perfil es demasiado grande y no puede ser exportado.
 
 Tamaño del perfil: %0.2f kB
 Máx.: 20 kB]=],
-	["PR_EXPORT_WARNING_MAC"] = [=[Algunas herramientas de edición de texto avanzada como Text Edit o Discord formatearán caracteres especiales como citas, alterando el contenido de los datos.
-
-Si planeas copiar el texto de abajo en un documento, usa herramientas de edición más sencillas que no cambien caracteres automáticamente (en Text Edit ve a "Formato > Convertir en texto normal" antes de pegar)]=],
 	["PR_EXPORT_WARNING_TITLE"] = "Atención:",
-	["PR_EXPORT_WARNING_WINDOWS"] = [=[Ten en cuenta que algunas herramientas de edición de texto avanzadas como Microsoft Word o Discord reformarán caracteres especiales como citas, alterando el contenido de la información.
-
-Si planeas copiar el texto de abajo en un documento, usa herramientas de edición más sencillas que no cambien caracteres automáticamente, como Notepad.]=],
 	["PR_IMPORT"] = "Importar",
 	["PR_IMPORT_CHAR_TAB"] = "Importar personajes",
 	["PR_IMPORT_EMPTY"] = "Sin perfiles importables",
@@ -1548,11 +1536,11 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 	["SLASH_CMD_SET_HELP_EXAMPLE1"] = "Soñando con mariposas",
 	["SLASH_CMD_SET_HELP_EXAMPLE2"] = "Oso feliz; Elfo enfadado",
 	["SLASH_CMD_SET_SUCCESS"] = "Se ha actualizado correctamente el campo %1$q de tu perfil actual.",
-	["SLASH_CMD_STATUS_HELP"] = [=[Uso: |cff00ff00/trp3 status ic || ooc || toggle|r
-Cambia el estado de tu personaje a la opción especificada:
+	["SLASH_CMD_STATUS_HELP"] = [=[Uso: |cff00ff00/trp3 status ic || ooc || toggle|r 
+Cambia el estado de tu personaje a la opción especificada: 
 
-|cffff9900/trp3 status ic|r establecerá tu estado como |cff00ff00en rol|r.
-|cffff9900/trp3 status ooc|r establecerá tu estado como |cffff0000fuera de rol|r.
+|cffff9900/trp3 status ic|r establecerá tu estado como |cff00ff00en rol|r. 
+|cffff9900/trp3 status ooc|r establecerá tu estado como |cffff0000fuera de rol|r. 
 |cffff9900/trp3 status toggle|r cambiará tu estado al opuesto.]=],
 	["SLASH_CMD_STATUS_USAGE"] = "ep || fdp || mostrar/ocultar",
 	["TB_AFK_MODE"] = "Ausente",
