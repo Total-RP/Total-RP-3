@@ -1,3 +1,16 @@
+# Changelog version 3.4.2
+
+## Fixed
+
+- Fixed secret errors with nameplates.
+- Fixed name text color not reverting to white while the text is inside the health bar.
+- The right-click menu option to change your character's RP status is now available while right-clicking your name in chat.
+
+## Changed
+
+- The "Hide bars on Blizzard nameplates" is now tied to the new persistent setting "Show only text" in the game's nameplates settings.
+  - The setting has been kept for now while players learn of the existence of the one in the game settings, and will likely be removed in the future.
+
 # Changelog version 3.4.1
 
 ## Fixed
