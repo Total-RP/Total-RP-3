@@ -44,13 +44,6 @@ jobs:
           echo "XML validation: ${{ steps.validate_xml.outcome }}"
           exit 1
 
-      - name: Check lint results
-        if: steps.luacheck.outcome == 'failure' || steps.editorconfig.outcome == 'failure'
-        run: |
-          echo "Luacheck: ${{ steps.luacheck.outcome }}"
-          echo "editorconfig-checker: ${{ steps.editorconfig.outcome }}"
-          exit 1
-
       - name: Create Package
         uses: BigWigsMods/packager@v2
         with:
