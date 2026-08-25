@@ -703,6 +703,15 @@ stds.wow = {
 		"Lerp",
 		"Mixin",
 		"MouseIsOver",
+		NamePlateConstants = {
+			fields = {
+				NAME_ANCHOR_STYLES = {
+					fields = {
+						"InsideHealthBar",
+					},
+				},
+			},
+		},
 		"NamePlateSetupOptions",
 		"NeutralPlayerSelectFaction",
 		"nop",
