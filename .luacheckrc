@@ -548,6 +548,16 @@ stds.wow = {
 			},
 		},
 
+		NamePlateConstants = {
+			fields = {
+				NAME_ANCHOR_STYLES = {
+					fields = {
+						"InsideHealthBar",
+					},
+				},
+			},
+		},
+
 		PixelUtil = {
 			fields = {
 				"SetPoint",
