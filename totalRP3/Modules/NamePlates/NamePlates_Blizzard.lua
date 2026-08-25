@@ -259,7 +259,7 @@ function TRP3_BlizzardNamePlates:InitializeUnitFrame(unitframe)
 
 	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.aggroHighlight);
 	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.BuffFrame);
-	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.castBar);
+	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.CastBarsContainer.castBar);
 	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.ClassificationFrame);
 	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.healthBar);
 	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.LevelFrame);  -- Classic-only.
@@ -514,7 +514,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateVisibility(nameplate)
 
 	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.aggroHighlight, shouldShow);
 	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.BuffFrame, shouldShow);
-	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.castBar, shouldShow);
+	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.CastBarsContainer.castBar, shouldShow);
 	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.ClassificationFrame, shouldShow);
 	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.healthBar, shouldShow);
 	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.LevelFrame, shouldShow);  -- Classic-only.
