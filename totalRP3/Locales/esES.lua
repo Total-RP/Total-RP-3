@@ -414,6 +414,8 @@ Posibles estados:
 	["CO_REGISTER_ABOUT_H2_SIZE_TT"] = "Tamaño del texto entre las etiquetas {h2}. Por defecto: %d",
 	["CO_REGISTER_ABOUT_H3_SIZE"] = "Tamaño del texto del encabezado 3",
 	["CO_REGISTER_ABOUT_H3_SIZE_TT"] = "Tamaño del texto entre las etiquetas {h3}. Por defecto: %d",
+	["CO_REGISTER_ABOUT_HIGH_CONTRAST"] = "Facilitar la lectura de las páginas Acerca de",
+	["CO_REGISTER_ABOUT_HIGH_CONTRAST_TT"] = "Muestra las páginas \"Acerca de\" con un |cnGREEN_FONT_COLOR:fondo y color de texto uniformes|r, ocultando los fondos y colores de texto personalizados. |cnGREEN_FONT_COLOR:Podrás seguir personalizando|r el fondo y los colores de texto de tu propio perfil.",
 	["CO_REGISTER_ABOUT_P_SIZE"] = "Tamaño del texto del párrafo",
 	["CO_REGISTER_ABOUT_P_SIZE_TT"] = "Tamaño del texto fuera de las etiquetas de encabezado. Por defecto: %d",
 	["CO_REGISTER_ABOUT_SETTINGS"] = "Configuraciones de \"Acerca de\"",
@@ -928,6 +930,7 @@ Puedes dejar este campo en blanco para crear emotes sin el nombre de un PNJ al p
 	["NPC_TALK_YELL_PATTERN"] = "grita:",
 	["OPTION_DISABLED_TOAST"] = "Opciones deshabilitadas",
 	["OPTION_ENABLED_TOAST"] = "Opción habilitada",
+	["PASTE_SYSTEM_MESSAGE"] = "Pegado desde el portapapeles",
 	["PATTERN_ERROR"] = "Error en el patrón",
 	["PATTERN_ERROR_TAG"] = "Error en patrón : etiqueta de texto sin cerrar.",
 	["PLATER_NAMEPLATES_MODULE_DESCRIPTION"] = "Permite la personalización de las placas de nombre en Plater.",
@@ -975,20 +978,27 @@ Cambiar el nombre no cambiará ningún vínculo entre este perfil y tus mascotas
 
 ¿Quieres enlazarla de todas formas?]=],
 	["PR_CREATE_PROFILE"] = "Crear perfil",
+	["PR_CREATE_PROFILE_CHOICE"] = "Perfil vacío",
+	["PR_CREATE_PROFILE_CHOICE_TT"] = "Crea un perfil nuevo |cnGREEN_FONT_COLOR:desde cero|r.",
+	["PR_CREATE_PROFILE_TT"] = "Crea un |cnGREEN_FONT_COLOR:perfil vacío|r o |cnGREEN_FONT_COLOR:importa uno desde una exportación anterior|r.",
 	["PR_DEFAULT_PROFILE_NAME"] = "Perfil por defecto",
 	["PR_DEFAULT_PROFILE_WARNING"] = "Crea un nuevo perfil o enlaza con uno ya existente en Perfiles para editar la información de tu personaje.",
 	["PR_DELETE_PROFILE"] = "Eliminar perfil",
 	["PR_DUPLICATE_PROFILE"] = "Duplicar perfil",
+	["PR_EMPTYNAME_PROFILE"] = "Nombre de perfil vacío.",
 	["PR_EXPORT_NAME"] = "Serie para el perfil %s (tamaño %0.2f kB)",
 	["PR_EXPORT_PROFILE"] = "Exportar perfil",
 	["PR_EXPORT_TOO_LARGE"] = [=[El perfil es demasiado grande y no puede ser exportado.
 
 Tamaño del perfil: %0.2f kB
 Máx.: 20 kB]=],
+	["PR_EXPORT_WARNING"] = "Recomendamos encarecidamente que |cnGREEN_FONT_COLOR:copies los datos exportados que aparecen a continuación en un editor de texto sencillo|r, como el Bloc de notas, que |cnWARNING_FONT_COLOR:no altere los caracteres especiales|r.",
 	["PR_EXPORT_WARNING_TITLE"] = "Atención:",
+	["PR_FINALIZE_PROFILE"] = "Crear perfil vacío",
 	["PR_IMPORT"] = "Importar",
 	["PR_IMPORT_CHAR_TAB"] = "Importar personajes",
 	["PR_IMPORT_EMPTY"] = "Sin perfiles importables",
+	["PR_IMPORT_EMPTY_SERIAL"] = "Serial del perfil vacío.",
 	["PR_IMPORT_ERROR"] = "Error al importar el perfil: %s",
 	["PR_IMPORT_ERROR_DECOMPRESS"] = "Error al descomprimir los datos PEM",
 	["PR_IMPORT_ERROR_DESERIALIZE_ACE"] = "Error al deserializar los datos de Ace",
@@ -998,19 +1008,35 @@ Máx.: 20 kB]=],
 	["PR_IMPORT_IMPORT_ALL"] = "Importar todo",
 	["PR_IMPORT_PETS_TAB"] = "Importar compañeros",
 	["PR_IMPORT_PROFILE"] = "Importar perfil",
+	["PR_IMPORT_PROFILE_CHOICE_TT"] = "Importa un perfil |cnGREEN_FONT_COLOR:de una exportación anterior|r.",
 	["PR_IMPORT_PROFILE_TT"] = "Pegar aquí serie de perfil",
 	["PR_IMPORT_WILL_BE_IMPORTED"] = "Se importarán",
 	["PR_PROFILE"] = "Perfil",
 	["PR_PROFILE_CREATED"] = "Perfil %s creado.",
 	["PR_PROFILE_DELETED"] = "Perfil %s eliminado.",
 	["PR_PROFILE_DETAIL"] = "Este perfil actualmente no está vinculado a ningún personaje de WoW.",
+	["PR_PROFILE_DUPLICATED"] = "Perfil %1$s duplicado como %2$s.",
 	["PR_PROFILE_HELP"] = [=[Un perfil contiene toda la información de un |cffffff00"personaje"|r como un |cff00ff00personaje de rol|r.
 
 Un |cffffff00"personaje del WoW"|r sólo puede ser vinculado a un solo perfil a la vez, pero puedes cambiar de uno a otro en cualquier momento.
 
 ¡También puedes vincular varios |cffffff00"personajes"|r al mismo |cff00ff00perfil|r!]=],
+	["PR_PROFILE_IMPORTED"] = "Perfil %s importado.",
 	["PR_PROFILE_LOADED"] = "El perfil %s ha sido cargado.",
 	["PR_PROFILE_MANAGEMENT_TITLE"] = "Administración de perfiles",
+	["PR_PROFILE_OPTIONS"] = "Opciones del perfil",
+	["PR_PROFILE_OPTIONS_HELP"] = [=[Puedes renombrar, duplicar, exportar y eliminar perfiles mediante las opciones del menú desplegable.
+
+La opción |cnGREEN_FONT_COLOR:Renombrar perfil|r te permite cambiar el nombre del perfil seleccionado.
+
+La opción |cnGREEN_FONT_COLOR:Duplicar perfil|r te permite crear un duplicado del perfil seleccionado con un nombre nuevo.
+
+La opción |cnGREEN_FONT_COLOR:Exportar perfil|r genera un fragmento de texto que contiene los datos serializados del perfil. Puedes copiar (%s) y pegarlo en otro lugar como copia de seguridad.
+
+Recomendamos encarecidamente que |cnGREEN_FONT_COLOR:copies los datos exportados que aparecen a continuación en un editor de texto sencillo|r, como el Bloc de notas, que |cnWARNING_FONT_COLOR:no altere los caracteres especiales|r.
+
+La opción |cnGREEN_FONT_COLOR:Eliminar perfil|r te permite eliminar el perfil seleccionado.]=],
+	["PR_PROFILE_RENAMED"] = "Perfil %1$s renombrado a %2$s.",
 	["PR_PROFILEMANAGER_ACTIONS"] = "Acciones",
 	["PR_PROFILEMANAGER_ALREADY_IN_USE"] = "El nombre del perfil %s no está disponible.",
 	["PR_PROFILEMANAGER_COUNT"] = "%s personaje vinculado a este perfil.",
@@ -1033,6 +1059,7 @@ Cambiar el nombre no afectará al vinculo entre este perfil y tus personajes.]=]
 Puede causar incompatibilidades.
 
 ¿Deseas reemplazar todo el contenido del perfil %s con la información importada?]=],
+	["PR_PROFILEMANAGER_IMPORT_WARNING_3"] = "Este serial de perfil se creó utilizando |cnGREEN_FONT_COLOR:una versión anterior de TRP3|r.|n|n|cnWARNING_FONT_COLOR:Esto puede causar incompatibilidades.|r",
 	["PR_PROFILEMANAGER_RENAME"] = "Renombrar perfil",
 	["PR_PROFILEMANAGER_SEARCH_PROFILE"] = "Buscar perfil",
 	["PR_PROFILEMANAGER_SWITCH"] = "Seleccionar perfil",
