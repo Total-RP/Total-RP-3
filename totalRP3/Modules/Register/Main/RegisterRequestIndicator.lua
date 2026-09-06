@@ -21,24 +21,19 @@ function TRP3_RegisterRequestIndicatorMixin:OnLoad()
 	-- indices must be populated or we'll end up with a mostly invisible
 	-- frame. Also, this requires render layer flattening to be enabled or no
 	-- fade will occur.
-	--
-	-- As of writing - Classic Era (1.15.7) doesn't support this tech, so
-	-- it'll have no fading.
 
-	if self.Background.SetAlphaGradient then
-		local edgeFadeTop = 15;
-		local edgeFadeLeft = 15;
-		local edgeFadeRight = 0;
-		local edgeFadeBottom = 0;
+	local edgeFadeTop = 15;
+	local edgeFadeLeft = 15;
+	local edgeFadeRight = 0;
+	local edgeFadeBottom = 0;
 
-		self.Background:SetAlphaGradient(0, CreateVector2D(edgeFadeLeft, edgeFadeTop));
-		self.Background:SetAlphaGradient(1, CreateVector2D(edgeFadeRight, edgeFadeBottom));
-	end
+	self.Background:SetAlphaGradient(0, CreateVector2D(edgeFadeLeft, edgeFadeTop));
+	self.Background:SetAlphaGradient(1, CreateVector2D(edgeFadeRight, edgeFadeBottom));
 end
 
 function TRP3_RegisterRequestIndicatorMixin:OnShow()
 	-- Localize before triggering a layout update, or the size will be wrong.
-	self.Text:SetText(L.REG_UPDATING_PROFILE);
+	self.Text:SetText(L.REG_LIST_REFRESHING);
 	ResizeLayoutMixin.OnShow(self);
 end
 

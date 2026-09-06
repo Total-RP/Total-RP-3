@@ -18,7 +18,6 @@ local getUnitIDCharacter = TRP3_API.register.getUnitIDCharacter;
 local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 local hasProfile = TRP3_API.register.hasProfile;
 local getCompleteName = TRP3_API.register.getCompleteName;
-local getProfile = TRP3_API.register.getProfile;
 local getIgnoredList, unignoreID, isIDIgnored = TRP3_API.register.getIgnoredList, TRP3_API.register.unignoreID, TRP3_API.register.isIDIgnored;
 local getRelation, getRelationInfo, getRelationText, getRelationTooltipText = TRP3_API.register.relation.getRelation, TRP3_API.register.relation.getRelationInfo, TRP3_API.register.relation.getRelationText, TRP3_API.register.relation.getRelationTooltipText;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
@@ -26,7 +25,7 @@ local showAlertPopup, showConfirmPopup = TRP3_API.popup.showAlertPopup, TRP3_API
 local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
 local deleteProfile, deleteCharacter, getProfileList = TRP3_API.register.deleteProfile, TRP3_API.register.deleteCharacter, TRP3_API.register.getProfileList;
 local ignoreID = TRP3_API.register.ignoreID;
-local refreshList;
+local RefreshRegisterList;
 local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 local getCompanionProfiles = TRP3_API.companions.register.getProfiles;
 local getRelationColor = TRP3_API.register.relation.getRelationColor;
@@ -44,7 +43,11 @@ local currentlyOpenedProfilePrefix = TRP3_API.register.MENU_LIST_ID_TAB;
 local REGISTER_PAGE = TRP3_API.register.MENU_LIST_ID;
 
 local function openPage(profileID, unitID)
-	local profile = getProfile(profileID);
+	local profile = TRP3_API.register.getProfileOrNil(profileID);
+	if not profile then
+		return;
+	end
+
 	local menuID = currentlyOpenedProfilePrefix .. profileID
 	if isMenuRegistered(menuID) then
 		local menuItem = TRP3_API.navigation.menu.getMenuItem(menuID)
@@ -96,6 +99,10 @@ TRP3_API.register.openPageByProfileID = openPage;
 
 local function openCompanionPage(profileID)
 	local profile = getCompanionProfiles()[profileID];
+	if not profile then
+		return;
+	end
+
 	if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
 		-- If the character already has his "tab", simply open it
 		selectMenu(currentlyOpenedProfilePrefix .. profileID);
@@ -144,96 +151,96 @@ local sortingMap = {
 	Realm = { asc = 9, desc = 10 },
 }
 
+local function CompareRelationsAscending(a, b)
+	return a.relationOrder < b.relationOrder;
+end
+
+local function CompareRelationsDescending(a, b)
+	local relationA = a.relationOrder;
+	local relationB = b.relationOrder;
+
+	-- Treat 0 as highest value so it goes last when descending.
+	if relationA == 0 then relationA = math.huge; end
+	if relationB == 0 then relationB = math.huge; end
+
+	return relationA < relationB;
+end
+
+local function CompareTimesAscending(a, b)
+	local timeA = a.time;
+	local timeB = b.time;
+
+	if timeA == nil then
+		return false;
+	elseif timeB == nil then
+		return true;
+	end
+	return timeA < timeB;
+end
+
+local function CompareTimesDescending(a, b)
+	local timeA = a.time;
+	local timeB = b.time;
+
+	if timeA == nil then
+		return false;
+	elseif timeB == nil then
+		return true;
+	end
+	return timeA > timeB;
+end
+
+local SortingConfigurations = {
+	[1] = { sortValue = "name", direction = TRP3_SortKeyDirection.Ascending },
+	[2] = { sortValue = "name", direction = TRP3_SortKeyDirection.Descending },
+	[3] = { comparator = CompareRelationsAscending },
+	[4] = { comparator = CompareRelationsDescending },
+	[5] = { comparator = CompareTimesAscending },
+	[6] = { comparator = CompareTimesDescending },
+	[7] = { sortValue = "guild", direction = TRP3_SortKeyDirection.Ascending },
+	[8] = { sortValue = "guild", direction = TRP3_SortKeyDirection.Descending },
+	[9] = { sortValue = "realm", direction = TRP3_SortKeyDirection.Ascending },
+	[10] = { sortValue = "realm", direction = TRP3_SortKeyDirection.Descending },
+}
+
 local function switchSorting(key)
 	local pair = sortingMap[key];
 	if not pair then
 		return;
 	end
 	sortingType = (sortingType == pair.asc) and pair.desc or pair.asc;
-	refreshList();
+	RefreshRegisterList();
 end
 
-local function getNameForSort(name)
-	name = name:lower();
-	name = name:gsub("\"", "");
-	name = name:gsub("'", "");
-	return name;
+---@param direction TRP3.SortKeyDirection
+local function CreateUserStringSortOptions(direction)
+	return {
+		direction = direction,
+		emptyKeyPosition = (direction == TRP3_SortKeyDirection.Ascending and TRP3_SortKeyEmptyPosition.Last or nil),
+		transliterator = TRP3_Transliterators.LettersOnly,
+	};
 end
-
-local function nameComparator(elem1, elem2)
-	return getNameForSort(elem1[2]) < getNameForSort(elem2[2]);
-end
-
-local function nameComparatorInverted(elem1, elem2)
-	return getNameForSort(elem1[2]) > getNameForSort(elem2[2]);
-end
-
-local function relationComparator(elem1, elem2)
-	return elem1[3] > elem2[3];
-end
-
-local function relationComparatorInverted(elem1, elem2)
-	local a, b = elem1[3], elem2[3];
-
-	-- Treat 0 as highest value so it goes last when descending
-	if a == 0 then a = math.huge; end
-	if b == 0 then b = math.huge; end
-
-	return a < b;
-end
-
-local function timeComparator(elem1, elem2)
-	if elem1[4] == nil then
-		return false;
-	elseif elem2[4] == nil then
-		return true;
-	end
-	return elem1[4] < elem2[4];
-end
-
-local function timeComparatorInverted(elem1, elem2)
-	if elem1[4] == nil then
-		return false;
-	elseif elem2[4] == nil then
-		return true;
-	end
-	return elem1[4] > elem2[4];
-end
-
-local function getStringForSort(str, inverted)
-	if not str or str == "" then
-		-- "\0" sorts before everything, "\255" sorts after everything
-		return inverted and "\0" or "\255";
-	end
-	str = str:lower();
-	str = str:gsub("\"", "");
-	str = str:gsub("'", "");
-	return str;
-end
-
-local function guildComparator(elem1, elem2)
-	return getStringForSort(elem1[5], false) < getStringForSort(elem2[5], false);
-end
-
-local function guildComparatorInverted(elem1, elem2)
-	return getStringForSort(elem1[5], true) > getStringForSort(elem2[5], true);
-end
-
-local function realmComparator(elem1, elem2)
-	return getStringForSort(elem1[6], false) < getStringForSort(elem2[6], false);
-end
-
-local function realmComparatorInverted(elem1, elem2)
-	return getStringForSort(elem1[6], true) > getStringForSort(elem2[6], true);
-end
-
-local comparators = {
-	nameComparator, nameComparatorInverted, relationComparator, relationComparatorInverted, timeComparator,
-	timeComparatorInverted, guildComparator, guildComparatorInverted, realmComparator, realmComparatorInverted
-}
 
 local function getCurrentComparator()
-	return comparators[sortingType];
+	local configuration = SortingConfigurations[sortingType];
+	local comparator;
+
+	if configuration.comparator then
+		comparator = configuration.comparator;
+	elseif configuration.sortValue then
+		comparator = function(a, b)
+			a = a.sortKey;
+			b = b.sortKey;
+
+			if configuration.direction == TRP3_SortKeyDirection.Descending then
+				a, b = b, a;
+			end
+
+			return a < b;
+		end
+	end
+
+	return comparator;
 end
 
 local ARROW_DOWN = "|TInterface\\Buttons\\Arrow-Down-Up:15:15:0:-6|t";
@@ -272,6 +279,33 @@ local PROFILE_NOTES_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-ico
 local WALKUP_ICON = "|TInterface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-walkup:15:15|t";
 local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 15);
 
+local function UpdateRegisterListHeaders()
+	local nameArrow, relationArrow, timeArrow, guildArrow, realmArrow = getComparatorArrows();
+
+	if currentMode == MODE_CHARACTER then
+		TRP3_RegisterListHeaderName:SetText(loc.REG_PLAYER .. nameArrow);
+		TRP3_RegisterListHeaderRelations:SetText(loc.REG_RELATION .. relationArrow);
+		TRP3_RegisterListHeaderTime:SetText(loc.REG_TIME .. timeArrow);
+		TRP3_RegisterListHeaderGuild:SetText(loc.REG_GUILD .. guildArrow);
+		TRP3_RegisterListHeaderRealm:SetText(loc.REG_REALM .. realmArrow);
+		TRP3_RegisterListHeaderFlags:SetText(loc.REG_LIST_FLAGS);
+	elseif currentMode == MODE_PETS then
+		TRP3_RegisterListHeaderName:SetText(loc.REG_COMPANION .. nameArrow);
+		TRP3_RegisterListHeaderRelations:SetText("");
+		TRP3_RegisterListHeaderTime:SetText("");
+		TRP3_RegisterListHeaderGuild:SetText(loc.REG_LIST_PET_OWNER);
+		TRP3_RegisterListHeaderRealm:SetText("");
+		TRP3_RegisterListHeaderFlags:SetText(loc.REG_LIST_FLAGS);
+	else
+		TRP3_RegisterListHeaderName:SetText(loc.REG_PLAYER);
+		TRP3_RegisterListHeaderRelations:SetText("");
+		TRP3_RegisterListHeaderTime:SetText("");
+		TRP3_RegisterListHeaderGuild:SetText("");
+		TRP3_RegisterListHeaderRealm:SetText("");
+		TRP3_RegisterListHeaderFlags:SetText("");
+	end
+end
+
 local function onIgnoredActions(button, unitID)
 	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 		description:CreateTitle(unitID);
@@ -284,23 +318,29 @@ local function onIgnoredActions(button, unitID)
 
 			showConfirmPopup(confirmMessage, function()
 				unignoreID(unitID);
-				refreshList();
+				RefreshRegisterList();
 			end);
 		end);
 	end);
 end
 
 local function onLineClicked(self, button)
+	local id = self:GetParent().id;
+	assert(id, "No id on line.");
+
 	if currentMode == MODE_CHARACTER then
-		assert(self:GetParent().id, "No profileID on line.");
+		local profile = TRP3_API.register.getProfileOrNil(id);
+		if not profile then
+			return;
+		end
+
 		if button == "LeftButton" then
 			if IsShiftKeyDown() then
-				TRP3_API.RegisterPlayerChatLinksModule:InsertLink(self:GetParent().id);
+				TRP3_API.RegisterPlayerChatLinksModule:InsertLink(id);
 			else
-				openPage(self:GetParent().id);
+				openPage(id);
 			end
 		else
-			local profile = getProfile(self:GetParent().id);
 			if profile.link and TableHasAnyEntries(profile.link) then
 				local characterList = {};
 				for unitID, _ in pairs(profile.link) do
@@ -315,25 +355,37 @@ local function onLineClicked(self, button)
 			end
 		end
 	elseif currentMode == MODE_PETS then
-		assert(self:GetParent().id, "No profileID on line.");
+		if not getCompanionProfiles()[id] then
+			return;
+		end
+
 		if IsShiftKeyDown() then
 			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_COMPANION_PROFILE, function(canBeImported)
-				TRP3_API.RegisterCompanionChatLinksModule:InsertLink(self:GetParent().id, canBeImported);
+				TRP3_API.RegisterCompanionChatLinksModule:InsertLink(id, canBeImported);
 			end);
 		else
-			openCompanionPage(self:GetParent().id);
+			openCompanionPage(id);
 		end
 	elseif currentMode == MODE_IGNORE then
-		assert(self:GetParent().id, "No unitID on line.");
 		if button == "RightButton" then
-			onIgnoredActions(self, self:GetParent().id);
+			onIgnoredActions(self, id);
 		end
 	end
 end
 
 local function onLineSelected(self)
-	assert(self:GetParent().id, "No id on line.");
-	selectedIDs[self:GetParent().id] = self:GetChecked() or nil;
+	local id = self:GetParent().id;
+	assert(id, "No id on line.");
+
+	if currentMode == MODE_CHARACTER and not TRP3_API.register.getProfileOrNil(id) then
+		self:SetChecked(false);
+		return;
+	elseif currentMode == MODE_PETS and not getCompanionProfiles()[id] then
+		self:SetChecked(false);
+		return;
+	end
+
+	selectedIDs[id] = self:GetChecked() or nil;
 end
 
 local function ResizeLineContents(line)
@@ -353,8 +405,6 @@ end
 local function decorateGenericLine(line)
 	line.Click:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 	line.Click:SetScript("OnClick", onLineClicked);
-	line.Click:SetHighlightTexture("Interface\\FriendsFrame\\UI-FriendsFrame-HighlightBar-Blue");
-	line.Click:SetAlpha(0.75);
 	line.Select:SetScript("OnClick", onLineSelected);
 	ResizeLineContents(line);
 end
@@ -365,8 +415,12 @@ end
 
 local function decorateCharacterLine(line, elementData)
 	decorateGenericLine(line);
-	local profileID = elementData[1];
-	local profile = getProfile(profileID);
+	local profileID = elementData.profileID;
+	local profile = TRP3_API.register.getProfileOrNil(profileID);
+	if not profile then
+		return;
+	end
+
 	line.id = profileID;
 
 	local name = getCompleteName(profile.characteristics or {}, UNKNOWN, true);
@@ -518,68 +572,86 @@ local function decorateCharacterLine(line, elementData)
 		TRP3_API.FormatShortcutWithInstruction("SHIFT-CLICK", loc.CL_TOOLTIP));
 end
 
-local function getCharacterLines()
-	local nameSearch = TRP3_RegisterListFilterCharactName:GetText():lower();
-	local guildSearch = TRP3_RegisterListFilterCharactGuild:GetText():lower();
+local function CreateCharacterLineBuilder()
+	local nameSearch = TRP3_RegisterListFilterCharactName:GetText();
+	local nameMatcher = TRP3_StringUtil.CreateMatcher(nameSearch);
+	local guildSearch = TRP3_RegisterListFilterCharactGuild:GetText();
+	local guildMatcher = TRP3_StringUtil.CreateMatcher(guildSearch);
 	local realmOnly = TRP3_RegisterListFilterCharactRealm:GetChecked();
 	local notesOnly = TRP3_RegisterListFilterCharactNotes:GetChecked();
-	local profileList = getProfileList();
-	local fullSize = CountTable(profileList);
-	local characterLines = {};
 	local connectedRealms = tInvert(GetAutoCompleteRealms());
+	local currentNotes = TRP3_API.profile.getPlayerCurrentProfile().notes or {};
+	local sortingConfiguration = SortingConfigurations[sortingType];
+	local sortKeyOptions;
 
-	for profileID, profile in pairs(profileList) do
-		local nameIsConform, guildIsConform, realmIsConform, notesIsConform = false, false, false, false;
-
-		-- Don't add default profiles to the directory
-		if not TRP3_API.profile.isDefaultProfile(profileID) and profile.characteristics and next(profile.characteristics) ~= nil then
-
-			local firstLink;
-			local firstGuild, firstRealm = "", "";
-			-- Defines if at least one character is conform to the search criteria
-			for unitID, _ in pairs(profile.link or Globals.empty) do
-				if not firstLink then
-					firstLink = unitID;
-				end
-				local unitName, unitRealm = unitIDToInfo(unitID);
-				if firstLink and isUnitIDKnown(firstLink) then
-					firstGuild = getUnitIDCharacter(firstLink).guild or "";
-					firstRealm = unitRealm or "";
-				end
-				if string.find(unitName:lower(), nameSearch, 1, true) then
-					nameIsConform = true;
-				end
-				if unitRealm == Globals.player_realm_id or connectedRealms[unitRealm] then
-					realmIsConform = true;
-				end
-				local characterData = AddOn_TotalRP3.Directory.getCharacterDataForCharacterId(unitID);
-				if characterData and characterData.guild and string.find(characterData.guild:lower(), guildSearch, 1, true) then
-					guildIsConform = true;
-				end
-				local currentNotes = TRP3_API.profile.getPlayerCurrentProfile().notes or {};
-				if TRP3_Notes and TRP3_Notes[profileID] or currentNotes[profileID] then
-					notesIsConform = true;
-				end
-			end
-			local completeName = getCompleteName(profile.characteristics or {}, "", true);
-			if not nameIsConform and string.find(completeName:lower(), nameSearch, 1, true) then
-				nameIsConform = true;
-			end
-
-			nameIsConform = nameIsConform or #nameSearch == 0;
-			guildIsConform = guildIsConform or #guildSearch == 0;
-			realmIsConform = realmIsConform or not realmOnly;
-			notesIsConform = notesIsConform or not notesOnly;
-
-			if nameIsConform and guildIsConform and realmIsConform and notesIsConform then
-				tinsert(characterLines, {profileID, completeName, getRelationInfo(getRelation(profileID)).order, profile.time, firstGuild, firstRealm});
-			end
-
-		end
+	if sortingConfiguration.sortValue then
+		sortKeyOptions = CreateUserStringSortOptions(sortingConfiguration.direction);
 	end
 
-	table.sort(characterLines, getCurrentComparator());
+	return function(profileID, profile)
+		if not profile or TRP3_API.profile.isDefaultProfile(profileID) or not profile.characteristics or next(profile.characteristics) == nil then
+			return;
+		end
 
+		local nameIsConform, guildIsConform, realmIsConform, notesIsConform = false, false, false, false;
+		local firstLink;
+		local firstGuild, firstRealm = "", "";
+		-- Defines if at least one character is conform to the search criteria
+		for unitID, _ in pairs(profile.link or Globals.empty) do
+			if not firstLink then
+				firstLink = unitID;
+			end
+			local unitName, unitRealm = unitIDToInfo(unitID);
+			if firstLink and isUnitIDKnown(firstLink) then
+				firstGuild = getUnitIDCharacter(firstLink).guild or "";
+				firstRealm = unitRealm or "";
+			end
+			if nameMatcher:Matches(unitName) then
+				nameIsConform = true;
+			end
+			if unitRealm == Globals.player_realm_id or connectedRealms[unitRealm] then
+				realmIsConform = true;
+			end
+			local characterData = AddOn_TotalRP3.Directory.getCharacterDataForCharacterId(unitID);
+			if characterData and characterData.guild and guildMatcher:Matches(characterData.guild) then
+				guildIsConform = true;
+			end
+			if TRP3_Notes and TRP3_Notes[profileID] or currentNotes[profileID] then
+				notesIsConform = true;
+			end
+		end
+		local completeName = getCompleteName(profile.characteristics or {}, "", true);
+		if not nameIsConform and nameMatcher:Matches(completeName) then
+			nameIsConform = true;
+		end
+
+		nameIsConform = nameIsConform or nameSearch == "";
+		guildIsConform = guildIsConform or guildSearch == "";
+		realmIsConform = realmIsConform or not realmOnly;
+		notesIsConform = notesIsConform or not notesOnly;
+
+		if nameIsConform and guildIsConform and realmIsConform and notesIsConform then
+			local sortValue = completeName;
+			if sortingConfiguration.sortValue == "guild" then
+				sortValue = firstGuild;
+			elseif sortingConfiguration.sortValue == "realm" then
+				sortValue = firstRealm;
+			end
+
+			return {
+				profileID = profileID,
+				name = completeName,
+				sortKey = sortKeyOptions and TRP3_StringUtil.GetSortKey(sortValue, sortKeyOptions) or nil,
+				relationOrder = getRelationInfo(getRelation(profileID)).order,
+				time = profile.time,
+				guild = firstGuild,
+				realm = firstRealm,
+			};
+		end
+	end;
+end
+
+local function ApplyCharacterListState(characterLines, fullSize)
 	local lineSize = #characterLines;
 	if lineSize == 0 then
 		if fullSize == 0 then
@@ -604,8 +676,6 @@ local function getCharacterLines()
 	TRP3_RegisterListHeaderGuildTT:Enable();
 	TRP3_RegisterListHeaderRealmTT:Enable();
 	TRP3_RegisterListHeaderActions:Show();
-
-	return characterLines;
 end
 
 local MONTH_IN_SECONDS = 2592000;
@@ -629,7 +699,7 @@ local function onCharactersActionSelected(value)
 				end
 				TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED);
 				TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED);
-				refreshList();
+				RefreshRegisterList();
 			end);
 		end
 	elseif value == "purge_unlinked" then
@@ -649,7 +719,7 @@ local function onCharactersActionSelected(value)
 				end
 				TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED);
 				TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED);
-				refreshList();
+				RefreshRegisterList();
 			end);
 		end
 	elseif value == "purge_ignore" then
@@ -666,7 +736,7 @@ local function onCharactersActionSelected(value)
 				end
 				TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED);
 				TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED);
-				refreshList();
+				RefreshRegisterList();
 			end);
 		end
 	elseif value == "purge_all" then
@@ -682,24 +752,29 @@ local function onCharactersActionSelected(value)
 	elseif value == "actions_delete" then
 		showConfirmPopup(loc.REG_LIST_ACTIONS_MASS_REMOVE_C:format(CountTable(selectedIDs)), function()
 			for profileID, _ in pairs(selectedIDs) do
-				deleteProfile(profileID, true);
+				if TRP3_API.register.getProfileOrNil(profileID) then
+					deleteProfile(profileID, true);
+				end
 			end
 			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED);
 			TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED);
-			refreshList();
+			RefreshRegisterList();
 		end);
 	elseif value == "actions_ignore" then
 		local charactToIgnore = {};
 		for profileID, _ in pairs(selectedIDs) do
-			for unitID, _ in pairs(getProfile(profileID).link or Globals.empty) do
-				charactToIgnore[unitID] = true;
+			local profile = TRP3_API.register.getProfileOrNil(profileID);
+			if profile then
+				for unitID, _ in pairs(profile.link or Globals.empty) do
+					charactToIgnore[unitID] = true;
+				end
 			end
 		end
 		showTextInputPopup(loc.REG_LIST_ACTIONS_MASS_IGNORE_C:format(CountTable(charactToIgnore)), function(text)
 			for unitID, _ in pairs(charactToIgnore) do
 				ignoreID(unitID, text);
 			end
-			refreshList();
+			RefreshRegisterList();
 		end);
 	end
 end
@@ -728,7 +803,7 @@ local deleteCompanionProfile = TRP3_API.companions.register.deleteProfile;
 
 local function decorateCompanionLine(line, elementData)
 	decorateGenericLine(line);
-	local profileID = elementData[1];
+	local profileID = elementData.profileID;
 	local profile = getCompanionProfiles()[profileID];
 	line.id = profileID;
 
@@ -805,25 +880,29 @@ local function decorateCompanionLine(line, elementData)
 	line.Realm:SetText("");
 end
 
-local function getCompanionLines()
-	local nameSearch = TRP3_RegisterListPetFilterName:GetText():lower();
-	local typeSearch = TRP3_RegisterListPetFilterType:GetText():lower();
-	local ownerSearch = TRP3_RegisterListPetFilterOwner:GetText():lower();
-	local profiles = getCompanionProfiles();
-	local fullSize = CountTable(profiles);
-	local companionLines = {};
+local function CreateCompanionLineBuilder()
+	local nameSearch = TRP3_RegisterListPetFilterName:GetText();
+	local nameMatcher = TRP3_StringUtil.CreateMatcher(nameSearch);
+	local ownerSearch = TRP3_RegisterListPetFilterOwner:GetText();
+	local ownerMatcher = TRP3_StringUtil.CreateMatcher(ownerSearch);
+	local sortingConfiguration = SortingConfigurations[sortingType];
+	local sortKeyOptions;
 
-	for profileID, profile in pairs(profiles) do
-		local nameIsConform, typeIsConform, ownerIsConform = false, false, false;
+	if sortingConfiguration.sortValue then
+		sortKeyOptions = CreateUserStringSortOptions(sortingConfiguration.direction);
+	end
 
-		-- Run this test only if there are criterias
-		if #typeSearch > 0 or #ownerSearch > 0 then
+	return function(profileID, profile)
+		if not profile then
+			return;
+		end
+
+		local nameIsConform, ownerIsConform = false, false;
+
+		if ownerSearch ~= "" then
 			for companionFullID, _ in pairs(profile.links) do
-				local ownerID, companionID = companionIDToInfo(companionFullID);
-				if string.find(companionID:lower(), typeSearch, 1, true) then
-					typeIsConform = true;
-				end
-				if string.find(ownerID:lower(), ownerSearch, 1, true) then
+				local ownerID = companionIDToInfo(companionFullID);
+				if ownerMatcher:Matches(ownerID) then
 					ownerIsConform = true;
 				end
 			end
@@ -833,21 +912,26 @@ local function getCompanionLines()
 		if profile.data and profile.data.NA then
 			companionName = profile.data.NA;
 		end
-		if #nameSearch ~= 0 and profile.data and profile.data.NA and string.find(profile.data.NA:lower(), nameSearch, 1, true) then
+		if nameSearch ~= "" and profile.data and profile.data.NA and nameMatcher:Matches(profile.data.NA) then
 			nameIsConform = true;
 		end
 
-		nameIsConform = nameIsConform or #nameSearch == 0;
-		typeIsConform = typeIsConform or #typeSearch == 0;
-		ownerIsConform = ownerIsConform or #ownerSearch == 0;
+		nameIsConform = nameIsConform or nameSearch == "";
+		ownerIsConform = ownerIsConform or ownerSearch == "";
 
-		if nameIsConform and typeIsConform and ownerIsConform then
-			tinsert(companionLines, {profileID, companionName, companionName, companionName});
+		if nameIsConform and ownerIsConform then
+			return {
+				profileID = profileID,
+				name = companionName,
+				sortKey = sortKeyOptions and TRP3_StringUtil.GetSortKey(companionName, sortKeyOptions) or nil,
+				relationOrder = companionName,
+				time = companionName,
+			};
 		end
 	end
+end
 
-	table.sort(companionLines, getCurrentComparator());
-
+local function ApplyCompanionListState(companionLines, fullSize)
 	local lineSize = #companionLines;
 	if lineSize == 0 then
 		if fullSize == 0 then
@@ -856,7 +940,7 @@ local function getCompanionLines()
 			TRP3_RegisterListEmpty:SetText(loc.REG_LIST_PETS_EMPTY2);
 		end
 	end
-	TRP3_RegisterListPetFilter:SetTitleText(loc.REG_LIST_PETS_FILTER:format(lineSize, fullSize))
+	TRP3_RegisterListPetFilter:SetTitleText(loc.REG_LIST_PETS_FILTER:format(lineSize, fullSize));
 	TRP3_RegisterListPetFilter:SetTitleWidth(200);
 
 	local nameArrow = getComparatorArrows();
@@ -871,8 +955,6 @@ local function getCompanionLines()
 	TRP3_RegisterListHeaderGuildTT:Disable();
 	TRP3_RegisterListHeaderRealmTT:Disable();
 	TRP3_RegisterListHeaderActions:Show();
-
-	return companionLines;
 end
 
 local DO_NOT_FIRE_EVENTS = true;
@@ -890,8 +972,10 @@ local function onCompanionActionSelected(value)
 	elseif value == "actions_delete" then
 		showConfirmPopup(loc.REG_LIST_ACTIONS_MASS_REMOVE_C:format(CountTable(selectedIDs)), function()
 			for profileID, _ in pairs(selectedIDs) do
-				-- We delete the companion profile without fire events to prevent UI freeze
-				deleteCompanionProfile(profileID, DO_NOT_FIRE_EVENTS);
+				if getCompanionProfiles()[profileID] then
+					-- We delete the companion profile without fire events to prevent UI freeze
+					deleteCompanionProfile(profileID, DO_NOT_FIRE_EVENTS);
+				end
 			end
 			-- We then fire the event once every profile we needed to delete has been deleted
 			TRP3_Addon:TriggerEvent(Events.REGISTER_PROFILE_DELETED);
@@ -949,7 +1033,17 @@ local function getIgnoredLines()
 	TRP3_RegisterListHeaderRealmTT:Disable();
 
 	local ignoredArray = GetKeysArray(getIgnoredList());
-	table.sort(ignoredArray, TRP3_StringUtil.SortCompareStrings);
+	local sortKeyOptions = {
+		transliterator = TRP3_Transliterators.LettersOnly,
+		emptyKeyPosition = TRP3_SortKeyEmptyPosition.Last,
+	};
+	local sortKeys = {};
+	for _, unitID in ipairs(ignoredArray) do
+		sortKeys[unitID] = TRP3_StringUtil.GetSortKey(unitID, sortKeyOptions);
+	end
+	table.sort(ignoredArray, function(a, b)
+		return sortKeys[a] < sortKeys[b];
+	end);
 
 	return ignoredArray;
 end
@@ -958,24 +1052,197 @@ end
 -- UI : LIST
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function refreshList()
-	local lines;
-	local initializer;
-	TRP3_RegisterListEmpty:Hide();
-	TRP3_RegisterListHeaderActions:Hide();
+---@alias TRP3.RegisterListRefreshTaskState "pending" | "running" | "finished" | "cancelled"
 
-	if currentMode == MODE_CHARACTER then
-		lines = getCharacterLines();
-		initializer = decorateCharacterLine;
-	elseif currentMode == MODE_PETS then
-		lines = getCompanionLines();
-		initializer = decorateCompanionLine;
-	elseif currentMode == MODE_IGNORE then
-		lines = getIgnoredLines();
-		initializer = decorateIgnoredLine;
+---@class TRP3.RegisterListRefreshTask
+---@field private callbacks TRP3.CallbackDispatcher
+---@field private state TRP3.RegisterListRefreshTaskState
+---@field private ticker unknown
+---@field private worker thread
+---@field private searched integer
+---@field private total integer
+---@field private found integer
+---@field private results table
+local RegisterListRefreshTask = {};
+
+---@param total integer
+---@param update fun(task: TRP3.RegisterListRefreshTask)
+---@protected
+function RegisterListRefreshTask:__init(total, update)
+	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.state = "pending";
+	self.ticker = nil;
+	self.worker = coroutine.create(function() update(self); end);
+	self.searched = 0;
+	self.total = total;
+	self.found = 0;
+	self.results = {};
+end
+
+function RegisterListRefreshTask:Start()
+	assert(self.state == "pending", "attempted to restart a register list refresh task");
+	self.state = "running";
+	self.ticker = C_Timer.NewTicker(0, function() self:OnUpdate(); end);
+	self.callbacks:Fire("OnStateChanged", self.state);
+end
+
+function RegisterListRefreshTask:Finish()
+	if self.state == "finished" or self.state == "cancelled" then
+		return;
 	end
 
-	if TableIsEmpty(lines) then
+	if self.ticker then
+		self.ticker:Cancel();
+		self.ticker = nil;
+	end
+
+	self.state = "finished";
+	self.callbacks:Fire("OnStateChanged", self.state);
+end
+
+function RegisterListRefreshTask:Cancel()
+	if self.state ~= "running" and self.state ~= "pending" then
+		return;
+	end
+
+	if self.ticker then
+		self.ticker:Cancel();
+		self.ticker = nil;
+	end
+	self.state = "cancelled";
+	self.callbacks:Fire("OnStateChanged", self.state);
+end
+
+---@return TRP3.RegisterListRefreshProgress progress
+function RegisterListRefreshTask:GetProgress()
+	return { found = self.found, searched = self.searched, total = self.total };
+end
+
+function RegisterListRefreshTask:GetState()
+	return self.state;
+end
+
+function RegisterListRefreshTask:GetResults()
+	return self.results;
+end
+
+---@param result table
+function RegisterListRefreshTask:AddResult(result)
+	self.found = self.found + 1;
+	table.insert(self.results, result);
+end
+
+---@param searched integer
+function RegisterListRefreshTask:SetSearched(searched)
+	self.searched = searched;
+end
+
+---@private
+function RegisterListRefreshTask:OnUpdate()
+	if self.state ~= "running" then
+		return;
+	end
+
+	local success, errorMessage = coroutine.resume(self.worker);
+	if not success then
+		self:Cancel();
+		securecall(error, errorMessage);
+	end
+
+	self.callbacks:Fire("OnProgressChanged", self:GetProgress());
+
+	if coroutine.status(self.worker) == "dead" then
+		self:Finish();
+	end
+end
+
+---@param total integer
+---@param update fun(task: TRP3.RegisterListRefreshTask)
+---@return TRP3.RegisterListRefreshTask
+local function CreateRegisterListRefreshTask(total, update)
+	return TRP3_API.CreateObject(RegisterListRefreshTask, total, update);
+end
+
+local function CreateRegisterListRefreshTaskFromProfiles(profiles, buildLine)
+	local profileIDs = table.keys(profiles);
+	local comparator = getCurrentComparator();
+	local task;
+	local index = 0;
+
+	task = CreateRegisterListRefreshTask(#profileIDs, function(refreshTask)
+		if #profileIDs == 0 then
+			refreshTask:SetSearched(0);
+			return;
+		end
+
+		local shouldYieldFromCollection = TRP3_FunctionUtil.CreateAdaptiveTimeBudgetChecker();
+
+		repeat
+			index = index + 1;
+			local profileID = profileIDs[index];
+			local line = buildLine(profileID, profiles[profileID]);
+
+			if line then
+				refreshTask:AddResult(line);
+			end
+
+			if shouldYieldFromCollection() then
+				refreshTask:SetSearched(index);
+				coroutine.yield();
+			end
+		until index >= #profileIDs;
+
+		refreshTask:SetSearched(index);
+
+		local shouldYieldFromSort = TRP3_FunctionUtil.CreateAdaptiveTimeBudgetChecker();
+		local results = refreshTask:GetResults();
+
+		local function YieldingComparator(a, b)
+			if shouldYieldFromSort() then
+				coroutine.yield();
+			end
+
+			return comparator(a, b);
+		end
+
+		TRP3_SortUtil.MergeSort(results, YieldingComparator);
+	end);
+
+	return task;
+end
+
+local function CreateCharacterRefreshTask()
+	return CreateRegisterListRefreshTaskFromProfiles(getProfileList(), CreateCharacterLineBuilder());
+end
+
+local function CreateCompanionRefreshTask()
+	return CreateRegisterListRefreshTaskFromProfiles(getCompanionProfiles(), CreateCompanionLineBuilder());
+end
+
+local activeRefreshTask;
+local hasPublishedSnapshot = false;
+
+local function ClearRegisterListLines()
+	TRP3_RegisterListContainer.ScrollView:RemoveDataProvider();
+end
+
+local function ResetRegisterListRefreshState()
+	if activeRefreshTask then
+		activeRefreshTask:Cancel();
+		activeRefreshTask = nil;
+	end
+
+	TRP3_RegisterListContainer.RefreshToast:ClearTask();
+end
+
+local function ClearRegisterListSnapshot()
+	ResetRegisterListRefreshState();
+	hasPublishedSnapshot = false;
+	ClearRegisterListLines();
+end
+
+local function ApplyRegisterListLines(lines, initializer)
+	if table.isempty(lines) then
 		TRP3_RegisterListEmpty:Show();
 	end
 
@@ -984,7 +1251,72 @@ function refreshList()
 	TRP3_RegisterListContainer.ScrollView:SetDataProvider(provider, ScrollBoxConstants.RetainScrollPosition);
 end
 
+local function StartRegisterListRefreshTask(task, applyResults)
+	activeRefreshTask = task;
+
+	local function PublishResults()
+		if activeRefreshTask ~= task or task:GetState() ~= "finished" then
+			return;
+		end
+
+		activeRefreshTask = nil;
+		hasPublishedSnapshot = true;
+		applyResults(task:GetResults());
+	end
+
+	local function OnStateChanged(_, state)
+		if state == "finished" then
+			PublishResults();
+		end
+	end
+
+	TRP3_RegisterListContainer.RefreshToast:SetTask(task);
+	task.RegisterCallback(TRP3_RegisterListContainer, "OnStateChanged", OnStateChanged);
+	task:Start();
+end
+
+function RefreshRegisterList()
+	local lines;
+	local initializer;
+
+	ResetRegisterListRefreshState();
+
+	TRP3_RegisterListEmpty:Hide();
+	TRP3_RegisterListHeaderActions:Hide();
+
+	if currentMode == MODE_CHARACTER then
+		StartRegisterListRefreshTask(CreateCharacterRefreshTask(), function(results)
+			ApplyCharacterListState(results, table.count(getProfileList()));
+			ApplyRegisterListLines(results, decorateCharacterLine);
+		end);
+		return;
+	elseif currentMode == MODE_PETS then
+		StartRegisterListRefreshTask(CreateCompanionRefreshTask(), function(results)
+			ApplyCompanionListState(results, table.count(getCompanionProfiles()));
+			ApplyRegisterListLines(results, decorateCompanionLine);
+		end);
+		return;
+	elseif currentMode == MODE_IGNORE then
+		lines = getIgnoredLines();
+		initializer = decorateIgnoredLine;
+	end
+
+	ApplyRegisterListLines(lines, initializer);
+	hasPublishedSnapshot = true;
+end
+
 local function changeMode(_, value)
+	-- If the tab hasn't changed then we'll trigger an incremental refresh
+	-- while preserving the current data.
+	if currentMode == value then
+		if hasPublishedSnapshot and not activeRefreshTask then
+			RefreshRegisterList();
+			return;
+		elseif activeRefreshTask then
+			return;
+		end
+	end
+
 	currentMode = value;
 	wipe(selectedIDs);
 	TRP3_RegisterListCharactFilter:Hide();
@@ -997,7 +1329,9 @@ local function changeMode(_, value)
 		TRP3_RegisterListPetFilter:Show();
 		TRP3_RegisterListHeaderGuild:SetText(loc.REG_LIST_PET_OWNER);
 	end
-	refreshList();
+	UpdateRegisterListHeaders();
+	ClearRegisterListSnapshot();
+	RefreshRegisterList();
 	TRP3_Addon:TriggerEvent(Events.NAVIGATION_TUTORIAL_REFRESH, REGISTER_LIST_PAGEID);
 end
 
@@ -1060,13 +1394,6 @@ end
 TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, function()
 	createTutorialStructure();
 
-	-- To try, but I'm afraid for performances ...
-	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_DATA_UPDATED, function(_, unitID, _, dataType)
-		if TRP3_MainFrame:IsShown() and getCurrentPageID() == REGISTER_LIST_PAGEID and unitID ~= Globals.player_id and (not dataType or dataType == "characteristics") then
-			refreshList();
-		end
-	end);
-
 	TRP3_API.RegisterCallback(TRP3_Addon, Events.REGISTER_PROFILE_DELETED, function(_, profileID)
 		if profileID then
 			selectedIDs[profileID] = nil;
@@ -1082,7 +1409,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 			wipe(selectedIDs);
 		end
 		if getCurrentPageID() == REGISTER_LIST_PAGEID then
-			refreshList();
+			RefreshRegisterList();
 		end
 	end);
 
@@ -1106,22 +1433,36 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		local self = TRP3_RegisterListContainer;
 
 		local scrollBoxAnchorsWithBar = {
-			AnchorUtil.CreateAnchor("TOP", self.Header, "BOTTOM", 0, -3),
-			AnchorUtil.CreateAnchor("LEFT", self, "LEFT", 16, 0),
-			AnchorUtil.CreateAnchor("RIGHT", self, "RIGHT", -16, 0),
-			AnchorUtil.CreateAnchor("BOTTOM", self, "BOTTOM", 0, 88),
+			AnchorUtil.CreateAnchor("TOP", self.Header, "BOTTOM", 0, 0),
+			AnchorUtil.CreateAnchor("LEFT", self, "LEFT", 5, 0),
+			AnchorUtil.CreateAnchor("RIGHT", self.ScrollBar, "LEFT", -5, 0),
+			AnchorUtil.CreateAnchor("BOTTOM", self, "BOTTOM", 0, 90),
+		};
+
+		local scrollBoxAnchorsWithoutBar = {
+			scrollBoxAnchorsWithBar[1],
+			scrollBoxAnchorsWithBar[2],
+			AnchorUtil.CreateAnchor("RIGHT", self, "RIGHT", -5, 0),
+			scrollBoxAnchorsWithBar[4],
 		};
 
 		self.ScrollView = CreateScrollBoxListLinearView();
 		ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
-		ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, scrollBoxAnchorsWithBar, scrollBoxAnchorsWithBar);
+		ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, scrollBoxAnchorsWithBar, scrollBoxAnchorsWithoutBar);
+		ScrollUtil.RegisterAlternateRowBehavior(self.ScrollBox, function(frame, isAlternateRow)
+			if isAlternateRow then
+				frame.Background:SetVertexColor(0.35, 0.25, 0.15, 0.75);
+			else
+				frame.Background:SetVertexColor(0.35, 0.25, 0.15, 0.6);
+			end
+		end);
 	end
 
 	TRP3_RegisterListFilterCharactNotes:SetChecked(false);
-	TRP3_RegisterListFilterCharactName:SetScript("OnEnterPressed", refreshList);
-	TRP3_RegisterListFilterCharactGuild:SetScript("OnEnterPressed", refreshList);
-	TRP3_RegisterListFilterCharactRealm:SetScript("OnClick", refreshList);
-	TRP3_RegisterListFilterCharactNotes:SetScript("OnClick", refreshList);
+	TRP3_RegisterListFilterCharactName:SetScript("OnEnterPressed", function() RefreshRegisterList(); end);
+	TRP3_RegisterListFilterCharactGuild:SetScript("OnEnterPressed", function() RefreshRegisterList(); end);
+	TRP3_RegisterListFilterCharactRealm:SetScript("OnClick", function() RefreshRegisterList(); end);
+	TRP3_RegisterListFilterCharactNotes:SetScript("OnClick", function() RefreshRegisterList(); end);
 	TRP3_RegisterListCharactFilterButton:SetScript("OnClick", function(_, button)
 		if button == "RightButton" then
 			TRP3_RegisterListFilterCharactName:SetText("");
@@ -1129,7 +1470,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 			TRP3_RegisterListFilterCharactRealm:SetChecked(true);
 			TRP3_RegisterListFilterCharactNotes:SetChecked(false);
 		end
-		refreshList();
+			RefreshRegisterList();
 	end)
 	setTooltipForSameFrame(TRP3_RegisterListCharactFilterButton, "RIGHT", 0, 5, loc.REG_LIST_FILTERS, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_LIST_FILTERS_APPLY)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_FILTERS_CLEAR));
@@ -1141,23 +1482,20 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_RegisterListHeaderRealm:SetText(loc.REG_REALM);
 	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListFilterCharactName, TRP3_RegisterListFilterCharactGuild});
 
-	TRP3_RegisterListPetFilterName:SetScript("OnEnterPressed", refreshList);
-	TRP3_RegisterListPetFilterType:SetScript("OnEnterPressed", refreshList);
-	TRP3_RegisterListPetFilterOwner:SetScript("OnEnterPressed", refreshList);
+	TRP3_RegisterListPetFilterName:SetScript("OnEnterPressed", function() RefreshRegisterList(); end);
+	TRP3_RegisterListPetFilterOwner:SetScript("OnEnterPressed", function() RefreshRegisterList(); end);
 	TRP3_RegisterListPetFilterButton:SetScript("OnClick", function(_, button)
 		if button == "RightButton" then
 			TRP3_RegisterListPetFilterName:SetText("");
-			TRP3_RegisterListPetFilterType:SetText("");
 			TRP3_RegisterListPetFilterOwner:SetText("");
 		end
-		refreshList();
+		RefreshRegisterList();
 	end)
 	setTooltipForSameFrame(TRP3_RegisterListPetFilterButton, "RIGHT", 0, 5, loc.REG_LIST_FILTERS, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_LIST_FILTERS_APPLY)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_LIST_FILTERS_CLEAR));
 	TRP3_RegisterListPetFilterNameText:SetText(loc.REG_LIST_PET_NAME);
-	TRP3_RegisterListPetFilterTypeText:SetText(loc.REG_LIST_PET_TYPE);
 	TRP3_RegisterListPetFilterOwnerText:SetText(loc.REG_LIST_PET_OWNER);
-	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListPetFilterName, TRP3_RegisterListPetFilterType, TRP3_RegisterListPetFilterOwner});
+	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListPetFilterName, TRP3_RegisterListPetFilterOwner});
 
 	TRP3_RegisterListHeaderNameTT:SetScript("OnClick", function() switchSorting("Name"); end);
 	TRP3_RegisterListHeaderRelationsTT:SetScript("OnClick", function() switchSorting("Info"); end);

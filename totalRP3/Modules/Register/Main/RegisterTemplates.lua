@@ -154,3 +154,136 @@ function TRP3_RegisterInfoSwatchLineMixin:SetValueColor(color)
 		self.Swatch:Hide();
 	end
 end
+
+TRP3_RegisterListRefreshToastMixin = {};
+
+function TRP3_RegisterListRefreshToastMixin:OnLoad()
+	self.task = nil;
+	self.callbacks = TRP3_API.InitCallbackRegistry(self);
+	self.timerMap = TimerUtil.CreateTimedSignalCallbackMap();
+	self.shownAt = 0;
+
+	self.showSignal = self.timerMap:RegisterCallback(function() self:PlayShowAnimation(); end);
+	self.hideSignal = self.timerMap:RegisterCallback(function() self:PlayHideAnimation(); end);
+
+	self.AnimOut:SetScript("OnFinished", function() self:OnHideAnimationFinished(); end);
+	self.Border:SetVertexColor(TRP3_BACKDROP_COLOR_CREAMY_BROWN:GetRGB());
+end
+
+function TRP3_RegisterListRefreshToastMixin:OnShow()
+	ResizeLayoutMixin.OnShow(self);
+
+	if self.task and self.task:GetState() == "running" then
+		self.shownAt = GetTime();
+	end
+end
+
+function TRP3_RegisterListRefreshToastMixin:OnHideAnimationFinished()
+	self:Hide();
+end
+
+---@param _progress TRP3.RegisterListRefreshProgress
+function TRP3_RegisterListRefreshToastMixin:OnTaskProgressChanged(_progress)
+	self:UpdateProgress();
+end
+
+---@param state TRP3.RegisterListRefreshTaskState
+function TRP3_RegisterListRefreshToastMixin:OnTaskStateChanged(state)
+	if state == "running" then
+		self:OnTaskStarted();
+	elseif state == "finished" or state == "cancelled" then
+		self:OnTaskFinished();
+	end
+end
+
+function TRP3_RegisterListRefreshToastMixin:OnTaskStarted()
+	self:UpdateProgress();
+	self:BeginShow();
+end
+
+function TRP3_RegisterListRefreshToastMixin:OnTaskFinished()
+	self:UpdateProgress();
+	self:BeginHide();
+end
+
+function TRP3_RegisterListRefreshToastMixin:ClearTask()
+	if self.task then
+		self.task.UnregisterAllCallbacks(self);
+	end
+
+	self.timerMap:CancelSignal(self.showSignal);
+	self.timerMap:CancelSignal(self.hideSignal);
+	self.task = nil;
+	self:Hide();
+
+	self:UpdateProgress();
+end
+
+---@param task TRP3.RegisterListRefreshTask
+function TRP3_RegisterListRefreshToastMixin:SetTask(task)
+	self:ClearTask();
+
+	self.task = task;
+
+	TRP3_API.RegisterCallback(task, "OnStateChanged", self.OnTaskStateChanged, self);
+	TRP3_API.RegisterCallback(task, "OnProgressChanged", self.OnTaskProgressChanged, self);
+end
+
+---@private
+function TRP3_RegisterListRefreshToastMixin:BeginShow()
+	self.timerMap:CancelSignal(self.hideSignal);
+	self.AnimOut:Stop();
+
+	if not self:IsShown() then
+		self.timerMap:SignalAfter(self.showSignal, self.showDelay);
+	end
+end
+
+---@private
+function TRP3_RegisterListRefreshToastMixin:BeginHide()
+	self.timerMap:CancelSignal(self.showSignal);
+
+	if self:IsShown() then
+		self.timerMap:SignalAt(self.hideSignal, self.shownAt + self.minimumVisibleDuration);
+	else
+		self:OnHideAnimationFinished();
+	end
+end
+
+---@private
+function TRP3_RegisterListRefreshToastMixin:PlayShowAnimation()
+	if self.task and self.task:GetState() == "running" and not self:IsShown() then
+		self.AnimIn:Play();
+		self:Show();
+	end
+end
+
+---@private
+function TRP3_RegisterListRefreshToastMixin:PlayHideAnimation()
+	if self:IsShown() then
+		self.AnimOut:Play();
+	end
+end
+
+---@private
+function TRP3_RegisterListRefreshToastMixin:UpdateProgress()
+	local state;
+
+	if self.task ~= nil then
+		state = self.task:GetState();
+	end
+
+	-- SetOnUpdateMode is required to flush hidden status bar values;
+	-- interpolated updates can continue from stale rendered value if a
+	-- SetValue call without interpolation is made while the bar isn't visible.
+
+	if state == nil or state == "pending" then
+		self.ProgressBar:SetOnUpdateMode(Enum.OnUpdateMode.RunOnce);
+		self.ProgressBar:SetValue(0, Enum.StatusBarInterpolation.Immediate);
+	else
+		self.ProgressBar:SetOnUpdateMode(state == "running" and Enum.OnUpdateMode.RunAlways or Enum.OnUpdateMode.RunWhenVisible);
+		local progress = self.task:GetProgress();
+		local value = (progress.total == 0) and 1 or progress.searched / progress.total;
+		self.ProgressBar:SetValue(value, Enum.StatusBarInterpolation.ExponentialEaseOut);
+	end
+end

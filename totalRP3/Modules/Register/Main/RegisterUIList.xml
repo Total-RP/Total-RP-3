@@ -8,7 +8,7 @@
 		<Size y="28"/>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture alphaMode="BLEND" file="Interface\ACHIEVEMENTFRAME\UI-Achievement-Title">
+				<Texture parentKey="Background" file="Interface\ACHIEVEMENTFRAME\UI-Achievement-Title">
 					<Anchors>
 						<Anchor point="TOPLEFT" y="-1"/>
 						<Anchor point="BOTTOMRIGHT" y="1"/>
@@ -61,11 +61,14 @@
 				<Anchors>
 					<Anchor point="LEFT" relativeKey="$parent.Name"/>
 					<Anchor point="RIGHT" relativeKey="$parent.Flags"/>
-					<Anchor point="TOP"/>
-					<Anchor point="BOTTOM"/>
+					<Anchor point="TOP" relativeKey="$parent.Background"/>
+					<Anchor point="BOTTOM" relativeKey="$parent.Background"/>
 				</Anchors>
-				<HighlightTexture alphaMode="ADD" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar">
-					<TexCoords bottom="0" left="0.25" top="1" right="1" />
+				<HighlightTexture alphaMode="ADD" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar-Blue" alpha="0.75">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.$parent.Background"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.$parent.Background"/>
+					</Anchors>
 				</HighlightTexture>
 			</Button>
 			<Button parentKey="ClickFlags">
@@ -168,7 +171,7 @@
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString name="TRP3_RegisterListEmpty" parentKey="Empty" inherits="GameFontHighlightLarge" justifyH="LEFT" wordwrap="false" text="[EMPTY]">
+						<FontString name="TRP3_RegisterListEmpty" parentKey="Empty" inherits="GameFontHighlightLarge" justifyH="LEFT" wordwrap="false">
 							<Size y="10"/>
 							<Anchors>
 								<Anchor point="CENTER" y="30"/>
@@ -185,65 +188,53 @@
 						</Anchors>
 					</Frame>
 					<Frame name="TRP3_RegisterListHeader" parentKey="Header">
-						<Size x="0" y="22" />
+						<Size y="30"/>
 						<Anchors>
-							<Anchor point="TOPLEFT" x="15" y="-15" />
-							<Anchor point="TOPRIGHT" x="-10" y="-15" />
+							<Anchor point="TOPLEFT" x="5" y="-5" />
+							<Anchor point="TOPRIGHT" x="-5" y="-5" />
 						</Anchors>
 						<Layers>
 							<Layer level="BACKGROUND">
-								<Texture alphaMode="BLEND" file="Interface\ACHIEVEMENTFRAME\UI-Achievement-Title">
-									<Size x="0" y="23" />
-									<Anchors>
-										<Anchor point="LEFT" x="0" y="0" />
-										<Anchor point="RIGHT" x="0" y="0" />
-									</Anchors>
-									<TexCoords top="0.0" bottom="0.335" left="0" right="1" />
+								<Texture file="Interface\ACHIEVEMENTFRAME\UI-Achievement-Title" setAllPoints="true">
+									<TexCoords top="0" bottom="0.335" left="0" right="1"/>
 								</Texture>
 							</Layer>
 							<Layer level="OVERLAY">
-								<FontString name="TRP3_RegisterListHeaderFlags" parentKey="Flags" inherits="GameFontNormal" justifyH="CENTER" text="[Flags ?]">
-									<Size x="134" y="10" />
+								<FontString name="TRP3_RegisterListHeaderFlags" parentKey="Flags" inherits="GameFontHighlight" justifyH="CENTER">
+									<Size x="134"/>
 									<Anchors>
-										<Anchor point="RIGHT" x="-15" y="0" />
+										<Anchor point="RIGHT" x="-40" y="0" />
 									</Anchors>
-									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
-								<FontString name="TRP3_RegisterListHeaderRealm" parentKey="Realm" inherits="GameFontNormal" justifyH="LEFT" text="[Characters realm]">
-									<Size x="110" y="10" />
+								<FontString name="TRP3_RegisterListHeaderRealm" parentKey="Realm" inherits="GameFontHighlight" justifyH="LEFT">
+									<Size x="110"/>
 									<Anchors>
 										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderFlags" />
 									</Anchors>
-									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
-								<FontString name="TRP3_RegisterListHeaderGuild" parentKey="Guild" inherits="GameFontNormal" justifyH="LEFT" text="[Characters guild]">
-									<Size x="110" y="10" />
+								<FontString name="TRP3_RegisterListHeaderGuild" parentKey="Guild" inherits="GameFontHighlight" justifyH="LEFT">
+									<Size x="110"/>
 									<Anchors>
 										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderRealm" />
 									</Anchors>
-									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
-								<FontString name="TRP3_RegisterListHeaderTime" parentKey="Time" inherits="GameFontNormal" justifyH="LEFT" text="[Time ?]">
-									<Size x="110" y="10" />
+								<FontString name="TRP3_RegisterListHeaderTime" parentKey="Time" inherits="GameFontHighlight" justifyH="LEFT">
+									<Size x="110"/>
 									<Anchors>
 										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderGuild" />
 									</Anchors>
-									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
-								<FontString name="TRP3_RegisterListHeaderRelations" parentKey="Info" inherits="GameFontNormal" justifyH="LEFT" text="[Relations ?]">
-									<Size x="110" y="10" />
+								<FontString name="TRP3_RegisterListHeaderRelations" parentKey="Info" inherits="GameFontHighlight" justifyH="LEFT">
+									<Size x="110"/>
 									<Anchors>
 										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderTime" />
 									</Anchors>
-									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
-								<FontString name="TRP3_RegisterListHeaderName" parentKey="Name" inherits="GameFontNormal" justifyH="LEFT" text="[Characters name]">
-									<Size x="0" y="10" />
+								<FontString name="TRP3_RegisterListHeaderName" parentKey="Name" inherits="GameFontHighlight" justifyH="LEFT">
 									<Anchors>
 										<Anchor point="LEFT" x="30" y="0" />
 										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderRelations" />
 									</Anchors>
-									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
 							</Layer>
 						</Layers>
@@ -337,6 +328,12 @@
 							<Anchor point="BOTTOMRIGHT" x="-16" y="88"/>
 						</Anchors>
 					</EventFrame>
+					<Frame parentKey="RefreshToast" inherits="TRP3_RegisterListRefreshToastTemplate" frameLevel="1000" fixedFrameLevel="true">
+						<Anchors>
+							<Anchor point="RIGHT" x="-35"/>
+							<Anchor point="BOTTOM" relativeKey="$parent.ScrollBox" y="-5"/>
+						</Anchors>
+					</Frame>
 
 					<!-- Characters filters -->
 					<Frame name="TRP3_RegisterListCharactFilter" parentKey="CharacterFilters" inherits="TRP3_GroupBoxTemplate">
@@ -396,16 +393,10 @@
 									<Anchor point="LEFT" x="25" y="0" />
 								</Anchors>
 							</EditBox>
-							<EditBox name="TRP3_RegisterListPetFilterType" parentKey="Type" inherits="TRP3_TitledEditBox">
+							<EditBox name="TRP3_RegisterListPetFilterOwner" parentKey="Owner" inherits="TRP3_TitledEditBox">
 								<Size x="125" y="20" />
 								<Anchors>
 									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterListPetFilterName" />
-								</Anchors>
-							</EditBox>
-							<EditBox name="TRP3_RegisterListPetFilterOwner" parentKey="Master" inherits="TRP3_TitledEditBox">
-								<Size x="125" y="20" />
-								<Anchors>
-									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterListPetFilterType" />
 								</Anchors>
 							</EditBox>
 							<Button name="TRP3_RegisterListPetFilterButton" parentKey="Button" inherits="TRP3_SearchButton">

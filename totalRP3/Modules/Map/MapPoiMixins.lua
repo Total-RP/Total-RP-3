@@ -45,34 +45,6 @@ local GroupedCoalescedMapPinMixin = {};
 local WHITE = TRP3_API.Colors.White;
 local TOOLTIP_CATEGORY_SEPARATOR = [[|TInterface\Common\UI-TooltipDivider-Transparent:8:128:0:0:8:8:0:128:0:8:255:255:255|t]];
 
---- Custom sorting function that compares entries.
-local function sortMarkerEntries(a, b)
-	local categoryA = a.categoryPriority or math.huge;
-	local categoryB = b.categoryPriority or math.huge;
-
-	if categoryA == math.huge and type(categoryB) == "string" then
-		categoryA = "";
-	elseif categoryB == math.huge and type(categoryA) == "string" then
-		categoryB = "";
-	end
-
-	if categoryA ~= categoryB then
-		return categoryA < categoryB;
-	end
-
-	local orderA = a.sortOrder or 0;
-	local orderB = b.sortOrder or 0;
-
-	if orderA ~= orderB then
-		return orderA < orderB;
-	end
-
-	local nameA = a.sortName or "";
-	local nameB = b.sortName or "";
-
-	return nameA < nameB;
-end
-
 local function ExecuteOnAllPins(map, func)
 	if map.ExecuteOnAllPins then
 		map:ExecuteOnAllPins(func);
@@ -110,6 +82,31 @@ function GroupedCoalescedMapPinMixin:GetMouseOverPinsByTemplate(pinTemplate)
 end
 
 function GroupedCoalescedMapPinMixin:SortPins(pins)
+	--- Custom sorting function that compares entries.
+	local function sortMarkerEntries(a, b)
+		local categoryA = a.categoryPriority or math.huge;
+		local categoryB = b.categoryPriority or math.huge;
+
+		if categoryA == math.huge and type(categoryB) == "string" then
+			categoryA = "";
+		elseif categoryB == math.huge and type(categoryA) == "string" then
+			categoryB = "";
+		end
+
+		if categoryA ~= categoryB then
+			return categoryA < categoryB;
+		end
+
+		local orderA = a.sortOrder or 0;
+		local orderB = b.sortOrder or 0;
+
+		if orderA ~= orderB then
+			return orderA < orderB;
+		end
+
+		return (a.sortName or "") < (b.sortName or "");
+	end
+
 	table.sort(pins, sortMarkerEntries);
 end
 

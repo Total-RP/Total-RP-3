@@ -69,7 +69,7 @@ local function GetBattleNetCharacterID(gameAccountInfo)
 	realmName = (realmName ~= "" and realmName or GetNormalizedRealmName());
 	ambiguatedName = Ambiguate(string.join("-", characterName, realmName), "none");
 
-	if string.find(ambiguatedName, UNKNOWNOBJECT, 1, true) == 1 then
+	if string.startswith(ambiguatedName, UNKNOWNOBJECT) then
 		ambiguatedName = nil;
 	end
 
@@ -236,7 +236,7 @@ local function CreateOpenCharacterProfileButton(menuDescription, contextData)
 
 		if UnitExists(unit) then
 			TRP3_API.slash.openProfile(unit);
-		elseif not string.find(fullName, UNKNOWNOBJECT, 1, true) then
+		elseif not string.contains(fullName, UNKNOWNOBJECT) then
 			TRP3_API.slash.openProfile(fullName);
 		end
 	end
