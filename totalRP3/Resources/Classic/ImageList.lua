@@ -3192,10 +3192,10 @@ function TRP3_API.utils.resources.getImageList(filter)
 	if filter == nil or filter:len() == 0 then
 		return IMAGES;
 	end
-	filter = filter:lower();
+	local matcher = TRP3_StringUtil.CreateMatcher(filter);
 	local newList = {};
 	for _, image in pairs(IMAGES) do
-		if string.find(image.url:lower(), filter, 1, true) then
+		if matcher:Matches(image.url) then
 			tinsert(newList, image);
 		end
 	end

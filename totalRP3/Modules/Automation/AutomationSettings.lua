@@ -198,11 +198,7 @@ function TRP3_AutomationSettingsMixin:SetupProfileDropdownMenu(menuDescription)
 	local profiles = TRP3_AutomationUtil.GetAllProfiles();
 	local currentProfileName = TRP3_AutomationUtil.GetCurrentProfile();
 
-	local function SortCompareProfiles(a, b)
-		return TRP3_StringUtil.SortCompareStrings(a, b);
-	end
-
-	table.sort(profiles, SortCompareProfiles);
+	table.sort(profiles, TRP3_StringUtil.SortCompareStrings);
 
 	local function IsSelected(profileName)
 		return profileName == currentProfileName;

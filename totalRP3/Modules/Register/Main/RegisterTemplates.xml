@@ -33,4 +33,73 @@
 			<OnMouseDown method="OnMouseDown"/>
 		</Scripts>
 	</Frame>
+
+	<StatusBar name="TRP3_RegisterListRadialProgressBar" minValue="0" maxValue="1" defaultValue="0.5" renderMode="Radial" virtual="true">
+		<Size x="21" y="21"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="ProgressBarBackground" atlas="Professions-Specialization-Node-EmptyPath" useAtlasSize="false">
+					<Size x="28" y="28"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<BarTexture parentKey="Ring" file="Interface\Garrison\orderhalltalents-timer-fill" alpha="0.8">
+			<RadialProgressBar startOffset="0.5"/>
+		</BarTexture>
+	</StatusBar>
+
+	<Frame name="TRP3_RegisterListRefreshToastTemplate" mixin="TRP3_RegisterListRefreshToastMixin" inherits="ResizeLayoutFrame" virtual="true" enableMouse="true">
+		<Size x="1" y="1"/>
+		<KeyValues>
+			<KeyValue key="showDelay" value="0.25" type="number"/>
+			<KeyValue key="minimumVisibleDuration" value="0.65" type="number"/>
+			<KeyValue key="heightPadding" value="15" type="number"/>
+			<KeyValue key="widthPadding" value="30" type="number"/>
+		</KeyValues>
+		<Frames>
+			<StatusBar parentKey="ProgressBar" inherits="TRP3_RegisterListRadialProgressBar">
+				<Anchors>
+					<Anchor point="LEFT" x="15"/>
+				</Anchors>
+			</StatusBar>
+		</Frames>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background" inherits="TRP3_UIFrameSmallFillTextureTemplate">
+					<KeyValues>
+						<KeyValue key="ignoreInLayout" value="true" type="boolean"/>
+					</KeyValues>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture parentKey="Border" inherits="TRP3_UIFrameSmallEdgeTextureTemplate">
+					<KeyValues>
+						<KeyValue key="ignoreInLayout" value="true" type="boolean"/>
+					</KeyValues>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Text" inherits="GameFontHighlight" text="TRP3_L_REG_LIST_REFRESHING">
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent.ProgressBar" relativePoint="RIGHT" x="5"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Animations>
+			<AnimationGroup parentKey="AnimIn" setToFinalAlpha="true">
+				<Alpha fromAlpha="0" toAlpha="1" duration="0.15" smoothing="IN"/>
+			</AnimationGroup>
+			<AnimationGroup parentKey="AnimOut" setToFinalAlpha="true" inherits="VisibleWhilePlayingAnimGroupTemplate">
+				<Alpha fromAlpha="1" toAlpha="0" duration="0.15" smoothing="OUT"/>
+			</AnimationGroup>
+		</Animations>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+		</Scripts>
+	</Frame>
 </Ui>
