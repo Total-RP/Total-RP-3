@@ -86,6 +86,7 @@ Core\Color.lua
 Core\ColorData.lua
 Core\CVarUtil.lua
 Core\FunctionUtil.lua
+Core\SortUtil.lua
 Core\StringUtil.lua
 Core\EncodingUtil.lua
 Core\BindingUtil.lua
