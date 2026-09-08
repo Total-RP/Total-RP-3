@@ -94,7 +94,7 @@
 	</Frame>
 
 	<StatusBar name="TRP3_IconBrowserProgressBar" minValue="0" maxValue="1" virtual="true">
-		<Size x="250" y="20"/>
+		<Size x="250" y="22"/>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture parentKey="Background">
