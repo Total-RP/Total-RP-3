@@ -92,6 +92,7 @@ Core\BindingUtil.lua
 Core\RegionUtil.lua
 Core\MarkupUtil.lua
 Core\CompanionUtil.lua
+Core\CompanionProviderJournal.lua [AllowLoadGameType mainline, mists, wrath]
 Core\Vanilla\CompanionUtilOverrides.lua
 Core\Utils.lua
 Core\ProfileUtil.lua
