@@ -1,16 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
--- This should be converted to an [AllowLoadGameType ...] directive when supported
--- on all clients.
---
--- While the collections journal wasn't introduced until Mists, it was added
--- into Cataclysm and then Wrath (CN) as part of Classic.
-
-if LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_WRATH_OF_THE_LICH_KING then
-	return;
-end
-
 local cachedSummonedMountID = nil;
 local staticCompanionPetsByID = {};
 local staticCompanionPetsByCreatureID = {};
@@ -38,15 +28,17 @@ local function SetSummonedCompanionPetID(petID)
 	TRP3_Companions.summonedPetID = petID;
 end
 
-function TRP3_CompanionUtil.CanRenameCompanionPets()
+local CompanionProviderStatic = {};
+
+function CompanionProviderStatic:CanRenameCompanionPets()
 	return false;
 end
 
-function TRP3_CompanionUtil.GetCompanionPetIDs()
+function CompanionProviderStatic:GetCompanionPetIDs()
 	return GetKeysArray(staticCompanionPetsByID);
 end
 
-function TRP3_CompanionUtil.GetCompanionPetInfo(petID)
+function CompanionProviderStatic:GetCompanionPetInfo(petID)
 	local staticPetInfo = staticCompanionPetsByID[petID];
 
 	if not staticPetInfo then
@@ -64,7 +56,7 @@ function TRP3_CompanionUtil.GetCompanionPetInfo(petID)
 	};
 end
 
-function TRP3_CompanionUtil.IsCompanionPetUnit(unitToken)
+function CompanionProviderStatic:IsCompanionPetUnit(unitToken)
 	if UnitPlayerControlled(unitToken) then
 		local unitGUID = UnitGUID(unitToken);
 		local guidType, _, _, _, _, creatureID = string.split("-", unitGUID or "", 7);
@@ -76,7 +68,7 @@ function TRP3_CompanionUtil.IsCompanionPetUnit(unitToken)
 	end
 end
 
-function TRP3_CompanionUtil.GetCompanionPetUnitName(unitToken)
+function CompanionProviderStatic:GetCompanionPetUnitName(unitToken)
 	-- In Classic flavors using static data rather than the pet journal, we
 	-- can't localize the summoned name of creatures ahead of time.
 	--
@@ -91,17 +83,17 @@ function TRP3_CompanionUtil.GetCompanionPetUnitName(unitToken)
 	end
 end
 
-function TRP3_CompanionUtil.GetSummonedCompanionPetID()
+function CompanionProviderStatic:GetSummonedCompanionPetID()
 	if TRP3_Companions then
 		return TRP3_Companions.summonedPetID;
 	end
 end
 
-function TRP3_CompanionUtil.GetMountIDs()
+function CompanionProviderStatic:GetMountIDs()
 	return GetKeysArray(staticMountsByID);
 end
 
-function TRP3_CompanionUtil.GetMountInfo(mountID)
+function CompanionProviderStatic:GetMountInfo(mountID)
 	local staticMountInfo = staticMountsByID[mountID];
 
 	if not staticMountInfo then
@@ -118,7 +110,7 @@ function TRP3_CompanionUtil.GetMountInfo(mountID)
 	};
 end
 
-function TRP3_CompanionUtil.GetMountSpellID(mountID)
+function CompanionProviderStatic:GetMountSpellID(mountID)
 	local staticMountInfo = staticMountsByID[mountID];
 
 	if staticMountInfo then
@@ -144,14 +136,14 @@ local function GetUnitAuraSpells(unitToken, filter)
 	return appliedAuras;
 end
 
-function TRP3_CompanionUtil.GetSummonedMountID()
+function CompanionProviderStatic:GetSummonedMountID()
 	if not IsMounted() then
 		return nil;
 	end
 
 	-- Is the last mount that we tested still the current summon?
 	if cachedSummonedMountID ~= nil then
-		local spellID = TRP3_CompanionUtil.GetMountSpellID(cachedSummonedMountID);
+		local spellID = self:GetMountSpellID(cachedSummonedMountID);
 
 		if not C_UnitAuras.GetPlayerAuraBySpellID(spellID) then
 			cachedSummonedMountID = nil;
@@ -162,8 +154,8 @@ function TRP3_CompanionUtil.GetSummonedMountID()
 	if cachedSummonedMountID == nil then
 		local appliedAuras = GetUnitAuraSpells("player", "HELPFUL|PLAYER|CANCELABLE");
 
-		for _, mountID in ipairs(TRP3_CompanionUtil.GetMountIDs()) do
-			local spellID = TRP3_CompanionUtil.GetMountSpellID(mountID);
+		for _, mountID in ipairs(self:GetMountIDs()) do
+			local spellID = self:GetMountSpellID(mountID);
 
 			if appliedAuras[spellID] then
 				cachedSummonedMountID = mountID;
@@ -335,4 +327,8 @@ do
 			CompanionStateDriver:RequestLoadSpellData(mountInfo.spellID, OnMountSpellLoaded);
 		end
 	end
+end
+
+function TRP3_CompanionUtil.GetDataProvider()
+	return CompanionProviderStatic;
 end
