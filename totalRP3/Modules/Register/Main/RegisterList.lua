@@ -1263,7 +1263,7 @@ local RegisterListModeConfigurations = {
 local activeRefreshTask;
 local registerListModels = {};
 
-local function ResetRegisterListRefreshState()
+local function CancelActiveRefreshTask()
 	if activeRefreshTask then
 		activeRefreshTask:Cancel();
 		activeRefreshTask = nil;
@@ -1299,14 +1299,14 @@ local function StartRegisterListRefreshTask(task, applyResults)
 		applyResults(task:GetResults());
 	end
 
-	local function OnStateChanged(_, state)
+	local function OnTaskStateChanged(_, state)
 		if state == "finished" then
 			PublishResults();
 		end
 	end
 
 	TRP3_RegisterListContainer.RefreshToast:SetTask(task);
-	task.RegisterCallback(TRP3_RegisterListContainer, "OnStateChanged", OnStateChanged);
+	task.RegisterCallback(TRP3_RegisterListContainer, "OnStateChanged", OnTaskStateChanged);
 	task:Start();
 end
 
@@ -1322,7 +1322,7 @@ local function PublishRegisterListModel(mode, results)
 end
 
 function RefreshRegisterList()
-	ResetRegisterListRefreshState();
+	CancelActiveRefreshTask();
 
 	TRP3_RegisterListEmpty:Hide();
 	TRP3_RegisterListHeaderActions:Hide();
@@ -1331,11 +1331,11 @@ function RefreshRegisterList()
 	local configuration = RegisterListModeConfigurations[mode];
 	local task = configuration.CreateRefreshTask();
 
-	local function OnTaskComplete(results)
+	local function OnTaskResultsReady(results)
 		PublishRegisterListModel(mode, results);
 	end
 
-	StartRegisterListRefreshTask(task, OnTaskComplete);
+	StartRegisterListRefreshTask(task, OnTaskResultsReady);
 end
 
 local function changeMode(_, value)
@@ -1371,7 +1371,7 @@ local function changeMode(_, value)
 	-- the refresh runs in the background.
 
 	UpdateRegisterListHeaders();
-	ResetRegisterListRefreshState();
+	CancelActiveRefreshTask();
 
 	local mode = currentMode;
 	local configuration = RegisterListModeConfigurations[mode];
