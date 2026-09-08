@@ -126,6 +126,12 @@ stds.wow = {
 			},
 		},
 
+		math = {
+			fields = {
+				"clamp",
+			},
+		},
+
 		string = {
 			fields = {
 				"concat",
@@ -308,6 +314,12 @@ stds.wow = {
 		C_HousingNeighborhood = {
 			fields = {
 				"GetNeighborhoodMapData",
+			},
+		},
+
+		C_Intl = {
+			fields = {
+				"FoldCase",
 			},
 		},
 
@@ -667,6 +679,7 @@ stds.wow = {
 		"GetEditBoxMetatable",
 		"GetFileIDFromPath",
 		"GetFrameMetatable",
+		"GetGameTime",
 		"GetGuildInfo",
 		"GetInventoryItemTexture",
 		"GetInventorySlotInfo",
