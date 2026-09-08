@@ -651,8 +651,9 @@ local function CreateCharacterLineBuilder()
 	end;
 end
 
-local function ApplyCharacterListState(characterLines, fullSize)
+local function ApplyCharacterListState(characterLines)
 	local lineSize = #characterLines;
+	local fullSize = table.count(getProfileList());
 	if lineSize == 0 then
 		if fullSize == 0 then
 			TRP3_RegisterListEmpty:SetText(loc.REG_LIST_CHAR_EMPTY);
@@ -931,8 +932,9 @@ local function CreateCompanionLineBuilder()
 	end
 end
 
-local function ApplyCompanionListState(companionLines, fullSize)
+local function ApplyCompanionListState(companionLines)
 	local lineSize = #companionLines;
+	local fullSize = table.count(getCompanionProfiles());
 	if lineSize == 0 then
 		if fullSize == 0 then
 			TRP3_RegisterListEmpty:SetText(loc.REG_LIST_PETS_EMPTY);
@@ -1016,8 +1018,8 @@ local function decorateIgnoredLine(line, unitID)
 	setTooltipForSameFrame(line.ClickFlags);
 end
 
-local function getIgnoredLines()
-	if TableIsEmpty(getIgnoredList()) then
+local function ApplyIgnoredListState(ignoredLines)
+	if #ignoredLines == 0 then
 		TRP3_RegisterListEmpty:SetText(loc.REG_LIST_IGNORE_EMPTY);
 	end
 	TRP3_RegisterListHeaderName:SetText(loc.REG_PLAYER);
@@ -1031,7 +1033,9 @@ local function getIgnoredLines()
 	TRP3_RegisterListHeaderTimeTT:Disable();
 	TRP3_RegisterListHeaderGuildTT:Disable();
 	TRP3_RegisterListHeaderRealmTT:Disable();
+end
 
+local function getIgnoredLines()
 	local ignoredArray = GetKeysArray(getIgnoredList());
 	local sortKeyOptions = {
 		transliterator = TRP3_Transliterators.LettersOnly,
@@ -1219,12 +1223,45 @@ local function CreateCompanionRefreshTask()
 	return CreateRegisterListRefreshTaskFromProfiles(getCompanionProfiles(), CreateCompanionLineBuilder());
 end
 
-local activeRefreshTask;
-local hasPublishedSnapshot = false;
+local function CreateIgnoredRefreshTask()
+	local totalRows = table.count(getIgnoredList());
 
-local function ClearRegisterListLines()
-	TRP3_RegisterListContainer.ScrollView:RemoveDataProvider();
+	-- At present, we don't anticipate ignore lists to be long enough to
+	-- require yields across frames. We only use the task infrastructure to
+	-- simplify integration elsewhere.
+	local function OnUpdate(refreshTask)
+		local lines = getIgnoredLines();
+
+		for _, line in ipairs(lines) do
+			refreshTask:AddResult(line);
+		end
+
+		refreshTask:SetSearched(#lines);
+	end
+
+	return CreateRegisterListRefreshTask(totalRows, OnUpdate);
 end
+
+local RegisterListModeConfigurations = {
+	[MODE_CHARACTER] = {
+		CreateRefreshTask = CreateCharacterRefreshTask,
+		ApplyListState = ApplyCharacterListState,
+		InitializeListElement = decorateCharacterLine,
+	},
+	[MODE_PETS] = {
+		CreateRefreshTask = CreateCompanionRefreshTask,
+		ApplyListState = ApplyCompanionListState,
+		InitializeListElement = decorateCompanionLine,
+	},
+	[MODE_IGNORE] = {
+		CreateRefreshTask = CreateIgnoredRefreshTask,
+		ApplyListState = ApplyIgnoredListState,
+		InitializeListElement = decorateIgnoredLine,
+	},
+};
+
+local activeRefreshTask;
+local registerListModels = {};
 
 local function ResetRegisterListRefreshState()
 	if activeRefreshTask then
@@ -1235,20 +1272,19 @@ local function ResetRegisterListRefreshState()
 	TRP3_RegisterListContainer.RefreshToast:ClearTask();
 end
 
-local function ClearRegisterListSnapshot()
-	ResetRegisterListRefreshState();
-	hasPublishedSnapshot = false;
-	ClearRegisterListLines();
+local function CreateRegisterListModel(results, initializer)
+	return { results = results, initializer = initializer };
 end
 
-local function ApplyRegisterListLines(lines, initializer)
-	if table.isempty(lines) then
+local function ApplyRegisterListModel(model)
+	if table.isempty(model.results) then
 		TRP3_RegisterListEmpty:Show();
+	else
+		TRP3_RegisterListEmpty:Hide();
 	end
 
-	local provider = CreateDataProvider(lines);
-	TRP3_RegisterListContainer.ScrollView:SetElementInitializer("TRP3_RegisterListLine", initializer);
-	TRP3_RegisterListContainer.ScrollView:SetDataProvider(provider, ScrollBoxConstants.RetainScrollPosition);
+	TRP3_RegisterListContainer.ScrollView:SetElementInitializer("TRP3_RegisterListLine", model.initializer);
+	TRP3_RegisterListContainer.ScrollView:SetDataProvider(CreateDataProvider(model.results), ScrollBoxConstants.RetainScrollPosition);
 end
 
 local function StartRegisterListRefreshTask(task, applyResults)
@@ -1260,7 +1296,6 @@ local function StartRegisterListRefreshTask(task, applyResults)
 		end
 
 		activeRefreshTask = nil;
-		hasPublishedSnapshot = true;
 		applyResults(task:GetResults());
 	end
 
@@ -1275,41 +1310,39 @@ local function StartRegisterListRefreshTask(task, applyResults)
 	task:Start();
 end
 
-function RefreshRegisterList()
-	local lines;
-	local initializer;
+local function PublishRegisterListModel(mode, results)
+	local configuration = RegisterListModeConfigurations[mode];
+	local model = CreateRegisterListModel(results, configuration.InitializeListElement);
 
+	registerListModels[mode] = model;
+	if currentMode == mode then
+		configuration.ApplyListState(results);
+		ApplyRegisterListModel(model);
+	end
+end
+
+function RefreshRegisterList()
 	ResetRegisterListRefreshState();
 
 	TRP3_RegisterListEmpty:Hide();
 	TRP3_RegisterListHeaderActions:Hide();
 
-	if currentMode == MODE_CHARACTER then
-		StartRegisterListRefreshTask(CreateCharacterRefreshTask(), function(results)
-			ApplyCharacterListState(results, table.count(getProfileList()));
-			ApplyRegisterListLines(results, decorateCharacterLine);
-		end);
-		return;
-	elseif currentMode == MODE_PETS then
-		StartRegisterListRefreshTask(CreateCompanionRefreshTask(), function(results)
-			ApplyCompanionListState(results, table.count(getCompanionProfiles()));
-			ApplyRegisterListLines(results, decorateCompanionLine);
-		end);
-		return;
-	elseif currentMode == MODE_IGNORE then
-		lines = getIgnoredLines();
-		initializer = decorateIgnoredLine;
+	local mode = currentMode;
+	local configuration = RegisterListModeConfigurations[mode];
+	local task = configuration.CreateRefreshTask();
+
+	local function OnTaskComplete(results)
+		PublishRegisterListModel(mode, results);
 	end
 
-	ApplyRegisterListLines(lines, initializer);
-	hasPublishedSnapshot = true;
+	StartRegisterListRefreshTask(task, OnTaskComplete);
 end
 
 local function changeMode(_, value)
 	-- If the tab hasn't changed then we'll trigger an incremental refresh
 	-- while preserving the current data.
 	if currentMode == value then
-		if hasPublishedSnapshot and not activeRefreshTask then
+		if registerListModels[currentMode] and not activeRefreshTask then
 			RefreshRegisterList();
 			return;
 		elseif activeRefreshTask then
@@ -1329,8 +1362,27 @@ local function changeMode(_, value)
 		TRP3_RegisterListPetFilter:Show();
 		TRP3_RegisterListHeaderGuild:SetText(loc.REG_LIST_PET_OWNER);
 	end
+
+	TRP3_RegisterListContainer.ScrollBox:ScrollToBegin();
+
+	-- Changing tabs always requests an async refresh. If this is the first
+	-- time we've entered a tab, there won't be a model defined - so set an
+	-- empty one up. Otherwise, use the most recent model for the tab while
+	-- the refresh runs in the background.
+
 	UpdateRegisterListHeaders();
-	ClearRegisterListSnapshot();
+	ResetRegisterListRefreshState();
+
+	local mode = currentMode;
+	local configuration = RegisterListModeConfigurations[mode];
+	local model = registerListModels[mode];
+	if model then
+		configuration.ApplyListState(model.results);
+		ApplyRegisterListModel(model);
+	else
+		ApplyRegisterListModel(CreateRegisterListModel({}, configuration.InitializeListElement));
+	end
+
 	RefreshRegisterList();
 	TRP3_Addon:TriggerEvent(Events.NAVIGATION_TUTORIAL_REFRESH, REGISTER_LIST_PAGEID);
 end
