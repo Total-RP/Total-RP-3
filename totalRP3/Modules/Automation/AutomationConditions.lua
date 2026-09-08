@@ -321,3 +321,46 @@ TRP3_AutomationUtil.RegisterCondition({
 		return false;
 	end,
 });
+
+local WeatherTypes = {
+	Clear = { type = Enum.WeatherType.Clear, threshold = 0.25 },
+	Rain = { type = Enum.WeatherType.Rain, threshold = 0.25 },
+	Snow = { type = Enum.WeatherType.Snow, threshold = 0.25 },
+	Sandstorm = { type = Enum.WeatherType.Sandstorm, threshold = 0.25 },
+};
+
+local WeatherTypesByToken = {
+	clear = WeatherTypes.Clear,
+	rain = WeatherTypes.Rain,
+	snow = WeatherTypes.Snow,
+	sandstorm = WeatherTypes.Sandstorm,
+	[C_Intl.FoldCase(L.AUTOMATION_WEATHER_CLEAR)] = WeatherTypes.Clear,
+	[C_Intl.FoldCase(L.AUTOMATION_WEATHER_RAIN)] = WeatherTypes.Rain,
+	[C_Intl.FoldCase(L.AUTOMATION_WEATHER_SNOW)] = WeatherTypes.Snow,
+	[C_Intl.FoldCase(L.AUTOMATION_WEATHER_SANDSTORM)] = WeatherTypes.Sandstorm,
+};
+
+TRP3_AutomationUtil.RegisterCondition({
+	id = "trp3:weather",
+	tokens = { "weather" },
+
+	Evaluate = function(context)
+		local weather = C_Weather.GetCurrentWeather();
+
+		for option in string.gmatch(context.option, "[^/]+") do
+			local normalizedOption = string.trim(C_Intl.FoldCase(option));
+			local weatherType = WeatherTypesByToken[normalizedOption];
+
+			if not weatherType then
+				context:Errorf(L.AUTOMATION_CONDITION_WEATHER_ERROR, context.option);
+				return false;
+			end
+
+			if weather.type == weatherType.type and weather.intensity >= weatherType.threshold then
+				return true;
+			end
+		end
+
+		return false;
+	end,
+});

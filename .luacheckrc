@@ -454,6 +454,12 @@ stds.wow = {
 			},
 		},
 
+		C_Weather = {
+			fields = {
+				"GetCurrentWeather",
+			},
+		},
+
 		CurveConstants = {
 			fields = {
 				"ScaleTo100",
@@ -497,7 +503,16 @@ stds.wow = {
 						"Male",
 						"Female",
 					},
-				}
+				},
+
+				WeatherType = {
+					fields = {
+						"Clear",
+						"Rain",
+						"Sandstorm",
+						"Snow",
+					},
+				},
 			},
 		},
 
