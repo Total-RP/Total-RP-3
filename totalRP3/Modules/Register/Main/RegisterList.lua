@@ -1356,11 +1356,15 @@ local function changeMode(_, value)
 	TRP3_RegisterListPetFilter:Hide();
 	TRP3_RegisterListHeaderGuild:SetText("");
 	if currentMode == MODE_CHARACTER then
+		TRP3_RegisterListContainer.ScrollBoxBottomAttachment:SetPoint("BOTTOM", TRP3_RegisterListCharactFilter, "TOP", 0, 10);
 		TRP3_RegisterListCharactFilter:Show();
 		TRP3_RegisterListHeaderGuild:SetText(loc.REG_GUILD);
 	elseif currentMode == MODE_PETS then
+		TRP3_RegisterListContainer.ScrollBoxBottomAttachment:SetPoint("BOTTOM", TRP3_RegisterListPetFilter, "TOP", 0, 10);
 		TRP3_RegisterListPetFilter:Show();
 		TRP3_RegisterListHeaderGuild:SetText(loc.REG_LIST_PET_OWNER);
+	else
+		TRP3_RegisterListContainer.ScrollBoxBottomAttachment:SetPoint("BOTTOM", 0, 5);
 	end
 
 	TRP3_RegisterListContainer.ScrollBox:ScrollToBegin();
@@ -1488,15 +1492,12 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 			AnchorUtil.CreateAnchor("TOP", self.Header, "BOTTOM", 0, 0),
 			AnchorUtil.CreateAnchor("LEFT", self, "LEFT", 5, 0),
 			AnchorUtil.CreateAnchor("RIGHT", self.ScrollBar, "LEFT", -5, 0),
-			AnchorUtil.CreateAnchor("BOTTOM", self, "BOTTOM", 0, 90),
+			AnchorUtil.CreateAnchor("BOTTOM", self.ScrollBoxBottomAttachment, "BOTTOM", 0, 0),
 		};
 
-		local scrollBoxAnchorsWithoutBar = {
-			scrollBoxAnchorsWithBar[1],
-			scrollBoxAnchorsWithBar[2],
-			AnchorUtil.CreateAnchor("RIGHT", self, "RIGHT", -5, 0),
-			scrollBoxAnchorsWithBar[4],
-		};
+		-- These have to be the same for now, as the fixed offsets on our
+		-- columns don't work well with dynamic width on the box.
+		local scrollBoxAnchorsWithoutBar = scrollBoxAnchorsWithBar;
 
 		-- Padding is used to give a small deadzone in the scrollbox for edge
 		-- fading. This gives us a small amount of feathering for partially

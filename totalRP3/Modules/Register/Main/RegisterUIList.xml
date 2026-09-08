@@ -322,10 +322,14 @@
 						</Frames>
 					</Frame>
 					<Frame parentKey="ScrollBox" inherits="WowScrollBoxList"/>
+					<Frame parentKey="ScrollBoxBottomAttachment">
+						<Size x="1" y="1"/>
+					</Frame>
 					<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
 						<Anchors>
 							<Anchor point="TOP" relativeKey="$parent.Header" relativePoint="BOTTOM" y="-6"/>
-							<Anchor point="BOTTOMRIGHT" x="-16" y="88"/>
+							<Anchor point="RIGHT" x="-16"/>
+							<Anchor point="BOTTOM" relativeKey="$parent.ScrollBoxBottomAttachment" y="10"/>
 						</Anchors>
 					</EventFrame>
 					<Frame parentKey="RefreshToast" inherits="TRP3_RegisterListRefreshToastTemplate" frameLevel="1000" fixedFrameLevel="true">
