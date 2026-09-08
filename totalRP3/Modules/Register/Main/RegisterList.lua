@@ -1498,7 +1498,20 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 			scrollBoxAnchorsWithBar[4],
 		};
 
-		self.ScrollView = CreateScrollBoxListLinearView();
+		-- Padding is used to give a small deadzone in the scrollbox for edge
+		-- fading. This gives us a small amount of feathering for partially
+		-- visible rows, avoiding a hard cutoff at the bottom of the view.
+		local paddingTop = 0;
+		local paddingBottom = 6;
+		local edgeFadeTop = 0;
+		local edgeFadeLeft = 0;
+		local edgeFadeRight = 0;
+		local edgeFadeBottom = paddingBottom;
+
+		self.ScrollBox:SetAlphaGradient(0, CreateVector2D(edgeFadeLeft, edgeFadeTop));
+		self.ScrollBox:SetAlphaGradient(1, CreateVector2D(edgeFadeRight, edgeFadeBottom));
+
+		self.ScrollView = CreateScrollBoxListLinearView(paddingTop, paddingBottom);
 		ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, self.ScrollView);
 		ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.ScrollBox, self.ScrollBar, scrollBoxAnchorsWithBar, scrollBoxAnchorsWithoutBar);
 		ScrollUtil.RegisterAlternateRowBehavior(self.ScrollBox, function(frame, isAlternateRow)
