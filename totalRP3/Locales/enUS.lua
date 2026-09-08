@@ -332,7 +332,7 @@ The |cnGREEN_FONT_COLOR:note only filter|r will filter the character profile lis
 	REG_LIST_NOTIF_ADD = "New profile discovered for |cnGREEN_FONT_COLOR:%s|r",
 	REG_LIST_NOTIF_ADD_CONFIG = "New profile discovered",
 	REG_LIST_NOTIF_ADD_NOT = "This profile doesn't exist anymore.",
-	REG_LIST_REFRESHING = "Searching...",
+	REG_LIST_REFRESHING = "Refreshing...",
 	REG_COMPANION_LINKED = "The companion %s is now linked to the profile %s.",
 	REG_COMPANION = "Companion",
 	REG_COMPANIONS = "Companions",
