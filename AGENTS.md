@@ -73,3 +73,15 @@ See the leading comment and implementation in [totalRP3/Core/Prototype.lua](tota
 - Keep XML declarative. Do not add or expand inline Lua logic in XML script blocks; put behavior in a mixin instead.
 - When changing existing inline Lua logic, suggest moving it to a mixin and ask whether that refactor should be included.
 - In UI mixins, define `OnLoad` first, followed by other script handlers such as `OnShow` and `OnHide`, then the remaining methods.
+
+## Reporting and Responsibility
+
+- An agent cannot run the game or load the addon. Passing validation does not necessarily mean that the change works in-game. Do not describe a change as tested or verified on that basis.
+- Treat any change touching UI frames, script handlers, event registration, or runtime API access as unverified regardless of what static checks report.
+- Conclude every change with a short report covering:
+  - what changed and why;
+  - which checks were run, and their results;
+  - what requires in-client testing;
+  - any assumption not confirmed by reading the relevant code, including which clients the change was and was not reasoned about.
+- State uncertainty plainly rather than silently resolving it. If a requirement is ambiguous, ask, or implement one reading and say which.
+- The contributor, not the agent, is responsible for understanding, validating, and explaining the change. The report is material for that review, not a sign-off that replaces it.
