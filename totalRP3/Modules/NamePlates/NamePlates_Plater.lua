@@ -227,12 +227,12 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 		if self.firstRun then
 			C_Timer.After(3, function()
 				if unitFrame.PlaterOnScreen and displayInfo.color then
-					Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBTable());
+					Plater.SetNameplateColor(unitFrame, displayInfo.color);
 				end
 				self.firstRun = false;
 			end);
 		else
-			Plater.SetNameplateColor(unitFrame, displayInfo.color:GetRGBTable());
+			Plater.SetNameplateColor(unitFrame, displayInfo.color);
 		end
 	else
 		Plater.RefreshNameplateColor(unitFrame);
