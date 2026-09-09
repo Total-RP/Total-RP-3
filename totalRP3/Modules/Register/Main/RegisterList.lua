@@ -526,7 +526,7 @@ local function getCharacterLines()
 	local profileList = getProfileList();
 	local fullSize = CountTable(profileList);
 	local characterLines = {};
-	local connectedRealms = tInvert(GetAutoCompleteRealms());
+	local connectedRealms = tInvert(C_AutoComplete.GetAutoCompleteRealms());
 
 	for profileID, profile in pairs(profileList) do
 		local nameIsConform, guildIsConform, realmIsConform, notesIsConform = false, false, false, false;

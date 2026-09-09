@@ -217,6 +217,12 @@ stds.wow = {
 			},
 		},
 
+		C_AutoComplete = {
+			fields = {
+				"GetAutoCompleteRealms",
+			},
+		},
+
 		C_BattleNet = {
 			fields = {
 				"GetAccountInfoByGUID",
@@ -571,6 +577,12 @@ stds.wow = {
 			},
 		},
 
+		RaidWarningUtil = {
+			fields = {
+				"AddMessage",
+			},
+		},
+
 		ResizeLayoutMixin = {
 			fields = {
 				"OnShow",
@@ -606,9 +618,7 @@ stds.wow = {
 		"BNGetInfo",
 		"CalculateStringEditDistance",
 		"canaccessvalue",
-		"Chat_GetChatFrame",
 		"ChatConfigChannelSettings_SwapChannelsByIndex",
-		"ChatEdit_FocusActiveWindow",
 		"ChatEdit_GetActiveWindow",
 		"ChatFrame_AddMessageEventFilter",
 		"ChatFrame_OpenChat",
@@ -653,7 +663,6 @@ stds.wow = {
 		"GameTooltip_ShowDisabledTooltip",
 		"GenerateClosure",
 		"GetAppropriateTooltip",
-		"GetAutoCompleteRealms",
 		"GetBindingText",
 		"GetChannelDisplayInfo",
 		"GetChannelList",
@@ -721,7 +730,6 @@ stds.wow = {
 		"PlayMusic",
 		"PlaySound",
 		"PlaySoundFile",
-		"RaidNotice_AddMessage",
 		"RaidWarningFrame",
 		"RegisterStateDriver",
 		"ReloadUI",
@@ -742,7 +750,6 @@ stds.wow = {
 		"securecallfunction",
 		"SecureCmdOptionParse",
 		"secureexecuterange",
-		"SendChatMessage",
 		"SendSystemMessage",
 		"SetCursor",
 		"SetCVar",
@@ -948,13 +955,11 @@ stds.wow = {
 		"MAELSTROM",
 		"MANA",
 		"MAX_CHANNEL_BUTTONS",
-		"MAX_WOW_CHAT_CHANNELS",
 		"MODELFRAME_MAX_PLAYER_ZOOM",
 		"NO",
 		"NONE",
 		"NORMAL_FONT_COLOR",
 		"NOT_BOUND",
-		"NUM_CHAT_WINDOWS",
 		"OKAY",
 		"PAIN",
 		"PLAYER_FACTION_COLOR_ALLIANCE",
