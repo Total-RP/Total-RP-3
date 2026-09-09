@@ -1,10 +1,30 @@
 # Agent Guidance
 
+## Investigation Scope
+
+- When a task identifies files, symbols, or a subsystem, treat those as the initial investigation scope.
+- Read the named files and their nearest callers or implementations before searching elsewhere.
+- Prefer exact symbol searches over broad keyword searches.
+- Do not scan vendored libraries, generated files, locale files, or unrelated modules unless the task requires them.
+- Expand the scope only when local evidence identifies an unresolved dependency or behavior boundary.
+- Once the controlling code path and a focused validation check are identified, stop exploring and act.
+
 ## Validation
 
-- Run relevant pre-commit checks for changed files before repository-wide validation.
+- Run the narrowest relevant validation available for changed files before repository-wide validation.
+- Prefer focused checks such as pre-commit checks, linting, type checking, schema validation, or a targeted runtime/manual check.
 - Use `just check` when full validation is needed. Do not run other `just` recipes unless explicitly requested.
 - LuaLS diagnostics are out of scope for normal validation. Do not inspect, run, or fix annotation warnings as part of routine validation.
+- Treat this section as implementation-stage guidance; do not scan validation configuration during initial architecture discovery unless validation behavior is itself part of the question.
+
+## Validation Escalation
+
+When `just check` reports an undefined global, field, or runtime-provided symbol that is valid for a supported client but absent from repository lint metadata:
+
+- If the symbol is a supported runtime-provided API, enum, field, mixin, or global, prefer updating the appropriate lint metadata over changing production code.
+- For a narrowly scoped metadata addition, the agent may update the metadata directly when the correct location and symbol are unambiguous.
+- If the symbol's client support, ownership, or metadata shape is uncertain, report it and ask before editing.
+- Do not use indirect access such as `_G` or `rawget` to silence lint warnings.
 
 ## Structure
 
