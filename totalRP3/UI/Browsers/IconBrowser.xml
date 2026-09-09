@@ -4,8 +4,6 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ../../totalRP3.xsd">
-	<Include file="IconBrowserConstants.lua"/>
-	<Include file="IconBrowser.lua"/>
 
 	<AnimationGroup name="TRP3_IconBrowserPulseAnimGroupTemplate" looping="REPEAT" setToFinalAlpha="true" virtual="true">
 		<Alpha fromAlpha="1" toAlpha="0.75" duration="1" smoothing="IN" order="1"/>

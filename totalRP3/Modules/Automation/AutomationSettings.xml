@@ -4,7 +4,7 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ../../totalRP3.xsd">
-	<Include file="Automation_Settings.lua"/>
+	<Include file="AutomationSettings.lua"/>
 
 	<Frame name="TRP3_AutomationSettingsTemplate" mixin="TRP3_AutomationSettingsMixin" virtual="true">
 		<Layers>

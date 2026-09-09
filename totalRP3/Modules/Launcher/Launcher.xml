@@ -5,7 +5,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ../../totalRP3.xsd">
 	<Include file="Launcher.lua"/>
-	<Include file="Launcher_Util.lua"/>
-	<Include file="Launcher_Actions.lua"/>
-	<Include file="Launcher_Settings.xml"/>
+	<Include file="LauncherUtil.lua"/>
+	<Include file="LauncherActions.lua"/>
+	<Include file="LauncherSettings.xml"/>
 </Ui>

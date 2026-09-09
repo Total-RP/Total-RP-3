@@ -4,12 +4,12 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ../../totalRP3.xsd">
-	<Include file="NamePlates_Shared.lua"/>
-	<Include file="NamePlates_Settings.lua"/>
-	<Include file="NamePlates_RequestQueue.lua"/>
-	<Include file="NamePlates_Core.lua"/>
-	<Include file="NamePlates_Blizzard.lua"/>
-	<Include file="NamePlates_MSP.lua"/>
-	<Include file="NamePlates_Plater.lua"/>
-	<Include file="NamePlates_Platynator.lua"/>
+	<Include file="NamePlatesShared.lua"/>
+	<Include file="NamePlatesSettings.lua"/>
+	<Include file="NamePlatesRequestQueue.lua"/>
+	<Include file="NamePlatesCore.lua"/>
+	<Include file="NamePlatesBlizzard.lua"/>
+	<Include file="NamePlatesMSP.lua"/>
+	<Include file="NamePlatesPlater.lua"/>
+	<Include file="NamePlatesPlatynator.lua"/>
 </Ui>

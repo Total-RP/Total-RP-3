@@ -5,9 +5,9 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ../../totalRP3.xsd">
 	<Include file="Automation.lua"/>
-	<Include file="Automation_Util.lua"/>
-	<Include file="Automation_Conditions.lua"/>
-	<Include file="Automation_Actions.lua"/>
-	<Include file="Automation_Settings.xml"/>
-	<Include file="Automation_FieldSetters.lua"/>
+	<Include file="AutomationUtil.lua"/>
+	<Include file="AutomationConditions.lua"/>
+	<Include file="AutomationActions.lua"/>
+	<Include file="AutomationSettings.xml"/>
+	<Include file="AutomationFieldSetters.lua"/>
 </Ui>
