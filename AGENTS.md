@@ -23,6 +23,7 @@ When `just check` reports an undefined global, field, or runtime-provided symbol
 
 - If the symbol is a supported runtime-provided API, enum, field, mixin, or global, prefer updating the appropriate lint metadata over changing production code.
 - For a narrowly scoped metadata addition, the agent may update the metadata directly when the correct location and symbol are unambiguous.
+- Preserve the structural shape of nested metadata declarations; when declaring a namespaced member, add the namespace with its `fields` entry rather than declaring only the namespace name.
 - If the symbol's client support, ownership, or metadata shape is uncertain, report it and ask before editing.
 - Do not use indirect access such as `_G` or `rawget` to silence lint warnings.
 
