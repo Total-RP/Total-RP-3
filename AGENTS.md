@@ -49,6 +49,7 @@ When `just check` reports an undefined global, field, or runtime-provided symbol
 - Start new Lua and XML files with the repository's standard copyright and SPDX license header, matching nearby files.
 - Follow the `TRP3_` prefix convention for new global frame names and mixins.
 - Avoid reformatting unrelated code.
+- Preserve surrounding function and lifecycle-handler ordering when practical.
 
 ## Imports
 
