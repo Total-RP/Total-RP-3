@@ -45,8 +45,10 @@ When `just check` reports an undefined global, field, or runtime-provided symbol
 ## Code Style
 
 - Follow `.editorconfig` for generalized file formatting.
-- Use PascalCase for functions and enum-like tables and members where practical.
-- Match the surrounding module's convention for constants.
+- Use PascalCase for functions, tables of constants, and identifier-like members where practical. In UI code, this includes fields that identify or reference child UI objects and XML `parentKey` values.
+- Existing enum tables and members may use SHOUT_CASE; preserve that convention when modifying them. New enum tables and members should use PascalCase unless they must match an established public API or external contract.
+- Use camelCase for local variables, parameters, and ordinary data fields, including data fields on UI objects. For example: `local otherFrame = frame`, `self.OtherFrame = otherFrame`, `frame.localState = 1`, and `<Frame parentKey="OtherFrame"/>`.
+- Use PascalCase for locally scoped scalar constants by default; SHOUT_CASE is also acceptable when visibility is useful.
 - Start new Lua and XML files with the repository's standard copyright and SPDX license header, matching nearby files.
 - Follow the `TRP3_` prefix convention for new global frame names and mixins.
 - Avoid reformatting unrelated code.
