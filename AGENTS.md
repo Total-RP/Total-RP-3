@@ -31,7 +31,7 @@ When `just check` reports an undefined global, field, or runtime-provided symbol
 
 - Place code with its owning domain: shared addon infrastructure in `totalRP3/Core`, feature-specific behavior in `totalRP3/Modules`, and reusable UI components in `totalRP3/UI`.
 - Keep new files focused around a cohesive responsibility. Prefer smaller, discoverable files over adding unrelated behavior to large modules, but do not split code solely to reduce file size.
-- Preserve required load order when adding files. Follow the established loading convention for the owning directory, whether that is the TOC or a directory-level XML file.
+- Preserve required load order when adding files. Follow the established loading convention for the owning directory, whether that is the TOC or a directory-level XML file. When adding a new UI Lua/XML file pair to a TOC, list the Lua file first, followed by the XML file.
 - Treat `totalRP3/Locales/enUS.lua` as the source of truth for localization keys; do not edit generated locale files or `Types/UI.xsd` directly.
 - Do not edit vendored libraries under `totalRP3/Libs`, except the private `totalRP3/Libs/Ellyb` copy.
 
