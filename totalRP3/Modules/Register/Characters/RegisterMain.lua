@@ -573,11 +573,11 @@ local function getAboutDataExists(profile)
 	if profile and profile.about then
 		if profile.about.MU then
 			return true;
-		elseif profile.about.T1 and profile.about.T1.TX then
+		elseif profile.about.T1 and Utils.str.emptyToNil(profile.about.T1.TX) then
 			return true;
-		elseif profile.about.T2 and CountTable(profile.about.T2) ~= 0 then
+		elseif profile.about.T2 and not TableIsEmpty(profile.about.T2) then
 			return true;
-		elseif profile.about.T3 and (profile.about.T3.PH.TX or profile.about.T3.PS.TX or profile.about.T3.HI.TX) then
+		elseif profile.about.T3 and (Utils.str.emptyToNil(profile.about.T3.PH.TX) or Utils.str.emptyToNil(profile.about.T3.PS.TX) or Utils.str.emptyToNil(profile.about.T3.HI.TX)) then
 			return true;
 		end
 	end
