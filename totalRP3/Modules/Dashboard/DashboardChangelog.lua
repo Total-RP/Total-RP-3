@@ -2,6 +2,14 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.4.3
+
+## Fixed
+
+- Fixed an issue with names not being colored while out of the health bar even when the setting to color them was on.
+- Fixed an issue with invisible castbars while using BetterBlizzPlates
+- Fixed an issue with nameplates while using Plater
+
 # Changelog version 3.4.2
 
 ## Fixed
