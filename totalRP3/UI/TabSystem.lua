@@ -53,7 +53,7 @@ function TRP3_TabButtonMixin:SetTabLocked(locked)
 end
 
 function TRP3_TabButtonMixin:MarkDirty()
-	self:SetScript("OnUpdate", self.Update);
+	self:SetOnUpdateMode(Enum.OnUpdateMode.RunWhenVisibleOnce);
 end
 
 function TRP3_TabButtonMixin:SetTabState(state)
@@ -96,4 +96,8 @@ function TRP3_TabButtonMixin:Update()
 	self.RightActive:SetShown(selected);
 	self.Text:SetPoint("LEFT", 10, selected and -3 or -6);
 	self.Text:SetPoint("RIGHT", -10, selected and -3 or -6);
+end
+
+function TRP3_TabButtonMixin:OnUpdate()
+	self:Update();
 end
