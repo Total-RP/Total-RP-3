@@ -402,7 +402,7 @@ local function refreshTooltip(Frame)
 end
 TRP3_API.ui.tooltip.refresh = refreshTooltip;
 TRP3_RefreshTooltipForFrame = refreshTooltip; -- For XML integration without too much perf' issue
-TRP3_HideTooltipForFrame = TRP3_TooltipUtil.HideTooltip;
+TRP3_HideTooltipForFrame = function(self) TRP3_TooltipUtil.HideTooltip(self); end;
 
 local function tooltipSimpleOnEnter(self)
 	refreshTooltip(self);
@@ -633,23 +633,50 @@ end
 -- Toast
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function toastUpdate(self, elapsed)
-	self.delay = self.delay - elapsed;
-	if self.delay <= 0 and not self.isFading then
-		self.isFading = true;
+local ToastConstants = {
+	DefaultToastDurationSeconds = 3,
+};
+
+local ToastFrameMixin = {};
+
+function ToastFrameMixin:OnHide()
+	self:CancelFadeTimer();
+end
+
+function ToastFrameMixin:FadeOutWithDelay(delay)
+	self:CancelFadeTimer();
+
+	local function OnElapsed()
 		self:FadeOut();
+	end
+
+	self.fadeTimer = C_Timer.NewTimer(delay, OnElapsed);
+end
+
+function ToastFrameMixin:CancelFadeTimer()
+	if self.fadeTimer then
+		self.fadeTimer:Cancel();
+		self.fadeTimer = nil;
 	end
 end
 
-TRP3_Toast.delay = 0;
-TRP3_Toast:SetScript("OnUpdate", toastUpdate);
+local GetToastFrame = TRP3_FunctionUtil.GetOrCreate(function()
+	local toastFrame = CreateFrame("GameTooltip", "TRP3_Toast", UIParent, "TRP3_TooltipTemplate");
+	FrameUtil.SpecializeFrameWithMixins(toastFrame, ToastFrameMixin);
+	return toastFrame;
+end);
 
 function TRP3_API.ui.tooltip.toast(text, duration)
-	TRP3_Toast:SetOwner(TRP3_MainFramePageContainer, "ANCHOR_BOTTOM", 0, 60);
-	GameTooltip_AddHighlightLine(TRP3_Toast, text, true);
-	TRP3_Toast:Show();
-	TRP3_Toast.isFading = false;
-	TRP3_Toast.delay = duration or 3;
+	local toastFrame = GetToastFrame();
+
+	if duration == nil then
+		duration = ToastConstants.DefaultToastDurationSeconds;
+	end
+
+	toastFrame:SetOwner(TRP3_MainFramePageContainer, "ANCHOR_BOTTOM", 0, 60);
+	GameTooltip_AddHighlightLine(toastFrame, text, true);
+	toastFrame:Show();
+	toastFrame:FadeOutWithDelay(duration);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1080,10 +1107,6 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 		end
 	end);
 end
-
-TRP3_ResizeShadowFrame:SetScript("OnUpdate", function(self)
-	TRP3_ResizeShadowFrame.text:SetText(string.format("|cnGREEN_FONT_COLOR:%d x %d|r", self:GetSize()));
-end);
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Move frame

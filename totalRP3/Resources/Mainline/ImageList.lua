@@ -1,10 +1,6 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
-	return;  -- This file requires assets not present in Classic.
-end
-
 local IMAGES = {
 	--region Achievement
 	{

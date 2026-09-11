@@ -29,6 +29,22 @@ function TRP3_FunctionUtil.Debounce(timeout, callback)
 	end
 end
 
+--- Returns a closure that lazily invokes the supplied callback once and returns
+--- the same result for every subsequent invocation.
+---
+--- @param callback function
+function TRP3_FunctionUtil.GetOrCreate(callback)
+	local value;
+
+	return function()
+		if value == nil then
+			value = callback();
+		end
+
+		return value;
+	end
+end
+
 --- Returns a closure that when first invoked will immediately execute the
 --- supplied callback, and starts a timer of duration `timeout`. Until the
 --- timer has elapsed, future invocations will do nothing.

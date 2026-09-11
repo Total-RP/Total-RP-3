@@ -397,14 +397,12 @@ local function UiInitProfileList()
 	TRP3_ProfileManager.list.ScrollBox:SetDataProvider(provider, ScrollBoxConstants.RetainScrollPosition);
 end
 
-local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
-
 --- UiDeleteProfile handles the ui prommpt portion of deleting a profile.
 ---@param profileID string Given profile ID to delete the profile of.
 local function UiDeleteProfile(profileID)
 	local profile = profiles[profileID];
 
-	showConfirmPopup(loc.PR_PROFILEMANAGER_DELETE_WARNING:format(Utils.str.color("g") .. profile.profileName .. "|r"),
+	TRP3_API.popup.showConfirmPopup(loc.PR_PROFILEMANAGER_DELETE_WARNING:format(Utils.str.color("g") .. profile.profileName .. "|r"),
 	function()
 		DeleteProfile(profileID);
 		UiInitProfileList();

@@ -43,15 +43,21 @@ local function closeAll(parentMenuID)
 	end
 end
 
-local closeAllButton = CreateFrame("Button", "TRP3_MainFrameMenuButtonCloseAll", TRP3_MainFrameMenuContainer, "TRP3_CommonButton");
+local GetCloseAllButton = TRP3_FunctionUtil.GetOrCreate(function()
+	return CreateFrame("Button", "TRP3_MainFrameMenuButtonCloseAll", TRP3_MainFrameMenuContainer, "TRP3_CommonButton");
+end);
 
-local MainMenuButtonPool = CreateFramePool("Button", TRP3_MainFrameMenuContainer, "TRP3_CategoryButton");
+local GetMainMenuButtonPool = TRP3_FunctionUtil.GetOrCreate(function()
+	return CreateFramePool("Button", TRP3_MainFrameMenuContainer, "TRP3_CategoryButton");
+end);
 
 -- The menu is built by SORTED menu item key.
 local function rebuildMenu()
 	-- Hide all
+	local closeAllButton = GetCloseAllButton();
+	local buttonPool = GetMainMenuButtonPool();
 	closeAllButton:Hide();
-	MainMenuButtonPool:ReleaseAll();
+	buttonPool:ReleaseAll();
 
 	-- Sort menu by name
 	-- Only take visible menu
@@ -83,7 +89,7 @@ local function rebuildMenu()
 		local menuStructure = menuStructures[id];
 		-- if Top button || Selected parent || Selected sibling
 		if not menuStructure.isChildOf or menuStructure.isChildOf == selectedMenuId or (selectedMenuId and menuStructures[selectedMenuId].isChildOf == menuStructure.isChildOf) then
-			local button = MainMenuButtonPool:Acquire();
+			local button = buttonPool:Acquire();
 			button:SetCloseCallback(nil);
 			button:SetScript("OnClick", function() selectMenu(id); end);
 			button:SetSelected((id == selectedMenuId));
@@ -415,6 +421,7 @@ TRP3_API.navigation.init = function()
 		end
 	end);
 	TRP3_API.ui.tooltip.setTooltipAll(TRP3_MainTutorialButton, "RIGHT", 0, 5, loc.UI_TUTO_BUTTON, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_TUTO_BUTTON_TT));
+	local closeAllButton = GetCloseAllButton();
 	closeAllButton:SetText(loc.UI_CLOSE_ALL);
 	closeAllButton:SetScript("OnClick", function(self)
 		closeAll(self.parentMenu);
