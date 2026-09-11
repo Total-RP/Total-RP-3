@@ -35,7 +35,6 @@ local showCharacteristicsTab, showAboutTab, showMiscTab, showNotesTab;
 local get = TRP3_API.profile.getData;
 local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
 local toast = TRP3_API.ui.tooltip.toast;
-local tsize = Utils.table.size;
 
 -- Saved variables references
 local profiles, characters;
@@ -576,7 +575,7 @@ local function getAboutDataExists(profile)
 			return true;
 		elseif profile.about.T1 and profile.about.T1.TX then
 			return true;
-		elseif profile.about.T2 and tsize(profile.about.T2) ~= 0 then
+		elseif profile.about.T2 table.count(profile.about.T2) ~= 0 then
 			return true;
 		elseif profile.about.T3 and (profile.about.T3.PH.TX or profile.about.T3.PS.TX or profile.about.T3.HI.TX) then
 			return true;
