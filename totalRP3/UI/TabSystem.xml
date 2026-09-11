@@ -97,7 +97,7 @@
 			<OnLoad method="OnLoad"/>
 			<OnEnter method="OnEnter"/>
 			<OnLeave method="OnLeave"/>
-			<OnLeave method="OnUpdate"/>
+			<OnUpdate method="OnUpdate"/>
 		</Scripts>
 	</Button>
 </Ui>
