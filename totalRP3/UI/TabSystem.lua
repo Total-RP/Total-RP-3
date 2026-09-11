@@ -82,7 +82,7 @@ function TRP3_TabButtonMixin:SetTabState(state)
 		self.Text:SetPoint("RIGHT", textOffsetRight, -6);
 	end
 end
-	
+
 function TRP3_TabButtonMixin:Update()
 	local selected = self:IsTabSelected();
 	local locked = self:IsTabLocked();
