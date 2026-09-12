@@ -243,11 +243,12 @@ TRP3_AutomationUtil.RegisterCondition({
 });
 
 local TimeRanges = {
-	Day = { startHour = 6, endHour = 17 },
-	Night = { startHour = 18, endHour = 5 },
-	Morning = { startHour = 6, endHour = 11 },
-	Afternoon = { startHour = 12, endHour = 17 },
-	Evening = { startHour = 18, endHour = 21 },
+	-- Ranges are [min, max).
+	Day = { startHour = 6, endHour = 18 },
+	Night = { startHour = 18, endHour = 6 },
+	Morning = { startHour = 6, endHour = 12 },
+	Afternoon = { startHour = 12, endHour = 18 },
+	Evening = { startHour = 18, endHour = 22 },
 };
 
 local TimeRangesByToken = {
@@ -263,8 +264,8 @@ local TimeRangesByToken = {
 	[C_Intl.FoldCase(L.AUTOMATION_TIME_EVENING)] = TimeRanges.Evening,
 };
 
-local function ClampHour(hour)
-	return math.clamp(hour, 0, 23);
+local function WrapHour(hour)
+	return math.wrap(hour, 0, 24);
 end
 
 local function ParseTimeRange(option)
@@ -284,16 +285,20 @@ local function ParseTimeRange(option)
 	end
 
 	if rangeStart and rangeEnd then
-		return ClampHour(rangeStart), ClampHour(rangeEnd);
+		return WrapHour(rangeStart), WrapHour(rangeEnd);
 	end
 end
 
 local function IsHourInRange(hour, rangeStart, rangeEnd)
-	if rangeStart <= rangeEnd then
-		return hour >= rangeStart and hour <= rangeEnd;
-	else
+	if rangeStart < rangeEnd then
+		return hour >= rangeStart and hour < rangeEnd;
+	elseif rangeStart > rangeEnd then
 		-- Required for matching overnight ranges (eg. '21-3').
-		return hour >= rangeStart or hour <= rangeEnd;
+		return hour >= rangeStart or hour < rangeEnd;
+	else
+		-- Inputs of "6" or "6-6" are treated implicitly as referencing a
+		-- span of a single hour.
+		return hour >= rangeStart and hour <= rangeEnd;
 	end
 end
 

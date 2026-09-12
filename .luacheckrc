@@ -129,6 +129,7 @@ stds.wow = {
 		math = {
 			fields = {
 				"clamp",
+				"wrap",
 			},
 		},
 
