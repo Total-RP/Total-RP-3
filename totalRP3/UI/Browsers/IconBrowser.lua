@@ -48,7 +48,7 @@ function IconBrowserSearchTask:__init(predicate, model)
 	self.total = model:GetIconCount();
 
 	-- On small data sets do only 5% of the set per tick to avoid UI flicker.
-	self.step = math.min(500, math.ceil(model:GetIconCount() / 20));
+	self.step = math.min(100, math.ceil(model:GetIconCount() / 20));
 	self.results = {};
 end
 
@@ -205,6 +205,7 @@ function IconBrowserFilterModel:__init(source)
 	self.searchQuery = "";
 	self.searchCategories = {};
 	self.searchTask = nil;
+	self.matcher = TRP3_StringUtil.CreateMatcher(self.searchQuery);
 
 	self.source.RegisterCallback(self, "OnModelUpdated", "OnSourceModelUpdated");
 end
@@ -294,6 +295,10 @@ function IconBrowserFilterModel:ClearAllFilters()
 	self:RebuildModel();
 end
 
+function IconBrowserFilterModel:ClearSearchCache()
+	self.matcher:ClearCache();
+end
+
 function IconBrowserFilterModel:ClearSearchQuery()
 	self:SetSearchQuery("");
 end
@@ -364,10 +369,9 @@ end
 
 ---@param query string
 function IconBrowserFilterModel:SetSearchQuery(query)
-	query = TRP3_StringUtil.GenerateSearchableString(query);  ---@cast query string
-
 	if self.searchQuery ~= query then
 		self.searchQuery = query;
+		self.matcher:SetQuery(query);
 		self:RebuildModel();
 	end
 end
@@ -407,7 +411,7 @@ function IconBrowserFilterModel:RebuildModel()
 		self.callbacks:Fire("OnModelUpdated");
 	end
 
-	local query = self:GetSearchQuery();
+	local matcher = self.matcher;
 	local categoryPredicate;
 
 	if self:IsFilteringAnyCategory() then
@@ -417,11 +421,7 @@ function IconBrowserFilterModel:RebuildModel()
 	---@param _proxyIndex integer
 	---@param iconInfo TRP3.IconBrowserModelItem
 	local function DoesIconMatchFilters(_proxyIndex, iconInfo)
-		local iconName = TRP3_StringUtil.GenerateSearchableString(iconInfo.name);
-		local offset = 1;
-		local plain = true;
-
-		if not string.find(iconName, query, offset, plain) then
+		if not matcher:Matches(iconInfo.name) then
 			return false;
 		end
 
@@ -688,6 +688,7 @@ end
 
 function TRP3_IconBrowserMixin:OnHide()
 	PlaySound(TRP3_InterfaceSounds.BrowserClose);
+	self.filterModel:ClearSearchCache();
 	self.callbacks:Fire("OnClosed");
 end
 
@@ -947,7 +948,7 @@ function TRP3_IconBrowserProgressOverlayMixin:SetModel(model)
 
 	---@param progress TRP3.IconBrowserSearchProgress
 	local function OnProgressChanged(_, progress)
-		self.ProgressBar:SetSmoothedValue(progress.searched / progress.total);
+		self.ProgressBar:SetValue(progress.searched / progress.total, Enum.StatusBarInterpolation.ExponentialEaseOut);
 	end
 
 	local function UpdateVisibilityDeferred()

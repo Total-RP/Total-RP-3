@@ -356,23 +356,23 @@ end
 ---@param profileID2 string Second profile ID to compare for alphabetical sorting.
 ---@return boolean comesFirst Whether the first profile ID comes first alphabetically.
 local function ProfileSortingByProfileName(profileID1, profileID2)
-	return profiles[profileID1].profileName < profiles[profileID2].profileName;
+	return TRP3_StringUtil.SortCompareStrings(profiles[profileID1].profileName, profiles[profileID2].profileName);
 end
 
 --- UiInitProfileList refreshes the profile list display.
 local function UiInitProfileList()
 	wipe(profileListID);
 	local defaultProfileID = getConfigValue("default_profile_id");
-	local profileSearch = Utils.str.emptyToNil(TRP3_ProfileManager.list.SearchBox:GetText());
-	local searchMode = profileSearch ~= nil;
+	local profileQuery = TRP3_ProfileManager.list.SearchBox:GetText();
+	local profileMatcher = TRP3_StringUtil.CreateMatcher(profileQuery);
+	local searchMode = profileQuery ~= "";
 
 	-- Build filtered profile list
 	for profileID, _ in pairs(profiles) do
 		local shouldAdd = profileID ~= defaultProfileID;
 
 		if shouldAdd and searchMode then
-			local profileName = profiles[profileID].profileName:lower();
-			shouldAdd = string.find(profileName, profileSearch:lower(), 1, true);
+			shouldAdd = profileMatcher:Matches(profiles[profileID].profileName);
 		end
 
 		if shouldAdd then

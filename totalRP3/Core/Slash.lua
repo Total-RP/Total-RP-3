@@ -49,7 +49,7 @@ function SlashCmdList.TOTALRP3(msg)
 		for commandId, _ in pairs(COMMANDS) do
 			tinsert(sortTable, commandId);
 		end
-		sort(sortTable);
+		table.sort(sortTable);
 		for _, commandId in pairs(sortTable) do
 			local cmd, cmdText = COMMANDS[commandId], TRP3_API.Colors.Green("/trp3 " .. commandId);
 			if cmd.helpLine then
