@@ -583,12 +583,16 @@ local function getAboutDataExists(profile)
 		elseif profile.about.T1 and Utils.str.emptyToNil(profile.about.T1.TX) then
 			return true;
 		elseif profile.about.T2 and not TableIsEmpty(profile.about.T2) then
-			return true;
+			for _, frameTab in pairs(profile.about.T2) do
+				if Utils.str.emptyToNil(frameTab.TX) ~= nil then
+					return true;
+				end
+			end
 		elseif profile.about.T3 then
 			local T3 = profile.about.T3;
 
-			for _, field in ipairs({ "PH", "PS", "HI" }) do
-				if T3[field] and Utils.str.emptyToNil(T3[field].TX) ~= nil then
+			for _, frameTab in ipairs({ "PH", "PS", "HI" }) do
+				if T3[frameTab] and Utils.str.emptyToNil(T3[frameTab].TX) ~= nil then
 					return true;
 				end
 			end
