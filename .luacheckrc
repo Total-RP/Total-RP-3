@@ -462,12 +462,6 @@ stds.wow = {
 					},
 				},
 
-				OnUpdateMode = {
-					fields = {
-						"RunWhenVisibleOnce",
-					},
-				},
-
 				TooltipDataLineType = {
 					fields = {
 						"UnitOwner",
