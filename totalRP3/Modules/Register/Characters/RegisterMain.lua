@@ -530,11 +530,13 @@ local function createTabBar()
 			TRP3_RegisterMisc:Hide();
 			TRP3_RegisterNotes:Hide();
 			TRP3_RegisterDefault:Hide();
+			local context = getCurrentContext();
+			updateAboutTabState(context);
 			if value == 1 then
 				showCharacteristicsTab();
 			elseif value == 2 then
 				showAboutTab();
-				updateAboutTabIcon(getCurrentContext());
+				updateAboutTabIcon(context);
 			elseif value == 3 then
 				showMiscTab();
 			elseif value == 4 then
@@ -596,14 +598,12 @@ local function getAboutDataExists(profile)
 end
 
 function updateAboutTabState(context)
-	local isEnabled = context.isPlayer or getAboutDataExists(context.profile);
-	tabGroup:SetTabEnabled(2, isEnabled);
+	local ABOUT_TAB_INDEX = 2;
+	local isPlayerProfile = context.isPlayer;
+	local hasAboutData = getAboutDataExists(context.profile);
+	local isTabSelected = tabGroup.current == ABOUT_TAB_INDEX;
 
-	-- If an update comes in that deletes About page content while we've got
-	-- that tab selected, swap to the Characteristics tab.
-	if not isEnabled and tabGroup.current == 2 and tabGroup.tabs[1]:IsShown() then
-		tabGroup:SelectTab(1);
-	end
+	tabGroup:SetTabEnabled(ABOUT_TAB_INDEX, isPlayerProfile or hasAboutData or isTabSelected);
 end
 
 local function showTabs()
