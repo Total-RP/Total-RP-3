@@ -328,7 +328,7 @@ TRP3_AutomationUtil.RegisterCondition({
 });
 
 local WeatherTypes = {
-	Clear = { type = Enum.WeatherType.Clear, threshold = 0.25 },
+	Clear = { type = Enum.WeatherType.Clear, threshold = 0 },
 	Rain = { type = Enum.WeatherType.Rain, threshold = 0.25 },
 	Snow = { type = Enum.WeatherType.Snow, threshold = 0.25 },
 	Sandstorm = { type = Enum.WeatherType.Sandstorm, threshold = 0.25 },
