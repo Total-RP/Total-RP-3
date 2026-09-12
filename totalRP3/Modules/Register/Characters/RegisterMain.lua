@@ -480,10 +480,12 @@ local function onInformationUpdated(profileID, infoType)
 		local context = getCurrentContext();
 		assert(context, "No context for page player_main !");
 		if not context.isPlayer and profileID == context.profileID then
-			updateAboutTabState(context);
-			if infoType == registerInfoTypes.ABOUT and tabGroup.current == 2 then
-				showAboutTab();
-				updateAboutTabIcon(context);
+			if infoType == registerInfoTypes.ABOUT then
+				updateAboutTabState(context);
+				if tabGroup.current == 2 then
+					showAboutTab();
+					updateAboutTabIcon(context);
+				end
 			elseif (infoType == registerInfoTypes.CHARACTERISTICS or infoType == registerInfoTypes.CHARACTER) and tabGroup.current == 1 then
 				showCharacteristicsTab();
 			elseif infoType == registerInfoTypes.MISC and tabGroup.current == 3 then
