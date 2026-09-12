@@ -43,19 +43,6 @@ function TRP3_TabButtonMixin:SetTooltip(tooltipFunction)
 	self.tooltipFunction = tooltipFunction;
 end
 
-function TRP3_TabButtonMixin:IsTabLocked()
-	return GetValueOrCallFunction(self, "locked");
-end
-
-function TRP3_TabButtonMixin:SetTabLocked(locked)
-	self.locked = locked;
-	self:MarkDirty();
-end
-
-function TRP3_TabButtonMixin:MarkDirty()
-	self:SetOnUpdateMode(Enum.OnUpdateMode.RunWhenVisibleOnce);
-end
-
 function TRP3_TabButtonMixin:SetTabState(state)
 	self:EnableMouse(state == "NORMAL");
 	self:SetEnabled(state ~= "DISABLED");
@@ -81,23 +68,4 @@ function TRP3_TabButtonMixin:SetTabState(state)
 		self.Text:SetPoint("LEFT", textOffsetLeft, -6);
 		self.Text:SetPoint("RIGHT", textOffsetRight, -6);
 	end
-end
-
-function TRP3_TabButtonMixin:Update()
-	local selected = self:IsTabSelected();
-	local locked = self:IsTabLocked();
-
-	self:SetEnabled(not selected and not locked);
-	self.Left:SetShown(not selected);
-	self.Middle:SetShown(not selected);
-	self.Right:SetShown(not selected);
-	self.LeftActive:SetShown(selected);
-	self.MiddleActive:SetShown(selected);
-	self.RightActive:SetShown(selected);
-	self.Text:SetPoint("LEFT", 10, selected and -3 or -6);
-	self.Text:SetPoint("RIGHT", -10, selected and -3 or -6);
-end
-
-function TRP3_TabButtonMixin:OnUpdate()
-	self:Update();
 end

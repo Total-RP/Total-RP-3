@@ -473,11 +473,14 @@ local function updateAboutTabIcon(context)
 	tabGroup.tabs[2]:SetTooltip(aboutUnread and OnTooltipShow or nil);
 end
 
+local updateAboutTabState;
+
 local function onInformationUpdated(profileID, infoType)
 	if getCurrentPageID() == "player_main" then
 		local context = getCurrentContext();
 		assert(context, "No context for page player_main !");
 		if not context.isPlayer and profileID == context.profileID then
+			updateAboutTabState(context);
 			if infoType == registerInfoTypes.ABOUT and tabGroup.current == 2 then
 				showAboutTab();
 				updateAboutTabIcon(context);
@@ -577,18 +580,35 @@ local function getAboutDataExists(profile)
 			return true;
 		elseif profile.about.T2 and not TableIsEmpty(profile.about.T2) then
 			return true;
-		elseif profile.about.T3 and (Utils.str.emptyToNil(profile.about.T3.PH.TX) or Utils.str.emptyToNil(profile.about.T3.PS.TX) or Utils.str.emptyToNil(profile.about.T3.HI.TX)) then
-			return true;
+		elseif profile.about.T3 then
+			local T3 = profile.about.T3;
+
+			for _, field in ipairs({ "PH", "PS", "HI" }) do
+				if T3[field] and Utils.str.emptyToNil(T3[field].TX) ~= nil then
+					return true;
+				end
+			end
 		end
 	end
 	return false;
+end
+
+function updateAboutTabState(context)
+	local isEnabled = context.isPlayer or getAboutDataExists(context.profile);
+	tabGroup:SetTabEnabled(2, isEnabled);
+
+	-- If an update comes in that deletes About page content while we've got
+	-- that tab selected, swap to the Characteristics tab.
+	if not isEnabled and tabGroup.current == 2 and tabGroup.tabs[1]:IsShown() then
+		tabGroup:SelectTab(1);
+	end
 end
 
 local function showTabs()
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	if not context.isPlayer or getPlayerCurrentProfileID() ~= getConfigValue("default_profile_id") then
-		tabGroup.tabs[2]:SetTabLocked(not getAboutDataExists(context.profile));
+		updateAboutTabState(context);
 		updateAboutTabIcon(context);
 		tabGroup:SetAllTabsVisible(true);
 		tabGroup:SelectTab(1);

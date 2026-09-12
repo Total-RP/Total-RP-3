@@ -967,7 +967,7 @@ function refreshList()
 	TRP3_RegisterListHeaderActions:Hide();
 
 	-- Disable ignored tab when no character ignored
-	tabGroup.tabs[3]:SetTabLocked(TableIsEmpty(getIgnoredList()));
+	tabGroup:SetTabEnabled(3, not TableIsEmpty(getIgnoredList()));
 
 	if currentMode == MODE_CHARACTER then
 		lines = getCharacterLines();
@@ -1011,7 +1011,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function createTabBar()
-	local frame = CreateFrame("Frame", "TRP3_RegisterMainTabBar", TRP3_RegisterList);
+	local frame = CreateFrame("Frame", "TRP3_RegisterListTabBar", TRP3_RegisterList);
 	frame:SetSize(400, 30);
 	frame:SetPoint("TOPLEFT", 17, 0);
 	frame:SetFrameLevel(1);
