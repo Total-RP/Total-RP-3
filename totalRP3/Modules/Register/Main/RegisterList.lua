@@ -966,9 +966,6 @@ function refreshList()
 	TRP3_RegisterListEmpty:Hide();
 	TRP3_RegisterListHeaderActions:Hide();
 
-	-- Disable ignored tab when no character ignored
-	tabGroup:SetTabEnabled(3, not TableIsEmpty(getIgnoredList()));
-
 	if currentMode == MODE_CHARACTER then
 		lines = getCharacterLines();
 		initializer = decorateCharacterLine;
