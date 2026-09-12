@@ -112,7 +112,6 @@ Core\FlywayPatches.lua
 
 UI\Backdrop.lua
 UI\Backdrop.xml
-UI\LocalizedText.lua
 UI\Widgets.lua
 UI\Widgets.xml
 UI\ScrollingEditBox.lua
