@@ -35,34 +35,37 @@
 	</Frame>
 
 	<StatusBar name="TRP3_RegisterListRadialProgressBar" minValue="0" maxValue="1" defaultValue="0.5" renderMode="Radial" virtual="true">
-		<Size x="21" y="21"/>
+		<Size x="24" y="24"/>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture parentKey="ProgressBarBackground" atlas="Professions-Specialization-Node-EmptyPath" useAtlasSize="false">
-					<Size x="28" y="28"/>
+				<Texture parentKey="Background" file="Interface\AddOns\totalRP3\Resources\UI\ui-circular-progress-bg-sm.png">
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
 				</Texture>
 			</Layer>
 		</Layers>
-		<BarTexture parentKey="Ring" file="Interface\Garrison\orderhalltalents-timer-fill" alpha="0.8">
+		<BarTexture parentKey="Fill" file="Interface\AddOns\totalRP3\Resources\UI\ui-circular-progress-fill-sm.png">
 			<RadialProgressBar startOffset="0.5"/>
+			<Gradient orientation="VERTICAL">
+				<MinColor r="0.247059" g="0.643137" b="0.149020"/>
+				<MaxColor r="0.207843" g="0.945098" b="0.047059"/>
+			</Gradient>
 		</BarTexture>
 	</StatusBar>
 
 	<Frame name="TRP3_RegisterListRefreshToastTemplate" mixin="TRP3_RegisterListRefreshToastMixin" inherits="ResizeLayoutFrame" virtual="true" enableMouse="true">
 		<Size x="1" y="1"/>
 		<KeyValues>
-			<KeyValue key="showDelay" value="0.25" type="number"/>
+			<KeyValue key="showDelay" value="0.15" type="number"/>
 			<KeyValue key="minimumVisibleDuration" value="1" type="number"/>
 			<KeyValue key="heightPadding" value="15" type="number"/>
-			<KeyValue key="widthPadding" value="30" type="number"/>
+			<KeyValue key="widthPadding" value="25" type="number"/>
 		</KeyValues>
 		<Frames>
 			<StatusBar parentKey="ProgressBar" inherits="TRP3_RegisterListRadialProgressBar">
 				<Anchors>
-					<Anchor point="LEFT" x="15"/>
+					<Anchor point="LEFT" x="12"/>
 				</Anchors>
 			</StatusBar>
 		</Frames>
