@@ -298,7 +298,7 @@ local function IsHourInRange(hour, rangeStart, rangeEnd)
 	else
 		-- Inputs of "6" or "6-6" are treated implicitly as referencing a
 		-- span of a single hour.
-		return hour >= rangeStart and hour <= rangeEnd;
+		return hour == rangeStart;
 	end
 end
 
