@@ -958,6 +958,8 @@ end
 -- UI : LIST
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local tabGroup;
+
 function refreshList()
 	local lines;
 	local initializer;
@@ -1005,10 +1007,8 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tabGroup;
-
 local function createTabBar()
-	local frame = CreateFrame("Frame", "TRP3_RegisterMainTabBar", TRP3_RegisterList);
+	local frame = CreateFrame("Frame", "TRP3_RegisterListTabBar", TRP3_RegisterList);
 	frame:SetSize(400, 30);
 	frame:SetPoint("TOPLEFT", 17, 0);
 	frame:SetFrameLevel(1);
