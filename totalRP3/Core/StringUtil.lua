@@ -107,9 +107,7 @@ local SearchScoreConstants = {
 local function FindFirstStringMatch(candidate, query, collation)
 	local matches = C_Intl.FindStringMatches(candidate, query, collation);
 	local startIndex = matches and matches[1];
-	-- C_Intl currently(?) returns zero-based string offsets, whereas the
-	-- legacy string.find approach used one-based offsets.
-	return startIndex and startIndex + 1 or nil;
+	return startIndex;
 end
 
 ---@param searchText string
