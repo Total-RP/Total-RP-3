@@ -226,7 +226,7 @@ local function onStart()
 			local info = getCharacterInfo(currentTargetID);
 			local name = unitIDToInfo(currentTargetID);
 			if info.characteristics then
-				ui_TargetFrame:SetTitleText((info.characteristics.FN or name) .. " " .. (info.characteristics.LN or ""));
+				ui_TargetFrame:SetTitleText(TRP3_NameUtil.ComposeFullName(info.characteristics.FN or name, info.characteristics.LN));
 			else
 				ui_TargetFrame:SetTitleText(name);
 			end
