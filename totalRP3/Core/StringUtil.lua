@@ -136,3 +136,12 @@ function TRP3_StringUtil.TrimNewlinesAndSpaces(str)
 	str = str:gsub("\n%s*\n%s*", "\n\n");
 	return string.trim(str);
 end
+
+function TRP3_StringUtil.CapitalizeWords(str)
+	-- Title case isn't strictly correct. However, ICU as provided with the
+	-- game doesn't contain stop words - so, it works as a Unicode-aware
+	-- word capitalizer.
+	return C_Intl.ToTitle(str);
+end
+
+return TRP3_StringUtil;

@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 python := env_var_or_default("PYTHON", "python3")
+lua := env_var_or_default("LUA", "lua5.1")
 libdir := "totalRP3/Libs"
 packager_url := "https://raw.githubusercontent.com/BigWigsMods/packager/eca4e176cd6ae5404c66bef5c11c08200a458400/release.sh"
 schema_url := "https://raw.githubusercontent.com/Gethe/wow-ui-source/refs/heads/live/Interface/AddOns/Blizzard_SharedXML/UI.xsd"
@@ -17,6 +18,10 @@ all: dist
 # Run the full pre-commit check suite.
 check:
     pre-commit run --all-files
+
+# Run the Lua unit tests.
+test:
+    exec "{{lua}}" "$(luarocks --lua-version=5.1 show busted --rock-dir)/bin/busted" '--lpath=Tests/?.lua' Tests/*Spec.lua
 
 # Build a distributable package using the packager script.
 dist:
