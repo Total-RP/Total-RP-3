@@ -161,7 +161,7 @@ local function showRaceClass()
 end
 
 local function showRealm()
-	return getConfigValue(ConfigKeys.CHARACT_REALM);
+	return TRP3_NameUtil.ShouldDisplayRealmNames() and getConfigValue(ConfigKeys.CHARACT_REALM);
 end
 
 local RelationLineOption = {
@@ -1105,7 +1105,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showCompanionOwner() then
-		local ownerName, ownerRealm = unitIDToInfo(ownerID);
+		local ownerName, _ownerRealm = unitIDToInfo(ownerID);
 		local ownerFinalName, ownerColor = ownerName, TRP3_API.Colors.White;
 		if ownerID == Globals.player_id or (IsUnitIDKnown(ownerID) and hasProfile(ownerID)) then
 			local ownerInfo = getCharacterInfoTab(ownerID);
@@ -1123,9 +1123,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 				end
 			end
 		else
-			if ownerRealm ~= Globals.player_realm_id then
-				ownerFinalName = ownerID;
-			end
+			ownerFinalName = Ambiguate(ownerID, "short");
 		end
 
 		ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
@@ -1834,6 +1832,7 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_REALM,
 				configKey = ConfigKeys.CHARACT_REALM,
+				showPredicate = function() return TRP3_NameUtil.ShouldDisplayRealmNames(); end,
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
