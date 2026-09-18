@@ -140,17 +140,7 @@ end
 -- Create a unit ID based on a targetType (target, player, mouseover ...)
 -- The returned id can be nil.
 function Utils.str.getUnitID(unit)
-	local playerName, realm = UnitNameUnmodified(unit);
-	if not canaccessvalue(playerName) then
-		return nil;
-	end
-	if not playerName or playerName:len() == 0 or playerName == UNKNOWNOBJECT then
-		return nil;
-	end
-	if not realm then
-		realm = Globals.player_realm_id;
-	end
-	return playerName .. "-" .. realm;
+	return TRP3_NameUtil.GetQualifiedName(unit);
 end
 
 local UnitGUID = UnitGUID;

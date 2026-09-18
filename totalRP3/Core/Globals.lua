@@ -9,6 +9,7 @@ local class_loc, class, class_index = UnitClass("player");
 local faction, faction_loc = UnitFactionGroup("player");
 
 local Player = AddOn_TotalRP3.Player.GetCurrentUser();
+local PLAYER_NAME = TRP3_NameUtil.GetUnmodifiedName("player");
 
 local currentDate = date("*t");
 
@@ -45,7 +46,9 @@ TRP3_API.globals = {
 	--@end-non-debug@]===]
 
 
-	player = UnitNameUnmodified("player"),
+	player = PLAYER_NAME,
+	player_given_name = TRP3_NameUtil.ExtractGivenName(PLAYER_NAME),
+	player_family_name = TRP3_NameUtil.ExtractFamilyName(PLAYER_NAME),
 	player_realm = GetRealmName(),
 	player_race_loc = race_loc,
 	player_class_loc = class_loc,
@@ -94,10 +97,8 @@ setmetatable(TRP3_API.globals.empty, emptyMeta);
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_API.globals.build = function()
-	local fullName = UnitNameUnmodified("player");
-	local realm = GetRealmName():gsub("[%s%-%.]*", "");
-	TRP3_API.globals.player_realm_id = realm;
-	TRP3_API.globals.player_id = fullName .. "-" .. realm;
+	TRP3_API.globals.player_realm_id = TRP3_NameUtil.NormalizeRealmName(GetRealmName());
+	TRP3_API.globals.player_id = TRP3_NameUtil.GetQualifiedName("player");
 	TRP3_API.globals.player_icon = TRP3_API.ui.misc.getUnitTexture(race, UnitSex("player"));
 end
 
