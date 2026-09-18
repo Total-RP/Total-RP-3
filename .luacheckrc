@@ -245,6 +245,7 @@ stds.wow = {
 		C_BattleNet = {
 			fields = {
 				"GetAccountInfoByGUID",
+				"GetGameAccountInfoByGUID",
 			},
 		},
 
