@@ -60,7 +60,7 @@ local FIELDS_TO_SANITIZE = {
 	"RA", "CL", "FN", "LN", "FT", "TI", "EC", "AG", "HE", "RE", "BP"
 };
 local VALID_DEFAULT_FIELDS = {
-	"v", "RA", "CL", "FN", "IC"
+	"v", "RA", "CL", "FN", "LN", "IC"
 };
 
 ---@param structure table
@@ -157,11 +157,14 @@ local function getCompleteName(characteristicsTab, name, hideTitle)
 		return name;
 	end
 	local text = "";
-	if not hideTitle and characteristicsTab.TI then
+	if not hideTitle and characteristicsTab.TI and characteristicsTab.TI ~= "" then
 		text = strconcat(characteristicsTab.TI, " ");
 	end
-	text = strconcat(text, characteristicsTab.FN or name);
-	text = TRP3_NameUtil.ComposeFullName(text, characteristicsTab.LN);
+	if characteristicsTab.FN and characteristicsTab.FN ~= "" then
+		text = strconcat(text, TRP3_NameUtil.ComposeFullName(characteristicsTab.FN, characteristicsTab.LN));
+	else
+		text = strconcat(text, name);
+	end
 	return text;
 end
 
