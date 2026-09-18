@@ -123,7 +123,7 @@ TRP3_AutomationUtil.RegisterCondition({
 	tokens = { "character" },
 
 	Evaluate = function(context)
-		local currentCharacterName = UnitNameUnmodified("player");
+		local currentCharacterName = TRP3_API.globals.player;
 		local desiredCharacterName = context.option;
 
 		return TRP3_StringUtil.IsExactOrSubstringMatch(desiredCharacterName, currentCharacterName);
@@ -135,7 +135,7 @@ TRP3_AutomationUtil.RegisterCondition({
 	tokens = { "realm" },
 
 	Evaluate = function(context)
-		local currentRealmName = GetNormalizedRealmName();
+		local currentRealmName = TRP3_API.globals.player_realm_id;
 		local desiredRealmName = context.option;
 
 		return TRP3_StringUtil.IsExactOrSubstringMatch(desiredRealmName, currentRealmName);

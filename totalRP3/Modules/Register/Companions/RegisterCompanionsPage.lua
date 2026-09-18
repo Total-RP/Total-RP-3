@@ -170,7 +170,7 @@ local function displayEdit()
 
 	setupIconButton(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
 	TRP3_CompanionsPageInformationEdit_NamePanel_TitleField:SetText(draftData.TI or "");
-	TRP3_CompanionsPageInformationEdit_NamePanel_NameField:SetText(draftData.NA or Globals.player);
+	TRP3_CompanionsPageInformationEdit_NamePanel_NameField:SetText(draftData.NA or "");
 	TRP3_CompanionsPageInformationEdit_About_TextScrollText:SetText(draftData.TX or "");
 
 	if draftData.NH then

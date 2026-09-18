@@ -96,11 +96,27 @@ Config.resetValue = resetValue;
 local GENERATED_WIDGET_INDEX = 0;
 local optionsDependentOnOtherOptions = {};
 
+local function EnumerateFilteredElements(elements)
+	local function GetNextElement(elements, index)  -- luacheck: no redefined
+		while index < #elements do
+			index = index + 1;
+
+			local element = elements[index];
+
+			if not element.showPredicate or element.showPredicate() then
+				return index, element;
+			end
+		end
+	end
+
+	return GetNextElement, elements, 0;
+end
+
 local function buildConfigurationPage(structure)
 	local optionsDependency = {};
 	local lastWidget;
 	local marginLeft = structure.marginLeft or 5;
-	for _, element in pairs(structure.elements) do
+	for _, element in EnumerateFilteredElements(structure.elements) do
 		local widget = element.widget or CreateFrame(element.frameType or "Frame", element.widgetName or ("TRP3_ConfigurationWidget"..GENERATED_WIDGET_INDEX), structure.parent, element.inherit);
 		widget:ClearAllPoints();
 		widget:SetPoint("LEFT", structure.parent, "LEFT", marginLeft + (element.marginLeft or 5), 0);
