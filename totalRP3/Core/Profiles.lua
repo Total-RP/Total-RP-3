@@ -279,7 +279,8 @@ local function UpdateDefaultProfile()
 	profileCharacteristics.v = profileCharacteristics.v + 1;
 	profileCharacteristics.RA = Globals.player_race_loc;
 	profileCharacteristics.CL = Globals.player_class_loc;
-	profileCharacteristics.FN = Globals.player;
+	profileCharacteristics.FN = Globals.player_given_name;
+	profileCharacteristics.LN = Globals.player_family_name;
 	profileCharacteristics.IC = TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
 end
 
@@ -496,7 +497,7 @@ end
 local function SetupFinalizeFrame(creationOption, profileName)
 	local frames = TRP3_ProfileCreateDialog.Frames;
 	local FinalizeFrame = frames.FinalizeFrame;
-	local name = profileName or (Globals.player_realm .. " - " .. Globals.player);
+	local name = profileName or TRP3_ProfileUtil.GetDefaultProfileName();
 
 	-- Set title based on creation option
 	local titles = {

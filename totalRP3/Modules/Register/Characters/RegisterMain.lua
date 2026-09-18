@@ -747,7 +747,7 @@ function TRP3_API.register.init()
 				end
 			end,
 			nil,
-			Globals.player_realm .. " - " .. Globals.player
+			TRP3_ProfileUtil.GetDefaultProfileName()
 		);
 	end);
 
@@ -769,7 +769,7 @@ function TRP3_API.register.init()
 
 	local currentPlayerMenu = {
 		id = "main_12_player_character",
-		text = get("player/characteristics/FN") or Globals.player,
+		text = TRP3_NameUtil.ComposeFullName(get("player/characteristics/FN"), get("player/characteristics/LN")) or Globals.player,
 		onSelected = function()
 			setPage("player_main", {
 				source = "player",
@@ -789,7 +789,7 @@ function TRP3_API.register.init()
 
 		if unitID == Globals.player_id and (not dataType or dataType == "characteristics") then
 			menuItemID = "main_12_player_character";
-			menuItemText = get("player/characteristics/FN") or Globals.player;
+			menuItemText = TRP3_NameUtil.ComposeFullName(get("player/characteristics/FN"), get("player/characteristics/LN")) or Globals.player;
 		elseif TRP3_API.register.getProfileOrNil(profileID) then
 			local player = AddOn_TotalRP3.Player.CreateFromProfileID(profileID);
 

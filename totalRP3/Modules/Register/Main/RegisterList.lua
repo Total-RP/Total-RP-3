@@ -59,7 +59,7 @@ local function openPage(profileID, unitID)
 		-- Else, create a new menu entry and open it.
 		local tabText = UNKNOWN;
 		if profile.characteristics and profile.characteristics.FN then
-			tabText = profile.characteristics.FN;
+			tabText = TRP3_NameUtil.ComposeFullName(profile.characteristics.FN, profile.characteristics.LN);
 		end
 		local pageContext = {
 			-- source isn't used, but useful in to know where you're getting the
