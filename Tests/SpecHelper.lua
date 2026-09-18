@@ -6,6 +6,13 @@
 
 UNKNOWNOBJECT = "Unknown";
 
+Constants = {};
+
+Constants.CharacterNameSeparatorConsts = {
+	CHARACTERNAME_REALMNAME_SEPARATOR = "-",
+	CHARACTERNAME_SURNAME_SEPARATOR = " ",
+};
+
 -- luacheck: ignore
 function string.split(separator, value, _limit)
 	local separatorStart, separatorEnd = string.find(value, separator, 1, true);
