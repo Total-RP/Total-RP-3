@@ -330,8 +330,14 @@ local function DecorateProfileList(widget, id)
 	local i = 0;
 	for characterID, characterInfo in pairs(characters) do
 		if characterInfo.profileID == id then
-			local charactName, charactRealm = TRP3_API.utils.str.unitIDToInfo(characterID);
-			table.insert(listText, "- |cnGREEN_FONT_COLOR:" .. charactName .. " ( " .. charactRealm .. " )|r");
+			local charactName, charactRealm = TRP3_NameUtil.DecomposeQualifiedName(characterID);
+			local characterText;
+			if charactRealm then
+				characterText = loc.REG_LIST_CHAR_LINKED_NAME:format(charactName, charactRealm);
+			else
+				characterText = loc.REG_LIST_CHAR_LINKED_NAME_NO_REALM:format(charactName);
+			end
+			table.insert(listText, "- |cnGREEN_FONT_COLOR:" .. characterText .. "|r");
 			i = i + 1;
 		end
 	end

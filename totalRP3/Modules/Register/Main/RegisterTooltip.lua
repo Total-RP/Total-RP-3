@@ -21,7 +21,6 @@ local Events = TRP3_Addon.Events;
 local hasProfile, getRelationColor = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColor;
 local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
 local EMPTY = Globals.empty;
-local unitIDToInfo = Utils.str.unitIDToInfo;
 local isPlayerIC;
 local unitIDIsFilteredForMatureContent;
 local crop = Utils.str.crop;
@@ -1105,7 +1104,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showCompanionOwner() then
-		local ownerName, _ownerRealm = unitIDToInfo(ownerID);
+		local ownerName, _ownerRealm = TRP3_NameUtil.DecomposeQualifiedName(ownerID);
 		local ownerFinalName, ownerColor = ownerName, TRP3_API.Colors.White;
 		if ownerID == Globals.player_id or (IsUnitIDKnown(ownerID) and hasProfile(ownerID)) then
 			local ownerInfo = getCharacterInfoTab(ownerID);

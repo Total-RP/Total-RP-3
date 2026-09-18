@@ -260,6 +260,8 @@ These slots will also be visible on the target frame's |cnGREEN_FONT_COLOR:"At f
 	REG_LIST_CHAR_TT = "Click to show page",
 	REG_LIST_CHAR_TT_RELATION = "Relation:|n|cnGREEN_FONT_COLOR:%s|r",
 	REG_LIST_CHAR_TT_CHAR = "Linked WoW characters:",
+	REG_LIST_CHAR_LINKED_NAME = "%s (%s)",
+	REG_LIST_CHAR_LINKED_NAME_NO_REALM = "%s",
 	REG_LIST_CHAR_TT_CHAR_NO = "Not linked to any character",
 	REG_LIST_CHAR_TT_DATE = "Last seen date: |cnGREEN_FONT_COLOR:%s|r|nLast seen location: |cnGREEN_FONT_COLOR:%s|r",
 	REG_LIST_CHAR_TT_GLANCE = "At first glance",

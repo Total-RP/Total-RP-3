@@ -110,25 +110,6 @@ local function generateID()
 end
 Utils.str.id = generateID;
 
--- Create a unit ID from a unit name and unit realm. If realm = nil then we use current realm.
--- This method ALWAYS return a nil free UnitName-RealmShortName string.
-Utils.str.unitInfoToID = function(unitName, unitRealmID)
-	-- Some functions (like GetPlayerInfoByGUID(GUID)) will return an empty string for the realm instead of null…
-	-- Thanks Blizz…
-	if not unitRealmID or unitRealmID == "" then
-		unitRealmID = Globals.player_realm_id
-	end
-	return strconcat(unitName or "_", '-', unitRealmID or "_");
-end
-
--- Separates the unit name and realm from an unit ID
-Utils.str.unitIDToInfo = function(unitID)
-	if not unitID:find('-') then
-		return unitID, Globals.player_realm_id;
-	end
-	return unitID:sub(1, unitID:find('-') - 1), unitID:sub(unitID:find('-') + 1);
-end
-
 -- Separates the owner ID and companion name from a companion ID
 Utils.str.companionIDToInfo = function(companionID)
 	if not companionID:find('_') then
