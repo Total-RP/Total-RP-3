@@ -355,7 +355,7 @@ local function onStart()
 			-- Full Name
 			do
 				local hideTitle = true;
-				local defaultName = (string.split("-", characterID));
+				local defaultName = Ambiguate(characterID, "short");
 				local completeName = TRP3_API.register.getCompleteName(profile.characteristics, defaultName, hideTitle)
 
 				if profile.characteristics.CH ~= nil and profile.characteristics.CH ~= "" then
