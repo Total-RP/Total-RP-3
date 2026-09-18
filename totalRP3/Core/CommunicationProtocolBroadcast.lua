@@ -275,9 +275,7 @@ local function onMessageReceived(_, prefix, message , distributionType, sender, 
 	end
 
 	if prefix == BROADCAST_HEADER then
-		if not sender:find('-') then
-			sender = TRP3_NameUtil.ComposeQualifiedName(sender);
-		end
+		sender = TRP3_NameUtil.GetQualifiedNameFromString(sender);
 
 		if sender and not isIDIgnored(sender) then
 			local handler;

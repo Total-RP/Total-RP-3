@@ -334,7 +334,6 @@ end
 
 --- Raises error if KNOWN unitID
 function TRP3_API.register.addCharacter(unitID)
-	assert(unitID and unitID:find('-'), "Malformed unitID");
 	assert(not isUnitIDKnown(unitID), "Already known character: " .. tostring(unitID));
 	characters[unitID] = {};
 	TRP3_API.Log("Added to the register: " .. unitID);
