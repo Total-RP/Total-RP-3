@@ -63,17 +63,32 @@ end
 local function GetBattleNetCharacterID(gameAccountInfo)
 	local characterName = gameAccountInfo.characterName;
 	local realmName = gameAccountInfo.realmName;
+	local qualifiedName = TRP3_NameUtil.ComposeQualifiedName(characterName, realmName);
 	local ambiguatedName;
 
-	characterName = (characterName ~= "" and characterName or UNKNOWNOBJECT);
-	realmName = (realmName ~= "" and realmName or GetNormalizedRealmName());
-	ambiguatedName = Ambiguate(string.join("-", characterName, realmName), "none");
-
-	if string.find(ambiguatedName, UNKNOWNOBJECT, 1, true) == 1 then
-		ambiguatedName = nil;
+	if qualifiedName then
+		ambiguatedName = Ambiguate(qualifiedName, "none");
 	end
 
 	return ambiguatedName;
+end
+
+local auroraProjectID;
+
+local function GetClientProjectID()
+	if auroraProjectID == nil then
+		-- Workaround for Camelot; WOW_PROJECT_ID is inaccurate (it claims to
+		-- be Mainline). C_BattleNet APIs expose the real project ID.
+		local gameAccountInfo = C_BattleNet.GetGameAccountInfoByGUID(UnitGUID("player"));
+
+		if gameAccountInfo and gameAccountInfo.wowProjectID then
+			auroraProjectID = gameAccountInfo.wowProjectID;
+		else
+			auroraProjectID = WOW_PROJECT_ID;
+		end
+	end
+
+	return auroraProjectID;
 end
 
 local function ShouldShowOpenBattleNetProfile(contextData)
@@ -88,7 +103,7 @@ local function ShouldShowOpenBattleNetProfile(contextData)
 		return false;
 	elseif gameAccountInfo.clientProgram ~= BNET_CLIENT_WOW then
 		return false;
-	elseif gameAccountInfo.wowProjectID ~= WOW_PROJECT_ID then
+	elseif gameAccountInfo.wowProjectID ~= GetClientProjectID() then
 		return false;
 	elseif not gameAccountInfo.isInCurrentRegion then
 		return false;
@@ -231,12 +246,12 @@ local function CreateOpenCharacterProfileButton(menuDescription, contextData)
 	local function OnClick(contextData)  -- luacheck: no redefined
 		local unit = contextData.unit;
 		local name = contextData.name;
-		local server = contextData.server;
-		local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
+		local server = contextData.server or contextData.surname;
+		local fullName = TRP3_NameUtil.ComposeQualifiedName(name or UNKNOWNOBJECT, server);
 
-		if UnitExists(unit) then
+		if UnitIsPlayer(unit) then
 			TRP3_API.slash.openProfile(unit);
-		elseif not string.find(fullName, UNKNOWNOBJECT, 1, true) then
+		elseif fullName then
 			TRP3_API.slash.openProfile(fullName);
 		end
 	end
@@ -279,11 +294,11 @@ local function CreateCharacterStatusMenu(menuDescription, contextData)
 	end
 
 	local name = contextData.name;
-	local server = contextData.server;
-	local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
+	local server = contextData.server or contextData.surname;
+	local fullName = TRP3_NameUtil.ComposeQualifiedName(name, server);
 
 	-- Gate for FRIEND (clicking on own name in chat frame) to only show for self.
-	if fullName ~= TRP3_API.globals.player_id then
+	if not fullName or fullName ~= TRP3_API.globals.player_id then
 		return nil;
 	end
 
