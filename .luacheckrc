@@ -14,6 +14,11 @@ ignore = {
 
 	-- Ignore unused self. This would popup for Mixins and Objects
 	"212/self",
+
+	-- Unused variables beginning with "_" are ignored.
+	"211/^_",
+	"212/^_",
+	"231/^_",
 };
 
 globals = {
@@ -210,6 +215,12 @@ stds.wow = {
 						"NUM_PET_SLOTS",
 					},
 				},
+				CharacterNameSeparatorConsts = {
+					fields = {
+						"CHARACTERNAME_REALMNAME_SEPARATOR",
+						"CHARACTERNAME_SURNAME_SEPARATOR",
+					},
+				},
 				ChatFrameConstants = {
 					fields = {
 						"MaxChatChannels",
@@ -340,6 +351,7 @@ stds.wow = {
 				"FoldCase",
 				"GetSortKey",
 				"Transliterate",
+				"ToUpper",
 			},
 		},
 
@@ -707,6 +719,7 @@ stds.wow = {
 		"BNGetGameAccountInfoByGUID",
 		"BNGetInfo",
 		"CalculateStringEditDistance",
+		"canaccessallvalues",
 		"canaccessvalue",
 		"ChatConfigChannelSettings_SwapChannelsByIndex",
 		"ChatEdit_GetActiveWindow",
@@ -823,12 +836,13 @@ stds.wow = {
 		"PlaySound",
 		"PlaySoundFile",
 		"RaidWarningFrame",
+		"RegionalUniqueNamesEnabled",
 		"RegisterStateDriver",
 		"ReloadUI",
 		"RemoveChatWindowChannel",
 		"ResetCursor",
-		"RunNextFrame",
 		"RoundToSignificantDigits",
+		"RunNextFrame",
 		"SafePack",
 		"Saturate",
 		"ScrollingEdit_OnCursorChanged",
@@ -902,6 +916,7 @@ stds.wow = {
 		"UnitIsUnit",
 		"UnitLevel",
 		"UnitName",
+		"UnitNameFromGUID",
 		"UnitNameUnmodified",
 		"UnitOwnerGUID",
 		"UnitPlayerControlled",

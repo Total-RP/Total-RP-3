@@ -91,6 +91,14 @@ function TRP3_StringUtil.TrimNewlinesAndSpaces(str)
 	return string.trim(str);
 end
 
+local function UppercaseWord(word)
+	return string.gsub(word, "^.", C_Intl and C_Intl.ToUpper or string.upper);
+end
+
+function TRP3_StringUtil.CapitalizeWords(str)
+	return (string.gsub(str, "%S+", UppercaseWord));
+end
+
 -- String Matching
 ------------------------------------------------------------------------------
 
@@ -393,3 +401,5 @@ function TRP3_StringUtil.GetSortKey(value, options)
 	local collation = options.collation or Enum.CollationStrength.Primary;
 	return prefix .. (C_Intl.GetSortKey(normalizedValue, collation) or "");
 end
+
+return TRP3_StringUtil;
