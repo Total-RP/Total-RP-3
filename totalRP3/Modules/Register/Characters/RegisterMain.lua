@@ -30,11 +30,9 @@ local Events = TRP3_Addon.Events;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
-local getPlayerCurrentProfileID, isProfileNameAvailable, createProfile, selectProfile = TRP3_API.profile.getPlayerCurrentProfileID, TRP3_API.profile.isProfileNameAvailable, TRP3_API.profile.createProfile, TRP3_API.profile.selectProfile;
+local getPlayerCurrentProfileID, selectProfile = TRP3_API.profile.getPlayerCurrentProfileID, TRP3_API.profile.selectProfile;
 local showCharacteristicsTab, showAboutTab, showMiscTab, showNotesTab;
 local get = TRP3_API.profile.getData;
-local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
-local toast = TRP3_API.ui.tooltip.toast;
 
 -- Saved variables references
 local profiles, characters;
@@ -733,22 +731,11 @@ function TRP3_API.register.init()
 	TRP3_RegisterDefaultViewText:SetJustifyH("CENTER");
 	TRP3_RegisterDefaultViewCreateProfile:SetText(loc.PR_CREATE_PROFILE);
 	TRP3_RegisterDefaultViewCreateProfile:SetScript("OnClick", function()
-		showTextInputPopup(loc.PR_PROFILEMANAGER_CREATE_POPUP,
-			function(newName)
-				if newName and #newName ~= 0 then
-					if not isProfileNameAvailable(newName) then
-						toast(loc.PR_PROFILEMANAGER_ALREADY_IN_USE:format(Utils.str.color("r")..newName.."|r"), 3);
-					else
-						selectProfile(createProfile(newName));
-						getCurrentContext().profile = get("player");
-						tabGroup:SetAllTabsVisible(true);
-						tabGroup:SelectTab(1);
-					end
-				end
-			end,
-			nil,
-			Globals.player_realm .. " - " .. Globals.player
-		);
+		selectMenu("main_11_profiles");
+		TRP3_API.profile.openCreateProfileFlow(function(profileID)
+			selectProfile(profileID);
+			selectMenu("main_12_player_character");
+		end);
 	end);
 
 	-- Listen to the mouse over event
