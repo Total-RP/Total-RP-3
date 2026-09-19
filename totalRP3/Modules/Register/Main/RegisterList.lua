@@ -152,7 +152,7 @@ local sortingMap = {
 }
 
 local function CompareRelationsAscending(a, b)
-	return a.relationOrder < b.relationOrder;
+	return a.relationOrder > b.relationOrder;
 end
 
 local function CompareRelationsDescending(a, b)
