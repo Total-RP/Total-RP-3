@@ -51,6 +51,17 @@ Prat:AddModuleToLoad(function()
 	function pratModule:Prat_PreAddMessage(_, message, _, event)
 		if TRP3_API.chat.disabledByOOC() then return; end
 
+		-- Emote handling
+		if event == "CHAT_MSG_EMOTE" and message.LINE_ID == TRP3_API.chat.getNPCMessageID() then
+			message.PLAYER = "";
+			message.PLAYERLINK = "";
+			message.lL = "";
+			message.LL = "";
+			message.Ll = "";
+			message.TYPEPOSTFIX = ""; -- Get rid of the ugly extra space
+			message.MESSAGE = "|Hplayer:" .. message.ORG.ARGS[2] .. "|h" .. TRP3_API.chat.getNPCMessageName() .. "|h";
+		end
+
 		-- Secret lockdown is in effect, can't do anything with the information
 		if not canaccessvalue(message.GUID) then return; end
 
