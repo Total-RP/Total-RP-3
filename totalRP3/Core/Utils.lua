@@ -33,7 +33,7 @@ Utils.message.displayMessage = function(message, messageType)
 	elseif messageType == messageTypes.ALERT_POPUP then
 		TRP3_API.popup.showAlertPopup(tostring(message));
 	elseif messageType == messageTypes.RAID_ALERT then
-		RaidNotice_AddMessage(RaidWarningFrame, tostring(message), ChatTypeInfo["RAID_WARNING"]);
+		RaidWarningUtil.AddMessage(tostring(message), ChatTypeInfo["RAID_WARNING"]);
 	elseif messageType == messageTypes.ALERT_MESSAGE then
 		UIErrorsFrame:AddMessage(message, 1.0, 0.0, 0.0);
 	end
