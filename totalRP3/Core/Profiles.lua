@@ -22,6 +22,7 @@ local profiles, character, characters;
 
 local PATH_DELIMITER = "/";
 local currentProfile, currentProfileId, chosenOption, chosenProfileId, chosenProfile, errorOrOldProfileID, forceClose;
+local flowCompleteCallback;
 local PR_DEFAULT_PROFILE = {
 	player = {},
 };
@@ -545,6 +546,13 @@ local function OpenProfileFlow(frameName, creationOption, profileName)
 	(profileActions[frameName] or SetupChoicesFrame)();
 end
 
+--- TRP3_API.profile.openCreateProfileFlow opens the profile creation flow.
+---@param onProfileCreated function|nil Optional callback called with the new profile ID.
+function TRP3_API.profile.openCreateProfileFlow(onProfileCreated)
+	flowCompleteCallback = onProfileCreated;
+	OpenProfileFlow();
+end
+
 --- CloseProfileFlow handles closing the profile flow depending on frame visibility.
 local function CloseProfileFlow()
 	local frames = TRP3_ProfileCreateDialog.Frames;
@@ -569,6 +577,7 @@ local function CloseProfileFlow()
 		frames.ChoicesFrame:Hide();
 		TRP3_ProfileCreateDialog:Hide();
 		TRP3_API.popup.hidePopups();
+		flowCompleteCallback = nil;
 	else
 		-- Reopen choices after closing Import/Finalize
 		OpenProfileFlow();
@@ -945,6 +954,13 @@ function TRP3_API.profile.init()
 	-- Evaluate the profile name on text change to prevent empty or duplicates.
 	finalizeOption.Name:SetScript("OnTextChanged", EvaluateProfileName);
 	finalizeOption.Name:SetScript("OnEditFocusGained", EvaluateProfileName);
+	-- Pressing Enter confirms, same as clicking the Confirm button.
+	finalizeOption.Name:SetScript("OnEnterPressed", function(self)
+		self:ClearFocus();
+		if finalizeOption.ConfirmButton:IsEnabled() then
+			finalizeOption.ConfirmButton:Click();
+		end
+	end);
 
 	-- Setup the profile icon button.
 	setTooltipAll(finalizeOption.Icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
@@ -988,6 +1004,12 @@ function TRP3_API.profile.init()
 		-- Honor the changed profile icon.
 		if profileID and profiles[profileID] and chosenOption ~= PROFILEMANAGER_ACTIONS.RENAME then
 			profiles[profileID].player.characteristics.IC = profileIcon;
+		end
+
+		-- Notify the caller that the profile was created.
+		if flowCompleteCallback and (chosenOption == PROFILEMANAGER_ACTIONS.CREATE or chosenOption == PROFILEMANAGER_ACTIONS.IMPORT) then
+			flowCompleteCallback(profileID);
+			flowCompleteCallback = nil;
 		end
 
 		-- Cleanup and refresh UI
