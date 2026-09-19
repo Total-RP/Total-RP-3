@@ -241,3 +241,131 @@ TRP3_AutomationUtil.RegisterCondition({
 		return TRP3_StringUtil.IsExactOrSubstringMatch(currentSexName, desiredSexName);
 	end,
 });
+
+local TimeRanges = {
+	-- Ranges are [min, max).
+	Day = { startHour = 6, endHour = 18 },
+	Night = { startHour = 18, endHour = 6 },
+	Morning = { startHour = 6, endHour = 12 },
+	Afternoon = { startHour = 12, endHour = 18 },
+	Evening = { startHour = 18, endHour = 22 },
+};
+
+local TimeRangesByToken = {
+	day = TimeRanges.Day,
+	night = TimeRanges.Night,
+	morning = TimeRanges.Morning,
+	afternoon = TimeRanges.Afternoon,
+	evening = TimeRanges.Evening,
+	[C_Intl.FoldCase(L.AUTOMATION_TIME_DAY)] = TimeRanges.Day,
+	[C_Intl.FoldCase(L.AUTOMATION_TIME_NIGHT)] = TimeRanges.Night,
+	[C_Intl.FoldCase(L.AUTOMATION_TIME_MORNING)] = TimeRanges.Morning,
+	[C_Intl.FoldCase(L.AUTOMATION_TIME_AFTERNOON)] = TimeRanges.Afternoon,
+	[C_Intl.FoldCase(L.AUTOMATION_TIME_EVENING)] = TimeRanges.Evening,
+};
+
+local function WrapHour(hour)
+	return math.wrap(hour, 0, 24);
+end
+
+local function ParseTimeRange(option)
+	local namedRange = TimeRangesByToken[option];
+
+	if namedRange then
+		return namedRange.startHour, namedRange.endHour;
+	end
+
+	local rangeStart, rangeEnd = string.match(option, "^(%d%d?)%-(%d%d?)$");
+	local hour = tonumber(option);
+
+	if hour then
+		rangeStart, rangeEnd = hour, hour;
+	else
+		rangeStart, rangeEnd = tonumber(rangeStart), tonumber(rangeEnd);
+	end
+
+	if rangeStart and rangeEnd then
+		return WrapHour(rangeStart), WrapHour(rangeEnd);
+	end
+end
+
+local function IsHourInRange(hour, rangeStart, rangeEnd)
+	if rangeStart < rangeEnd then
+		return hour >= rangeStart and hour < rangeEnd;
+	elseif rangeStart > rangeEnd then
+		-- Required for matching overnight ranges (eg. '21-3').
+		return hour >= rangeStart or hour < rangeEnd;
+	else
+		-- Inputs of "6" or "6-6" are treated implicitly as referencing a
+		-- span of a single hour.
+		return hour == rangeStart;
+	end
+end
+
+TRP3_AutomationUtil.RegisterCondition({
+	id = "trp3:time",
+	tokens = { "time" },
+
+	Evaluate = function(context)
+		local currentHour = GetGameTime();
+
+		for option in string.gmatch(C_Intl.FoldCase(context.option), "[^/]+") do
+			local normalizedOption = string.trim(C_Intl.FoldCase(option));
+			local rangeStart, rangeEnd = ParseTimeRange(normalizedOption);
+
+			if not rangeStart then
+				context:Errorf(L.AUTOMATION_CONDITION_TIME_ERROR, context.option);
+				return false;
+			end
+
+			if IsHourInRange(currentHour, rangeStart, rangeEnd) then
+				return true;
+			end
+		end
+
+		return false;
+	end,
+});
+
+local WeatherTypes = {
+	Clear = { type = Enum.WeatherType.Clear, threshold = 0 },
+	Rain = { type = Enum.WeatherType.Rain, threshold = 0.25 },
+	Snow = { type = Enum.WeatherType.Snow, threshold = 0.25 },
+	Sandstorm = { type = Enum.WeatherType.Sandstorm, threshold = 0.25 },
+};
+
+local WeatherTypesByToken = {
+	clear = WeatherTypes.Clear,
+	rain = WeatherTypes.Rain,
+	snow = WeatherTypes.Snow,
+	sandstorm = WeatherTypes.Sandstorm,
+	[C_Intl.FoldCase(L.AUTOMATION_WEATHER_CLEAR)] = WeatherTypes.Clear,
+	[C_Intl.FoldCase(L.AUTOMATION_WEATHER_RAIN)] = WeatherTypes.Rain,
+	[C_Intl.FoldCase(L.AUTOMATION_WEATHER_SNOW)] = WeatherTypes.Snow,
+	[C_Intl.FoldCase(L.AUTOMATION_WEATHER_SANDSTORM)] = WeatherTypes.Sandstorm,
+};
+
+TRP3_AutomationUtil.RegisterCondition({
+	id = "trp3:weather",
+	tokens = { "weather" },
+
+	Evaluate = function(context)
+		local weather = C_Weather.GetCurrentWeather();
+
+		for option in string.gmatch(context.option, "[^/]+") do
+			local normalizedOption = string.trim(C_Intl.FoldCase(option));
+			local weatherType = WeatherTypesByToken[normalizedOption];
+
+			if not weatherType then
+				context:Errorf(L.AUTOMATION_CONDITION_WEATHER_ERROR, context.option);
+				return false;
+			end
+
+			if weather.type == weatherType.type and weather.intensity >= weatherType.threshold then
+				return true;
+			end
+		end
+
+		return false;
+	end,
+});
