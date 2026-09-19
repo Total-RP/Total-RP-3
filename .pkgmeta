@@ -13,7 +13,7 @@ ignore:
   - totalRP3/Resources/UI/*.afdesign
   - totalRP3/Tests
   - Types
-  - *.xsd
+  - '*.xsd'
   - README.md
   - CONTRIBUTING.md
   - CODE_OF_CONDUCT.md
