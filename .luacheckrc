@@ -324,6 +324,12 @@ stds.wow = {
 			},
 		},
 
+		C_Intl = {
+			fields = {
+				"ToUpper",
+			},
+		},
+
 		C_Item = {
 			fields = {
 				"GetItemIconByID",

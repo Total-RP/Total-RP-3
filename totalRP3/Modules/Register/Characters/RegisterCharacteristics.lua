@@ -785,8 +785,8 @@ function setEditDisplay()
 
 	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
 	TRP3_RegisterCharact_Edit_TitleField:SetText(draftData.TI or "");
-	TRP3_RegisterCharact_Edit_FirstField:SetText(draftData.FN or Globals.player_given_name);
-	TRP3_RegisterCharact_Edit_LastField:SetText(draftData.LN or Globals.player_family_name);
+	TRP3_RegisterCharact_Edit_FirstField:SetText(draftData.FN or Globals.player_given_name or "");
+	TRP3_RegisterCharact_Edit_LastField:SetText(draftData.LN or Globals.player_family_name or "");
 	TRP3_RegisterCharact_Edit_FullTitleField:SetText(draftData.FT or "");
 
 	TRP3_RegisterCharact_Edit_RaceField:SetText(draftData.RA or "");

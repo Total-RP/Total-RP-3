@@ -264,7 +264,7 @@ end
 
 ---@return TRP3.NameUtil.Mode
 function TRP3_NameUtil.GetCurrentMode()
-	if RegionalUniqueNamesEnabled() then
+	if RegionalUniqueNamesEnabled and RegionalUniqueNamesEnabled() then
 		return TRP3_NameUtil.Mode.RegionalUnique;
 	else
 		return TRP3_NameUtil.Mode.RealmQualified;

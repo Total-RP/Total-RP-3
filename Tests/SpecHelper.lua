@@ -57,18 +57,6 @@ function scrubsecretvalues(...)
 	return unpack(values, 1, values.n);
 end
 
-C_Intl = {};
-
-function C_Intl.ToTitle(str)
-	-- Not a particularly accurate implementation ("fooBar" -> "FooBar", but
-	-- should be "Foobar"). Good enough for simple tests.
-	local function UppercaseWord(word)
-		return string.gsub(word, "^%l", string.upper);
-	end
-
-	return (string.gsub(str, "%S+", UppercaseWord));
-end
-
 function RegionalUniqueNamesEnabled()
 	return false;
 end

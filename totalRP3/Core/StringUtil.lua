@@ -137,11 +137,12 @@ function TRP3_StringUtil.TrimNewlinesAndSpaces(str)
 	return string.trim(str);
 end
 
+local function UppercaseWord(word)
+	return string.gsub(word, "^.", C_Intl and C_Intl.ToUpper or string.upper);
+end
+
 function TRP3_StringUtil.CapitalizeWords(str)
-	-- Title case isn't strictly correct. However, ICU as provided with the
-	-- game doesn't contain stop words - so, it works as a Unicode-aware
-	-- word capitalizer.
-	return C_Intl.ToTitle(str);
+	return (string.gsub(str, "%S+", UppercaseWord));
 end
 
 return TRP3_StringUtil;
