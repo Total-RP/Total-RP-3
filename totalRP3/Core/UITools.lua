@@ -729,24 +729,113 @@ end
 -- Tab bar
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tabBar_index = 0;
+---@class TRP3.TabGroup
+---@field tabs { [number]: Button }
+---@field enabled { [number]: boolean }
+---@field current number?
+---@field tabBar Frame
+local TabGroup = {};
 
-local function tabBar_onSelect(tabGroup, index)
-	assert(#tabGroup.tabs >= index, "Index out of bound.");
-	for i=1, #tabGroup.tabs do
-		local widget = tabGroup.tabs[i];
-		if i == index then
-			widget:SetTabState("SELECTED");
-			tabGroup.current = index;
-		else
-			widget:SetTabState("NORMAL");
-		end
-	end
+---@param tabBar Frame
+function TabGroup:__init(tabBar)
+	self.tabBar = tabBar;
+	self.tabs = {};
+	self.enabled = {};
 end
 
-local function tabBar_redraw(tabGroup)
+---@param index number
+function TabGroup:OnSelect(index)
+	assert(#self.tabs >= index, "Index out of bound.");
+	self.current = index;
+	self:UpdateTabStates();
+end
+
+---@param tabData { [1]: string, [2]: any, [3]: number? }
+---@param callback fun(tabWidget: Button, value: any)?
+---@param confirmCallback fun(confirm: fun())?
+function TabGroup:AddTab(tabData, callback, confirmCallback)
+	local index = #self.tabs + 1;
+	local text = tabData[1];
+	local value = tabData[2];
+	local width = tabData[3];
+	local tabWidget = CreateFrame("Button", nil, self.tabBar, "TRP3_TabButtonTemplate");
+
+	local function SelectTab()
+		self:OnSelect(index);
+
+		if callback then
+			callback(tabWidget, value);
+		end
+	end
+
+	local function OnClick()
+		PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
+
+		if not confirmCallback then
+			SelectTab();
+		else
+			confirmCallback(function() SelectTab() end);
+		end
+	end
+
+	tabWidget:SetText(text);
+	tabWidget:SetWidth(width or (text:len() * 11));
+	tabWidget:SetScript("OnClick", OnClick);
+
+	table.insert(self.tabs, tabWidget);
+	self.enabled[index] = true;
+end
+
+---@param index number
+function TabGroup:SelectTab(index)
+	assert(self.tabs[index], "Tab index out of bound.");
+	if not self.enabled[index] then
+		return;
+	end
+	assert(self.tabs[index]:IsShown(), "Try to select a hidden tab.");
+	ExecuteFrameScript(self.tabs[index], "OnClick");
+end
+
+function TabGroup:Size()
+	return #self.tabs;
+end
+
+---@param index number
+---@param isEnabled boolean
+function TabGroup:SetTabEnabled(index, isEnabled)
+	assert(self.tabs[index], "Tab index out of bound.");
+	self.enabled[index] = isEnabled;
+	self:UpdateTabStates();
+end
+
+---@param index number
+---@param isVisible boolean
+function TabGroup:SetTabVisible(index, isVisible)
+	assert(self.tabs[index], "Tab index out of bound.");
+	if isVisible then
+		self.tabs[index]:Show();
+	else
+		self.tabs[index]:Hide();
+	end
+	self:Redraw();
+end
+
+---@param isVisible boolean
+function TabGroup:SetAllTabsVisible(isVisible)
+	for index=1, #self.tabs do
+		if isVisible then
+			self.tabs[index]:Show();
+		else
+			self.tabs[index]:Hide();
+		end
+	end
+	self:Redraw();
+end
+
+---@private
+function TabGroup:Redraw()
 	local lastWidget;
-	for _, tabWidget in pairs(tabGroup.tabs) do
+	for _, tabWidget in pairs(self.tabs) do
 		if tabWidget:IsShown() then
 			tabWidget:ClearAllPoints();
 			if lastWidget == nil then
@@ -759,74 +848,31 @@ local function tabBar_redraw(tabGroup)
 	end
 end
 
-local function tabBar_size(tabGroup)
-	return #tabGroup.tabs;
-end
-
-local function tabBar_setTabVisible(tabGroup, index, isVisible)
-	assert(tabGroup.tabs[index], "Tab index out of bound.");
-	if isVisible then
-		tabGroup.tabs[index]:Show();
-	else
-		tabGroup.tabs[index]:Hide();
-	end
-	tabGroup:Redraw();
-end
-
-local function tabBar_setAllTabsVisible(tabGroup, isVisible)
-	for index=1, #tabGroup.tabs do
-		if isVisible then
-			tabGroup.tabs[index]:Show();
+---@private
+function TabGroup:UpdateTabStates()
+	for i = 1, #self.tabs do
+		local widget = self.tabs[i];
+		if not self.enabled[i] then
+			widget:SetTabState("DISABLED");
+		elseif i == self.current then
+			widget:SetTabState("SELECTED");
 		else
-			tabGroup.tabs[index]:Hide();
+			widget:SetTabState("NORMAL");
 		end
 	end
-	tabGroup:Redraw();
-end
-
-local function tabBar_selectTab(tabGroup, index)
-	assert(tabGroup.tabs[index], "Tab index out of bound.");
-	assert(tabGroup.tabs[index]:IsShown(), "Try to select a hidden tab.");
-	ExecuteFrameScript(tabGroup.tabs[index], "OnClick");
 end
 
 function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback, confirmCallback)
 	assert(tabBar, "The tabBar can't be nil");
 
-	local tabGroup = {};
-	tabGroup.tabs = {};
-	for index, tabData in pairs(data) do
-		local text = tabData[1];
-		local value = tabData[2];
-		local width = tabData[3];
-		local tabWidget = CreateFrame("Button", "TRP3_TabBar_Tab_" .. tabBar_index, tabBar, "TRP3_TabButtonTemplate");
-		tabWidget:SetText(text);
-		tabWidget:SetWidth(width or (text:len() * 11));
-		local clickFunction = function()
-			tabBar_onSelect(tabGroup, index);
-			if callback then
-				callback(tabWidget, value);
-			end
-		end
-		tabWidget:SetScript("OnClick", function()
-			if not confirmCallback then
-				clickFunction();
-			else
-				confirmCallback(function() clickFunction() end);
-			end
-			PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
-		end);
-		tinsert(tabGroup.tabs, tabWidget);
-		tabBar_index = tabBar_index + 1;
+	local tabGroup = TRP3_API.AllocateObject(TabGroup);
+	tabGroup:__init(tabBar);
+
+	for _, tabData in ipairs(data) do
+		tabGroup:AddTab(tabData, callback, confirmCallback);
 	end
 
-	tabGroup.Redraw = tabBar_redraw;
-	tabGroup.Size = tabBar_size;
-	tabGroup.SetTabVisible = tabBar_setTabVisible;
-	tabGroup.SelectTab = tabBar_selectTab;
-	tabGroup.SetAllTabsVisible = tabBar_setAllTabsVisible;
 	tabGroup:Redraw();
-
 	return tabGroup;
 end
 
