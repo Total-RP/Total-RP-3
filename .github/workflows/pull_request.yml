@@ -44,18 +44,6 @@ jobs:
           echo "XML validation: ${{ steps.validate_xml.outcome }}"
           exit 1
 
-      - name: Create Package
-        uses: BigWigsMods/packager@v2
-        with:
-          args: -dz
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: totalRP3-PR-${{ github.event.number }}
-          path: .release/
-          archive: true
-          include-hidden-files: true
-
       - name: Send Webhook Notification
         if: failure()
         uses: ./.github/actions/send-webhook-notification
