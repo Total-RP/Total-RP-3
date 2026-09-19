@@ -7,7 +7,6 @@ local _, TRP3_API = ...;
 -- imports
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local loc = TRP3_API.loc;
-local unitIDToInfo, unitInfoToID = Utils.str.unitIDToInfo, Utils.str.unitInfoToID;
 local get = TRP3_API.profile.getData;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local getUnitIDCurrentProfile, getUnitRPName, getUnitRPFirstName, getUnitRPLastName = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.getUnitRPName, TRP3_API.register.getUnitRPFirstName, TRP3_API.register.getUnitRPLastName;
@@ -618,7 +617,7 @@ local function getFullnameUsingChatMethod(info)
 
 		if (nameMethod == 3 or nameMethod == 4) and characteristics.LN then
 			-- With last name
-			characterName = characterName .. " " .. characteristics.LN;
+			characterName = TRP3_NameUtil.ComposeFullName(characterName, characteristics.LN);
 		end
 	end
 
@@ -639,7 +638,7 @@ TRP3_API.chat.getFullnameForUnitUsingChatMethod = getFullnameForUnitUsingChatMet
 -- This is our custom function for the SenderNameFilter function that will replace player's names with their full RP names
 -- and use their custom colors.
 -- (It is stored in Utils as we need it in other modules like Prat or WIM)
-function Utils.customGetColoredName(event, _, _, unitID, _, _, _, _, _, _, _, _, messageID, GUID)
+function Utils.customGetColoredName(event, _, _, characterID, _, _, _, _, _, _, _, _, messageID, GUID)
 
 	if disabledByOOC() then
 		return;
@@ -650,13 +649,12 @@ function Utils.customGetColoredName(event, _, _, unitID, _, _, _, _, _, _, _, _,
 		return;
 	end ;
 
-	local characterName = unitID;
 	--@type ColorMixin
 	local characterColor;
 
 	-- We don't have a unit ID for this message (WTF? Some other add-on must be doing some weird shit again…)
 	-- Bail out, let the fallback function handle that shit.
-	if not unitID then
+	if not characterID then
 		return;
 	end
 
@@ -666,26 +664,18 @@ function Utils.customGetColoredName(event, _, _, unitID, _, _, _, _, _, _, _, _,
 		return npcMessageName or UNKNOWN;
 	end
 
-	-- Extract the character name and realm from the unit ID
-	local character, realm = unitIDToInfo(unitID);
-	if not realm then
-		-- if realm is nil (i.e. globals haven't been set yet) just run the vanilla version of the code to prevent errors.
-		return;
-	end
 	-- Make sure we have a unitID formatted as "Player-Realm"
-	unitID = unitInfoToID(character, realm);
+	characterID = TRP3_NameUtil.GetQualifiedNameByGUID(GUID);
 	---@type Player
-	local player = AddOn_TotalRP3.Player.static.CreateFromNameAndRealm(character, realm);
+	local player = AddOn_TotalRP3.Player.static.CreateFromCharacterID(characterID);
 
 	-- Character name is without the server name is they are from the same realm or if the option to remove realm info is enabled
-	if realm == Globals.player_realm_id or getConfigValue(CONFIG_REMOVE_REALM) then
-		characterName = character;
-	end
+	local characterName = Ambiguate(characterID, getConfigValue(CONFIG_REMOVE_REALM) and "short" or "none");
 
 	-- Retrieve the character full RP name (if not default profile)
 	local hasNonDefaultProfile = player:GetProfileID() and TRP3_API.profile.isDefaultProfile(player:GetProfileID()) == false;
 	if hasNonDefaultProfile then
-		local customizedName = getFullnameForUnitUsingChatMethod(unitID);
+		local customizedName = getFullnameForUnitUsingChatMethod(characterID);
 
 		if customizedName then
 			characterName = customizedName;
@@ -713,7 +703,7 @@ function Utils.customGetColoredName(event, _, _, unitID, _, _, _, _, _, _, _, _,
 	end
 
 	if hasNonDefaultProfile and getConfigValue(CONFIG_SHOW_ICON) then
-		local info = getCharacterInfoTab(unitID);
+		local info = getCharacterInfoTab(characterID);
 		if info and info.characteristics and info.characteristics.IC then
 			characterName = Utils.str.icon(info.characteristics.IC, 15) .. " " .. characterName;
 		end
@@ -773,7 +763,7 @@ function hooking()
 			local textBefore = currentText:sub(1, currentCursorPosition - unitID:len());
 			local textAfter = currentText:sub(currentCursorPosition + 1);
 
-			local name = getFullnameForUnitUsingChatMethod(unitID, unitID);
+			local name = getFullnameForUnitUsingChatMethod(unitID);
 
 			-- Replace the text of the edit box
 			editBox:SetText(textBefore .. name .. textAfter);

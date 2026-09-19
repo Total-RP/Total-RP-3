@@ -565,16 +565,17 @@ function ScanningTooltip:FindMatchingLine(patternList)
 end
 
 local function getCompanionOwner(unitType, targetType)
-	local ownerName;
-	local ownerRealm;
+	local ownerCharacterID;
 
 	if UnitOwnerGUID then
 		local ownerGUID = UnitOwnerGUID(unitType);
 
 		if ownerGUID ~= nil then
-			ownerName, ownerRealm = select(6, GetPlayerInfoByGUID(ownerGUID));
+			ownerCharacterID = TRP3_NameUtil.GetQualifiedNameByGUID(ownerGUID);
 		end
 	else
+		local ownerName;
+
 		ScanningTooltip:SetOwner(WorldFrame, "ANCHOR_NONE");
 		ScanningTooltip:SetUnit(unitType);
 		ScanningTooltip:Show();
@@ -585,16 +586,11 @@ local function getCompanionOwner(unitType, targetType)
 			ownerName = ScanningTooltip:FindMatchingLine(COMPANION_PET_OWNER_PATTERNS);
 		end
 
+		ownerCharacterID = TRP3_NameUtil.ComposeQualifiedName(ownerName);
 		ScanningTooltip:Hide();
 	end
 
-	if not ownerName or ownerName == "" or ownerName == UNKNOWNOBJECT then
-		return nil;
-	elseif not ownerRealm or ownerRealm == "" then
-		return ownerName;
-	else
-		return string.join("-", ownerName, ownerRealm);
-	end
+	return ownerCharacterID;
 end
 TRP3_API.ui.misc.getCompanionOwner = getCompanionOwner;
 
@@ -620,9 +616,6 @@ function TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType)
 	if shortID then
 		local owner = getCompanionOwner(unitToken, unitType);
 		if owner ~= nil then
-			if not owner:find("-") then
-				owner = owner .. "-" .. globals.player_realm_id;
-			end
 			return owner .. "_" .. shortID, owner;
 		end
 	end

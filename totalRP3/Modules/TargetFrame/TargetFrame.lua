@@ -22,7 +22,7 @@ local function onStart()
 	local loc = TRP3_API.loc;
 	local isPlayerIC, isUnitIDKnown, getUnitIDCurrentProfile, hasProfile, isIDIgnored;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
-	local getUnitID, unitIDToInfo, companionIDToInfo = Utils.str.getUnitID, Utils.str.unitIDToInfo, Utils.str.companionIDToInfo;
+	local getUnitID, companionIDToInfo = Utils.str.getUnitID, Utils.str.companionIDToInfo;
 	local setTooltipForSameFrame, mainTooltip, refreshTooltip = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_MainTooltip, TRP3_API.ui.tooltip.refresh;
 	local get = TRP3_API.profile.getData;
 
@@ -224,9 +224,9 @@ local function onStart()
 	local function displayTargetName()
 		if currentTargetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
 			local info = getCharacterInfo(currentTargetID);
-			local name = unitIDToInfo(currentTargetID);
+			local name = TRP3_NameUtil.DecomposeQualifiedName(currentTargetID);
 			if info.characteristics then
-				ui_TargetFrame:SetTitleText((info.characteristics.FN or name) .. " " .. (info.characteristics.LN or ""));
+				ui_TargetFrame:SetTitleText(TRP3_NameUtil.ComposeFullName(info.characteristics.FN or name, info.characteristics.LN));
 			else
 				ui_TargetFrame:SetTitleText(name);
 			end

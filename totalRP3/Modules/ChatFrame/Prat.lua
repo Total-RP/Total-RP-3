@@ -65,10 +65,7 @@ Prat:AddModuleToLoad(function()
 		if not TRP3_API.chat.isChannelHandled(event) or not TRP3_API.chat.configIsChannelUsed(event) then return; end
 
 		-- Retrieve all the player info from the message GUID
-		local _, _, _, _, _, name, realm = GetPlayerInfoByGUID(message.GUID);
-
-		-- Calling our unitInfoToID() function to get a "Player-Realm" formatted string (handles cases where realm is nil)
-		local unitID = TRP3_API.utils.str.unitInfoToID(name, realm);
+		local unitID = TRP3_NameUtil.GetQualifiedNameByGUID(message.GUID);
 		local characterName = unitID;
 
 		-- Extract the color if present used by Prat so we use it by default;
@@ -76,12 +73,16 @@ Prat:AddModuleToLoad(function()
 		local characterColor = TRP3_API.ParseColorFromHexMarkup(message.PLAYER);
 
 		-- Character name is without the server name is they are from the same realm or if the option to remove realm info is enabled
-		if realm == TRP3_API.globals.player_realm_id or TRP3_API.configuration.getValue("remove_realm") then
-			characterName = name;
+		do
+			local context = TRP3_API.configuration.getValue("remove_realm") and "short" or "none";
+			local ambiguatedName = Ambiguate(characterName, context);
 
-			message.sS = ""
-			message.SERVER = ""
-			message.Ss = ""
+			if ambiguatedName ~= characterName then
+				characterName = ambiguatedName;
+				message.sS = ""
+				message.SERVER = ""
+				message.Ss = ""
+			end
 		end
 
 		-- Get the unit color and name
