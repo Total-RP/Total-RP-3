@@ -1006,10 +1006,14 @@ function TRP3_API.profile.init()
 			profiles[profileID].player.characteristics.IC = profileIcon;
 		end
 
-		-- Notify the caller that the profile was created.
-		if flowCompleteCallback and (chosenOption == PROFILEMANAGER_ACTIONS.CREATE or chosenOption == PROFILEMANAGER_ACTIONS.IMPORT) then
-			flowCompleteCallback(profileID);
-			flowCompleteCallback = nil;
+		if chosenOption == PROFILEMANAGER_ACTIONS.CREATE or chosenOption == PROFILEMANAGER_ACTIONS.IMPORT then
+			SelectProfile(profileID);
+
+			-- Notify the caller that the profile was created.
+			if flowCompleteCallback then
+				flowCompleteCallback(profileID);
+				flowCompleteCallback = nil;
+			end
 		end
 
 		-- Cleanup and refresh UI

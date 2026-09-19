@@ -30,7 +30,7 @@ local Events = TRP3_Addon.Events;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
-local getPlayerCurrentProfileID, selectProfile = TRP3_API.profile.getPlayerCurrentProfileID, TRP3_API.profile.selectProfile;
+local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 local showCharacteristicsTab, showAboutTab, showMiscTab, showNotesTab;
 local get = TRP3_API.profile.getData;
 
@@ -732,8 +732,7 @@ function TRP3_API.register.init()
 	TRP3_RegisterDefaultViewCreateProfile:SetText(loc.PR_CREATE_PROFILE);
 	TRP3_RegisterDefaultViewCreateProfile:SetScript("OnClick", function()
 		selectMenu("main_11_profiles");
-		TRP3_API.profile.openCreateProfileFlow(function(profileID)
-			selectProfile(profileID);
+		TRP3_API.profile.openCreateProfileFlow(function()
 			selectMenu("main_12_player_character");
 		end);
 	end);
