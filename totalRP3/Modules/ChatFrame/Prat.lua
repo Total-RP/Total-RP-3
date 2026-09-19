@@ -54,6 +54,10 @@ Prat:AddModuleToLoad(function()
 		-- Emote handling
 		if event == "CHAT_MSG_EMOTE" and message.LINE_ID == TRP3_API.chat.getNPCMessageID() then
 			message.PLAYER = "";
+			message.PLAYERLINK = "";
+			message.lL = "";
+			message.LL = "";
+			message.Ll = "";
 			message.TYPEPOSTFIX = ""; -- Get rid of the ugly extra space
 			message.MESSAGE = "|Hplayer:" .. message.ORG.ARGS[2] .. "|h" .. TRP3_API.chat.getNPCMessageName() .. "|h";
 		end
