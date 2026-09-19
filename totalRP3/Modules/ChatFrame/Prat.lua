@@ -53,8 +53,8 @@ Prat:AddModuleToLoad(function()
 
 		-- Emote handling
 		if event == "CHAT_MSG_EMOTE" and message.LINE_ID == TRP3_API.chat.getNPCMessageID() then
-			message.PLAYER = "";
-			message.MESSAGE = TRP3_API.chat.getNPCMessageName();
+			message.PLAYER = TRP3_API.chat.getNPCMessageName();
+			message.MESSAGE = "";
 		end
 
 		-- Secret lockdown is in effect, can't do anything with the information
