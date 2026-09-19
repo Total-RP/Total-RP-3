@@ -126,6 +126,13 @@ stds.wow = {
 			},
 		},
 
+		math = {
+			fields = {
+				"clamp",
+				"wrap",
+			},
+		},
+
 		string = {
 			fields = {
 				"concat",
@@ -317,6 +324,12 @@ stds.wow = {
 			},
 		},
 
+		C_Intl = {
+			fields = {
+				"FoldCase",
+			},
+		},
+
 		C_Item = {
 			fields = {
 				"GetItemIconByID",
@@ -448,6 +461,12 @@ stds.wow = {
 			},
 		},
 
+		C_Weather = {
+			fields = {
+				"GetCurrentWeather",
+			},
+		},
+
 		CurveConstants = {
 			fields = {
 				"ScaleTo100",
@@ -491,7 +510,16 @@ stds.wow = {
 						"Male",
 						"Female",
 					},
-				}
+				},
+
+				WeatherType = {
+					fields = {
+						"Clear",
+						"Rain",
+						"Sandstorm",
+						"Snow",
+					},
+				},
 			},
 		},
 
@@ -676,6 +704,7 @@ stds.wow = {
 		"GetEditBoxMetatable",
 		"GetFileIDFromPath",
 		"GetFrameMetatable",
+		"GetGameTime",
 		"GetGuildInfo",
 		"GetInventoryItemTexture",
 		"GetInventorySlotInfo",
