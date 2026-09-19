@@ -375,12 +375,17 @@ local function setConsultDisplay(context)
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame.Value, "LEFT", -5, 0);
 			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_RESIDENCE_SHOW, dataTab.RC[4] .. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_RESIDENCE_SHOW_TT));
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetScript("OnClick", function()
-				if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
+				if InCombatLockdown() then
+					-- UI panels cannot be toggled in combat.
+					return;
+				end
+
+				if C_Map.OpenWorldMap then
+					C_Map.OpenWorldMap(dataTab.RC[1])
+				else
 					-- Bug: https://github.com/Stanzilla/WoWUIBugs/issues/124
 					ShowUIPanel(WorldMapFrame);
 					WorldMapFrame:SetMapID(dataTab.RC[1]);
-				else
-					OpenWorldMap(dataTab.RC[1]);
 				end
 
 				local characterID;

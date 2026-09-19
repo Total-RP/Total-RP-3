@@ -343,6 +343,7 @@ stds.wow = {
 				"GetBestMapForUnit",
 				"GetMapInfo",
 				"GetPlayerMapPosition",
+				"OpenWorldMap",
 			},
 		},
 
