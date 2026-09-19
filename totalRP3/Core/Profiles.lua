@@ -945,6 +945,13 @@ function TRP3_API.profile.init()
 	-- Evaluate the profile name on text change to prevent empty or duplicates.
 	finalizeOption.Name:SetScript("OnTextChanged", EvaluateProfileName);
 	finalizeOption.Name:SetScript("OnEditFocusGained", EvaluateProfileName);
+	-- Pressing Enter confirms, same as clicking the Confirm button.
+	finalizeOption.Name:SetScript("OnEnterPressed", function(self)
+		self:ClearFocus();
+		if finalizeOption.ConfirmButton:IsEnabled() then
+			finalizeOption.ConfirmButton:Click();
+		end
+	end);
 
 	-- Setup the profile icon button.
 	setTooltipAll(finalizeOption.Icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
