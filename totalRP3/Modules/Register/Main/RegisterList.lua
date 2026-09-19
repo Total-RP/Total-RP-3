@@ -806,6 +806,11 @@ local function decorateCompanionLine(line, elementData)
 	decorateGenericLine(line);
 	local profileID = elementData.profileID;
 	local profile = getCompanionProfiles()[profileID];
+
+	if not profile then
+		return;
+	end
+
 	line.id = profileID;
 
 	local hasNewAbout = profile.data and profile.data.read == false;
