@@ -290,7 +290,7 @@ function IconBrowserFilterModel:IsApplyingAnyFilter()
 end
 
 function IconBrowserFilterModel:ClearAllFilters()
-	self.searchQuery = "";
+	self:ClearSearchQuery();
 	self.searchCategories = {};
 	self:RebuildModel();
 end
