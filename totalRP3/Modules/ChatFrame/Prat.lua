@@ -51,6 +51,12 @@ Prat:AddModuleToLoad(function()
 	function pratModule:Prat_PreAddMessage(_, message, _, event)
 		if TRP3_API.chat.disabledByOOC() then return; end
 
+		-- Emote handling
+		if event == "CHAT_MSG_EMOTE" and message.LINE_ID == TRP3_API.chat.getNPCMessageID() then
+			message.PLAYER = "";
+			message.MESSAGE = TRP3_API.chat.getNPCMessageName();
+		end
+
 		-- Secret lockdown is in effect, can't do anything with the information
 		if not canaccessvalue(message.GUID) then return; end
 
