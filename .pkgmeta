@@ -11,11 +11,14 @@ ignore:
   - totalRP3/Libs/*/README.*
   - totalRP3/Libs/*/tests
   - totalRP3/Resources/UI/*.afdesign
+  - totalRP3/Tests
+  - Types
+  - *.xsd
   - README.md
   - CONTRIBUTING.md
   - CODE_OF_CONDUCT.md
   - LICENSE
-  - Makefile
+  - justfile
   - Scripts
 
 externals:
