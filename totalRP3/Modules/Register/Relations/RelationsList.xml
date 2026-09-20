@@ -91,16 +91,11 @@
 		</Layers>
 		<Frames>
 			<Frame parentKey="Background" inherits="TRP3_PageBackgroundSettings" setAllPoints="true"/>
-			<Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeKey="$parent.Divider" relativePoint="BOTTOMLEFT" y="-1"/>
-					<Anchor point="BOTTOMRIGHT" relativeKey="$parent.ScrollBar" relativePoint="BOTTOMLEFT" x="-10" y="4"/>
-				</Anchors>
-			</Frame>
+			<Frame parentKey="ScrollBox" inherits="WowScrollBoxList"/>
 			<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
 				<Anchors>
 					<Anchor point="TOP" relativeKey="$parent.Divider" relativePoint="BOTTOM" y="-8"/>
-					<Anchor point="BOTTOMRIGHT" x="-16" y="4"/>
+					<Anchor point="BOTTOMRIGHT" x="-12" y="6"/>
 				</Anchors>
 			</EventFrame>
 			<Button parentKey="CreateNew" inherits="TRP3_CommonButton">

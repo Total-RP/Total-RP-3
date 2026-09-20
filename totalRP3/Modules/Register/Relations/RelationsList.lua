@@ -88,13 +88,17 @@ TRP3_RelationsListMixin = {};
 
 function TRP3_RelationsListMixin:OnLoad()
 	local scrollBoxAnchorsWithBar = {
-		AnchorUtil.CreateAnchor("TOPLEFT", self.Divider, "BOTTOMLEFT", 0, -1),
-		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self.ScrollBar, "BOTTOMLEFT", -10, 4),
+		AnchorUtil.CreateAnchor("TOP", self.Divider, "BOTTOM", 0, -3),
+		AnchorUtil.CreateAnchor("LEFT", self, "LEFT", 6, 0),
+		AnchorUtil.CreateAnchor("RIGHT", self.ScrollBar, "LEFT", -6, 0),
+		AnchorUtil.CreateAnchor("BOTTOM", self, "BOTTOM", 0, 3),
 	};
 
 	local scrollBoxAnchorsWithoutBar = {
 		scrollBoxAnchorsWithBar[1],
-		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self, "BOTTOMRIGHT", -16, 4),
+		scrollBoxAnchorsWithBar[2],
+		AnchorUtil.CreateAnchor("RIGHT", self, "RIGHT", -6, 0),
+		scrollBoxAnchorsWithBar[4],
 	};
 
 	self.ScrollView = CreateScrollBoxListLinearView();
