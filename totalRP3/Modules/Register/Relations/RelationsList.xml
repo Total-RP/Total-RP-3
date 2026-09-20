@@ -34,13 +34,13 @@
 		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Title" inherits="GameFontHighlight" justifyH="LEFT">
+				<FontString parentKey="Title" inherits="GameFontHighlightLarge" justifyH="LEFT">
 					<Anchors>
-						<Anchor point="BOTTOMLEFT" relativePoint="RIGHT" relativeKey="$parent.Icon" x="5" y="3"/>
+						<Anchor point="BOTTOMLEFT" relativePoint="RIGHT" relativeKey="$parent.Icon" x="5" y="2"/>
 						<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.Actions" x="-5"/>
 					</Anchors>
 				</FontString>
-				<FontString parentKey="Text" inherits="GameFontNormalSmall" justifyH="LEFT">
+				<FontString parentKey="Text" inherits="GameFontNormal" justifyH="LEFT">
 					<Size y="10"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Title" y="-5"/>
