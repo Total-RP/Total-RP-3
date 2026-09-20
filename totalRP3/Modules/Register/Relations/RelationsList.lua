@@ -46,15 +46,13 @@ function TRP3_RelationsListElementMixin:OnLoad()
 end
 
 function TRP3_RelationsListElementMixin:OnTooltipShow(description)
-	local title = GetRelationName(self.relation);
-	local text = GenerateEditDescription(GetRelationDescription(self.relation));
-	local instructions = {};
-
 	if CanReorderRelation(self.relation) then
-		table.insert(instructions, { "DRAGDROP", L.REG_RELATION_REORDER });
-	end
+		local title = GetRelationName(self.relation);
+		local text = nil;
+		local instructions = { { "DRAGDROP", L.REG_RELATION_REORDER } };
 
-	TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
+		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
+	end
 end
 
 function TRP3_RelationsListElementMixin:Init(relation, actionCallback)
