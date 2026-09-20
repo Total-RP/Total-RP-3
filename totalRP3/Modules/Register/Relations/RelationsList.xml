@@ -4,9 +4,7 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ../../../totalRP3.xsd">
-
-
-	<Frame name="TRP3_ConfigurationRelationsFrame" virtual="true">
+	<Frame name="TRP3_RelationsListElementTemplate" mixin="TRP3_RelationsListElementMixin" virtual="true">
 		<Size y="60"/>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -17,26 +15,21 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button parentKey="DragButton" inherits="TRP3_ReorderButtonTemplate">
-				<Size x="22" y="24"/>
-				<Scripts>
-					<OnEnter function="TRP3_RefreshTooltipForFrame"/>
-					<OnLeave>TRP3_MainTooltip:Hide();</OnLeave>
-				</Scripts>
-				<Anchors>
-					<Anchor point="LEFT" x="10"/>
-				</Anchors>
-			</Button>
 			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
 				<Size x="48" y="48"/>
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.DragButton" x="0" y="0"/>
+					<Anchor point="LEFT" x="10"/>
 				</Anchors>
 			</Frame>
-			<Button parentKey="Actions" inherits="TRP3_ActionButton">
+			<Button parentKey="Actions" mixin="TRP3_RelationsListActionButtonMixin" inherits="TRP3_ActionButton">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
 				</Anchors>
+				<Scripts>
+					<OnEnter method="OnEnter"/>
+					<OnLeave method="OnLeave"/>
+					<OnMouseDown method="OnMouseDown"/>
+				</Scripts>
 			</Button>
 		</Frames>
 		<Layers>
@@ -44,19 +37,24 @@
 				<FontString parentKey="Title" inherits="GameFontHighlight" justifyH="LEFT">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" relativePoint="RIGHT" relativeKey="$parent.Icon" x="5" y="3"/>
+						<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.Actions" x="-5"/>
 					</Anchors>
 				</FontString>
 				<FontString parentKey="Text" inherits="GameFontNormalSmall" justifyH="LEFT">
-					<Size x="300" y="10"/>
+					<Size y="10"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Title" y="-5"/>
+						<Anchor point="RIGHT" x="-10"/>
 					</Anchors>
 				</FontString>
 			</Layer>
 		</Layers>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_RelationsList" hidden="true">
+	<Frame name="TRP3_RelationsListTemplate" mixin="TRP3_RelationsListMixin" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="Title" inherits="GameFontHighlightHuge" justifyH="LEFT">
@@ -76,24 +74,18 @@
 		</Layers>
 		<Frames>
 			<Frame parentKey="Background" inherits="TRP3_PageBackgroundSettings" setAllPoints="true"/>
-			<ScrollFrame parentKey="ScrollFrame" inherits="ScrollFrameTemplate">
-				<KeyValues>
-					<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
-					<KeyValue key="scrollBarX" value="-8" type="number"/>
-					<KeyValue key="scrollBarTopY" value="-8" type="number"/>
-					<KeyValue key="scrollBarBottomY" value="8" type="number"/>
-					<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
-				</KeyValues>
+			<Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeKey="$parent.Divider" relativePoint="BOTTOMLEFT" y="-1"/>
+					<Anchor point="BOTTOMRIGHT" relativeKey="$parent.ScrollBar" relativePoint="BOTTOMLEFT" x="-10" y="4"/>
+				</Anchors>
+			</Frame>
+			<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.Divider" relativePoint="BOTTOM" y="-8"/>
 					<Anchor point="BOTTOMRIGHT" x="-16" y="4"/>
 				</Anchors>
-				<ScrollChild>
-					<Frame parentKey="Content">
-						<Size x="1" y="1"/>
-					</Frame>
-				</ScrollChild>
-			</ScrollFrame>
+			</EventFrame>
 			<Button parentKey="CreateNew" inherits="TRP3_CommonButton">
 				<Size x="200" y="22"/>
 				<Anchors>
@@ -168,5 +160,8 @@
 				</Frames>
 			</Frame>
 		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
 	</Frame>
 </Ui>

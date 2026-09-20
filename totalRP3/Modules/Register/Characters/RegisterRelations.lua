@@ -11,6 +11,10 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 
 TRP3_API.register.relation = {};
 
+local GetRelationsList = TRP3_FunctionUtil.GetOrCreate(function()
+	return CreateFrame("Frame", nil, TRP3_MainFramePageContainer, "TRP3_RelationsListTemplate");
+end);
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Relation
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -172,6 +176,7 @@ end
 
 -- Init the relation popup
 local function initRelationEditor(relationID)
+	local TRP3_RelationsList = GetRelationsList();
 	if relationID then
 		TRP3_RelationsList.Editor.Content.Title:SetText(loc.CO_RELATIONS_MENU_EDIT);
 	else
@@ -243,6 +248,7 @@ local function initRelationEditor(relationID)
 end
 
 function TRP3_API.register.relation.showEditor(relationID)
+	local TRP3_RelationsList = GetRelationsList();
 	TRP3_RelationsList.Editor:ClearAllPoints();
 	TRP3_RelationsList.Editor:SetAllPoints(TRP3_MainFramePageContainer);
 	TRP3_RelationsList.Editor:Show();
@@ -250,7 +256,16 @@ function TRP3_API.register.relation.showEditor(relationID)
 	initRelationEditor(relationID);
 end
 
-local updateRelationsList;
+local function updateRelationsList(relationToScrollTo)
+	local TRP3_RelationsList = GetRelationsList();
+
+	local sorted = true;
+	TRP3_RelationsList:SetDataProvider(CreateDataProvider(getRelationList(sorted)));
+
+	if relationToScrollTo then
+		TRP3_RelationsList.ScrollBox:ScrollToElementData(relationToScrollTo);
+	end
+end
 
 local function onActionSelected(selectedAction)
 	local action = selectedAction:sub(1, 3);
@@ -276,88 +291,22 @@ local function onActionSelected(selectedAction)
 	end
 end
 
-local noneWidget;
-local widgetsList = {};
-local movableRelations = {};
-
-local function updateOrderAfterDrag()
-	local relationList = getRelationList();
-	-- Not #widgetsList, as that keeps the surplus widgets hidden by earlier refreshes.
-	for i = 1, #movableRelations do
-		relationList[widgetsList[i].relationID].order = i + 1;
-	end
-	updateRelationsList();
-end
-
-function updateRelationsList()
-	local relations = getRelationList(true);
-	movableRelations = CopyTable(relations);
-	table.remove(movableRelations, 1);
-
-	local widgetCount = 1;
-	for _, relation in ipairs(relations) do
-		local widget;
-		if widgetCount == 1 then
-			widget = noneWidget;
-		else
-			widget = widgetsList[widgetCount - 1];
-		end
-		if not widget then
-			widget = CreateFrame("Frame", nil, TRP3_RelationsList.ScrollFrame.Content, "TRP3_ConfigurationRelationsFrame");
-			widget:ClearAllPoints();
-			widget:SetPoint("LEFT", TRP3_RelationsList.ScrollFrame.Content, "LEFT", 0, 0);
-			widget.Border:SetVertexColor(TRP3_BACKDROP_COLOR_CREAMY_BROWN:GetRGB());
-			widget:SetPoint("RIGHT", TRP3_RelationsList.ScrollFrame.Content, "RIGHT", -20, 0);
-			if widgetCount > 2 then
-				widget:SetPoint("TOP", widgetsList[widgetCount - 2], "BOTTOM", 0, 0);
-			elseif widgetCount == 2 then
-				widget:SetPoint("TOP", noneWidget, "BOTTOM", 0, 0);
-			else
-				widget:SetPoint("TOP", TRP3_RelationsList.ScrollFrame.Content, "TOP", 0, 0);
-				widget.Actions:Hide();
-				widget.DragButton:Hide();
-			end
-
-			if widgetCount > 1 then
-				widget.frameIndex = widgetCount - 1;
-				TRP3_API.ui.list.setInfoReorderable(widget.DragButton, widget, function() return movableRelations; end, function() return widgetsList; end, TRP3_RelationsList.ScrollFrame, noneWidget, nil, updateOrderAfterDrag);
-				widgetsList[widgetCount - 1] = widget;
-			else
-				noneWidget = widget;
-			end
-		end
-		widget.Title:SetText((getColor(relation) or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_"..relation.id)));
-		widget.Text:SetText(GenerateEditDescription(relation.description or loc:GetText("REG_RELATION_" .. relation.id .. "_TT")));
-		setupIconButton(widget.Icon, relation.texture or TRP3_InterfaceIcons.ProfileDefault);
-		widget.relationID = relation.id;
-
-		TRP3_API.ui.tooltip.setTooltipForSameFrame(widget.Actions, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
-		widget.Actions:SetScript("OnMouseDown", function(button)
-			TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
-				description:CreateButton(loc.CO_RELATIONS_MENU_EDIT, onActionSelected, ACTIONS.EDIT..relation.id);
-				description:CreateButton("|cnRED_FONT_COLOR:" ..loc.CO_RELATIONS_MENU_DELETE.. "|r", onActionSelected, ACTIONS.DELETE..relation.id);
-			end);
-		end);
-
-		widget:Show();
-
-		widgetCount = widgetCount + 1;
-	end
-
-	if widgetCount - 1 <= #widgetsList then
-		for i = widgetCount - 1, #widgetsList do
-			widgetsList[i]:Hide();
-		end
-	end
+local function OnRelationActions(button, relation)
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+		description:CreateButton(loc.CO_RELATIONS_MENU_EDIT, onActionSelected, ACTIONS.EDIT .. relation.id);
+		description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CO_RELATIONS_MENU_DELETE .. "|r", onActionSelected, ACTIONS.DELETE .. relation.id);
+	end);
 end
 
 local function saveCurrentRelation()
+	local TRP3_RelationsList = GetRelationsList();
 	if not TRP3_API.utils.str.emptyToNil(TRP3_RelationsList.Editor.Content.Name:GetText()) then
 		TRP3_API.utils.message.displayMessage(loc.CO_RELATIONS_NEW_ERROR, TRP3_API.utils.message.type.ALERT_MESSAGE);
 		return
 	end
 
 	local relationToUpdate;
+	local isNewRelation = not TRP3_RelationsList.Editor.Content.ID;
 	if TRP3_RelationsList.Editor.Content.ID then
 		relationToUpdate = getRelationInfo(TRP3_RelationsList.Editor.Content.ID);
 	else
@@ -390,7 +339,8 @@ local function saveCurrentRelation()
 		relationToUpdate.color = nil;
 	end
 
-	updateRelationsList();
+	local relationToScrollTo = isNewRelation and relationToUpdate or nil;
+	updateRelationsList(relationToScrollTo);
 	TRP3_RelationsList.Editor:Hide();
 	TRP3_API.popup.hidePopups();
 end
@@ -450,6 +400,7 @@ TRP3_API.register.inits.relationsInit = function()
 
 	-- Register menu
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_FINISH, function()
+		local TRP3_RelationsList = GetRelationsList();
 
 		TRP3_RelationsList.Title:SetText(loc.CO_RELATIONS);
 		TRP3_RelationsList.CreateNew:SetText(loc.CO_RELATIONS_NEW);
@@ -465,6 +416,7 @@ TRP3_API.register.inits.relationsInit = function()
 		TRP3_RelationsList.Editor.Content.Save:SetScript("OnClick", function()
 			saveCurrentRelation();
 		end);
+		TRP3_RelationsList:SetActionCallback(OnRelationActions);
 
 		updateRelationsList();
 
@@ -486,12 +438,7 @@ TRP3_API.register.inits.relationsInit = function()
 			isChildOf = "main_40_customization",
 			onSelected = function()
 				TRP3_API.navigation.page.setPage(RELATIONS_PAGE_ID);
-				TRP3_RelationsList.ScrollFrame.Content:SetWidth(TRP3_RelationsList.ScrollFrame:GetWidth());
 			end,
 		});
 	end)
-
-	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.NAVIGATION_RESIZED, function(_)
-		TRP3_RelationsList.ScrollFrame.Content:SetWidth(TRP3_RelationsList.ScrollFrame:GetWidth());
-	end);
 end
