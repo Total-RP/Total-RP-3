@@ -4,7 +4,7 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ../../../totalRP3.xsd">
-	<Frame name="TRP3_RelationsListElementTemplate" mixin="TRP3_RelationsListElementMixin" virtual="true">
+	<Button name="TRP3_RelationsListElementTemplate" mixin="TRP3_RelationsListElementMixin" virtual="true">
 		<Size y="60"/>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -51,10 +51,27 @@
 		</Layers>
 		<Scripts>
 			<OnLoad method="OnLoad"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_RelationsListDragIndicatorTemplate" mixin="TRP3_RelationsListDragIndicatorMixin" virtual="true">
+		<Size x="1" y="10"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Texture"/>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
 		</Scripts>
 	</Frame>
 
 	<Frame name="TRP3_RelationsListTemplate" mixin="TRP3_RelationsListMixin" virtual="true">
+		<KeyValues>
+			<KeyValue key="dragAreaIntersectMargin" value="30" type="number"/>
+		</KeyValues>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="Title" inherits="GameFontHighlightHuge" justifyH="LEFT">

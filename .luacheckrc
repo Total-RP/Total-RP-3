@@ -434,6 +434,7 @@ stds.wow = {
 
 		C_Texture = {
 			fields = {
+				"GetAtlasExists",
 				"GetAtlasInfo",
 			},
 		},
@@ -625,9 +626,18 @@ stds.wow = {
 			},
 		},
 
+		DragIntersectionArea = {
+			fields = {
+				"Above",
+				"Below",
+				"Inside",
+			},
+		},
+
 		ScrollUtil = {
 			fields = {
 				"AddManagedScrollBarVisibilityBehavior",
+				"InitDefaultLinearDragBehavior",
 				"InitScrollBoxListWithScrollBar",
 				"InitScrollBoxWithScrollBar",
 				"RegisterScrollBoxWithScrollBar",

@@ -236,6 +236,7 @@ These slots will also be visible on the target frame's |cnGREEN_FONT_COLOR:"At f
 	REG_RELATION_LOVE_TT = "%1$s is in love with %2$s!",
 	REG_RELATION_FAMILY_TT = "%1$s shares blood ties with %2$s.",
 	REG_RELATION_TARGET = "Change relation",
+	REG_RELATION_REORDER = "Reorder relation",
 	REG_TIME = "Time last seen",
 	REG_GUILD = "Guild(s)",
 	REG_REALM = "Realm(s)",
