@@ -3,12 +3,69 @@
 
 local L = TRP3_API.loc;
 
-local function GenerateEditDescription(description)
-	return description:gsub("%%1%$s", "%%p"):gsub("%%2%$s", "%%t");
+local PREVIEW_TARGET_NAMES = {
+	Alliance = {
+		{ name = "Mira Briarwick", class = "MAGE" },
+		{ name = "Perrin Candleford", class = "PALADIN" },
+		{ name = "Thalan Duskbranch", class = "DRUID" },
+		{ name = "Rhoswen Saltmere", class = "PRIEST" },
+		{ name = "Tibby Cogwhistle", class = "WARLOCK" },
+		{ name = "Nella Brassbutton", class = "ROGUE" },
+		{ name = "Borin Flintmantle", class = "WARRIOR" },
+		{ name = "Brynja Runebeard", class = "SHAMAN" },
+		{ name = "Shu-Lin Mistvale", class = "MONK" },
+		{ name = "Bao Ren Cloudstep", class = "HUNTER" },
+	},
+	Horde = {
+		{ name = "Korga Bloodaxe", class = "WARRIOR" },
+		{ name = "Veyra Coldmarrow", class = "WARLOCK" },
+		{ name = "Aroha Boulderhide", class = "DRUID" },
+		{ name = "Jazulo Darktide", class = "SHAMAN" },
+		{ name = "Vaeron Brightsong", class = "PALADIN" },
+		{ name = "M'jara Bloodscale", class = "PRIEST" },
+		{ name = "Kezza Blastfuse", class = "ROGUE" },
+		{ name = "Rixx Geargrin", class = "ROGUE" },
+		{ name = "Mei-Lan Reedwhisker", class = "MONK" },
+		{ name = "Tao-Shi Embertea", class = "MAGE" },
+		{ name = "Rava Dustrunner", class = "HUNTER" },
+	},
+};
+
+local GetNextTargetNameIndex = CreateCounter(fastrandom(10));
+
+local function GeneratePreviewTargetName()
+	local names = PREVIEW_TARGET_NAMES[TRP3_API.globals.player_character.faction] or PREVIEW_TARGET_NAMES.Alliance;
+	local target = names[Wrap(GetNextTargetNameIndex(), #names)];
+	return C_ColorUtil.WrapTextInColor(target.name, TRP3_API.ClassColors[target.class]);
+end
+
+local function GeneratePreviewPlayerName()
+	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+	local color = player:GetCustomColorForDisplay() or TRP3_API.GetClassDisplayColor(TRP3_API.globals.player_character.class);
+	return C_ColorUtil.WrapTextInColor(player:GetRoleplayingName(), color);
+end
+
+local function GeneratePreviewDescription(description, playerName, targetName)
+	local replacements = {
+		["%1$s"] = playerName,
+		["%2$s"] = targetName,
+	};
+
+	return (string.gsub(description, "%%[12]%$s", replacements));
 end
 
 local function GetRelationName(relation)
 	return relation.name or L:GetText("REG_RELATION_" .. relation.id);
+end
+
+local function GetColoredRelationName(relation)
+	local name = GetRelationName(relation);
+
+	if relation.color then
+		name = TRP3_API.CreateColorFromHexString(relation.color):WrapTextInColorCode(name);
+	end
+
+	return name;
 end
 
 local function GetRelationDescription(relation)
@@ -46,25 +103,28 @@ function TRP3_RelationsListElementMixin:OnLoad()
 end
 
 function TRP3_RelationsListElementMixin:OnTooltipShow(description)
-	if CanReorderRelation(self.relation) then
-		local title = GetRelationName(self.relation);
-		local text = nil;
-		local instructions = { { "DRAGDROP", L.REG_RELATION_REORDER } };
+	-- Intentionally keeping tooltip titles the regular color for consistency.
+	local title = GetRelationName(self.relation);
+	local text = self.Text:IsTruncated() and self.previewDescription or nil;
+	local instructions;
 
+	if CanReorderRelation(self.relation) then
+		instructions = { { "DRAGDROP", L.REG_RELATION_REORDER } };
+	end
+
+	if text or instructions then
 		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
 	end
 end
 
-function TRP3_RelationsListElementMixin:Init(relation, actionCallback)
-	self.relation = relation;
-	local name = GetRelationName(relation);
+function TRP3_RelationsListElementMixin:Init(relation, actionCallback, targetName)
+	local name = GetColoredRelationName(relation);
 
-	if relation.color then
-		name = TRP3_API.CreateColorFromHexString(relation.color):WrapTextInColorCode(name);
-	end
+	self.relation = relation;
+	self.previewDescription = GeneratePreviewDescription(GetRelationDescription(relation), GeneratePreviewPlayerName(), targetName);
 
 	self.Title:SetText(name);
-	self.Text:SetText(GenerateEditDescription(GetRelationDescription(relation)));
+	self.Text:SetText(self.previewDescription);
 	self.Icon:SetIconTexture(relation.texture);
 
 	self.Actions:SetShown(relation.id ~= "NONE");
@@ -85,6 +145,10 @@ end
 TRP3_RelationsListMixin = {};
 
 function TRP3_RelationsListMixin:OnLoad()
+	self.dynamicEvents = TRP3_API.CreateCallbackGroup();
+	self.dynamicEvents:AddCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", self.OnRegisterDataUpdated, self);
+	self.previewTargetNames = {};
+
 	local scrollBoxAnchorsWithBar = {
 		AnchorUtil.CreateAnchor("TOP", self.Divider, "BOTTOM", 0, -3),
 		AnchorUtil.CreateAnchor("LEFT", self, "LEFT", 6, 0),
@@ -114,8 +178,23 @@ function TRP3_RelationsListMixin:OnLoad()
 	self.DragBehavior:SetFinalizeDrop(function() self:OnListFinalizeDrop(); end);
 end
 
+function TRP3_RelationsListMixin:OnShow()
+	self.dynamicEvents:Register();
+	self.ScrollBox:Rebuild();
+end
+
+function TRP3_RelationsListMixin:OnHide()
+	self.dynamicEvents:Unregister();
+end
+
+function TRP3_RelationsListMixin:OnRegisterDataUpdated(characterID, _profileID, dataType)
+	if characterID == TRP3_API.globals.player_id and (dataType == nil or dataType == "characteristics") then
+		self.ScrollBox:Rebuild();
+	end
+end
+
 function TRP3_RelationsListMixin:OnListElementInitialize(frame, relation)
-	frame:Init(relation, self.actionCallback);
+	frame:Init(relation, self.actionCallback, self:GetTargetNameForRelation(relation));
 end
 
 function TRP3_RelationsListMixin:OnListDropEnter(factory, candidate)
@@ -154,8 +233,23 @@ function TRP3_RelationsListMixin:CanDropOnListElement(contextData)
 	return contextData.area ~= DragIntersectionArea.Inside and CanReorderRelation(contextData.elementData);
 end
 
+function TRP3_RelationsListMixin:GetTargetNameForRelation(relation)
+	local targetName = self.previewTargetNames[relation.id];
+
+	if not targetName then
+		targetName = GeneratePreviewTargetName();
+		self.previewTargetNames[relation.id] = targetName;
+	end
+
+	return targetName;
+end
+
 function TRP3_RelationsListMixin:SetActionCallback(callback)
 	self.actionCallback = callback;
+end
+
+function TRP3_RelationsListMixin:SetDataProviderFactory(factory)
+	self.dataProviderFactory = factory;
 end
 
 function TRP3_RelationsListMixin:SetDataProvider(dataProvider, retainScrollPosition)
