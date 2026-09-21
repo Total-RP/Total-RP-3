@@ -384,8 +384,6 @@ end
 -- Tooltip tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local getConfigValue = function() end;
-
 -- Show the tooltip for this Frame (the frame must have been set up with setTooltipForFrame).
 -- If already shown, the tooltip text will be refreshed.
 local function refreshTooltip(Frame)
@@ -962,7 +960,7 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 	end);
 	toolbar.color:SetScript("OnClick", function()
 		if toolbar.textFrame then
-			if IsShiftKeyDown() or (getConfigValue and getConfigValue("default_color_picker")) then
+			if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
 				TRP3_API.popup.showDefaultColorPicker({function(red, green, blue) onColorTagSelected(red, green, blue, toolbar.textFrame) end});
 			else
 				TRP3_API.popup.showPopup(
