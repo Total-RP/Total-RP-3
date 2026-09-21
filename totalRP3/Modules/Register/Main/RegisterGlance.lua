@@ -411,10 +411,10 @@ end
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local stEtN = Utils.str.emptyToNil;
 
-local function onIconSelected(icon)
-	icon = icon or TRP3_InterfaceIcons.Default;
-	setupIconButton(TRP3_AtFirstGlanceEditorIcon, icon);
-	TRP3_AtFirstGlanceEditorIcon.icon = icon;
+local function onIconSelected(_iconName, iconInfo)
+	local iconID = iconInfo.id or TRP3_InterfaceIcons.Default;
+	setupIconButton(TRP3_AtFirstGlanceEditorIcon, iconID);
+	TRP3_AtFirstGlanceEditorIcon.icon = iconID;
 end
 
 --- pasteCopiedIcon handles receiving an icon from the right-click menu.
@@ -478,7 +478,7 @@ local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 			end);
 		end
 	end);
-	onIconSelected(slotData.IC);
+	onIconSelected(nil, { id = slotData.IC });
 	TRP3_API.popup.hideIconBrowser();
 end
 TRP3_API.register.glance.openGlanceEditor = openGlanceEditor;

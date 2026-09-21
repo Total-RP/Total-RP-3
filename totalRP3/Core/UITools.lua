@@ -1001,7 +1001,7 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 			TRP3_API.popup.showPopup(
 				TRP3_API.popup.ICONS,
 				{parent = parentFrame, point = point, parentPoint = parentPoint},
-				{function(icon) onIconTagSelected(icon, toolbar.textFrame) end});
+				{function(_iconName, iconInfo) onIconTagSelected(iconInfo.id, toolbar.textFrame) end});
 		end
 	end);
 	toolbar.color:SetScript("OnClick", function()
