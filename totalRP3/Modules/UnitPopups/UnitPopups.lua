@@ -60,19 +60,6 @@ local function GetUnitCompanionProfileInfo(unitToken)
 	end
 end
 
-local function GetBattleNetCharacterID(gameAccountInfo)
-	local characterName = gameAccountInfo.characterName;
-	local realmName = gameAccountInfo.realmName;
-	local qualifiedName = TRP3_NameUtil.ComposeQualifiedName(characterName, realmName);
-	local ambiguatedName;
-
-	if qualifiedName then
-		ambiguatedName = Ambiguate(qualifiedName, "none");
-	end
-
-	return ambiguatedName;
-end
-
 local auroraProjectID;
 
 local function GetClientProjectID()
@@ -91,31 +78,42 @@ local function GetClientProjectID()
 	return auroraProjectID;
 end
 
+TRP3_UnitPopupUtil = {};
+
+function TRP3_UnitPopupUtil.GetCharacterIDFromName(contextData)
+	local name = contextData.name;
+	local qualifier = contextData.server or contextData.surname;
+	return TRP3_NameUtil.ComposeQualifiedName(name or UNKNOWNOBJECT, qualifier);
+end
+
+function TRP3_UnitPopupUtil.GetCharacterIDFromBattleNet(contextData)
+	local accountInfo = contextData.accountInfo;
+	local gameAccountInfo = accountInfo and accountInfo.gameAccountInfo or nil;
+
+	-- Filtering is applied here since in the context of character IDs for
+	-- profiles, we don't support cross-region or project transfers.
+	if not gameAccountInfo then
+		return nil;
+	elseif gameAccountInfo.clientProgram ~= BNET_CLIENT_WOW then
+		return nil;
+	elseif gameAccountInfo.wowProjectID ~= GetClientProjectID() then
+		return nil;
+	elseif not gameAccountInfo.isInCurrentRegion then
+		return nil;
+	end
+
+	local characterName = gameAccountInfo.characterName;
+	local realmName = gameAccountInfo.realmName;
+	return TRP3_NameUtil.ComposeQualifiedName(characterName, realmName);
+end
+
 local function ShouldShowOpenBattleNetProfile(contextData)
 	if not ShouldShowOpenProfile(contextData) then
 		return false;
 	end
 
-	local accountInfo = contextData.accountInfo;
-	local gameAccountInfo = accountInfo and accountInfo.gameAccountInfo or nil;
-
-	if not gameAccountInfo then
-		return false;
-	elseif gameAccountInfo.clientProgram ~= BNET_CLIENT_WOW then
-		return false;
-	elseif gameAccountInfo.wowProjectID ~= GetClientProjectID() then
-		return false;
-	elseif not gameAccountInfo.isInCurrentRegion then
-		return false;
-	end
-
-	local characterID = GetBattleNetCharacterID(gameAccountInfo);
-
-	if not characterID then
-		return false;
-	else
-		return true;
-	end
+	local characterID = TRP3_UnitPopupUtil.GetCharacterIDFromBattleNet(contextData);
+	return characterID ~= nil;
 end
 
 local function ShouldShowOpenCompanionProfile(contextData)
@@ -217,17 +215,10 @@ local function CreateOpenBattleNetProfileButton(menuDescription, contextData)
 	end
 
 	local function OnClick(contextData)  -- luacheck: no redefined
-		local accountInfo = contextData.accountInfo;
-		local gameAccountInfo = accountInfo and accountInfo.gameAccountInfo or nil;
-
-		-- Only a basic sanity test is required here.
-		if not gameAccountInfo then
-			return;
-		end
-
-		local characterID = GetBattleNetCharacterID(gameAccountInfo);
+		local characterID = TRP3_UnitPopupUtil.GetCharacterIDFromBattleNet(contextData);
 
 		if characterID then
+			characterID = Ambiguate(characterID, "none");
 			TRP3_API.slash.openProfile(characterID);
 		end
 	end
@@ -245,9 +236,7 @@ local function CreateOpenCharacterProfileButton(menuDescription, contextData)
 
 	local function OnClick(contextData)  -- luacheck: no redefined
 		local unit = contextData.unit;
-		local name = contextData.name;
-		local server = contextData.server or contextData.surname;
-		local fullName = TRP3_NameUtil.ComposeQualifiedName(name or UNKNOWNOBJECT, server);
+		local fullName = TRP3_UnitPopupUtil.GetCharacterIDFromName(contextData);
 
 		if UnitIsPlayer(unit) then
 			TRP3_API.slash.openProfile(unit);
@@ -293,9 +282,7 @@ local function CreateCharacterStatusMenu(menuDescription, contextData)
 		return nil;
 	end
 
-	local name = contextData.name;
-	local server = contextData.server or contextData.surname;
-	local fullName = TRP3_NameUtil.ComposeQualifiedName(name, server);
+	local fullName = TRP3_UnitPopupUtil.GetCharacterIDFromName(contextData);
 
 	-- Gate for FRIEND (clicking on own name in chat frame) to only show for self.
 	if not fullName or fullName ~= TRP3_API.globals.player_id then
