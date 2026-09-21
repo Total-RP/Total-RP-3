@@ -254,6 +254,33 @@ function TRP3_RelationsListMixin:SetActionCallback(callback)
 	self.actionCallback = callback;
 end
 
+function TRP3_RelationsListMixin:GetTutorialStructure()
+	return {
+		{
+			box = {
+				allPoints = self.CreateNew,
+			},
+			button = {
+				x = 0, y = -10, anchor = "TOP",
+				text = L.CO_RELATIONS_TUTORIAL_CREATE,
+				textWidth = 320,
+				arrow = "DOWN",
+			},
+		},
+		{
+			box = {
+				allPoints = self.ScrollBox,
+			},
+			button = {
+				x = 0, y = 0, anchor = "CENTER",
+				text = L.CO_RELATIONS_TUTORIAL_LIST,
+				textWidth = 420,
+				arrow = "UP",
+			},
+		},
+	};
+end
+
 function TRP3_RelationsListMixin:SetDataProviderFactory(factory)
 	self.dataProviderFactory = factory;
 end

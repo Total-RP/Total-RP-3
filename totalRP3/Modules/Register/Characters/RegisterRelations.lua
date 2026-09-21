@@ -423,6 +423,9 @@ TRP3_API.register.inits.relationsInit = function()
 		TRP3_API.navigation.page.registerPage({
 			id = RELATIONS_PAGE_ID,
 			frame = TRP3_RelationsList,
+			tutorialProvider = function()
+				return TRP3_RelationsList:GetTutorialStructure();
+			end,
 		});
 
 		TRP3_API.navigation.menu.registerMenu({
