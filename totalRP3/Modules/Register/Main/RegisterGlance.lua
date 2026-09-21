@@ -778,7 +778,7 @@ local draggingGlance = false;
 local function onGlanceDragStart(button)
 	if button.isCurrentMine and button.data then
 		draggingGlance = true;
-		SetCursor(GetFileIDFromPath("Interface\\ICONS\\" .. (button.data.IC or TRP3_InterfaceIconIDs.Default)));
+		TRP3_IconUtil.SetCursor(button.data.IC or TRP3_InterfaceIconIDs.Default);
 		PlaySound(TRP3_InterfaceSounds.DragPickup);
 	end
 end
@@ -803,7 +803,7 @@ local function GetGlanceDropTarget()
 end
 
 local function onGlanceDragStop(button)
-	ResetCursor();
+	TRP3_IconUtil.ClearCursor();
 	PlaySound(TRP3_InterfaceSounds.DragDrop);
 	if draggingGlance and button.isCurrentMine and button and button.slot then
 		draggingGlance = false;
