@@ -882,7 +882,7 @@ TRP3_API.ui.misc.getUnitTexture = function(race, gender)
 	local raceToken = race;
 	local genderToken = (gender == 3) and "Female" or "Male";
 
-	return TRP3_InterfaceIcons[raceToken .. genderToken] or TRP3_InterfaceIcons.Default;
+	return TRP3_InterfaceIconIDs[raceToken .. genderToken] or TRP3_InterfaceIconIDs.Default;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

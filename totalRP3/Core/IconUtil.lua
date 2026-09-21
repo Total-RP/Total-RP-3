@@ -3,9 +3,6 @@
 
 local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 
----@alias TRP3.IconIdentifier string|integer
----An icon name, atlas name, or LibRPMedia icon ID.
-
 TRP3_IconUtil = {};
 
 ---@param icon TRP3.IconIdentifier?
@@ -33,7 +30,7 @@ function TRP3_IconUtil.SetTextureToIcon(texture, icon)
 	local iconInfo = TRP3_IconUtil.GetIconInfo(icon);
 
 	if iconInfo == nil then
-		iconInfo = TRP3_IconUtil.GetIconInfo("inv_misc_questionmark");
+		iconInfo = TRP3_IconUtil.GetIconInfo(TRP3_InterfaceIconIDs.Default);
 	end
 
 	if iconInfo.file then

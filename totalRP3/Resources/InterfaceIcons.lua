@@ -1,246 +1,246 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
---
--- Interface Icon Data
---
+local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 
 local DEFAULT_ICON_NAME = "inv_misc_questionmark";
+local DEFAULT_ICON_ID = LRPM12:ResolveIconID("inv_misc_questionmark");
 
-TRP3_InterfaceIcons = {
-	Default        = { DEFAULT_ICON_NAME },
-	DiceRoll       = { "inv_misc_dice_01", "inv_enchant_shardglowingsmall" },
-	Gears          = { "icon_petfamily_mechanical", "inv_misc_gear_01" },
-	ProfileDefault = { "inv_misc_grouplooking" },
-	ScanCooldown   = { "ability_mage_timewarp", "spell_nature_timestop" },
-	ScanReady      = { "icon_treasuremap", "inv_misc_map_01" },
-	Unknown        = { DEFAULT_ICON_NAME },
+---@return TRP3.IconIdentifier?
+local function GetFirstValidIcon(...)
+	local icons = { ... };
+
+	for _, icon in ipairs(icons) do
+		local iconID = LRPM12:ResolveIconID(icon);
+
+		if iconID then
+			return iconID;
+		end
+	end
+
+	securecallfunction(error, string.format("Failed to resolve icon ID (candidates: %s)", table.concat(icons, ", ")), 3);
+	return DEFAULT_ICON_ID;
+end
+
+---@param iconID integer
+local function GetIconName(iconID)
+	return LRPM12:GetIconNameByID(iconID) or DEFAULT_ICON_NAME;
+end
+
+TRP3_InterfaceIconIDs = {
+	Default = DEFAULT_ICON_ID,
+	DiceRoll = GetFirstValidIcon("inv_misc_dice_01", "inv_enchant_shardglowingsmall"),
+	Gears = GetFirstValidIcon("icon_petfamily_mechanical", "inv_misc_gear_01"),
+	ProfileDefault = GetFirstValidIcon("inv_misc_grouplooking"),
+	ScanCooldown = GetFirstValidIcon("ability_mage_timewarp", "spell_nature_timestop"),
+	ScanReady = GetFirstValidIcon("icon_treasuremap", "inv_misc_map_01"),
+	Unknown = DEFAULT_ICON_ID,
 
 	--
 	-- UI Icons
 	--
 
-	DirectorySection  = { "inv_misc_book_09" },
-	HistorySection    = { "inv_misc_book_12" },
-	MiscInfoSection   = { "inv_misc_note_06" },
-	PhysicalSection   = { "ability_warrior_strengthofarms", "spell_nature_strength" },
-	TraitSection      = { "spell_arcane_mindmastery" },
-	CharacterMenuItem = { "pet_type_humanoid", "inv_helmet_20" },
-	CompanionMenuItem = { "pet_type_beast", "inv_box_petcarrier_01" },
-	DefaultScanIcon   = { "inv_misc_enggizmos_20" },
-	PlayerScanIcon    = { "achievement_guildperk_everybodysfriend" },
+	DirectorySection = GetFirstValidIcon("inv_misc_book_09"),
+	HistorySection = GetFirstValidIcon("inv_misc_book_12"),
+	MiscInfoSection = GetFirstValidIcon("inv_misc_note_06"),
+	PhysicalSection = GetFirstValidIcon("ability_warrior_strengthofarms", "spell_nature_strength"),
+	TraitSection = GetFirstValidIcon("spell_arcane_mindmastery"),
+	CharacterMenuItem = GetFirstValidIcon("pet_type_humanoid", "inv_helmet_20"),
+	CompanionMenuItem = GetFirstValidIcon("pet_type_beast", "inv_box_petcarrier_01"),
+	DefaultScanIcon = GetFirstValidIcon("inv_misc_enggizmos_20"),
+	PlayerScanIcon = GetFirstValidIcon("achievement_guildperk_everybodysfriend"),
 
 	--
 	-- Target Bar Icons
 	--
 
-	TargetFlagMature       = { "ability_hunter_mastermarksman" },
-	TargetFlagMatureSafe   = { "inv_valentinescard02" },
-	TargetFlagMatureUnsafe = { "inv_inscription_parchmentvar03", "inv_scroll_07" },
-	TargetOpenCharacterA   = { "inv_misc_paperbundle04c", "inv_inscription_scroll", "inv_misc_scrollunrolled01" },
-	TargetOpenCharacterH   = { "Inv_misc_paperbundle04b", "inv_inscription_scroll", "inv_misc_scrollunrolled01" },
-	TargetOpenCharacterN   = { "Inv_misc_paperbundle04a", "inv_inscription_scroll", "inv_misc_scrollunrolled01" },
-	TargetOpenCompanion    = { "inv_box_petcarrier_01" },
-	TargetOpenMount        = { "spell_nature_swiftness" },
-	TargetPlayMusic        = { "inv_misc_trinket_goldenharp", "inv_misc_drum_06" },
-	TargetNotes            = { "inv_misc_notescript1e", "inv_scroll_02" },
+	TargetFlagMature = GetFirstValidIcon("ability_hunter_mastermarksman"),
+	TargetFlagMatureSafe = GetFirstValidIcon("inv_valentinescard02"),
+	TargetFlagMatureUnsafe = GetFirstValidIcon("inv_inscription_parchmentvar03", "inv_scroll_07"),
+	TargetOpenCharacterA = GetFirstValidIcon("inv_misc_paperbundle04c", "inv_inscription_scroll", "inv_misc_scrollunrolled01"),
+	TargetOpenCharacterH = GetFirstValidIcon("Inv_misc_paperbundle04b", "inv_inscription_scroll", "inv_misc_scrollunrolled01"),
+	TargetOpenCharacterN = GetFirstValidIcon("Inv_misc_paperbundle04a", "inv_inscription_scroll", "inv_misc_scrollunrolled01"),
+	TargetOpenCompanion = GetFirstValidIcon("inv_box_petcarrier_01"),
+	TargetOpenMount = GetFirstValidIcon("spell_nature_swiftness"),
+	TargetPlayMusic = GetFirstValidIcon("inv_misc_trinket_goldenharp", "inv_misc_drum_06"),
+	TargetNotes = GetFirstValidIcon("inv_misc_notescript1e", "inv_scroll_02"),
 
 	--
 	-- Toolbar Icons
 	--
 
-	ToolbarNPCTalk    = { "ability_warrior_commandingshout" },
-	ToolbarStatusIC   = { "Inv_collections_armor_hood_b_01_white", "spell_shadow_charm" },
-	ToolbarStatusOOC  = { "Inv_collections_armor_hood_b_01_black", "achievement_guildperk_everybodysfriend" },
-	ToolbarCloakOn    = { "inv_misc_cape_18" },
-	ToolbarCloakOff   = { "inv_misc_cape_20" },
-	ToolbarHelmetOn   = { "inv_helmet_13" },
-	ToolbarHelmetOff  = { "spell_nature_invisibilty" },
-	ToolbarLanguage   = { "spell_holy_silence" },
-	ToolbarCurrently  = { "ui_chat" },
+	ToolbarNPCTalk = GetFirstValidIcon("ability_warrior_commandingshout"),
+	ToolbarStatusIC = GetFirstValidIcon("Inv_collections_armor_hood_b_01_white", "spell_shadow_charm"),
+	ToolbarStatusOOC = GetFirstValidIcon("Inv_collections_armor_hood_b_01_black", "achievement_guildperk_everybodysfriend"),
+	ToolbarCloakOn = GetFirstValidIcon("inv_misc_cape_18"),
+	ToolbarCloakOff = GetFirstValidIcon("inv_misc_cape_20"),
+	ToolbarHelmetOn = GetFirstValidIcon("inv_helmet_13"),
+	ToolbarHelmetOff = GetFirstValidIcon("spell_nature_invisibilty"),
+	ToolbarLanguage = GetFirstValidIcon("spell_holy_silence"),
+	ToolbarCurrently = GetFirstValidIcon("ui_chat"),
 
 	--
 	-- Player Mode Icons
 	--
 
-	ModeNormal = { "inv_misc_grouplooking" },
-	ModeAFK    = { "spell_nature_sleep" },
-	ModeDND    = { "ability_mage_incantersabsorbtion", "ability_druid_challangingroar" },
+	ModeNormal = GetFirstValidIcon("inv_misc_grouplooking"),
+	ModeAFK = GetFirstValidIcon("spell_nature_sleep"),
+	ModeDND = GetFirstValidIcon("ability_mage_incantersabsorbtion", "ability_druid_challangingroar"),
 
 	--
 	-- Relation Icons
 	--
 
-	RelationBusiness   = { "achievement_reputation_08", "inv_misc_coin_02" },
-	RelationFamily     = { "achievement_reputation_07", "achievement_guildperk_everybodysfriend" },
-	RelationFriend     = { "achievement_reputation_06", "spell_nature_massteleport" },
-	RelationLove       = { "inv_valentinescandy" },
-	RelationNeutral    = { "achievement_reputation_05", "ability_hibernation", "inv_misc_grouplooking" },
-	RelationNone       = { "ability_rogue_disguise" },
-	RelationUnfriendly = { "ability_dualwield" },
+	RelationBusiness = GetFirstValidIcon("achievement_reputation_08", "inv_misc_coin_02"),
+	RelationFamily = GetFirstValidIcon("achievement_reputation_07", "achievement_guildperk_everybodysfriend"),
+	RelationFriend = GetFirstValidIcon("achievement_reputation_06", "spell_nature_massteleport"),
+	RelationLove = GetFirstValidIcon("inv_valentinescandy"),
+	RelationNeutral = GetFirstValidIcon("achievement_reputation_05", "ability_hibernation", "inv_misc_grouplooking"),
+	RelationNone = GetFirstValidIcon("ability_rogue_disguise"),
+	RelationUnfriendly = GetFirstValidIcon("ability_dualwield"),
 
 	--
 	-- Race Icons
 	--
 
-	BloodElfFemale           = { "achievement_character_bloodelf_female", "spell_arcane_teleportsilvermoon" },
-	BloodElfMale             = { "achievement_character_bloodelf_male", "spell_arcane_teleportsilvermoon" },
-	DarkIronDwarfFemale      = { "ability_racial_foregedinflames", DEFAULT_ICON_NAME },
-	DarkIronDwarfMale        = { "ability_racial_fireblood", DEFAULT_ICON_NAME },
-	DracthyrFemale           = { "inv_dracthyrhead01", DEFAULT_ICON_NAME},
-	DracthyrMale             = { "inv_dracthyrhead02", DEFAULT_ICON_NAME},
-	DraeneiFemale            = { "achievement_character_draenei_female", "spell_arcane_teleportexodar" },
-	DraeneiMale              = { "achievement_character_draenei_male", "spell_arcane_teleportexodar" },
-	DwarfFemale              = { "achievement_character_dwarf_female", "spell_arcane_teleportironforge" },
-	DwarfMale                = { "achievement_character_dwarf_male", "spell_arcane_teleportironforge" },
-	EarthenDwarfFemale       = { "ability_earthen_wideeyedwonder", DEFAULT_ICON_NAME },
-	EarthenDwarfMale         = { "achievement_dungeon_ulduarraid_irondwarf_01", DEFAULT_ICON_NAME },
-	GnomeFemale              = { "achievement_character_gnome_female", "inv_misc_head_gnome_02" },
-	GnomeMale                = { "achievement_character_gnome_male", "inv_misc_head_gnome_01" },
-	GoblinFemale             = { "ability_racial_rocketjump", DEFAULT_ICON_NAME },
-	GoblinMale               = { "ability_racial_rocketjump", DEFAULT_ICON_NAME },
-	HarronirFemale           = { "inv12_haranir_character_creation_female", DEFAULT_ICON_NAME },
-	HarronirMale             = { "inv12_haranir_character_creation_male", DEFAULT_ICON_NAME },
-	HighmountainTaurenFemale = { "achievement_alliedrace_highmountaintauren", DEFAULT_ICON_NAME },
-	HighmountainTaurenMale   = { "ability_racial_bullrush", DEFAULT_ICON_NAME },
-	HumanFemale              = { "achievement_character_human_female", "spell_arcane_teleportstormwind" },
-	HumanMale                = { "achievement_character_human_male", "spell_arcane_teleportstormwind" },
-	KulTiranFemale           = { "ability_racial_childofthesea", DEFAULT_ICON_NAME },
-	KulTiranMale             = { "achievement_boss_zuldazar_manceroy_mestrah", DEFAULT_ICON_NAME },
-	LightforgedDraeneiFemale = { "achievement_alliedrace_lightforgeddraenei", DEFAULT_ICON_NAME },
-	LightforgedDraeneiMale   = { "ability_racial_finalverdict", DEFAULT_ICON_NAME },
-	MagharOrcFemale          = { "achievement_character_orc_female_brn", DEFAULT_ICON_NAME },
-	MagharOrcMale            = { "achievement_character_orc_male_brn", DEFAULT_ICON_NAME },
-	MechagnomeFemale         = { "inv_plate_mechagnome_c_01helm", DEFAULT_ICON_NAME },
-	MechagnomeMale           = { "ability_racial_hyperorganiclightoriginator", DEFAULT_ICON_NAME },
-	NightborneFemale         = { "ability_racial_masquerade", DEFAULT_ICON_NAME },
-	NightborneMale           = { "ability_racial_dispelillusions", DEFAULT_ICON_NAME },
-	NightElfFemale           = { "achievement_character_nightelf_female", "spell_arcane_teleportdarnassus" },
-	NightElfMale             = { "achievement_character_nightelf_male", "spell_arcane_teleportdarnassus" },
-	OrcFemale                = { "achievement_character_orc_female", "spell_arcane_teleportorgrimmar" },
-	OrcMale                  = { "achievement_character_orc_male", "spell_arcane_teleportorgrimmar" },
-	PandarenFemale           = { "achievement_character_pandaren_female", DEFAULT_ICON_NAME },
-	PandarenMale             = { "achievement_guild_classypanda", DEFAULT_ICON_NAME },
-	ScourgeFemale            = { "achievement_character_undead_female", "spell_arcane_teleportundercity" },
-	ScourgeMale              = { "achievement_character_undead_male", "spell_arcane_teleportundercity" },
-	TaurenFemale             = { "achievement_character_tauren_female", "spell_arcane_teleportthunderbluff" },
-	TaurenMale               = { "achievement_character_tauren_male", "spell_arcane_teleportthunderbluff" },
-	TrollFemale              = { "achievement_character_troll_female", "inv_misc_head_troll_02" },
-	TrollMale                = { "achievement_character_troll_male" },
-	VoidElfFemale            = { "ability_racial_preturnaturalcalm", DEFAULT_ICON_NAME },
-	VoidElfMale              = { "ability_racial_entropicembrace", DEFAULT_ICON_NAME },
-	VulperaFemale            = { "ability_racial_nosefortrouble", DEFAULT_ICON_NAME },
-	VulperaMale              = { "ability_racial_nosefortrouble", DEFAULT_ICON_NAME },
-	WorgenFemale             = { "ability_racial_viciousness", DEFAULT_ICON_NAME },
-	WorgenMale               = { "achievement_worganhead", DEFAULT_ICON_NAME },
-	ZandalariTrollFemale     = { "inv_zandalarifemalehead", DEFAULT_ICON_NAME },
-	ZandalariTrollMale       = { "inv_zandalarimalehead", DEFAULT_ICON_NAME },
+	BloodElfFemale = GetFirstValidIcon("achievement_character_bloodelf_female", "spell_arcane_teleportsilvermoon"),
+	BloodElfMale = GetFirstValidIcon("achievement_character_bloodelf_male", "spell_arcane_teleportsilvermoon"),
+	DarkIronDwarfFemale = GetFirstValidIcon("ability_racial_foregedinflames", DEFAULT_ICON_ID),
+	DarkIronDwarfMale = GetFirstValidIcon("ability_racial_fireblood", DEFAULT_ICON_ID),
+	DracthyrFemale = GetFirstValidIcon("inv_dracthyrhead01", DEFAULT_ICON_ID),
+	DracthyrMale = GetFirstValidIcon("inv_dracthyrhead02", DEFAULT_ICON_ID),
+	DraeneiFemale = GetFirstValidIcon("achievement_character_draenei_female", "spell_arcane_teleportexodar"),
+	DraeneiMale = GetFirstValidIcon("achievement_character_draenei_male", "spell_arcane_teleportexodar"),
+	DwarfFemale = GetFirstValidIcon("achievement_character_dwarf_female", "spell_arcane_teleportironforge"),
+	DwarfMale = GetFirstValidIcon("achievement_character_dwarf_male", "spell_arcane_teleportironforge"),
+	EarthenDwarfFemale = GetFirstValidIcon("ability_earthen_wideeyedwonder", DEFAULT_ICON_ID),
+	EarthenDwarfMale = GetFirstValidIcon("achievement_dungeon_ulduarraid_irondwarf_01", DEFAULT_ICON_ID),
+	GnomeFemale = GetFirstValidIcon("achievement_character_gnome_female", "inv_misc_head_gnome_02"),
+	GnomeMale = GetFirstValidIcon("achievement_character_gnome_male", "inv_misc_head_gnome_01"),
+	GoblinFemale = GetFirstValidIcon("ability_racial_rocketjump", DEFAULT_ICON_ID),
+	GoblinMale = GetFirstValidIcon("ability_racial_rocketjump", DEFAULT_ICON_ID),
+	HarronirFemale = GetFirstValidIcon("inv12_haranir_character_creation_female", DEFAULT_ICON_ID),
+	HarronirMale = GetFirstValidIcon("inv12_haranir_character_creation_male", DEFAULT_ICON_ID),
+	HighmountainTaurenFemale = GetFirstValidIcon("achievement_alliedrace_highmountaintauren", DEFAULT_ICON_ID),
+	HighmountainTaurenMale = GetFirstValidIcon("ability_racial_bullrush", DEFAULT_ICON_ID),
+	HumanFemale = GetFirstValidIcon("achievement_character_human_female", "spell_arcane_teleportstormwind"),
+	HumanMale = GetFirstValidIcon("achievement_character_human_male", "spell_arcane_teleportstormwind"),
+	KulTiranFemale = GetFirstValidIcon("ability_racial_childofthesea", DEFAULT_ICON_ID),
+	KulTiranMale = GetFirstValidIcon("achievement_boss_zuldazar_manceroy_mestrah", DEFAULT_ICON_ID),
+	LightforgedDraeneiFemale = GetFirstValidIcon("achievement_alliedrace_lightforgeddraenei", DEFAULT_ICON_ID),
+	LightforgedDraeneiMale = GetFirstValidIcon("ability_racial_finalverdict", DEFAULT_ICON_ID),
+	MagharOrcFemale = GetFirstValidIcon("achievement_character_orc_female_brn", DEFAULT_ICON_ID),
+	MagharOrcMale = GetFirstValidIcon("achievement_character_orc_male_brn", DEFAULT_ICON_ID),
+	MechagnomeFemale = GetFirstValidIcon("inv_plate_mechagnome_c_01helm", DEFAULT_ICON_ID),
+	MechagnomeMale = GetFirstValidIcon("ability_racial_hyperorganiclightoriginator", DEFAULT_ICON_ID),
+	NightborneFemale = GetFirstValidIcon("ability_racial_masquerade", DEFAULT_ICON_ID),
+	NightborneMale = GetFirstValidIcon("ability_racial_dispelillusions", DEFAULT_ICON_ID),
+	NightElfFemale = GetFirstValidIcon("achievement_character_nightelf_female", "spell_arcane_teleportdarnassus"),
+	NightElfMale = GetFirstValidIcon("achievement_character_nightelf_male", "spell_arcane_teleportdarnassus"),
+	OrcFemale = GetFirstValidIcon("achievement_character_orc_female", "spell_arcane_teleportorgrimmar"),
+	OrcMale = GetFirstValidIcon("achievement_character_orc_male", "spell_arcane_teleportorgrimmar"),
+	PandarenFemale = GetFirstValidIcon("achievement_character_pandaren_female", DEFAULT_ICON_ID),
+	PandarenMale = GetFirstValidIcon("achievement_guild_classypanda", DEFAULT_ICON_ID),
+	ScourgeFemale = GetFirstValidIcon("achievement_character_undead_female", "spell_arcane_teleportundercity"),
+	ScourgeMale = GetFirstValidIcon("achievement_character_undead_male", "spell_arcane_teleportundercity"),
+	TaurenFemale = GetFirstValidIcon("achievement_character_tauren_female", "spell_arcane_teleportthunderbluff"),
+	TaurenMale = GetFirstValidIcon("achievement_character_tauren_male", "spell_arcane_teleportthunderbluff"),
+	TrollFemale = GetFirstValidIcon("achievement_character_troll_female", "inv_misc_head_troll_02"),
+	TrollMale = GetFirstValidIcon("achievement_character_troll_male"),
+	VoidElfFemale = GetFirstValidIcon("ability_racial_preturnaturalcalm", DEFAULT_ICON_ID),
+	VoidElfMale = GetFirstValidIcon("ability_racial_entropicembrace", DEFAULT_ICON_ID),
+	VulperaFemale = GetFirstValidIcon("ability_racial_nosefortrouble", DEFAULT_ICON_ID),
+	VulperaMale = GetFirstValidIcon("ability_racial_nosefortrouble", DEFAULT_ICON_ID),
+	WorgenFemale = GetFirstValidIcon("ability_racial_viciousness", DEFAULT_ICON_ID),
+	WorgenMale = GetFirstValidIcon("achievement_worganhead", DEFAULT_ICON_ID),
+	ZandalariTrollFemale = GetFirstValidIcon("inv_zandalarifemalehead", DEFAULT_ICON_ID),
+	ZandalariTrollMale = GetFirstValidIcon("inv_zandalarimalehead", DEFAULT_ICON_ID),
 
 	--
 	-- Miscellaneous Info Field Icons
 	--
 
-	MiscInfoGuildName      = { "vas_guildnamechange", "inv_shirt_guildtabard_01" },
-	MiscInfoGuildRank      = { "achievement_guildperk_honorablemention_rank2", "achievement_pvp_o_04", "achievement_guildperk_havegroup willtravel" },
-	MiscInfoHouse          = { "inv_misc_kingsring1", "inv_jewelry_ring_36" },
-	MiscInfoMotto          = { "inv_inscription_scrollofwisdom_01", "inv_scroll_01" },
-	MiscInfoNickname       = { "ability_hunter_beastcall" },
-	MiscInfoPiercings      = { "inv_jewelry_ring_14" },
-	MiscInfoPronouns       = { "vas_namechange" },
-	MiscInfoTattoos        = { "inv_inscription_inkblack01", "inv_potion_133" },
-	MiscInfoTraits         = { "spell_shadow_mindsteal" },
-	MiscInfoVoiceReference = { "spell_holy_silence" },
+	MiscInfoGuildName = GetFirstValidIcon("vas_guildnamechange", "inv_shirt_guildtabard_01"),
+	MiscInfoGuildRank = GetFirstValidIcon("achievement_guildperk_honorablemention_rank2", "achievement_pvp_o_04", "achievement_guildperk_havegroup willtravel"),
+	MiscInfoHouse = GetFirstValidIcon("inv_misc_kingsring1", "inv_jewelry_ring_36"),
+	MiscInfoMotto = GetFirstValidIcon("inv_inscription_scrollofwisdom_01", "inv_scroll_01"),
+	MiscInfoNickname = GetFirstValidIcon("ability_hunter_beastcall"),
+	MiscInfoPiercings = GetFirstValidIcon("inv_jewelry_ring_14"),
+	MiscInfoPronouns = GetFirstValidIcon("vas_namechange"),
+	MiscInfoTattoos = GetFirstValidIcon("inv_inscription_inkblack01", "inv_potion_133"),
+	MiscInfoTraits = GetFirstValidIcon("spell_shadow_mindsteal"),
+	MiscInfoVoiceReference = GetFirstValidIcon("spell_holy_silence"),
 
 	--
 	-- Personality Trait Icons
 	--
 
-	TraitAltruistic    = { "inv_misc_gift_02" },
-	TraitAscetic       = { "inv_misc_food_pinenut", "inv_misc_food_02" },
-	TraitBonVivant     = { "inv_misc_food_99" },
-	TraitBrutal        = { "ability_warrior_trauma", "ability_warrior_bloodfrenzy" },
-	TraitCautious      = { "spell_shadow_brainwash" },
-	TraitChaotic       = { "ability_rogue_wrongfullyaccused", "spell_fire_masterofelements" },
-	TraitChaste        = { "inv_belt_27" },
-	TraitDeceitful     = { "ability_rogue_disguise" },
-	TraitForgiving     = { "inv_rosebouquet01" },
-	TraitGentle        = { "inv_valentinescandysack" },
-	TraitImpulsive     = { "achievement_bg_captureflag_eos", "spell_fire_burningspeed" },
-	TraitLawful        = { "ability_paladin_sanctifiedwrath", "inv_shield_35" },
-	TraitLustful       = { "spell_shadow_summonsuccubus" },
-	TraitParagon       = { "inv_misc_groupneedmore" },
-	TraitRational      = { "inv_gizmo_02" },
-	TraitRenegade      = { "ability_rogue_honoramongstthieves", "ability_warrior_improveddisciplines" },
-	TraitSelfish       = { "inv_misc_coin_02" },
-	TraitSpineless     = { "ability_druid_cower" },
-	TraitSuperstitious = { "spell_holy_holyguidance" },
-	TraitTruthful      = { "inv_misc_toy_07" },
-	TraitValorous      = { "ability_paladin_beaconoflight", "spell_holy_auraoflight" },
-	TraitVindictive    = { "ability_hunter_snipershot" },
+	TraitAltruistic = GetFirstValidIcon("inv_misc_gift_02"),
+	TraitAscetic = GetFirstValidIcon("inv_misc_food_pinenut", "inv_misc_food_02"),
+	TraitBonVivant = GetFirstValidIcon("inv_misc_food_99"),
+	TraitBrutal = GetFirstValidIcon("ability_warrior_trauma", "ability_warrior_bloodfrenzy"),
+	TraitCautious = GetFirstValidIcon("spell_shadow_brainwash"),
+	TraitChaotic = GetFirstValidIcon("ability_rogue_wrongfullyaccused", "spell_fire_masterofelements"),
+	TraitChaste = GetFirstValidIcon("inv_belt_27"),
+	TraitDeceitful = GetFirstValidIcon("ability_rogue_disguise"),
+	TraitForgiving = GetFirstValidIcon("inv_rosebouquet01"),
+	TraitGentle = GetFirstValidIcon("inv_valentinescandysack"),
+	TraitImpulsive = GetFirstValidIcon("achievement_bg_captureflag_eos", "spell_fire_burningspeed"),
+	TraitLawful = GetFirstValidIcon("ability_paladin_sanctifiedwrath", "inv_shield_35"),
+	TraitLustful = GetFirstValidIcon("spell_shadow_summonsuccubus"),
+	TraitParagon = GetFirstValidIcon("inv_misc_groupneedmore"),
+	TraitRational = GetFirstValidIcon("inv_gizmo_02"),
+	TraitRenegade = GetFirstValidIcon("ability_rogue_honoramongstthieves", "ability_warrior_improveddisciplines"),
+	TraitSelfish = GetFirstValidIcon("inv_misc_coin_02"),
+	TraitSpineless = GetFirstValidIcon("ability_druid_cower"),
+	TraitSuperstitious = GetFirstValidIcon("spell_holy_holyguidance"),
+	TraitTruthful = GetFirstValidIcon("inv_misc_toy_07"),
+	TraitValorous = GetFirstValidIcon("ability_paladin_beaconoflight", "spell_holy_auraoflight"),
+	TraitVindictive = GetFirstValidIcon("ability_hunter_snipershot"),
 
 	--
 	-- Language Icons
 	--
 
-	LanguageCommon        = { "inv_misc_tournaments_banner_human", "spell_arcane_teleportstormwind" },
-	LanguageDarnassian    = { "inv_misc_tournaments_banner_nightelf", "spell_arcane_teleportdarnassus" },
-	LanguageDemonic       = { "artifactability_havocdemonhunter_anguishofthedeceiver", DEFAULT_ICON_NAME },
-	LanguageDraconic      = { "ability_warrior_dragonroar", DEFAULT_ICON_NAME },
-	LanguageDraenei       = { "inv_misc_tournaments_banner_draenei", "spell_arcane_teleportexodar" },
-	LanguageDwarvish      = { "inv_misc_tournaments_banner_dwarf", "spell_arcane_teleportironforge" },
-	LanguageForsaken      = { "inv_misc_tournaments_banner_scourge", "spell_arcane_teleportundercity" },
-	LanguageFurbolg       = { "inv_gauntlets_02" },
-	LanguageGnomish       = { "inv_misc_tournaments_banner_gnome", "inv_misc_head_gnome_01" },
-	LanguageGnomishBinary = { "inv_misc_punchcards_blue" },
-	LanguageGoblin        = { "achievement_goblinhead", DEFAULT_ICON_NAME },
-	LanguageGoblinBinary  = { "inv_misc_punchcards_blue" },
-	LanguageHarani        = { "inv12_achievements_alliedrace_haranir_sigil", DEFAULT_ICON_NAME },
-	LanguageKalimag       = { "shaman_talent_elementalblast", DEFAULT_ICON_NAME },
-	LanguageMoonkin       = { "ability_druid_improvedmoonkinform", "ability_eyeoftheowl" },
-	LanguageNerglish      = { "inv_pet_babymurlocs_blue", DEFAULT_ICON_NAME },
-	LanguageOrcish        = { "inv_misc_tournaments_banner_orc", "spell_arcane_teleportorgrimmar" },
-	LanguagePandaren      = { "achievement_guild_classypanda", DEFAULT_ICON_NAME },
-	LanguageShalassian    = { "achievement_alliedrace_nightborne", DEFAULT_ICON_NAME },
-	LanguageShathYar      = { "spell_priest_voidform", DEFAULT_ICON_NAME },
-	LanguageSprite        = { "inv_pet_sprite_darter_hatchling", DEFAULT_ICON_NAME },
-	LanguageTaurahe       = { "inv_misc_tournaments_banner_tauren", "spell_arcane_teleportthunderbluff" },
-	LanguageThalassian    = { "inv_misc_tournaments_banner_bloodelf", "spell_arcane_teleportsilvermoon" },
-	LanguageTitan         = { "achievement_dungeon_ulduarraid_titan_01", DEFAULT_ICON_NAME },
-	LanguageVulpera       = { "inv_tabard_vulpera", DEFAULT_ICON_NAME },
-	LanguageZandali       = { "inv_misc_tournaments_banner_troll", "achievement_character_troll_male" },
-	LanguageZombie        = { "icon_petfamily_undead", DEFAULT_ICON_NAME },
+	LanguageCommon = GetFirstValidIcon("inv_misc_tournaments_banner_human", "spell_arcane_teleportstormwind"),
+	LanguageDarnassian = GetFirstValidIcon("inv_misc_tournaments_banner_nightelf", "spell_arcane_teleportdarnassus"),
+	LanguageDemonic = GetFirstValidIcon("artifactability_havocdemonhunter_anguishofthedeceiver", DEFAULT_ICON_ID),
+	LanguageDraconic = GetFirstValidIcon("ability_warrior_dragonroar", DEFAULT_ICON_ID),
+	LanguageDraenei = GetFirstValidIcon("inv_misc_tournaments_banner_draenei", "spell_arcane_teleportexodar"),
+	LanguageDwarvish = GetFirstValidIcon("inv_misc_tournaments_banner_dwarf", "spell_arcane_teleportironforge"),
+	LanguageForsaken = GetFirstValidIcon("inv_misc_tournaments_banner_scourge", "spell_arcane_teleportundercity"),
+	LanguageFurbolg = GetFirstValidIcon("inv_gauntlets_02"),
+	LanguageGnomish = GetFirstValidIcon("inv_misc_tournaments_banner_gnome", "inv_misc_head_gnome_01"),
+	LanguageGnomishBinary = GetFirstValidIcon("inv_misc_punchcards_blue"),
+	LanguageGoblin = GetFirstValidIcon("achievement_goblinhead", DEFAULT_ICON_ID),
+	LanguageGoblinBinary = GetFirstValidIcon("inv_misc_punchcards_blue"),
+	LanguageHarani = GetFirstValidIcon("inv12_achievements_alliedrace_haranir_sigil", DEFAULT_ICON_ID),
+	LanguageKalimag = GetFirstValidIcon("shaman_talent_elementalblast", DEFAULT_ICON_ID),
+	LanguageMoonkin = GetFirstValidIcon("ability_druid_improvedmoonkinform", "ability_eyeoftheowl"),
+	LanguageNerglish = GetFirstValidIcon("inv_pet_babymurlocs_blue", DEFAULT_ICON_ID),
+	LanguageOrcish = GetFirstValidIcon("inv_misc_tournaments_banner_orc", "spell_arcane_teleportorgrimmar"),
+	LanguagePandaren = GetFirstValidIcon("achievement_guild_classypanda", DEFAULT_ICON_ID),
+	LanguageShalassian = GetFirstValidIcon("achievement_alliedrace_nightborne", DEFAULT_ICON_ID),
+	LanguageShathYar = GetFirstValidIcon("spell_priest_voidform", DEFAULT_ICON_ID),
+	LanguageSprite = GetFirstValidIcon("inv_pet_sprite_darter_hatchling", DEFAULT_ICON_ID),
+	LanguageTaurahe = GetFirstValidIcon("inv_misc_tournaments_banner_tauren", "spell_arcane_teleportthunderbluff"),
+	LanguageThalassian = GetFirstValidIcon("inv_misc_tournaments_banner_bloodelf", "spell_arcane_teleportsilvermoon"),
+	LanguageTitan = GetFirstValidIcon("achievement_dungeon_ulduarraid_titan_01", DEFAULT_ICON_ID),
+	LanguageVulpera = GetFirstValidIcon("inv_tabard_vulpera", DEFAULT_ICON_ID),
+	LanguageZandali = GetFirstValidIcon("inv_misc_tournaments_banner_troll", "achievement_character_troll_male"),
+	LanguageZombie = GetFirstValidIcon("icon_petfamily_undead", DEFAULT_ICON_ID),
 
 	--
 	-- Credits Icons
 	--
 
-	CreditsAuthors = { "inv_eng_gizmo1", "trade_engineering" },
-	CreditsTeam    = { "quest_khadgar", "achievement_general_stayclassy" },
-	CreditsOthers  = { "thumbup", "spell_holy_healingaura" },
+	CreditsAuthors = GetFirstValidIcon("inv_eng_gizmo1", "trade_engineering"),
+	CreditsTeam = GetFirstValidIcon("quest_khadgar", "achievement_general_stayclassy"),
+	CreditsOthers = GetFirstValidIcon("thumbup", "spell_holy_healingaura"),
 };
 
---
--- Data Initialization
---
-
-do
-	local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
-
-	local function GetFirstValidIcon(candidates)
-		for _, name in ipairs(candidates) do
-			if LRPM12:GetIconInfoByName(name) then
-				return name;
-			end
-		end
-	end
-
-	for id, candidates in pairs(TRP3_InterfaceIcons) do
-		local name = GetFirstValidIcon(candidates);
-
-		if not name and TRP3_API.globals.DEBUG_MODE then
-			securecallfunction(error, string.format("Invalid interface icon %q: No valid texture file found", id));
-		end
-
-		TRP3_InterfaceIcons[id] = name or DEFAULT_ICON_NAME;
-	end
-end
+TRP3_InterfaceIconNames = {
+	Default = GetIconName(TRP3_InterfaceIconIDs.Default),
+	ProfileDefault = GetIconName(TRP3_InterfaceIconIDs.ProfileDefault),
+	Unknown = GetIconName(TRP3_InterfaceIconIDs.Unknown),
+};

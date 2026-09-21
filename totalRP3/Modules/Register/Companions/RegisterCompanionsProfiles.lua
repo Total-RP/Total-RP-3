@@ -588,7 +588,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			adapter = function(buttonStructure, characterID)
 				-- Initialize the buttonStructure parts.
 				buttonStructure.alert = false;
-				buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenCompanion;
+				buttonStructure.icon = TRP3_InterfaceIconIDs.TargetOpenCompanion;
 				buttonStructure.tooltip = loc.REG_COMPANION;
 				buttonStructure.tooltipSub = loc.REG_COMPANION_TF_NO;
 
@@ -622,7 +622,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		TRP3_API.target.registerButton({
 			id = "bb_companion_profile_speech",
 			configText = loc.REG_COMPANION_TF_PROFILE_SPEECH,
-			icon = TRP3_InterfaceIcons.ToolbarNPCTalk;
+			icon = TRP3_InterfaceIconIDs.ToolbarNPCTalk;
 			condition = function(targetType, characterID)
 				if isTargetTypeACompanion(targetType) then
 					local ownerID, companionID = companionIDToInfo(characterID);
@@ -661,7 +661,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			adapter = function(buttonStructure, characterID)
 				-- Initialize the buttonStructure parts.
 				buttonStructure.alert = false;
-				buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenMount;
+				buttonStructure.icon = TRP3_InterfaceIconIDs.TargetOpenMount;
 				buttonStructure.tooltip = loc.PR_CO_MOUNT;
 				buttonStructure.tooltipSub = loc.REG_COMPANION_TF_NO;
 

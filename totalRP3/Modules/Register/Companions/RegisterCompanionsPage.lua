@@ -152,7 +152,7 @@ end
 
 local function onPlayerIconSelected(_iconName, iconInfo)
 	draftData.IC = iconInfo.id;
-	setupIconButton(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
+	setupIconButton(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIconIDs.ProfileDefault);
 end
 
 local function displayEdit()
@@ -168,7 +168,7 @@ local function displayEdit()
 		tcopy(draftData, dataTab);
 	end
 
-	setupIconButton(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
+	setupIconButton(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIconIDs.ProfileDefault);
 	TRP3_CompanionsPageInformationEdit_NamePanel_TitleField:SetText(draftData.TI or "");
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameField:SetText(draftData.NA or Globals.player);
 	TRP3_CompanionsPageInformationEdit_About_TextScrollText:SetText(draftData.TX or "");
@@ -193,7 +193,7 @@ function displayConsult(context)
 	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetReadableTextColor(TRP3_API.CreateColorFromHexString(dataTab.NH or "ffffff"));
 	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetFixedColor(true);
 	TRP3_CompanionsPageInformationConsult_NamePanel_Title:SetText((string.gsub(dataTab.TI or "", "%s+", " ")));
-	TRP3_CompanionsPageInformationConsult_NamePanel.Icon:SetIconTexture(dataTab.IC or TRP3_InterfaceIcons.ProfileDefault);
+	TRP3_CompanionsPageInformationConsult_NamePanel.Icon:SetIconTexture(dataTab.IC or TRP3_InterfaceIconIDs.ProfileDefault);
 
 	for i=1,5 do
 		local glanceData = (context.profile.PE or {})[tostring(i)] or {};
@@ -438,7 +438,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_CompanionsPageInformationConsult_Glance:SetTitleText(loc.REG_PLAYER_GLANCE);
 	TRP3_CompanionsPageInformationConsult_About:SetTitleText(loc.REG_PLAYER_ABOUT);
 	TRP3_CompanionsPageInformationConsult_About_Empty:SetText(loc.REG_PLAYER_ABOUT_EMPTY);
-	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, TRP3_InterfaceIcons.Gears);
+	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, TRP3_InterfaceIconIDs.Gears);
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, "RIGHT", 0, 5, loc.CM_OPTIONS, TRP3_API.FormatShortcutWithInstruction("CLICK", loc.CM_OPTIONS_ADDITIONAL));
 	TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton:SetScript("OnMouseDown", onActionClick);
 

@@ -883,7 +883,7 @@ end
 ---@param iconInfo TRP3.IconBrowserModelItem
 function TRP3_IconBrowserButtonMixin:Init(iconInfo)
 	self.SelectedTexture:SetShown(iconInfo and iconInfo.selected);
-	LRPM12:SetTextureToIcon(self.Icon, iconInfo and iconInfo.id or TRP3_InterfaceIcons.Default);
+	LRPM12:SetTextureToIcon(self.Icon, iconInfo and iconInfo.id or TRP3_InterfaceIconIDs.Default);
 end
 
 TRP3_IconBrowserEmptyStateMixin = {};

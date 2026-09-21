@@ -39,13 +39,13 @@ local function GenerateEditDescription(description)
 end
 
 local DEFAULT_RELATIONS = {
-	NONE = { id = "NONE", order = 0, texture = TRP3_InterfaceIcons.RelationNone },
-	UNFRIENDLY = { id = "UNFRIENDLY", order = 1, texture = TRP3_InterfaceIcons.RelationUnfriendly, color = TRP3_API.RelationColors.Unfriendly:GenerateHexColorOpaque() },
-	NEUTRAL = { id = "NEUTRAL", order = 2, texture = TRP3_InterfaceIcons.RelationNeutral, color = TRP3_API.RelationColors.Neutral:GenerateHexColorOpaque() },
-	BUSINESS = { id = "BUSINESS", order = 3, texture = TRP3_InterfaceIcons.RelationBusiness, color = TRP3_API.RelationColors.Business:GenerateHexColorOpaque() },
-	FRIEND = { id = "FRIEND", order = 4, texture = TRP3_InterfaceIcons.RelationFriend, color = TRP3_API.RelationColors.Friend:GenerateHexColorOpaque() },
-	LOVE = { id = "LOVE", order = 5, texture = TRP3_InterfaceIcons.RelationLove, color = TRP3_API.RelationColors.Love:GenerateHexColorOpaque() },
-	FAMILY = { id = "FAMILY", order = 6, texture = TRP3_InterfaceIcons.RelationFamily, color = TRP3_API.RelationColors.Family:GenerateHexColorOpaque() },
+	NONE = { id = "NONE", order = 0, texture = TRP3_InterfaceIconIDs.RelationNone },
+	UNFRIENDLY = { id = "UNFRIENDLY", order = 1, texture = TRP3_InterfaceIconIDs.RelationUnfriendly, color = TRP3_API.RelationColors.Unfriendly:GenerateHexColorOpaque() },
+	NEUTRAL = { id = "NEUTRAL", order = 2, texture = TRP3_InterfaceIconIDs.RelationNeutral, color = TRP3_API.RelationColors.Neutral:GenerateHexColorOpaque() },
+	BUSINESS = { id = "BUSINESS", order = 3, texture = TRP3_InterfaceIconIDs.RelationBusiness, color = TRP3_API.RelationColors.Business:GenerateHexColorOpaque() },
+	FRIEND = { id = "FRIEND", order = 4, texture = TRP3_InterfaceIconIDs.RelationFriend, color = TRP3_API.RelationColors.Friend:GenerateHexColorOpaque() },
+	LOVE = { id = "LOVE", order = 5, texture = TRP3_InterfaceIconIDs.RelationLove, color = TRP3_API.RelationColors.Love:GenerateHexColorOpaque() },
+	FAMILY = { id = "FAMILY", order = 6, texture = TRP3_InterfaceIconIDs.RelationFamily, color = TRP3_API.RelationColors.Family:GenerateHexColorOpaque() },
 };
 
 local ACTIONS = {
@@ -151,7 +151,7 @@ local draftRelationTexture;
 --- pasteCopiedIcon handles receiving an icon from the right-click menu.
 ---@param frame Frame The frame the icon belongs to.
 local function pasteCopiedIcon(frame)
-	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIcons.ProfileDefault;
+	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIconIDs.ProfileDefault;
 	draftRelationTexture = icon;
 	setupIconButton(frame, icon);
 end
@@ -190,7 +190,7 @@ local function initRelationEditor(relationID)
 	else
 		relation = { name = "", description = "" };
 	end
-	draftRelationTexture = relation.texture or TRP3_InterfaceIcons.ProfileDefault;
+	draftRelationTexture = relation.texture or TRP3_InterfaceIconIDs.ProfileDefault;
 	-- set icon, name, description, color
 	setupIconButton(TRP3_RelationsList.Editor.Content.Icon, draftRelationTexture);
 	setTooltipAll(TRP3_RelationsList.Editor.Content.Icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
@@ -198,10 +198,10 @@ local function initRelationEditor(relationID)
 		if button == "LeftButton" then
 			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {function(_iconName, iconInfo)
 				draftRelationTexture = iconInfo.id;
-				setupIconButton(TRP3_RelationsList.Editor.Content.Icon, iconInfo.id or TRP3_InterfaceIcons.ProfileDefault);
+				setupIconButton(TRP3_RelationsList.Editor.Content.Icon, iconInfo.id or TRP3_InterfaceIconIDs.ProfileDefault);
 			end, nil, nil, draftRelationTexture});
 		elseif button == "RightButton" then
-			draftRelationTexture = draftRelationTexture or relation.texture or TRP3_InterfaceIcons.ProfileDefault;
+			draftRelationTexture = draftRelationTexture or relation.texture or TRP3_InterfaceIconIDs.ProfileDefault;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, draftRelationTexture);
 				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftRelationTexture}); end);

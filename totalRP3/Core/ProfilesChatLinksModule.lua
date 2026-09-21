@@ -53,7 +53,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			customColor = TRP3_API.CreateColorFromHexString(info.characteristics.CH);
 		end
 
-		tooltipLines:SetTitle(customColor(Utils.str.icon(info.characteristics.IC or TRP3_InterfaceIcons.ProfileDefault, 20) .. " " .. TRP3_API.register.getCompleteName(info.characteristics, profile.profileName, true)));
+		tooltipLines:SetTitle(customColor(Utils.str.icon(info.characteristics.IC or TRP3_InterfaceIconIDs.ProfileDefault, 20) .. " " .. TRP3_API.register.getCompleteName(info.characteristics, profile.profileName, true)));
 
 		if info.characteristics.FT then
 			tooltipLines:AddLine("< " .. info.characteristics.FT .. " >", TRP3_API.Colors.Orange);
