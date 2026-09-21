@@ -961,7 +961,7 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 	toolbar.color:SetScript("OnClick", function()
 		if toolbar.textFrame then
 			if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
-				TRP3_API.popup.showDefaultColorPicker({function(red, green, blue) onColorTagSelected(red, green, blue, toolbar.textFrame) end});
+				TRP3_API.popup.showDefaultColorPicker({function(red, green, blue) if red then onColorTagSelected(red, green, blue, toolbar.textFrame) end end});
 			else
 				TRP3_API.popup.showPopup(
 					TRP3_API.popup.COLORS,

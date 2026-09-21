@@ -647,14 +647,26 @@ end
 
 function TRP3_API.popup.showDefaultColorPicker(popupArgs)
 	local setColor, r, g, b = unpack(popupArgs);
+	local hasSetColor = false;
+
+	local function NotifyColorSelected(newR, newG, newB)
+		if not hasSetColor then
+			hasSetColor = true;
+			setColor(newR, newG, newB);
+		end
+	end
 
 	local function OnColorChanged()
-		local newR, newG, newB = ColorPickerFrame:GetColorRGB();
-		setColor(newR * 255, newG * 255, newB * 255);
+		-- Shown check here is because we only want the final color when
+		-- the user clicks Okay to be processed.
+		if not ColorPickerFrame:IsShown() then
+			local newR, newG, newB = ColorPickerFrame:GetColorRGB();
+			NotifyColorSelected(newR * 255, newG * 255, newB * 255);
+		end
 	end
 
 	local function OnCancel()
-		setColor(r, g, b);
+		NotifyColorSelected(r, g, b);
 	end
 
 	-- For the swatchFunc and opacityFunc callbacks we debounce changes; these
