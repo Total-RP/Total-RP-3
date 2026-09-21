@@ -408,7 +408,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateIcon(nameplate)
 	end
 
 	if displayIcon then
-		unitFrameIcon:SetTexture(TRP3_API.utils.getIconTexture(displayIcon));
+		TRP3_IconUtil.SetTextureToIcon(unitFrameIcon, displayIcon);
 		unitFrameIcon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
 		unitFrameIcon:Show();
 	else

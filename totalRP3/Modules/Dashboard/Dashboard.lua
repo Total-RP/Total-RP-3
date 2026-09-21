@@ -281,10 +281,11 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 						for _, profile in ipairs(profileList) do
 							-- Current profile has nil profileID (profile[3])
 							local icon = profile[2] or TRP3_InterfaceIcons.ProfileDefault;
+							local iconMarkup = TRP3_MarkupUtil.GenerateIconMarkup(icon, { size = 15 });
 							if profile[3] then
-								description:CreateButton("|Tinterface\\icons\\" .. icon .. ":15|t " .. profile[1], profileSelected, profile[3]);
+								description:CreateButton(iconMarkup .. " " .. profile[1], profileSelected, profile[3]);
 							else
-								description:CreateButton("|Tinterface\\icons\\" .. icon .. ":15|t|cnGREEN_FONT_COLOR: " .. profile[1] .."|r");
+								description:CreateButton(iconMarkup .. "|cnGREEN_FONT_COLOR: " .. profile[1] .."|r");
 							end
 						end
 					end);

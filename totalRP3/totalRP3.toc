@@ -90,6 +90,7 @@ Core\StringUtil.lua
 Core\EncodingUtil.lua
 Core\BindingUtil.lua
 Core\RegionUtil.lua
+Core\IconUtil.lua
 Core\MarkupUtil.lua
 Core\CompanionUtil.lua
 Core\CompanionProviderJournal.lua [AllowLoadGameType mainline, mists, wrath]

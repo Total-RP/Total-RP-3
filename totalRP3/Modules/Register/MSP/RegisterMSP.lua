@@ -3,6 +3,8 @@
 
 local outstandingHelloRequests = {};
 
+local DEFAULT_MSP_ICON_NAME = "inv_misc_grouplooking";
+
 local function GetOrCreateTable(t, key)
 	if t[key] ~= nil then
 		return t[key];
@@ -10,6 +12,26 @@ local function GetOrCreateTable(t, key)
 
 	t[key] = {};
 	return t[key];
+end
+
+local function ResolveIconName(icon)
+	local iconInfo = TRP3_IconUtil.GetIconInfo(icon);
+
+	if iconInfo and iconInfo.file then
+		return iconInfo.name;
+	else
+		return DEFAULT_MSP_ICON_NAME;
+	end
+end
+
+local function ResolveIconID(icon)
+	local iconID = TRP3_IconUtil.GetIconID(icon);
+
+	if iconID then
+		return tostring(iconID);
+	end
+
+	return TRP3_IconUtil.GetIconID(DEFAULT_MSP_ICON_NAME);
 end
 
 local function onStart()
@@ -102,7 +124,8 @@ local function onStart()
 		else
 			msp.my['NA'] = getCompleteName(dataTab, Globals.player);
 		end
-		msp.my['IC'] = dataTab.IC or TRP3_InterfaceIcons.ProfileDefault;
+		msp.my['IC'] = ResolveIconName(dataTab.IC);
+		msp.my['IX'] = ResolveIconID(dataTab.IC);
 		msp.my['NT'] = dataTab.FT;
 		msp.my['PX'] = dataTab.TI;
 		msp.my['RA'] = dataTab.RA;
@@ -173,9 +196,8 @@ local function onStart()
 				if #peeks > 0 then
 					peeks[#peeks + 1] = "\n\n---\n\n";
 				end
-				peeks[#peeks + 1] = "|TInterface\\Icons\\";
-				peeks[#peeks + 1] = peek.IC;
-				peeks[#peeks + 1] = ":32:32|t\n";
+				peeks[#peeks + 1] = TRP3_MarkupUtil.GenerateIconMarkup(peek.IC, { size = 32 });
+				peeks[#peeks + 1] = "\n";
 				if peek.TI then
 					peeks[#peeks + 1] = "#";
 					peeks[#peeks + 1] = peek.TI;
@@ -279,6 +301,7 @@ local function onStart()
 	end
 
 	local function parsePeekString(str)
+		-- TODO: This needs to drop the explicit path. Also need to support `|A` atlas markup.
 		local icon = str:match("%f[^\n%z]|TInterface\\Icons\\([^:|]+)[^|]*|t%f[\n%z]") or TRP3_InterfaceIcons.Default;
 		local title = str:match("%f[^\n%z]#+% *(.-)% *%f[\n%z]");
 		local text = str:match("%f[^\n%z]% *([^|#].-)%s*$");
@@ -381,7 +404,8 @@ local function onStart()
 
 			char.field.PX = profile.characteristics.TI;  -- Prefix Title
 			char.field.NT = profile.characteristics.FT;  -- Full Title
-			char.field.IC = profile.characteristics.IC;  -- Icon
+			char.field.IC = ResolveIconName(profile.characteristics.IC);  -- Icon
+			char.field.IX = ResolveIconID(profile.characteristics.IC);
 			char.field.RA = profile.characteristics.RA;  -- Race
 			char.field.RS = tostring(profile.characteristics.RS or AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN);
 			char.field.AG = profile.characteristics.AG;  -- Age

@@ -14,18 +14,29 @@ function TRP3_MenuUtil.SetElementTooltip(elementDescription, tooltipText)
 	elementDescription:SetTooltip(OnTooltipShow);
 end
 
-function TRP3_MenuUtil.AttachTexture(elementDescription, icon)
+function TRP3_MenuUtil.AttachTexture(elementDescription, texture)
 	local function Initializer(button)
-		local iconTexture = button:AttachTexture();
-		iconTexture:SetPoint("RIGHT");
-		iconTexture:SetSize(16, 16);
+		local textureObject = button:AttachTexture();
+		textureObject:SetPoint("RIGHT");
+		textureObject:SetSize(16, 16);
 
-		if C_Texture.GetAtlasInfo(icon) then
+		if C_Texture.GetAtlasInfo(texture) then
 			local useAtlasSize = false;
-			iconTexture:SetAtlas(icon, useAtlasSize);
+			textureObject:SetAtlas(texture, useAtlasSize);
 		else
-			iconTexture:SetTexture(icon);
+			textureObject:SetTexture(texture);
 		end
+	end
+
+	elementDescription:AddInitializer(Initializer);
+end
+
+function TRP3_MenuUtil.AttachIconTexture(elementDescription, icon)
+	local function Initializer(button)
+		local textureObject = button:AttachTexture();
+		textureObject:SetPoint("RIGHT");
+		textureObject:SetSize(16, 16);
+		TRP3_IconUtil.SetTextureToIcon(textureObject, icon);
 	end
 
 	elementDescription:AddInitializer(Initializer);

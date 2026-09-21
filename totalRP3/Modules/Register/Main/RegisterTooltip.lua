@@ -417,12 +417,8 @@ function TooltipBuilder:AddSpace()
 	self.spaceBeforeNextLine = true;
 end
 
----@param texture TextureAssetDisk
----@param options TooltipTextureInfo
-function TooltipBuilder:AddTexture(texture, options)
-	if not TRP3_ClientFeatures.OldTooltipAPI then
-		self.tooltip:AddTexture(texture, options);
-	else
+function TooltipBuilder:AddIcon(icon, textureInfoTable)
+	if TRP3_ClientFeatures.OldTooltipAPI then
 		-- In Classic, AddTexture won't work on the first line of the tooltip,
 		-- which is also coincidentally the only line that we actually care
 		-- to stick icons on currently.
@@ -431,12 +427,20 @@ function TooltipBuilder:AddTexture(texture, options)
 		-- that we can't use the size values in the options table either, as
 		-- for some reason they aren't equivalent.
 
+		local iconMarkup = TRP3_MarkupUtil.GenerateIconMarkup(icon, { size = 24 });
 		local line = self.tooltip:NumLines();
 		local leftFontString = TRP3_TooltipUtil.GetLineFontStrings(self.tooltip, line);
 		local leftText = leftFontString:GetText();
-		local iconText = string.format("|T%s:%d:%d|t ", texture, 24, 24);
 
-		leftFontString:SetText(iconText .. leftText);
+		leftFontString:SetText(iconMarkup .. leftText);
+	else
+		local iconInfo = TRP3_IconUtil.GetIconInfo(icon);
+
+		if iconInfo.atlas then
+			self.tooltip:AddAtlas(iconInfo.atlas, textureInfoTable);
+		elseif iconInfo.file then
+			self.tooltip:AddTexture(iconInfo.file, textureInfoTable);
+		end
 	end
 end
 
@@ -628,7 +632,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 
 	-- Player icon
 	if showIcons() and info.characteristics and info.characteristics.IC then
-		tooltipBuilder:AddTexture(TRP3_API.utils.getIconTexture(info.characteristics.IC), ICON_TEXTURE_OPTIONS);
+		tooltipBuilder:AddIcon(info.characteristics.IC, ICON_TEXTURE_OPTIONS);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1075,7 +1079,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 	if showCompanionIcons() then
 		-- Companion icon
 		if info.IC then
-			tooltipBuilder:AddTexture(TRP3_API.utils.getIconTexture(info.IC), ICON_TEXTURE_OPTIONS);
+			tooltipBuilder:AddIcon(info.IC, ICON_TEXTURE_OPTIONS);
 		end
 	end
 
@@ -1240,7 +1244,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	if showCompanionIcons() then
 		-- Companion icon
 		if info.IC then
-			tooltipCompanionBuilder:AddTexture(TRP3_API.utils.getIconTexture(info.IC), ICON_TEXTURE_OPTIONS);
+			tooltipCompanionBuilder:AddIcon(info.IC, ICON_TEXTURE_OPTIONS);
 		end
 	end
 
