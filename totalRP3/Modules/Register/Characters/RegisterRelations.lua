@@ -196,9 +196,9 @@ local function initRelationEditor(relationID)
 	setTooltipAll(TRP3_RelationsList.Editor.Content.Icon, "RIGHT", 0, 5, loc.UI_ICON_SELECT, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	TRP3_RelationsList.Editor.Content.Icon:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
-			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {function(icon)
-				draftRelationTexture = icon;
-				setupIconButton(TRP3_RelationsList.Editor.Content.Icon, icon or TRP3_InterfaceIcons.ProfileDefault);
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {function(_iconName, iconInfo)
+				draftRelationTexture = iconInfo.id;
+				setupIconButton(TRP3_RelationsList.Editor.Content.Icon, iconInfo.id or TRP3_InterfaceIcons.ProfileDefault);
 			end, nil, nil, draftRelationTexture});
 		elseif button == "RightButton" then
 			draftRelationTexture = draftRelationTexture or relation.texture or TRP3_InterfaceIcons.ProfileDefault;

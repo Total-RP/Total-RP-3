@@ -975,9 +975,9 @@ function TRP3_API.profile.init()
 	setupIconButton(finalizeOption.Icon, profileIcon);
 	finalizeOption.Icon:SetScript("OnMouseDown", function(self, button)
 		if button == "LeftButton" then
-			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {function(icon)
-				profileIcon = icon;
-				setupIconButton(finalizeOption.Icon, icon or TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player")));
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {function(_iconName, iconinfo)
+				profileIcon = iconinfo.id;
+				setupIconButton(finalizeOption.Icon, iconinfo.id or TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player")));
 			end, nil, nil, profileIcon});
 		elseif button == "RightButton" then
 			profileIcon = profileIcon or TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));

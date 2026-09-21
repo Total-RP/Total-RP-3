@@ -547,8 +547,8 @@ local function saveInDraft()
 
 end
 
-local function onPlayerIconSelected(icon)
-	draftData.IC = icon;
+local function onPlayerIconSelected(_iconName, iconInfo)
+	draftData.IC = iconInfo.id;
 	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
 end
 
@@ -854,9 +854,9 @@ function setEditDisplay()
 
 		frame.Icon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
-				showIconBrowser(function(icon)
-					miscStructure.IC = icon;
-					setupIconButton(frame.Icon, icon or TRP3_InterfaceIcons.Default);
+				showIconBrowser(function(_iconName, iconInfo)
+					miscStructure.IC = iconInfo.id;
+					setupIconButton(frame.Icon, iconInfo.id or TRP3_InterfaceIcons.Default);
 				end, miscStructure.IC);
 			elseif button == "RightButton" then
 				local icon = miscStructure.IC or TRP3_InterfaceIcons.Default;
@@ -970,9 +970,9 @@ function setEditDisplay()
 
 		frame.CustomLeftIcon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
-				showIconBrowser(function(icon)
-					psychoStructure.LI = icon;
-					setupIconButton(self, icon or TRP3_InterfaceIcons.Default);
+				showIconBrowser(function(_iconName, iconInfo)
+					psychoStructure.LI = iconInfo.id;
+					setupIconButton(self, iconInfo.id or TRP3_InterfaceIcons.Default);
 				end, psychoStructure.LI);
 			elseif button == "RightButton" then
 				local icon = psychoStructure.LI or TRP3_InterfaceIcons.Default;
@@ -986,9 +986,9 @@ function setEditDisplay()
 
 		frame.CustomRightIcon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
-				showIconBrowser(function(icon)
-					psychoStructure.RI = icon;
-					setupIconButton(self, icon or TRP3_InterfaceIcons.Default);
+				showIconBrowser(function(_iconName, iconInfo)
+					psychoStructure.RI = iconInfo.id;
+					setupIconButton(self, iconInfo.id or TRP3_InterfaceIcons.Default);
 				end, psychoStructure.RI);
 			elseif button == "RightButton" then
 				local icon = psychoStructure.RI or TRP3_InterfaceIcons.Default;
@@ -1323,7 +1323,7 @@ function TRP3_API.register.inits.characteristicsInit()
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
 				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(TRP3_API.GetLastCopiedIcon()); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(nil, { id = TRP3_API.GetLastCopiedIcon() }); end);
 			end);
 		end
 	end);

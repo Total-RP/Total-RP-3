@@ -150,8 +150,8 @@ local function saveInformation()
 	TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID);
 end
 
-local function onPlayerIconSelected(icon)
-	draftData.IC = icon;
+local function onPlayerIconSelected(_iconName, iconInfo)
+	draftData.IC = iconInfo.id;
 	setupIconButton(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
 end
 
@@ -426,7 +426,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, draftData.IC);
 				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftData.IC}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(TRP3_API.GetLastCopiedIcon()); end);
+				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(nil, { id = TRP3_API.GetLastCopiedIcon() }); end);
 			end);
 		end
 	end);
