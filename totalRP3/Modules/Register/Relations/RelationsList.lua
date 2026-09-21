@@ -142,6 +142,12 @@ function TRP3_RelationsListDragIndicatorMixin:OnLoad()
 	end
 end
 
+TRP3_RelationsListCreateButtonMixin = {};
+
+function TRP3_RelationsListCreateButtonMixin:OnClick()
+	TRP3_API.register.relation.showEditor();
+end
+
 TRP3_RelationsListMixin = {};
 
 function TRP3_RelationsListMixin:OnLoad()
