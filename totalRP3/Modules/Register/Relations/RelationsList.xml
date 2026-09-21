@@ -99,9 +99,9 @@
 				</Anchors>
 			</EventFrame>
 			<Button parentKey="CreateNew" mixin="TRP3_RelationsListCreateButtonMixin" inherits="TRP3_RedButtonTemplate">
-				<Size x="200" y="30"/>
+				<Size x="175" y="30"/>
 				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.Title" relativePoint="RIGHT"/>
+					<Anchor point="LEFT" relativeKey="$parent.Title" relativePoint="RIGHT" x="25"/>
 				</Anchors>
 				<Scripts>
 					<OnClick method="OnClick"/>

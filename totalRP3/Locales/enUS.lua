@@ -504,7 +504,7 @@ The description doesn't have to be limited to |cnGREEN_FONT_COLOR:physical descr
 	CO_RELATIONS = "Relations",
 	CO_RELATIONS_DESCRIPTION = "Description",
 	CO_RELATIONS_DESCRIPTION_TT = "|cnGREEN_FONT_COLOR:%p|r for your character's name.|n|cnGREEN_FONT_COLOR:%t|r for the other character's name.",
-	CO_RELATIONS_NEW = "Create new relation",
+	CO_RELATIONS_NEW = "Create relation",
 	CO_RELATIONS_NEW_ERROR = "You must enter a name for the new relation.",
 	CO_RELATIONS_DELETE_WARNING = "Are you sure you want to delete the relation %s?",
 	CO_RELATIONS_NEW_COLOR = "Relation color",
