@@ -155,7 +155,7 @@ end
 ---@param frame Frame The frame the icon belongs to.
 ---@param frameData Frame The draftData frame that holds all the info.
 local function pasteCopiedIcon(frame, frameData)
-	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIcons.Default;
+	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIconIDs.Default;
 	frameData.IC = icon;
 	setupIconButton(frame, icon);
 end
@@ -381,7 +381,7 @@ function refreshTemplate2EditDisplay()
 		frame.index = frameIndex;
 		frame.frameData = frameData;
 		_G[frame:GetName().."TextScrollText"]:SetText(frameData.TX or "");
-		setupIconButton(_G[frame:GetName().."Icon"], frameData.IC or TRP3_InterfaceIcons.Default);
+		setupIconButton(_G[frame:GetName().."Icon"], frameData.IC or TRP3_InterfaceIconIDs.Default);
 		_G[frame:GetName().."Icon"]:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(_iconName, iconInfo)
@@ -389,7 +389,7 @@ function refreshTemplate2EditDisplay()
 					setupIconButton(_G[frame:GetName().."Icon"], iconInfo.id);
 				end, frameData.IC);
 			elseif button == "RightButton" then
-				local icon = frameData.IC or TRP3_InterfaceIcons.Default;
+				local icon = frameData.IC or TRP3_InterfaceIconIDs.Default;
 				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
 					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
@@ -440,9 +440,9 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local TEMPLATE3_MARGIN = 30;
-local TEMPLATE3_ICON_PHYSICAL = TRP3_InterfaceIcons.PhysicalSection;
-local TEMPLATE3_ICON_PSYCHO = TRP3_InterfaceIcons.TraitSection;
-local TEMPLATE3_ICON_HISTORY = TRP3_InterfaceIcons.HistorySection;
+local TEMPLATE3_ICON_PHYSICAL = TRP3_InterfaceIconIDs.PhysicalSection;
+local TEMPLATE3_ICON_PSYCHO = TRP3_InterfaceIconIDs.TraitSection;
+local TEMPLATE3_ICON_HISTORY = TRP3_InterfaceIconIDs.HistorySection;
 
 local function setTemplate3PhysBkg(bkg)
 	draftData.T3.PH.BK = bkg;
@@ -984,7 +984,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				end
 			end,
 			tooltip = loc.TF_CHAR_THEME,
-			icon = TRP3_InterfaceIcons.TargetPlayMusic,
+			icon = TRP3_InterfaceIconIDs.TargetPlayMusic,
 		});
 	end
 end);

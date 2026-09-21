@@ -3,8 +3,6 @@
 
 local outstandingHelloRequests = {};
 
-local DEFAULT_MSP_ICON_NAME = "inv_misc_grouplooking";
-
 local function GetOrCreateTable(t, key)
 	if t[key] ~= nil then
 		return t[key];
@@ -20,7 +18,7 @@ local function ResolveIconName(icon)
 	if iconInfo and iconInfo.file then
 		return iconInfo.name;
 	else
-		return DEFAULT_MSP_ICON_NAME;
+		return TRP3_InterfaceIconNames.ProfileDefault;
 	end
 end
 
@@ -31,7 +29,7 @@ local function ResolveIconID(icon)
 		return tostring(iconID);
 	end
 
-	return TRP3_IconUtil.GetIconID(DEFAULT_MSP_ICON_NAME);
+	return TRP3_InterfaceIconIDs.ProfileDefault;
 end
 
 local function onStart()
@@ -302,7 +300,7 @@ local function onStart()
 
 	local function parsePeekString(str)
 		-- TODO: This needs to drop the explicit path. Also need to support `|A` atlas markup.
-		local icon = str:match("%f[^\n%z]|TInterface\\Icons\\([^:|]+)[^|]*|t%f[\n%z]") or TRP3_InterfaceIcons.Default;
+		local icon = str:match("%f[^\n%z]|TInterface\\Icons\\([^:|]+)[^|]*|t%f[\n%z]") or TRP3_InterfaceIconIDs.Default;
 		local title = str:match("%f[^\n%z]#+% *(.-)% *%f[\n%z]");
 		local text = str:match("%f[^\n%z]% *([^|#].-)%s*$");
 		return {
@@ -568,10 +566,10 @@ local function onStart()
 								profile.about.T3 = {};
 							end
 							if not profile.about.T3.HI then
-								profile.about.T3.HI = {BK = 1, IC = TRP3_InterfaceIcons.HistorySection };
+								profile.about.T3.HI = {BK = 1, IC = TRP3_InterfaceIconIDs.HistorySection };
 							end
 							if not profile.about.T3.PH then
-								profile.about.T3.PH = {BK = 1, IC = TRP3_InterfaceIcons.PhysicalSection };
+								profile.about.T3.PH = {BK = 1, IC = TRP3_InterfaceIconIDs.PhysicalSection };
 							end
 							profile.about.T3[ABOUT_FIELDS[field]].TX = value;
 							if profile.about.read ~= false then

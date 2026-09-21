@@ -189,7 +189,7 @@ end
 
 -- Return an texture text tag based on the given icon url and size. Nil safe.
 function Utils.str.icon(iconID, iconSize)
-	iconID = iconID or TRP3_InterfaceIcons.Default;
+	iconID = iconID or TRP3_InterfaceIconIDs.Default;
 	return TRP3_MarkupUtil.GenerateIconMarkup(iconID, { size = iconSize });
 end
 

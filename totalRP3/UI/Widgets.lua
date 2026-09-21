@@ -238,7 +238,7 @@ function TRP3_ColorPickerButtonMixin:OnLoad()
 			self.SwatchBg:SetColorTexture(red / 255, green / 255, blue / 255);
 			self.SwatchBgHighlight:SetVertexColor(red / 255, green / 255, blue / 255);
 		else
-			self.SwatchBg:SetTexture([[interface\icons\]] .. TRP3_InterfaceIcons.Gears);
+			self.SwatchBg:SetTexture([[interface\icons\]] .. TRP3_InterfaceIconIDs.Gears);
 			self.SwatchBgHighlight:SetVertexColor(1.0, 1.0, 1.0);
 		end
 		if self.onSelection then

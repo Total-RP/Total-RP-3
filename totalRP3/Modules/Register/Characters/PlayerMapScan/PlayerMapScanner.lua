@@ -61,7 +61,7 @@ local lastScannerUsed;
 
 local PlayerMapScannerMixin = {};
 -- Set scan display properties
-PlayerMapScannerMixin.scanIcon = Ellyb.Icon(TRP3_InterfaceIcons.PlayerScanIcon);
+PlayerMapScannerMixin.scanIcon = Ellyb.Icon(TRP3_InterfaceIconIDs.PlayerScanIcon);
 PlayerMapScannerMixin.scanOptionText = loc.MAP_SCAN_CHAR;
 PlayerMapScannerMixin.scanTitle = loc.MAP_SCAN_CHAR_TITLE;
 PlayerMapScannerMixin.broadcastMethod = TRP3_API.BroadcastMethod.World
@@ -172,7 +172,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	---@type MapScanner
 	local guildMapScanner = newMapScanner("guildScan");
-	guildMapScanner.scanIcon = Ellyb.Icon(TRP3_InterfaceIcons.MiscInfoGuildRank);
+	guildMapScanner.scanIcon = Ellyb.Icon(TRP3_InterfaceIconIDs.MiscInfoGuildRank);
 	guildMapScanner.scanOptionText = loc.MAP_SCAN_CHAR_GUILD_ONLY;
 	guildMapScanner.scanSortIndex = 50;
 	guildMapScanner.scanTitle = loc.MAP_SCAN_CHAR_GUILD_ONLY_TITLE;

@@ -218,7 +218,7 @@ end
 -- PEEK
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local GLANCE_NOT_USED_ICON = TRP3_InterfaceIcons.Default;
+local GLANCE_NOT_USED_ICON = TRP3_InterfaceIconIDs.Default;
 
 local function setupGlanceButton(button, active, icon, title, text, isMine)
 	button:Enable();

@@ -368,7 +368,7 @@ local function saveSlotPreset(glanceTab)
 	if glanceTab == nil then return end;
 	local presetTitle = glanceTab.TI or UNKNOWN;
 	local presetText = glanceTab.TX or "";
-	local presetIcon = glanceTab.IC or TRP3_InterfaceIcons.Unknown;
+	local presetIcon = glanceTab.IC or TRP3_InterfaceIconIDs.Unknown;
 	local presetID = Utils.str.id();
 
 	local icon = Utils.str.icon(presetIcon, 40) .. "|n|n|cnGREEN_FONT_COLOR:" .. presetTitle .. "|r";
@@ -412,7 +412,7 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local stEtN = Utils.str.emptyToNil;
 
 local function onIconSelected(_iconName, iconInfo)
-	local iconID = iconInfo.id or TRP3_InterfaceIcons.Default;
+	local iconID = iconInfo.id or TRP3_InterfaceIconIDs.Default;
 	setupIconButton(TRP3_AtFirstGlanceEditorIcon, iconID);
 	TRP3_AtFirstGlanceEditorIcon.icon = iconID;
 end
@@ -420,7 +420,7 @@ end
 --- pasteCopiedIcon handles receiving an icon from the right-click menu.
 ---@param frame Frame The frame the icon belongs to.
 local function pasteCopiedIcon(frame)
-	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIcons.Default;
+	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIconIDs.Default;
 	TRP3_AtFirstGlanceEditorIcon.icon = icon;
 	setupIconButton(frame, icon);
 end
@@ -470,7 +470,7 @@ local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 				TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {onIconSelected, nil, nil, TRP3_AtFirstGlanceEditorIcon.icon});
 			end
 		elseif button == "RightButton" then
-			local icon = TRP3_AtFirstGlanceEditorIcon.icon or TRP3_InterfaceIcons.Default;
+			local icon = TRP3_AtFirstGlanceEditorIcon.icon or TRP3_InterfaceIconIDs.Default;
 			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
 				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
 				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
@@ -724,7 +724,7 @@ local function displayGlanceSlots()
 			button.data = glance;
 			button.glanceTab = glanceTab;
 
-			local icon = TRP3_InterfaceIcons.Default;
+			local icon = TRP3_InterfaceIconIDs.Default;
 
 			if glance and glance.AC then
 				button:SetAlpha(1);
@@ -778,7 +778,7 @@ local draggingGlance = false;
 local function onGlanceDragStart(button)
 	if button.isCurrentMine and button.data then
 		draggingGlance = true;
-		SetCursor(GetFileIDFromPath("Interface\\ICONS\\" .. (button.data.IC or TRP3_InterfaceIcons.Default)));
+		SetCursor(GetFileIDFromPath("Interface\\ICONS\\" .. (button.data.IC or TRP3_InterfaceIconIDs.Default)));
 		PlaySound(TRP3_InterfaceSounds.DragPickup);
 	end
 end

@@ -50,7 +50,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		-- Create a toolbar button to show/hide the Currently frame.
 		TRP3_API.toolbar.toolbarAddButton({
 			id = "bb_trp3_currently",
-			icon = TRP3_InterfaceIcons.ToolbarCurrently,
+			icon = TRP3_InterfaceIconIDs.ToolbarCurrently,
 			text = loc.CURRENTLY_TITLE,
 			configText = loc.CURRENTLY_TITLE,
 			tooltip = loc.CURRENTLY_TITLE,
