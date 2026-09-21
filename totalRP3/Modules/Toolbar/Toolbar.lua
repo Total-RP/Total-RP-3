@@ -48,6 +48,16 @@ local function onStart()
 	local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
 	local OBJECT_NAME_FORMAT = TRP3_API.globals.addon_name_short .. " — %s";
 
+	local function GetIconTextureFile(icon)
+		if type(icon) == "table" and icon.isInstanceOf and icon:isInstanceOf(Ellyb.Icon) then
+			return icon:GetFileID()
+		elseif type(icon) == "number" then
+			return icon;
+		else
+			return [[Interface\ICONS\]] .. icon;
+		end
+	end
+
 	---
 	-- Register a Databroker plugin using a button structure
 	-- @param buttonStructure
@@ -58,7 +68,7 @@ local function onStart()
 			objectName,
 			{
 				type = "data source",
-				icon = Utils.getIconTexture(buttonStructure.icon),
+				icon = GetIconTextureFile(buttonStructure.icon),
 				text = buttonStructure.text,
 				OnClick = function(Uibutton, button)
 					if buttonStructure.onClick then
@@ -93,7 +103,7 @@ local function onStart()
 		local LDBButton = LDBObjects[buttonStructure.id];
 		assert(LDBButton, "Could not find a registered LDB object for id " .. buttonStructure.id)
 
-		LDBButton.icon = Utils.getIconTexture(buttonStructure.icon);
+		LDBButton.icon = GetIconTextureFile(buttonStructure.icon);
 		LDBButton.text = buttonStructure.text;
 
 		LDBButton.tooltipTitle = TRP3_ToolbarUtil.GetFormattedTooltipTitle(buttonStructure);

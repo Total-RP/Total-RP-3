@@ -8,7 +8,6 @@
 -- Custom health colors will not be supported.
 
 
-local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 local L = TRP3_API.loc;
 TRP3_Platynator = {};
 
@@ -95,9 +94,7 @@ function TRP3_Platynator:UpdateNamePlate(nameplate, unitToken)
 
 			if displayInfo.icon then
 				local size = TRP3_NamePlatesUtil.GetPreferredIconSize();
-				local offsetX = 0;
-				local offsetY = 0;
-				local icon = LRPM12:GenerateIconMarkup(displayInfo.icon, size, size, offsetX, offsetY)
+				local icon = TRP3_MarkupUtil.GenerateIconMarkup(displayInfo.icon, { size = size });
 				overrideText = string.join(" ", icon, overrideText);
 			end
 

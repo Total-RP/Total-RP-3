@@ -728,7 +728,7 @@ local function displayGlanceSlots()
 
 			if glance and glance.AC then
 				button:SetAlpha(1);
-				if glance.IC and glance.IC:len() > 0 then
+				if glance.IC and glance.IC ~= "" then
 					icon = glance.IC;
 				end
 				local TTText = glance.TX;
@@ -748,7 +748,7 @@ local function displayGlanceSlots()
 					local TTText;
 					local glanceTitle = loc.REG_PLAYER_GLANCE_UNUSED;
 					if glance then
-						if glance.IC and glance.IC:len() > 0 then
+						if glance.IC and glance.IC ~= "" then
 							icon = glance.IC;
 						end
 						TTText = glance.TX;
@@ -764,7 +764,7 @@ local function displayGlanceSlots()
 				end
 			end
 
-			button:SetNormalTexture("Interface\\ICONS\\" .. icon);
+			button.Icon:SetIconTexture(icon);
 			button.isCurrentMine = isCurrentMine;
 		end
 	end
