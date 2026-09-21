@@ -68,7 +68,12 @@ end);
 function Cursor:SetIcon(cursorTexture, x, y)
 	Ellyb.Assertions.isOfTypes(cursorTexture, { "string", "number" }, "cursorTexture");
 
-	Icon:SetTexture(cursorTexture);
+	if C_Texture.GetAtlasExists(cursorTexture) then
+		Icon:SetAtlas(cursorTexture);
+	else
+		Icon:SetTexture(cursorTexture);
+	end
+
 	Icon:SetPoint("TOPLEFT", x or DEFAULT_ANCHOR_X, y or DEFAULT_ANCHOR_Y);
 	CursorFrame:PlaceOnCursor();
 	CursorFrame:Show();

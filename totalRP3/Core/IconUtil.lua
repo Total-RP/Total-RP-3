@@ -40,4 +40,24 @@ function TRP3_IconUtil.SetTextureToIcon(texture, icon)
 	end
 end
 
+---@param icon TRP3.IconIdentifier?
+function TRP3_IconUtil.SetCursor(icon)
+	local iconInfo = TRP3_IconUtil.GetIconInfo(icon);
+
+	if iconInfo == nil then
+		iconInfo = TRP3_IconUtil.GetIconInfo(TRP3_InterfaceIconIDs.Default);
+	end
+
+	if iconInfo.file then
+		SetCursor(iconInfo.file);
+	else
+		TRP3_API.Ellyb.Cursor:SetAtlas(iconInfo.atlas);
+	end
+end
+
+function TRP3_IconUtil.ClearCursor()
+	ResetCursor();
+	TRP3_API.Ellyb.Cursor:ClearIcon();
+end
+
 return TRP3_IconUtil;
