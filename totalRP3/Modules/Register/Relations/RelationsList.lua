@@ -5,29 +5,29 @@ local L = TRP3_API.loc;
 
 local PREVIEW_TARGET_NAMES = {
 	Alliance = {
-		{ name = "Mira Briarwick", class = "MAGE" },
-		{ name = "Perrin Candleford", class = "PALADIN" },
-		{ name = "Thalan Duskbranch", class = "DRUID" },
-		{ name = "Rhoswen Saltmere", class = "PRIEST" },
-		{ name = "Tibby Cogwhistle", class = "WARLOCK" },
-		{ name = "Nella Brassbutton", class = "ROGUE" },
-		{ name = "Borin Flintmantle", class = "WARRIOR" },
-		{ name = "Brynja Runebeard", class = "SHAMAN" },
-		{ name = "Shu-Lin Mistvale", class = "MONK" },
-		{ name = "Bao Ren Cloudstep", class = "HUNTER" },
+		"Mira Briarwick",
+		"Perrin Candleford",
+		"Thalan Duskbranch",
+		"Rhoswen Saltmere",
+		"Tibby Cogwhistle",
+		"Nella Brassbutton",
+		"Borin Flintmantle",
+		"Brynja Runebeard",
+		"Shu-Lin Mistvale",
+		"Bao Ren Cloudstep",
 	},
 	Horde = {
-		{ name = "Korga Bloodaxe", class = "WARRIOR" },
-		{ name = "Veyra Coldmarrow", class = "WARLOCK" },
-		{ name = "Aroha Boulderhide", class = "DRUID" },
-		{ name = "Jazulo Darktide", class = "SHAMAN" },
-		{ name = "Vaeron Brightsong", class = "PALADIN" },
-		{ name = "M'jara Bloodscale", class = "PRIEST" },
-		{ name = "Kezza Blastfuse", class = "ROGUE" },
-		{ name = "Rixx Geargrin", class = "ROGUE" },
-		{ name = "Mei-Lan Reedwhisker", class = "MONK" },
-		{ name = "Tao-Shi Embertea", class = "MAGE" },
-		{ name = "Rava Dustrunner", class = "HUNTER" },
+		"Korga Bloodaxe",
+		"Veyra Coldmarrow",
+		"Aroha Boulderhide",
+		"Jazulo Darktide",
+		"Vaeron Brightsong",
+		"M'jara Bloodscale",
+		"Kezza Blastfuse",
+		"Rixx Geargrin",
+		"Mei-Lan Reedwhisker",
+		"Tao-Shi Embertea",
+		"Rava Dustrunner",
 	},
 };
 
@@ -35,14 +35,12 @@ local GetNextTargetNameIndex = CreateCounter(fastrandom(10));
 
 local function GeneratePreviewTargetName()
 	local names = PREVIEW_TARGET_NAMES[TRP3_API.globals.player_character.faction] or PREVIEW_TARGET_NAMES.Alliance;
-	local target = names[Wrap(GetNextTargetNameIndex(), #names)];
-	return C_ColorUtil.WrapTextInColor(target.name, TRP3_API.ClassColors[target.class]);
+	return names[Wrap(GetNextTargetNameIndex(), #names)];
 end
 
 local function GeneratePreviewPlayerName()
 	local player = AddOn_TotalRP3.Player.GetCurrentUser();
-	local color = player:GetCustomColorForDisplay() or TRP3_API.GetClassDisplayColor(TRP3_API.globals.player_character.class);
-	return C_ColorUtil.WrapTextInColor(player:GetRoleplayingName(), color);
+	return player:GetRoleplayingName();
 end
 
 local function GeneratePreviewDescription(description, playerName, targetName)
