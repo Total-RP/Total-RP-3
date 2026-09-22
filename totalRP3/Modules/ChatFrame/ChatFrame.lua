@@ -343,10 +343,10 @@ local function UnprotectMessageContents(message, replacements)
 end
 
 local function IsEmoticonParenthesis(text, index)
-	if string.find(text, "^[:;][()]", index - 1) then
+	if string.find(text, "^[:=;][()]", index - 1) then
 		-- Simple face like ":)" or ";(".
 		return true;
-	elseif string.find(text, "^[:;][%-^*'~o][()]", index - 2) then
+	elseif string.find(text, "^[:=;][%-^*'~o][()]", index - 2) then
 		-- As above, but it's got a nose. Or it's crying. Screaming for help,
 		-- trapped in a ChatFrame.
 		return true;
