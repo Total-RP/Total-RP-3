@@ -150,8 +150,9 @@ local draftRelationTexture;
 
 --- pasteCopiedIcon handles receiving an icon from the right-click menu.
 ---@param frame Frame The frame the icon belongs to.
-local function pasteCopiedIcon(frame)
-	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIconIDs.ProfileDefault;
+---@param copiedIcon string? The icon supplied by the right-click menu.
+local function pasteCopiedIcon(frame, copiedIcon)
+	local icon = copiedIcon or TRP3_InterfaceIconIDs.ProfileDefault;
 	draftRelationTexture = icon;
 	setupIconButton(frame, icon);
 end
@@ -202,11 +203,9 @@ local function initRelationEditor(relationID)
 			end, nil, nil, draftRelationTexture});
 		elseif button == "RightButton" then
 			draftRelationTexture = draftRelationTexture or relation.texture or TRP3_InterfaceIconIDs.ProfileDefault;
-			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, draftRelationTexture);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftRelationTexture}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(TRP3_RelationsList.Editor.Content.Icon); end);
-			end);
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) pasteCopiedIcon(TRP3_RelationsList.Editor.Content.Icon, copiedIcon); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, draftRelationTexture);
 		end
 	end);
 

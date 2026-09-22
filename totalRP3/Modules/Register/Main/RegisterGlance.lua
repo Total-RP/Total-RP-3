@@ -419,8 +419,9 @@ end
 
 --- pasteCopiedIcon handles receiving an icon from the right-click menu.
 ---@param frame Frame The frame the icon belongs to.
-local function pasteCopiedIcon(frame)
-	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIconIDs.Default;
+---@param copiedIcon string? The icon supplied by the right-click menu.
+local function pasteCopiedIcon(frame, copiedIcon)
+	local icon = copiedIcon or TRP3_InterfaceIconIDs.Default;
 	TRP3_AtFirstGlanceEditorIcon.icon = icon;
 	setupIconButton(frame, icon);
 end
@@ -471,11 +472,9 @@ local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 			end
 		elseif button == "RightButton" then
 			local icon = TRP3_AtFirstGlanceEditorIcon.icon or TRP3_InterfaceIconIDs.Default;
-			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(self); end);
-			end);
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) pasteCopiedIcon(self, copiedIcon); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
 		end
 	end);
 	onIconSelected(nil, { id = slotData.IC });

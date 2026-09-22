@@ -154,8 +154,9 @@ end
 --- pasteCopiedIcon handles receiving an icon from the right-click menu.
 ---@param frame Frame The frame the icon belongs to.
 ---@param frameData Frame The draftData frame that holds all the info.
-local function pasteCopiedIcon(frame, frameData)
-	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIconIDs.Default;
+---@param copiedIcon string? The icon supplied by the right-click menu.
+local function pasteCopiedIcon(frame, frameData, copiedIcon)
+	local icon = copiedIcon or TRP3_InterfaceIconIDs.Default;
 	frameData.IC = icon;
 	setupIconButton(frame, icon);
 end
@@ -390,11 +391,9 @@ function refreshTemplate2EditDisplay()
 				end, frameData.IC);
 			elseif button == "RightButton" then
 				local icon = frameData.IC or TRP3_InterfaceIconIDs.Default;
-				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(_G[frame:GetName().."Icon"], frameData); end);
-				end);
+				local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+				handler:SetPasteCallback(function(copiedIcon) pasteCopiedIcon(_G[frame:GetName().."Icon"], frameData, copiedIcon); end);
+				TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
 			end
 		end);
 		-- Buttons
@@ -1011,11 +1010,9 @@ function TRP3_API.register.inits.aboutInit()
 			showIconBrowser(onPhisIconSelected, draftData.T3.PH.IC);
 		elseif button == "RightButton" then
 			local icon = draftData.T3.PH.IC or TEMPLATE3_ICON_PHYSICAL;
-			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() onPhisIconSelected(nil, { id = TRP3_API.GetLastCopiedIcon() }); end);
-			end);
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) onPhisIconSelected(nil, { id = copiedIcon }); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
 		end
 	end);
 
@@ -1052,11 +1049,9 @@ function TRP3_API.register.inits.aboutInit()
 			showIconBrowser(onPsychoIconSelected, draftData.T3.PS.IC);
 		elseif button == "RightButton" then
 			local icon = draftData.T3.PS.IC or TEMPLATE3_ICON_PSYCHO;
-			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() onPsychoIconSelected(nil, { id = TRP3_API.GetLastCopiedIcon() }); end);
-			end);
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) onPsychoIconSelected(nil, { id = copiedIcon }); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
 		end
 	end);
 
@@ -1066,11 +1061,9 @@ function TRP3_API.register.inits.aboutInit()
 			showIconBrowser(onHistoIconSelected, draftData.T3.HI.IC);
 		elseif button == "RightButton" then
 			local icon = draftData.T3.HI.IC or TEMPLATE3_ICON_HISTORY;
-			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() onHistoIconSelected(nil, { id = TRP3_API.GetLastCopiedIcon() }); end);
-			end);
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) onHistoIconSelected(nil, { id = copiedIcon }); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
 		end
 	end);
 	TRP3_RegisterAbout_Edit_Music_Action:SetScript("OnClick", onMusicEditClicked);
