@@ -247,8 +247,8 @@ function TRP3_RelationsListMixin:OnListDropEnter(factory, candidate)
 		indicatorFrame:SetPoint("BOTTOMLEFT", candidateFrame, "TOPLEFT", 0, -4);
 		indicatorFrame:SetPoint("BOTTOMRIGHT", candidateFrame, "TOPRIGHT", 0, -4);
 	elseif candidate.area == DragIntersectionArea.Below then
-		indicatorFrame:SetPoint("TOPLEFT", candidateFrame, "BOTTOMLEFT", 0, -12);
-		indicatorFrame:SetPoint("TOPRIGHT", candidateFrame, "BOTTOMRIGHT", 0, -12);
+		indicatorFrame:SetPoint("TOPLEFT", candidateFrame, "BOTTOMLEFT", 0, 6);
+		indicatorFrame:SetPoint("TOPRIGHT", candidateFrame, "BOTTOMRIGHT", 0, 6);
 	end
 end
 
