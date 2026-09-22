@@ -16,6 +16,15 @@ function TRP3_IconUtil.GetIconID(icon)
 end
 
 ---@param icon TRP3.IconIdentifier?
+function TRP3_IconUtil.GetIconName(icon)
+	local iconID = LRPM12:ResolveIconID(icon);
+
+	if iconID then
+		return LRPM12:GetIconNameByID(iconID);
+	end
+end
+
+---@param icon TRP3.IconIdentifier?
 function TRP3_IconUtil.GetIconInfo(icon)
 	local iconID = LRPM12:ResolveIconID(icon);
 

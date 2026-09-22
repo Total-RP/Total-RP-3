@@ -592,8 +592,9 @@ end
 
 --- PasteCopiedIcon handles receiving an icon from the right-click menu.
 ---@param frame Frame The frame the icon belongs to.
-local function PasteCopiedIcon(frame)
-	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
+---@param copiedIcon string? The icon supplied by the right-click menu.
+local function PasteCopiedIcon(frame, copiedIcon)
+	local icon = copiedIcon or TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
 	profileIcon = icon;
 	setupIconButton(frame, icon);
 end
@@ -981,11 +982,9 @@ function TRP3_API.profile.init()
 			end, nil, nil, profileIcon});
 		elseif button == "RightButton" then
 			profileIcon = profileIcon or TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
-			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, profileIcon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({profileIcon}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() PasteCopiedIcon(finalizeOption.Icon); end);
-			end);
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) PasteCopiedIcon(finalizeOption.Icon, copiedIcon); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, profileIcon);
 		end
 	end);
 

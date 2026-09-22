@@ -423,11 +423,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		if button == "LeftButton" then
 			showIconBrowser(onPlayerIconSelected, draftData.IC);
 		elseif button == "RightButton" then
-			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, draftData.IC);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({draftData.IC}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(nil, { id = TRP3_API.GetLastCopiedIcon() }); end);
-			end);
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) onPlayerIconSelected(nil, { id = copiedIcon }); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, draftData.IC);
 		end
 	end);
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, "RIGHT", 0, 5, loc.REG_COMPANION_ICON, loc.REG_COMPANION_ICON_TT .. "\n\n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
