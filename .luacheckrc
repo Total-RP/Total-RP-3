@@ -506,6 +506,12 @@ stds.wow = {
 					},
 				},
 
+				Cursormode = {
+					fields = {
+						"ItemCursor",
+					},
+				},
+
 				GameRule = {
 					fields = {
 						"TransmogEnabled",
@@ -844,6 +850,7 @@ stds.wow = {
 		"secureexecuterange",
 		"SendSystemMessage",
 		"SetCursor",
+		"SetCursorByMode",
 		"SetCVar",
 		"SetPetStablePaperdoll",
 		"SetPortraitToTexture",

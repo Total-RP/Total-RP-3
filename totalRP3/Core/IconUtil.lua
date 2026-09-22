@@ -51,7 +51,15 @@ function TRP3_IconUtil.SetCursor(icon)
 	if iconInfo.file then
 		SetCursor(iconInfo.file);
 	else
-		TRP3_API.Ellyb.Cursor:SetAtlas(iconInfo.atlas);
+		-- Atlases can't be used as cursor assets. Use a software cursor
+		-- with a texture region instead. This will noticably lag behind
+		-- the hardware cursor when moved. The ItemCursor mode puts a small
+		-- arrow at the top-left of the icon to make it look more like a
+		-- regular cursor.
+		local offsetX = 1;
+		local offsetY = -1;
+		SetCursorByMode(Enum.Cursormode.ItemCursor);
+		TRP3_API.Ellyb.Cursor:SetIcon(iconInfo.atlas, offsetX, offsetY);
 	end
 end
 
