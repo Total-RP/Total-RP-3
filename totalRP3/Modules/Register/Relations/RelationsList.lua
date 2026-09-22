@@ -100,33 +100,58 @@ function TRP3_RelationsListElementMixin:OnLoad()
 	self.Border:SetVertexColor(TRP3_BACKDROP_COLOR_CREAMY_BROWN:GetRGB());
 end
 
+function TRP3_RelationsListElementMixin:OnClick(mouseButtonName)
+	if mouseButtonName == "RightButton" then
+		self:InvokeMenuCallback();
+	end
+end
+
+function TRP3_RelationsListElementMixin:OnDoubleClick()
+	self:InvokeEditCallback();
+end
+
 function TRP3_RelationsListElementMixin:OnTooltipShow(description)
 	-- Intentionally keeping tooltip titles the regular color for consistency.
 	local title = GetRelationName(self.relation);
 	local text = self.Text:IsTruncated() and self.previewDescription or nil;
-	local instructions;
+	local instructions = {
+		{ "DCLICK", L.CO_RELATIONS_MENU_EDIT },
+		{ "RCLICK", L.CM_OPTIONS_ADDITIONAL },
+	};
 
 	if CanReorderRelation(self.relation) then
-		instructions = { { "DRAGDROP", L.REG_RELATION_REORDER } };
+		table.insert(instructions, { "DRAGDROP", L.REG_RELATION_REORDER });
 	end
 
-	if text or instructions then
-		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
-	end
+	TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
 end
 
-function TRP3_RelationsListElementMixin:Init(relation, actionCallback, targetName)
+function TRP3_RelationsListElementMixin:Init(relation, options)
 	local name = GetColoredRelationName(relation);
 
 	self.relation = relation;
-	self.previewDescription = GeneratePreviewDescription(GetRelationDescription(relation), GeneratePreviewPlayerName(), targetName);
+	self.editCallback = options.editCallback;
+	self.menuCallback = options.menuCallback;
+	self.previewDescription = GeneratePreviewDescription(GetRelationDescription(relation), GeneratePreviewPlayerName(), options.targetName);
 
 	self.Title:SetText(name);
 	self.Text:SetText(self.previewDescription);
 	self.Icon:SetIconTexture(relation.texture);
 
 	self.Actions:SetShown(relation.id ~= "NONE");
-	self.Actions:SetActionCallback(function(button) return actionCallback(button, relation); end);
+	self.Actions:SetActionCallback(function(button) self:InvokeMenuCallback(button); end);
+end
+
+function TRP3_RelationsListElementMixin:InvokeEditCallback()
+	if self.editCallback then
+		self.editCallback(self, self.relation);
+	end
+end
+
+function TRP3_RelationsListElementMixin:InvokeMenuCallback(owner)
+	if self.menuCallback then
+		self.menuCallback(owner or self, self.relation);
+	end
 end
 
 TRP3_RelationsListDragIndicatorMixin = {};
@@ -198,7 +223,11 @@ function TRP3_RelationsListMixin:OnRegisterDataUpdated(characterID, _profileID, 
 end
 
 function TRP3_RelationsListMixin:OnListElementInitialize(frame, relation)
-	frame:Init(relation, self.actionCallback, self:GetTargetNameForRelation(relation));
+	frame:Init(relation, {
+		targetName = self:GetTargetNameForRelation(relation),
+		menuCallback = self.menuCallback,
+		editCallback = self.editCallback,
+	});
 end
 
 function TRP3_RelationsListMixin:OnListDropEnter(factory, candidate)
@@ -252,8 +281,20 @@ function TRP3_RelationsListMixin:GetTargetNameForRelation(relation)
 	return targetName;
 end
 
-function TRP3_RelationsListMixin:SetActionCallback(callback)
-	self.actionCallback = callback;
+function TRP3_RelationsListMixin:SetEditCallback(callback)
+	self.editCallback = callback;
+end
+
+function TRP3_RelationsListMixin:SetMenuCallback(callback)
+	self.menuCallback = callback;
+end
+
+function TRP3_RelationsListMixin:SetDataProviderFactory(factory)
+	self.dataProviderFactory = factory;
+end
+
+function TRP3_RelationsListMixin:SetDataProvider(dataProvider, retainScrollPosition)
+	self.ScrollBox:SetDataProvider(dataProvider, retainScrollPosition ~= false);
 end
 
 function TRP3_RelationsListMixin:GetTutorialStructure()
@@ -281,12 +322,4 @@ function TRP3_RelationsListMixin:GetTutorialStructure()
 			},
 		},
 	};
-end
-
-function TRP3_RelationsListMixin:SetDataProviderFactory(factory)
-	self.dataProviderFactory = factory;
-end
-
-function TRP3_RelationsListMixin:SetDataProvider(dataProvider, retainScrollPosition)
-	self.ScrollBox:SetDataProvider(dataProvider, retainScrollPosition ~= false);
 end

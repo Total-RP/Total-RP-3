@@ -4,7 +4,7 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ../../../totalRP3.xsd">
-	<Button name="TRP3_RelationsListElementTemplate" mixin="TRP3_RelationsListElementMixin" virtual="true">
+	<Button name="TRP3_RelationsListElementTemplate" mixin="TRP3_RelationsListElementMixin" registerForClicks="LeftButtonUp, RightButtonUp" virtual="true">
 		<Size y="60"/>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -12,6 +12,13 @@
 			</Layer>
 			<Layer level="BORDER">
 				<Texture parentKey="Border" inherits="TRP3_UIFrameMediumEdgeTextureTemplate"/>
+			</Layer>
+			<Layer level="HIGHLIGHT">
+				<Texture parentKey="Highlight" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-md-glow" alphaMode="ADD">
+					<TextureSliceMargins left="32" top="32" right="32" bottom="32"/>
+					<TextureSliceMode mode="Tiled"/>
+					<Color r="0.92" g="0.68" b="0"/>
+				</Texture>
 			</Layer>
 		</Layers>
 		<Frames>
@@ -53,6 +60,8 @@
 			<OnLoad method="OnLoad"/>
 			<OnEnter method="OnEnter"/>
 			<OnLeave method="OnLeave"/>
+			<OnClick method="OnClick"/>
+			<OnDoubleClick method="OnDoubleClick"/>
 		</Scripts>
 	</Button>
 

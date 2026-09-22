@@ -291,8 +291,13 @@ local function onActionSelected(selectedAction)
 	end
 end
 
-local function OnRelationActions(button, relation)
-	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+local function ShowRelationEditor(_owner, relation)
+	onActionSelected(ACTIONS.EDIT .. relation.id);
+end
+
+local function ShowRelationActionMenu(owner, relation)
+	TRP3_MenuUtil.CreateContextMenu(owner, function(_, description)
+		description:CreateTitle(relation.name or loc:GetText("REG_RELATION_" .. relation.id));
 		description:CreateButton(loc.CO_RELATIONS_MENU_EDIT, onActionSelected, ACTIONS.EDIT .. relation.id);
 		description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CO_RELATIONS_MENU_DELETE .. "|r", onActionSelected, ACTIONS.DELETE .. relation.id);
 	end);
@@ -416,7 +421,8 @@ TRP3_API.register.inits.relationsInit = function()
 		TRP3_RelationsList.Editor.Content.Save:SetScript("OnClick", function()
 			saveCurrentRelation();
 		end);
-		TRP3_RelationsList:SetActionCallback(OnRelationActions);
+		TRP3_RelationsList:SetEditCallback(ShowRelationEditor);
+		TRP3_RelationsList:SetMenuCallback(ShowRelationActionMenu);
 
 		updateRelationsList();
 
