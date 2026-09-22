@@ -229,6 +229,7 @@ local function initRelationEditor(relationID)
 		nameText = loc:GetText("REG_RELATION_" .. relation.id);
 	end
 	TRP3_RelationsList.Editor.Content.Name:SetText(nameText);
+	TRP3_RelationsList.Editor.Content.Name:SetFocus();
 
 	local descriptionText = relation.description;
 	if not descriptionText then
@@ -421,6 +422,7 @@ TRP3_API.register.inits.relationsInit = function()
 		TRP3_RelationsList.Editor.Content.Save:SetScript("OnClick", function()
 			saveCurrentRelation();
 		end);
+		TRP3_API.ui.frame.setupEditBoxesNavigation({ TRP3_RelationsList.Editor.Content.Name, TRP3_RelationsList.Editor.Content.Description });
 		TRP3_RelationsList:SetEditCallback(ShowRelationEditor);
 		TRP3_RelationsList:SetMenuCallback(ShowRelationActionMenu);
 
