@@ -39,7 +39,6 @@ local CONFIG_EMOTE = "chat_emote";
 local CONFIG_EMOTE_PATTERN = "chat_emote_pattern";
 local CONFIG_USAGE = "chat_use_";
 local CONFIG_OOC = "chat_ooc";
-local CONFIG_OOC_PATTERN = "chat_ooc_pattern";
 local CONFIG_OOC_COLOR = "chat_ooc_color";
 local CONFIG_SPEECH = "chat_speech";
 local CONFIG_YELL_NO_EMOTE = "chat_yell_no_emote";
@@ -94,10 +93,6 @@ local function configDoOOCDetection()
 	return getConfigValue(CONFIG_OOC);
 end
 
-local function configOOCDetectionPattern()
-	return getConfigValue(CONFIG_OOC_PATTERN);
-end
-
 local function configOOCDetectionColor()
 	return TRP3_API.CreateColorFromHexString(getConfigValue(CONFIG_OOC_COLOR));
 end
@@ -122,7 +117,6 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_EMOTE, true);
 	registerConfigKey(CONFIG_EMOTE_PATTERN, "(%*.-%*)");
 	registerConfigKey(CONFIG_OOC, true);
-	registerConfigKey(CONFIG_OOC_PATTERN, "(%(.-%))");
 	registerConfigKey(CONFIG_OOC_COLOR, "aaaaaa");
 	registerConfigKey(CONFIG_SPEECH, true);
 	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
@@ -143,12 +137,6 @@ local function createConfigPage()
 		{ "** Emote **", "(%*%*.-%*%*)" },
 		{ "< Emote >", "(%<.-%>)" },
 		{ "* Emote * + < Emote >", "([%*%<].-[%*%>])" },
-	}
-
-	local OOC_PATTERNS = {
-		{ "( OOC )", "(%(.-%))" },
-		{ "(( OOC ))", "(%(%(.-%)%))" },
-		{ "(OOC) + (( OOC )) ", "(%(+[^%)]+%)+)" },
 	}
 
 	-- Build configuration page
@@ -241,15 +229,6 @@ local function createConfigPage()
 				configKey = CONFIG_OOC,
 			},
 			{
-				inherit = "TRP3_ConfigDropDown",
-				widgetName = "TRP3_ConfigurationTooltip_Chat_OOCPattern",
-				title = loc.CO_CHAT_MAIN_OOC_PATTERN,
-				listContent = OOC_PATTERNS,
-				configKey = CONFIG_OOC_PATTERN,
-				listCancel = true,
-				dependentOnOptions = { CONFIG_OOC },
-			},
-			{
 				inherit = "TRP3_ConfigColorPicker",
 				title = loc.CO_CHAT_MAIN_OOC_COLOR,
 				configKey = CONFIG_OOC_COLOR,
@@ -315,6 +294,8 @@ tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 -- Utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+TRP3_ChatFrameUtil = {};
+
 local function getCharacterInfoTab(unitID)
 	if unitID == Globals.player_id then
 		return get("player");
@@ -361,6 +342,104 @@ local function UnprotectMessageContents(message, replacements)
 	return message;
 end
 
+local function IsEmoticonParenthesis(text, index)
+	if string.find(text, "^[:;][()]", index - 1) then
+		-- It's an ":)" or ":(".
+		return true;
+	elseif string.find(text, "^[:;]%-[()]", index - 2) then
+		-- As above, but it's got a nose.
+		return true;
+	end
+
+	return false;
+end
+
+function TRP3_ChatFrameUtil.TransformOOCSpans(text, transform)
+	local parts = {};
+	local textLength = #text;
+	local searchStart = 1;
+	local lastEndIndex = 0;
+
+	local function AppendTransformedSpan(spanStart, endIndex)
+		-- Append any non-OOC text since the last match as-is, unless empty.
+		if spanStart > lastEndIndex + 1 then
+			table.insert(parts, string.sub(text, lastEndIndex + 1, spanStart - 1));
+		end
+
+		local candidate = string.sub(text, spanStart, endIndex);
+		local replacement = transform(candidate, spanStart, endIndex);
+		table.insert(parts, replacement or candidate);
+
+		lastEndIndex = endIndex;
+		searchStart = endIndex + 1;
+	end
+
+	while searchStart <= textLength do
+		local plain = true;
+		local spanStart = string.find(text, "(", searchStart, plain);
+
+		if not spanStart then
+			break;
+		end
+
+		if IsEmoticonParenthesis(text, spanStart) then
+			searchStart = spanStart + 1;
+		else
+			local depth = 1;
+			local pendingEmoticonClose;
+			local index = spanStart + 1;
+
+			while index <= textLength do
+				local characterIndex, character = string.match(text, "()([()])", index);
+
+				if not characterIndex then
+					index = textLength + 1;
+					break;
+				end
+
+				index = characterIndex;
+
+				if (character == "(" or character == ")") and IsEmoticonParenthesis(text, index) then
+					if character == ")" then
+						pendingEmoticonClose = index;
+					end
+				elseif character == "(" then
+					depth = depth + 1;
+				elseif character == ")" then
+					depth = depth - 1;
+
+					if depth == 0 then
+						AppendTransformedSpan(spanStart, index);
+						break;
+					end
+				end
+
+				index = characterIndex + 1;
+			end
+
+			if index > textLength then
+				if pendingEmoticonClose then
+					AppendTransformedSpan(spanStart, pendingEmoticonClose);
+				else
+					break;
+				end
+			end
+		end
+	end
+
+	-- Process the remaining tail of the string as IC text. Skip this if we
+	-- didn't find any OOC spans at all - the text can be returned unaltered.
+	if lastEndIndex > 0 then
+		if lastEndIndex < textLength then
+			table.insert(parts, string.sub(text, lastEndIndex + 1));
+		end
+
+		text = table.concat(parts);
+	end
+
+	return text;
+end
+
 ---@param message string
 ---@param NPCEmoteChatColor Color
 local function detectEmoteAndOOC(message, isEmote)
@@ -381,7 +460,7 @@ local function detectEmoteAndOOC(message, isEmote)
 
 		if configDoOOCDetection() then
 			local color = TRP3_API.chat.getOOCDetectionColor();
-			message = message:gsub(configOOCDetectionPattern(), function(content)
+			message = TRP3_ChatFrameUtil.TransformOOCSpans(message, function(content)
 				return color:WrapTextInColorCode(content);
 			end);
 		end
