@@ -70,7 +70,7 @@ local function GetRelationDescription(relation)
 	return relation.description or L:GetText("REG_RELATION_" .. relation.id .. "_TT");
 end
 
-local function CanReorderRelation(relation)
+local function CanEditRelation(relation)
 	return relation.id ~= "NONE";
 end
 
@@ -114,16 +114,17 @@ function TRP3_RelationsListElementMixin:OnTooltipShow(description)
 	-- Intentionally keeping tooltip titles the regular color for consistency.
 	local title = GetRelationName(self.relation);
 	local text = self.Text:IsTruncated() and self.previewDescription or nil;
-	local instructions = {
-		{ "DCLICK", L.CO_RELATIONS_MENU_EDIT },
-		{ "RCLICK", L.CM_OPTIONS_ADDITIONAL },
-	};
+	local instructions = {};
 
-	if CanReorderRelation(self.relation) then
+	if CanEditRelation(self.relation) then
+		table.insert(instructions, { "DCLICK", L.CO_RELATIONS_MENU_EDIT });
+		table.insert(instructions, { "RCLICK", L.CM_OPTIONS_ADDITIONAL });
 		table.insert(instructions, { "DRAGDROP", L.REG_RELATION_REORDER });
 	end
 
-	TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
+	if text or #instructions > 0 then
+		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
+	end
 end
 
 function TRP3_RelationsListElementMixin:Init(relation, options)
@@ -138,7 +139,8 @@ function TRP3_RelationsListElementMixin:Init(relation, options)
 	self.Text:SetText(self.previewDescription);
 	self.Icon:SetIconTexture(relation.texture);
 
-	self.Actions:SetShown(relation.id ~= "NONE");
+	self:SetEnabled(CanEditRelation(relation));
+	self.Actions:SetShown(CanEditRelation(relation));
 	self.Actions:SetActionCallback(function(button) self:InvokeMenuCallback(button); end);
 end
 
@@ -263,11 +265,11 @@ function TRP3_RelationsListMixin:OnListFinalizeDrop()
 end
 
 function TRP3_RelationsListMixin:CanReorderListElement(relation)
-	return CanReorderRelation(relation);
+	return CanEditRelation(relation);
 end
 
 function TRP3_RelationsListMixin:CanDropOnListElement(contextData)
-	return contextData.area ~= DragIntersectionArea.Inside and CanReorderRelation(contextData.elementData);
+	return contextData.area ~= DragIntersectionArea.Inside and CanEditRelation(contextData.elementData);
 end
 
 function TRP3_RelationsListMixin:GetTargetNameForRelation(relation)
