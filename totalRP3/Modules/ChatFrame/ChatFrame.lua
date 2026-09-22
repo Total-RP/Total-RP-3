@@ -416,6 +416,9 @@ function TRP3_ChatFrameUtil.TransformOOCSpans(text, transform)
 			end
 
 			if index > textLength then
+				-- We reached the end of the string without reaching a balance
+				-- of closing ')' tokens. Skip over the '(' we started from
+				-- and re-parse the string from there.
 				searchStart = spanStart + 1;
 			end
 		end
