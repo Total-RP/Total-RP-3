@@ -346,7 +346,7 @@ local function IsEmoticonParenthesis(text, index)
 	if string.find(text, "^[:;][()]", index - 1) then
 		-- It's an ":)" or ":(".
 		return true;
-	elseif string.find(text, "^[:;]%-[()]", index - 2) then
+	elseif string.find(text, "^[:;][%-^*'~o][()]", index - 2) then
 		-- As above, but it's got a nose.
 		return true;
 	end
