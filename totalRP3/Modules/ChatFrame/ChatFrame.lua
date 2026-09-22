@@ -387,7 +387,6 @@ function TRP3_ChatFrameUtil.TransformOOCSpans(text, transform)
 			searchStart = spanStart + 1;
 		else
 			local depth = 1;
-			local pendingEmoticonClose;
 			local index = spanStart + 1;
 
 			while index <= textLength do
@@ -400,13 +399,11 @@ function TRP3_ChatFrameUtil.TransformOOCSpans(text, transform)
 
 				index = characterIndex;
 
-				if (character == "(" or character == ")") and IsEmoticonParenthesis(text, index) then
-					if character == ")" then
-						pendingEmoticonClose = index;
-					end
+				if IsEmoticonParenthesis(text, index) then -- luacheck: ignore 542
+					-- Skip; the parenthesis we matched is part of an emote.
 				elseif character == "(" then
 					depth = depth + 1;
-				elseif character == ")" then
+				else
 					depth = depth - 1;
 
 					if depth == 0 then
@@ -419,11 +416,7 @@ function TRP3_ChatFrameUtil.TransformOOCSpans(text, transform)
 			end
 
 			if index > textLength then
-				if pendingEmoticonClose then
-					AppendTransformedSpan(spanStart, pendingEmoticonClose);
-				else
-					break;
-				end
+				searchStart = spanStart + 1;
 			end
 		end
 	end
