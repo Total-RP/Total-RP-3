@@ -243,11 +243,7 @@ function TRP3_RelationsListMixin:OnListDropEnter(factory, candidate)
 	local candidateFrame = candidate.frame;
 	local indicatorFrame = factory("TRP3_RelationsListDragIndicatorTemplate");
 
-	-- The last candidate in the list always anchors its indicator above, as
-	-- putting it below would clip it out of the scroll view. We don't need
-	-- to accomodate the first frame in the list as we don't allow reordering
-	-- the None entry at the top.
-	if candidate.area == DragIntersectionArea.Above or not candidate.nextFrame then
+	if candidate.area == DragIntersectionArea.Above then
 		indicatorFrame:SetPoint("BOTTOMLEFT", candidateFrame, "TOPLEFT", 0, -4);
 		indicatorFrame:SetPoint("BOTTOMRIGHT", candidateFrame, "TOPRIGHT", 0, -4);
 	elseif candidate.area == DragIntersectionArea.Below then
