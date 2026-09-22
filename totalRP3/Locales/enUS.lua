@@ -619,7 +619,6 @@ Possible status:
 	CO_CHAT_MAIN_EMOTE_PATTERN = "Emote detection pattern",
 	CO_CHAT_MAIN_OOC = "OOC detection",
 	CO_CHAT_MAIN_OOC_USE = "Use OOC detection",
-	CO_CHAT_MAIN_OOC_PATTERN = "OOC detection pattern",
 	CO_CHAT_MAIN_OOC_COLOR = "OOC color",
 	CO_CHAT_MAIN_EMOTE_YELL = "No yelled emote",
 	CO_CHAT_MAIN_EMOTE_YELL_TT = "Do not show *emote* or <emote> in yelling.",
