@@ -113,8 +113,14 @@ end
 function TRP3_RelationsListElementMixin:OnTooltipShow(description)
 	-- Intentionally keeping tooltip titles the regular color for consistency.
 	local title = GetRelationName(self.relation);
-	local text = self.Text:IsTruncated() and self.previewDescription or nil;
+	local text = nil;
 	local instructions = {};
+
+	if not CanEditRelation(self.relation) then
+		text = L.CO_RELATIONS_CANNOT_EDIT;
+	elseif self.Text:IsTruncated() then
+		text = self.Text:GetText();
+	end
 
 	if CanEditRelation(self.relation) then
 		table.insert(instructions, { "DCLICK", L.CO_RELATIONS_MENU_EDIT });
@@ -133,10 +139,9 @@ function TRP3_RelationsListElementMixin:Init(relation, options)
 	self.relation = relation;
 	self.editCallback = options.editCallback;
 	self.menuCallback = options.menuCallback;
-	self.previewDescription = GeneratePreviewDescription(GetRelationDescription(relation), GeneratePreviewPlayerName(), options.targetName);
 
 	self.Title:SetText(name);
-	self.Text:SetText(self.previewDescription);
+	self.Text:SetText(GeneratePreviewDescription(GetRelationDescription(relation), GeneratePreviewPlayerName(), options.targetName));
 	self.Icon:SetIconTexture(relation.texture);
 
 	self:SetEnabled(CanEditRelation(relation));

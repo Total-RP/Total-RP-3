@@ -513,6 +513,7 @@ The description doesn't have to be limited to |cnGREEN_FONT_COLOR:physical descr
 	CO_RELATIONS_MENU_DELETE = "Delete relation",
 	CO_RELATIONS_TUTORIAL_CREATE = "Create a relation to |cnGREEN_FONT_COLOR:describe a meaningful connection|r between your character and someone else.",
 	CO_RELATIONS_TUTORIAL_LIST = "This list shows your available relations and how they appear on character profiles. Each entry previews the |cnGREEN_FONT_COLOR:finished relation text|r, using |cnGREEN_FONT_COLOR:sample character names|r.",
+	CO_RELATIONS_CANNOT_EDIT = "This is the |cnGREEN_FONT_COLOR:default relation|r for all characters. It cannot be |cnRED_FONT_COLOR:edited, deleted, or moved|r.",
 	CO_CURSOR_TITLE = "Cursor interactions",
 	CO_CURSOR_RIGHT_CLICK = "Right-click to open profile",
 	CO_CURSOR_RIGHT_CLICK_TT = [[Right-click on a player in the 3D world to open their profile, if they have one.
