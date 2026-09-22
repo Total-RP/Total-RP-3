@@ -106,8 +106,10 @@ function TRP3_RelationsListElementMixin:OnClick(mouseButtonName)
 	end
 end
 
-function TRP3_RelationsListElementMixin:OnDoubleClick()
-	self:InvokeEditCallback();
+function TRP3_RelationsListElementMixin:OnDoubleClick(mouseButtonName)
+	if mouseButtonName == "LeftButton" then
+		self:InvokeEditCallback();
+	end
 end
 
 function TRP3_RelationsListElementMixin:OnTooltipShow(description)
