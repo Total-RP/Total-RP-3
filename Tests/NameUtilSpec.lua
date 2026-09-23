@@ -183,6 +183,7 @@ describe("regional unique names", function()
 
 	it("joins name parts into a regional unique name", function()
 		assert.are.equal("John Stormwind", TRP3_NameUtil.ComposeFullName("John", "Stormwind"));
+		assert.are.equal("John Stormwind", RegionalUnique.ComposeQualifiedName("John", "Stormwind"));
 		assert.are.equal("John Stormwind", RegionalUnique.ComposeQualifiedName("John Stormwind", nil));
 	end);
 

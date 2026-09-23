@@ -103,9 +103,8 @@ function RegionalUniqueNameImpl.NormalizeUnitName(givenName, familyName)
 	return NormalizeUnitName(TRP3_NameUtil.ComposeFullName(givenName, familyName));
 end
 
-function RegionalUniqueNameImpl.ComposeQualifiedName(name, _realm)
-	name = NormalizeUnitName(name);
-	return name;
+function RegionalUniqueNameImpl.ComposeQualifiedName(givenName, familyName)
+	return RegionalUniqueNameImpl.NormalizeUnitName(givenName, familyName);
 end
 
 function RegionalUniqueNameImpl.DecomposeQualifiedName(qualifiedName)
