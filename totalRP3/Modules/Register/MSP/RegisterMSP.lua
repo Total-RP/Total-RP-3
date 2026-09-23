@@ -299,8 +299,10 @@ local function onStart()
 	end
 
 	local function parsePeekString(str)
-		-- TODO: This needs to drop the explicit path. Also need to support `|A` atlas markup.
-		local icon = str:match("%f[^\n%z]|TInterface\\Icons\\([^:|]+)[^|]*|t%f[\n%z]") or TRP3_InterfaceIconIDs.Default;
+		local icon = str:match("%f[^\n%z]|TInterface\\Icons\\([^:|]+)[^|]*|t%f[\n%z]")
+			or str:match("%f[^\n%z]|T(%d+):[^|]*|t%f[\n%z]")
+			or str:match("%f[^\n%z]|A:([^:|]+):[^|]*|a%f[\n%z]");
+		icon = TRP3_IconUtil.GetIconID(icon) or TRP3_InterfaceIconIDs.Default;
 		local title = str:match("%f[^\n%z]#+% *(.-)% *%f[\n%z]");
 		local text = str:match("%f[^\n%z]% *([^|#].-)%s*$");
 		return {
