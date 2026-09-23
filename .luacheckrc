@@ -309,6 +309,12 @@ stds.wow = {
 			},
 		},
 
+		C_GameRules = {
+			fields = {
+				"IsGameRuleActive",
+			},
+		},
+
 		C_Housing = {
 			fields = {
 				"GetCurrentHouseInfo",
@@ -350,6 +356,7 @@ stds.wow = {
 				"GetBestMapForUnit",
 				"GetMapInfo",
 				"GetPlayerMapPosition",
+				"OpenWorldMap",
 			},
 		},
 
@@ -478,6 +485,12 @@ stds.wow = {
 				AddOnRestrictionType = {
 					fields = {
 						"PvPMatch",
+					},
+				},
+
+				GameRule = {
+					fields = {
+						"TransmogEnabled",
 					},
 				},
 

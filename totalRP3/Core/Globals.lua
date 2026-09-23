@@ -69,12 +69,16 @@ TRP3_API.globals = {
 	PSYCHO_MAX_VALUE_V2 = 20,
 };
 
+local WOW_PROJECT_FOREVER = 18;
+
 TRP3_ClientFeatures = {
-	ChannelBroadcasts = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE),
+	ChannelBroadcasts = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE or WOW_PROJECT_ID == WOW_PROJECT_FOREVER),
+	-- This should use C_PvP.IsWarModeFeatureEnabled, however that API returns
+	-- true on Forever currently despite it not actually supporting war mode.
 	WarMode = (LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_BATTLE_FOR_AZEROTH),
-	Transmogrification = (LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_WRATH_OF_THE_LICH_KING),
-	WaterElementalWorkaround = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE),
-	OldTooltipAPI = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE),
+	Transmogrification = C_GameRules.IsGameRuleActive(Enum.GameRule.TransmogEnabled),
+	WaterElementalWorkaround = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE and WOW_PROJECT_ID ~= WOW_PROJECT_FOREVER),
+	OldTooltipAPI = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE and WOW_PROJECT_ID ~= WOW_PROJECT_FOREVER),
 };
 
 TRP3_OOCIndicatorStyle = {
