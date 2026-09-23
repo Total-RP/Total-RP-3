@@ -538,6 +538,10 @@ local function onStart()
 						if field == "RS" and value then
 							value = tonumber(value);
 						end
+						-- Icon migration; prefer data from new IX field.
+						if field == "IC" and data["IX"] ~= "" then
+							value = data["IX"];
+						end
 						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = value;
 						-- Hack for spaced name tolerated in MRP
 						if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then

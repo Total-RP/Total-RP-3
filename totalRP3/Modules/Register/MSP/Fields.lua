@@ -7,8 +7,8 @@ local Globals = TRP3_API.globals;
 
 local module = AddOn_TotalRP3.MSP or {};
 
-module.TOOLTIP_FIELDS = {"CO", "IC", "PX", "RC", "RS", "TR", "PN"};
-module.REQUEST_FIELDS = {"TT", "IC", "PG", "PR", "PN", "PV", "CO", "AE", "AG", "AH", "AW", "DE", "HB", "HH", "HI", "MO", "NH", "MU", "PE", "PS", "RS"};
+module.TOOLTIP_FIELDS = {"CO", "IC", "IX", "PX", "RC", "RS", "TR", "PN"};
+module.REQUEST_FIELDS = {"TT", "IC", "IX", "PG", "PR", "PN", "PV", "CO", "AE", "AG", "AH", "AW", "DE", "HB", "HH", "HI", "MO", "NH", "MU", "PE", "PS", "RS"};
 
 -- Registry of known serializers/deserializers by name.
 local serializers = {};
