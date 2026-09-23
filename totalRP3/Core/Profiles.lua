@@ -432,6 +432,12 @@ local function SetupChoicesFrame()
 
 	forceClose, profileIcon, chosenProfile = false, nil, nil;
 
+	-- Hide any frame left open by a previous flow.
+	frames.ImportFrame:Hide();
+	frames.ImportFrame.Content.ImportText:ClearText();
+	frames.ExportFrame:Hide();
+	frames.FinalizeFrame:Hide();
+
 	-- Show choices and profile creation frame
 	choicesFrame:Show();
 	TRP3_ProfileCreateDialog:Show();
