@@ -32,7 +32,7 @@ end
 ---@return string? name
 ---@return string? qualifier
 local function UnitOrPlayerNameFromGUID(unitGUID)
-	local name, qualifier = UnitNameFromGUID(unitGUID);
+	local name, qualifier = scrubsecretvalues(UnitNameFromGUID(unitGUID));
 
 	if not name or name == "" then
 		local _className, _classFile, _raceName, _raceFile, _sex, _level;
@@ -113,6 +113,11 @@ end
 
 function RegionalUniqueNameImpl.GetQualifiedNameFromString(qualifiedName)
 	local fullName = RegionalUniqueNameImpl.DecomposeQualifiedName(qualifiedName);
+
+	if not fullName then
+		return nil;
+	end
+
 	local givenName, familyName = TRP3_NameUtil.DecomposeFullName(fullName);
 
 	if not givenName or not familyName then
@@ -271,13 +276,17 @@ function TRP3_NameUtil.GetCurrentMode()
 end
 
 ---@param mode TRP3.NameUtil.Mode
----@return TRP3.NameUtil.Implementation?
-function TRP3_NameUtil.GetImplementation(mode)
+---@return TRP3.NameUtil.Implementation
+local function GetImplementation(mode)
 	if mode == TRP3_NameUtil.Mode.RealmQualified then
 		return RealmQualifiedNameImpl;
 	elseif mode == TRP3_NameUtil.Mode.RegionalUnique then
 		return RegionalUniqueNameImpl;
 	end
+
+	assertsafe(false,  "Unable to determine name implementation for this client");
+	return RealmQualifiedNameImpl;
 end
 
-Impl = TRP3_NameUtil.GetImplementation(TRP3_NameUtil.GetCurrentMode());
+Impl = GetImplementation(TRP3_NameUtil.GetCurrentMode());
+return TRP3_NameUtil;
