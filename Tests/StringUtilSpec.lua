@@ -28,3 +28,24 @@ insulate("DequoteString", function()
 		assert.is_false(wasDequoted);
 	end);
 end);
+
+insulate("CapitalizeWords", function()
+	setup(function()
+		SpecHelper.LoadFile("totalRP3/Core/StringUtil.lua");
+	end);
+
+	it("capitalizes the first character of each word", function()
+		local result = TRP3_StringUtil.CapitalizeWords("hello world");
+		assert.are.equal("Hello World", result);
+	end);
+
+	it("preserves the rest of each word and the original whitespace", function()
+		local result = TRP3_StringUtil.CapitalizeWords("hELLO\t wORLD\nagain");
+		assert.are.equal("HELLO\t WORLD\nAgain", result);
+	end);
+
+	it("returns an empty string unchanged", function()
+		local result = TRP3_StringUtil.CapitalizeWords("");
+		assert.are.equal("", result);
+	end);
+end);

@@ -138,7 +138,7 @@ function TRP3_StringUtil.TrimNewlinesAndSpaces(str)
 end
 
 local function UppercaseWord(word)
-	return string.gsub(word, "^.", C_Intl and C_Intl.ToUpper or string.upper);
+	return string.gsub(word, "^([%z\1-\127\194-\244][\128-\191]*)", C_Intl and C_Intl.ToUpper or string.upper);
 end
 
 function TRP3_StringUtil.CapitalizeWords(str)
