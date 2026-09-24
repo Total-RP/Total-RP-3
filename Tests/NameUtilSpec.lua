@@ -184,20 +184,6 @@ insulate("realm-qualified names", function()
 	end);
 
 	it("gets a name from a player GUID", function()
-		stub(_G, "UnitNameFromGUID", function() return "John", "Stormwind" end);
-		assert.are.equal("John-Stormwind", TRP3_NameUtil.GetQualifiedNameByGUID("guid"));
-	end);
-
-	it("falls back to player info for an unknown GUID", function()
-		stub(_G, "UnitNameFromGUID", function() return nil end);
-		stub(_G, "GetPlayerInfoByGUID", function()
-			return nil, nil, nil, nil, nil, "John", "Stormwind", nil;
-		end);
-		assert.are.equal("John-Stormwind", TRP3_NameUtil.GetQualifiedNameByGUID("guid"));
-	end);
-
-	it("falls back to player info for an empty GUID name", function()
-		stub(_G, "UnitNameFromGUID", function() return "", "OldRealm" end);
 		stub(_G, "GetPlayerInfoByGUID", function()
 			return nil, nil, nil, nil, nil, "John", "Stormwind", nil;
 		end);
@@ -281,40 +267,14 @@ insulate("regional unique names", function()
 		assert.are.equal("John Stormwind", TRP3_NameUtil.GetQualifiedName("target"));
 	end);
 
-	it("gets a regional name from a GUID without needing player info", function()
-		stub(_G, "UnitNameFromGUID", function() return "John", "Stormwind" end);
-		stub(_G, "GetPlayerInfoByGUID", function()
-			error("GetPlayerInfoByGUID should not be called");
-		end);
-		assert.are.equal("John Stormwind", TRP3_NameUtil.GetQualifiedNameByGUID("guid"));
-	end);
-
-	it("uses a full name returned by UnitNameFromGUID", function()
-		stub(_G, "UnitNameFromGUID", function() return "John Stormwind", "Foo" end);
-		stub(_G, "GetPlayerInfoByGUID", function()
-			error("GetPlayerInfoByGUID should not be called");
-		end);
-		assert.are.equal("John Stormwind", TRP3_NameUtil.GetQualifiedNameByGUID("guid"));
-	end);
-
-	it("falls back to player info when the GUID name is unavailable", function()
-		stub(_G, "UnitNameFromGUID", function() return nil end);
+	it("gets a regional name from a GUID", function()
 		stub(_G, "GetPlayerInfoByGUID", function()
 			return nil, nil, nil, nil, nil, "John", "Stormwind", nil;
 		end);
 		assert.are.equal("John Stormwind", TRP3_NameUtil.GetQualifiedNameByGUID("guid"));
 	end);
 
-	it("falls back to player info when the GUID name is empty", function()
-		stub(_G, "UnitNameFromGUID", function() return "", "OldRealm" end);
-		stub(_G, "GetPlayerInfoByGUID", function()
-			return nil, nil, nil, nil, nil, "John", "Stormwind", nil;
-		end);
-		assert.are.equal("John Stormwind", TRP3_NameUtil.GetQualifiedNameByGUID("guid"));
-	end);
-
-	it("returns nil when GUID and player info have no name", function()
-		stub(_G, "UnitNameFromGUID", function() return nil end);
+	it("returns nil when player info has no name", function()
 		stub(_G, "GetPlayerInfoByGUID", function()
 			return nil, nil, nil, nil, nil, nil, nil, nil;
 		end);

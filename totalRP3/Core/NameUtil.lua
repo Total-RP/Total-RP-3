@@ -31,14 +31,8 @@ end
 ---@param unitGUID WOWGUID
 ---@return string? name
 ---@return string? qualifier
-local function UnitOrPlayerNameFromGUID(unitGUID)
-	local name, qualifier = scrubsecretvalues(UnitNameFromGUID(unitGUID));
-
-	if not name or name == "" then
-		local _className, _classFile, _raceName, _raceFile, _sex, _level;
-		_className, _classFile, _raceName, _raceFile, _sex, name, qualifier, _level = GetPlayerInfoByGUID(unitGUID);
-	end
-
+local function GetPlayerNameByGUID(unitGUID)
+	local _className, _classFile, _raceName, _raceFile, _sex, name, qualifier, _level = GetPlayerInfoByGUID(unitGUID);
 	return name, qualifier;
 end
 
@@ -212,7 +206,7 @@ end
 ---@param unitGUID WOWGUID
 ---@return string? qualifiedName Qualified name, e.g. "Zugzug-AzjolNerub".
 function TRP3_NameUtil.GetQualifiedNameByGUID(unitGUID)
-	local name, realm = Impl.NormalizeUnitName(UnitOrPlayerNameFromGUID(unitGUID));
+	local name, realm = Impl.NormalizeUnitName(GetPlayerNameByGUID(unitGUID));
 	return Impl.ComposeQualifiedName(name, realm);
 end
 
