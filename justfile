@@ -16,6 +16,10 @@ all: dist
 check:
     pre-commit run --all-files
 
+# Run the Lua unit tests.
+test:
+    busted '--lpath=Tests/?.lua' Tests/*Spec.lua
+
 # Build a distributable package using the packager script.
 dist:
     curl -s {{ packager_url }} | bash -s -- -d
