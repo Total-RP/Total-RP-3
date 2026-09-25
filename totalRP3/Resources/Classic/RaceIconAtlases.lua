@@ -1,0 +1,31 @@
+-- Copyright The Total RP 3 Authors
+-- SPDX-License-Identifier: Apache-2.0
+
+TRP3_RaceIconAtlases = {
+	BloodElfFemale = "raceicon-bloodelf-female",
+	BloodElfMale = "raceicon-bloodelf-male",
+	DraeneiFemale = "raceicon-draenei-female",
+	DraeneiMale = "raceicon-draenei-male",
+	DwarfFemale = "raceicon-dwarf-female",
+	DwarfMale = "raceicon-dwarf-male",
+	GnomeFemale = "raceicon-gnome-female",
+	GnomeMale = "raceicon-gnome-male",
+	GoblinFemale = "raceicon-goblin-female",
+	GoblinMale = "raceicon-goblin-male",
+	HumanFemale = "raceicon-human-female",
+	HumanMale = "raceicon-human-male",
+	NightElfFemale = "raceicon-nightelf-female",
+	NightElfMale = "raceicon-nightelf-male",
+	OrcFemale = "raceicon-orc-female",
+	OrcMale = "raceicon-orc-male",
+	PandarenFemale = "raceicon-pandaren-female",
+	PandarenMale = "raceicon-pandaren-male",
+	ScourgeFemale = "raceicon-undead-female",
+	ScourgeMale = "raceicon-undead-male",
+	TaurenFemale = "raceicon-tauren-female",
+	TaurenMale = "raceicon-tauren-male",
+	TrollFemale = "raceicon-troll-female",
+	TrollMale = "raceicon-troll-male",
+	WorgenFemale = "raceicon-worgen-female",
+	WorgenMale = "raceicon-worgen-male",
+};
