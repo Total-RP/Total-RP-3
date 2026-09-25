@@ -49,6 +49,8 @@ Prat:AddModuleToLoad(function()
 
 	-- Runs before Prat add the message to the chat frames
 	function pratModule:Prat_PreAddMessage(_, message, _, event)
+		-- The chat settings read below only exist while the Chat frames module is loaded.
+		if not TRP3_API.module.isModuleLoaded("trp3_chatframes") then return; end
 		if TRP3_API.chat.disabledByOOC() then return; end
 
 		-- Emote handling
