@@ -111,7 +111,7 @@ function TRP3_API.register.inits.notesInit()
 		end
 
 		local openPageByUnitID = TRP3_API.register.openPageByUnitID;
-		local openNotesTab = TRP3_TabBar_Tab_5:GetScript("OnClick");    -- This was a quick workaround for RP.IO, is there a better option ?
+		local openNotesTab = function() TRP3_API.register.player.tabGroup:SelectTab(4); end
 		TRP3_API.target.registerButton({
 			id = "za_notes",
 			configText = loc.REG_NOTES_PROFILE,
