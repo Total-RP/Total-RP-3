@@ -49,7 +49,7 @@ local function onStart()
 	local OBJECT_NAME_FORMAT = TRP3_API.globals.addon_name_short .. " — %s";
 
 	local function GetIconTextureFile(icon)
-		if type(icon) == "table" and icon.isInstanceOf and icon:isInstanceOf(Ellyb.Icon) then
+		if type(icon) == "table" and icon.isInstanceOf and icon:isInstanceOf(TRP3_API.Ellyb.Icon) then
 			return icon:GetFileID()
 		elseif type(icon) == "number" then
 			return icon;
