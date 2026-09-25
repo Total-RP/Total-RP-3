@@ -583,7 +583,7 @@ function TRP3_API.slash.openProfile(...)
 
 		if UnitIsPlayer(characterNameOrUnitToken) then
 			characterID = TRP3_NameUtil.GetQualifiedName(characterNameOrUnitToken);
-		else
+		elseif not UnitIsVisible(characterNameOrUnitToken) then
 			characterID = TRP3_NameUtil.GetQualifiedNameFromString(characterNameOrUnitToken);
 		end
 	elseif UnitIsPlayer("target") then
