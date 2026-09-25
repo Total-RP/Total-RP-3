@@ -714,7 +714,7 @@ TRP3_API.chat.getFullnameForUnitUsingChatMethod = getFullnameForUnitUsingChatMet
 -- This is our custom function for the SenderNameFilter function that will replace player's names with their full RP names
 -- and use their custom colors.
 -- (It is stored in Utils as we need it in other modules like Prat or WIM)
-function Utils.customGetColoredName(event, _, _, characterID, _, _, _, _, _, _, _, _, messageID, GUID)
+function Utils.customGetColoredName(event, _, _, senderName, _, _, _, _, _, _, _, _, messageID, GUID)
 
 	if disabledByOOC() then
 		return;
@@ -730,7 +730,7 @@ function Utils.customGetColoredName(event, _, _, characterID, _, _, _, _, _, _, 
 
 	-- We don't have a unit ID for this message (WTF? Some other add-on must be doing some weird shit again…)
 	-- Bail out, let the fallback function handle that shit.
-	if not characterID then
+	if not senderName then
 		return;
 	end
 
@@ -741,7 +741,12 @@ function Utils.customGetColoredName(event, _, _, characterID, _, _, _, _, _, _, 
 	end
 
 	-- Make sure we have a unitID formatted as "Player-Realm"
-	characterID = TRP3_NameUtil.GetQualifiedNameByGUID(GUID);
+	local characterID = TRP3_NameUtil.GetQualifiedNameByGUID(GUID);
+
+	if not characterID then
+		return;
+	end
+
 	---@type Player
 	local player = AddOn_TotalRP3.Player.static.CreateFromCharacterID(characterID);
 

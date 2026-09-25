@@ -79,6 +79,8 @@ Prat:AddModuleToLoad(function()
 
 		-- Retrieve all the player info from the message GUID
 		local unitID = TRP3_NameUtil.GetQualifiedNameByGUID(message.GUID);
+		if not unitID then return; end;
+
 		local characterName = unitID;
 
 		-- Extract the color if present used by Prat so we use it by default;
