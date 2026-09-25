@@ -48,4 +48,22 @@ insulate("CapitalizeWords", function()
 		local result = TRP3_StringUtil.CapitalizeWords("");
 		assert.are.equal("", result);
 	end);
+
+	it("passes the complete initial multi-byte codepoint to C_Intl.ToUpper", function()
+		local original = C_Intl.ToUpper;
+		local received;
+
+		-- We can't use a regular stub to replace this function as it's passed
+		-- as a direct argument to string.gsub; stubs replace functions with
+		-- tables which doesn't mix well with gsub's treatment of tables.
+		C_Intl.ToUpper = function(codepoint)
+			received = codepoint;
+			return "É";
+		end;
+
+		finally(function() C_Intl.ToUpper = original; end);
+
+		assert.are.equal("Éclair", TRP3_StringUtil.CapitalizeWords("éclair"));
+		assert.are.equal("é", received);
+	end);
 end);
