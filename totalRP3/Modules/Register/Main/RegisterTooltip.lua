@@ -427,19 +427,23 @@ function TooltipBuilder:AddIcon(icon, textureInfoTable)
 		-- that we can't use the size values in the options table either, as
 		-- for some reason they aren't equivalent.
 
-		local iconMarkup = TRP3_MarkupUtil.GenerateIconMarkup(icon, { size = 24 });
-		local line = self.tooltip:NumLines();
-		local leftFontString = TRP3_TooltipUtil.GetLineFontStrings(self.tooltip, line);
-		local leftText = leftFontString:GetText();
+		if TRP3_IconUtil.IsValidIcon(icon) then
+			local iconMarkup = TRP3_MarkupUtil.GenerateIconMarkup(icon, { size = 24 });
+			local line = self.tooltip:NumLines();
+			local leftFontString = TRP3_TooltipUtil.GetLineFontStrings(self.tooltip, line);
+			local leftText = leftFontString:GetText();
 
-		leftFontString:SetText(iconMarkup .. leftText);
+			leftFontString:SetText(iconMarkup .. leftText);
+		end
 	else
 		local iconInfo = TRP3_IconUtil.GetIconInfo(icon);
 
-		if iconInfo.atlas then
-			self.tooltip:AddAtlas(iconInfo.atlas, textureInfoTable);
-		elseif iconInfo.file then
-			self.tooltip:AddTexture(iconInfo.file, textureInfoTable);
+		if iconInfo ~= nil then
+			if iconInfo.atlas then
+				self.tooltip:AddAtlas(iconInfo.atlas, textureInfoTable);
+			elseif iconInfo.file then
+				self.tooltip:AddTexture(iconInfo.file, textureInfoTable);
+			end
 		end
 	end
 end
