@@ -861,6 +861,7 @@ stds.wow = {
 		ColorPickerFrame = {
 			fields = {
 				"GetColorRGB",
+				"IsShown",
 				"SetColorRGB",
 				"SetupColorPickerAndShow",
 			},
