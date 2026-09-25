@@ -55,6 +55,7 @@ function BackgroundBrowserFilterModel:__init(source)
 	self.source = source;
 	self.sourceIndices = {};
 	self.searchQuery = "";
+	self.matcher = TRP3_StringUtil.CreateMatcher(self.searchQuery);
 
 	self.source.RegisterCallback(self, "OnModelUpdated", "OnSourceModelUpdated");
 end
@@ -109,6 +110,10 @@ function BackgroundBrowserFilterModel:GetProxyIndex(sourceIndex)
 	return proxyIndex;
 end
 
+function BackgroundBrowserFilterModel:ClearSearchCache()
+	self.matcher:ClearCache();
+end
+
 function BackgroundBrowserFilterModel:ClearSearchQuery()
 	self:SetSearchQuery("");
 end
@@ -122,10 +127,9 @@ function BackgroundBrowserFilterModel:HasSearchQuery()
 end
 
 function BackgroundBrowserFilterModel:SetSearchQuery(query)
-	query = TRP3_StringUtil.GenerateSearchableString(query);
-
 	if self.searchQuery ~= query then
 		self.searchQuery = query;
+		self.matcher:SetQuery(query);
 		self:RebuildModel();
 	end
 end
@@ -135,9 +139,8 @@ function BackgroundBrowserFilterModel:OnSourceModelUpdated()
 end
 
 function BackgroundBrowserFilterModel:RebuildModel()
-	local query = self:GetSearchQuery();
-
-	if query == "" then
+	if not self:HasSearchQuery() then
+		self.sourceIndices = {};
 		self.callbacks:Fire("OnModelUpdated");
 		return;
 	end
@@ -146,11 +149,7 @@ function BackgroundBrowserFilterModel:RebuildModel()
 	local results = {};
 
 	for sourceIndex = 1, self.source:GetImageCount() do
-		local backgroundName = TRP3_StringUtil.GenerateSearchableString(self.source:GetImageName(sourceIndex));
-		local offset = 1;
-		local plain = true;
-
-		if backgroundName and string.find(backgroundName, query, offset, plain) then
+		if self.matcher:Matches(self.source:GetImageName(sourceIndex)) then
 			found = found + 1;
 			results[found] = sourceIndex;
 		end
@@ -349,6 +348,7 @@ end
 
 function TRP3_BackgroundBrowserMixin:OnHide()
 	PlaySound(TRP3_InterfaceSounds.BrowserClose);
+	self.filterModel:ClearSearchCache();
 	self.callbacks:Fire("OnClosed");
 end
 

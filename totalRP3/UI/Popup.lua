@@ -452,36 +452,7 @@ local function decorateCompanion(button, index)
 	button.index = index;
 end
 
-local function nameComparator(elem1, elem2)
-	return elem1[1] < elem2[1];
-end
-
-local function SearchFilterPredicate(value, filter)
-	if type(value) ~= "string" then
-		return false;
-	end
-
-	value = string.lower(string.trim(value));
-	filter = string.lower(string.trim(filter));
-
-	return filter == "" or (not not string.find(value, filter, 1, true));
-end
-
-local function CollectBattlePets(filter)
-	local uniquePetNames = {};
-	local battlePets = {};
-
-	for _, petInfo in TRP3_CompanionUtil.EnumerateCompanionPets() do
-		if not uniquePetNames[petInfo.name] and SearchFilterPredicate(petInfo.name, filter) then
-			uniquePetNames[petInfo.name] = true;
-			table.insert(battlePets, { petInfo.name, petInfo.icon, petInfo.description, petInfo.speciesName });
-		end
-	end
-
-	return battlePets;
-end
-
-local function BattlePetNameComparator(a, b)
+local function SortCompareBattlePets(a, b)
 	local customNameA = a[1]
 	local customNameB = b[1]
 	local isRenamedA = customNameA ~= a[4]
@@ -490,35 +461,57 @@ local function BattlePetNameComparator(a, b)
 	if isRenamedA ~= isRenamedB then
 		return isRenamedA;
 	else
-		return strcmputf8i(customNameA, customNameB) < 0;
+		return TRP3_StringUtil.SortCompareStrings(customNameA, customNameB);
 	end
 end
 
-local function getWoWCompanionFilteredList(filter)
-	local count = 0;
-	wipe(filteredCompanionList);
+local function CollectBattlePets(query)
+	local matcher = TRP3_StringUtil.CreateMatcher(query);
+	local uniquePetNames = {};
+	local battlePets = {};
 
-	if currentCompanionType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
-		-- Battle pets
-		Mixin(filteredCompanionList, CollectBattlePets(filter));
-		count = #filteredCompanionList;
-		table.sort(filteredCompanionList, BattlePetNameComparator);
-	elseif currentCompanionType == TRP3_Enums.UNIT_TYPE.MOUNT then
-		-- Mounts
-		for _, mountInfo in TRP3_CompanionUtil.EnumerateMounts() do
-			-- The not-false check here is intended to allow mounts that we've
-			-- either definitely collected (true) or mounts whose collection
-			-- state is indeterminate (nil).
-			if mountInfo.isCollected ~= false and SearchFilterPredicate(mountInfo.name, filter) then
-				tinsert(filteredCompanionList, {mountInfo.name, mountInfo.icon, mountInfo.description, loc.PR_CO_MOUNT, mountInfo.spellID, mountInfo.id});
-				count = count + 1;
-			end
+	for _, petInfo in TRP3_CompanionUtil.EnumerateCompanionPets() do
+		if not uniquePetNames[petInfo.name] and matcher:Matches(petInfo.name) then
+			uniquePetNames[petInfo.name] = true;
+			table.insert(battlePets, { petInfo.name, petInfo.icon, petInfo.description, petInfo.speciesName });
 		end
-		table.sort(filteredCompanionList, nameComparator);
 	end
 
+	table.sort(battlePets, SortCompareBattlePets);
+	return battlePets;
+end
 
-	return count;
+local function SortCompareMounts(a, b)
+	return TRP3_StringUtil.SortCompareStrings(a[1], b[1]);
+end
+
+local function CollectMounts(query)
+	local matcher = TRP3_StringUtil.CreateMatcher(query);
+	local mounts = {};
+
+	for _, mountInfo in TRP3_CompanionUtil.EnumerateMounts() do
+		-- The not-false check here is intended to allow mounts that we've
+		-- either definitely collected (true) or mounts whose collection
+		-- state is indeterminate (nil).
+		if mountInfo.isCollected ~= false and matcher:Matches(mountInfo.name) then
+			table.insert(mounts, { mountInfo.name, mountInfo.icon, mountInfo.description, loc.PR_CO_MOUNT, mountInfo.spellID, mountInfo.id });
+		end
+	end
+
+	table.sort(mounts, SortCompareMounts);
+	return mounts;
+end
+
+local function getWoWCompanionFilteredList(query)
+	if currentCompanionType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
+		filteredCompanionList = CollectBattlePets(query);
+	elseif currentCompanionType == TRP3_Enums.UNIT_TYPE.MOUNT then
+		filteredCompanionList = CollectMounts(query);
+	else
+		filteredCompanionList = {};
+	end
+
+	return #filteredCompanionList;
 end
 
 local function filteredCompanionBrowser()

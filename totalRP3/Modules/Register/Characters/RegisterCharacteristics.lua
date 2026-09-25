@@ -659,7 +659,7 @@ local function SortCompareMiscEntries(a, b)
 	if a.list ~= b.list then
 		return a.list == nil;  -- Force "Create new" to end of list.
 	else
-		return strcmputf8i(a.localizedName, b.localizedName) < 0;
+		return TRP3_StringUtil.SortCompareStrings(a.localizedName, b.localizedName);
 	end
 end
 
