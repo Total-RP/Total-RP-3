@@ -2,7 +2,7 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local TRP3_API = select(2, ...);
-local L = TRP3_API.L;
+local L = TRP3_API.loc;
 local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 
 local function SetCustomClassColor(player, field, data)
