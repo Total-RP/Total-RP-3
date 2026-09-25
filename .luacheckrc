@@ -915,6 +915,7 @@ stds.wow = {
 		"UnitIsPlayer",
 		"UnitIsPVP",
 		"UnitIsUnit",
+		"UnitIsVisible",
 		"UnitLevel",
 		"UnitName",
 		"UnitNameFromGUID",
