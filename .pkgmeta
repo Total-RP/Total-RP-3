@@ -11,7 +11,7 @@ ignore:
   - totalRP3/Libs/*/README.*
   - totalRP3/Libs/*/tests
   - totalRP3/Resources/UI/*.afdesign
-  - totalRP3/Tests
+  - Tests
   - Types
   - '*.xsd'
   - README.md
