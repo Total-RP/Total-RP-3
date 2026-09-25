@@ -811,6 +811,8 @@ We strongly recommend that you |cnGREEN_FONT_COLOR:copy the exported data below 
 	PR_IMPORT_ERROR_PEM_LABEL = "PEM block has an invalid header",
 	PR_IMPORT_ERROR_DECOMPRESS = "Failed to decompress PEM data",
 	PR_IMPORT_ERROR_DESERIALIZE_CBOR = "Failed to deserialize CBOR data",
+	PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT = "This doesn't look like a Total RP 3 profile.|n|nA profile serial starts with:|n|cnGREEN_FONT_COLOR:-----BEGIN TRP3 PROFILE-----|r|nand ends with:|n|cnGREEN_FONT_COLOR:-----END TRP3 PROFILE-----|r|n|nSerials exported with an older version of TRP3 start with |cnGREEN_FONT_COLOR:^1^T|r instead.|n|nMake sure you copied all of it.",
+	PR_IMPORT_ERROR_PACKED_DATA_INVALID = "This serial isn't a Total RP 3 profile.|n|nIt may come from another addon, or from a different kind of Total RP 3 export.",
 	PR_IMPORT_EMPTY_SERIAL = "Empty profile serial.",
 	PR_PROFILEMANAGER_IMPORT_WARNING = "Replace all the content of profile %s with this imported data?",
 	PR_PROFILEMANAGER_IMPORT_WARNING_2 = "This profile serial was created using |cnGREEN_FONT_COLOR:an older version of TRP3|r.|n|n|cnWARNING_FONT_COLOR:This may cause incompatibilities.|r|n|nReplace all the content of profile %s with this imported data?",

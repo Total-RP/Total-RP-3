@@ -179,3 +179,27 @@ function TRP3_EncodingUtil.DecodePEM(data)
 	local decoder = TRP3_EncodingUtil.CreatePEMDecoder(data);
 	return decoder:Decode();
 end
+
+--
+-- AceSerializer Decoding Utilities
+--
+
+local AceSerializer = LibStub:GetLibrary("AceSerializer-3.0");
+
+-- Deserializes the first AceSerializer string found in data, ignoring any text before
+-- it. Returns nil if data holds none, and raises an error if that string is malformed.
+function TRP3_EncodingUtil.DecodeAce(data)
+	local serializedStart = string.find(data, "^1", 1, true);
+
+	if not serializedStart then
+		return nil;
+	end
+
+	local ok, value = AceSerializer:Deserialize(string.sub(data, serializedStart));
+
+	if not ok then
+		error(value, 2);
+	end
+
+	return value;
+end
