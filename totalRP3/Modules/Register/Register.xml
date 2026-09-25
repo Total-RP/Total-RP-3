@@ -11,7 +11,8 @@
 	<Include file="Characters\RegisterUIAbout.xml"/>
 	<Include file="Characters\RegisterUIMisc.xml"/>
 	<Include file="Characters\RegisterUINotes.xml"/>
-	<Include file="Characters\RegisterUIRelations.xml"/>
+	<Include file="Relations\RelationsList.lua"/>
+	<Include file="Relations\RelationsList.xml"/>
 	<Include file="Main\RegisterUIGlance.xml"/>
 	<Include file="Main\RegisterUIList.xml"/>
 	<Include file="Characters\RegisterUIMain.xml"/>

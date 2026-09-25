@@ -4,9 +4,7 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ../../../totalRP3.xsd">
-
-
-	<Frame name="TRP3_ConfigurationRelationsFrame" virtual="true">
+	<Button name="TRP3_RelationsListElementTemplate" mixin="TRP3_RelationsListElementMixin" registerForClicks="LeftButtonUp, RightButtonUp" motionScriptsWhileDisabled="true" virtual="true">
 		<Size y="60"/>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -15,48 +13,73 @@
 			<Layer level="BORDER">
 				<Texture parentKey="Border" inherits="TRP3_UIFrameMediumEdgeTextureTemplate"/>
 			</Layer>
+			<Layer level="HIGHLIGHT">
+				<Texture parentKey="Highlight" file="Interface\AddOns\totalRP3\Resources\UI\ui-frame-slice-md-glow" alphaMode="ADD">
+					<TextureSliceMargins left="32" top="32" right="32" bottom="32"/>
+					<TextureSliceMode mode="Tiled"/>
+					<Color r="0.92" g="0.68" b="0"/>
+				</Texture>
+			</Layer>
 		</Layers>
 		<Frames>
-			<Button parentKey="DragButton" inherits="TRP3_ReorderButtonTemplate">
-				<Size x="22" y="24"/>
-				<Scripts>
-					<OnEnter function="TRP3_RefreshTooltipForFrame"/>
-					<OnLeave>TRP3_MainTooltip:Hide();</OnLeave>
-				</Scripts>
-				<Anchors>
-					<Anchor point="LEFT" x="10"/>
-				</Anchors>
-			</Button>
 			<Frame parentKey="Icon" inherits="TRP3_BorderedIconTemplate">
 				<Size x="48" y="48"/>
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.DragButton" x="0" y="0"/>
+					<Anchor point="LEFT" x="10"/>
 				</Anchors>
 			</Frame>
-			<Button parentKey="Actions" inherits="TRP3_ActionButton">
+			<Button parentKey="Actions" mixin="TRP3_RelationsListActionButtonMixin" inherits="TRP3_ActionButton">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
 				</Anchors>
+				<Scripts>
+					<OnEnter method="OnEnter"/>
+					<OnLeave method="OnLeave"/>
+					<OnMouseDown method="OnMouseDown"/>
+				</Scripts>
 			</Button>
 		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Title" inherits="GameFontHighlight" justifyH="LEFT">
+				<FontString parentKey="Title" inherits="GameFontHighlightLarge" justifyH="LEFT" wordwrap="false" nonspacewrap="false">
 					<Anchors>
-						<Anchor point="BOTTOMLEFT" relativePoint="RIGHT" relativeKey="$parent.Icon" x="5" y="3"/>
+						<Anchor point="BOTTOMLEFT" relativePoint="RIGHT" relativeKey="$parent.Icon" x="5" y="2"/>
+						<Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.Actions" x="-5"/>
 					</Anchors>
 				</FontString>
-				<FontString parentKey="Text" inherits="GameFontNormalSmall" justifyH="LEFT">
-					<Size x="300" y="10"/>
+				<FontString parentKey="Text" inherits="GameFontNormal" justifyH="LEFT" wordwrap="false" nonspacewrap="false">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Title" y="-5"/>
+						<Anchor point="RIGHT" x="-10"/>
 					</Anchors>
 				</FontString>
 			</Layer>
 		</Layers>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<OnClick method="OnClick"/>
+			<OnDoubleClick method="OnDoubleClick"/>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_RelationsListDragIndicatorTemplate" mixin="TRP3_RelationsListDragIndicatorMixin" virtual="true">
+		<Size x="1" y="10"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Texture"/>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
 	</Frame>
 
-	<Frame name="TRP3_RelationsList" hidden="true">
+	<Frame name="TRP3_RelationsListTemplate" mixin="TRP3_RelationsListMixin" virtual="true">
+		<KeyValues>
+			<KeyValue key="dragAreaIntersectMargin" value="30" type="number"/>
+		</KeyValues>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="Title" inherits="GameFontHighlightHuge" justifyH="LEFT">
@@ -76,33 +99,20 @@
 		</Layers>
 		<Frames>
 			<Frame parentKey="Background" inherits="TRP3_PageBackgroundSettings" setAllPoints="true"/>
-			<ScrollFrame parentKey="ScrollFrame" inherits="ScrollFrameTemplate">
-				<KeyValues>
-					<KeyValue key="scrollBarTemplate" value="MinimalScrollBar" type="string"/>
-					<KeyValue key="scrollBarX" value="-8" type="number"/>
-					<KeyValue key="scrollBarTopY" value="-8" type="number"/>
-					<KeyValue key="scrollBarBottomY" value="8" type="number"/>
-					<KeyValue key="scrollBarHideIfUnscrollable" value="true" type="boolean"/>
-				</KeyValues>
+			<Frame parentKey="ScrollBox" inherits="WowScrollBoxList"/>
+			<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeKey="$parent.Divider" relativePoint="BOTTOMLEFT" y="-1"/>
-					<Anchor point="BOTTOMRIGHT" x="-16" y="4"/>
+					<Anchor point="TOP" relativeKey="$parent.Divider" relativePoint="BOTTOM" y="-8"/>
+					<Anchor point="BOTTOMRIGHT" x="-12" y="6"/>
 				</Anchors>
-				<ScrollChild>
-					<Frame parentKey="Content">
-						<Size x="1" y="1"/>
-					</Frame>
-				</ScrollChild>
-			</ScrollFrame>
-			<Button parentKey="CreateNew" inherits="TRP3_CommonButton">
-				<Size x="200" y="22"/>
+			</EventFrame>
+			<Button parentKey="CreateNew" mixin="TRP3_RelationsListCreateButtonMixin" inherits="TRP3_RedButtonTemplate">
+				<Size x="175" y="30"/>
 				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.Title" relativePoint="RIGHT"/>
+					<Anchor point="LEFT" relativeKey="$parent.Title" relativePoint="RIGHT" x="25"/>
 				</Anchors>
 				<Scripts>
-					<OnClick>
-						TRP3_API.register.relation.showEditor();
-					</OnClick>
+					<OnClick method="OnClick"/>
 				</Scripts>
 			</Button>
 			<Frame parentKey="Editor" frameStrata="HIGH" enableMouse="true" hidden="true" inherits="TRP3_OverlayBackdropTemplate">
@@ -168,5 +178,10 @@
 				</Frames>
 			</Frame>
 		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+			<OnHide method="OnHide"/>
+		</Scripts>
 	</Frame>
 </Ui>
