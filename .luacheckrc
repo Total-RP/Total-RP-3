@@ -275,6 +275,7 @@ stds.wow = {
 				"GetCVar",
 				"GetCVarBool",
 				"SetCVar",
+				"SetTempCVar",
 			},
 		},
 
