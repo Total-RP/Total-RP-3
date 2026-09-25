@@ -128,7 +128,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				buttonStructure.currentLanguageID = currentLanguage:GetID();
 				buttonStructure.tooltip = loc.TB_LANGUAGE .. ": " .. currentLanguage:GetName();
 				buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_LANGUAGES_TT):format(Languages.selectNextLanguage():GetName()) .. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_LANGUAGE_DROPDOWN_TT);
-				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or TRP3_InterfaceIconIDs.ToolbarLanguage;
+				buttonStructure.icon = currentLanguage:GetIcon():GetFileID() or TRP3_InterfaceIconIDs.ToolbarLanguage;
 			end
 			buttonStructure.text = buttonStructure.tooltip;
 		end,
