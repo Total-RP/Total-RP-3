@@ -73,6 +73,7 @@ Resources\[Family]\CompanionData.lua [AllowLoadGameType vanilla, tbc]
 Resources\UI\Templates.xml
 
 Core\Enums.lua
+Core\NameUtil.lua
 Core\Player.lua
 Core\Globals.lua
 Core\Logging.lua

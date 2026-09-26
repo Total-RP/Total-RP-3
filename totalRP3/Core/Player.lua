@@ -24,8 +24,8 @@ end
 ---@return string|nil playerName
 function Player:GetName()
 	if self:GetCharacterID() then
-		local name = strsplit("-", self:GetCharacterID());
-		return name
+		local name, _realm = TRP3_NameUtil.DecomposeQualifiedName(self:GetCharacterID());
+		return name;
 	end
 end
 
@@ -74,12 +74,7 @@ function Player:GetFullName()
 	if characteristics then
 		local firstName = characteristics.FN;
 		local lastName = characteristics.LN;
-
-		if lastName and lastName ~= "" then
-			return string.join(" ", firstName, lastName);
-		else
-			return firstName;
-		end
+		return TRP3_NameUtil.ComposeFullName(firstName, lastName);
 	end
 end
 
@@ -325,7 +320,7 @@ end
 ---@return Player player
 function Player.static.CreateFromProfileID(profileID)
 	Ellyb.Assertions.isType(profileID, "string", "profileID");
-	assert(TRP3_Register.profiles[profileID], ("Unknown profile ID %s"):format(profileID));
+	assert(TRP3_Register.profiles[profileID], "attempted to construct a Player object from an unknown profile ID");
 
 	local player = Player();
 
@@ -346,23 +341,24 @@ end
 --- @param realm string|nil The server of the player, default to the server of the current user
 --- @return Player
 function Player.static.CreateFromNameAndRealm(name, realm)
-	name = (name ~= "") and name or UNKNOWNOBJECT;
-	realm = (realm ~= "") and realm or TRP3_API.globals.player_realm_id;
-
-	return Player.static.CreateFromCharacterID(name .. "-" .. realm)
+	local characterID = TRP3_NameUtil.ComposeQualifiedName(name or UNKNOWNOBJECT, realm);
+	assert(characterID, "attempted to construct a Player object from an invalid name-realm pair");
+	return Player.static.CreateFromCharacterID(characterID);
 end
 
 --- Create a new Player using a player GUID
 --- @param guid string The player GUID to use
 --- @return Player
 function Player.static.CreateFromGUID(guid)
-	local _, _, _, _, _, name, realm = GetPlayerInfoByGUID(guid);
-	return Player.static.CreateFromNameAndRealm(name, realm)
+	local characterID = TRP3_NameUtil.GetQualifiedNameByGUID(guid);
+	assert(characterID, "attempted to construct a Player object from an invalid guid");
+	return Player.static.CreateFromCharacterID(characterID)
 end
 
 function Player.static.CreateFromUnit(unit)
-	local guid = UnitGUID(unit);
-	return Player.static.CreateFromGUID(guid);
+	local characterID = TRP3_NameUtil.GetQualifiedName(unit);
+	assert(characterID, "attempted to construct a Player object from an invalid unit");
+	return Player.static.CreateFromCharacterID(characterID);
 end
 
 --{{{ Current user

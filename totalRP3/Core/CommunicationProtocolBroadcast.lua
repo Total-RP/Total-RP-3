@@ -11,7 +11,6 @@ local Chomp = AddOn_Chomp;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local Comm, isIDIgnored = AddOn_TotalRP3.Communications, nil;
-local unitIDToInfo = Utils.str.unitIDToInfo;
 local getConfigValue = TRP3_API.configuration.getValue;
 local loc = TRP3_API.loc;
 
@@ -239,7 +238,7 @@ end
 local function onChannelJoin(_, _, arg2, _, _, _, _, _, _, arg9)
 	if not canaccessvalue(arg2) then return; end
 	if config_UseBroadcast() and arg2 and arg9 == config_BroadcastChannel() then
-		local unitName = unitIDToInfo(arg2);
+		local unitName = TRP3_NameUtil.DecomposeQualifiedName(arg2);
 		connectedPlayers[unitName] = 1;
 	end
 end
@@ -247,7 +246,7 @@ end
 local function onChannelLeave(_, _, arg2, _, _, _, _, _, _, arg9)
 	if not canaccessvalue(arg2) then return; end
 	if config_UseBroadcast() and arg2 and arg9 == config_BroadcastChannel() then
-		local unitName = unitIDToInfo(arg2);
+		local unitName = TRP3_NameUtil.DecomposeQualifiedName(arg2);
 		connectedPlayers[unitName] = nil;
 	end
 end
@@ -276,11 +275,9 @@ local function onMessageReceived(_, prefix, message , distributionType, sender, 
 	end
 
 	if prefix == BROADCAST_HEADER then
-		if not sender:find('-') then
-			sender = Utils.str.unitInfoToID(sender);
-		end
+		sender = TRP3_NameUtil.GetQualifiedNameFromString(sender);
 
-		if not isIDIgnored(sender) then
+		if sender and not isIDIgnored(sender) then
 			local handler;
 
 			if isBroadcastMessage(distributionType, channel) then

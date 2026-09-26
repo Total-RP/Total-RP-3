@@ -136,3 +136,13 @@ function TRP3_StringUtil.TrimNewlinesAndSpaces(str)
 	str = str:gsub("\n%s*\n%s*", "\n\n");
 	return string.trim(str);
 end
+
+local function UppercaseWord(word)
+	return string.gsub(word, "^([%z\1-\127\194-\244][\128-\191]*)", C_Intl and C_Intl.ToUpper or string.upper);
+end
+
+function TRP3_StringUtil.CapitalizeWords(str)
+	return (string.gsub(str, "%S+", UppercaseWord));
+end
+
+return TRP3_StringUtil;
