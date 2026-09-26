@@ -18,9 +18,18 @@
   - For Lua, run `luacheck -q <Lua files>`.
   - For XML, run `python .github/scripts/validate_xml.py <XML files>` when its Python dependency is installed.
 - If neither `pre-commit` nor an applicable direct check can run, report which focused validation was unavailable.
+- For changes to tested Core utilities or their specs, run `just test` when Busted is available. The suite uses Busted and Lua 5.1 outside the game; if Busted is unavailable, report that the tests could not run rather than treating them as passed.
 - Use `just check` when a full repository gate is needed.
 - Do not run other `just` recipes unless explicitly requested; they may modify vendored files, regenerate schemas or locales, build artifacts, or access the network.
 - LuaLS diagnostics are not a normal validation gate. See Type Metadata for rules governing hand-maintained definitions.
+
+## Unit Tests
+
+- Add Busted specs under `Tests/` for Core utilities that can be loaded in a regular Lua 5.1 environment. Do not write UI tests for now; the suite has no full mock of the game UI.
+- Prefer small tests with one clear responsibility. Keep inputs and assertions in the test body where practical; share setup, not the behavior being verified.
+- Test the public contract before implementation details: check documented or expected return values, nil results, and errors for representative inputs where applicable.
+- Prioritize common inputs and realistic failure cases based on callers and usage. Include meaningful edge cases, but avoid exhaustive speculative combinations.
+- Use luaassert/Busted stubs and spies when needed to isolate unavailable game APIs or verify important interactions. Prefer asserting observable results over call details when either would establish the behavior.
 
 ## Validation Escalation
 
