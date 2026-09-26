@@ -441,6 +441,7 @@ stds.wow = {
 
 		C_Texture = {
 			fields = {
+				"GetAtlasExists",
 				"GetAtlasInfo",
 			},
 		},
@@ -638,9 +639,18 @@ stds.wow = {
 			},
 		},
 
+		DragIntersectionArea = {
+			fields = {
+				"Above",
+				"Below",
+				"Inside",
+			},
+		},
+
 		ScrollUtil = {
 			fields = {
 				"AddManagedScrollBarVisibilityBehavior",
+				"InitDefaultLinearDragBehavior",
 				"InitScrollBoxListWithScrollBar",
 				"InitScrollBoxWithScrollBar",
 				"RegisterScrollBoxWithScrollBar",
@@ -670,9 +680,11 @@ stds.wow = {
 		"ClampedPercentageBetween",
 		"CloseDropDownMenus",
 		"CopyTable",
+		"CountTable",
 		"CreateAndInitFromMixin",
 		"CreateAtlasMarkup",
 		"CreateCircularBuffer",
+		"CreateCounter",
 		"CreateDataProvider",
 		"CreateFont",
 		"CreateFrame",
@@ -680,7 +692,6 @@ stds.wow = {
 		"CreateFramePoolCollection",
 		"CreateFromMixins",
 		"CreateIndexRangeDataProvider",
-		"CountTable",
 		"CreateMinimalSliderFormatter",
 		"CreateScrollBoxLinearView",
 		"CreateScrollBoxListGridView",
@@ -874,6 +885,7 @@ stds.wow = {
 		ColorPickerFrame = {
 			fields = {
 				"GetColorRGB",
+				"IsShown",
 				"SetColorRGB",
 				"SetupColorPickerAndShow",
 			},
