@@ -163,7 +163,7 @@ WorldMapButton:SetScript("OnMouseDown", function(self)
 		local scanLabelA = scanA:GetActionText();
 		local scanLabelB = scanB:GetActionText();
 
-		return scanLabelA < scanLabelB;
+		return TRP3_StringUtil.SortCompareStrings(scanLabelA, scanLabelB);
 	end
 
 	table.sort(structure, SortCompareScanNames);

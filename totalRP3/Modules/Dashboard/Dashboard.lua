@@ -145,7 +145,7 @@ local function getPlayerProfilesAsList(currentProfileID)
 			tinsert(list, {profile.profileName, profile.player.characteristics.IC, profileID});
 		end
 	end
-	table.sort(list, function(a,b) return string.lower(a[1]) < string.lower(b[1]) end);
+	table.sort(list, function(a,b) return TRP3_StringUtil.SortCompareStrings(a[1], b[1]) end);
 	return list;
 end
 

@@ -62,7 +62,7 @@ function TRP3_NamePlatesUtil.GetUnitCharacterID(unitToken)
 		characterID = TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType);
 	end
 
-	if characterID and string.find(characterID, UNKNOWNOBJECT, 1, true) == 1 then
+	if characterID and string.startswith(characterID, UNKNOWNOBJECT) then
 		-- The player that owns this profile isn't yet known to the client.
 		characterID = nil;
 	end

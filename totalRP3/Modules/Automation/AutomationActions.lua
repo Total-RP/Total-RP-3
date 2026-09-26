@@ -63,7 +63,7 @@ TRP3_AutomationUtil.RegisterAction({
 			candidateProfileIDs[profileName] = profileID;
 		end
 
-		local matchingProfileName = TRP3_StringUtil.FindClosestMatch(context.option, candidateProfileNames);
+		local matchingProfileName = TRP3_StringUtil.FindBestMatch(context.option, candidateProfileNames);
 		local matchingProfileID = candidateProfileIDs[matchingProfileName];
 
 		if matchingProfileID == nil then

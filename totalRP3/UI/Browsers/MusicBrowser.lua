@@ -6,21 +6,14 @@ local L = TRP3_API.loc;
 local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 
 local function GenerateFilteredMusicList(query)
+	local matcher = TRP3_StringUtil.CreateMatcher(query);
 	local results = {};
 
-	query = TRP3_StringUtil.GenerateSearchableString(query);
-
 	local function CheckStringMatch(musicName)
-		local searchName = TRP3_StringUtil.GenerateSearchableString(musicName);
-		local offset = 1;
-		local plain = true;
-
-		return (string.find(searchName, query, offset, plain));
+		return matcher:Matches(musicName);
 	end
 
-	local predicate = (query ~= "" and CheckStringMatch or "");
-
-	for musicResult in LRPM12:FindMusic(predicate, { reuseTable = {} }) do
+	for musicResult in LRPM12:FindMusic(CheckStringMatch, { reuseTable = {} }) do
 		local musicInfo = { name = musicResult.matchingName, file = musicResult.file, duration = musicResult.duration };
 		table.insert(results, musicInfo);
 	end

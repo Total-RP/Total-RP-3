@@ -146,7 +146,7 @@ function TRP3_LauncherSettings.RegisterSettingsPage()
 	-- script bodies directly without issue.
 
 	local function ActionSortComparator(a, b)
-		return strcmputf8i(a.name, b.name) < 0;
+		return TRP3_StringUtil.SortCompareStrings(a.name, b.name);
 	end
 
 	local actions = TRP3_LauncherUtil.GetActions();
