@@ -32,6 +32,7 @@ TRP3_InterfaceIconIDs = {
 	DiceRoll = GetFirstValidIcon("inv_misc_dice_01", "inv_enchant_shardglowingsmall"),
 	Gears = GetFirstValidIcon("icon_petfamily_mechanical", "inv_misc_gear_01"),
 	ProfileDefault = GetFirstValidIcon("inv_misc_grouplooking"),
+	CompanionDefault = GetFirstValidIcon("inv_box_petcarrier_01"),
 	ScanCooldown = GetFirstValidIcon("ability_mage_timewarp", "spell_nature_timestop"),
 	ScanReady = GetFirstValidIcon("icon_treasuremap", "inv_misc_map_01"),
 	Unknown = DEFAULT_ICON_ID,
