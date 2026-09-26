@@ -18,9 +18,18 @@
   - For Lua, run `luacheck -q <Lua files>`.
   - For XML, run `python .github/scripts/validate_xml.py <XML files>` when its Python dependency is installed.
 - If neither `pre-commit` nor an applicable direct check can run, report which focused validation was unavailable.
+- For changes to tested Core utilities or their specs, run `just test` when Busted is available. The suite uses Busted and Lua 5.1 outside the game; if Busted is unavailable, report that the tests could not run rather than treating them as passed.
 - Use `just check` when a full repository gate is needed.
 - Do not run other `just` recipes unless explicitly requested; they may modify vendored files, regenerate schemas or locales, build artifacts, or access the network.
 - LuaLS diagnostics are not a normal validation gate. See Type Metadata for rules governing hand-maintained definitions.
+
+## Unit Tests
+
+- Add Busted specs under `Tests/` for Core utilities that can be loaded in a regular Lua 5.1 environment. Do not write UI tests for now; the suite has no full mock of the game UI.
+- Prefer small tests with one clear responsibility. Keep inputs and assertions in the test body where practical; share setup, not the behavior being verified.
+- Test the public contract before implementation details: check documented or expected return values, nil results, and errors for representative inputs where applicable.
+- Prioritize common inputs and realistic failure cases based on callers and usage. Include meaningful edge cases, but avoid exhaustive speculative combinations.
+- Use luaassert/Busted stubs and spies when needed to isolate unavailable game APIs or verify important interactions. Prefer asserting observable results over call details when either would establish the behavior.
 
 ## Validation Escalation
 
@@ -56,6 +65,12 @@ When `luacheck` reports an undefined global, field, or runtime-provided symbol t
 - Treat `totalRP3/Locales/enUS.lua` as the source of truth for localization keys.
 - Do not introduce hardcoded user-facing strings; add or reuse an enUS key and access it through `L`.
 - Do not edit generated locale files directly.
+- Write for the player: make the benefit or outcome clear, especially in setting labels, rather than naming only the mechanism. Keep labels concise and accurate; a direct description is better when a benefit-led label would be unclear.
+- Use tooltips to explain what the player will see or what will change. Put surprising exceptions, limitations, or scope notes last, separated from the main explanation by a blank line.
+- In new localized strings, prefer `|n` for a line break and `|n|n` for a blank line rather than `\n`; do not rewrite existing strings solely to standardize their line breaks.
+- Prefer plain language and established in-addon terms over technical jargon. Use technical terms only when players need them to understand or operate the feature.
+- Use highlights sparingly in tooltips: choose at most two short, scan-worthy phrases, and omit highlights when they add nothing. Use `|cnGREEN_FONT_COLOR:text|r` for a positive outcome or reassurance and `|cnWARNING_FONT_COLOR:text|r` for a negative consequence or warning; keep the surrounding explanation readable without relying on color alone.
+- Check the relevant behavior before writing. If it is still unclear what players will see or whether an exception needs calling out, ask rather than guess. If only the choice of highlight is unclear, leave the text unhighlighted instead of asking about a stylistic preference.
 
 ## Persisted Data
 
