@@ -285,3 +285,12 @@ function TRP3_ProfileUtil.DeserializeProfile(serializedData)
 	local addonVersion, profileID, profileData = unpack(packedData, 1, 3);
 	return addonVersion, profileID, profileData;
 end
+
+-- The owner's notes and relations about other profiles.
+local PrivateProfileFields = { "notes", "relation" };
+
+function TRP3_ProfileUtil.RemovePrivateData(profile)
+	for _, field in ipairs(PrivateProfileFields) do
+		profile[field] = nil;
+	end
+end

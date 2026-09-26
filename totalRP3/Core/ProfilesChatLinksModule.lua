@@ -32,6 +32,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		};
 
 		tcopy(tooltipData.profile, profile);
+		TRP3_ProfileUtil.RemovePrivateData(tooltipData.profile);
 		tooltipData.profileID = profileID;
 		tooltipData.canBeImported = canBeImported == true;
 
@@ -82,6 +83,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	function ImportProfileButton:OnAnswerCommandReceived(data)
 		local profile = data.profile;
+		-- Links from older versions still carry the sender's notes and relations.
+		TRP3_ProfileUtil.RemovePrivateData(profile);
 		local profileName = profile.profileName;
 		local i = 1;
 		while not TRP3_API.profile.isProfileNameAvailable(profileName) and i < 500 do
