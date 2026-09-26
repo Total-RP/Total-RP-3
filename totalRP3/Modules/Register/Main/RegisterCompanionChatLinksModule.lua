@@ -29,6 +29,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		};
 
 		tcopy(tooltipData.profile, profile);
+		-- Links name other players' characters and companions; receivers still expect a table.
+		tooltipData.profile.links = {};
 		tooltipData.profileID = profileID;
 		tooltipData.canBeImported = canBeImported == true;
 
