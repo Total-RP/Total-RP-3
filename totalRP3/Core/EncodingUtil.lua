@@ -189,7 +189,9 @@ local AceSerializer = LibStub:GetLibrary("AceSerializer-3.0");
 -- Deserializes the first AceSerializer string found in data, ignoring any text before
 -- it. Returns nil if data holds none, and raises an error if that string is malformed.
 function TRP3_EncodingUtil.DecodeAce(data)
-	local serializedStart = string.find(data, "^1", 1, true);
+	local offset = 1;
+	local plain = true;
+	local serializedStart = string.find(data, "^1", offset, plain);
 
 	if not serializedStart then
 		return nil;
