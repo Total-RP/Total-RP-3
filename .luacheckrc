@@ -136,6 +136,7 @@ stds.wow = {
 		string = {
 			fields = {
 				"concat",
+				"contains",
 				"join",
 				"split",
 				"trim",
