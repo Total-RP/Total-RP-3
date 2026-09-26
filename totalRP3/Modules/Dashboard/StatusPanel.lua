@@ -29,7 +29,7 @@ local function GetRoleplayExperienceButtonText(selection)
 	local icon = TRP3_API.GetRoleplayExperienceIcon(status);
 	if icon and C_Texture.GetAtlasInfo(icon) then
 		text = string.join(" ", "|A:" .. icon .. ":16:16|a ", text);
-	elseif icon and GetFileIDFromPath(icon) then
+	elseif icon and C_UIFileAsset.IsKnownFile(icon) then
 		text = string.join(" ", "|T" .. icon .. ":16:16|t ", text);
 	end
 
