@@ -154,7 +154,7 @@ local function GetOutboundTraitIconName(icon)
 end
 
 local function GetInboundTraitIconID(icon)
-	return TRP3_IconUtil.GetIconID(icon) or TRP3_InterfaceIconIDs.Default;
+	return TRP3_IconUtil.SerializeIcon(TRP3_IconUtil.GetIconID(icon) or TRP3_InterfaceIconIDs.Default);
 end
 
 module.TryRegisterField("PS", {

@@ -25,11 +25,11 @@ end
 local function ResolveIconID(icon)
 	local iconID = TRP3_IconUtil.GetIconID(icon);
 
-	if iconID then
-		return tostring(iconID);
+	if iconID == nil then
+		iconID = TRP3_InterfaceIconIDs.ProfileDefault;
 	end
 
-	return TRP3_InterfaceIconIDs.ProfileDefault;
+	return tostring(iconID);
 end
 
 local function onStart()
@@ -307,7 +307,7 @@ local function onStart()
 		local text = str:match("%f[^\n%z]% *([^|#].-)%s*$");
 		return {
 			AC = true,
-			IC = icon,
+			IC = TRP3_IconUtil.SerializeIcon(icon),
 			TI = title,
 			TX = text,
 		};
@@ -343,7 +343,7 @@ local function onStart()
 
 			miscData.ID = fieldInfo.type;
 			miscData.NA = fieldInfo.localizedName;
-			miscData.IC = fieldInfo.icon;
+			miscData.IC = TRP3_IconUtil.SerializeIcon(fieldInfo.icon);
 			miscData.VA = fieldInfo.formatter and fieldInfo.formatter(value) or value;
 		elseif miscIndex then
 			table.remove(miscInfo, miscIndex);
@@ -572,10 +572,10 @@ local function onStart()
 								profile.about.T3 = {};
 							end
 							if not profile.about.T3.HI then
-								profile.about.T3.HI = {BK = 1, IC = TRP3_InterfaceIconIDs.HistorySection };
+								profile.about.T3.HI = {BK = 1, IC = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.HistorySection) };
 							end
 							if not profile.about.T3.PH then
-								profile.about.T3.PH = {BK = 1, IC = TRP3_InterfaceIconIDs.PhysicalSection };
+								profile.about.T3.PH = {BK = 1, IC = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.PhysicalSection) };
 							end
 							profile.about.T3[ABOUT_FIELDS[field]].TX = value;
 							if profile.about.read ~= false then

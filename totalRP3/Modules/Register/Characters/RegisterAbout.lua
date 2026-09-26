@@ -157,7 +157,7 @@ end
 ---@param copiedIcon string? The icon supplied by the right-click menu.
 local function pasteCopiedIcon(frame, frameData, copiedIcon)
 	local icon = copiedIcon or TRP3_InterfaceIconIDs.Default;
-	frameData.IC = icon;
+	frameData.IC = TRP3_IconUtil.SerializeIcon(icon);
 	setupIconButton(frame, icon);
 end
 
@@ -386,7 +386,7 @@ function refreshTemplate2EditDisplay()
 		_G[frame:GetName().."Icon"]:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(_iconName, iconInfo)
-					frame.frameData.IC = iconInfo.id;
+					frame.frameData.IC = TRP3_IconUtil.SerializeIcon(iconInfo.id);
 					setupIconButton(_G[frame:GetName().."Icon"], iconInfo.id);
 				end, frameData.IC);
 			elseif button == "RightButton" then
@@ -459,17 +459,17 @@ local function setTemplate3HistBkg(bkg)
 end
 
 local function onPhisIconSelected(_iconName, iconInfo)
-	draftData.T3.PH.IC = iconInfo.id;
+	draftData.T3.PH.IC = TRP3_IconUtil.SerializeIcon(iconInfo.id);
 	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, iconInfo.id or TEMPLATE3_ICON_PHYSICAL);
 end
 
 local function onPsychoIconSelected(_iconName, iconInfo)
-	draftData.T3.PS.IC = iconInfo.id;
+	draftData.T3.PS.IC = TRP3_IconUtil.SerializeIcon(iconInfo.id);
 	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, iconInfo.id or TEMPLATE3_ICON_PSYCHO);
 end
 
 local function onHistoIconSelected(_iconName, iconInfo)
-	draftData.T3.HI.IC = iconInfo.id;
+	draftData.T3.HI.IC = TRP3_IconUtil.SerializeIcon(iconInfo.id);
 	setupIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, iconInfo.id or TEMPLATE3_ICON_HISTORY);
 end
 
