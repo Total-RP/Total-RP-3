@@ -245,7 +245,7 @@ end
 function TRP3_ProfileUtil.DeserializeProfile(serializedData)
 	local ok, packedData;
 	local startsWithAceMarker = string.find(serializedData, "^^1");
-	local containsPEMMarker = string.find(serializedData, "-----BEGIN ", 1, true);
+	local containsPEMMarker = string.contains(serializedData, "-----BEGIN ");
 
 	if startsWithAceMarker or not containsPEMMarker then
 		-- Older export, pasted as is or behind noise such as an invisible character or a code fence.

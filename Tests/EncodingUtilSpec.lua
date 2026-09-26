@@ -34,10 +34,10 @@ insulate("DecodeAce", function()
 		function serializer:Deserialize()
 			return true, "<Deserialized Data>";
 		end;
-	
+
 		spy.on(serializer, "Deserialize");
 
-		local deserializedData = TRP3_EncodingUtil.DecodeAce(SerializedData);		
+		local deserializedData = TRP3_EncodingUtil.DecodeAce(SerializedData);
 		assert.spy(serializer.Deserialize).called_with(serializer, SerializedData);
 		assert.are.equal(deserializedData, "<Deserialized Data>");
 	end);
