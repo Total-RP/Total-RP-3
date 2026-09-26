@@ -69,7 +69,7 @@ When `luacheck` reports an undefined global, field, or runtime-provided symbol t
 - Use tooltips to explain what the player will see or what will change. Put surprising exceptions, limitations, or scope notes last, separated from the main explanation by a blank line.
 - In new localized strings, prefer `|n` for a line break and `|n|n` for a blank line rather than `\n`; do not rewrite existing strings solely to standardize their line breaks.
 - Prefer plain language and established in-addon terms over technical jargon. Use technical terms only when players need them to understand or operate the feature.
-- Use highlights sparingly in tooltips: choose at most two short, scan-worthy phrases, and omit highlights when they add nothing. Use `|cnGREEN_FONT_COLOR:text|r` for a positive outcome or reassurance and `|cnWARNING_FONT_COLOR:text|r` for a negative consequence or warning; keep the surrounding explanation readable without relying on color alone.
+- Use highlights sparingly in tooltips: choose at most two short, scan-worthy phrases, and omit highlights when they add nothing. Use `|cnGREEN_FONT_COLOR:text|r` for keywords, a positive outcome, or reassurance and `|cnWARNING_FONT_COLOR:text|r` for a negative consequence or warning; keep the surrounding explanation readable without relying on color alone.
 - Check the relevant behavior before writing. If it is still unclear what players will see or whether an exception needs calling out, ask rather than guess. If only the choice of highlight is unclear, leave the text unhighlighted instead of asking about a stylistic preference.
 
 ## Persisted Data
