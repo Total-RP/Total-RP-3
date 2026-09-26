@@ -46,7 +46,7 @@ getDefaultProfile().player.characteristics = {
 	RA = Globals.player_race_loc,
 	CL = Globals.player_class_loc,
 	FN = Globals.player,
-	IC = TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player")),
+	IC = TRP3_IconUtil.SerializeIcon(TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"))),
 	MI = {},
 	PS = {}
 };
@@ -548,7 +548,7 @@ local function saveInDraft()
 end
 
 local function onPlayerIconSelected(_iconName, iconInfo)
-	draftData.IC = iconInfo.id;
+	draftData.IC = TRP3_IconUtil.SerializeIcon(iconInfo.id);
 	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIconIDs.ProfileDefault);
 end
 
@@ -560,11 +560,11 @@ end
 local function pasteCopiedIcon(frame, fields, structure, copiedIcon)
 	local icon = copiedIcon or TRP3_InterfaceIconIDs.Default;
 	if fields == "misc" then
-		structure.IC = icon;
+		structure.IC = TRP3_IconUtil.SerializeIcon(icon);
 	elseif fields == "psychoLeft" then
-		structure.LI = icon;
+		structure.LI = TRP3_IconUtil.SerializeIcon(icon);
 	elseif fields == "psychoRight" then
-		structure.RI = icon;
+		structure.RI = TRP3_IconUtil.SerializeIcon(icon);
 	end
 	setupIconButton(frame, icon);
 end
@@ -611,7 +611,7 @@ local function miscAdd(ID, NA, VA, IC)
 		ID = ID,
 		NA = NA,
 		VA = VA,
-		IC = IC,
+		IC = TRP3_IconUtil.SerializeIcon(IC),
 	});
 	setEditDisplay();
 end
@@ -693,9 +693,9 @@ local function psychoAdd(presetID)
 	if presetID == "new" then
 		tinsert(draftData.PS, {
 			LT = loc.REG_PLAYER_LEFTTRAIT,
-			LI = "INV_Misc_QuestionMark",
+			LI = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.Default),
 			RT = loc.REG_PLAYER_RIGHTTRAIT,
-			RI = "INV_Misc_QuestionMark",
+			RI = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.Default),
 			V2 = Globals.PSYCHO_DEFAULT_VALUE_V2,
 		});
 	else
@@ -742,8 +742,8 @@ local function onPsychoConvert(self)
 	draftData.PS[frame.frameIndex]["LT"] = preset.LT or "";
 	draftData.PS[frame.frameIndex]["RT"] = preset.RT or "";
 
-	draftData.PS[frame.frameIndex]["LI"] = preset.LI;
-	draftData.PS[frame.frameIndex]["RI"] = preset.RI;
+	draftData.PS[frame.frameIndex]["LI"] = TRP3_IconUtil.SerializeIcon(preset.LI);
+	draftData.PS[frame.frameIndex]["RI"] = TRP3_IconUtil.SerializeIcon(preset.RI);
 	setEditDisplay();
 end
 
@@ -856,7 +856,7 @@ function setEditDisplay()
 		frame.Icon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(_iconName, iconInfo)
-					miscStructure.IC = iconInfo.id;
+					miscStructure.IC = TRP3_IconUtil.SerializeIcon(iconInfo.id);
 					setupIconButton(frame.Icon, iconInfo.id or TRP3_InterfaceIconIDs.Default);
 				end, miscStructure.IC);
 			elseif button == "RightButton" then
@@ -970,7 +970,7 @@ function setEditDisplay()
 		frame.CustomLeftIcon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(_iconName, iconInfo)
-					psychoStructure.LI = iconInfo.id;
+					psychoStructure.LI = TRP3_IconUtil.SerializeIcon(iconInfo.id);
 					setupIconButton(self, iconInfo.id or TRP3_InterfaceIconIDs.Default);
 				end, psychoStructure.LI);
 			elseif button == "RightButton" then
@@ -984,7 +984,7 @@ function setEditDisplay()
 		frame.CustomRightIcon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
 				showIconBrowser(function(_iconName, iconInfo)
-					psychoStructure.RI = iconInfo.id;
+					psychoStructure.RI = TRP3_IconUtil.SerializeIcon(iconInfo.id);
 					setupIconButton(self, iconInfo.id or TRP3_InterfaceIconIDs.Default);
 				end, psychoStructure.RI);
 			elseif button == "RightButton" then

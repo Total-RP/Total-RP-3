@@ -460,7 +460,7 @@ function CurrentUser:SetLastName(lastName)
 end
 
 function CurrentUser:SetCustomIcon(icon)
-	UpdateProfileField(self, "characteristics", "IC", icon);
+	UpdateProfileField(self, "characteristics", "IC", TRP3_IconUtil.SerializeIcon(icon));
 end
 
 function CurrentUser:SetTitle(title)

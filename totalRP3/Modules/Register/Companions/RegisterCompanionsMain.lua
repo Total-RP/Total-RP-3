@@ -37,7 +37,7 @@ end
 local playerCompanions;
 local DEFAULT_PROFILE = {
 	data = {
-		IC = TRP3_InterfaceIconIDs.CompanionDefault,
+		IC = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.CompanionDefault),
 		v = 1,
 	},
 	PE = {

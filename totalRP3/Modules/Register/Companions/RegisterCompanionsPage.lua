@@ -58,7 +58,7 @@ local function applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx, swap)
 	if swap then
 		peekTab.AC = not peekTab.AC;
 	else
-		peekTab.IC = ic;
+		peekTab.IC = TRP3_IconUtil.SerializeIcon(ic);
 		peekTab.AC = ac;
 		peekTab.TI = ti;
 		peekTab.TX = tx;
@@ -151,7 +151,7 @@ local function saveInformation()
 end
 
 local function onPlayerIconSelected(_iconName, iconInfo)
-	draftData.IC = iconInfo.id;
+	draftData.IC = TRP3_IconUtil.SerializeIcon(iconInfo.id);
 	setupIconButton(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIconIDs.ProfileDefault);
 end
 

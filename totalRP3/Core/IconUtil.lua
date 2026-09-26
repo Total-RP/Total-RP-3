@@ -33,6 +33,27 @@ function TRP3_IconUtil.GetIconInfo(icon)
 	end
 end
 
+---@param icon TRP3.IconIdentifier?
+function TRP3_IconUtil.SerializeIcon(icon)
+	if icon ~= nil then
+		-- Serialization of an icon attempts where possible to promote any
+		-- incoming icon references to stringified IDs. If we can't resolve
+		-- an icon however, do not default or nil it. Serialization is not
+		-- a validation layer, and we should retain invalid/unknown inputs
+		-- and handle those at display and communication boundaries only.
+
+		local iconID = LRPM12:ResolveIconID(icon);
+
+		if iconID then
+			icon = iconID;
+		end
+
+		icon = tostring(icon);
+	end
+
+	return icon;
+end
+
 ---@param texture Texture
 ---@param icon TRP3.IconIdentifier?
 function TRP3_IconUtil.SetTextureToIcon(texture, icon)

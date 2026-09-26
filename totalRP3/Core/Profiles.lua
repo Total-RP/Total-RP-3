@@ -281,7 +281,7 @@ local function UpdateDefaultProfile()
 	profileCharacteristics.RA = Globals.player_race_loc;
 	profileCharacteristics.CL = Globals.player_class_loc;
 	profileCharacteristics.FN = Globals.player;
-	profileCharacteristics.IC = TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
+	profileCharacteristics.IC = TRP3_IconUtil.SerializeIcon(TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player")));
 end
 
 --- TRP3_API.profile.isDefaultProfile checks if given profile ID is the default profile.
@@ -1008,7 +1008,7 @@ function TRP3_API.profile.init()
 
 		-- Honor the changed profile icon.
 		if profileID and profiles[profileID] and chosenOption ~= PROFILEMANAGER_ACTIONS.RENAME then
-			profiles[profileID].player.characteristics.IC = profileIcon;
+			profiles[profileID].player.characteristics.IC = TRP3_IconUtil.SerializeIcon(profileIcon);
 		end
 
 		if chosenOption == PROFILEMANAGER_ACTIONS.CREATE or chosenOption == PROFILEMANAGER_ACTIONS.IMPORT then

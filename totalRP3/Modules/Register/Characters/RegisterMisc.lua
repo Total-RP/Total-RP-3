@@ -343,7 +343,7 @@ local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
 	if swap then
 		peekTab.AC = not peekTab.AC;
 	else
-		peekTab.IC = ic;
+		peekTab.IC = TRP3_IconUtil.SerializeIcon(ic);
 		peekTab.AC = ac;
 		peekTab.TI = ti;
 		peekTab.TX = tx;
