@@ -22,7 +22,7 @@
 				</MaskTexture>
 			</Layer>
 		</Layers>
-		<NormalTexture name="$parentImage" parentKey="Icon" file="Interface\TargetingFrame\UI-TargetingFrame-Seal.blp"/>
+		<NormalTexture parentKey="Icon" inherits="TRP3_IconTextureTemplate"/>
 		<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD" />
 		<Scripts>
 			<OnLoad method="OnLoad"/>

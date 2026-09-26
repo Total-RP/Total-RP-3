@@ -113,7 +113,7 @@ local function rollDice(diceString)
 		total = total + modifierValue;
 
 		local modifierString = (modifierValue == 0) and "" or format("%+d", modifierValue); -- we add a + to positive modifiers and don't render a 0 value
-		Utils.message.displayMessage(loc.DICE_ROLL:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), num, diceCount, modifierString, total));
+		Utils.message.displayMessage(loc.DICE_ROLL:format(Utils.str.icon(TRP3_InterfaceIconIDs.DiceRoll, 20), num, diceCount, modifierString, total));
 		sendDiceRoll({c = num, d = diceCount, t = total, m = modifierValue});
 		return total;
 	end
@@ -133,7 +133,7 @@ function TRP3_API.slash.rollDices(...)
 		i = index;
 	end
 
-	local totalMessage = loc.DICE_TOTAL:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), total);
+	local totalMessage = loc.DICE_TOTAL:format(Utils.str.icon(TRP3_InterfaceIconIDs.DiceRoll, 20), total);
 	if i > 1 then
 		Utils.message.displayMessage(totalMessage);
 		sendDiceRoll({t = total});
@@ -192,9 +192,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		local totalMessage;
 		if arg.c and arg.d and arg.t then
 			local modifierString = (arg.m == 0) and "" or format("%+d", arg.m); -- we add a + to positive modifiers and don't render a 0 value
-			totalMessage = loc.DICE_ROLL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), characterName, arg.c, arg.d, modifierString, arg.t);
+			totalMessage = loc.DICE_ROLL_T:format(Utils.str.icon(TRP3_InterfaceIconIDs.DiceRoll, 20), characterName, arg.c, arg.d, modifierString, arg.t);
 		elseif arg.t then
-			totalMessage = loc.DICE_TOTAL_T:format(Utils.str.icon(TRP3_InterfaceIcons.DiceRoll, 20), characterName, arg.t);
+			totalMessage = loc.DICE_TOTAL_T:format(Utils.str.icon(TRP3_InterfaceIconIDs.DiceRoll, 20), characterName, arg.t);
 		end
 
 		-- Adding player hyperlink so people can right-click and identify the player

@@ -130,6 +130,7 @@ end
 --- Table structure providing data about a single icon sourced from a model.
 ---
 ---@class TRP3.IconBrowserModelItem
+---@field id integer
 ---@field index integer
 ---@field key integer
 ---@field name string
@@ -169,14 +170,14 @@ function IconBrowserModel:EnumerateIcons(options)
 	return LRPM12:EnumerateIcons(options);
 end
 
----@param name string
+---@param iconID integer
 ---@return integer? index
-function IconBrowserModel:GetIconIndex(name)
-	if not name or name == "" then
+function IconBrowserModel:GetIconIndex(iconID)
+	if not iconID then
 		return nil;
 	end
 
-	return LRPM12:GetIconIndexByName(name);
+	return LRPM12:GetIconIndexByID(iconID);
 end
 
 local function CreateIconBrowserModel()
@@ -190,7 +191,7 @@ end
 ---@field private callbacks TRP3.CallbackDispatcher
 ---@field private source TRP3.AbstractIconBrowserModel
 ---@field private sourceIndices integer[]
----@field private searchQuery string
+---@field private searchQuery integer
 ---@field private searchCategories { [integer]: true }
 ---@field private searchTask TRP3.IconBrowserSearchTask?
 ---@field private searchProgress TRP3.IconBrowserSearchProgress
@@ -221,8 +222,8 @@ function IconBrowserFilterModel:GetIconCount()
 	return count;
 end
 
-function IconBrowserFilterModel:GetIconIndex(name)
-	local sourceIndex = self.source:GetIconIndex(name);
+function IconBrowserFilterModel:GetIconIndex(iconID)
+	local sourceIndex = self.source:GetIconIndex(iconID);
 	local proxyIndex;
 
 	if sourceIndex then
@@ -451,7 +452,7 @@ end
 ---@class TRP3.IconBrowserSelectionModel : TRP3.AbstractIconBrowserProxyModel
 ---@field private callbacks TRP3.CallbackDispatcher
 ---@field private source TRP3.AbstractIconBrowserModel
----@field private selectedIconName string?
+---@field private selectedIconID integer?
 ---@field private selectedIconSourceIndex integer?
 local IconBrowserSelectionModel = {};
 
@@ -460,7 +461,7 @@ function IconBrowserSelectionModel:__init(source)
 	self.callbacks = TRP3_API.InitCallbackRegistry(self);
 	self.source = source;
 	self.source.RegisterCallback(self, "OnModelUpdated", "OnSourceModelUpdated");
-	self.selectedIconName = nil;
+	self.selectedIconID = nil;
 	self.selectedIconSourceIndex = nil;
 end
 
@@ -468,8 +469,8 @@ function IconBrowserSelectionModel:GetIconCount()
 	return self.source:GetIconCount();
 end
 
-function IconBrowserSelectionModel:GetIconIndex(name)
-	local sourceIndex = self.source:GetIconIndex(name);
+function IconBrowserSelectionModel:GetIconIndex(iconID)
+	local sourceIndex = self.source:GetIconIndex(iconID);
 	local proxyIndex;
 
 	if sourceIndex then
@@ -564,12 +565,14 @@ function IconBrowserSelectionModel:GetProxyIndex(sourceIndex)
 end
 
 function IconBrowserSelectionModel:GetSelectedIcon()
-	return self.selectedIconName;
+	return self.selectedIconID;
 end
 
-function IconBrowserSelectionModel:SetSelectedIcon(iconName)
-	if self.selectedIconName ~= iconName then
-		self.selectedIconName = iconName;
+function IconBrowserSelectionModel:SetSelectedIcon(icon)
+	local iconID = LRPM12:ResolveIconID(icon);
+
+	if self.selectedIconID ~= iconID then
+		self.selectedIconID = iconID;
 		self:RebuildModel();
 	end
 end
@@ -581,10 +584,10 @@ end
 
 ---@private
 function IconBrowserSelectionModel:RebuildModel()
-	self.selectedIconSourceIndex = self.source:GetIconIndex(self.selectedIconName);
+	self.selectedIconSourceIndex = self.source:GetIconIndex(self.selectedIconID);
 
 	if not self.selectedIconSourceIndex then
-		self.selectedIconName = nil;
+		self.selectedIconID = nil;
 	end
 
 	self.callbacks:Fire("OnModelUpdated");
@@ -723,8 +726,8 @@ function TRP3_IconBrowserMixin:OnIconButtonClicked(button)
 	self:Hide();
 end
 
-function TRP3_IconBrowserMixin:SetSelectedIcon(iconName)
-	self.selectionModel:SetSelectedIcon(iconName);
+function TRP3_IconBrowserMixin:SetSelectedIcon(icon)
+	self.selectionModel:SetSelectedIcon(icon);
 end
 
 function TRP3_IconBrowserMixin:SetupFilterDropdown(_dropdown, rootDescription)
@@ -865,9 +868,7 @@ function TRP3_IconBrowserButtonMixin:OnEnter()
 		return;
 	end
 
-	local iconSizeSource = 64;
-	local iconSizeScaled = 64;
-	local titleLineIcon = CreateTextureMarkup(iconInfo.file, iconSizeSource, iconSizeSource, iconSizeScaled, iconSizeScaled, 0, 1, 0, 1);
+	local titleLineIcon = TRP3_MarkupUtil.GenerateIconMarkup(iconInfo.id, { size = 64 });
 	local titleLineText = string.join(" ", titleLineIcon, iconInfo.name);
 
 	TRP3_MainTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -882,7 +883,7 @@ end
 ---@param iconInfo TRP3.IconBrowserModelItem
 function TRP3_IconBrowserButtonMixin:Init(iconInfo)
 	self.SelectedTexture:SetShown(iconInfo and iconInfo.selected);
-	self.Icon:SetTexture(iconInfo and iconInfo.file or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]]);
+	LRPM12:SetTextureToIcon(self.Icon, iconInfo and iconInfo.id or TRP3_InterfaceIconIDs.Default);
 end
 
 TRP3_IconBrowserEmptyStateMixin = {};
@@ -967,7 +968,7 @@ TRP3_IconBrowser = {};
 ---@class TRP3.IconBrowserOpenOptions
 ---@field onAcceptCallback fun(iconInfo: TRP3.IconBrowserModelItem)?
 ---@field onCancelCallback fun()?
----@field selectedIcon string?
+---@field selectedIcon integer|string?
 ---@field scale number?
 
 function TRP3_IconBrowser.Close()

@@ -6,9 +6,9 @@ local AbstractIconBrowserModel = {};
 ---@return integer count
 function AbstractIconBrowserModel:GetIconCount() end
 
----@param name string
+---@param iconID integer?
 ---@return integer? index
-function AbstractIconBrowserModel:GetIconIndex(name) end
+function AbstractIconBrowserModel:GetIconIndex(iconID) end
 
 ---@param index integer
 ---@return TRP3.IconBrowserModelItem? data

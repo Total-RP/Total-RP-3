@@ -76,7 +76,7 @@ local function openPage(profileID, unitID)
 			onSelected = function() setPage("player_main", pageContext ) end,
 			isChildOf = REGISTER_PAGE,
 			closeable = true,
-			icon = [[interface\icons\]] .. TRP3_InterfaceIcons.CharacterMenuItem,
+			icon = TRP3_InterfaceIconIDs.CharacterMenuItem,
 			pageContext = pageContext,
 			sortGroup = currentlyOpenedProfilePrefix,
 			sortIndex = -time(),
@@ -111,7 +111,7 @@ local function openCompanionPage(profileID)
 			onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PAGE, {profile = profile, profileID = profileID, isPlayer = false}) end,
 			isChildOf = REGISTER_PAGE,
 			closeable = true,
-			icon = [[interface\icons\]] .. TRP3_InterfaceIcons.CompanionMenuItem,
+			icon = TRP3_InterfaceIconIDs.CompanionMenuItem,
 			sortGroup = currentlyOpenedProfilePrefix,
 			sortIndex = -time(),
 		});
@@ -1216,11 +1216,11 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				buttonStructure.alert = false;
 				local factionTag = UnitFactionGroup("target");
 				if factionTag == "Alliance" then
-					buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenCharacterA;
+					buttonStructure.icon = TRP3_InterfaceIconIDs.TargetOpenCharacterA;
 				elseif factionTag == "Horde" then
-					buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenCharacterH;
+					buttonStructure.icon = TRP3_InterfaceIconIDs.TargetOpenCharacterH;
 				else
-					buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenCharacterN;
+					buttonStructure.icon = TRP3_InterfaceIconIDs.TargetOpenCharacterN;
 				end
 				buttonStructure.tooltip = loc.REG_PLAYER;
 

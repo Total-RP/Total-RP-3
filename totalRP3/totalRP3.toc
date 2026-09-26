@@ -66,6 +66,8 @@ Locales\zhTW.lua
 Locales\Locale.lua
 
 Resources\[Family]\ImageList.lua
+Resources\[Family]\RaceIconAtlases.lua [AllowLoadGameType classic]
+Resources\[Game]\RaceIconAtlases.lua [ExcludeLoadGameType classic]
 Resources\InterfaceIcons.lua
 Resources\InterfaceAtlases.lua
 Resources\InterfaceSounds.lua
@@ -90,6 +92,7 @@ Core\StringUtil.lua
 Core\EncodingUtil.lua
 Core\BindingUtil.lua
 Core\RegionUtil.lua
+Core\IconUtil.lua
 Core\MarkupUtil.lua
 Core\CompanionUtil.lua
 Core\CompanionProviderJournal.lua [AllowLoadGameType mainline, mists, wrath]

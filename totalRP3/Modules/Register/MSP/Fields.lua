@@ -7,8 +7,8 @@ local Globals = TRP3_API.globals;
 
 local module = AddOn_TotalRP3.MSP or {};
 
-module.TOOLTIP_FIELDS = {"CO", "IC", "PX", "RC", "RS", "TR", "PN"};
-module.REQUEST_FIELDS = {"TT", "IC", "PG", "PR", "PN", "PV", "CO", "AE", "AG", "AH", "AW", "DE", "HB", "HH", "HI", "MO", "NH", "MU", "PE", "PS", "RS"};
+module.TOOLTIP_FIELDS = {"CO", "IC", "IX", "PX", "RC", "RS", "TR", "PN"};
+module.REQUEST_FIELDS = {"TT", "IC", "IX", "PG", "PR", "PN", "PV", "CO", "AE", "AG", "AH", "AW", "DE", "HB", "HH", "HI", "MO", "NH", "MU", "PE", "PS", "RS"};
 
 -- Registry of known serializers/deserializers by name.
 local serializers = {};
@@ -121,6 +121,7 @@ AddOn_TotalRP3.MSP = module;
 --    value: [0-1] floating point number representing the strength of this trait.
 --    (left|right)-name:  Name of a custom trait.
 --    (left|right)-icon:  Name of a custom icon for this trait.
+--    (left|right)-icon-id: Icon ID for a custom icon for this trait.
 --    (left|right)-color: Hexadecimal color code for this trait.
 
 -- Min/max ranges of the known trait IDs. These map to our own internal
@@ -132,9 +133,29 @@ local PS_MAX_BUILTIN_TRAIT_ID = 11;
 -- Format strings used when serialising the traits.
 local PS_BUILTIN_FORMAT = "[trait value=\"%.2f\" id=\"%d\"]";
 local PS_CUSTOM_FORMAT = "[trait value=\"%.2f\""
-	.. " left-name=%q left-icon=%q left-color=\"%02x%02x%02x\""
-	.. " right-name=%q right-icon=%q right-color=\"%02x%02x%02x\""
+	.. " left-name=%q left-icon=%q left-icon-id=%q left-color=\"%02x%02x%02x\""
+	.. " right-name=%q right-icon=%q right-icon-id=%q right-color=\"%02x%02x%02x\""
 	.. "]";
+
+local function GetOutboundTraitIconID(icon)
+	return TRP3_IconUtil.GetIconID(icon) or TRP3_InterfaceIconIDs.Default;
+end
+
+local function GetOutboundTraitIconName(icon)
+	local iconInfo = TRP3_IconUtil.GetIconInfo(icon);
+
+	if iconInfo and iconInfo.file then
+		return iconInfo.name;
+	end
+
+	-- Invalid or atlas-based icons fall back to a texture as older network
+	-- clients assume this field to be a texture file name.
+	return TRP3_InterfaceIconNames.Default;
+end
+
+local function GetInboundTraitIconID(icon)
+	return TRP3_IconUtil.SerializeIcon(TRP3_IconUtil.GetIconID(icon) or TRP3_InterfaceIconIDs.Default);
+end
 
 module.TryRegisterField("PS", {
 	Serialize = function(traits)
@@ -156,22 +177,26 @@ module.TryRegisterField("PS", {
 			elseif trait.LT and trait.RT then
 				-- We'll strip " and ] from the names for simplicity if present.
 				local leftName = trait.LT:gsub("[%]=]", "");
-				local leftIcon = trait.LI or TRP3_InterfaceIcons.Default;
+				local leftIconID = GetOutboundTraitIconID(trait.LI);
+				local leftIconName = GetOutboundTraitIconName(trait.LI);
 				local leftColor = trait.LC or TRP3_API.MiscColors.PersonalityTraitColorLeft:GetRGBTable();
 
 				local rightName = trait.RT:gsub("[%]=]", "");
-				local rightIcon = trait.RI or TRP3_InterfaceIcons.Default;
+				local rightIconID = GetOutboundTraitIconID(trait.RI);
+				local rightIconName = GetOutboundTraitIconName(trait.RI);
 				local rightColor = trait.RC or TRP3_API.MiscColors.PersonalityTraitColorRight:GetRGBTable();
 
 				table.insert(out, PS_CUSTOM_FORMAT:format(
 					value,
 					leftName,
-					leftIcon,
+					leftIconName,
+					tostring(leftIconID),
 					(leftColor.r or 1) * 255,
 					(leftColor.g or 1) * 255,
 					(leftColor.b or 1) * 255,
 					rightName,
-					rightIcon,
+					rightIconName,
+					tostring(rightIconID),
 					(rightColor.r or 1) * 255,
 					(rightColor.g or 1) * 255,
 					(rightColor.b or 1) * 255
@@ -197,6 +222,7 @@ module.TryRegisterField("PS", {
 		-- Parse each [trait {attr...}] block.
 		for trait in fieldValue:gmatch("%[trait [^%]]-%]") do
 			local struct = {};
+			local leftIconName, leftIconID, rightIconName, rightIconID;
 
 			-- And then each attr="value" pair.
 			for key, value in trait:gmatch("([%w_-]+)=\"([^\"]*)\"") do
@@ -207,13 +233,17 @@ module.TryRegisterField("PS", {
 				elseif key == "left-name" then
 					struct.LT = value;
 				elseif key == "left-icon" then
-					struct.LI = value;
+					leftIconName = value;
+				elseif key == "left-icon-id" then
+					leftIconID = value;
 				elseif key == "left-color" then
 					struct.LC = TRP3_API.CreateColorFromHexString(value):GetRGBTable();
 				elseif key == "right-name" then
 					struct.RT = value;
 				elseif key == "right-icon" then
-					struct.RI = value;
+					rightIconName = value;
+				elseif key == "right-icon-id" then
+					rightIconID = value;
 				elseif key == "right-color" then
 					struct.RC = TRP3_API.CreateColorFromHexString(value):GetRGBTable();
 				end
@@ -234,9 +264,9 @@ module.TryRegisterField("PS", {
 				struct.V2 = v2;
 			elseif struct.LT and struct.RT then
 				-- It's custom, default any missing fields.
-				struct.LI = struct.LI or TRP3_InterfaceIcons.Default;
+				struct.LI = GetInboundTraitIconID(leftIconID or leftIconName);
 				struct.LC = struct.LC or TRP3_API.MiscColors.PersonalityTraitColorLeft:GetRGBTable();
-				struct.RI = struct.RI or TRP3_InterfaceIcons.Default;
+				struct.RI = GetInboundTraitIconID(rightIconID or rightIconName);
 				struct.RC = struct.RC or TRP3_API.MiscColors.PersonalityTraitColorRight:GetRGBTable();
 			end
 

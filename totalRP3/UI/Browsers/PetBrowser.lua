@@ -121,8 +121,8 @@ AddOn_TotalRP3.Ui = AddOn_TotalRP3.Ui or {};
 function AddOn_TotalRP3.Ui.IsPetBrowserEnabled()
 	if TRP3_API.globals.player_character.class ~= "HUNTER" then
 		return false;  -- Player isn't a supported class.
-	elseif WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
-		return false;  -- Classic is unsupported due to missing art assets.
+	elseif C_StableInfo.GetStablePetInfo == nil then
+		return false;  -- Classic is unsupported due its legacy stable API.
 	else
 		return true;
 	end

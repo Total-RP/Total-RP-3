@@ -204,7 +204,7 @@ function TRP3_PlaterNamePlates:CustomizeNameplate(nameplate, unitToken, displayI
 
 	if displayInfo.icon and plateFrame.TRP3Icon and not displayInfo.shouldHide then
 		plateFrame.TRP3Icon:ClearAllPoints();
-		plateFrame.TRP3Icon:SetTexture(TRP3_API.utils.getIconTexture(displayInfo.icon));
+		TRP3_IconUtil.SetTextureToIcon(plateFrame.TRP3Icon, displayInfo.icon);
 		plateFrame.TRP3Icon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
 		plateFrame.TRP3Icon:SetPoint("RIGHT", plateFrame.CurrentUnitNameString, "LEFT", -4, 0);
 		plateFrame.TRP3Icon:Show();

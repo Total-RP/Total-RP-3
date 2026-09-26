@@ -12,6 +12,26 @@ local function GetOrCreateTable(t, key)
 	return t[key];
 end
 
+local function ResolveIconName(icon)
+	local iconInfo = TRP3_IconUtil.GetIconInfo(icon);
+
+	if iconInfo and iconInfo.file then
+		return iconInfo.name;
+	else
+		return TRP3_InterfaceIconNames.ProfileDefault;
+	end
+end
+
+local function ResolveIconID(icon)
+	local iconID = TRP3_IconUtil.GetIconID(icon);
+
+	if iconID == nil then
+		iconID = TRP3_InterfaceIconIDs.ProfileDefault;
+	end
+
+	return tostring(iconID);
+end
+
 local function onStart()
 	local loc = TRP3_API.loc;
 
@@ -102,7 +122,8 @@ local function onStart()
 		else
 			msp.my['NA'] = getCompleteName(dataTab, Globals.player);
 		end
-		msp.my['IC'] = dataTab.IC or TRP3_InterfaceIcons.ProfileDefault;
+		msp.my['IC'] = ResolveIconName(dataTab.IC);
+		msp.my['IX'] = ResolveIconID(dataTab.IC);
 		msp.my['NT'] = dataTab.FT;
 		msp.my['PX'] = dataTab.TI;
 		msp.my['RA'] = dataTab.RA;
@@ -173,9 +194,8 @@ local function onStart()
 				if #peeks > 0 then
 					peeks[#peeks + 1] = "\n\n---\n\n";
 				end
-				peeks[#peeks + 1] = "|TInterface\\Icons\\";
-				peeks[#peeks + 1] = peek.IC;
-				peeks[#peeks + 1] = ":32:32|t\n";
+				peeks[#peeks + 1] = TRP3_MarkupUtil.GenerateIconMarkup(peek.IC, { size = 32 });
+				peeks[#peeks + 1] = "\n";
 				if peek.TI then
 					peeks[#peeks + 1] = "#";
 					peeks[#peeks + 1] = peek.TI;
@@ -279,12 +299,15 @@ local function onStart()
 	end
 
 	local function parsePeekString(str)
-		local icon = str:match("%f[^\n%z]|TInterface\\Icons\\([^:|]+)[^|]*|t%f[\n%z]") or TRP3_InterfaceIcons.Default;
+		local icon = str:match("%f[^\n%z]|TInterface\\Icons\\([^:|]+)[^|]*|t%f[\n%z]")
+			or str:match("%f[^\n%z]|T(%d+):[^|]*|t%f[\n%z]")
+			or str:match("%f[^\n%z]|A:([^:|]+):[^|]*|a%f[\n%z]");
+		icon = TRP3_IconUtil.GetIconID(icon) or TRP3_InterfaceIconIDs.Default;
 		local title = str:match("%f[^\n%z]#+% *(.-)% *%f[\n%z]");
 		local text = str:match("%f[^\n%z]% *([^|#].-)%s*$");
 		return {
 			AC = true,
-			IC = icon,
+			IC = TRP3_IconUtil.SerializeIcon(icon),
 			TI = title,
 			TX = text,
 		};
@@ -320,7 +343,7 @@ local function onStart()
 
 			miscData.ID = fieldInfo.type;
 			miscData.NA = fieldInfo.localizedName;
-			miscData.IC = fieldInfo.icon;
+			miscData.IC = TRP3_IconUtil.SerializeIcon(fieldInfo.icon);
 			miscData.VA = fieldInfo.formatter and fieldInfo.formatter(value) or value;
 		elseif miscIndex then
 			table.remove(miscInfo, miscIndex);
@@ -381,7 +404,8 @@ local function onStart()
 
 			char.field.PX = profile.characteristics.TI;  -- Prefix Title
 			char.field.NT = profile.characteristics.FT;  -- Full Title
-			char.field.IC = profile.characteristics.IC;  -- Icon
+			char.field.IC = ResolveIconName(profile.characteristics.IC);  -- Icon
+			char.field.IX = ResolveIconID(profile.characteristics.IC);
 			char.field.RA = profile.characteristics.RA;  -- Race
 			char.field.RS = tostring(profile.characteristics.RS or AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN);
 			char.field.AG = profile.characteristics.AG;  -- Age
@@ -516,6 +540,10 @@ local function onStart()
 						if field == "RS" and value then
 							value = tonumber(value);
 						end
+						-- Icon migration; prefer data from new IX field.
+						if field == "IC" and data["IX"] ~= "" then
+							value = data["IX"];
+						end
 						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = value;
 						-- Hack for spaced name tolerated in MRP
 						if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then
@@ -544,10 +572,10 @@ local function onStart()
 								profile.about.T3 = {};
 							end
 							if not profile.about.T3.HI then
-								profile.about.T3.HI = {BK = 1, IC = TRP3_InterfaceIcons.HistorySection };
+								profile.about.T3.HI = {BK = 1, IC = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.HistorySection) };
 							end
 							if not profile.about.T3.PH then
-								profile.about.T3.PH = {BK = 1, IC = TRP3_InterfaceIcons.PhysicalSection };
+								profile.about.T3.PH = {BK = 1, IC = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.PhysicalSection) };
 							end
 							profile.about.T3[ABOUT_FIELDS[field]].TX = value;
 							if profile.about.read ~= false then

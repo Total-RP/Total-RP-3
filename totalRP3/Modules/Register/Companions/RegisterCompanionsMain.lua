@@ -35,11 +35,9 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local playerCompanions;
-local PROFILE_DEFAULT_ICON = "INV_Box_PetCarrier_01";
-TRP3_API.companions.PROFILE_DEFAULT_ICON = PROFILE_DEFAULT_ICON;
 local DEFAULT_PROFILE = {
 	data = {
-		IC = PROFILE_DEFAULT_ICON,
+		IC = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.CompanionDefault),
 		v = 1,
 	},
 	PE = {
