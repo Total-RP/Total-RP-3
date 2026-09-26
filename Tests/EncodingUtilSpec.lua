@@ -30,12 +30,16 @@ insulate("DecodeAce", function()
 		function serializer:Deserialize(data) return true, data; end
 	end);
 
-	it("decodes an AceSerializer string", function()
-		assert.are.equal(SerializedData, TRP3_EncodingUtil.DecodeAce(SerializedData));
-	end);
+	it("passes valid data to AceSerializer for deserialization", function()
+		function serializer:Deserialize()
+			return true, "<Deserialized Data>";
+		end;
+	
+		spy.on(serializer, "Deserialize");
 
-	it("passes data that starts with the start code through whole", function()
-		assert.are.equal("^1\n^T^^", TRP3_EncodingUtil.DecodeAce("^1\n^T^^"));
+		local deserializedData = TRP3_EncodingUtil.DecodeAce(SerializedData);		
+		assert.spy(serializer.Deserialize).called_with(serializer, SerializedData);
+		assert.are.equal(deserializedData, "<Deserialized Data>");
 	end);
 
 	it("skips text pasted before the AceSerializer string", function()
