@@ -81,7 +81,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	end
 
 	-- Sort locales alphabetically.
-	table.sort(localeTab, function(a,b) return a[1] < b[1] end);
+	table.sort(localeTab, function(a,b) return TRP3_StringUtil.SortCompareStrings(a[1], b[1]) end);
 	table.insert(localeTab, 1, { string.format(loc.CO_LOCALE_DEFAULT, loc:GetLocale(TRP3_API.GetDefaultLocale()):GetName()), TRP3_LocaleConstants.DefaultLocaleCode })
 
 	-- Localization settings

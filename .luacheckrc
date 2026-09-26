@@ -136,16 +136,20 @@ stds.wow = {
 		string = {
 			fields = {
 				"concat",
+				"contains",
 				"join",
 				"split",
+				"startswith",
 				"trim",
-				"utf8lower", -- Added by the UTF8 library.
 				"utf8sub", -- Added by the UTF8 library.
 			},
 		},
 
 		table = {
 			fields = {
+				"count",
+				"isempty",
+				"keys",
 				"wipe",
 			},
 		},
@@ -155,7 +159,6 @@ stds.wow = {
 		"floor",
 		"format",
 		"ipairs_reverse",
-		"sort",
 		"strconcat",
 		"strjoin",
 		"strlen",
@@ -332,7 +335,11 @@ stds.wow = {
 
 		C_Intl = {
 			fields = {
+				"CompareStrings",
+				"FindStringMatches",
 				"FoldCase",
+				"GetSortKey",
+				"Transliterate",
 			},
 		},
 
@@ -489,6 +496,16 @@ stds.wow = {
 					},
 				},
 
+				CollationStrength = {
+					fields = {
+						"Primary",
+						"Secondary",
+						"Tertiary",
+						"Quaternary",
+						"Identical",
+					},
+				},
+
 				GameRule = {
 					fields = {
 						"TransmogEnabled",
@@ -498,6 +515,21 @@ stds.wow = {
 				HouseSettingFlags = {
 					fields = {
 						"HouseAccessAnyone",
+					},
+				},
+
+				StatusBarInterpolation = {
+					fields = {
+						"ExponentialEaseOut",
+						"Immediate",
+					},
+				},
+
+				OnUpdateMode = {
+					fields = {
+						"RunAlways",
+						"RunOnce",
+						"RunWhenVisible",
 					},
 				},
 
@@ -653,7 +685,14 @@ stds.wow = {
 				"InitDefaultLinearDragBehavior",
 				"InitScrollBoxListWithScrollBar",
 				"InitScrollBoxWithScrollBar",
+				"RegisterAlternateRowBehavior",
 				"RegisterScrollBoxWithScrollBar",
+			},
+		},
+
+		TimerUtil = {
+			fields = {
+				"CreateTimedSignalCallbackMap",
 			},
 		},
 
@@ -818,7 +857,6 @@ stds.wow = {
 		"StaticPopup_Show",
 		"StopMusic",
 		"StopSound",
-		"strcmputf8i",
 		"StringToBoolean",
 		"SwapChatChannelByLocalID",
 		"TableHasAnyEntries",

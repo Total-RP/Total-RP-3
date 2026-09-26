@@ -25,6 +25,12 @@ TRP3_PlayerMapPinMixin.TEMPLATE_NAME = "TRP3_PlayerMapPinTemplate";
 local CONFIG_SHOW_DIFFERENT_WAR_MODES = "register_map_location_show_war_modes";
 local getConfigValue = TRP3_API.configuration.getValue;
 
+---@type TRP3.SortKeyOptions
+local PlayerNameSortKeyOptions = {
+	emptyKeyPosition = TRP3_SortKeyEmptyPosition.Last,
+	transliterator = TRP3_Transliterators.LettersOnly,
+};
+
 --- This is called when the data provider acquire a pin, to transform poiInfo received from the scan
 --- into display info to be used to decorate the pin.
 function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
@@ -32,6 +38,7 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	local hasWarModeActive = poiInfo.hasWarModeActive;
 	local shouldDifferentiateBetweenWarModes = getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES);
 	local hasSameWarModeAsPlayer = (not TRP3_ClientFeatures.WarMode) or hasWarModeActive == C_PvP.IsWarModeActive();
+	local playerName = player:GenerateFormattedName(TRP3_PlayerNameFormat.Plain);
 
 	local displayData = {
 		categoryName = nil,
@@ -39,11 +46,12 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 		iconAtlas = nil,
 		iconColor = nil,
 		opacity = 1.0,
-		playerName = player:GenerateFormattedName(TRP3_PlayerNameFormat.Plain),
+		playerName = playerName,
 		playerNameColored = player:GenerateFormattedName(TRP3_PlayerNameFormat.Colored),
 		playerNameFancy = player:GenerateFormattedName(TRP3_PlayerNameFormat.Fancy),
 		sender = poiInfo.sender,
 		sortOrder = 0,
+		sortName = TRP3_StringUtil.GetSortKey(playerName, PlayerNameSortKeyOptions),
 	};
 
 	if player:IsCurrentUser() then
@@ -94,7 +102,7 @@ function TRP3_PlayerMapPinMixin:Decorate(displayData)
 	self.tooltipLine = displayData.playerNameFancy;
 	self.categoryName = displayData.categoryName;
 	self.categoryPriority = displayData.categoryPriority;
-	self.sortName = displayData.playerName;
+	self.sortName = displayData.sortName;
 	self.sortOrder = displayData.sortOrder;
 
 	if displayData.iconColor then

@@ -208,16 +208,17 @@ end
 
 local function profileSortingByProfileName(profileID1, profileID2)
 	local profiles = getProfiles();
-	return profiles[profileID1].profileName < profiles[profileID2].profileName;
+	return TRP3_StringUtil.SortCompareStrings(profiles[profileID1].profileName, profiles[profileID2].profileName);
 end
 
 -- Refresh list display
 function uiInitProfileList()
 	wipe(profileListID);
 	local profiles = getProfiles();
-	local profileSearch = Utils.str.emptyToNil(TRP3_CompanionsProfiles.list.SearchBox:GetText());
+	local profileQuery = TRP3_CompanionsProfiles.list.SearchBox:GetText();
+	local profileMatcher = TRP3_StringUtil.CreateMatcher(profileQuery);
 	for profileID, _ in pairs(profiles) do
-		if not profileSearch or string.find(profiles[profileID].profileName:lower(), profileSearch:lower(), 1, true) then
+		if profileMatcher:Matches(profiles[profileID].profileName) then
 			tinsert(profileListID, profileID);
 		end
 	end
@@ -225,7 +226,7 @@ function uiInitProfileList()
 	local size = #profileListID;
 	TRP3_CompanionsProfiles.list.ScrollBox.EmptyText:Hide();
 	if size == 0 then
-		if not profileSearch then
+		if profileQuery == "" then
 			TRP3_CompanionsProfiles.list.ScrollBox.EmptyText:SetText(loc.PR_CO_EMPTY);
 		else
 			TRP3_CompanionsProfiles.list.ScrollBox.EmptyText:SetText(loc.PR_PROFILEMANAGER_EMPTY);
@@ -365,7 +366,7 @@ local function getPlayerCompanionProfilesAsList(companionID)
 			tinsert(list, {profile.profileName, profileID});
 		end
 	end
-	table.sort(list, function(a,b) return string.lower(a[1]) < string.lower(b[1]) end);
+	table.sort(list, function(a,b) return TRP3_StringUtil.SortCompareStrings(a[1], b[1]) end);
 	return list;
 end
 
