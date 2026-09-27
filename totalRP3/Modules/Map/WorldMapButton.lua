@@ -27,8 +27,8 @@ local CONFIG_HIDE_BUTTON_IF_EMPTY = "HIDE_MAP_BUTTON_IF_EMPTY";
 ---@type Button
 local WorldMapButton = TRP3_WorldMapButton;
 
-local NORMAL_STATE_MAP_ICON = Ellyb.Icon(TRP3_InterfaceIcons.ScanReady);
-local ON_COOLDOWN_STATE_MAP_ICON = Ellyb.Icon(TRP3_InterfaceIcons.ScanCooldown);
+local NORMAL_STATE_MAP_ICON = Ellyb.Icon(TRP3_InterfaceIconIDs.ScanReady);
+local ON_COOLDOWN_STATE_MAP_ICON = Ellyb.Icon(TRP3_InterfaceIconIDs.ScanCooldown);
 
 --region Configuration
 TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, function()

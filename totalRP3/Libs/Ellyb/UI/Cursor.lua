@@ -30,11 +30,16 @@ local Cursor = {};
 local CursorFrame = CreateFrame("Frame", nil, UIParent);
 CursorFrame:SetSize(1, 1);
 CursorFrame:SetPoint("CENTER");
+CursorFrame:SetFrameStrata("TOOLTIP");
+CursorFrame:SetFrameLevel(1000);
+CursorFrame:SetFixedFrameLevel(true);
 CursorFrame:Hide();
 
 local Icon = CursorFrame:CreateTexture();
 Icon:SetTexture([[Interface\Cursor\WorkOrders]]);
-Icon:SetSize(30, 30);
+Icon:SetSize(32, 32);
+Icon:SetTexelSnappingBias(0.0);
+Icon:SetSnapToPixelGrid(false);
 Icon:SetPoint("TOPLEFT", 45, -15);
 
 local DEFAULT_ANCHOR_X, DEFAULT_ANCHOR_Y = 33, -3;
@@ -68,7 +73,12 @@ end);
 function Cursor:SetIcon(cursorTexture, x, y)
 	Ellyb.Assertions.isOfTypes(cursorTexture, { "string", "number" }, "cursorTexture");
 
-	Icon:SetTexture(cursorTexture);
+	if C_Texture.GetAtlasExists(cursorTexture) then
+		Icon:SetAtlas(cursorTexture);
+	else
+		Icon:SetTexture(cursorTexture);
+	end
+
 	Icon:SetPoint("TOPLEFT", x or DEFAULT_ANCHOR_X, y or DEFAULT_ANCHOR_Y);
 	CursorFrame:PlaceOnCursor();
 	CursorFrame:Show();

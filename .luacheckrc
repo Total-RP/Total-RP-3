@@ -859,6 +859,7 @@ stds.wow = {
 		"secureexecuterange",
 		"SendSystemMessage",
 		"SetCursor",
+		"SetCursorByMode",
 		"SetCVar",
 		"SetPetStablePaperdoll",
 		"SetPortraitToTexture",

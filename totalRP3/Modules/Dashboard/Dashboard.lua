@@ -179,7 +179,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 		local Button_TRP3_Open = {
 			id = "aa_trp3_a",
-			icon = TRP3_InterfaceIcons.DirectorySection,
+			icon = TRP3_InterfaceIconIDs.DirectorySection,
 			configText = loc.LAUNCHER_ACTION_OPEN,
 			tooltip = TRP3_API.globals.addon_name,
 			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.LAUNCHER_ACTION_OPEN),
@@ -197,7 +197,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		local status3SubText = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_GO_TO_MODE:format(loc.TB_AFK_MODE)) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_GO_TO_MODE:format(loc.TB_DND_MODE));
 		local Button_Status = {
 			id = "aa_trp3_d",
-			icon = TRP3_InterfaceIcons.ModeNormal,
+			icon = TRP3_InterfaceIconIDs.ModeNormal,
 			text = status3Text,
 			configText = loc.CO_TOOLBAR_CONTENT_STATUS,
 			onModelUpdate = function(buttonStructure)
@@ -206,15 +206,15 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				if playerDND then
 					buttonStructure.tooltip  = status1Text;
 					buttonStructure.tooltipSub  = status1SubText;
-					buttonStructure.icon = TRP3_InterfaceIcons.ModeDND;
+					buttonStructure.icon = TRP3_InterfaceIconIDs.ModeDND;
 				elseif playerAFK then
 					buttonStructure.tooltip  = status2Text;
 					buttonStructure.tooltipSub  = status2SubText;
-					buttonStructure.icon = TRP3_InterfaceIcons.ModeAFK;
+					buttonStructure.icon = TRP3_InterfaceIconIDs.ModeAFK;
 				else
 					buttonStructure.tooltip  = status3Text;
 					buttonStructure.tooltipSub  = status3SubText;
-					buttonStructure.icon = TRP3_InterfaceIcons.ModeNormal;
+					buttonStructure.icon = TRP3_InterfaceIconIDs.ModeNormal;
 				end
 				buttonStructure.text = buttonStructure.tooltip;
 			end,
@@ -238,7 +238,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		TRP3_API.toolbar.toolbarAddButton(Button_Status);
 
 		-- Toolbar RP status
-		local RP_ICON, OOC_ICON = TRP3_InterfaceIcons.ToolbarStatusIC, TRP3_InterfaceIcons.ToolbarStatusOOC;
+		local RP_ICON, OOC_ICON = TRP3_InterfaceIconIDs.ToolbarStatusIC, TRP3_InterfaceIconIDs.ToolbarStatusOOC;
 		local rpTextOn = loc.TB_RPSTATUS_ON;
 		local rpTextOff = loc.TB_RPSTATUS_OFF;
 		local rpText2 = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TB_RPSTATUS_TO_ON) .. "\n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.TB_SWITCH_PROFILE);
@@ -280,11 +280,12 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 						for _, profile in ipairs(profileList) do
 							-- Current profile has nil profileID (profile[3])
-							local icon = profile[2] or TRP3_InterfaceIcons.ProfileDefault;
+							local icon = profile[2] or TRP3_InterfaceIconIDs.ProfileDefault;
+							local iconMarkup = TRP3_MarkupUtil.GenerateIconMarkup(icon, { size = 15 });
 							if profile[3] then
-								description:CreateButton("|Tinterface\\icons\\" .. icon .. ":15|t " .. profile[1], profileSelected, profile[3]);
+								description:CreateButton(iconMarkup .. " " .. profile[1], profileSelected, profile[3]);
 							else
-								description:CreateButton("|Tinterface\\icons\\" .. icon .. ":15|t|cnGREEN_FONT_COLOR: " .. profile[1] .."|r");
+								description:CreateButton(iconMarkup .. "|cnGREEN_FONT_COLOR: " .. profile[1] .."|r");
 							end
 						end
 					end);
@@ -302,8 +303,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 		if not TRP3_ClientFeatures.Transmogrification then
 			-- Show / hide helmet
-			local helmetOffIcon = TRP3_InterfaceIcons.ToolbarHelmetOff;
-			local helmetOnIcon = TRP3_InterfaceIcons.ToolbarHelmetOn;
+			local helmetOffIcon = TRP3_InterfaceIconIDs.ToolbarHelmetOff;
+			local helmetOnIcon = TRP3_InterfaceIconIDs.ToolbarHelmetOn;
 			local helmTextOn = loc.TB_SWITCH_HELM_ON;
 			local helmTextOff = loc.TB_SWITCH_HELM_OFF;
 			local helmText2 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_HELM_1);
@@ -341,8 +342,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			TRP3_API.toolbar.toolbarAddButton(Button_Helmet);
 
 			-- Show/hide cloak
-			local cloakOnIcon = TRP3_InterfaceIcons.ToolbarCloakOff;
-			local cloakOffIcon = TRP3_InterfaceIcons.ToolbarCloakOn;
+			local cloakOnIcon = TRP3_InterfaceIconIDs.ToolbarCloakOff;
+			local cloakOffIcon = TRP3_InterfaceIconIDs.ToolbarCloakOn;
 			local capeTextOn =  loc.TB_SWITCH_CAPE_ON;
 			local capeTextOff = loc.TB_SWITCH_CAPE_OFF;
 			local capeText2 = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.TB_SWITCH_CAPE_1);

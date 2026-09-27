@@ -282,7 +282,7 @@ local function UpdateDefaultProfile()
 	profileCharacteristics.CL = Globals.player_class_loc;
 	profileCharacteristics.FN = Globals.player_given_name;
 	profileCharacteristics.LN = Globals.player_family_name;
-	profileCharacteristics.IC = TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
+	profileCharacteristics.IC = TRP3_IconUtil.SerializeIcon(TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player")));
 end
 
 --- TRP3_API.profile.isDefaultProfile checks if given profile ID is the default profile.
@@ -599,8 +599,9 @@ end
 
 --- PasteCopiedIcon handles receiving an icon from the right-click menu.
 ---@param frame Frame The frame the icon belongs to.
-local function PasteCopiedIcon(frame)
-	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
+---@param copiedIcon string? The icon supplied by the right-click menu.
+local function PasteCopiedIcon(frame, copiedIcon)
+	local icon = copiedIcon or TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
 	profileIcon = icon;
 	setupIconButton(frame, icon);
 end
@@ -982,17 +983,15 @@ function TRP3_API.profile.init()
 	setupIconButton(finalizeOption.Icon, profileIcon);
 	finalizeOption.Icon:SetScript("OnMouseDown", function(self, button)
 		if button == "LeftButton" then
-			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {function(icon)
-				profileIcon = icon;
-				setupIconButton(finalizeOption.Icon, icon or TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player")));
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {function(_iconName, iconinfo)
+				profileIcon = iconinfo.id;
+				setupIconButton(finalizeOption.Icon, iconinfo.id or TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player")));
 			end, nil, nil, profileIcon});
 		elseif button == "RightButton" then
 			profileIcon = profileIcon or TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
-			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, profileIcon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({profileIcon}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() PasteCopiedIcon(finalizeOption.Icon); end);
-			end);
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) PasteCopiedIcon(finalizeOption.Icon, copiedIcon); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, profileIcon);
 		end
 	end);
 
@@ -1016,7 +1015,7 @@ function TRP3_API.profile.init()
 
 		-- Honor the changed profile icon.
 		if profileID and profiles[profileID] and chosenOption ~= PROFILEMANAGER_ACTIONS.RENAME then
-			profiles[profileID].player.characteristics.IC = profileIcon;
+			profiles[profileID].player.characteristics.IC = TRP3_IconUtil.SerializeIcon(profileIcon);
 		end
 
 		if chosenOption == PROFILEMANAGER_ACTIONS.CREATE or chosenOption == PROFILEMANAGER_ACTIONS.IMPORT then
