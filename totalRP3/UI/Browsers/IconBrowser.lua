@@ -677,6 +677,7 @@ function TRP3_IconBrowserMixin:OnLoad()
 
 	self.CloseButton:SetScript("OnClick", function() self:OnCloseButtonClicked(); end);
 	self.SearchBox:HookScript("OnTextChanged", TRP3_FunctionUtil.Debounce(0.25, function() self:OnFilterTextChanged(); end));
+	self.SearchBox:SetScript("OnEnterPressed", function() self:OnFilterEnterPressed(); end);
 	self.FilterDropdown:SetIsDefaultCallback(function() return not self.filterModel:IsFilteringAnyCategory(); end);
 	self.FilterDropdown:SetDefaultCallback(function() self:OnFilterDropdownResetClicked(); end);
 	self.FilterDropdown:SetupMenu(function(dropdown, rootDescription) self:SetupFilterDropdown(dropdown, rootDescription); end);
@@ -703,6 +704,14 @@ function TRP3_IconBrowserMixin:OnFilterTextChanged()
 	self.filterModel:SetSearchQuery(self.SearchBox:GetText());
 end
 
+function TRP3_IconBrowserMixin:OnFilterEnterPressed()
+	local iconInfo = TRP3_IconUtil.GetIconInfo(self.SearchBox:GetText());
+
+	if iconInfo ~= nil then
+		self:SubmitSelectedIcon(iconInfo);
+	end
+end
+
 function TRP3_IconBrowserMixin:OnFilterDropdownResetClicked()
 	self.filterModel:ClearCategoryFilters();
 end
@@ -714,6 +723,10 @@ end
 
 function TRP3_IconBrowserMixin:OnIconButtonClicked(button)
 	local iconInfo = button:GetElementData();
+	self:SubmitSelectedIcon(iconInfo);
+end
+
+function TRP3_IconBrowserMixin:SubmitSelectedIcon(iconInfo)
 	self.callbacks:Fire("OnIconSelected", iconInfo);
 
 	-- Selecting an icon should reset all filtering state. Canceling out of
