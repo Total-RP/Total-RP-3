@@ -158,13 +158,11 @@ function TRP3_API.ui.listbox.displayDropDown(ownerRegion, rootMenuItems, onClick
 	end
 
 	local function GenerateMenuDescription(menuItems, menuDescription)
-		-- Make the dropdown list have a scrollbar on mainline.
-		if menuDescription.SetScrollMode then
-			local optionHeight = 20; -- 20 is the default height.
-			local maxLines = 20;
-			local maxScrollExtent = optionHeight * maxLines;
-			menuDescription:SetScrollMode(maxScrollExtent);
-		end
+		-- Make the dropdown list have a scrollbar over 20 options.
+		local optionHeight = 20; -- 20 is the default height.
+		local maxLines = 20;
+		local maxScrollExtent = optionHeight * maxLines;
+		menuDescription:SetScrollMode(maxScrollExtent);
 
 		for _, elementData in ipairs(menuItems) do
 			local text, value, tooltipText = unpack(elementData, 1, 3);
@@ -222,13 +220,11 @@ function TRP3_API.ui.listbox.setupListBox(dropdown, rootMenuItems, onClickFuncti
 	end
 
 	local function GenerateMenuDescription(menuItems, menuDescription)
-		-- Make the dropdown list have a scrollbar on mainline.
-		if menuDescription.SetScrollMode then
-			local optionHeight = 20; -- 20 is the default height.
-			local maxLines = 20;
-			local maxScrollExtent = optionHeight * maxLines;
-			menuDescription:SetScrollMode(maxScrollExtent);
-		end
+		-- Make the dropdown list have a scrollbar over 20 options.
+		local optionHeight = 20; -- 20 is the default height.
+		local maxLines = 20;
+		local maxScrollExtent = optionHeight * maxLines;
+		menuDescription:SetScrollMode(maxScrollExtent);
 
 		for _, elementData in ipairs(menuItems) do
 			local text, value, tooltipText = unpack(elementData, 1, 3);
