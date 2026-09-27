@@ -45,7 +45,8 @@ getDefaultProfile().player.characteristics = {
 	v = 1,
 	RA = Globals.player_race_loc,
 	CL = Globals.player_class_loc,
-	FN = Globals.player,
+	FN = Globals.player_given_name,
+	LN = Globals.player_family_name,
 	IC = TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player")),
 	MI = {},
 	PS = {}
@@ -59,7 +60,7 @@ local FIELDS_TO_SANITIZE = {
 	"RA", "CL", "FN", "LN", "FT", "TI", "EC", "AG", "HE", "RE", "BP"
 };
 local VALID_DEFAULT_FIELDS = {
-	"v", "RA", "CL", "FN", "IC"
+	"v", "RA", "CL", "FN", "LN", "IC"
 };
 
 ---@param structure table
@@ -156,12 +157,13 @@ local function getCompleteName(characteristicsTab, name, hideTitle)
 		return name;
 	end
 	local text = "";
-	if not hideTitle and characteristicsTab.TI then
+	if not hideTitle and characteristicsTab.TI and characteristicsTab.TI ~= "" then
 		text = strconcat(characteristicsTab.TI, " ");
 	end
-	text = strconcat(text, characteristicsTab.FN or name);
-	if characteristicsTab.LN then
-		text = strconcat(text, " ", characteristicsTab.LN);
+	if characteristicsTab.FN and characteristicsTab.FN ~= "" then
+		text = strconcat(text, TRP3_NameUtil.ComposeFullName(characteristicsTab.FN, characteristicsTab.LN));
+	else
+		text = strconcat(text, name);
 	end
 	return text;
 end
@@ -486,7 +488,7 @@ local miscEditCharFrame = {};
 local function saveInDraft()
 	assert(type(draftData) == "table", "Error: Nil draftData or not a table.");
 	draftData.TI = stEtN(strtrim(TRP3_RegisterCharact_Edit_TitleField:GetText()));
-	draftData.FN = stEtN(strtrim(TRP3_RegisterCharact_Edit_FirstField:GetText())) or Globals.player;
+	draftData.FN = stEtN(strtrim(TRP3_RegisterCharact_Edit_FirstField:GetText())) or Globals.player_given_name;
 	draftData.LN = stEtN(strtrim(TRP3_RegisterCharact_Edit_LastField:GetText()));
 	draftData.FT = stEtN(strtrim(TRP3_RegisterCharact_Edit_FullTitleField:GetText()));
 	draftData.RA = stEtN(TRP3_RegisterCharact_Edit_RaceField:GetText());
@@ -788,7 +790,7 @@ function setEditDisplay()
 
 	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
 	TRP3_RegisterCharact_Edit_TitleField:SetText(draftData.TI or "");
-	TRP3_RegisterCharact_Edit_FirstField:SetText(draftData.FN or Globals.player);
+	TRP3_RegisterCharact_Edit_FirstField:SetText(draftData.FN or Globals.player_given_name or "");
 	TRP3_RegisterCharact_Edit_LastField:SetText(draftData.LN or "");
 	TRP3_RegisterCharact_Edit_FullTitleField:SetText(draftData.FT or "");
 
@@ -1375,7 +1377,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	.. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.UI_ICON_OPENBROWSER)
 	.. "|n" .. TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.UI_ICON_OPTIONS));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_TitleFieldHelp, "RIGHT", 0, 5, loc.REG_TITLE, loc.REG_PLAYER_TITLE_TT);
-	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_FirstFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_FIRSTNAME, loc.REG_PLAYER_FIRSTNAME_TT:format(Globals.player));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_FirstFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_FIRSTNAME, loc.REG_PLAYER_FIRSTNAME_TT:format(Globals.player_given_name));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_LastFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_LASTNAME, loc.REG_PLAYER_LASTNAME_TT);
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_FullTitleFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_FULLTITLE, loc.REG_PLAYER_FULLTITLE_TT);
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_RaceFieldHelp, "RIGHT", 0, 5, loc.REG_PLAYER_RACE, loc.REG_PLAYER_RACE_TT:format(Globals.player_race_loc));

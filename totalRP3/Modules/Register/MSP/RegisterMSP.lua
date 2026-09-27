@@ -216,7 +216,7 @@ local function onStart()
 	local isUnitIDKnown, getUnitIDCharacter = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCharacter;
 	local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 	local hasProfile, saveCurrentProfileID = TRP3_API.register.hasProfile, TRP3_API.register.saveCurrentProfileID;
-	local emptyToNil, unitIDToInfo = Utils.str.emptyToNil, Utils.str.unitIDToInfo;
+	local emptyToNil = Utils.str.emptyToNil;
 
 	local SUPPORTED_FIELDS = {
 		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
@@ -355,7 +355,7 @@ local function onStart()
 			-- Full Name
 			do
 				local hideTitle = true;
-				local defaultName = (string.split("-", characterID));
+				local defaultName = Ambiguate(characterID, "short");
 				local completeName = TRP3_API.register.getCompleteName(profile.characteristics, defaultName, hideTitle)
 
 				if profile.characteristics.CH ~= nil and profile.characteristics.CH ~= "" then
@@ -519,7 +519,7 @@ local function onStart()
 						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = value;
 						-- Hack for spaced name tolerated in MRP
 						if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then
-							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = unitIDToInfo(senderID);
+							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = TRP3_NameUtil.DecomposeQualifiedName(senderID);
 						end
 						-- Machine-formatted psychological traits.
 						if field == "PS" and value then

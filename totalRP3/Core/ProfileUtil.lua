@@ -226,6 +226,16 @@ end
 
 TRP3_ProfileUtil = {};
 
+function TRP3_ProfileUtil.GetDefaultProfileName()
+	local name = TRP3_API.globals.player;
+
+	if TRP3_NameUtil.ShouldDisplayRealmNames() then
+		return string.join(" - ", TRP3_API.globals.player_realm, name);
+	end
+
+	return name;
+end
+
 function TRP3_ProfileUtil.SerializeProfile(addonVersion, profileID, profileData)
 	local packedData = { addonVersion, profileID, profileData };
 	local serializedData;
