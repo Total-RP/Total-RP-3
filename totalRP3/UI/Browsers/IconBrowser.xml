@@ -35,9 +35,21 @@
 				</FontString>
 				<FontString parentKey="ID" inherits="GameTooltipText">
 					<Anchors>
-						<Anchor point="TOPLEFT" relativeKey="$parent.Name" relativePoint="BOTTOMLEFT" y="-4"/>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Name" relativePoint="BOTTOMLEFT" y="-2"/>
 					</Anchors>
 					<Color color="NORMAL_FONT_COLOR"/>
+				</FontString>
+				<FontString parentKey="LeftClickInstruction" inherits="GameTooltipText">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.ID" relativePoint="BOTTOMLEFT" y="-6"/>
+					</Anchors>
+					<Color color="GREEN_FONT_COLOR"/>
+				</FontString>
+				<FontString parentKey="RightClickInstruction" inherits="GameTooltipText">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.LeftClickInstruction" relativePoint="BOTTOMLEFT" y="-2"/>
+					</Anchors>
+					<Color color="GREEN_FONT_COLOR"/>
 				</FontString>
 			</Layer>
 		</Layers>
@@ -49,6 +61,9 @@
 				</KeyValues>
 			</Frame>
 		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
 	</Frame>
 
 	<CheckButton name="TRP3_IconBrowserButtonTemplate" mixin="TRP3_IconBrowserButtonMixin" virtual="true">
@@ -93,6 +108,7 @@
 			<OnLoad method="OnLoad"/>
 			<OnEnter method="OnEnter"/>
 			<OnLeave method="OnLeave"/>
+			<OnClick method="OnClick"/>
 		</Scripts>
 	</CheckButton>
 

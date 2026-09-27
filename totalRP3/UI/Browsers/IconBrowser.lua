@@ -719,7 +719,7 @@ function TRP3_IconBrowserMixin:OnFilterDropdownResetClicked()
 end
 
 function TRP3_IconBrowserMixin:OnIconButtonInitialized(button, iconInfo)
-	button:SetScript("OnClick", function() self:OnIconButtonClicked(button); end);
+	button:SetSelectedCallback(function() self:OnIconButtonClicked(button); end);
 	button:Init(iconInfo);
 end
 
@@ -869,6 +869,11 @@ end
 
 TRP3_IconBrowserButtonTooltipMixin = {};
 
+function TRP3_IconBrowserButtonTooltipMixin:OnLoad()
+	self.LeftClickInstruction:SetText(TRP3_API.FormatShortcutWithInstruction("LCLICK", L.CM_SELECT));
+	self.RightClickInstruction:SetText(TRP3_API.FormatShortcutWithInstruction("RCLICK", L.UI_ICON_OPTIONS));
+end
+
 function TRP3_IconBrowserButtonTooltipMixin:Init(owner, iconInfo)
 	self:Reset();
 
@@ -910,6 +915,20 @@ function TRP3_IconBrowserButtonMixin:OnLeave()
 	self:GetTooltipFrame():Reset();
 end
 
+function TRP3_IconBrowserButtonMixin:OnClick(mouseButtonName)
+	local iconInfo = self:GetElementData();
+	assert(iconInfo ~= nil);
+
+	if mouseButtonName == "LeftButton" then
+		if self.selectedCallback then
+			self.selectedCallback(self);
+		end
+	elseif mouseButtonName == "RightButton" then
+		local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+		TRP3_MenuTemplates.CreateIconContextMenu(self, handler, iconInfo.id);
+	end
+end
+
 ---@param iconInfo TRP3.IconBrowserModelItem
 function TRP3_IconBrowserButtonMixin:Init(iconInfo)
 	self.SelectedTexture:SetShown(iconInfo and iconInfo.selected);
@@ -918,6 +937,10 @@ end
 
 function TRP3_IconBrowserButtonMixin:GetTooltipFrame()
 	return TRP3_IconBrowserButtonTooltip;
+end
+
+function TRP3_IconBrowserButtonMixin:SetSelectedCallback(callback)
+	self.selectedCallback = callback;
 end
 
 TRP3_IconBrowserEmptyStateMixin = {};
