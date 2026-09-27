@@ -5,16 +5,6 @@
 
 local SpecHelper = require("SpecHelper");
 
--- What copy-pasting from a browser, Discord or a word processor tends to add.
-local PastedNoise = {
-	["a non-breaking space"] = "\194\160",
-	["a zero-width space"] = "\226\128\139",
-	["a byte order mark"] = "\239\187\191",
-	["a code fence"] = "```\n",
-	["a quote"] = "\"",
-	["a message with a smiley"] = "Here it is ^^\n",
-};
-
 insulate("DecodeAce", function()
 	local SerializedData = "^1^T^N1^N142^N2^SabcDEF^t^^";
 	local serializer;
@@ -42,10 +32,29 @@ insulate("DecodeAce", function()
 		assert.are.equal(deserializedData, "<Deserialized Data>");
 	end);
 
-	it("skips text pasted before the AceSerializer string", function()
-		for noiseName, noise in pairs(PastedNoise) do
-			assert.are.equal(SerializedData, TRP3_EncodingUtil.DecodeAce(noise .. SerializedData), noiseName);
-		end
+	-- What copy-pasting from a browser, Discord or a word processor tends to add.
+	it("skips a non-breaking space pasted before the AceSerializer string", function()
+		assert.are.equal(SerializedData, TRP3_EncodingUtil.DecodeAce("\194\160" .. SerializedData));
+	end);
+
+	it("skips a zero-width space pasted before the AceSerializer string", function()
+		assert.are.equal(SerializedData, TRP3_EncodingUtil.DecodeAce("\226\128\139" .. SerializedData));
+	end);
+
+	it("skips a byte order mark pasted before the AceSerializer string", function()
+		assert.are.equal(SerializedData, TRP3_EncodingUtil.DecodeAce("\239\187\191" .. SerializedData));
+	end);
+
+	it("skips a code fence pasted before the AceSerializer string", function()
+		assert.are.equal(SerializedData, TRP3_EncodingUtil.DecodeAce("```\n" .. SerializedData));
+	end);
+
+	it("skips a quote pasted before the AceSerializer string", function()
+		assert.are.equal(SerializedData, TRP3_EncodingUtil.DecodeAce("\"" .. SerializedData));
+	end);
+
+	it("skips a message with a smiley pasted before the AceSerializer string", function()
+		assert.are.equal(SerializedData, TRP3_EncodingUtil.DecodeAce("Here it is ^^\n" .. SerializedData));
 	end);
 
 	it("returns nil when the data holds no AceSerializer string", function()
