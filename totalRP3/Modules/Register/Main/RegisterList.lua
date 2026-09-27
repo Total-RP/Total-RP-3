@@ -629,6 +629,10 @@ local function CreateCharacterLineBuilder()
 			nameIsConform = true;
 		end
 
+		if not TRP3_NameUtil.ShouldDisplayRealmNames() then
+			realmIsConform = true;
+		end
+
 		nameIsConform = nameIsConform or nameSearch == "";
 		guildIsConform = guildIsConform or guildSearch == "";
 		realmIsConform = realmIsConform or not realmOnly;
@@ -1538,6 +1542,11 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_RegisterListFilterCharactGuild:SetScript("OnEnterPressed", function() RefreshRegisterList(); end);
 	TRP3_RegisterListFilterCharactRealm:SetScript("OnClick", function() RefreshRegisterList(); end);
 	TRP3_RegisterListFilterCharactNotes:SetScript("OnClick", function() RefreshRegisterList(); end);
+	if not TRP3_NameUtil.ShouldDisplayRealmNames() then
+		TRP3_RegisterListFilterCharactRealm:Hide();
+		TRP3_RegisterListFilterCharactNotes:ClearAllPoints();
+		TRP3_RegisterListFilterCharactNotes:SetPoint("LEFT", TRP3_RegisterListFilterCharactGuild, "RIGHT", 15, 0);
+	end
 	TRP3_RegisterListCharactFilterButton:SetScript("OnClick", function(_, button)
 		if button == "RightButton" then
 			TRP3_RegisterListFilterCharactName:SetText("");
