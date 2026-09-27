@@ -519,6 +519,12 @@ stds.wow = {
 					},
 				},
 
+				Cursormode = {
+					fields = {
+						"ItemCursor",
+					},
+				},
+
 				GameRule = {
 					fields = {
 						"TransmogEnabled",
