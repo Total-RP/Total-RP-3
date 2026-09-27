@@ -218,7 +218,7 @@ end
 -- PEEK
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local GLANCE_NOT_USED_ICON = TRP3_InterfaceIcons.Default;
+local GLANCE_NOT_USED_ICON = TRP3_InterfaceIconIDs.Default;
 
 local function setupGlanceButton(button, active, icon, title, text, isMine)
 	button:Enable();
@@ -343,7 +343,7 @@ local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
 	if swap then
 		peekTab.AC = not peekTab.AC;
 	else
-		peekTab.IC = ic;
+		peekTab.IC = TRP3_IconUtil.SerializeIcon(ic);
 		peekTab.AC = ac;
 		peekTab.TI = ti;
 		peekTab.TX = tx;

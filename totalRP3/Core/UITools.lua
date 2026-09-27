@@ -691,7 +691,7 @@ function TRP3_API.ui.frame.setupIconButton(self, icon)
 	if type(icon) == "table" and icon.Apply then
 		icon:Apply(iconWidget);
 	else
-		iconWidget:SetTexture("Interface\\ICONS\\" .. icon);
+		TRP3_IconUtil.SetTextureToIcon(iconWidget, icon);
 	end
 end
 
@@ -882,7 +882,7 @@ TRP3_API.ui.misc.getUnitTexture = function(race, gender)
 	local raceToken = race;
 	local genderToken = (gender == 3) and "Female" or "Male";
 
-	return TRP3_InterfaceIcons[raceToken .. genderToken] or TRP3_InterfaceIcons.Default;
+	return TRP3_InterfaceIconIDs[raceToken .. genderToken] or TRP3_InterfaceIconIDs.Default;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1001,7 +1001,7 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 			TRP3_API.popup.showPopup(
 				TRP3_API.popup.ICONS,
 				{parent = parentFrame, point = point, parentPoint = parentPoint},
-				{function(icon) onIconTagSelected(icon, toolbar.textFrame) end});
+				{function(_iconName, iconInfo) onIconTagSelected(iconInfo.id, toolbar.textFrame) end});
 		end
 	end);
 	toolbar.color:SetScript("OnClick", function()

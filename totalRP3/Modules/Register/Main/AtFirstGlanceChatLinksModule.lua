@@ -38,8 +38,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 		local glance = tooltipData.glanceTab;
 
-		local icon = TRP3_InterfaceIcons.Default;
-		if glance.IC and glance.IC:len() > 0 then
+		local icon = TRP3_InterfaceIconIDs.Default;
+		if glance.IC and glance.IC ~= "" then
 			icon = glance.IC;
 		end
 		local TTText = glance.TX or "";

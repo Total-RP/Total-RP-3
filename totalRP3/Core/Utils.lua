@@ -3,7 +3,6 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
 local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 
 -- TRP3 imports
@@ -189,23 +188,9 @@ function Utils.str.texture(iconPath, iconSize)
 end
 
 -- Return an texture text tag based on the given icon url and size. Nil safe.
-function Utils.str.icon(iconPath, iconSize)
-	iconPath = iconPath or TRP3_InterfaceIcons.Default;
-	return Utils.str.texture(Utils.getIconTexture(iconPath), iconSize);
-end
-
---- Gives the full texture path of an individual icon.
---- Handle using icon as a string, a file ID or as an Ellyb.icon
---- @param icon string|Icon
---- @return string
-function Utils.getIconTexture(icon)
-	if type(icon) == "table" and icon.isInstanceOf and icon:isInstanceOf(Ellyb.Icon) then
-		return icon:GetFileID()
-	elseif type(icon) == "number" then
-		return icon
-	else
-		return "Interface\\ICONS\\" .. tostring(icon)
-	end
+function Utils.str.icon(iconID, iconSize)
+	iconID = iconID or TRP3_InterfaceIconIDs.Default;
+	return TRP3_MarkupUtil.GenerateIconMarkup(iconID, { size = iconSize });
 end
 
 -- Return a color tag based on a letter

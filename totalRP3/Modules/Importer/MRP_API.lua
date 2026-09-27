@@ -81,7 +81,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				ID = TRP3_API.MiscInfoType.Motto,
 				NA = loc.REG_PLAYER_MSP_MOTTO;
 				VA = "\"" .. importedProfile.MO .. "\"";
-				IC = TRP3_InterfaceIcons.MiscInfoMotto;
+				IC = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.MiscInfoMotto);
 			});
 		end
 		if importedProfile.NI then
@@ -89,7 +89,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				ID = TRP3_API.MiscInfoType.Nickname,
 				NA = loc.REG_PLAYER_MSP_NICK;
 				VA = importedProfile.NI;
-				IC = TRP3_InterfaceIcons.MiscInfoNickname;
+				IC = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.MiscInfoNickname);
 			});
 		end
 		if importedProfile.NH then
@@ -97,7 +97,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				ID = TRP3_API.MiscInfoType.House,
 				NA = loc.REG_PLAYER_MSP_HOUSE;
 				VA = importedProfile.NH;
-				IC = TRP3_InterfaceIcons.MiscInfoHouse;
+				IC = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.MiscInfoHouse);
 			});
 		end
 		if importedProfile.PN then
@@ -105,7 +105,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				ID = TRP3_API.MiscInfoType.Pronouns,
 				NA = loc.REG_PLAYER_MISC_PRESET_PRONOUNS;
 				VA = importedProfile.PN;
-				IC = TRP3_InterfaceIcons.MiscInfoPronouns;
+				IC = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.MiscInfoPronouns);
 			});
 		end
 		if importedProfile.PG then
@@ -113,7 +113,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				ID = TRP3_API.MiscInfoType.GuildName,
 				NA = loc.REG_PLAYER_MISC_PRESET_GUILD_NAME;
 				VA = importedProfile.PG;
-				IC = TRP3_InterfaceIcons.MiscInfoGuildName;
+				IC = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.MiscInfoGuildName);
 			});
 		end
 		if importedProfile.PR then
@@ -121,7 +121,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				ID = TRP3_API.MiscInfoType.GuildRank,
 				NA = loc.REG_PLAYER_MISC_PRESET_GUILD_RANK;
 				VA = importedProfile.PR;
-				IC = TRP3_InterfaceIcons.MiscInfoGuildRank;
+				IC = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.MiscInfoGuildRank);
 			});
 		end
 		if importedProfile.PV then
@@ -129,7 +129,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 				ID = TRP3_API.MiscInfoType.VoiceReference,
 				NA = loc.REG_PLAYER_MISC_PRESET_VOICE_REFERENCE;
 				VA = importedProfile.PV;
-				IC = TRP3_InterfaceIcons.MiscInfoVoiceReference;
+				IC = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.MiscInfoVoiceReference);
 			});
 		end
 		profile.player.character.CU = importedProfile.CU;

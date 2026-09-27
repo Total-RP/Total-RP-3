@@ -399,7 +399,7 @@ local function onTutorialRefresh(_, pageID)
 	if currentPageId == pageID then
 		local currentPage = pageStructures[currentPageId];
 		TRP3_TutorialFrame:Hide();
-		if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE and currentPage.tutorialProvider and currentPage.tutorialProvider() then
+		if currentPage.tutorialProvider and currentPage.tutorialProvider() then
 			TRP3_MainTutorialButton:Show();
 			TRP3_MainTutorialButton.provider = currentPage.tutorialProvider;
 		else

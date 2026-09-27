@@ -312,6 +312,12 @@ stds.wow = {
 			},
 		},
 
+		C_GameRules = {
+			fields = {
+				"IsGameRuleActive",
+			},
+		},
+
 		C_Housing = {
 			fields = {
 				"GetCurrentHouseInfo",
@@ -357,6 +363,7 @@ stds.wow = {
 				"GetBestMapForUnit",
 				"GetMapInfo",
 				"GetPlayerMapPosition",
+				"OpenWorldMap",
 			},
 		},
 
@@ -496,6 +503,18 @@ stds.wow = {
 						"Tertiary",
 						"Quaternary",
 						"Identical",
+					},
+				},
+
+				Cursormode = {
+					fields = {
+						"ItemCursor",
+					},
+				},
+
+				GameRule = {
+					fields = {
+						"TransmogEnabled",
 					},
 				},
 
@@ -831,6 +850,7 @@ stds.wow = {
 		"secureexecuterange",
 		"SendSystemMessage",
 		"SetCursor",
+		"SetCursorByMode",
 		"SetCVar",
 		"SetPetStablePaperdoll",
 		"SetPortraitToTexture",

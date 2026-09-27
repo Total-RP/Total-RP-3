@@ -175,7 +175,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		-- Create a button for the toolbar to show/hide the NPC Talk frame
 		TRP3_API.toolbar.toolbarAddButton({
 			id = "bb_trp3_npctalk",
-			icon = TRP3_InterfaceIcons.ToolbarNPCTalk,
+			icon = TRP3_InterfaceIconIDs.ToolbarNPCTalk,
 			configText = loc.NPC_TALK_TITLE,
 			tooltip = loc.NPC_TALK_TITLE,
 			tooltipSub = TRP3_API.FormatShortcutWithInstruction("CLICK", loc.NPC_TALK_BUTTON_TT),

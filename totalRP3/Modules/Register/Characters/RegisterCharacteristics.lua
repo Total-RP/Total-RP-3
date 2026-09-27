@@ -46,7 +46,7 @@ getDefaultProfile().player.characteristics = {
 	RA = Globals.player_race_loc,
 	CL = Globals.player_class_loc,
 	FN = Globals.player,
-	IC = TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player")),
+	IC = TRP3_IconUtil.SerializeIcon(TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"))),
 	MI = {},
 	PS = {}
 };
@@ -375,12 +375,17 @@ local function setConsultDisplay(context)
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame.Value, "LEFT", -5, 0);
 			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_RESIDENCE_SHOW, dataTab.RC[4] .. "|n|n" .. TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.REG_PLAYER_RESIDENCE_SHOW_TT));
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetScript("OnClick", function()
-				if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
+				if InCombatLockdown() then
+					-- UI panels cannot be toggled in combat.
+					return;
+				end
+
+				if C_Map.OpenWorldMap then
+					C_Map.OpenWorldMap(dataTab.RC[1])
+				else
 					-- Bug: https://github.com/Stanzilla/WoWUIBugs/issues/124
 					ShowUIPanel(WorldMapFrame);
 					WorldMapFrame:SetMapID(dataTab.RC[1]);
-				else
-					OpenWorldMap(dataTab.RC[1]);
 				end
 
 				local characterID;
@@ -542,23 +547,24 @@ local function saveInDraft()
 
 end
 
-local function onPlayerIconSelected(icon)
-	draftData.IC = icon;
-	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
+local function onPlayerIconSelected(_iconName, iconInfo)
+	draftData.IC = TRP3_IconUtil.SerializeIcon(iconInfo.id);
+	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIconIDs.ProfileDefault);
 end
 
 --- pasteCopiedIcon handles receiving an icon from the right-click menu.
 ---@param frame Frame The frame the icon belongs to.
 ---@param fields string To identify the required fields to modify.
 ---@param structure Frame The draftData frame that holds all the info.
-local function pasteCopiedIcon(frame, fields, structure)
-	local icon = TRP3_API.GetLastCopiedIcon() or TRP3_InterfaceIcons.Default;
+---@param copiedIcon string? The icon supplied by the right-click menu.
+local function pasteCopiedIcon(frame, fields, structure, copiedIcon)
+	local icon = copiedIcon or TRP3_InterfaceIconIDs.Default;
 	if fields == "misc" then
-		structure.IC = icon;
+		structure.IC = TRP3_IconUtil.SerializeIcon(icon);
 	elseif fields == "psychoLeft" then
-		structure.LI = icon;
+		structure.LI = TRP3_IconUtil.SerializeIcon(icon);
 	elseif fields == "psychoRight" then
-		structure.RI = icon;
+		structure.RI = TRP3_IconUtil.SerializeIcon(icon);
 	end
 	setupIconButton(frame, icon);
 end
@@ -586,7 +592,7 @@ local function onPsychoValueChanged(frame, value)
 end
 
 local function refreshEditIcon(frame)
-	setupIconButton(frame, frame.IC or TRP3_InterfaceIcons.ProfileDefault);
+	setupIconButton(frame, frame.IC or TRP3_InterfaceIconIDs.ProfileDefault);
 end
 
 local function onMiscDelete(self)
@@ -605,7 +611,7 @@ local function miscAdd(ID, NA, VA, IC)
 		ID = ID,
 		NA = NA,
 		VA = VA,
-		IC = IC,
+		IC = TRP3_IconUtil.SerializeIcon(IC),
 	});
 	setEditDisplay();
 end
@@ -687,9 +693,9 @@ local function psychoAdd(presetID)
 	if presetID == "new" then
 		tinsert(draftData.PS, {
 			LT = loc.REG_PLAYER_LEFTTRAIT,
-			LI = "INV_Misc_QuestionMark",
+			LI = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.Default),
 			RT = loc.REG_PLAYER_RIGHTTRAIT,
-			RI = "INV_Misc_QuestionMark",
+			RI = TRP3_IconUtil.SerializeIcon(TRP3_InterfaceIconIDs.Default),
 			V2 = Globals.PSYCHO_DEFAULT_VALUE_V2,
 		});
 	else
@@ -736,8 +742,8 @@ local function onPsychoConvert(self)
 	draftData.PS[frame.frameIndex]["LT"] = preset.LT or "";
 	draftData.PS[frame.frameIndex]["RT"] = preset.RT or "";
 
-	draftData.PS[frame.frameIndex]["LI"] = preset.LI;
-	draftData.PS[frame.frameIndex]["RI"] = preset.RI;
+	draftData.PS[frame.frameIndex]["LI"] = TRP3_IconUtil.SerializeIcon(preset.LI);
+	draftData.PS[frame.frameIndex]["RI"] = TRP3_IconUtil.SerializeIcon(preset.RI);
 	setEditDisplay();
 end
 
@@ -781,7 +787,7 @@ function setEditDisplay()
 		tcopy(draftData, dataTab);
 	end
 
-	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
+	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIconIDs.ProfileDefault);
 	TRP3_RegisterCharact_Edit_TitleField:SetText(draftData.TI or "");
 	TRP3_RegisterCharact_Edit_FirstField:SetText(draftData.FN or Globals.player);
 	TRP3_RegisterCharact_Edit_LastField:SetText(draftData.LN or "");
@@ -849,22 +855,20 @@ function setEditDisplay()
 
 		frame.Icon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
-				showIconBrowser(function(icon)
-					miscStructure.IC = icon;
-					setupIconButton(frame.Icon, icon or TRP3_InterfaceIcons.Default);
+				showIconBrowser(function(_iconName, iconInfo)
+					miscStructure.IC = TRP3_IconUtil.SerializeIcon(iconInfo.id);
+					setupIconButton(frame.Icon, iconInfo.id or TRP3_InterfaceIconIDs.Default);
 				end, miscStructure.IC);
 			elseif button == "RightButton" then
-				local icon = miscStructure.IC or TRP3_InterfaceIcons.Default;
-				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.Icon, "misc", miscStructure); end);
-				end);
+				local icon = miscStructure.IC or TRP3_InterfaceIconIDs.Default;
+				local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+				handler:SetPasteCallback(function(copiedIcon) pasteCopiedIcon(frame.Icon, "misc", miscStructure, copiedIcon); end);
+				TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
 			end
 		end);
 
 		frame.frameIndex = frameIndex;
-		frame.Icon.IC = miscStructure.IC or TRP3_InterfaceIcons.Default;
+		frame.Icon.IC = miscStructure.IC or TRP3_InterfaceIconIDs.Default;
 		frame.NameField:SetText(miscStructure.NA or loc.CM_NAME);
 		-- Disable name editing on presets
 		if miscStructure.ID == TRP3_API.MiscInfoType.Custom then
@@ -965,33 +969,29 @@ function setEditDisplay()
 
 		frame.CustomLeftIcon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
-				showIconBrowser(function(icon)
-					psychoStructure.LI = icon;
-					setupIconButton(self, icon or TRP3_InterfaceIcons.Default);
+				showIconBrowser(function(_iconName, iconInfo)
+					psychoStructure.LI = TRP3_IconUtil.SerializeIcon(iconInfo.id);
+					setupIconButton(self, iconInfo.id or TRP3_InterfaceIconIDs.Default);
 				end, psychoStructure.LI);
 			elseif button == "RightButton" then
-				local icon = psychoStructure.LI or TRP3_InterfaceIcons.Default;
-				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.CustomLeftIcon, "psychoLeft", psychoStructure); end);
-				end);
+				local icon = psychoStructure.LI or TRP3_InterfaceIconIDs.Default;
+				local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+				handler:SetPasteCallback(function(copiedIcon) pasteCopiedIcon(frame.CustomLeftIcon, "psychoLeft", psychoStructure, copiedIcon); end);
+				TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
 			end
 		end);
 
 		frame.CustomRightIcon:SetScript("OnClick", function(self, button)
 			if button == "LeftButton" then
-				showIconBrowser(function(icon)
-					psychoStructure.RI = icon;
-					setupIconButton(self, icon or TRP3_InterfaceIcons.Default);
+				showIconBrowser(function(_iconName, iconInfo)
+					psychoStructure.RI = TRP3_IconUtil.SerializeIcon(iconInfo.id);
+					setupIconButton(self, iconInfo.id or TRP3_InterfaceIconIDs.Default);
 				end, psychoStructure.RI);
 			elseif button == "RightButton" then
-				local icon = psychoStructure.RI or TRP3_InterfaceIcons.Default;
-				TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-					description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-					description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-					description:CreateButton(loc.UI_ICON_PASTE, function() pasteCopiedIcon(frame.CustomRightIcon, "psychoRight", psychoStructure); end);
-				end);
+				local icon = psychoStructure.RI or TRP3_InterfaceIconIDs.Default;
+				local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+				handler:SetPasteCallback(function(copiedIcon) pasteCopiedIcon(frame.CustomRightIcon, "psychoRight", psychoStructure, copiedIcon); end);
+				TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
 			end
 		end);
 
@@ -1014,8 +1014,8 @@ function setEditDisplay()
 			frame.CustomLeftField:SetText(psychoStructure.LT or "");
 			frame.CustomRightField:SetText(psychoStructure.RT or "");
 
-			frame.CustomLeftIcon.IC = psychoStructure.LI or TRP3_InterfaceIcons.Default;
-			frame.CustomRightIcon.IC = psychoStructure.RI or TRP3_InterfaceIcons.Default;
+			frame.CustomLeftIcon.IC = psychoStructure.LI or TRP3_InterfaceIconIDs.Default;
+			frame.CustomRightIcon.IC = psychoStructure.RI or TRP3_InterfaceIconIDs.Default;
 
 			refreshEditIcon(frame.CustomLeftIcon);
 			refreshEditIcon(frame.CustomRightIcon);
@@ -1205,76 +1205,76 @@ local function initStructures()
 	PSYCHO_PRESETS_UNKOWN = {
 		LT = loc.CM_UNKNOWN,
 		RT = loc.CM_UNKNOWN,
-		LI = TRP3_InterfaceIcons.Default,
-		RI = TRP3_InterfaceIcons.Default,
+		LI = TRP3_InterfaceIconIDs.Default,
+		RI = TRP3_InterfaceIconIDs.Default,
 	};
 
 	PSYCHO_PRESETS = {
 		{
 			LT = loc.REG_PLAYER_PSYCHO_CHAOTIC,
 			RT = loc.REG_PLAYER_PSYCHO_LAWFUL,
-			LI = TRP3_InterfaceIcons.TraitChaotic,
-			RI = TRP3_InterfaceIcons.TraitLawful,
+			LI = TRP3_InterfaceIconIDs.TraitChaotic,
+			RI = TRP3_InterfaceIconIDs.TraitLawful,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_CHASTE,
 			RT = loc.REG_PLAYER_PSYCHO_LUSTFUL,
-			LI = TRP3_InterfaceIcons.TraitChaste,
-			RI = TRP3_InterfaceIcons.TraitLustful,
+			LI = TRP3_InterfaceIconIDs.TraitChaste,
+			RI = TRP3_InterfaceIconIDs.TraitLustful,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_FORGIVING,
 			RT = loc.REG_PLAYER_PSYCHO_VINDICTIVE,
-			LI = TRP3_InterfaceIcons.TraitForgiving,
-			RI = TRP3_InterfaceIcons.TraitVindictive,
+			LI = TRP3_InterfaceIconIDs.TraitForgiving,
+			RI = TRP3_InterfaceIconIDs.TraitVindictive,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_ALTRUISTIC,
 			RT = loc.REG_PLAYER_PSYCHO_SELFISH,
-			LI = TRP3_InterfaceIcons.TraitAltruistic,
-			RI = TRP3_InterfaceIcons.TraitSelfish,
+			LI = TRP3_InterfaceIconIDs.TraitAltruistic,
+			RI = TRP3_InterfaceIconIDs.TraitSelfish,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_TRUTHFUL,
 			RT = loc.REG_PLAYER_PSYCHO_DECEITFUL,
-			LI = TRP3_InterfaceIcons.TraitTruthful,
-			RI = TRP3_InterfaceIcons.TraitDeceitful,
+			LI = TRP3_InterfaceIconIDs.TraitTruthful,
+			RI = TRP3_InterfaceIconIDs.TraitDeceitful,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_GENTLE,
 			RT = loc.REG_PLAYER_PSYCHO_BRUTAL,
-			LI = TRP3_InterfaceIcons.TraitGentle,
-			RI = TRP3_InterfaceIcons.TraitBrutal,
+			LI = TRP3_InterfaceIconIDs.TraitGentle,
+			RI = TRP3_InterfaceIconIDs.TraitBrutal,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_SUPERSTITIOUS,
 			RT = loc.REG_PLAYER_PSYCHO_RATIONAL,
-			LI = TRP3_InterfaceIcons.TraitSuperstitious,
-			RI = TRP3_InterfaceIcons.TraitRational,
+			LI = TRP3_InterfaceIconIDs.TraitSuperstitious,
+			RI = TRP3_InterfaceIconIDs.TraitRational,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_RENEGADE,
 			RT = loc.REG_PLAYER_PSYCHO_PARAGON,
-			LI = TRP3_InterfaceIcons.TraitRenegade,
-			RI = TRP3_InterfaceIcons.TraitParagon,
+			LI = TRP3_InterfaceIconIDs.TraitRenegade,
+			RI = TRP3_InterfaceIconIDs.TraitParagon,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_CAUTIOUS,
 			RT = loc.REG_PLAYER_PSYCHO_IMPULSIVE,
-			LI = TRP3_InterfaceIcons.TraitCautious,
-			RI = TRP3_InterfaceIcons.TraitImpulsive,
+			LI = TRP3_InterfaceIconIDs.TraitCautious,
+			RI = TRP3_InterfaceIconIDs.TraitImpulsive,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_ASCETIC,
 			RT = loc.REG_PLAYER_PSYCHO_BONVIVANT,
-			LI = TRP3_InterfaceIcons.TraitAscetic,
-			RI = TRP3_InterfaceIcons.TraitBonVivant,
+			LI = TRP3_InterfaceIconIDs.TraitAscetic,
+			RI = TRP3_InterfaceIconIDs.TraitBonVivant,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_VALOROUS,
 			RT = loc.REG_PLAYER_PSYCHO_SPINELESS,
-			LI = TRP3_InterfaceIcons.TraitValorous,
-			RI = TRP3_InterfaceIcons.TraitSpineless,
+			LI = TRP3_InterfaceIconIDs.TraitValorous,
+			RI = TRP3_InterfaceIconIDs.TraitSpineless,
 		},
 	};
 
@@ -1314,12 +1314,10 @@ function TRP3_API.register.inits.characteristicsInit()
 		if button == "LeftButton" then
 			showIconBrowser(onPlayerIconSelected, draftData.IC);
 		elseif button == "RightButton" then
-			local icon = draftData.IC or TRP3_InterfaceIcons.ProfileDefault;
-			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
-				description:CreateButton(loc.UI_ICON_COPY, TRP3_API.SetLastCopiedIcon, icon);
-				description:CreateButton(loc.UI_ICON_COPYNAME, function() TRP3_API.popup.showCopyDropdownPopup({icon}); end);
-				description:CreateButton(loc.UI_ICON_PASTE, function() onPlayerIconSelected(TRP3_API.GetLastCopiedIcon()); end);
-			end);
+			local icon = draftData.IC or TRP3_InterfaceIconIDs.ProfileDefault;
+			local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+			handler:SetPasteCallback(function(copiedIcon) onPlayerIconSelected(nil, { id = copiedIcon }); end);
+			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
 		end
 	end);
 	TRP3_RegisterCharact_NamePanel_Edit_CancelButton:SetScript("OnClick", showCharacteristicsTab);
@@ -1427,18 +1425,18 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_FullTitleFieldText:SetText(loc.REG_PLAYER_FULLTITLE);
 
 	TRP3_RegisterCharact_CharactPanel_Container.RegisterTitle:SetText(loc.REG_PLAYER_REGISTER);
-	TRP3_RegisterCharact_CharactPanel_Container.RegisterTitle:SetIconTexture(TRP3_InterfaceIcons.DirectorySection);
+	TRP3_RegisterCharact_CharactPanel_Container.RegisterTitle:SetIconTexture(TRP3_InterfaceIconIDs.DirectorySection);
 	TRP3_RegisterCharact_CharactPanel_Container.MiscTitle:SetText(loc.REG_PLAYER_MORE_INFO);
-	TRP3_RegisterCharact_CharactPanel_Container.MiscTitle:SetIconTexture(TRP3_InterfaceIcons.MiscInfoSection);
+	TRP3_RegisterCharact_CharactPanel_Container.MiscTitle:SetIconTexture(TRP3_InterfaceIconIDs.MiscInfoSection);
 	TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle:SetText(loc.REG_PLAYER_PSYCHO);
-	TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle:SetIconTexture(TRP3_InterfaceIcons.TraitSection);
+	TRP3_RegisterCharact_CharactPanel_Container.TraitsTitle:SetIconTexture(TRP3_InterfaceIconIDs.TraitSection);
 
 	TRP3_RegisterCharact_Edit_CharactPanel_Container.RegisterTitle:SetText(loc.REG_PLAYER_REGISTER);
-	TRP3_RegisterCharact_Edit_CharactPanel_Container.RegisterTitle:SetIconTexture(TRP3_InterfaceIcons.DirectorySection);
+	TRP3_RegisterCharact_Edit_CharactPanel_Container.RegisterTitle:SetIconTexture(TRP3_InterfaceIconIDs.DirectorySection);
 	TRP3_RegisterCharact_Edit_CharactPanel_Container.MiscTitle:SetText(loc.REG_PLAYER_MORE_INFO);
-	TRP3_RegisterCharact_Edit_CharactPanel_Container.MiscTitle:SetIconTexture(TRP3_InterfaceIcons.MiscInfoSection);
+	TRP3_RegisterCharact_Edit_CharactPanel_Container.MiscTitle:SetIconTexture(TRP3_InterfaceIconIDs.MiscInfoSection);
 	TRP3_RegisterCharact_Edit_CharactPanel_Container.TraitsTitle:SetText(loc.REG_PLAYER_PSYCHO);
-	TRP3_RegisterCharact_Edit_CharactPanel_Container.TraitsTitle:SetIconTexture(TRP3_InterfaceIcons.TraitSection);
+	TRP3_RegisterCharact_Edit_CharactPanel_Container.TraitsTitle:SetIconTexture(TRP3_InterfaceIconIDs.TraitSection);
 
 	TRP3_RegisterCharact_Edit_RaceFieldText:SetText(loc.REG_PLAYER_RACE);
 	TRP3_RegisterCharact_Edit_ClassFieldText:SetText(loc.REG_PLAYER_CLASS);
