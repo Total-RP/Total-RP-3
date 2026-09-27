@@ -891,7 +891,7 @@ We strongly recommend that you |cnGREEN_FONT_COLOR:copy the exported data below 
 	UI_ICON_OPENBROWSER = "Open icon browser",
 	UI_ICON_OPTIONS = "Show icon options",
 	UI_ICON_COPY = "Copy icon",
-	UI_ICON_COPYNAME = "Copy icon name",
+	UI_ICON_COPYID = "Copy icon ID",
 	UI_ICON_PASTE = "Paste icon",
 	UI_MUSIC_BROWSER = "Music browser",
 	UI_MUSIC_SELECT = "Select music",
