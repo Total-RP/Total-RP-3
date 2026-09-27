@@ -254,17 +254,23 @@
 					<Anchor point="BOTTOM" y="10"/>
 				</Anchors>
 				<Frames>
-					<Frame parentKey="ScrollBox" inherits="WowScrollBoxList"/>
 					<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
 						<Anchors>
 							<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" x="-12" y="-8"/>
 							<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-12" y="8"/>
 						</Anchors>
 					</EventFrame>
+					<Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="6" y="-4"/>
+							<Anchor point="RIGHT" relativeKey="$parent.ScrollBar" relativePoint="LEFT" x="-4"/>
+							<Anchor point="BOTTOM" x="-10" y="4"/>
+						</Anchors>
+					</Frame>
 					<Frame parentKey="EmptyState" inherits="TRP3_IconBrowserEmptyStateTemplate">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="4" y="-4"/>
-							<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+							<Anchor point="TOPLEFT" relativeKey="$parent.ScrollBox"/>
+							<Anchor point="BOTTOMRIGHT" relativeKey="$parent.ScrollBox"/>
 						</Anchors>
 					</Frame>
 					<Frame parentKey="ProgressOverlay" inherits="TRP3_IconBrowserProgressOverlayTemplate" frameLevel="1000" fixedFrameLevel="true">

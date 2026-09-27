@@ -668,20 +668,9 @@ function TRP3_IconBrowserMixin:OnLoad()
 	local GRID_STRIDE = 7;
 	local GRID_PADDING = 4;
 
-	local scrollBoxAnchorsWithBar = {
-		AnchorUtil.CreateAnchor("TOPLEFT", self.Content, "TOPLEFT", 6, -4),
-		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self.Content, "BOTTOMRIGHT", -10, 4),
-	};
-
-	local scrollBoxAnchorsWithoutBar = {
-		AnchorUtil.CreateAnchor("TOPLEFT", self.Content, "TOPLEFT", 14, -4),
-		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self.Content, "BOTTOMRIGHT", -17, -4),
-	};
-
 	self.Content.ScrollView = CreateScrollBoxListGridView(GRID_STRIDE, GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING);
 	self.Content.ScrollView:SetElementInitializer("TRP3_IconBrowserButtonTemplate", function(button, iconInfo) self:OnIconButtonInitialized(button, iconInfo); end);
 	ScrollUtil.InitScrollBoxListWithScrollBar(self.Content.ScrollBox, self.Content.ScrollBar, self.Content.ScrollView);
-	ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.Content.ScrollBox, self.Content.ScrollBar, scrollBoxAnchorsWithBar, scrollBoxAnchorsWithoutBar);
 	self.Content.ScrollBox:SetDataProvider(CreateIconDataProvider(self.filterModel));
 	self.Content.ProgressOverlay:SetModel(self.filterModel);
 	self.Content.EmptyState:SetModel(self.filterModel);
