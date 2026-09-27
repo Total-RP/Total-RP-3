@@ -264,7 +264,7 @@
 						<Anchors>
 							<Anchor point="TOPLEFT" x="6" y="-4"/>
 							<Anchor point="RIGHT" relativeKey="$parent.ScrollBar" relativePoint="LEFT" x="-4"/>
-							<Anchor point="BOTTOM" x="-10" y="4"/>
+							<Anchor point="BOTTOM" y="4"/>
 						</Anchors>
 					</Frame>
 					<Frame parentKey="EmptyState" inherits="TRP3_IconBrowserEmptyStateTemplate">
