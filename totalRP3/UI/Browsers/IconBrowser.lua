@@ -867,6 +867,27 @@ function TRP3_IconBrowserMixin:SetupFilterDropdown(_dropdown, rootDescription)
 	CreateItemMenu(rootDescription);
 end
 
+TRP3_IconBrowserButtonTooltipMixin = {};
+
+function TRP3_IconBrowserButtonTooltipMixin:Init(owner, iconInfo)
+	self:Reset();
+
+	if not iconInfo then
+		return;
+	end
+
+	self:SetPoint("BOTTOMLEFT", owner, "TOPRIGHT", -4, -4);
+	self.Icon:SetIconTexture(iconInfo.id);
+	self.Name:SetText(iconInfo.name);
+	self.ID:SetText(string.format(L.UI_ICON_BROWSER_ID, tostring(iconInfo.id)));
+	self:Show();
+end
+
+function TRP3_IconBrowserButtonTooltipMixin:Reset()
+	self:ClearAllPoints();
+	self:Hide();
+end
+
 TRP3_IconBrowserButtonMixin = {};
 
 function TRP3_IconBrowserButtonMixin:OnLoad()
@@ -880,22 +901,23 @@ function TRP3_IconBrowserButtonMixin:OnEnter()
 		return;
 	end
 
-	local titleLineIcon = TRP3_MarkupUtil.GenerateIconMarkup(iconInfo.id, { size = 64 });
-	local titleLineText = string.join(" ", titleLineIcon, iconInfo.name);
 
-	TRP3_MainTooltip:SetOwner(self, "ANCHOR_RIGHT");
-	GameTooltip_SetTitle(TRP3_MainTooltip, titleLineText, GREEN_FONT_COLOR, false);
-	TRP3_MainTooltip:Show();
+	local tooltipFrame = self:GetTooltipFrame();
+	tooltipFrame:Init(self, iconInfo);
 end
 
 function TRP3_IconBrowserButtonMixin:OnLeave()
-	TRP3_MainTooltip:Hide();
+	self:GetTooltipFrame():Reset();
 end
 
 ---@param iconInfo TRP3.IconBrowserModelItem
 function TRP3_IconBrowserButtonMixin:Init(iconInfo)
 	self.SelectedTexture:SetShown(iconInfo and iconInfo.selected);
 	LRPM12:SetTextureToIcon(self.Icon, iconInfo and iconInfo.id or TRP3_InterfaceIconIDs.Default);
+end
+
+function TRP3_IconBrowserButtonMixin:GetTooltipFrame()
+	return TRP3_IconBrowserButtonTooltip;
 end
 
 TRP3_IconBrowserEmptyStateMixin = {};

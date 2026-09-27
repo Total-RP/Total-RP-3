@@ -13,6 +13,44 @@
 		</Scripts>
 	</AnimationGroup>
 
+	<Frame name="TRP3_IconBrowserButtonTooltip" mixin="TRP3_IconBrowserButtonTooltipMixin" inherits="ResizeLayoutFrame" parent="UIParent" frameStrata="TOOLTIP" hidden="true">
+		<Size x="1" y="1"/>
+		<KeyValues>
+			<KeyValue key="widthPadding" value="32" type="number"/>
+			<KeyValue key="heightPadding" value="16" type="number"/>
+			<KeyValue key="minimumWidth" value="250" type="number"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture parentKey="Icon" inherits="TRP3_IconTextureTemplate">
+					<Size x="64" y="64"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="8" y="-8"/>
+					</Anchors>
+				</Texture>
+				<FontString parentKey="Name" inherits="GameTooltipHeaderText">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Icon" relativePoint="TOPRIGHT" x="6"/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey="ID" inherits="GameTooltipText">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Name" relativePoint="BOTTOMLEFT" y="-4"/>
+					</Anchors>
+					<Color color="NORMAL_FONT_COLOR"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey="Backdrop" inherits="TRP3_TooltipBackdropTemplate" setAllPoints="true" useParentLevel="true">
+				<KeyValues>
+					<KeyValue key="ignoreInLayout" value="true" type="boolean"/>
+					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+				</KeyValues>
+			</Frame>
+		</Frames>
+	</Frame>
+
 	<CheckButton name="TRP3_IconBrowserButtonTemplate" mixin="TRP3_IconBrowserButtonMixin" virtual="true">
 		<Size x="52" y="52"/>
 		<HitRectInsets left="2" right="2" top="2" bottom="2"/>
@@ -183,6 +221,9 @@
 			</DropdownButton>
 			<EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" autoFocus="false">
 				<Size x="200" y="22"/>
+				<KeyValues>
+					<KeyValue key="instructionText" value="TRP3_L_UI_ICON_BROWSER_SEARCH" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="TOP" y="-30"/>
 					<Anchor point="LEFT" x="20"/>

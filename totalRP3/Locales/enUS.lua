@@ -882,6 +882,8 @@ We strongly recommend that you |cnGREEN_FONT_COLOR:copy the exported data below 
 	UI_BKG_BROWSER = "Background browser",
 	UI_BKG_BUTTON = "Change background",
 	UI_ICON_BROWSER = "Icon browser",
+	UI_ICON_BROWSER_ID = "ID: %s",
+	UI_ICON_BROWSER_SEARCH = "Search by name or ID",
 	UI_ICON_BROWSER_SEARCHING = "Searching...",
 	UI_COMPANION_BROWSER_HELP = "Select a battle pet",
 	UI_COMPANION_BROWSER_RENAME_WARNING = "|cffff0000Warning:|r It is strongly recommended to only link companion profiles to renamed pets.",
