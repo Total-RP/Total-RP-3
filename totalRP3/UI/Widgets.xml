@@ -109,12 +109,7 @@
 				<Anchor point="CENTER" x="14" y="-14"/>
 			</Anchors>
 		</NormalTexture>
-		<PushedTexture file="Interface\Buttons\UI-EmptySlot">
-			<Size x="50" y="50"/>
-			<Anchors>
-				<Anchor point="CENTER" x="0" y="0"/>
-			</Anchors>
-		</PushedTexture>
+		<PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>
 		<DisabledTexture file="Interface\Buttons\UI-EmptySlot-Disabled">
 			<Size x="47" y="47"/>
 			<Anchors>
