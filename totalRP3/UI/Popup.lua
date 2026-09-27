@@ -836,6 +836,7 @@ function TRP3_API.popup.showPopup(popupID, popupPosition, popupArgs)
 			if key == "ESCAPE" then
 				PlaySound(TRP3_InterfaceSounds.PopupClose);
 				popup.frame:SetPropagateKeyboardInput(false);
+				popup.frame:Hide();
 				hidePopups();
 			else
 				popup.frame:SetPropagateKeyboardInput(true);
