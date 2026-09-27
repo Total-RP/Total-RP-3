@@ -99,7 +99,7 @@
 	<Button name="TRP3_IconButton" registerForClicks="LeftButtonUp, RightButtonUp" virtual="true">
 		<Size x="26" y="26"/>
 		<Layers>
-			<Layer level="OVERLAY">
+			<Layer level="ARTWORK" textureSubLevel="-7">
 				<Texture name="$parentIcon" parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark" setAllPoints="true"/>
 			</Layer>
 		</Layers>
