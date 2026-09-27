@@ -13,7 +13,7 @@
 		</Scripts>
 	</AnimationGroup>
 
-	<Frame name="TRP3_IconBrowserButtonTooltip" mixin="TRP3_IconBrowserButtonTooltipMixin" inherits="ResizeLayoutFrame" parent="UIParent" frameStrata="TOOLTIP" hidden="true">
+	<Frame name="TRP3_IconBrowserButtonTooltip" mixin="TRP3_IconBrowserButtonTooltipMixin" inherits="ResizeLayoutFrame" parent="UIParent" frameStrata="TOOLTIP" clampedToScreen="true" hidden="true">
 		<Size x="1" y="1"/>
 		<KeyValues>
 			<KeyValue key="widthPadding" value="32" type="number"/>
