@@ -5,7 +5,7 @@
 
 local SpecHelper = require("SpecHelper");
 
-insulate("RemovePrivateData", function()
+insulate("RemoveUnsharedFields", function()
 	setup(function()
 		-- Only read by the file-level tables in ProfileUtil.lua.
 		_G.TRP3_API = { loc = setmetatable({}, { __index = function(_, key) return key; end }) };
@@ -21,16 +21,24 @@ insulate("RemovePrivateData", function()
 			relation = { ["0123456789ABCDEF"] = "FRIEND" },
 		};
 
-		TRP3_ProfileUtil.RemovePrivateData(profile);
+		TRP3_ProfileUtil.RemoveUnsharedFields(profile);
 
 		assert.is_nil(profile.notes);
 		assert.is_nil(profile.relation);
 	end);
 
-	it("keeps the profile content", function()
+	it("removes fields it does not know about", function()
+		local profile = { profileName = "Main", player = {}, someAddonData = { secret = true } };
+
+		TRP3_ProfileUtil.RemoveUnsharedFields(profile);
+
+		assert.is_nil(profile.someAddonData);
+	end);
+
+	it("keeps the profile name and player data", function()
 		local profile = { profileName = "Main", player = { characteristics = { FN = "Elly" } }, notes = {} };
 
-		TRP3_ProfileUtil.RemovePrivateData(profile);
+		TRP3_ProfileUtil.RemoveUnsharedFields(profile);
 
 		assert.are.same({ profileName = "Main", player = { characteristics = { FN = "Elly" } } }, profile);
 	end);
