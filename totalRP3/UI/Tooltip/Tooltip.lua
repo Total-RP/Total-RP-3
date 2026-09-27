@@ -202,6 +202,11 @@ function TooltipDescription:AddErrorLine(text, wrap, leftOffset)
 	return self:InsertLine(lineDescription);
 end
 
+function TooltipDescription:AddWarningLine(text, wrap, leftOffset)
+	local lineDescription = TRP3_TooltipTemplates.CreateWarningLine(text, wrap, leftOffset);
+	return self:InsertLine(lineDescription);
+end
+
 function TooltipDescription:AddDisabledLine(text, wrap, leftOffset)
 	local lineDescription = TRP3_TooltipTemplates.CreateDisabledLine(text, wrap, leftOffset);
 	return self:InsertLine(lineDescription);

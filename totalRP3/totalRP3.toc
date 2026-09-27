@@ -87,6 +87,7 @@ Core\Events.lua
 Core\Color.lua
 Core\ColorData.lua
 Core\CVarUtil.lua
+Core\SoundUtil.lua
 Core\FunctionUtil.lua
 Core\SortUtil.lua
 Core\StringUtil.lua

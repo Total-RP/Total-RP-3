@@ -814,8 +814,16 @@ local function onMusicEditClicked(button)
 		description:CreateButton(loc.REG_PLAYER_ABOUT_MUSIC_SELECT, onMusicEditSelected, 1);
 		if draftData.MU then
 			description:CreateButton(loc.REG_PLAYER_ABOUT_MUSIC_REMOVE, onMusicEditSelected, 2);
-			description:CreateButton(loc.REG_PLAYER_ABOUT_MUSIC_LISTEN, onMusicEditSelected, 3);
+			local listenButton = description:CreateButton(loc.REG_PLAYER_ABOUT_MUSIC_LISTEN, onMusicEditSelected, 3);
 			description:CreateButton(loc.REG_PLAYER_ABOUT_MUSIC_STOP, onMusicEditSelected, 4);
+
+			local function OnListenButtonTooltip(_tooltipFrame, tooltipDescription)
+				if TRP3_SoundUtil.IsMusicEffectivelyDisabled() then
+					tooltipDescription:AddWarningLine(loc.UI_MUSIC_SETTINGS_WARNING);
+				end
+			end
+
+			TRP3_MenuUtil.SetElementTooltipScript(listenButton, OnListenButtonTooltip);
 		end
 	end);
 end
@@ -979,7 +987,16 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			adapter = function(buttonStructure, unitID)
 				local theme = getUnitIDTheme(unitID);
 				if theme then
-					buttonStructure.tooltipSub = TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TF_CHAR_THEME_PLAY:format(Utils.music.getTitle(theme))) .. "\n" ..  TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_ABOUT_MUSIC_STOP);
+					local lines = {};
+					table.insert(lines, TRP3_API.FormatShortcutWithInstruction("LCLICK", loc.TF_CHAR_THEME_PLAY:format(Utils.music.getTitle(theme))));
+					table.insert(lines, TRP3_API.FormatShortcutWithInstruction("RCLICK", loc.REG_PLAYER_ABOUT_MUSIC_STOP));
+
+					if TRP3_SoundUtil.IsMusicEffectivelyDisabled() then
+						table.insert(lines, " ");
+						table.insert(lines, WARNING_FONT_COLOR:WrapTextInColorCode(loc.UI_MUSIC_SETTINGS_WARNING));
+					end
+
+					buttonStructure.tooltipSub = table.concat(lines, "\n");
 				end
 			end,
 			tooltip = loc.TF_CHAR_THEME,
@@ -1161,6 +1178,11 @@ function TRP3_API.register.inits.aboutInit()
 		configKey = CONFIG_REGISTER_ABOUT_HIGH_CONTRAST,
 	});
 
+	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play.OnTooltipShow = function(_self, description)
+		if TRP3_SoundUtil.IsMusicEffectivelyDisabled() then
+			description:AddWarningLine(loc.UI_MUSIC_SETTINGS_WARNING);
+		end
+	end;
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
 		Utils.music.playMusic(TRP3_RegisterAbout_AboutPanel.musicURL);
 	end);

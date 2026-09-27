@@ -894,6 +894,7 @@ We strongly recommend that you |cnGREEN_FONT_COLOR:copy the exported data below 
 	UI_MUSIC_BROWSER = "Music browser",
 	UI_MUSIC_SELECT = "Select music",
 	UI_MUSIC_DURATION = "Duration",
+	UI_MUSIC_SETTINGS_WARNING = "Your sound settings may prevent this music from playing.",
 	UI_MUSIC_ALTTITLE = "Alternate title",
 	UI_COLOR_BROWSER = "Color browser",
 	UI_COLOR_BROWSER_SELECT = "Select color",

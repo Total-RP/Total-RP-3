@@ -51,6 +51,10 @@ function TRP3_TooltipTemplates.CreateErrorLine(text, wrap, leftOffset)
 	return TRP3_TooltipTemplates.CreateLine(text, RED_FONT_COLOR, wrap, leftOffset);
 end
 
+function TRP3_TooltipTemplates.CreateWarningLine(text, wrap, leftOffset)
+	return TRP3_TooltipTemplates.CreateLine(text, WARNING_FONT_COLOR, wrap, leftOffset);
+end
+
 function TRP3_TooltipTemplates.CreateDisabledLine(text, wrap, leftOffset)
 	return TRP3_TooltipTemplates.CreateLine(text, DISABLED_FONT_COLOR, wrap, leftOffset);
 end
