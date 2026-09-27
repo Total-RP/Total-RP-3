@@ -810,6 +810,12 @@ local function onMusicEditSelected(value)
 end
 
 local function onMusicEditClicked(button)
+	-- Skip the pointless popup if it'd only have one entry.
+	if not draftData.MU then
+		onMusicEditSelected(1);
+		return;
+	end
+
 	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 		description:CreateButton(loc.REG_PLAYER_ABOUT_MUSIC_SELECT, onMusicEditSelected, 1);
 		if draftData.MU then
