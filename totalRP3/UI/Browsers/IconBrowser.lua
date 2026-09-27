@@ -15,7 +15,7 @@ local L = TRP3_API.loc;
 ---@field searched integer
 ---@field total integer
 
----@alias TRP3.IconBrowserSearchPredicate fun(iconIndex: integer, iconInfo: TRP3.IconBrowserModelItem): boolean)
+---@alias TRP3.IconBrowserSearchPredicate fun(iconIndex: integer, iconInfo: TRP3.IconBrowserModelItem): boolean
 
 --- IconBrowserSearchTask is a single-shot object that performs an
 --- asynchronous name-based search against a model to provide a filtered
@@ -30,8 +30,8 @@ local L = TRP3_API.loc;
 ---@field private searched integer
 ---@field private iterator TRP3.IconModelItemIterator
 ---@field private total integer
----@field private step integer
 ---@field private results integer[]
+---@field private budget fun(): boolean
 local IconBrowserSearchTask = {};
 
 ---@param predicate TRP3.IconBrowserSearchPredicate
@@ -46,9 +46,8 @@ function IconBrowserSearchTask:__init(predicate, model)
 	self.searched = 0;
 	self.iterator = model:EnumerateIcons({ reuseTable = {} });
 	self.total = model:GetIconCount();
+	self.budget = TRP3_FunctionUtil.CreateAdaptiveTimeBudgetChecker();
 
-	-- On small data sets do only 5% of the set per tick to avoid UI flicker.
-	self.step = math.min(100, math.ceil(model:GetIconCount() / 20));
 	self.results = {};
 end
 
@@ -90,7 +89,6 @@ function IconBrowserSearchTask:OnUpdate()
 	local results = self.results;
 
 	local visited = self.searched;
-	local limit = math.min(self.searched + self.step, self.total);
 
 	for iconIndex, iconInfo in self.iterator do
 		if predicate(iconIndex, iconInfo) then
@@ -100,7 +98,10 @@ function IconBrowserSearchTask:OnUpdate()
 
 		visited = visited + 1;
 
-		if visited > limit then
+		-- Budget checking is performed last; the iterator is stateful and
+		-- so we need to process it before yielding as re-entry cannot
+		-- resume from the same point.
+		if self.budget() then
 			break;
 		end
 	end
@@ -110,7 +111,7 @@ function IconBrowserSearchTask:OnUpdate()
 		self.callbacks:Fire("OnResultsChanged", self.results);
 	end
 
-	self.searched = limit;
+	self.searched = visited;
 	self.callbacks:Fire("OnProgressChanged", self:GetProgress());
 
 	if self.searched >= self.total then
@@ -414,16 +415,26 @@ function IconBrowserFilterModel:RebuildModel()
 
 	local matcher = self.matcher;
 	local categoryPredicate;
+	local identityPredicate;
 
 	if self:IsFilteringAnyCategory() then
 		categoryPredicate = LRPM12:GenerateIconCategoryPredicate(GetKeysArray(self.searchCategories));
 	end
 
+	if tonumber(self.searchQuery) ~= nil then
+		local searchID = tonumber(self.searchQuery);
+		identityPredicate = function(iconInfo)
+			return iconInfo.id == searchID or iconInfo.file == searchID;
+		end
+	end
+
 	---@param _proxyIndex integer
 	---@param iconInfo TRP3.IconBrowserModelItem
 	local function DoesIconMatchFilters(_proxyIndex, iconInfo)
-		if not matcher:Matches(iconInfo.name) then
-			return false;
+		if identityPredicate == nil or not identityPredicate(iconInfo) then
+			if not matcher:Matches(iconInfo.name) then
+				return false;
+			end
 		end
 
 		-- The category predicate requires the raw index of the icon from the
