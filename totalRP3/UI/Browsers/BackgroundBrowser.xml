@@ -114,7 +114,7 @@
 					<Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="14" y="-4"/>
-							<Anchor point="RIGHT" relativeKey="$parent.ScrollBar" relativePoint="LEFT" y="-10"/>
+							<Anchor point="RIGHT" relativeKey="$parent.ScrollBar" relativePoint="LEFT" x="-10"/>
 							<Anchor point="BOTTOM" y="4"/>
 						</Anchors>
 					</Frame>
