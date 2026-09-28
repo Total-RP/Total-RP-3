@@ -709,6 +709,8 @@ function TRP3_IconBrowserMixin:OnFilterEnterPressed()
 
 	if iconInfo ~= nil then
 		self:SubmitSelectedIcon(iconInfo);
+	else
+		self.SearchBox:ClearFocus();
 	end
 end
 
