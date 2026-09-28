@@ -11,7 +11,7 @@ insulate("DeserializeProfile", function()
 		_G.TRP3_API = { loc = setmetatable({}, { __index = function(_, key) return key; end }) };
 
 		-- Only read by the file-level icon tables in ProfileUtil.lua.
-		_G.TRP3_InterfaceIcons = setmetatable({}, { __index = function(_, key) return key; end });
+		_G.TRP3_InterfaceIconIDs = setmetatable({}, { __index = function(_, key) return key; end });
 		_G.AddOn_TotalRP3 = { Enums = { ROLEPLAY_EXPERIENCE = setmetatable({}, { __index = function(_, key) return key; end }) } };
 
 		SpecHelper.LoadFile("totalRP3/Core/ProfileUtil.lua", "totalRP3", TRP3_API);
