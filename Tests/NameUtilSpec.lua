@@ -135,8 +135,8 @@ insulate("realm-qualified names", function()
 	end);
 
 	it("disallows qualified name conversion from multi-component names", function()
-		assert.are.is_nil(TRP3_NameUtil.GetQualifiedNameFromString("John Stormwind"));
-		assert.are.is_nil(TRP3_NameUtil.GetQualifiedNameFromString("John Stormwind-OtherRealm"));
+		assert.is_nil(TRP3_NameUtil.GetQualifiedNameFromString("John Stormwind"));
+		assert.is_nil(TRP3_NameUtil.GetQualifiedNameFromString("John Stormwind-OtherRealm"));
 	end);
 
 	it("normalizes realm punctuation", function()
