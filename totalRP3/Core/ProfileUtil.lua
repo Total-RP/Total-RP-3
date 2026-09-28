@@ -285,3 +285,14 @@ function TRP3_ProfileUtil.DeserializeProfile(serializedData)
 	local addonVersion, profileID, profileData = unpack(packedData, 1, 3);
 	return addonVersion, profileID, profileData;
 end
+
+-- Everything else on a profile (notes, relations, data stored by other addons) stays with its owner.
+local SharedProfileFields = { profileName = true, player = true };
+
+function TRP3_ProfileUtil.RemoveUnsharedFields(profile)
+	for field in pairs(profile) do
+		if not SharedProfileFields[field] then
+			profile[field] = nil;
+		end
+	end
+end
