@@ -244,49 +244,29 @@ end
 
 function TRP3_ProfileUtil.DeserializeProfile(serializedData)
 	local ok, packedData;
-	local startsWithAceMarker = string.find(serializedData, "^^1");
 	local containsPEMMarker = string.contains(serializedData, "-----BEGIN ");
+	local containsAceMarker = string.contains(serializedData, "^1");
 
-	if startsWithAceMarker or not containsPEMMarker then
-		-- Older export, pasted as is or behind noise such as an invisible character or a code fence.
-		ok, packedData = pcall(TRP3_EncodingUtil.DecodeAce, serializedData);
-
-		if not ok then
-			return nil, L.PR_IMPORT_ERROR_DESERIALIZE_ACE;
-		elseif packedData == nil then
-			return nil, L.PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT;
-		end
-	else
-		-- Current export: a PEM block, which is found anywhere in the text.
-		local decodedLabel, decodedData;
+	if containsPEMMarker then
+		-- Checked first, as PEM headers can hold user text (such as the profile name) that may contain "^1".
+		local decodedLabel, decodedData, decompressedData;
 		ok, decodedLabel, decodedData = pcall(TRP3_EncodingUtil.DecodePEM, serializedData);
+		ok = ok and decodedLabel == "TRP3 PROFILE";
 
-		if not ok then
-			return nil, L.PR_IMPORT_ERROR_PEM_DECODE;
+		if ok then
+			ok, decompressedData = pcall(C_EncodingUtil.DecompressString, decodedData);
 		end
 
-		if decodedLabel == nil then
-			return nil, L.PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT;
-		elseif decodedLabel ~= "TRP3 PROFILE" then
-			return nil, L.PR_IMPORT_ERROR_PEM_LABEL;
+		if ok then
+			ok, packedData = pcall(C_EncodingUtil.DeserializeCBOR, decompressedData);
 		end
-
-		local decompressedData;
-		ok, decompressedData = pcall(C_EncodingUtil.DecompressString, decodedData);
-
-		if not ok then
-			return nil, L.PR_IMPORT_ERROR_DECOMPRESS;
-		end
-
-		ok, packedData = pcall(C_EncodingUtil.DeserializeCBOR, decompressedData);
-
-		if not ok then
-			return nil, L.PR_IMPORT_ERROR_DESERIALIZE_CBOR;
-		end
+	elseif containsAceMarker then
+		-- Older (Ace) exports.
+		ok, packedData = pcall(TRP3_EncodingUtil.DecodeAce, serializedData);
 	end
 
-	if type(packedData) ~= "table" or #packedData < 3 then
-		return nil, L.PR_IMPORT_ERROR_PACKED_DATA_INVALID;
+	if not ok or type(packedData) ~= "table" or #packedData < 3 then
+		return nil, L.PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT;
 	end
 
 	local addonVersion, profileID, profileData = unpack(packedData, 1, 3);

@@ -33,13 +33,6 @@ insulate("DeserializeProfile", function()
 		assert.spy(TRP3_EncodingUtil.DecodePEM).was_not.called();
 	end);
 
-	it("hands an older export to DecodeAce, even with a PEM block pasted after it", function()
-		local export = "^1^T^^\n-----BEGIN TRP3 PROFILE-----\nQUJD\n-----END TRP3 PROFILE-----";
-		TRP3_ProfileUtil.DeserializeProfile(export);
-		assert.spy(TRP3_EncodingUtil.DecodeAce).was.called_with(export);
-		assert.spy(TRP3_EncodingUtil.DecodePEM).was_not.called();
-	end);
-
 	it("hands text with a plain dashed line to DecodeAce", function()
 		TRP3_ProfileUtil.DeserializeProfile("-----\n^1^T^^");
 		assert.spy(TRP3_EncodingUtil.DecodeAce).was.called_with("-----\n^1^T^^");
@@ -68,9 +61,9 @@ insulate("DeserializeProfile", function()
 		assert.are.equal("PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT", reportedError);
 	end);
 
-	it("reports a malformed older export as an Ace error", function()
+	it("reports a malformed older export as unrecognized", function()
 		TRP3_EncodingUtil.DecodeAce = spy.new(function() error("Supplied data is malformed"); end);
 		local _, reportedError = TRP3_ProfileUtil.DeserializeProfile("^1^Tbroken");
-		assert.are.equal("PR_IMPORT_ERROR_DESERIALIZE_ACE", reportedError);
+		assert.are.equal("PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT", reportedError);
 	end);
 end);
