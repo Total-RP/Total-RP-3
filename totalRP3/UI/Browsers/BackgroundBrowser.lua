@@ -318,20 +318,9 @@ function TRP3_BackgroundBrowserMixin:OnLoad()
 	local GRID_STRIDE = 3;
 	local GRID_PADDING = 8;
 
-	local scrollBoxAnchorsWithBar = {
-		AnchorUtil.CreateAnchor("TOPLEFT", self.Content, "TOPLEFT", 14, -4),
-		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self.Content, "BOTTOMRIGHT", -10, 4),
-	};
-
-	local scrollBoxAnchorsWithoutBar = {
-		AnchorUtil.CreateAnchor("TOPLEFT", self.Content, "TOPLEFT", 21, -4),
-		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self.Content, "BOTTOMRIGHT", -17, -4),
-	};
-
 	self.Content.ScrollView = CreateScrollBoxListGridView(GRID_STRIDE, GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING);
 	self.Content.ScrollView:SetElementInitializer("TRP3_BackgroundBrowserButtonTemplate", function(button, imageInfo) self:OnImageButtonInitialized(button, imageInfo); end);
 	ScrollUtil.InitScrollBoxListWithScrollBar(self.Content.ScrollBox, self.Content.ScrollBar, self.Content.ScrollView);
-	ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.Content.ScrollBox, self.Content.ScrollBar, scrollBoxAnchorsWithBar, scrollBoxAnchorsWithoutBar);
 	self.Content.ScrollBox:SetDataProvider(CreateImageDataProvider(self.filterModel));
 	self.Content.EmptyState:SetModel(self.filterModel);
 
