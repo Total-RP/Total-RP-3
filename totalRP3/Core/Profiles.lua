@@ -466,14 +466,7 @@ local function SetupExportFrame(profileID, profile)
 	local frames = TRP3_ProfileCreateDialog.Frames;
 	local exportFrame = frames.ExportFrame;
 	local serial = TRP3_ProfileUtil.SerializeProfile(Globals.version, profileID, profile);
-	local maxSerialSize = 20000;
 	forceClose = true;
-
-	-- Check if the profile data is too large
-	if serial:len() >= maxSerialSize then
-		Utils.message.displayMessage(loc.PR_EXPORT_TOO_LARGE:format(serial:len() / 1000), 2);
-		return;
-	end
 
 	local exportWarningText = loc.PR_EXPORT_WARNING;
 	local copyShortcut = TRP3_API.FormatShortcut("CTRL-C", TRP3_API.ShortcutType.System);
@@ -482,7 +475,7 @@ local function SetupExportFrame(profileID, profile)
 	exportFrame.Content.Warning:SetText(
 		exportWarningText ..
 		"|n|n" .. loc.COPY_DROPDOWN_POPUP_TEXT:format(TRP3_API.Colors.Orange(copyShortcut), TRP3_API.Colors.Orange(pasteShortcut)) ..
-		"|n|n|cnNORMAL_FONT_COLOR:" .. loc.PR_EXPORT_NAME:format("|cnGREEN_FONT_COLOR:" .. profile.profileName .. "|r", serial:len() / 1000) .. "|r"
+		"|n|n|cnNORMAL_FONT_COLOR:" .. loc.PR_EXPORT_NAME:format("|cnGREEN_FONT_COLOR:" .. profile.profileName .. "|r") .. "|r"
 	);
 
 	exportFrame.Title:SetText(loc.PR_EXPORT_PROFILE);
