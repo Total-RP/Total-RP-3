@@ -22,6 +22,7 @@ function TRP3_ScrollingEditBoxMixin:OnLoad()
 	self.EditBox:RegisterCallback("OnTabPressed", self.OnTabPressed, self);
 	self.EditBox:RegisterCallback("OnTextChanged", self.OnTextChanged, self);
 	self.EditBox:HookScript("OnChar", function(_, char) self:OnChar(char); end);
+	self.EditBox:HookScript("OnMouseUp", function() self:OnMouseUp(); end);
 
 	self.FocusCapture:RegisterCallback("OnClick", self.SetFocus, self);
 
@@ -56,7 +57,7 @@ end
 function TRP3_ScrollingEditBoxMixin:OnEditFocusGained()
 	self:TriggerEvent("OnEditFocusGained");
 	if self.highlightOnFocus then
-		RunNextFrame(function() self.EditBox:HighlightText(); end);
+		RunNextFrame(function() self:HighlightAll(); end);
 	end
 end
 
@@ -67,6 +68,12 @@ end
 
 function TRP3_ScrollingEditBoxMixin:OnEscapePressed()
 	self:TriggerEvent("OnEscapePressed");
+end
+
+function TRP3_ScrollingEditBoxMixin:OnMouseUp()
+	if self.highlightOnFocus then
+		self:HighlightAll();
+	end
 end
 
 function TRP3_ScrollingEditBoxMixin:OnTabPressed()
@@ -104,6 +111,12 @@ function TRP3_ScrollingEditBoxMixin:GetInputText()
 		text = string.gsub(text, "||", "|");
 	end
 	return text;
+end
+
+function TRP3_ScrollingEditBoxMixin:HighlightAll()
+	self.EditBox:HighlightText();
+	-- Selecting moves the cursor to the end and scrolls there, so scroll back up.
+	self.ScrollBox:ScrollToBegin();
 end
 
 function TRP3_ScrollingEditBoxMixin:IsReadOnly()
