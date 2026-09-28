@@ -453,6 +453,9 @@ local function onStart()
 	end);
 
 	TRP3_API.RegisterCallback(TRP3_Addon, "ROLEPLAY_STATUS_CHANGED", function() onTargetChanged(); end);
+	TRP3_API.RegisterCallback(TRP3_CVarCache, TRP3_CVarConstants.EnableAllSound, function() onTargetChanged(); end);
+	TRP3_API.RegisterCallback(TRP3_CVarCache, TRP3_CVarConstants.EnableMusic, function() onTargetChanged(); end);
+	TRP3_API.RegisterCallback(TRP3_CVarCache, TRP3_CVarConstants.MusicVolume, function() onTargetChanged(); end);
 
 	RegisterStateDriver(ui_TargetFrame, "forcehide", "[petbattle] 1;0");
 end
