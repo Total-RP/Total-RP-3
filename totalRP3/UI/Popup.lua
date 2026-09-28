@@ -828,14 +828,16 @@ function TRP3_API.popup.showPopup(popupID, popupPosition, popupArgs)
 
 	popup.frame:ClearAllPoints();
 
+	-- Replaces any OnKeyDown on the popup; use disableCloseOnEscape to keep your own.
 	if not popup.disableCloseOnEscape then
-		popup.frame:HookScript("OnKeyDown", function(_, key)
+		popup.frame:SetScript("OnKeyDown", function(_, key)
 			-- Do not steal input if we're in combat.
 			if InCombatLockdown() then return; end
 
 			if key == "ESCAPE" then
 				PlaySound(TRP3_InterfaceSounds.PopupClose);
 				popup.frame:SetPropagateKeyboardInput(false);
+				popup.frame:Hide();
 				hidePopups();
 			else
 				popup.frame:SetPropagateKeyboardInput(true);
