@@ -483,9 +483,9 @@ local function decorateCharacterLine(line, elementData)
 
 			local tooltipLine;
 			if unitRealm then
-				tooltipLine = loc.REG_LIST_CHAR_LINKED_NAME:format(unitName, unitRealm);
+				tooltipLine = " - " .. loc.REG_LIST_CHAR_LINKED_NAME:format(unitName, unitRealm);
 			else
-				tooltipLine = loc.REG_LIST_CHAR_LINKED_NAME_NO_REALM:format(unitName);
+				tooltipLine = " - " .. loc.REG_LIST_CHAR_LINKED_NAME_NO_REALM:format(unitName);
 			end
 			if isIDIgnored(unitID) then
 				tooltipLine = tooltipLine .. " - " .. IGNORED_ICON .. " " .. loc.REG_LIST_IGNORE_TITLE;
