@@ -181,13 +181,17 @@
 					<Anchor point="RIGHT" x="-12"/>
 				</Anchors>
 			</DropdownButton>
-			<EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" autoFocus="false">
+			<EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" mixin="TRP3_IconBrowserSearchBoxMixin" autoFocus="false">
 				<Size x="200" y="22"/>
 				<Anchors>
 					<Anchor point="TOP" y="-30"/>
 					<Anchor point="LEFT" x="20"/>
 					<Anchor point="RIGHT" relativeKey="$parent.FilterDropdown" relativePoint="LEFT" x="-10"/>
 				</Anchors>
+				<Scripts>
+					<OnLoad method="OnLoad"/>
+					<OnTextChanged method="OnTextChanged"/>
+				</Scripts>
 			</EditBox>
 			<Frame parentKey="Content">
 				<Anchors>
