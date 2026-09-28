@@ -473,6 +473,13 @@ stds.wow = {
 			},
 		},
 
+		C_UIFileAsset = {
+			fields = {
+				"GetFileID",
+				"IsKnownFile",
+			},
+		},
+
 		C_UnitAuras = {
 			fields = {
 				"GetAuraDataBySlot",
@@ -776,7 +783,6 @@ stds.wow = {
 		"GetCVar",
 		"GetDefaultLanguage",
 		"GetEditBoxMetatable",
-		"GetFileIDFromPath",
 		"GetFrameMetatable",
 		"GetGameTime",
 		"GetGuildInfo",

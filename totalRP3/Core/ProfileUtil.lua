@@ -177,7 +177,7 @@ function TRP3_API.GetRoleplayExperienceIcon(experience)
 	if iconInfo then
 		if iconInfo.atlas and C_Texture.GetAtlasInfo(iconInfo.atlas) then
 			iconTexture = iconInfo.atlas;
-		elseif iconInfo.file and GetFileIDFromPath(iconInfo.file) then
+		elseif iconInfo.file and C_UIFileAsset.IsKnownFile(iconInfo.file) then
 			iconTexture = iconInfo.file;
 		end
 	end

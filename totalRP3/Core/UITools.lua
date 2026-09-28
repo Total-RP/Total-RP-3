@@ -115,7 +115,7 @@ end
 function TRP3_API.ui.frame.getTiledBackgroundList()
 	local tab = {};
 	for index, info in ipairs(tiledBackgrounds) do
-		if GetFileIDFromPath(info.bgFile) then
+		if C_UIFileAsset.IsKnownFile(info.bgFile) then
 			tinsert(tab, {index, info.bgFile});
 		end
 	end

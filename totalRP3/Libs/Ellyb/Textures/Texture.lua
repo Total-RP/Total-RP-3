@@ -57,9 +57,7 @@ end
 ---@param filePath string @ The file path you want to use for this texture
 function Texture:SetTextureFromFilePath(filePath)
 	private[self].filePath = filePath;
-	if GetFileIDFromPath then
-		self:SetTextureByID(GetFileIDFromPath(filePath));
-	end
+	self:SetTextureByID(C_UIFileAsset.GetFileID(filePath));
 end
 
 --- Get the file path that was used to create this texture.

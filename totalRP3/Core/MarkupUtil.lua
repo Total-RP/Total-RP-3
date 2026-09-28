@@ -30,7 +30,7 @@ function TRP3_MarkupUtil.GenerateIconMarkup(icon, description)
 end
 
 function TRP3_MarkupUtil.GenerateFileMarkup(file, description)
-	local fileID = tonumber(file) or GetFileIDFromPath(file);
+	local fileID = tonumber(file) or C_UIFileAsset.GetFileID(file);
 	local width, height = UnpackMarkupSize(description);
 	local offsetX, offsetY = UnpackMarkupOffset(description);
 	return string.format("|T%s:%d:%d:%d:%d|t", fileID or "", height, width, offsetX, offsetY);
