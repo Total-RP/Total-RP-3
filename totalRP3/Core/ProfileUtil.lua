@@ -244,15 +244,20 @@ end
 
 function TRP3_ProfileUtil.DeserializeProfile(serializedData)
 	local ok, packedData;
+	local startsWithAceMarker = string.find(serializedData, "^^1");
+	local containsPEMMarker = string.contains(serializedData, "-----BEGIN ");
 
-	-- Exports that begin with an "^1" are AceSerializer-based exports.
-	if string.find(serializedData, "^^1") then
-		ok, packedData = pcall(TRP3_API.utils.serial.deserialize, serializedData);
+	if startsWithAceMarker or not containsPEMMarker then
+		-- Older export, pasted as is or behind noise such as an invisible character or a code fence.
+		ok, packedData = pcall(TRP3_EncodingUtil.DecodeAce, serializedData);
 
 		if not ok then
 			return nil, L.PR_IMPORT_ERROR_DESERIALIZE_ACE;
+		elseif packedData == nil then
+			return nil, L.PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT;
 		end
 	else
+		-- Current export: a PEM block, which is found anywhere in the text.
 		local decodedLabel, decodedData;
 		ok, decodedLabel, decodedData = pcall(TRP3_EncodingUtil.DecodePEM, serializedData);
 
@@ -260,7 +265,9 @@ function TRP3_ProfileUtil.DeserializeProfile(serializedData)
 			return nil, L.PR_IMPORT_ERROR_PEM_DECODE;
 		end
 
-		if decodedLabel ~= "TRP3 PROFILE" then
+		if decodedLabel == nil then
+			return nil, L.PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT;
+		elseif decodedLabel ~= "TRP3 PROFILE" then
 			return nil, L.PR_IMPORT_ERROR_PEM_LABEL;
 		end
 

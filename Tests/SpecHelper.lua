@@ -16,6 +16,11 @@ function string.split(separator, value, _limit)
 end
 
 -- luacheck: ignore
+function string.contains(value, substring)
+	return string.find(value, substring, 1, true) ~= nil;
+end
+
+-- luacheck: ignore
 function string.join(separator, ...)
 	return table.concat({...}, separator);
 end
