@@ -134,6 +134,11 @@ insulate("realm-qualified names", function()
 		assert.are.equal("John-Stormwind", TRP3_NameUtil.GetQualifiedNameFromString("john-stormwind"));
 	end);
 
+	it("disallows qualified name conversion from multi-component names", function()
+		assert.are.is_nil(TRP3_NameUtil.GetQualifiedNameFromString("John Stormwind"));
+		assert.are.is_nil(TRP3_NameUtil.GetQualifiedNameFromString("John Stormwind-OtherRealm"));
+	end);
+
 	it("normalizes realm punctuation", function()
 		assert.are.equal("John-StormWind", TRP3_NameUtil.ComposeQualifiedName("John", "Storm-Wind"));
 	end);

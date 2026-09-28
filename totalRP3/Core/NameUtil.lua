@@ -68,6 +68,11 @@ end
 function RealmQualifiedNameImpl.GetQualifiedNameFromString(qualifiedName)
 	local name, realm = RealmQualifiedNameImpl.DecomposeQualifiedName(qualifiedName);
 	name = name and TRP3_StringUtil.CapitalizeWords(name) or nil;
+
+	if name and string.contains(name, SURNAME_SEPARATOR) then
+		return nil;
+	end
+
 	realm = realm and TRP3_StringUtil.CapitalizeWords(realm) or nil;
 	return RealmQualifiedNameImpl.ComposeQualifiedName(name, realm);
 end
