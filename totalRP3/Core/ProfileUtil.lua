@@ -236,6 +236,12 @@ function TRP3_ProfileUtil.GetDefaultProfileName()
 	return name;
 end
 
+-- Maps the TOC's X-GameType to the flavor name shown in exports.
+local FlavorNames = {
+	Standard = "Retail",
+	Camelot = "Forever",
+};
+
 function TRP3_ProfileUtil.SerializeProfile(addonVersion, profileID, profileData)
 	local packedData = { addonVersion, profileID, profileData };
 	local serializedData;
@@ -246,6 +252,7 @@ function TRP3_ProfileUtil.SerializeProfile(addonVersion, profileID, profileData)
 		{ key = "Name", value = profileData.profileName },
 		{ key = "Exported", value = date("%Y-%m-%d %H:%M:%S") },
 		{ key = "AddOn-Version", value = TRP3_API.globals.version_display },
+		{ key = "Flavor", value = FlavorNames[C_AddOns.GetAddOnMetadata("totalRP3", "X-GameType")] },
 	};
 
 	serializedData = TRP3_EncodingUtil.EncodePEM(label, data, headers);
