@@ -1130,7 +1130,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 				end
 			end
 		else
-			ownerFinalName = Ambiguate(ownerID, "short");
+			ownerFinalName = Ambiguate(ownerID, "none");
 		end
 
 		ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
