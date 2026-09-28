@@ -14,6 +14,11 @@ ignore = {
 
 	-- Ignore unused self. This would popup for Mixins and Objects
 	"212/self",
+
+	-- Unused variables beginning with "_" are ignored.
+	"211/^_",
+	"212/^_",
+	"231/^_",
 };
 
 globals = {
