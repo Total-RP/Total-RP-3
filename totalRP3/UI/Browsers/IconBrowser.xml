@@ -54,10 +54,10 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame parentKey="Backdrop" inherits="TRP3_TooltipBackdropTemplate" setAllPoints="true" useParentLevel="true">
+			<Frame parentKey="Backdrop" inherits="NineSlicePanelTemplate" setAllPoints="true" useParentLevel="true">
 				<KeyValues>
 					<KeyValue key="ignoreInLayout" value="true" type="boolean"/>
-					<KeyValue key="backdropBorderColor" value="TRP3_BACKDROP_COLOR_CREAMY_BROWN" type="global"/>
+					<KeyValue key="layoutType" value="TooltipDefaultLayout" type="string"/>
 				</KeyValues>
 			</Frame>
 		</Frames>

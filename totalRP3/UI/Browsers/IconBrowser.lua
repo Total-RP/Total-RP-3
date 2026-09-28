@@ -859,6 +859,7 @@ end
 TRP3_IconBrowserButtonTooltipMixin = {};
 
 function TRP3_IconBrowserButtonTooltipMixin:OnLoad()
+	self.Backdrop:SetCenterColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR:GetRGB());
 	self.LeftClickInstruction:SetText(TRP3_API.FormatShortcutWithInstruction("LCLICK", L.CM_SELECT));
 	self.RightClickInstruction:SetText(TRP3_API.FormatShortcutWithInstruction("RCLICK", L.UI_ICON_OPTIONS));
 end
