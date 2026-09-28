@@ -116,7 +116,7 @@ end
 function TRP3_ScrollingEditBoxMixin:HighlightAll()
 	self.EditBox:HighlightText();
 	-- Selecting moves the cursor to the end and scrolls there, so scroll back up.
-	self.ScrollBox:ScrollToBegin();
+	RunNextFrame(function() self.ScrollBox:ScrollToBegin(); end);
 end
 
 function TRP3_ScrollingEditBoxMixin:IsReadOnly()
