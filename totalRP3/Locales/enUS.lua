@@ -807,7 +807,7 @@ We strongly recommend that you |cnGREEN_FONT_COLOR:copy the exported data below 
 	PR_IMPORT = "Import",
 	PR_IMPORT_ERROR = "Failed to import profile: %s",
 	PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT = "This is not a valid profile export.|n|nMake sure you copied all of it, from |cnGREEN_FONT_COLOR:-----BEGIN|r to |cnGREEN_FONT_COLOR:-----END|r.|n|nOlder exports start with |cnGREEN_FONT_COLOR:^1^T|r instead.",
-	PR_IMPORT_EMPTY_SERIAL = "Empty profile export.",
+	PR_IMPORT_EMPTY_EXPORT = "Empty profile export.",
 	PR_PROFILEMANAGER_IMPORT_WARNING = "Replace all the content of profile %s with this imported data?",
 	PR_PROFILEMANAGER_IMPORT_WARNING_2 = "This profile export was created using |cnGREEN_FONT_COLOR:an older version of TRP3|r.|n|n|cnWARNING_FONT_COLOR:This may cause incompatibilities.|r|n|nReplace all the content of profile %s with this imported data?",
 	PR_PROFILEMANAGER_IMPORT_WARNING_3 = "This profile export was created using |cnGREEN_FONT_COLOR:an older version of TRP3|r.|n|n|cnWARNING_FONT_COLOR:This may cause incompatibilities.|r",

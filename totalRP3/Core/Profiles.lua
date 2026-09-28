@@ -644,15 +644,15 @@ local function EvaluateImportData(forceImport)
 	setTooltipForSameFrame(importButton.WarningIcon);
 	importButton:Enable();
 
-	-- Get import serial code
+	-- Get import export string
 	local code = importFrame.Content.ImportText:GetInputText();
 	if code == "" then
 		importButton:Disable();
-		setTooltipForSameFrame(importButton, "RIGHT", 0, 5, loc.PR_IMPORT, loc.PR_IMPORT_EMPTY_SERIAL);
+		setTooltipForSameFrame(importButton, "RIGHT", 0, 5, loc.PR_IMPORT, loc.PR_IMPORT_EMPTY_EXPORT);
 		return false;
 	end
 
-	-- Deserialize the serial code
+	-- Deserialize the export string
 	local version, data;
 	version, errorOrOldProfileID, data = TRP3_ProfileUtil.DeserializeProfile(string.trim(code));
 	if version == nil or not data then
