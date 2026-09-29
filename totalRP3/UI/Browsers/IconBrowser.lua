@@ -676,7 +676,8 @@ function TRP3_IconBrowserMixin:OnLoad()
 	self.Content.EmptyState:SetModel(self.filterModel);
 
 	self.CloseButton:SetScript("OnClick", function() self:OnCloseButtonClicked(); end);
-	self.SearchBox:HookScript("OnTextChanged", TRP3_FunctionUtil.Debounce(0.25, function() self:OnFilterTextChanged(); end));
+	self.SearchBox:SetTextChangedCallback(TRP3_FunctionUtil.Debounce(0.25, function() self:OnFilterTextChanged(); end));
+	self.SearchBox:SetScript("OnEnterPressed", function() self:OnFilterEnterPressed(); end);
 	self.FilterDropdown:SetIsDefaultCallback(function() return not self.filterModel:IsFilteringAnyCategory(); end);
 	self.FilterDropdown:SetDefaultCallback(function() self:OnFilterDropdownResetClicked(); end);
 	self.FilterDropdown:SetupMenu(function(dropdown, rootDescription) self:SetupFilterDropdown(dropdown, rootDescription); end);
@@ -703,6 +704,16 @@ function TRP3_IconBrowserMixin:OnFilterTextChanged()
 	self.filterModel:SetSearchQuery(self.SearchBox:GetText());
 end
 
+function TRP3_IconBrowserMixin:OnFilterEnterPressed()
+	local iconInfo = TRP3_IconUtil.GetIconInfo(self.SearchBox:GetText());
+
+	if iconInfo ~= nil then
+		self:SubmitSelectedIcon(iconInfo);
+	else
+		self.SearchBox:ClearFocus();
+	end
+end
+
 function TRP3_IconBrowserMixin:OnFilterDropdownResetClicked()
 	self.filterModel:ClearCategoryFilters();
 end
@@ -714,6 +725,10 @@ end
 
 function TRP3_IconBrowserMixin:OnIconButtonClicked(button)
 	local iconInfo = button:GetElementData();
+	self:SubmitSelectedIcon(iconInfo);
+end
+
+function TRP3_IconBrowserMixin:SubmitSelectedIcon(iconInfo)
 	self.callbacks:Fire("OnIconSelected", iconInfo);
 
 	-- Selecting an icon should reset all filtering state. Canceling out of
@@ -959,6 +974,61 @@ function TRP3_IconBrowserProgressOverlayMixin:SetModel(model)
 	self.model = model;
 	self.model.RegisterCallback(self, "OnSearchProgressChanged", OnProgressChanged);
 	self.model.RegisterCallback(self, "OnSearchStateChanged", UpdateVisibilityDeferred);
+end
+
+TRP3_IconBrowserSearchBoxMixin = {};
+
+function TRP3_IconBrowserSearchBoxMixin:OnLoad()
+	SearchBoxTemplate_OnLoad(self);
+
+	self.SearchIconTooltip = TRP3_TooltipUtil.AddTooltipBehavior(self.searchIcon, function(_owner, description) self:PopulateSearchIconTooltip(description); end);
+	self.SearchIconTooltip:SetShowOnEnterPredicate(function(_owner) return self:ShouldShowSearchIconTooltip(); end);
+end
+
+function TRP3_IconBrowserSearchBoxMixin:OnTextChanged()
+	SearchBoxTemplate_OnTextChanged(self);
+
+	self:UpdateSearchIcon();
+	self:NotifyTextChanged(self:GetText());
+end
+
+function TRP3_IconBrowserSearchBoxMixin:HasExactIconInput()
+	return TRP3_IconUtil.IsValidIcon(self:GetText());
+end
+
+function TRP3_IconBrowserSearchBoxMixin:SetTextChangedCallback(callback)
+	self.textChangedCallback = callback;
+end
+
+function TRP3_IconBrowserSearchBoxMixin:NotifyTextChanged(text)
+	if self.textChangedCallback then
+		self.textChangedCallback(text);
+	end
+end
+
+function TRP3_IconBrowserSearchBoxMixin:ShouldShowSearchIconTooltip()
+	return self.searchIcon:IsMouseMotionFocus() and self:HasExactIconInput();
+end
+
+function TRP3_IconBrowserSearchBoxMixin:PopulateSearchIconTooltip(description)
+	local exactMatchAtlas = TRP3_MarkupUtil.GenerateAtlasMarkup("perks-tick", { width = 14, height = 12 });
+	description:AddLine(string.join(" ", exactMatchAtlas, L.UI_ICON_BROWSER_EXACT_MATCH));
+	description:AddBlankLine();
+	description:AddInstructionLine("ENTER", L.UI_ICON_SELECT);
+end
+
+function TRP3_IconBrowserSearchBoxMixin:UpdateSearchIcon()
+	if self:HasExactIconInput() then
+		self.searchIcon:SetAtlas("perks-tick");
+		self.searchIcon:SetSize(14, 12);
+		self.searchIcon:SetPoint("LEFT", 0, 0);
+		self.SearchIconTooltip:SetTooltipShown(self:ShouldShowSearchIconTooltip());
+	else
+		self.searchIcon:SetAtlas("common-search-magnifyingglass");
+		self.searchIcon:SetSize(10, 10);
+		self.searchIcon:SetPoint("LEFT", 1, -1);
+		self.SearchIconTooltip:HideTooltip();
+	end
 end
 
 -- Icon Browser API
