@@ -51,10 +51,15 @@ function TRP3_AutomationUtil.ResetCurrentProfile()
 end
 
 function TRP3_AutomationUtil.GenerateProfileName()
-	local playerName = UnitNameUnmodified("player");
-	local serverName = GetRealmName();
+	local playerName = TRP3_API.globals.player;
+	local profileNamePrefix;
 
-	local profileNamePrefix = string.format("%s - %s", playerName, serverName);
+	if TRP3_NameUtil.ShouldDisplayRealmNames() then
+		profileNamePrefix = string.format("%s - %s", playerName, TRP3_API.globals.player_realm);
+	else
+		profileNamePrefix = playerName;
+	end
+
 	local profiles = tInvert(TRP3_Automation:GetAllProfiles());
 
 	local function IsAvailableProfileName(profileName)

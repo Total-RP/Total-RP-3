@@ -572,66 +572,53 @@ function TRP3_API.register.inits.dataExchangeInit()
 end
 
 function TRP3_API.slash.openProfile(...)
-	local args = {...};
-
 	if commandOpeningTimerHandle then
 		commandOpeningTimerHandle:Cancel();
 	end
 
-	if #args > 1 then
-		displayMessage(loc.PR_SLASH_OPEN_EXAMPLE);
-		return
-	elseif #args == 1 then
-		characterToOpen = table.concat(args, " ");
+	local characterID;
 
-		if UnitExists(characterToOpen:lower()) then
-			-- If we typed a unit token we resolve it
-			characterToOpen = Utils.str.getUnitID(characterToOpen:lower());
-		else
-			-- Capitalizing first letter of the name/realm, just in case someone is lazy.
-			local name, realm = AddOn_Chomp.NameSplitRealm(characterToOpen);
+	if select("#", ...) > 0 then
+		local characterNameOrUnitToken = string.join(" ", ...);
 
-			-- If the split fails due to the user only giving a name then
-			-- neither a name/realm will be returned; in this case we'll
-			-- assume the input is name-only and use the current realm.
-
-			name  = name or characterToOpen;
-			realm = realm or TRP3_API.globals.player_realm_id;
-
-			name  = string.gsub(name, "^%l", string.upper);
-			realm = string.gsub(realm, "^%l", string.upper);
-
-			characterToOpen = AddOn_Chomp.NameMergedRealm(name, realm);
+		if UnitIsPlayer(characterNameOrUnitToken) then
+			characterID = TRP3_NameUtil.GetQualifiedName(characterNameOrUnitToken);
+		elseif not UnitIsVisible(characterNameOrUnitToken) then
+			characterID = TRP3_NameUtil.GetQualifiedNameFromString(characterNameOrUnitToken);
 		end
-
-		-- If no realm has been entered, we use the player's realm automatically
-		if characterToOpen and not characterToOpen:find("-") then
-			characterToOpen = characterToOpen .. "-" .. TRP3_API.globals.player_realm_id;
-		end
-	else
+	elseif UnitIsPlayer("target") then
 		-- If no name is provided, we use the target ID
-		if UnitIsPlayer("target") then
-			characterToOpen = Utils.str.getUnitID("target");
-		else
-			displayMessage(loc.PR_SLASH_OPEN_EXAMPLE);
-			return
-		end
+		characterID = TRP3_NameUtil.GetQualifiedName("target");
 	end
 
-	if not characterToOpen then
-		-- Probably tried to use a unit token in a secret environment, nothing we can do.
+	if not characterID then
+		-- A few possibilities here - the user used a unit token that produced
+		-- secret values, or the user is on a server that applies strict rules
+		-- to qualified name construction (eg. requires "Full Name").
+		--
+		-- Assume the bad input case and show the help text; a user can't
+		-- meaningfully know what a secret value is all about.
+
+		if TRP3_NameUtil.ShouldDisplayRealmNames() then
+			displayMessage(loc.PR_SLASH_OPEN_EXAMPLE);
+		else
+			displayMessage(loc.PR_SLASH_OPEN_REGIONAL_EXAMPLE);
+		end
+
 		return;
 	end
 
+	characterToOpen = characterID;
 	sendQuery(characterToOpen);
 	TRP3_API.r.sendMSPQuery(characterToOpen);
+
 	-- If we already have a profile for that user in the registry, we open it and reset the name (so it doesn't try to open again afterwards)
 	if characterToOpen == TRP3_API.globals.player_id or (isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen)) then
 		TRP3_API.navigation.openMainFrame();
 		TRP3_API.register.openPageByUnitID(characterToOpen);
 		characterToOpen = "";
 	else
-		displayMessage(loc.PR_SLASH_OPEN_WAITING);
+		displayMessage(string.format(loc.PR_SLASH_OPEN_WAITING, characterID));
 
 		-- If after 1 minute they didn't reply, abort
 		commandOpeningTimerHandle = C_Timer.NewTimer(60, function()

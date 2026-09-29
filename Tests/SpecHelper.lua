@@ -6,6 +6,19 @@
 
 UNKNOWNOBJECT = "Unknown";
 
+Constants = {};
+
+Constants.CharacterNameSeparatorConsts = {
+	CHARACTERNAME_REALMNAME_SEPARATOR = "-",
+	CHARACTERNAME_SURNAME_SEPARATOR = " ",
+};
+
+C_Intl = {};
+
+function C_Intl.ToUpper(str)
+	return string.upper(str);
+end
+
 -- luacheck: ignore
 function string.split(separator, value, _limit)
 	local separatorStart, separatorEnd = string.find(value, separator, 1, true);
