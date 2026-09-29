@@ -660,8 +660,8 @@ local function EvaluateImportData(forceImport)
 	end
 
 	-- Deserialize the export string
-	local version, data;
-	version, errorOrOldProfileID, data = TRP3_ProfileUtil.DeserializeProfile(string.trim(code));
+	local version, data, flavor;
+	version, errorOrOldProfileID, data, flavor = TRP3_ProfileUtil.DeserializeProfile(string.trim(code));
 	if version == nil or not data then
 		importButton:Disable();
 		setTooltipForSameFrame(importButton, "RIGHT", 0, 5, loc.PR_IMPORT, errorOrOldProfileID);
@@ -675,6 +675,11 @@ local function EvaluateImportData(forceImport)
 		-- Export came from a different TRP version!
 		importButton.WarningIcon:Show();
 		setTooltipAll(importButton.WarningIcon, "RIGHT", 0, 5, "Warning", loc.PR_PROFILEMANAGER_IMPORT_WARNING_3);
+		valid = false;
+	elseif flavor ~= TRP3_ProfileUtil.GetFlavor() then
+		-- Export came from a different WoW flavor!
+		importButton.WarningIcon:Show();
+		setTooltipAll(importButton.WarningIcon, "RIGHT", 0, 5, "Warning", loc.PR_PROFILEMANAGER_IMPORT_WARNING_FLAVOR);
 		valid = false;
 	end
 

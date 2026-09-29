@@ -813,6 +813,7 @@ We strongly recommend that you |cnGREEN_FONT_COLOR:copy the exported data below 
 	PR_PROFILEMANAGER_IMPORT_WARNING = "Replace all the content of profile %s with this imported data?",
 	PR_PROFILEMANAGER_IMPORT_WARNING_2 = "This profile export was created using |cnGREEN_FONT_COLOR:an older version of TRP3|r.|n|n|cnWARNING_FONT_COLOR:This may cause incompatibilities.|r|n|nReplace all the content of profile %s with this imported data?",
 	PR_PROFILEMANAGER_IMPORT_WARNING_3 = "This profile export was created using |cnGREEN_FONT_COLOR:an older version of TRP3|r.|n|n|cnWARNING_FONT_COLOR:This may cause incompatibilities.|r",
+	PR_PROFILEMANAGER_IMPORT_WARNING_FLAVOR = "This profile export was created in another WoW flavor.|n|n|cnWARNING_FONT_COLOR:This may cause incompatibilities.|r",
 	PR_SLASH_SWITCH_HELP = "Switch to another profile by its name.",
 	PR_SLASH_EXAMPLE = "Usage: |cnGREEN_FONT_COLOR:/trp3 profile Millidan Foamrage|r to switch to Millidan Foamrage's profile.",
 	PR_SLASH_NOT_FOUND = "|cnWARNING_FONT_COLOR:Could not find a profile named |cnGREEN_FONT_COLOR:%s|r.|r",
