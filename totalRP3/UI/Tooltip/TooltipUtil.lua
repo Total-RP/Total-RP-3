@@ -116,6 +116,99 @@ function TRP3_TooltipUtil.IsOwned(tooltip, owner)
 	return tooltip:GetOwner() == owner;
 end
 
+---@class TRP3.TooltipBehavior
+---@field private owner Region
+---@field private generator fun(owner: Region, description: table)
+---@field private showOnEnterPredicate (fun(owner: Region): boolean)?
+---@field private tooltipFrame GameTooltip
+---@field private tooltipDescription table
+TRP3_TooltipBehavior = {};
+
+function TRP3_TooltipBehavior:__init(owner, generator)
+	self.owner = owner;
+	self.generator = generator;
+	self.showOnEnterPredicate = nil;
+	self.tooltipFrame = TRP3_MainTooltip;
+	self.tooltipDescription = nil;
+end
+
+function TRP3_TooltipBehavior:OnEnter(_region, _isFromMouseMotion)
+	if self:ShouldShowOnEnter() then
+		self:ShowTooltip();
+	end
+end
+
+function TRP3_TooltipBehavior:OnLeave(_region, _isFromMouseMotion)
+	self:HideTooltip();
+end
+
+function TRP3_TooltipBehavior:GetOwner()
+	return self.owner;
+end
+
+function TRP3_TooltipBehavior:GetTooltipFrame()
+	return self.tooltipFrame;
+end
+
+---@param frame GameTooltip
+function TRP3_TooltipBehavior:SetTooltipFrame(frame)
+	self.tooltipFrame = frame;
+end
+
+function TRP3_TooltipBehavior:SetShowOnEnterPredicate(predicate)
+	self.showOnEnterPredicate = predicate;
+end
+
+function TRP3_TooltipBehavior:ShouldShowOnEnter()
+	return self.showOnEnterPredicate == nil or self.showOnEnterPredicate(self.owner);
+end
+
+function TRP3_TooltipBehavior:IsTooltipShown()
+	return TRP3_TooltipUtil.IsOwned(self.tooltipFrame, self.owner);
+end
+
+function TRP3_TooltipBehavior:GenerateTooltip()
+	local description = TRP3_Tooltip.CreateTooltipDescription(self.owner);
+	TRP3_Tooltip.PopulateTooltipDescription(self.generator, self.owner, description);
+	return description;
+end
+
+function TRP3_TooltipBehavior:ShowTooltip()
+	self.tooltipDescription = self:GenerateTooltip();
+	TRP3_Tooltip.ProcessTooltipDescription(self.tooltipFrame, self.tooltipDescription);
+end
+
+function TRP3_TooltipBehavior:RefreshTooltip()
+	if self:IsTooltipShown() then
+		TRP3_Tooltip.ProcessTooltipDescription(self.tooltipFrame, self.tooltipDescription);
+	end
+end
+
+function TRP3_TooltipBehavior:HideTooltip()
+	if self:IsTooltipShown() then
+		self.tooltipDescription = nil;
+		self.tooltipFrame:Hide();
+	end
+end
+
+function TRP3_TooltipBehavior:SetTooltipShown(shown)
+	if shown then
+		self:ShowTooltip();
+	else
+		self:HideTooltip();
+	end
+end
+
+function TRP3_TooltipUtil.AddTooltipBehavior(owner, generator)
+	local behavior = TRP3_API.AllocateObject(TRP3_TooltipBehavior);
+
+	behavior:__init(owner, generator);
+	owner:HookScript("OnEnter", GenerateClosure(behavior.OnEnter, behavior));
+	owner:HookScript("OnLeave", GenerateClosure(behavior.OnLeave, behavior));
+
+	return behavior;
+end
+
 ---@class TRP3_TooltipUtil.LineOptions
 ---@field color ColorMixin? The color to apply to the line.
 ---@field wrap boolean? If true, automatically wrap text on the line.

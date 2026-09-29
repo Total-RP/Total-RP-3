@@ -14,6 +14,19 @@ function TRP3_MenuUtil.SetElementTooltip(elementDescription, tooltipText)
 	elementDescription:SetTooltip(OnTooltipShow);
 end
 
+function TRP3_MenuUtil.SetElementTooltipScript(elementDescription, tooltipGenerator)
+	local function OnEnter(frame)
+		TRP3_TooltipUtil.ShowTooltip(frame, tooltipGenerator);
+	end
+
+	local function OnLeave(frame)
+		TRP3_TooltipUtil.HideTooltip(frame);
+	end
+
+	elementDescription:SetOnEnter(OnEnter);
+	elementDescription:SetOnLeave(OnLeave);
+end
+
 function TRP3_MenuUtil.AttachTexture(elementDescription, texture)
 	local function Initializer(button)
 		local textureObject = button:AttachTexture();

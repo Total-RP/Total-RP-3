@@ -521,7 +521,7 @@
 									</Layer>
 								</Layers>
 								<Frames>
-									<Button name="TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play" inherits="TRP3_CommonButton">
+									<Button name="TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play" inherits="TRP3_CommonButton, TRP3_TooltipScriptTemplate">
 										<Size x="70" y="22"/>
 										<Anchors>
 											<Anchor point="BOTTOMLEFT" x="20" y="8"/>

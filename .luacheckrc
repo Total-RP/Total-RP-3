@@ -634,6 +634,12 @@ stds.wow = {
 			}
 		},
 
+		MathUtil = {
+			fields = {
+				"ApproxZero",
+			},
+		},
+
 		Menu = {
 			fields = {
 				"ModifyMenu",
@@ -863,6 +869,7 @@ stds.wow = {
 		"ScrollingEdit_OnLoad",
 		"ScrollingEdit_OnTextChanged",
 		"scrubsecretvalues",
+		"SearchBoxTemplate_OnLoad",
 		"SearchBoxTemplate_OnTextChanged",
 		"SecondsFormatter",
 		"SecondsFormatterMixin",

@@ -64,6 +64,11 @@ function TRP3_MusicBrowserListElementMixin:OnTooltipShow(description)
 	description:AddBlankLine();
 	description:AddInstructionLine("LCLICK", L.REG_PLAYER_ABOUT_MUSIC_SELECT);
 	description:AddInstructionLine("RCLICK", L.REG_PLAYER_ABOUT_MUSIC_LISTEN);
+
+	if TRP3_SoundUtil.IsMusicEffectivelyDisabled() then
+		description:AddBlankLine();
+		description:AddWarningLine(L.UI_MUSIC_SETTINGS_WARNING);
+	end
 end
 
 function TRP3_MusicBrowserListElementMixin:Init(musicInfo)
