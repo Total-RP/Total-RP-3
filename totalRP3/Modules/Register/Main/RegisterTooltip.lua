@@ -139,14 +139,6 @@ function TRP3_API.ui.tooltip.setTooltipDefaultAnchor(tooltip, parent)
 	GameTooltip_SetDefaultAnchor(tooltip, parent);
 end
 
-function TRP3_API.ui.tooltip.shouldCropTexts()
-	if not registerTooltipModuleIsEnabled then
-		return true;
-	else
-		return getConfigValue(ConfigKeys.CROP_TEXT);
-	end
-end
-
 local function showIcons()
 	return getConfigValue(ConfigKeys.CHARACT_ICONS);
 end
@@ -588,11 +580,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 
 
 	local completeName = getCompleteName(info.characteristics or {}, targetName, not showTitle());
-
-	if getConfigValue(ConfigKeys.CROP_TEXT) then
-		completeName = crop(completeName, TRP3_TooltipCroppingConstants.Name);
-	end
-
+	completeName = crop(completeName, TRP3_TooltipCroppingConstants.Name);
 	completeName = color:WrapTextInColorCode(completeName);
 
 	-- OOC
@@ -652,11 +640,8 @@ local function writeTooltipForCharacter(targetID, targetType)
 		end
 
 		if fullTitle and fullTitle ~= "" then
-			if getConfigValue(ConfigKeys.CROP_TEXT) then
-				fullTitle = string.gsub(fullTitle, "%s+", " ");
-				fullTitle = crop(fullTitle, TRP3_TooltipCroppingConstants.Title);
-			end
-
+			fullTitle = string.gsub(fullTitle, "%s+", " ");
+			fullTitle = crop(fullTitle, TRP3_TooltipCroppingConstants.Title);
 			tooltipBuilder:AddLine(strconcat("< ", fullTitle, " >"), colors.TITLE, getSubLineFontSize(), true);
 		end
 	end
@@ -673,14 +658,10 @@ local function writeTooltipForCharacter(targetID, targetType)
 		local race = UnitRace(targetType);
 		local class = localizedClass;
 		if info.characteristics and info.characteristics.RA and info.characteristics.RA ~= "" then
-			race = info.characteristics.RA;
+			race = crop(info.characteristics.RA, TRP3_TooltipCroppingConstants.Race);
 		end
 		if info.characteristics and info.characteristics.CL and info.characteristics.CL ~= "" then
-			class = info.characteristics.CL;
-		end
-		if getConfigValue(ConfigKeys.CROP_TEXT) then
-			race = crop(race, TRP3_TooltipCroppingConstants.Race);
-			class = crop(class, TRP3_TooltipCroppingConstants.Class);
+			class = crop(info.characteristics.CL, TRP3_TooltipCroppingConstants.Class);
 		end
 		lineLeft = string.trim(strconcat(race, " ", color:WrapTextInColorCode(class)));
 		lineRight = loc.REG_TT_LEVEL:format(getLevelIconOrText(targetType), getFactionIcon(targetType));
@@ -879,10 +860,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 				name = getCompleteName(targetInfo.characteristics or {}, name, true);
 			end
 
-			if getConfigValue(ConfigKeys.CROP_TEXT) then
-				name = crop(name, TRP3_TooltipCroppingConstants.Name);
-			end
-
+			name = crop(name, TRP3_TooltipCroppingConstants.Name);
 			name = targetClassColor:WrapTextInColorCode(name);
 		end
 		tooltipBuilder:AddLine(loc.REG_TT_TARGET:format(name), colors.MAIN, getSubLineFontSize());
@@ -1069,11 +1047,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 	-- Icon and name
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local petName = info.NA or targetName or UNKNOWN;
-
-	if getConfigValue(ConfigKeys.CROP_TEXT) then
-		petName = crop(petName, TRP3_TooltipCroppingConstants.Name);
-	end
+	local petName = crop(info.NA or targetName or UNKNOWN, TRP3_TooltipCroppingConstants.Name);
 
 	local companionCustomColor = info.NH and TRP3_API.CreateColorFromHexString(info.NH) or TRP3_API.Colors.White
 	companionCustomColor = TRP3_API.GenerateReadableColor(companionCustomColor, TRP3_API.Colors.Black);
@@ -1096,11 +1070,8 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 			fullTitle = strconcat("< ", info.TI, " >");
 		end
 		if fullTitle and fullTitle ~= "" then
-
-			if getConfigValue(ConfigKeys.CROP_TEXT) then
-				fullTitle = string.gsub(fullTitle, "%s+", " ");
-				fullTitle = crop(fullTitle, TRP3_TooltipCroppingConstants.Title);
-			end
+			fullTitle = string.gsub(fullTitle, "%s+", " ");
+			fullTitle = crop(fullTitle, TRP3_TooltipCroppingConstants.Title);
 			tooltipBuilder:AddLine(fullTitle, colors.TITLE, getSubLineFontSize(), true);
 		end
 	end
@@ -1118,10 +1089,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 			local ownerInfo = getCharacterInfoTab(ownerID);
 			if ownerInfo.characteristics then
 				ownerFinalName = getCompleteName(ownerInfo.characteristics, ownerFinalName, true);
-
-				if getConfigValue(ConfigKeys.CROP_TEXT) then
-					ownerFinalName = crop(ownerFinalName, TRP3_TooltipCroppingConstants.Name);
-				end
+				ownerFinalName = crop(ownerFinalName, TRP3_TooltipCroppingConstants.Name);
 
 				if getConfigValue(ConfigKeys.CHARACT_COLOR) and ownerInfo.characteristics.CH then
 					local customColor = TRP3_API.CreateColorFromHexString(ownerInfo.characteristics.CH);
@@ -1232,12 +1200,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	-- Icon and name
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local mountCustomName = info.NA
-
-	if getConfigValue(ConfigKeys.CROP_TEXT) then
-		mountCustomName = crop(mountCustomName, TRP3_TooltipCroppingConstants.Name);
-	end
-
+	local mountCustomName = crop(info.NA, TRP3_TooltipCroppingConstants.Name);
 	local mountCustomColor = info.NH and TRP3_API.CreateColorFromHexString(info.NH) or TRP3_API.Colors.White
 	mountCustomColor = TRP3_API.GenerateReadableColor(mountCustomColor, TRP3_API.Colors.Black);
 	tooltipCompanionBuilder:AddLine(mountCustomColor:WrapTextInColorCode((mountCustomName or mountName)), colors.MAIN, getMainLineFontSize());
@@ -1259,10 +1222,8 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 			fullTitle = strconcat("< ", info.TI, " >");
 		end
 		if fullTitle and fullTitle ~= "" then
-			if getConfigValue(ConfigKeys.CROP_TEXT) then
-				fullTitle = string.gsub(fullTitle, "%s+", " ");
-				fullTitle = crop(fullTitle, TRP3_TooltipCroppingConstants.Title);
-			end
+			fullTitle = string.gsub(fullTitle, "%s+", " ");
+			fullTitle = crop(fullTitle, TRP3_TooltipCroppingConstants.Title);
 			tooltipCompanionBuilder:AddLine(fullTitle, colors.TITLE, getSubLineFontSize(), true);
 		end
 	end
@@ -1602,7 +1563,6 @@ local function onModuleInit()
 	registerConfigKey(ConfigKeys.CHARACT_COMBAT, false);
 	registerConfigKey(ConfigKeys.HIDE_IN_INSTANCE, false);
 	registerConfigKey(ConfigKeys.CHARACT_COLOR, true);
-	registerConfigKey(ConfigKeys.CROP_TEXT, true);
 	registerConfigKey(ConfigKeys.CHARACT_ANCHORED_FRAME, "GameTooltip");
 	registerConfigKey(ConfigKeys.CHARACT_ANCHOR, "ANCHOR_TOPRIGHT");
 	registerConfigKey(ConfigKeys.CHARACT_HIDE_ORIGINAL, true);
@@ -1714,12 +1674,6 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_COLOR,
 				configKey = ConfigKeys.CHARACT_COLOR,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_TOOLTIP_CROP_TEXT,
-				configKey = ConfigKeys.CROP_TEXT,
-				help = loc.CO_TOOLTIP_CROP_TEXT_TT
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",

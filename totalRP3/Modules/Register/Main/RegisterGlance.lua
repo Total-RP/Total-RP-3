@@ -13,7 +13,6 @@ local getIcon, tableRemove = Utils.str.icon, Utils.table.remove;
 local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.toast;
 local unitIDIsFilteredForMatureContent;
 local crop = TRP3_API.utils.str.crop;
-local shouldCropTexts = TRP3_API.ui.tooltip.shouldCropTexts;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 -- CONSTANTS
@@ -732,7 +731,7 @@ local function displayGlanceSlots()
 				end
 				local TTText = glance.TX;
 				local glanceTitle = glance.TI or "...";
-				if not isCurrentMine and shouldCropTexts() then
+				if not isCurrentMine then
 					TTText = crop(TTText, GLANCE_TOOLTIP_CROP);
 					glanceTitle = crop(glanceTitle, GLANCE_TITLE_CROP);
 				end
