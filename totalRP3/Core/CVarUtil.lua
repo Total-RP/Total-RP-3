@@ -4,10 +4,13 @@
 TRP3_CVarConstants = {
 	ChatClassColorOverride = "chatClassColorOverride",
 	ColorblindMode = "colorblindMode",
-	NamePlateSize = "nameplateSize",
+	EnableAllSound = "Sound_EnableAllSound",
+	EnableMusic = "Sound_EnableMusic",
+	MusicVolume = "Sound_MusicVolume",
 	NamePlateShowFriendlyNPCs = "nameplateShowFriendlyNpcs",
 	NamePlateShowFriendlyPlayers = "nameplateShowFriendlyPlayers",
 	NamePlateShowOnlyNameForFriendlyPlayerUnits = "nameplateShowOnlyNameForFriendlyPlayerUnits",
+	NamePlateSize = "nameplateSize",
 	ProfanityFilter = "profanityFilter",
 };
 

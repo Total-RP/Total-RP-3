@@ -625,6 +625,12 @@ stds.wow = {
 			}
 		},
 
+		MathUtil = {
+			fields = {
+				"ApproxZero",
+			},
+		},
+
 		Menu = {
 			fields = {
 				"ModifyMenu",
