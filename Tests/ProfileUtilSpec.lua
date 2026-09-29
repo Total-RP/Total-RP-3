@@ -19,6 +19,10 @@ insulate("DeserializeProfile", function()
 
 	before_each(function()
 		_G.TRP3_EncodingUtil = { DecodeAce = spy.new(function() end), DecodePEM = spy.new(function() end) };
+		_G.C_EncodingUtil = {
+			DecompressString = function(data) return data; end,
+			DeserializeCBOR = function() return { 166, "id", {} }; end,
+		};
 	end);
 
 	it("hands an older export to DecodeAce", function()
@@ -65,5 +69,17 @@ insulate("DeserializeProfile", function()
 		TRP3_EncodingUtil.DecodeAce = spy.new(function() error("Supplied data is malformed"); end);
 		local _, reportedError = TRP3_ProfileUtil.DeserializeProfile("^1^Tbroken");
 		assert.are.equal("PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT", reportedError);
+	end);
+
+	it("returns the flavor from the PEM headers", function()
+		TRP3_EncodingUtil.DecodePEM = function() return "TRP3 PROFILE", "data", { Flavor = "Forever" }; end;
+		local _, _, _, flavor = TRP3_ProfileUtil.DeserializeProfile("-----BEGIN TRP3 PROFILE-----");
+		assert.are.equal("Forever", flavor);
+	end);
+
+	it("assumes Retail when the export has no flavor", function()
+		TRP3_EncodingUtil.DecodePEM = function() return "TRP3 PROFILE", "data", {}; end;
+		local _, _, _, flavor = TRP3_ProfileUtil.DeserializeProfile("-----BEGIN TRP3 PROFILE-----");
+		assert.are.equal("Retail", flavor);
 	end);
 end);

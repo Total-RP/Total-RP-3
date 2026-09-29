@@ -232,6 +232,10 @@ local FlavorNames = {
 	Camelot = "Forever",
 };
 
+function TRP3_ProfileUtil.GetFlavor()
+	return FlavorNames[C_AddOns.GetAddOnMetadata("totalRP3", "X-GameType")];
+end
+
 function TRP3_ProfileUtil.SerializeProfile(addonVersion, profileID, profileData)
 	local packedData = { addonVersion, profileID, profileData };
 	local serializedData;
@@ -242,7 +246,7 @@ function TRP3_ProfileUtil.SerializeProfile(addonVersion, profileID, profileData)
 		{ key = "Name", value = profileData.profileName },
 		{ key = "Exported", value = date("%Y-%m-%d %H:%M:%S") },
 		{ key = "AddOn-Version", value = TRP3_API.globals.version_display },
-		{ key = "Flavor", value = FlavorNames[C_AddOns.GetAddOnMetadata("totalRP3", "X-GameType")] },
+		{ key = "Flavor", value = TRP3_ProfileUtil.GetFlavor() },
 	};
 
 	serializedData = TRP3_EncodingUtil.EncodePEM(label, data, headers);
@@ -251,16 +255,18 @@ end
 
 function TRP3_ProfileUtil.DeserializeProfile(serializedData)
 	local ok, packedData;
+	local flavor = "Retail"; -- Exports without a flavor predate it and (probably) came from Retail.
 	local containsPEMMarker = string.contains(serializedData, "-----BEGIN ");
 	local containsAceMarker = string.contains(serializedData, "^1");
 
 	if containsPEMMarker then
 		-- Checked first, as PEM headers can hold user text (such as the profile name) that may contain "^1".
-		local decodedLabel, decodedData, decompressedData;
-		ok, decodedLabel, decodedData = pcall(TRP3_EncodingUtil.DecodePEM, serializedData);
+		local decodedLabel, decodedData, decodedHeaders, decompressedData;
+		ok, decodedLabel, decodedData, decodedHeaders = pcall(TRP3_EncodingUtil.DecodePEM, serializedData);
 		ok = ok and decodedLabel == "TRP3 PROFILE";
 
 		if ok then
+			flavor = decodedHeaders.Flavor or flavor;
 			ok, decompressedData = pcall(C_EncodingUtil.DecompressString, decodedData);
 		end
 
@@ -277,5 +283,5 @@ function TRP3_ProfileUtil.DeserializeProfile(serializedData)
 	end
 
 	local addonVersion, profileID, profileData = unpack(packedData, 1, 3);
-	return addonVersion, profileID, profileData;
+	return addonVersion, profileID, profileData, flavor;
 end
