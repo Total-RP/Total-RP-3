@@ -13,6 +13,59 @@
 		</Scripts>
 	</AnimationGroup>
 
+	<Frame name="TRP3_IconBrowserButtonTooltip" mixin="TRP3_IconBrowserButtonTooltipMixin" inherits="ResizeLayoutFrame" parent="UIParent" frameStrata="TOOLTIP" clampedToScreen="true" hidden="true">
+		<Size x="1" y="1"/>
+		<KeyValues>
+			<KeyValue key="widthPadding" value="32" type="number"/>
+			<KeyValue key="heightPadding" value="16" type="number"/>
+			<KeyValue key="minimumWidth" value="250" type="number"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture parentKey="Icon" inherits="TRP3_IconTextureTemplate">
+					<Size x="64" y="64"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="8" y="-8"/>
+					</Anchors>
+				</Texture>
+				<FontString parentKey="Name" inherits="GameTooltipHeaderText">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Icon" relativePoint="TOPRIGHT" x="6"/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey="ID" inherits="GameTooltipText">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Name" relativePoint="BOTTOMLEFT" y="-2"/>
+					</Anchors>
+					<Color color="NORMAL_FONT_COLOR"/>
+				</FontString>
+				<FontString parentKey="LeftClickInstruction" inherits="GameTooltipText">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.ID" relativePoint="BOTTOMLEFT" y="-6"/>
+					</Anchors>
+					<Color color="GREEN_FONT_COLOR"/>
+				</FontString>
+				<FontString parentKey="RightClickInstruction" inherits="GameTooltipText">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.LeftClickInstruction" relativePoint="BOTTOMLEFT" y="-2"/>
+					</Anchors>
+					<Color color="GREEN_FONT_COLOR"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey="Backdrop" inherits="NineSlicePanelTemplate" setAllPoints="true" useParentLevel="true">
+				<KeyValues>
+					<KeyValue key="ignoreInLayout" value="true" type="boolean"/>
+					<KeyValue key="layoutType" value="TooltipDefaultLayout" type="string"/>
+				</KeyValues>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
+	</Frame>
+
 	<CheckButton name="TRP3_IconBrowserButtonTemplate" mixin="TRP3_IconBrowserButtonMixin" virtual="true">
 		<Size x="52" y="52"/>
 		<HitRectInsets left="2" right="2" top="2" bottom="2"/>
@@ -55,6 +108,7 @@
 			<OnLoad method="OnLoad"/>
 			<OnEnter method="OnEnter"/>
 			<OnLeave method="OnLeave"/>
+			<OnClick method="OnClick"/>
 		</Scripts>
 	</CheckButton>
 
@@ -183,6 +237,9 @@
 			</DropdownButton>
 			<EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" mixin="TRP3_IconBrowserSearchBoxMixin" autoFocus="false">
 				<Size x="200" y="22"/>
+				<KeyValues>
+					<KeyValue key="instructionText" value="TRP3_L_UI_ICON_BROWSER_SEARCH" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="TOP" y="-30"/>
 					<Anchor point="LEFT" x="20"/>
@@ -201,17 +258,23 @@
 					<Anchor point="BOTTOM" y="10"/>
 				</Anchors>
 				<Frames>
-					<Frame parentKey="ScrollBox" inherits="WowScrollBoxList"/>
 					<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
 						<Anchors>
 							<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" x="-12" y="-8"/>
 							<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-12" y="8"/>
 						</Anchors>
 					</EventFrame>
+					<Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="6" y="-4"/>
+							<Anchor point="RIGHT" relativeKey="$parent.ScrollBar" relativePoint="LEFT" x="-4"/>
+							<Anchor point="BOTTOM" y="4"/>
+						</Anchors>
+					</Frame>
 					<Frame parentKey="EmptyState" inherits="TRP3_IconBrowserEmptyStateTemplate">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="4" y="-4"/>
-							<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+							<Anchor point="TOPLEFT" relativeKey="$parent.ScrollBox"/>
+							<Anchor point="BOTTOMRIGHT" relativeKey="$parent.ScrollBox"/>
 						</Anchors>
 					</Frame>
 					<Frame parentKey="ProgressOverlay" inherits="TRP3_IconBrowserProgressOverlayTemplate" frameLevel="1000" fixedFrameLevel="true">

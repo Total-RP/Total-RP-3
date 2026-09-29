@@ -66,11 +66,11 @@ function TRP3_MenuTemplates.AppendIconContextMenuElements(description, handler, 
 
 	do
 		local function OnClick()
-			local iconName = TRP3_IconUtil.GetIconName(icon);
-			TRP3_API.popup.showCopyDropdownPopup({ iconName });
+			local iconID = TRP3_IconUtil.GetIconID(icon);
+			TRP3_API.popup.showCopyDropdownPopup({ tostring(iconID) });
 		end
 
-		description:CreateButton(L.UI_ICON_COPYNAME, OnClick);
+		description:CreateButton(L.UI_ICON_COPYID, OnClick);
 	end
 
 	if handler:GetPasteCallback() then
