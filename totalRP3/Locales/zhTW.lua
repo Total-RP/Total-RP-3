@@ -151,7 +151,6 @@ L = {
 	["CO_CHAT_MAIN_NPC_USE"] = "使用ＮＰＣ對話判讀",
 	["CO_CHAT_MAIN_OOC"] = "ＯＯＣ判讀",
 	["CO_CHAT_MAIN_OOC_COLOR"] = "ＯＯＣ顏色",
-	["CO_CHAT_MAIN_OOC_PATTERN"] = "ＯＯＣ判讀模式",
 	["CO_CHAT_MAIN_OOC_USE"] = "使用ＯＯＣ判讀",
 	["CO_CHAT_REMOVE_REALM"] = "移除角色名稱當中的伺服器名稱",
 	["CO_CHAT_USE"] = "使用聊天頻道",

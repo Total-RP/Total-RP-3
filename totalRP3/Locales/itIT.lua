@@ -164,7 +164,6 @@ Per favore ricorda che cambiare queste impostazioni potrebbero alterare la tua e
 	["CO_CHAT_MAIN_NPC_USE"] = "Usare rivelazione del parlare di NPC",
 	["CO_CHAT_MAIN_OOC"] = "Rivelazione OOC (fuori dal personaggio)",
 	["CO_CHAT_MAIN_OOC_COLOR"] = "Colore OOC",
-	["CO_CHAT_MAIN_OOC_PATTERN"] = "Modello della rivelazione OOC",
 	["CO_CHAT_REMOVE_REALM"] = "Rimuovere regno dai nomi dei giocatori",
 	["CO_CONFIGURATION"] = "Impostazioni",
 	["CO_GENERAL"] = "Impostazioni generali",
