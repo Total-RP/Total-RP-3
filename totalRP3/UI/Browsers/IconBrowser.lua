@@ -15,7 +15,7 @@ local L = TRP3_API.loc;
 ---@field searched integer
 ---@field total integer
 
----@alias TRP3.IconBrowserSearchPredicate fun(iconIndex: integer, iconInfo: TRP3.IconBrowserModelItem): boolean)
+---@alias TRP3.IconBrowserSearchPredicate fun(iconIndex: integer, iconInfo: TRP3.IconBrowserModelItem): boolean
 
 --- IconBrowserSearchTask is a single-shot object that performs an
 --- asynchronous name-based search against a model to provide a filtered
@@ -30,8 +30,8 @@ local L = TRP3_API.loc;
 ---@field private searched integer
 ---@field private iterator TRP3.IconModelItemIterator
 ---@field private total integer
----@field private step integer
 ---@field private results integer[]
+---@field private budget fun(): boolean
 local IconBrowserSearchTask = {};
 
 ---@param predicate TRP3.IconBrowserSearchPredicate
@@ -46,9 +46,8 @@ function IconBrowserSearchTask:__init(predicate, model)
 	self.searched = 0;
 	self.iterator = model:EnumerateIcons({ reuseTable = {} });
 	self.total = model:GetIconCount();
+	self.budget = TRP3_FunctionUtil.CreateAdaptiveTimeBudgetChecker();
 
-	-- On small data sets do only 5% of the set per tick to avoid UI flicker.
-	self.step = math.min(100, math.ceil(model:GetIconCount() / 20));
 	self.results = {};
 end
 
@@ -90,7 +89,6 @@ function IconBrowserSearchTask:OnUpdate()
 	local results = self.results;
 
 	local visited = self.searched;
-	local limit = math.min(self.searched + self.step, self.total);
 
 	for iconIndex, iconInfo in self.iterator do
 		if predicate(iconIndex, iconInfo) then
@@ -100,7 +98,10 @@ function IconBrowserSearchTask:OnUpdate()
 
 		visited = visited + 1;
 
-		if visited > limit then
+		-- Budget checking is performed last; the iterator is stateful and
+		-- so we need to process it before yielding as re-entry cannot
+		-- resume from the same point.
+		if self.budget() then
 			break;
 		end
 	end
@@ -110,7 +111,7 @@ function IconBrowserSearchTask:OnUpdate()
 		self.callbacks:Fire("OnResultsChanged", self.results);
 	end
 
-	self.searched = limit;
+	self.searched = visited;
 	self.callbacks:Fire("OnProgressChanged", self:GetProgress());
 
 	if self.searched >= self.total then
@@ -414,16 +415,26 @@ function IconBrowserFilterModel:RebuildModel()
 
 	local matcher = self.matcher;
 	local categoryPredicate;
+	local identityPredicate;
 
 	if self:IsFilteringAnyCategory() then
 		categoryPredicate = LRPM12:GenerateIconCategoryPredicate(GetKeysArray(self.searchCategories));
 	end
 
+	if tonumber(self.searchQuery) ~= nil then
+		local searchID = tonumber(self.searchQuery);
+		identityPredicate = function(iconInfo)
+			return iconInfo.id == searchID or iconInfo.file == searchID;
+		end
+	end
+
 	---@param _proxyIndex integer
 	---@param iconInfo TRP3.IconBrowserModelItem
 	local function DoesIconMatchFilters(_proxyIndex, iconInfo)
-		if not matcher:Matches(iconInfo.name) then
-			return false;
+		if identityPredicate == nil or not identityPredicate(iconInfo) then
+			if not matcher:Matches(iconInfo.name) then
+				return false;
+			end
 		end
 
 		-- The category predicate requires the raw index of the icon from the
@@ -657,26 +668,16 @@ function TRP3_IconBrowserMixin:OnLoad()
 	local GRID_STRIDE = 7;
 	local GRID_PADDING = 4;
 
-	local scrollBoxAnchorsWithBar = {
-		AnchorUtil.CreateAnchor("TOPLEFT", self.Content, "TOPLEFT", 6, -4),
-		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self.Content, "BOTTOMRIGHT", -10, 4),
-	};
-
-	local scrollBoxAnchorsWithoutBar = {
-		AnchorUtil.CreateAnchor("TOPLEFT", self.Content, "TOPLEFT", 14, -4),
-		AnchorUtil.CreateAnchor("BOTTOMRIGHT", self.Content, "BOTTOMRIGHT", -17, -4),
-	};
-
 	self.Content.ScrollView = CreateScrollBoxListGridView(GRID_STRIDE, GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING);
 	self.Content.ScrollView:SetElementInitializer("TRP3_IconBrowserButtonTemplate", function(button, iconInfo) self:OnIconButtonInitialized(button, iconInfo); end);
 	ScrollUtil.InitScrollBoxListWithScrollBar(self.Content.ScrollBox, self.Content.ScrollBar, self.Content.ScrollView);
-	ScrollUtil.AddManagedScrollBarVisibilityBehavior(self.Content.ScrollBox, self.Content.ScrollBar, scrollBoxAnchorsWithBar, scrollBoxAnchorsWithoutBar);
 	self.Content.ScrollBox:SetDataProvider(CreateIconDataProvider(self.filterModel));
 	self.Content.ProgressOverlay:SetModel(self.filterModel);
 	self.Content.EmptyState:SetModel(self.filterModel);
 
 	self.CloseButton:SetScript("OnClick", function() self:OnCloseButtonClicked(); end);
-	self.SearchBox:HookScript("OnTextChanged", TRP3_FunctionUtil.Debounce(0.25, function() self:OnFilterTextChanged(); end));
+	self.SearchBox:SetTextChangedCallback(TRP3_FunctionUtil.Debounce(0.25, function() self:OnFilterTextChanged(); end));
+	self.SearchBox:SetScript("OnEnterPressed", function() self:OnFilterEnterPressed(); end);
 	self.FilterDropdown:SetIsDefaultCallback(function() return not self.filterModel:IsFilteringAnyCategory(); end);
 	self.FilterDropdown:SetDefaultCallback(function() self:OnFilterDropdownResetClicked(); end);
 	self.FilterDropdown:SetupMenu(function(dropdown, rootDescription) self:SetupFilterDropdown(dropdown, rootDescription); end);
@@ -703,17 +704,31 @@ function TRP3_IconBrowserMixin:OnFilterTextChanged()
 	self.filterModel:SetSearchQuery(self.SearchBox:GetText());
 end
 
+function TRP3_IconBrowserMixin:OnFilterEnterPressed()
+	local iconInfo = TRP3_IconUtil.GetIconInfo(self.SearchBox:GetText());
+
+	if iconInfo ~= nil then
+		self:SubmitSelectedIcon(iconInfo);
+	else
+		self.SearchBox:ClearFocus();
+	end
+end
+
 function TRP3_IconBrowserMixin:OnFilterDropdownResetClicked()
 	self.filterModel:ClearCategoryFilters();
 end
 
 function TRP3_IconBrowserMixin:OnIconButtonInitialized(button, iconInfo)
-	button:SetScript("OnClick", function() self:OnIconButtonClicked(button); end);
+	button:SetSelectedCallback(function() self:OnIconButtonClicked(button); end);
 	button:Init(iconInfo);
 end
 
 function TRP3_IconBrowserMixin:OnIconButtonClicked(button)
 	local iconInfo = button:GetElementData();
+	self:SubmitSelectedIcon(iconInfo);
+end
+
+function TRP3_IconBrowserMixin:SubmitSelectedIcon(iconInfo)
 	self.callbacks:Fire("OnIconSelected", iconInfo);
 
 	-- Selecting an icon should reset all filtering state. Canceling out of
@@ -856,6 +871,33 @@ function TRP3_IconBrowserMixin:SetupFilterDropdown(_dropdown, rootDescription)
 	CreateItemMenu(rootDescription);
 end
 
+TRP3_IconBrowserButtonTooltipMixin = {};
+
+function TRP3_IconBrowserButtonTooltipMixin:OnLoad()
+	self.Backdrop:SetCenterColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR:GetRGB());
+	self.LeftClickInstruction:SetText(TRP3_API.FormatShortcutWithInstruction("LCLICK", L.CM_SELECT));
+	self.RightClickInstruction:SetText(TRP3_API.FormatShortcutWithInstruction("RCLICK", L.UI_ICON_OPTIONS));
+end
+
+function TRP3_IconBrowserButtonTooltipMixin:Init(owner, iconInfo)
+	self:Reset();
+
+	if not iconInfo then
+		return;
+	end
+
+	self:SetPoint("BOTTOMLEFT", owner, "TOPRIGHT", -4, -4);
+	self.Icon:SetIconTexture(iconInfo.id);
+	self.Name:SetText(iconInfo.name);
+	self.ID:SetText(string.format(L.UI_ICON_BROWSER_ID, tostring(iconInfo.id)));
+	self:Show();
+end
+
+function TRP3_IconBrowserButtonTooltipMixin:Reset()
+	self:ClearAllPoints();
+	self:Hide();
+end
+
 TRP3_IconBrowserButtonMixin = {};
 
 function TRP3_IconBrowserButtonMixin:OnLoad()
@@ -869,22 +911,41 @@ function TRP3_IconBrowserButtonMixin:OnEnter()
 		return;
 	end
 
-	local titleLineIcon = TRP3_MarkupUtil.GenerateIconMarkup(iconInfo.id, { size = 64 });
-	local titleLineText = string.join(" ", titleLineIcon, iconInfo.name);
 
-	TRP3_MainTooltip:SetOwner(self, "ANCHOR_RIGHT");
-	GameTooltip_SetTitle(TRP3_MainTooltip, titleLineText, GREEN_FONT_COLOR, false);
-	TRP3_MainTooltip:Show();
+	local tooltipFrame = self:GetTooltipFrame();
+	tooltipFrame:Init(self, iconInfo);
 end
 
 function TRP3_IconBrowserButtonMixin:OnLeave()
-	TRP3_MainTooltip:Hide();
+	self:GetTooltipFrame():Reset();
+end
+
+function TRP3_IconBrowserButtonMixin:OnClick(mouseButtonName)
+	local iconInfo = self:GetElementData();
+	assert(iconInfo ~= nil);
+
+	if mouseButtonName == "LeftButton" then
+		if self.selectedCallback then
+			self.selectedCallback(self);
+		end
+	elseif mouseButtonName == "RightButton" then
+		local handler = TRP3_MenuTemplates.CreateIconContextMenuHandler();
+		TRP3_MenuTemplates.CreateIconContextMenu(self, handler, iconInfo.id);
+	end
 end
 
 ---@param iconInfo TRP3.IconBrowserModelItem
 function TRP3_IconBrowserButtonMixin:Init(iconInfo)
 	self.SelectedTexture:SetShown(iconInfo and iconInfo.selected);
 	LRPM12:SetTextureToIcon(self.Icon, iconInfo and iconInfo.id or TRP3_InterfaceIconIDs.Default);
+end
+
+function TRP3_IconBrowserButtonMixin:GetTooltipFrame()
+	return TRP3_IconBrowserButtonTooltip;
+end
+
+function TRP3_IconBrowserButtonMixin:SetSelectedCallback(callback)
+	self.selectedCallback = callback;
 end
 
 TRP3_IconBrowserEmptyStateMixin = {};
@@ -959,6 +1020,61 @@ function TRP3_IconBrowserProgressOverlayMixin:SetModel(model)
 	self.model = model;
 	self.model.RegisterCallback(self, "OnSearchProgressChanged", OnProgressChanged);
 	self.model.RegisterCallback(self, "OnSearchStateChanged", UpdateVisibilityDeferred);
+end
+
+TRP3_IconBrowserSearchBoxMixin = {};
+
+function TRP3_IconBrowserSearchBoxMixin:OnLoad()
+	SearchBoxTemplate_OnLoad(self);
+
+	self.SearchIconTooltip = TRP3_TooltipUtil.AddTooltipBehavior(self.searchIcon, function(_owner, description) self:PopulateSearchIconTooltip(description); end);
+	self.SearchIconTooltip:SetShowOnEnterPredicate(function(_owner) return self:ShouldShowSearchIconTooltip(); end);
+end
+
+function TRP3_IconBrowserSearchBoxMixin:OnTextChanged()
+	SearchBoxTemplate_OnTextChanged(self);
+
+	self:UpdateSearchIcon();
+	self:NotifyTextChanged(self:GetText());
+end
+
+function TRP3_IconBrowserSearchBoxMixin:HasExactIconInput()
+	return TRP3_IconUtil.IsValidIcon(self:GetText());
+end
+
+function TRP3_IconBrowserSearchBoxMixin:SetTextChangedCallback(callback)
+	self.textChangedCallback = callback;
+end
+
+function TRP3_IconBrowserSearchBoxMixin:NotifyTextChanged(text)
+	if self.textChangedCallback then
+		self.textChangedCallback(text);
+	end
+end
+
+function TRP3_IconBrowserSearchBoxMixin:ShouldShowSearchIconTooltip()
+	return self.searchIcon:IsMouseMotionFocus() and self:HasExactIconInput();
+end
+
+function TRP3_IconBrowserSearchBoxMixin:PopulateSearchIconTooltip(description)
+	local exactMatchAtlas = TRP3_MarkupUtil.GenerateAtlasMarkup("perks-tick", { width = 14, height = 12 });
+	description:AddLine(string.join(" ", exactMatchAtlas, L.UI_ICON_BROWSER_EXACT_MATCH));
+	description:AddBlankLine();
+	description:AddInstructionLine("ENTER", L.UI_ICON_SELECT);
+end
+
+function TRP3_IconBrowserSearchBoxMixin:UpdateSearchIcon()
+	if self:HasExactIconInput() then
+		self.searchIcon:SetAtlas("perks-tick");
+		self.searchIcon:SetSize(14, 12);
+		self.searchIcon:SetPoint("LEFT", 0, 0);
+		self.SearchIconTooltip:SetTooltipShown(self:ShouldShowSearchIconTooltip());
+	else
+		self.searchIcon:SetAtlas("common-search-magnifyingglass");
+		self.searchIcon:SetSize(10, 10);
+		self.searchIcon:SetPoint("LEFT", 1, -1);
+		self.SearchIconTooltip:HideTooltip();
+	end
 end
 
 -- Icon Browser API
