@@ -319,10 +319,6 @@ local swapChannelsByIndex = ChatConfigChannelSettings_SwapChannelsByIndex or C_C
 --- This is so the user always have the channels they actually use first and that the broadcast channel
 --- is never taking the General or Trade chat position.
 local function moveBroadcastChannelToTheBottomOfTheList(forceMove)
-	-- Swapping channels currently taints leading to nasty errors during secret chat situations. Unfortunately we have no choice but to disable it for now...
-	local disabled = true;
-	if disabled then return; end
-
 	if not (getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST) and (forceMove or helloWorlded)) then
 		return;
 	end
