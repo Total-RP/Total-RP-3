@@ -247,6 +247,14 @@ local function CreateOpenCharacterProfileButton(menuDescription, contextData)
 	return elementDescription;
 end
 
+local function CreateOpenOfflineCharacterProfileButton(menuDescription, contextData)
+	local characterID = TRP3_UnitPopupUtil.GetCharacterIDFromName(contextData);
+
+	if TRP3_API.register.isUnitIDKnown(characterID) then
+		return CreateOpenCharacterProfileButton(menuDescription, contextData);
+	end
+end
+
 local function CreateOpenCompanionProfileButton(menuDescription, contextData)
 	if not ShouldShowOpenCompanionProfile(contextData) then
 		return nil;
@@ -323,6 +331,7 @@ UnitPopupsModule.MenuElementFactories = {
 	OpenBattleNetProfile = CreateOpenBattleNetProfileButton,
 	OpenCharacterProfile = CreateOpenCharacterProfileButton,
 	OpenCompanionProfile = CreateOpenCompanionProfileButton,
+	OpenOfflineCharacterProfile = CreateOpenOfflineCharacterProfileButton,
 	CharacterStatus = CreateCharacterStatusMenu,
 };
 
@@ -334,7 +343,7 @@ UnitPopupsModule.MenuEntries = {
 	COMMUNITIES_MEMBER = { "OpenBattleNetProfile" },
 	COMMUNITIES_WOW_MEMBER = { "OpenCharacterProfile" },
 	FRIEND = { "OpenCharacterProfile", "CharacterStatus" },
-	FRIEND_OFFLINE = { "OpenCharacterProfile" },
+	FRIEND_OFFLINE = { "OpenOfflineCharacterProfile" },
 	OTHERBATTLEPET = { "OpenCompanionProfile" },
 	OTHERPET = { "OpenCompanionProfile" },
 	PARTY = { "OpenCharacterProfile" },
@@ -342,6 +351,8 @@ UnitPopupsModule.MenuEntries = {
 	PLAYER = { "OpenCharacterProfile" },
 	RAID = { "OpenCharacterProfile" },
 	RAID_PLAYER = { "OpenCharacterProfile" },
+	RECENT_ALLY = { "OpenCharacterProfile" },
+	RECENT_ALLY_OFFLINE = { "OpenOfflineCharacterProfile" },
 	SELF = { "OpenCharacterProfile", "CharacterStatus" },
 };
 
