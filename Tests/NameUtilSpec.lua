@@ -1,15 +1,10 @@
 -- luacheck: ignore
 
-local SpecHelper = require("SpecHelper");
-
-local function LoadNameUtil()
-	SpecHelper.LoadFile("totalRP3/Core/NameUtil.lua");
-	SpecHelper.LoadFile("totalRP3/Core/StringUtil.lua");
-end
+local Environment = require("Environment");
 
 insulate("mode selection", function()
 	setup(function()
-		LoadNameUtil();
+		Environment.LoadAddOn();
 	end);
 
 	it("selects realm-qualified mode when regional names are disabled", function()
@@ -25,7 +20,7 @@ end);
 
 insulate("mode-independent names", function()
 	setup(function()
-		LoadNameUtil();
+		Environment.LoadAddOn();
 	end);
 
 	it("joins given and family names", function()
@@ -88,7 +83,7 @@ end);
 insulate("realm-qualified names", function()
 	setup(function()
 		stub(_G, "RegionalUniqueNamesEnabled", false);
-		LoadNameUtil();
+		Environment.LoadAddOn();
 	end);
 
 	it("displays realm names", function()
@@ -199,7 +194,7 @@ end);
 insulate("regional unique names", function()
 	setup(function()
 		stub(_G, "RegionalUniqueNamesEnabled", true);
-		LoadNameUtil();
+		Environment.LoadAddOn();
 	end);
 
 	it("does not display realm names", function()
