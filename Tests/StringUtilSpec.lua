@@ -1,12 +1,10 @@
 -- luacheck: ignore
 
-local SpecHelper = require("SpecHelper");
+local Environment = require("Environment");
 
-insulate("DequoteString", function()
-	setup(function()
-		SpecHelper.LoadFile("totalRP3/Core/StringUtil.lua");
-	end);
+Environment.LoadAddOn();
 
+describe("DequoteString", function()
 	it("removes supported matching surrounding quotes", function()
 		local quotedStrings = {
 			'"quoted"',
@@ -29,11 +27,7 @@ insulate("DequoteString", function()
 	end);
 end);
 
-insulate("CapitalizeWords", function()
-	setup(function()
-		SpecHelper.LoadFile("totalRP3/Core/StringUtil.lua");
-	end);
-
+describe("CapitalizeWords", function()
 	it("capitalizes the first character of each word", function()
 		local result = TRP3_StringUtil.CapitalizeWords("hello world");
 		assert.are.equal("Hello World", result);

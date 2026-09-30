@@ -18,7 +18,7 @@ check:
 
 # Run the Lua unit tests.
 test:
-    busted '--lpath=Tests/?.lua' Tests/*Spec.lua
+    busted '--lpath=Tests/?.lua;Tests/?/Init.lua' Tests/*Spec.lua
 
 # Build a distributable package using the packager script.
 dist:
