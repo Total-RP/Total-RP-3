@@ -411,7 +411,7 @@ end
 TRP3_API.register.getUnitRPNameWithID = getUnitRPNameWithID;
 
 function TRP3_API.register.getUnitRPName(targetType)
-	local unitName = UnitName(targetType);
+	local unitName = TRP3_NameUtil.GetDisplayName(targetType);
 	local unitID = getUnitID(targetType);
 	return getUnitRPNameWithID(unitID, unitName);
 end
