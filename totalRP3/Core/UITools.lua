@@ -517,85 +517,13 @@ function TRP3_API.ui.misc.getTargetType(unitType)
 	end
 end
 
-local ScanningTooltip = CreateFrame("GameTooltip", "TRP3_ScanningTooltip", nil, "GameTooltipTemplate");
-
-local COMBAT_PET_OWNER_PATTERNS;
-local COMPANION_PET_OWNER_PATTERNS;
-
-do
-	local function GenerateDeformattingPattern(text)
-		-- For French locales the "|2" needs to match both "de <name>" and
-		-- "d'<name>".
-		--
-		-- Additionally for UNITNAME_TITLE_COMPANION specifically, the
-		-- generated pattern is ambiguous with the template used for the
-		-- pet type and level line. This is avoided by making the match
-		-- pattern refuse to match spaces _and_ including start/end anchors.
-
-		text = string.gsub(text, "%%s", "([^%%s]+)");
-		text = string.gsub(text, "|2 ", "d[e'] ?");
-		return "^" .. text .. "$";
-	end
-
-	COMBAT_PET_OWNER_PATTERNS =
-	{
-		GenerateDeformattingPattern(UNITNAME_TITLE_CHARM),
-		GenerateDeformattingPattern(UNITNAME_TITLE_CREATION),
-		GenerateDeformattingPattern(UNITNAME_TITLE_GUARDIAN),
-		GenerateDeformattingPattern(UNITNAME_TITLE_MINION),
-		GenerateDeformattingPattern(UNITNAME_TITLE_PET),
-	};
-
-	COMPANION_PET_OWNER_PATTERNS =
-	{
-		GenerateDeformattingPattern(UNITNAME_TITLE_COMPANION),
-		GenerateDeformattingPattern(UNITNAME_TITLE_SQUIRE),
-	};
-end
-
-function ScanningTooltip:GetLeftLineText(lineNumber)
-	local region = _G[self:GetName() .. "TextLeft" .. lineNumber];
-	return region and region:GetText() or "";
-end
-
-function ScanningTooltip:FindMatchingLine(patternList)
-	for lineNumber = 1, self:NumLines() do
-		local leftText = self:GetLeftLineText(lineNumber);
-
-		for _, pattern in ipairs(patternList) do
-			local ownerName = string.match(leftText or "", pattern);
-
-			if ownerName then
-				return ownerName;
-			end
-		end
-	end
-
-	return nil;
-end
-
-local function getCompanionOwner(unitType, targetType)
+local function getCompanionOwner(unitType, _targetType)
 	local ownerName;
 	local ownerRealm;
+	local ownerGUID = UnitOwnerGUID(unitType);
 
-	if UnitOwnerGUID then
-		local ownerGUID = UnitOwnerGUID(unitType);
-
-		if ownerGUID ~= nil then
-			ownerName, ownerRealm = select(6, GetPlayerInfoByGUID(ownerGUID));
-		end
-	else
-		ScanningTooltip:SetOwner(WorldFrame, "ANCHOR_NONE");
-		ScanningTooltip:SetUnit(unitType);
-		ScanningTooltip:Show();
-
-		if targetType == TRP3_Enums.UNIT_TYPE.PET then
-			ownerName = ScanningTooltip:FindMatchingLine(COMBAT_PET_OWNER_PATTERNS);
-		elseif targetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
-			ownerName = ScanningTooltip:FindMatchingLine(COMPANION_PET_OWNER_PATTERNS);
-		end
-
-		ScanningTooltip:Hide();
+	if ownerGUID ~= nil then
+		ownerName, ownerRealm = select(6, GetPlayerInfoByGUID(ownerGUID));
 	end
 
 	if not ownerName or ownerName == "" or ownerName == UNKNOWNOBJECT then
