@@ -42,7 +42,6 @@ local ConfigKeys = {
 	HIDE_IN_INSTANCE = "tooltip_hide_in_instance";
 	HIDE_ON_MODIFIER = "tooltip_hide_on_modifier";
 	CHARACT_COLOR = "tooltip_char_color";
-	CROP_TEXT = "tooltip_crop_text";
 	CHARACT_ANCHORED_FRAME = "tooltip_char_AnchoredFrame";
 	CHARACT_ANCHOR = "tooltip_char_Anchor";
 	CHARACT_HIDE_ORIGINAL = "tooltip_char_HideOriginal";
@@ -1047,11 +1046,11 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 	-- Icon and name
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local petName = crop(info.NA or targetName or UNKNOWN, TRP3_TooltipCroppingConstants.Name);
+	local petName = crop(info.NA or targetName or UNKNOWNOBJECT, TRP3_TooltipCroppingConstants.Name);
 
 	local companionCustomColor = info.NH and TRP3_API.CreateColorFromHexString(info.NH) or TRP3_API.Colors.White
 	companionCustomColor = TRP3_API.GenerateReadableColor(companionCustomColor, TRP3_API.Colors.Black);
-	tooltipBuilder:AddLine(companionCustomColor:WrapTextInColorCode((petName or companionID)), colors.MAIN, getMainLineFontSize());
+	tooltipBuilder:AddLine(companionCustomColor:WrapTextInColorCode(petName), colors.MAIN, getMainLineFontSize());
 
 	if showCompanionIcons() then
 		-- Companion icon
@@ -1200,10 +1199,10 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	-- Icon and name
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local mountCustomName = crop(info.NA, TRP3_TooltipCroppingConstants.Name);
+	local mountCustomName = crop(info.NA or mountName or UNKNOWNOBJECT, TRP3_TooltipCroppingConstants.Name);
 	local mountCustomColor = info.NH and TRP3_API.CreateColorFromHexString(info.NH) or TRP3_API.Colors.White
 	mountCustomColor = TRP3_API.GenerateReadableColor(mountCustomColor, TRP3_API.Colors.Black);
-	tooltipCompanionBuilder:AddLine(mountCustomColor:WrapTextInColorCode((mountCustomName or mountName)), colors.MAIN, getMainLineFontSize());
+	tooltipCompanionBuilder:AddLine(mountCustomColor:WrapTextInColorCode(mountCustomName), colors.MAIN, getMainLineFontSize());
 
 	if showCompanionIcons() then
 		-- Companion icon
