@@ -58,8 +58,6 @@ read_globals = {
 	"AddOn_Chomp",
 	"DLAPI.DebugLog",
 	"ElvUI",
-	"KuiNameplates",
-	"KuiNameplatesCore",
 	"LibStub",
 	"mrp",
 	"mrpSaved",
@@ -133,14 +131,12 @@ stds.wow = {
 
 		math = {
 			fields = {
-				"clamp",
 				"wrap",
 			},
 		},
 
 		string = {
 			fields = {
-				"concat",
 				"contains",
 				"join",
 				"split",
@@ -171,9 +167,7 @@ stds.wow = {
 		"strsplit",
 		"strtrim",
 		"strupper",
-		"tAppendAll",
 		"tContains",
-		"tFilter",
 		"time",
 		"tinsert",
 		"tInvert",
@@ -210,11 +204,6 @@ stds.wow = {
 
 		Constants = {
 			fields = {
-				PetConsts = {
-					fields = {
-						"NUM_PET_SLOTS",
-					},
-				},
 				CharacterNameSeparatorConsts = {
 					fields = {
 						"CHARACTERNAME_REALMNAME_SEPARATOR",
@@ -232,7 +221,6 @@ stds.wow = {
 
 		C_AddOns = {
 			fields = {
-				"DisableAddOn",
 				"GetAddOnMetadata",
 				"IsAddOnLoaded",
 			},
@@ -254,7 +242,6 @@ stds.wow = {
 		C_ChatInfo = {
 			fields = {
 				"GetChannelShortcut",
-				"IsTimerunningPlayer",
 				"RegisterAddonMessagePrefix",
 				"SendChatMessage",
 				"SwapChatChannelsByChannelIndex",
@@ -279,7 +266,6 @@ stds.wow = {
 
 		C_CreatureInfo = {
 			fields = {
-				"GetClassInfo",
 				"GetFactionInfo",
 				"GetRaceInfo",
 			},
@@ -288,7 +274,6 @@ stds.wow = {
 		C_CVar = {
 			fields = {
 				"GetCVar",
-				"GetCVarBool",
 				"SetCVar",
 				"SetTempCVar",
 			},
@@ -454,12 +439,6 @@ stds.wow = {
 			},
 		},
 
-		C_StorePublic = {
-			fields = {
-				"IsDisabledByParentalControls",
-			},
-		},
-
 		C_Texture = {
 			fields = {
 				"GetAtlasExists",
@@ -477,7 +456,6 @@ stds.wow = {
 
 		C_TooltipInfo = {
 			fields = {
-				"GetUnit",
 				"GetWorldCursor",
 			},
 		},
@@ -520,10 +498,6 @@ stds.wow = {
 				CollationStrength = {
 					fields = {
 						"Primary",
-						"Secondary",
-						"Tertiary",
-						"Quaternary",
-						"Identical",
 					},
 				},
 
@@ -560,12 +534,6 @@ stds.wow = {
 					},
 				},
 
-				TooltipDataLineType = {
-					fields = {
-						"UnitOwner",
-					},
-				},
-
 				TooltipDataType = {
 					fields = {
 						"Unit",
@@ -580,8 +548,6 @@ stds.wow = {
 
 				UnitSex = {
 					fields = {
-						"Male",
-						"Female",
 					},
 				},
 
@@ -599,20 +565,6 @@ stds.wow = {
 		EnumUtil = {
 			fields = {
 				"GenerateNameTranslation",
-			},
-		},
-
-		EventTrace = {
-			fields = {
-				"CanLogEvent",
-				"IsLoggingCREvents",
-				"LogLine",
-			},
-		},
-
-		EventUtil = {
-			fields = {
-				"ContinueOnAddOnLoaded",
 			},
 		},
 
@@ -649,14 +601,9 @@ stds.wow = {
 		MenuUtil = {
 			fields = {
 				"CreateButton",
-				"CreateCheckbox",
 				"CreateContextMenu",
-				"CreateDivider",
-				"CreateRadio",
-				"CreateTitle",
 				"GetElementText",
 				"HideTooltipEx",
-				"SetElementText",
 				"ShowTooltipEx",
 			},
 		},
@@ -674,7 +621,6 @@ stds.wow = {
 		PixelUtil = {
 			fields = {
 				"SetPoint",
-				"SetSize",
 			},
 		},
 
@@ -698,7 +644,6 @@ stds.wow = {
 
 		ScrollBoxConstants = {
 			fields = {
-				"DiscardScrollPosition",
 				"NoScrollInterpolation",
 				"RetainScrollPosition",
 			},
@@ -729,34 +674,20 @@ stds.wow = {
 			},
 		},
 
-		TimerunningUtil = {
-			fields = {
-				"AddSmallIcon",
-			},
-		},
-
 		"AbbreviateLargeNumbers",
 		"Ambiguate",
 		"BNGetGameAccountInfoByGUID",
-		"BNGetInfo",
 		"CalculateStringEditDistance",
 		"canaccessallvalues",
 		"canaccessvalue",
 		"ChatConfigChannelSettings_SwapChannelsByIndex",
-		"ChatEdit_GetActiveWindow",
-		"ChatFrame_AddMessageEventFilter",
-		"ChatFrame_OpenChat",
-		"ChatFrame_RemoveMessageEventFilter",
-		"ChatFrameEditBoxBaseMixin",
 		"CheckInteractDistance",
 		"Clamp",
 		"ClampedPercentageBetween",
-		"CloseDropDownMenus",
 		"CopyTable",
 		"CountTable",
 		"CreateAndInitFromMixin",
 		"CreateAtlasMarkup",
-		"CreateCircularBuffer",
 		"CreateCounter",
 		"CreateDataProvider",
 		"CreateFont",
@@ -764,28 +695,20 @@ stds.wow = {
 		"CreateFramePool",
 		"CreateFramePoolCollection",
 		"CreateFromMixins",
-		"CreateIndexRangeDataProvider",
 		"CreateMinimalSliderFormatter",
 		"CreateScrollBoxLinearView",
 		"CreateScrollBoxListGridView",
 		"CreateScrollBoxListLinearView",
-		"CreateTextureMarkup",
 		"CreateVector2D",
-		"DisableAddOn",
-		"DoesTemplateExist",
-		"EventRegistry",
 		"ExecuteFrameScript",
 		"fastrandom",
 		"FCF_GetCurrentChatFrame",
 		"FindInTableIf",
-		"FormatPercentage",
 		"GameTooltip_AddBlankLineToTooltip",
-		"GameTooltip_AddColoredLine",
 		"GameTooltip_AddHighlightLine",
 		"GameTooltip_AddNormalLine",
 		"GameTooltip_SetDefaultAnchor",
 		"GameTooltip_SetTitle",
-		"GameTooltip_ShowDisabledTooltip",
 		"GenerateClosure",
 		"GetAppropriateTooltip",
 		"GetBindingText",
@@ -817,7 +740,6 @@ stds.wow = {
 		"GetRealmName",
 		"GetStablePetInfo",
 		"GetSubZoneText",
-		"GetTickTime",
 		"GetTime",
 		"GetTimePreciseSec",
 		"GetUnitName",
@@ -837,10 +759,8 @@ stds.wow = {
 		"IsKeyDown",
 		"IsMacClient",
 		"IsMetaKeyDown",
-		"IsModifierKeyDown",
 		"IsMounted",
 		"IsShiftKeyDown",
-		"IsSpellKnown",
 		"IsTrialAccount",
 		"IsVeteranTrialAccount",
 		"JoinChannelByName",
@@ -855,7 +775,6 @@ stds.wow = {
 		"PlayMusic",
 		"PlaySound",
 		"PlaySoundFile",
-		"RaidWarningFrame",
 		"RegionalUniqueNamesEnabled",
 		"RegisterStateDriver",
 		"ReloadUI",
@@ -863,7 +782,6 @@ stds.wow = {
 		"ResetCursor",
 		"RoundToSignificantDigits",
 		"RunNextFrame",
-		"SafePack",
 		"Saturate",
 		"ScrollingEdit_OnCursorChanged",
 		"ScrollingEdit_OnLoad",
@@ -881,8 +799,6 @@ stds.wow = {
 		"SetCursor",
 		"SetCursorByMode",
 		"SetCVar",
-		"SetPetStablePaperdoll",
-		"SetPortraitToTexture",
 		"ShouldShowName",
 		"ShowCloak",
 		"ShowHelm",
@@ -894,25 +810,9 @@ stds.wow = {
 		"StopMusic",
 		"StopSound",
 		"StringToBoolean",
-		"SwapChatChannelByLocalID",
 		"TableHasAnyEntries",
 		"TableIsEmpty",
-		"ToggleDropDownMenu",
 		"tostringall",
-		"UIDropDownMenu_AddButton",
-		"UIDropDownMenu_GetText",
-		"UIDROPDOWNMENU_INIT_MENU",
-		"UIDropDownMenu_Initialize",
-		"UIDropDownMenu_IsEnabled",
-		"UIDropDownMenu_RefreshAll",
-		"UIDropDownMenu_SetAnchor",
-		"UIDropDownMenu_SetDisplayMode",
-		"UIDropDownMenu_SetDropDownEnabled",
-		"UIDropDownMenu_SetInitializeFunction",
-		"UIDropDownMenu_SetText",
-		"UIDropDownMenu_SetWidth",
-		"UIPanelCloseButton_SetBorderAtlas",
-		"UnitAffectingCombat",
 		"UnitBattlePetLevel",
 		"UnitBattlePetType",
 		"UnitClass",
@@ -921,7 +821,6 @@ stds.wow = {
 		"UnitCreatureType",
 		"UnitExists",
 		"UnitFactionGroup",
-		"UnitFullName",
 		"UnitGUID",
 		"UnitHealth",
 		"UnitHealthMax",
@@ -939,7 +838,6 @@ stds.wow = {
 		"UnitIsVisible",
 		"UnitLevel",
 		"UnitName",
-		"UnitNameFromGUID",
 		"UnitNameUnmodified",
 		"UnitOwnerGUID",
 		"UnitPlayerControlled",
@@ -982,7 +880,6 @@ stds.wow = {
 		"CallbackRegistryMixin",
 		"ChatFrame1EditBox",
 		"ChatTypeInfo",
-		"FontableFrameMixin",
 		"GameFontDisableSmall",
 		"GameFontHighlight",
 		"GameFontHighlightSmall",
@@ -995,12 +892,8 @@ stds.wow = {
 		"GameTooltipText",
 		"GridLayoutMixin",
 		"MapCanvasDataProviderMixin",
-		"MenuInputContext",
-		"MenuResponse",
 		"ModelFrameMixin",
 		"NamePlateDriverFrame",
-		"SystemFont_LargeNamePlate",
-		"SystemFont_NamePlate",
 		"SystemFont_NamePlate_Outlined",
 		"SystemFont_Shadow_Huge1",
 		"SystemFont_Shadow_Huge3",
@@ -1010,37 +903,28 @@ stds.wow = {
 		"UIErrorsFrame",
 		"UIParent",
 		"UISpecialFrames",
-		"WorldFrame",
 		"WorldMapFrame",
 
 		-- Global Constants
 
 		"ACCEPT",
 		"AMMOSLOT",
-		"ARCANE_CHARGES",
 		"BATTLENET_FONT_COLOR",
 		"BNET_CLIENT_WOW",
 		"CANCEL",
 		"CHI",
 		"CLOSE",
 		"COMBO_POINTS",
-		"DEFAULT_CHAT_FRAME",
 		"DELETE",
 		"DISABLE",
 		"DISABLED_FONT_COLOR",
-		"ENABLE_COLORBLIND_MODE",
-		"ENERGY",
 		"ERR_TOO_MANY_CHAT_CHANNELS",
 		"FOCUS_TOKEN_NOT_FOUND",
-		"FOCUS",
-		"FUEL",
-		"FURY",
 		"GENERIC_FRACTION_STRING",
 		"GREEN_FONT_COLOR",
 		"HEALTH",
 		"HIGHLIGHT_FONT_COLOR",
 		"HOLY_POWER",
-		"INSANITY",
 		"ITEM_ARTIFACT_COLOR",
 		"ITEM_EPIC_COLOR",
 		"ITEM_GOOD_COLOR",
@@ -1062,28 +946,13 @@ stds.wow = {
 		"KEY_BINDING_NAME_AND_KEY",
 		"KEY_BINDING_TOOLTIP",
 		"LE_EXPANSION_BATTLE_FOR_AZEROTH",
-		"LE_EXPANSION_BURNING_CRUSADE",
-		"LE_EXPANSION_CATACLYSM",
-		"LE_EXPANSION_CLASSIC",
-		"LE_EXPANSION_LEGION",
 		"LE_EXPANSION_LEVEL_CURRENT",
-		"LE_EXPANSION_MISTS_OF_PANDARIA",
-		"LE_EXPANSION_SHADOWLANDS",
-		"LE_EXPANSION_WARLORDS_OF_DRAENOR",
-		"LE_EXPANSION_WRATH_OF_THE_LICH_KING",
 		"LE_PARTY_CATEGORY_HOME",
-		"LE_PET_JOURNAL_FILTER_COLLECTED",
-		"LE_PET_JOURNAL_FILTER_NOT_COLLECTED",
-		"LE_SORT_BY_LEVEL",
-		"LIGHTBLUE_FONT_COLOR",
 		"LINK_FONT_COLOR",
 		"LIST_DELIMITER",
 		"LOCALE_enGB",
 		"LOCALIZED_CLASS_NAMES_MALE",
 		"LOWER_RIGHT_VERTEX",
-		"LUNAR_POWER",
-		"MAELSTROM",
-		"MANA",
 		"MAX_CHANNEL_BUTTONS",
 		"MODELFRAME_MAX_PLAYER_ZOOM",
 		"NO",
@@ -1091,7 +960,6 @@ stds.wow = {
 		"NORMAL_FONT_COLOR",
 		"NOT_BOUND",
 		"OKAY",
-		"PAIN",
 		"PLAYER_FACTION_COLOR_ALLIANCE",
 		"PLAYER_FACTION_COLOR_HORDE",
 		"POWER_TYPE_ARCANE_CHARGES",
@@ -1119,18 +987,12 @@ stds.wow = {
 		"TOOLTIP_DEFAULT_COLOR",
 		"TOOLTIP_UNIT_LEVEL_TYPE",
 		"TRANSMOGRIFY_FONT_COLOR",
-		"UIDROPDOWNMENU_DEFAULT_WIDTH_PADDING",
-		"UIDROPDOWNMENU_OPEN_MENU",
 		"UNIT_TYPE_LEVEL_TEMPLATE",
 		"UNKNOWN",
 		"UNKNOWNOBJECT",
-		"UNLOCK",
 		"UPPER_LEFT_VERTEX",
-		"VIDEO_QUALITY_LABEL6",
 		"WARNING_FONT_COLOR",
 		"WHITE_FONT_COLOR",
-		"WOW_PROJECT_BURNING_CRUSADE_CLASSIC",
-		"WOW_PROJECT_CLASSIC",
 		"WOW_PROJECT_ID",
 		"WOW_PROJECT_MAINLINE",
 		"YELLOW_FONT_COLOR",
