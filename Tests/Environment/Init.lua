@@ -108,7 +108,7 @@ local ADDON_FILES = {
 	"totalRP3/Core/IconUtil.lua",
 	"totalRP3/Core/MarkupUtil.lua",
 	"totalRP3/Core/CompanionUtil.lua",
-	{ file = "totalRP3/Core/CompanionProviderJournal.lua", allowLoad = { Standard = true, Mists = true } },
+	{ file = "totalRP3/Core/CompanionProviderJournal.lua", allowLoad = { Mainline = true, Mists = true } },
 	{ file = "totalRP3/Core/CompanionProviderStatic.lua", allowLoad = { Vanilla = true, TBC = true } },
 	"totalRP3/Core/Utils.lua",
 	"totalRP3/Core/ProfileUtil.lua",
