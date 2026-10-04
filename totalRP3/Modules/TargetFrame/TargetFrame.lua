@@ -236,7 +236,7 @@ local function onStart()
 			local info = companionInfo and companionInfo.data or EMPTY;
 			ui_TargetFrame:SetTitleText(info.NA or companionID);
 		elseif currentTargetType == TRP3_Enums.UNIT_TYPE.NPC then
-			ui_TargetFrame:SetTitleText(UnitName("target"));
+			ui_TargetFrame:SetTitleText(TRP3_NameUtil.GetDisplayName("target"));
 		end
 	end
 

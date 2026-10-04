@@ -550,7 +550,7 @@ end
 local function writeTooltipForCharacter(targetID, targetType)
 	local info = getCharacterInfoTab(targetID);
 	local character = getCharacter(targetID);
-	local targetName = UnitName(targetType);
+	local targetName = TRP3_NameUtil.GetDisplayName(targetType);
 	local colors = getTooltipTextColors();
 	---@type Player
 	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(targetID);
@@ -840,7 +840,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 
 	if showTarget() and CanAccessUnitTarget(targetType) then
 		local targetToken = targetType .. "-target";
-		local name = UnitName(targetToken);
+		local name = TRP3_NameUtil.GetDisplayName(targetToken);
 		local targetTargetID = getUnitID(targetToken);
 		if targetTargetID then
 			local unitType = TRP3_API.ui.misc.getTargetType(targetToken);
@@ -1051,7 +1051,7 @@ local function writeCompanionTooltip(companionFullID, targetType, targetMode)
 	local ownerID, companionID = companionIDToInfo(companionFullID);
 	local data = getCompanionInfo(ownerID, companionID);
 	local info = data.data or EMPTY;
-	local targetName = UnitName(targetType);
+	local targetName = TRP3_NameUtil.GetDisplayName(targetType);
 	local colors = getTooltipTextColors();
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
