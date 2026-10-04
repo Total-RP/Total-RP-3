@@ -194,7 +194,7 @@ local function onStart()
 				if #peeks > 0 then
 					peeks[#peeks + 1] = "\n\n---\n\n";
 				end
-				peeks[#peeks + 1] = TRP3_MarkupUtil.GenerateFileMarkup("Interface/Icons/" .. TRP3_IconUtil.GetIconName(peek.IC) or "inv_misc_questionmark", { size = 32 });
+				peeks[#peeks + 1] = TRP3_MarkupUtil.GenerateFileMarkup("Interface/Icons/" .. (TRP3_IconUtil.GetIconName(peek.IC) or "inv_misc_questionmark"), { size = 32 });
 				peeks[#peeks + 1] = "\n";
 				if peek.TI then
 					peeks[#peeks + 1] = "#";
