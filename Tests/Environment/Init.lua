@@ -77,13 +77,13 @@ local ADDON_FILES = {
 	"totalRP3/Locales/zhCN.lua",
 	"totalRP3/Locales/zhTW.lua",
 	"totalRP3/Locales/Locale.lua",
-	{ file = "totalRP3/Resources/[Flavor]/ImageList.lua" },
-	{ file = "totalRP3/Resources/[Flavor]/RaceIconAtlases.lua", allowLoad = { Classic = true } },
+	{ file = "totalRP3/Resources/[Family]/ImageList.lua" },
+	{ file = "totalRP3/Resources/[Family]/RaceIconAtlases.lua", allowLoad = { Classic = true } },
 	{ file = "totalRP3/Resources/[Game]/RaceIconAtlases.lua", excludeLoad = { Classic = true } },
 	"totalRP3/Resources/InterfaceIcons.lua",
 	"totalRP3/Resources/InterfaceAtlases.lua",
 	"totalRP3/Resources/InterfaceSounds.lua",
-	{ file = "totalRP3/Resources/[Flavor]/CompanionData.lua", allowLoad = { Vanilla = true, TBC = true } },
+	{ file = "totalRP3/Resources/[Family]/CompanionData.lua", allowLoad = { Vanilla = true, TBC = true } },
 	"totalRP3/Core/Enums.lua",
 	"totalRP3/Core/NameUtil.lua",
 	"totalRP3/Core/Player.lua",
@@ -139,7 +139,7 @@ end
 
 local function ResolvePath(entry, family, gameDirectory)
 	local path = type(entry) == "string" and entry or entry.file;
-	path = string.gsub(path, "%[Flavor%]", family);
+	path = string.gsub(path, "%[Family%]", family);
 	path = string.gsub(path, "%[Game%]", gameDirectory);
 	return path;
 end
