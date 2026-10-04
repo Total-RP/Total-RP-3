@@ -183,7 +183,7 @@ TRP3_AutomationUtil.RegisterAction({
 			enabledText = L.AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDS_DISABLED;
 		end
 
-		C_CVar.SetCVar(TRP3_CVarConstants.NamePlateShowFriendlyPlayers, enabled and "1" or "0");
+		TRP3_CVarUtil.SetTemporaryCVar(TRP3_CVarConstants.NamePlateShowFriendlyPlayers, enabled);
 		context:Print(enabledText);
 	end,
 });
@@ -220,7 +220,7 @@ TRP3_AutomationUtil.RegisterAction({
 			enabledText = L.AUTOMATION_ACTION_NAMEPLATES_SHOW_FRIENDLY_NPCS_DISABLED;
 		end
 
-		C_CVar.SetCVar(TRP3_CVarConstants.NamePlateShowFriendlyNPCs, enabled and "1" or "0");
+		TRP3_CVarUtil.SetTemporaryCVar(TRP3_CVarConstants.NamePlateShowFriendlyNPCs, enabled);
 		context:Print(enabledText);
 	end,
 });

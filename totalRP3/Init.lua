@@ -64,8 +64,3 @@ _G.TRP3_API = TRP3_API;
 -- New public API, intended for external use
 ---@type AddOn_TotalRP3
 AddOn_TotalRP3 = {};
-
---@debug@
--- Force showing Lua errors on non release builds
-SetCVar("scriptErrors", 1);
---@end-debug@

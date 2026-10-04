@@ -215,6 +215,12 @@ stds.wow = {
 						"NUM_PET_SLOTS",
 					},
 				},
+				CharacterNameSeparatorConsts = {
+					fields = {
+						"CHARACTERNAME_REALMNAME_SEPARATOR",
+						"CHARACTERNAME_SURNAME_SEPARATOR",
+					},
+				},
 				ChatFrameConstants = {
 					fields = {
 						"MaxChatChannels",
@@ -241,6 +247,7 @@ stds.wow = {
 		C_BattleNet = {
 			fields = {
 				"GetAccountInfoByGUID",
+				"GetGameAccountInfoByGUID",
 			},
 		},
 
@@ -283,6 +290,7 @@ stds.wow = {
 				"GetCVar",
 				"GetCVarBool",
 				"SetCVar",
+				"SetTempCVar",
 			},
 		},
 
@@ -345,6 +353,7 @@ stds.wow = {
 				"FoldCase",
 				"GetSortKey",
 				"Transliterate",
+				"ToUpper",
 			},
 		},
 
@@ -731,6 +740,7 @@ stds.wow = {
 		"BNGetGameAccountInfoByGUID",
 		"BNGetInfo",
 		"CalculateStringEditDistance",
+		"canaccessallvalues",
 		"canaccessvalue",
 		"ChatConfigChannelSettings_SwapChannelsByIndex",
 		"ChatEdit_GetActiveWindow",
@@ -846,12 +856,13 @@ stds.wow = {
 		"PlaySound",
 		"PlaySoundFile",
 		"RaidWarningFrame",
+		"RegionalUniqueNamesEnabled",
 		"RegisterStateDriver",
 		"ReloadUI",
 		"RemoveChatWindowChannel",
 		"ResetCursor",
-		"RunNextFrame",
 		"RoundToSignificantDigits",
+		"RunNextFrame",
 		"SafePack",
 		"Saturate",
 		"ScrollingEdit_OnCursorChanged",
@@ -925,8 +936,10 @@ stds.wow = {
 		"UnitIsPlayer",
 		"UnitIsPVP",
 		"UnitIsUnit",
+		"UnitIsVisible",
 		"UnitLevel",
 		"UnitName",
+		"UnitNameFromGUID",
 		"UnitNameUnmodified",
 		"UnitOwnerGUID",
 		"UnitPlayerControlled",

@@ -9,7 +9,6 @@ local Globals, Events = TRP3_API.globals, TRP3_Addon.Events;
 local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
-local unitIDToInfo = Utils.str.unitIDToInfo;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local isMenuRegistered = TRP3_API.navigation.menu.isMenuRegistered;
 local registerMenu, selectMenu, openMainFrame = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu, TRP3_API.navigation.openMainFrame;
@@ -62,7 +61,7 @@ local function openPage(profileID, unitID)
 		-- Else, create a new menu entry and open it.
 		local tabText = UNKNOWN;
 		if profile.characteristics and profile.characteristics.FN then
-			tabText = profile.characteristics.FN;
+			tabText = TRP3_NameUtil.ComposeFullName(profile.characteristics.FN, profile.characteristics.LN);
 		end
 		local pageContext = {
 			-- source isn't used, but useful in to know where you're getting the
@@ -344,8 +343,8 @@ local function onLineClicked(self, button)
 			if profile.link and TableHasAnyEntries(profile.link) then
 				local characterList = {};
 				for unitID, _ in pairs(profile.link) do
-					local unitName, unitRealm = unitIDToInfo(unitID);
-					if unitRealm == Globals.player_realm_id then
+					local unitName, unitRealm = TRP3_NameUtil.DecomposeQualifiedName(unitID);
+					if not unitRealm or unitRealm == Globals.player_realm_id then
 						tinsert(characterList, unitName);
 					else
 						tinsert(characterList, unitName .. "-" .. unitRealm);
@@ -445,7 +444,7 @@ local function decorateCharacterLine(line, elementData)
 	if profile.link and TableHasAnyEntries(profile.link) then
 		leftTooltipText = leftTooltipText .. loc.REG_LIST_CHAR_TT_CHAR .. "|cnGREEN_FONT_COLOR:";
 		for unitID, _ in pairs(profile.link) do
-			local unitName, unitRealm = unitIDToInfo(unitID);
+			local unitName, unitRealm = TRP3_NameUtil.DecomposeQualifiedName(unitID);
 			local character = getUnitIDCharacter(unitID);
 
 			if not firstLink then
@@ -482,7 +481,12 @@ local function decorateCharacterLine(line, elementData)
 				end
 			end
 
-			local tooltipLine = " - " .. unitName .. " ( " .. unitRealm .. " )";
+			local tooltipLine;
+			if unitRealm then
+				tooltipLine = " - " .. loc.REG_LIST_CHAR_LINKED_NAME:format(unitName, unitRealm);
+			else
+				tooltipLine = " - " .. loc.REG_LIST_CHAR_LINKED_NAME_NO_REALM:format(unitName);
+			end
 			if isIDIgnored(unitID) then
 				tooltipLine = tooltipLine .. " - " .. IGNORED_ICON .. " " .. loc.REG_LIST_IGNORE_TITLE;
 				atLeastOneIgnored = true;
@@ -601,7 +605,7 @@ local function CreateCharacterLineBuilder()
 			if not firstLink then
 				firstLink = unitID;
 			end
-			local unitName, unitRealm = unitIDToInfo(unitID);
+			local unitName, unitRealm = TRP3_NameUtil.DecomposeQualifiedName(unitID);
 			if firstLink and isUnitIDKnown(firstLink) then
 				firstGuild = getUnitIDCharacter(firstLink).guild or "";
 				firstRealm = unitRealm or "";
@@ -623,6 +627,10 @@ local function CreateCharacterLineBuilder()
 		local completeName = getCompleteName(profile.characteristics or {}, "", true);
 		if not nameIsConform and nameMatcher:Matches(completeName) then
 			nameIsConform = true;
+		end
+
+		if not TRP3_NameUtil.ShouldDisplayRealmNames() then
+			realmIsConform = true;
 		end
 
 		nameIsConform = nameIsConform or nameSearch == "";
@@ -1534,6 +1542,11 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	TRP3_RegisterListFilterCharactGuild:SetScript("OnEnterPressed", function() RefreshRegisterList(); end);
 	TRP3_RegisterListFilterCharactRealm:SetScript("OnClick", function() RefreshRegisterList(); end);
 	TRP3_RegisterListFilterCharactNotes:SetScript("OnClick", function() RefreshRegisterList(); end);
+	if not TRP3_NameUtil.ShouldDisplayRealmNames() then
+		TRP3_RegisterListFilterCharactRealm:Hide();
+		TRP3_RegisterListFilterCharactNotes:ClearAllPoints();
+		TRP3_RegisterListFilterCharactNotes:SetPoint("LEFT", TRP3_RegisterListFilterCharactGuild, "RIGHT", 15, 0);
+	end
 	TRP3_RegisterListCharactFilterButton:SetScript("OnClick", function(_, button)
 		if button == "RightButton" then
 			TRP3_RegisterListFilterCharactName:SetText("");
