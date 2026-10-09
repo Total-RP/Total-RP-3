@@ -67,7 +67,9 @@ Locales\Locale.lua
 
 Resources\[Family]\ImageList.lua
 Resources\[Family]\RaceIconAtlases.lua [AllowLoadGameType classic]
-Resources\[Game]\RaceIconAtlases.lua [ExcludeLoadGameType classic]
+# Simplify to one line and remove the AllowLoad criteria when [Game] expands out to Forever.
+Resources\Forever\RaceIconAtlases.lua [AllowLoadGameType forever][ExcludeLoadGameType classic, standard]
+Resources\[Game]\RaceIconAtlases.lua [AllowLoadGameType standard][ExcludeLoadGameType classic]
 Resources\InterfaceIcons.lua
 Resources\InterfaceAtlases.lua
 Resources\InterfaceSounds.lua
