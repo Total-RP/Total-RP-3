@@ -60,24 +60,6 @@ local function GetUnitCompanionProfileInfo(unitToken)
 	end
 end
 
-local auroraProjectID;
-
-local function GetClientProjectID()
-	if auroraProjectID == nil then
-		-- Workaround for Camelot; WOW_PROJECT_ID is inaccurate (it claims to
-		-- be Mainline). C_BattleNet APIs expose the real project ID.
-		local gameAccountInfo = C_BattleNet.GetGameAccountInfoByGUID(UnitGUID("player"));
-
-		if gameAccountInfo and gameAccountInfo.wowProjectID then
-			auroraProjectID = gameAccountInfo.wowProjectID;
-		else
-			auroraProjectID = WOW_PROJECT_ID;
-		end
-	end
-
-	return auroraProjectID;
-end
-
 TRP3_UnitPopupUtil = {};
 
 function TRP3_UnitPopupUtil.GetCharacterIDFromName(contextData)
@@ -96,7 +78,7 @@ function TRP3_UnitPopupUtil.GetCharacterIDFromBattleNet(contextData)
 		return nil;
 	elseif gameAccountInfo.clientProgram ~= BNET_CLIENT_WOW then
 		return nil;
-	elseif gameAccountInfo.wowProjectID ~= GetClientProjectID() then
+	elseif gameAccountInfo.wowProjectID ~= WOW_PROJECT_ID then
 		return nil;
 	elseif not gameAccountInfo.isInCurrentRegion then
 		return nil;
