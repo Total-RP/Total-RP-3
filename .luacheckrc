@@ -403,6 +403,7 @@ stds.wow = {
 			fields = {
 				"GetZonePVPInfo",
 				"IsWarModeActive",
+				"IsWarModeFeatureEnabled",
 			},
 		},
 
