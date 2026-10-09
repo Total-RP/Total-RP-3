@@ -71,6 +71,7 @@ TRP3_API.globals = {
 	PSYCHO_DEFAULT_VALUE_V2 = 10,
 	PSYCHO_MAX_VALUE_V2 = 20,
 };
+
 local WATER_ELEMENTAL_FAMILY = 49;
 
 TRP3_ClientFeatures = {
