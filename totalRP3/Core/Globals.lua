@@ -73,6 +73,7 @@ TRP3_API.globals = {
 };
 
 local WOW_PROJECT_FOREVER = 18;
+local WATER_ELEMENTAL_FAMILY = 49;
 
 TRP3_ClientFeatures = {
 	ChannelBroadcasts = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE or WOW_PROJECT_ID == WOW_PROJECT_FOREVER),
@@ -80,7 +81,7 @@ TRP3_ClientFeatures = {
 	-- true on Forever currently despite it not actually supporting war mode.
 	WarMode = (LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_BATTLE_FOR_AZEROTH),
 	Transmogrification = C_GameRules.IsGameRuleActive(Enum.GameRule.TransmogEnabled),
-	WaterElementalWorkaround = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE and WOW_PROJECT_ID ~= WOW_PROJECT_FOREVER),
+	WaterElementalWorkaround = (C_CreatureInfo.GetCreatureFamilyInfo(WATER_ELEMENTAL_FAMILY) == nil),
 	OldTooltipAPI = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE and WOW_PROJECT_ID ~= WOW_PROJECT_FOREVER),
 };
 

@@ -266,6 +266,7 @@ stds.wow = {
 
 		C_CreatureInfo = {
 			fields = {
+				"GetCreatureFamilyInfo",
 				"GetFactionInfo",
 				"GetRaceInfo",
 			},
