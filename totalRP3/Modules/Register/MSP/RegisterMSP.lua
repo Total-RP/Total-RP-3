@@ -12,16 +12,6 @@ local function GetOrCreateTable(t, key)
 	return t[key];
 end
 
-local function ResolveIconName(icon)
-	local iconInfo = TRP3_IconUtil.GetIconInfo(icon);
-
-	if iconInfo and iconInfo.file then
-		return iconInfo.name;
-	else
-		return TRP3_InterfaceIconNames.ProfileDefault;
-	end
-end
-
 local function ResolveIconID(icon)
 	local iconID = TRP3_IconUtil.GetIconID(icon);
 
@@ -122,8 +112,7 @@ local function onStart()
 		else
 			msp.my['NA'] = getCompleteName(dataTab, Globals.player);
 		end
-		msp.my['IC'] = ResolveIconName(dataTab.IC);
-		msp.my['IX'] = ResolveIconID(dataTab.IC);
+		msp.my['IC'] = ResolveIconID(dataTab.IC);
 		msp.my['NT'] = dataTab.FT;
 		msp.my['PX'] = dataTab.TI;
 		msp.my['RA'] = dataTab.RA;
@@ -404,8 +393,7 @@ local function onStart()
 
 			char.field.PX = profile.characteristics.TI;  -- Prefix Title
 			char.field.NT = profile.characteristics.FT;  -- Full Title
-			char.field.IC = ResolveIconName(profile.characteristics.IC);  -- Icon
-			char.field.IX = ResolveIconID(profile.characteristics.IC);
+			char.field.IC = ResolveIconID(profile.characteristics.IC);  -- Icon
 			char.field.RA = profile.characteristics.RA;  -- Race
 			char.field.RS = tostring(profile.characteristics.RS or AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN);
 			char.field.AG = profile.characteristics.AG;  -- Age
@@ -539,10 +527,6 @@ local function onStart()
 						end
 						if field == "RS" and value then
 							value = tonumber(value);
-						end
-						-- Icon migration; prefer data from new IX field.
-						if field == "IC" and data["IX"] ~= "" then
-							value = data["IX"];
 						end
 						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = value;
 						-- Hack for spaced name tolerated in MRP
