@@ -183,7 +183,7 @@ local function onStart()
 				if #peeks > 0 then
 					peeks[#peeks + 1] = "\n\n---\n\n";
 				end
-				peeks[#peeks + 1] = string.format("|TInterface/Icons/%s:32:32|t", TRP3_IconUtil.GetIconName(peek.IC) or "inv_misc_questionmark");
+				peeks[#peeks + 1] = string.format("|TInterface\\Icons\\%s:32:32|t", TRP3_IconUtil.GetIconName(peek.IC) or "inv_misc_questionmark");
 				peeks[#peeks + 1] = "\n";
 				if peek.TI then
 					peeks[#peeks + 1] = "#";
