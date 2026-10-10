@@ -192,7 +192,7 @@ function TRP3_API.ui.listbox.displayDropDown(ownerRegion, rootMenuItems, onClick
 		GenerateMenuDescription(rootMenuItems, rootDescription);
 	end
 
-	TRP3_MenuUtil.CreateContextMenu(ownerRegion, GenerateRootMenuDescription);
+	TRP3_MenuUtil.CreateActionMenu(ownerRegion, GenerateRootMenuDescription);
 end
 
 --- Setup a drop down menu for a clickable (Button ...)

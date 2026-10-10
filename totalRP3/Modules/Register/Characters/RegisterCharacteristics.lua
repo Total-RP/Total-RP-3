@@ -678,7 +678,7 @@ local function miscAddDropDown()
 	end
 	table.sort(values, SortCompareMiscEntries);
 
-	TRP3_MenuUtil.CreateContextMenu(TRP3_RegisterCharact_Edit_MiscAdd, function(_, description)
+	TRP3_MenuUtil.CreateActionMenu(TRP3_RegisterCharact_Edit_MiscAdd, function(_, description)
 		description:CreateTitle(loc.REG_PLAYER_MISC_ADD);
 		for _, preset in pairs(values) do
 			local addOption = description:CreateButton(preset[1], miscAddDropDownSelection, preset[2]);
@@ -842,7 +842,7 @@ function setEditDisplay()
 		end
 
 		frame.Action:SetScript("OnMouseDown", function(self)
-			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+			TRP3_MenuUtil.CreateActionMenu(self, function(_, description)
 				-- If not custom, allow convert to custom.
 				if miscStructure.ID ~= TRP3_API.MiscInfoType.Custom then
 					local convertOption = description:CreateButton(loc.REG_PLAYER_CONVERT, onMiscConvert, self);
@@ -959,7 +959,7 @@ function setEditDisplay()
 		end
 
 		frame.ActionButton:SetScript("OnMouseDown", function(self)
-			TRP3_MenuUtil.CreateContextMenu(self, function(_, description)
+			TRP3_MenuUtil.CreateActionMenu(self, function(_, description)
 				-- If not custom, allow convert to custom.
 				if psychoStructure.ID then
 					description:CreateButton(loc.REG_PLAYER_CONVERT, onPsychoConvert, self);
@@ -1158,7 +1158,7 @@ local function onActionClicked(button)
 	assert(context, "No context for page player_main !");
 	assert(context.profile, "No profile in context");
 
-	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+	TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
 		if context.profile.link and TableHasAnyEntries(context.profile.link) then
 			description:CreateButton(loc.REG_PLAYER_IGNORE:format(CountTable(context.profile.link)), onActionSelected, 2);
 		end
@@ -1353,7 +1353,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_EyeButton.onSelection = onEyeColorSelected;
 
 	TRP3_RegisterCharact_Edit_PsychoAdd:SetScript("OnClick", function(button)
-		TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+		TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
 			for _, preset in pairs(PSYCHO_PRESETS_DROPDOWN) do
 				-- If there is no index or action, it is a title
 				if not preset[2] then

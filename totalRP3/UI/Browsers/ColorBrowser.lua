@@ -268,7 +268,7 @@ function TRP3_ColorBrowserMixin:OnPresetButtonClick()
 		rootDescription:CreateButton(L.BW_COLOR_PRESET_SAVE, OnPresetSaveClicked, self:GetSelectedColor());
 	end
 
-	TRP3_MenuUtil.CreateContextMenu(self, GeneratePresetMenu);
+	TRP3_MenuUtil.CreateActionMenu(self.Content.PresetButton, GeneratePresetMenu);
 end
 
 function TRP3_ColorBrowserMixin:OnPreviewSwatchClick()
