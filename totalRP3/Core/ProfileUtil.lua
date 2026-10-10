@@ -236,6 +236,16 @@ function TRP3_ProfileUtil.GetDefaultProfileName()
 	return name;
 end
 
+-- Maps the TOC's X-GameType to the flavor name shown in exports.
+local FlavorNames = {
+	Standard = "Retail",
+	Camelot = "Forever",
+};
+
+function TRP3_ProfileUtil.GetFlavor()
+	return FlavorNames[C_AddOns.GetAddOnMetadata("totalRP3", "X-GameType")];
+end
+
 function TRP3_ProfileUtil.SerializeProfile(addonVersion, profileID, profileData)
 	local packedData = { addonVersion, profileID, profileData };
 	local serializedData;
@@ -246,6 +256,7 @@ function TRP3_ProfileUtil.SerializeProfile(addonVersion, profileID, profileData)
 		{ key = "Name", value = profileData.profileName },
 		{ key = "Exported", value = date("%Y-%m-%d %H:%M:%S") },
 		{ key = "AddOn-Version", value = TRP3_API.globals.version_display },
+		{ key = "Flavor", value = TRP3_ProfileUtil.GetFlavor() },
 	};
 
 	serializedData = TRP3_EncodingUtil.EncodePEM(label, data, headers);
@@ -254,51 +265,33 @@ end
 
 function TRP3_ProfileUtil.DeserializeProfile(serializedData)
 	local ok, packedData;
-	local startsWithAceMarker = string.find(serializedData, "^^1");
+	local flavor = "Retail"; -- Exports without a flavor predate it and (probably) came from Retail.
 	local containsPEMMarker = string.contains(serializedData, "-----BEGIN ");
+	local containsAceMarker = string.contains(serializedData, "^1");
 
-	if startsWithAceMarker or not containsPEMMarker then
-		-- Older export, pasted as is or behind noise such as an invisible character or a code fence.
+	if containsPEMMarker then
+		-- Checked first, as PEM headers can hold user text (such as the profile name) that may contain "^1".
+		local decodedLabel, decodedData, decodedHeaders, decompressedData;
+		ok, decodedLabel, decodedData, decodedHeaders = pcall(TRP3_EncodingUtil.DecodePEM, serializedData);
+		ok = ok and decodedLabel == "TRP3 PROFILE";
+
+		if ok then
+			flavor = decodedHeaders.Flavor or flavor;
+			ok, decompressedData = pcall(C_EncodingUtil.DecompressString, decodedData);
+		end
+
+		if ok then
+			ok, packedData = pcall(C_EncodingUtil.DeserializeCBOR, decompressedData);
+		end
+	elseif containsAceMarker then
+		-- Older (Ace) exports.
 		ok, packedData = pcall(TRP3_EncodingUtil.DecodeAce, serializedData);
-
-		if not ok then
-			return nil, L.PR_IMPORT_ERROR_DESERIALIZE_ACE;
-		elseif packedData == nil then
-			return nil, L.PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT;
-		end
-	else
-		-- Current export: a PEM block, which is found anywhere in the text.
-		local decodedLabel, decodedData;
-		ok, decodedLabel, decodedData = pcall(TRP3_EncodingUtil.DecodePEM, serializedData);
-
-		if not ok then
-			return nil, L.PR_IMPORT_ERROR_PEM_DECODE;
-		end
-
-		if decodedLabel == nil then
-			return nil, L.PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT;
-		elseif decodedLabel ~= "TRP3 PROFILE" then
-			return nil, L.PR_IMPORT_ERROR_PEM_LABEL;
-		end
-
-		local decompressedData;
-		ok, decompressedData = pcall(C_EncodingUtil.DecompressString, decodedData);
-
-		if not ok then
-			return nil, L.PR_IMPORT_ERROR_DECOMPRESS;
-		end
-
-		ok, packedData = pcall(C_EncodingUtil.DeserializeCBOR, decompressedData);
-
-		if not ok then
-			return nil, L.PR_IMPORT_ERROR_DESERIALIZE_CBOR;
-		end
 	end
 
-	if type(packedData) ~= "table" or #packedData < 3 then
-		return nil, L.PR_IMPORT_ERROR_PACKED_DATA_INVALID;
+	if not ok or type(packedData) ~= "table" or #packedData < 3 then
+		return nil, L.PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT;
 	end
 
 	local addonVersion, profileID, profileData = unpack(packedData, 1, 3);
-	return addonVersion, profileID, profileData;
+	return addonVersion, profileID, profileData, flavor;
 end

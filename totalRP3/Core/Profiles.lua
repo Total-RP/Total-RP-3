@@ -473,14 +473,7 @@ local function SetupExportFrame(profileID, profile)
 	local frames = TRP3_ProfileCreateDialog.Frames;
 	local exportFrame = frames.ExportFrame;
 	local serial = TRP3_ProfileUtil.SerializeProfile(Globals.version, profileID, profile);
-	local maxSerialSize = 20000;
 	forceClose = true;
-
-	-- Check if the profile data is too large
-	if serial:len() >= maxSerialSize then
-		Utils.message.displayMessage(loc.PR_EXPORT_TOO_LARGE:format(serial:len() / 1000), 2);
-		return;
-	end
 
 	local exportWarningText = loc.PR_EXPORT_WARNING;
 	local copyShortcut = TRP3_API.FormatShortcut("CTRL-C", TRP3_API.ShortcutType.System);
@@ -489,7 +482,7 @@ local function SetupExportFrame(profileID, profile)
 	exportFrame.Content.Warning:SetText(
 		exportWarningText ..
 		"|n|n" .. loc.COPY_DROPDOWN_POPUP_TEXT:format(TRP3_API.Colors.Orange(copyShortcut), TRP3_API.Colors.Orange(pasteShortcut)) ..
-		"|n|n|cnNORMAL_FONT_COLOR:" .. loc.PR_EXPORT_NAME:format("|cnGREEN_FONT_COLOR:" .. profile.profileName .. "|r", serial:len() / 1000) .. "|r"
+		"|n|n|cnNORMAL_FONT_COLOR:" .. loc.PR_EXPORT_NAME:format("|cnGREEN_FONT_COLOR:" .. profile.profileName .. "|r") .. "|r"
 	);
 
 	exportFrame.Title:SetText(loc.PR_EXPORT_PROFILE);
@@ -658,17 +651,17 @@ local function EvaluateImportData(forceImport)
 	setTooltipForSameFrame(importButton.WarningIcon);
 	importButton:Enable();
 
-	-- Get import serial code
+	-- Get import export string
 	local code = importFrame.Content.ImportText:GetInputText();
 	if code == "" then
 		importButton:Disable();
-		setTooltipForSameFrame(importButton, "RIGHT", 0, 5, loc.PR_IMPORT, loc.PR_IMPORT_EMPTY_SERIAL);
+		setTooltipForSameFrame(importButton, "RIGHT", 0, 5, loc.PR_IMPORT, loc.PR_IMPORT_EMPTY_EXPORT);
 		return false;
 	end
 
-	-- Deserialize the serial code
-	local version, data;
-	version, errorOrOldProfileID, data = TRP3_ProfileUtil.DeserializeProfile(string.trim(code));
+	-- Deserialize the export string
+	local version, data, flavor;
+	version, errorOrOldProfileID, data, flavor = TRP3_ProfileUtil.DeserializeProfile(string.trim(code));
 	if version == nil or not data then
 		importButton:Disable();
 		setTooltipForSameFrame(importButton, "RIGHT", 0, 5, loc.PR_IMPORT, errorOrOldProfileID);
@@ -682,6 +675,11 @@ local function EvaluateImportData(forceImport)
 		-- Export came from a different TRP version!
 		importButton.WarningIcon:Show();
 		setTooltipAll(importButton.WarningIcon, "RIGHT", 0, 5, "Warning", loc.PR_PROFILEMANAGER_IMPORT_WARNING_3);
+		valid = false;
+	elseif flavor ~= TRP3_ProfileUtil.GetFlavor() then
+		-- Export came from a different WoW flavor!
+		importButton.WarningIcon:Show();
+		setTooltipAll(importButton.WarningIcon, "RIGHT", 0, 5, "Warning", loc.PR_PROFILEMANAGER_IMPORT_WARNING_FLAVOR);
 		valid = false;
 	end
 

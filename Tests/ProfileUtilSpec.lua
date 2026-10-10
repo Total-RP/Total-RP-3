@@ -19,6 +19,10 @@ insulate("DeserializeProfile", function()
 
 	before_each(function()
 		_G.TRP3_EncodingUtil = { DecodeAce = spy.new(function() end), DecodePEM = spy.new(function() end) };
+		_G.C_EncodingUtil = {
+			DecompressString = function(data) return data; end,
+			DeserializeCBOR = function() return { 166, "id", {} }; end,
+		};
 	end);
 
 	it("hands an older export to DecodeAce", function()
@@ -30,13 +34,6 @@ insulate("DeserializeProfile", function()
 	it("hands text without a PEM block to DecodeAce, even with noise pasted before", function()
 		TRP3_ProfileUtil.DeserializeProfile("\194\160^1^T^^");
 		assert.spy(TRP3_EncodingUtil.DecodeAce).was.called_with("\194\160^1^T^^");
-		assert.spy(TRP3_EncodingUtil.DecodePEM).was_not.called();
-	end);
-
-	it("hands an older export to DecodeAce, even with a PEM block pasted after it", function()
-		local export = "^1^T^^\n-----BEGIN TRP3 PROFILE-----\nQUJD\n-----END TRP3 PROFILE-----";
-		TRP3_ProfileUtil.DeserializeProfile(export);
-		assert.spy(TRP3_EncodingUtil.DecodeAce).was.called_with(export);
 		assert.spy(TRP3_EncodingUtil.DecodePEM).was_not.called();
 	end);
 
@@ -68,9 +65,21 @@ insulate("DeserializeProfile", function()
 		assert.are.equal("PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT", reportedError);
 	end);
 
-	it("reports a malformed older export as an Ace error", function()
+	it("reports a malformed older export as unrecognized", function()
 		TRP3_EncodingUtil.DecodeAce = spy.new(function() error("Supplied data is malformed"); end);
 		local _, reportedError = TRP3_ProfileUtil.DeserializeProfile("^1^Tbroken");
-		assert.are.equal("PR_IMPORT_ERROR_DESERIALIZE_ACE", reportedError);
+		assert.are.equal("PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT", reportedError);
+	end);
+
+	it("returns the flavor from the PEM headers", function()
+		TRP3_EncodingUtil.DecodePEM = function() return "TRP3 PROFILE", "data", { Flavor = "Forever" }; end;
+		local _, _, _, flavor = TRP3_ProfileUtil.DeserializeProfile("-----BEGIN TRP3 PROFILE-----");
+		assert.are.equal("Forever", flavor);
+	end);
+
+	it("assumes Retail when the export has no flavor", function()
+		TRP3_EncodingUtil.DecodePEM = function() return "TRP3 PROFILE", "data", {}; end;
+		local _, _, _, flavor = TRP3_ProfileUtil.DeserializeProfile("-----BEGIN TRP3 PROFILE-----");
+		assert.are.equal("Retail", flavor);
 	end);
 end);
