@@ -46,6 +46,7 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 		iconAtlas = nil,
 		iconColor = nil,
 		opacity = 1.0,
+		pinFrameLevelType = nil,
 		playerName = playerName,
 		playerNameColored = player:GenerateFormattedName(TRP3_PlayerNameFormat.Colored),
 		playerNameFancy = player:GenerateFormattedName(TRP3_PlayerNameFormat.Fancy),
@@ -59,7 +60,8 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 		displayData.iconAtlas = "PlayerPartyBlip";
 		displayData.iconColor = TRP3_API.Colors.Cyan;
 		displayData.categoryName = loc.REG_RELATION .. ": " .. TRP3_API.Colors.Cyan("SELF");
-		displayData.categoryPriority = math.huge;
+		displayData.categoryPriority = -math.huge;
+		displayData.pinFrameLevelType = "PIN_FRAME_LEVEL_TOPMOST";
 	elseif shouldDifferentiateBetweenWarModes and not hasSameWarModeAsPlayer then
 		-- Swap out the atlas for this marker, show it in red, low opacity, and in a special category
 		displayData.iconAtlas = "PlayerPartyBlip";
@@ -74,7 +76,8 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 			displayData.iconAtlas = "PlayerPartyBlip";
 			displayData.iconColor = relationshipColor;
 			displayData.categoryName = loc.REG_RELATION .. ": " .. (relationshipColor or TRP3_API.Colors.White)(relation.name or loc:GetText("REG_RELATION_".. relation.id));
-			displayData.categoryPriority = -(relation.order or math.huge);
+			displayData.categoryPriority = -relation.order;
+			displayData.pinFrameLevelType = "PIN_FRAME_LEVEL_TOPMOST";
 		end
 	end
 
@@ -102,6 +105,8 @@ function TRP3_PlayerMapPinMixin:Decorate(displayData)
 	self.tooltipLine = displayData.playerNameFancy;
 	self.categoryName = displayData.categoryName;
 	self.categoryPriority = displayData.categoryPriority;
+	self.pinFrameLevelType = displayData.pinFrameLevelType;
+	self.pinFrameLevelIndex = displayData.pinFrameLevelIndex;
 	self.sortName = displayData.sortName;
 	self.sortOrder = displayData.sortOrder;
 
@@ -111,16 +116,7 @@ function TRP3_PlayerMapPinMixin:Decorate(displayData)
 		self.Texture:SetVertexColor(1, 1, 1, 1);
 	end
 
-	-- Adjust the frame level of pins that have a zero or higher priority.
-	-- This applies to pins that have a relationship status set.
-	if displayData.categoryPriority ~= nil then
-		-- Topmost level if there's any sort of priority.
-		self:UseFrameLevelType("PIN_FRAME_LEVEL_TOPMOST");
-	else
-		-- Default level.
-		self:UseFrameLevelType("PIN_FRAME_LEVEL_VEHICLE_ABOVE_GROUP_MEMBER");
-	end
-
+	self:UseFrameLevelType(self.pinFrameLevelType or "PIN_FRAME_LEVEL_VEHICLE_ABOVE_GROUP_MEMBER", self.pinFrameLevelIndex);
 	self.Texture:SetAlpha(displayData.opacity or 1)
 
 	Ellyb.Tooltips.getTooltip(self):SetTitle(ORANGE(loc.REG_PLAYERS)):ClearLines();
