@@ -730,7 +730,7 @@ end
 ---@param _ Frame The list element parent of the button.
 ---@param button Button The button that was clicked to trigger the menu.
 local function OnActionClicked(_, button)
-	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+	TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
 		description:CreateTitle(loc.PR_PROFILE_MANAGEMENT_TITLE);
 		description:CreateButton(loc.PR_PROFILEMANAGER_RENAME, function() OnActionSelected(PROFILEMANAGER_ACTIONS.RENAME, button); end);
 		description:CreateButton(loc.PR_DUPLICATE_PROFILE, function() OnActionSelected(PROFILEMANAGER_ACTIONS.DUPLICATE, button); end);

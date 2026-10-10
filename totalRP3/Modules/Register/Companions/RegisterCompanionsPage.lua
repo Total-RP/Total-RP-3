@@ -234,7 +234,7 @@ local function onActionClick(button)
 	assert(context, "No context !");
 	assert(context.profile, "No profile in context");
 
-	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+	TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
 		local masters = {};
 		for companionFullId, _ in pairs(context.profile.links or EMPTY) do
 			local ownerID, _ = companionIDToInfo(companionFullId);

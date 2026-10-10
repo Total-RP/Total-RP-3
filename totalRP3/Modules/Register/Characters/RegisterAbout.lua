@@ -816,7 +816,7 @@ local function onMusicEditClicked(button)
 		return;
 	end
 
-	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+	TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
 		description:CreateButton(loc.REG_PLAYER_ABOUT_MUSIC_SELECT, onMusicEditSelected, 1);
 		if draftData.MU then
 			description:CreateButton(loc.REG_PLAYER_ABOUT_MUSIC_REMOVE, onMusicEditSelected, 2);

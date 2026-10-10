@@ -440,7 +440,7 @@ end
 local function onActionClicked(button)
 	local module = button:GetParent().module;
 
-	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+	TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
 		if MODULE_ACTIVATION[module.id] ~= false then
 			description:CreateButton(loc.CO_MODULES_DISABLE, onActionSelected, {button, module, 1});
 		else
