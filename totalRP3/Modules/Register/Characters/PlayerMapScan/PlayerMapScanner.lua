@@ -29,7 +29,7 @@ local function shouldAnswerToLocationRequest()
 		return false;
 	end
 	if getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE) then
-		if not TRP3_ClientFeatures.WarMode then
+		if not TRP3_API.utils.IsWarModeFeatureEnabled() then
 			return not UnitIsPVP("player");
 		elseif C_PvP.IsWarModeActive() then
 			return C_PvP.GetZonePVPInfo() == "sanctuary"
@@ -135,30 +135,30 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		configKey = CONFIG_DISABLE_MAP_LOCATION_ON_OOC,
 		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 	});
-	if not TRP3_ClientFeatures.WarMode then
-		table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
-			inherit = "TRP3_ConfigCheck",
-			title = loc.CO_LOCATION_DISABLE_CLASSIC_PVP,
-			help = loc.CO_LOCATION_DISABLE_CLASSIC_PVP_TT,
-			configKey = CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE,
-			dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
-		});
-	else
-		table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
-			inherit = "TRP3_ConfigCheck",
-			title = loc.CO_LOCATION_DISABLE_WAR_MODE,
-			help = loc.CO_LOCATION_DISABLE_WAR_MODE_TT,
-			configKey = CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE,
-			dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
-		});
-		table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
-			inherit = "TRP3_ConfigCheck",
-			title = loc.CO_LOCATION_SHOW_DIFFERENT_WAR_MODES,
-			help = loc.CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT,
-			configKey = CONFIG_SHOW_DIFFERENT_WAR_MODES,
-			dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
-		});
-	end
+	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc.CO_LOCATION_DISABLE_CLASSIC_PVP,
+		help = loc.CO_LOCATION_DISABLE_CLASSIC_PVP_TT,
+		configKey = CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE,
+		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
+		showPredicate = function() return not TRP3_API.utils.IsWarModeFeatureEnabled(); end,
+	});
+	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc.CO_LOCATION_DISABLE_WAR_MODE,
+		help = loc.CO_LOCATION_DISABLE_WAR_MODE_TT,
+		configKey = CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE,
+		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
+		showPredicate = function() return TRP3_API.utils.IsWarModeFeatureEnabled(); end,
+	});
+	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc.CO_LOCATION_SHOW_DIFFERENT_WAR_MODES,
+		help = loc.CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT,
+		configKey = CONFIG_SHOW_DIFFERENT_WAR_MODES,
+		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
+		showPredicate = function() return TRP3_API.utils.IsWarModeFeatureEnabled(); end,
+	});
 	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc.CO_LOCATION_SHOW_OUT_OF_CHARACTER,
@@ -244,7 +244,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			if shouldAnswerToLocationRequest() then
 				local x, y = GetScanResponseCoordinates(mapID);
 				if x and y then
-					local hasWarModeActive = (not TRP3_ClientFeatures.WarMode) or C_PvP.IsWarModeActive();
+					local hasWarModeActive = (not TRP3_API.utils.IsWarModeFeatureEnabled()) or C_PvP.IsWarModeActive();
 					local roleplayStatus = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayStatus();
 
 					broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, hasWarModeActive, roleplayStatus);
@@ -260,7 +260,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		local checkWarMode;
 
 		-- If the option to show people in different War Mode is not enabled we will filter them out from the result
-		if TRP3_ClientFeatures.WarMode and not getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES) then
+		if TRP3_API.utils.IsWarModeFeatureEnabled() and not getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES) then
 			checkWarMode = hasWarModeActive;
 		end
 

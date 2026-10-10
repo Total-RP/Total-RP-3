@@ -266,6 +266,7 @@ stds.wow = {
 
 		C_CreatureInfo = {
 			fields = {
+				"GetCreatureFamilyInfo",
 				"GetFactionInfo",
 				"GetRaceInfo",
 			},
@@ -403,6 +404,7 @@ stds.wow = {
 			fields = {
 				"GetZonePVPInfo",
 				"IsWarModeActive",
+				"IsWarModeFeatureEnabled",
 			},
 		},
 
@@ -994,6 +996,7 @@ stds.wow = {
 		"WARNING_FONT_COLOR",
 		"WHITE_FONT_COLOR",
 		"WOW_PROJECT_ID",
+		"WOW_PROJECT_CAMELOT",
 		"WOW_PROJECT_MAINLINE",
 		"YELLOW_FONT_COLOR",
 		"YES",

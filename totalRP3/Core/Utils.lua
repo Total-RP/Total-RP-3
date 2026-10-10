@@ -1011,3 +1011,11 @@ function Utils.IsUnitDND(unit)
 		return scrubsecretvalues(UnitIsDND(unit));
 	end
 end
+
+function Utils.IsWarModeFeatureEnabled()
+	if C_PvP.IsWarModeFeatureEnabled then
+		return C_PvP.IsWarModeFeatureEnabled();
+	else
+		return false;
+	end
+end

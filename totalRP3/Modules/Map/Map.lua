@@ -69,7 +69,7 @@ function Map.playerCanSeeTarget(target, targetHasWarModeEnabled, targetMapID)
 		-- If the player is in a personal phased zone, the target has to be in their group to be seen
 		return UnitInParty(Ambiguate(target, "none"));
 	end
-	if TRP3_ClientFeatures.WarMode and targetHasWarModeEnabled ~= nil then
+	if TRP3_API.utils.IsWarModeFeatureEnabled() and targetHasWarModeEnabled ~= nil then
 		return C_PvP.IsWarModeActive() == targetHasWarModeEnabled
 	end
 	return true;
