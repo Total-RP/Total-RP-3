@@ -130,7 +130,6 @@ L = {
 	["CO_CHAT_MAIN_NPC_USE"] = "Usar detección de diálogo de NPC",
 	["CO_CHAT_MAIN_OOC"] = "Detección OOC",
 	["CO_CHAT_MAIN_OOC_COLOR"] = "Color OOC",
-	["CO_CHAT_MAIN_OOC_PATTERN"] = "Patrón de detección OOC",
 	["CO_CHAT_MAIN_OOC_USE"] = "Usar detección OOC",
 	["CO_CHAT_REMOVE_REALM"] = "Remover reino del nombre de los jugadores",
 	["CO_CHAT_SHOW_OOC"] = "Mostrar indicador FdP",
