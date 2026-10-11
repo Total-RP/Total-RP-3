@@ -35,7 +35,7 @@
 					<Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
 				</Anchors>
 			</Button>
-			<Button parentKey="MenuButton" inherits="TRP3_ActionButton">
+			<Button parentKey="MenuButton" inherits="TRP3_ActionButton" registerForClicks="LeftButtonUp, RightButtonUp">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
 				</Anchors>
