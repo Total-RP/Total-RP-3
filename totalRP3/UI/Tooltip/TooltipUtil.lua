@@ -1,37 +1,15 @@
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
----@type { [GameTooltip]: { left: FontString?, right: FontString? }[] }
-local TooltipFontStrings = setmetatable({}, { __index = function(t, k) t[k] = {}; return t[k]; end });
-
-local function GetTooltipFontStrings(tooltip, numLines)
-	local fontstrings = TooltipFontStrings[tooltip];
-
-	for i = #fontstrings + 1, numLines do
-		local left  = tooltip["TextLeft" .. i]  or _G[tooltip:GetName() .. "TextLeft" .. i];
-		local right = tooltip["TextRight" .. i] or _G[tooltip:GetName() .. "TextRight" .. i];
-
-		if not left and not right then
-			break
-		end
-
-		fontstrings[i] = { left = left, right = right };
-	end
-
-	return fontstrings;
-end
-
 TRP3_TooltipUtil = {};
 
 --- Returns the left and right fontstrings of a tooltip line, if present.
 ---@param tooltip GameTooltip The tooltip frame to query.
 ---@param line integer? The line index to obtain fontstrings for.
 function TRP3_TooltipUtil.GetLineFontStrings(tooltip, line)
-	local fontstrings = GetTooltipFontStrings(tooltip, line)[line];
-
-	if fontstrings then
-		return fontstrings.left, fontstrings.right;
-	end
+	local leftFontString = tooltip:GetLeftLine(line);
+	local rightFontString = tooltip:GetRightLine(line);
+	return leftFontString, rightFontString;
 end
 
 local function NextLineFontStrings(tooltip, line)

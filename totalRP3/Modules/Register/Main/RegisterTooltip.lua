@@ -297,7 +297,7 @@ end
 local function getGameTooltipTexts(tooltip)
 	local tab = {};
 	for j = 1, tooltip:NumLines() do
-		tab[j] = _G[tooltip:GetName() .. "TextLeft" ..  j]:GetText();
+		tab[j] = tooltip:GetLeftLine(j):GetText();
 	end
 	return tab;
 end
