@@ -107,6 +107,8 @@ local function IsUnitIgnored(unitToken)
 			return TRP3_API.register.isIDIgnored(characterID);
 		end
 	end
+
+	return false;
 end
 
 local function IsUnitOutOfCharacter(unitToken)
