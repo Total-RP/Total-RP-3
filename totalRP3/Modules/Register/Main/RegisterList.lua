@@ -306,7 +306,7 @@ local function UpdateRegisterListHeaders()
 end
 
 local function onIgnoredActions(button, unitID)
-	TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
+	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
 		description:CreateTitle(unitID);
 		description:CreateButton(loc.CM_EDIT, function()
 			TRP3_API.register.ignoreIDConfirm(unitID);
