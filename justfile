@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 libdir := "totalRP3/Libs"
-packager_url := "https://raw.githubusercontent.com/BigWigsMods/packager/eca4e176cd6ae5404c66bef5c11c08200a458400/release.sh"
+packager_url := "https://raw.githubusercontent.com/BigWigsMods/packager/v2/release.sh"
 schema_url := "https://raw.githubusercontent.com/Gethe/wow-ui-source/refs/heads/live/Interface/AddOns/Blizzard_SharedXML/UI.xsd"
 schema_file := "Types/UI.xsd"
 cf_project_id := "75973"
