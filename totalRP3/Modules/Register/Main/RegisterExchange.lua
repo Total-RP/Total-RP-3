@@ -518,7 +518,7 @@ end
 
 local function onTargetChanged()
 	local unitID = Utils.str.getUnitID("target");
-	if UnitIsPlayer("target") then
+	if UnitIsHumanPlayer("target") then
 		sendQuery(unitID);
 	end
 end
@@ -581,12 +581,12 @@ function TRP3_API.slash.openProfile(...)
 	if select("#", ...) > 0 then
 		local characterNameOrUnitToken = string.join(" ", ...);
 
-		if UnitIsPlayer(characterNameOrUnitToken) then
+		if UnitIsHumanPlayer(characterNameOrUnitToken) then
 			characterID = TRP3_NameUtil.GetQualifiedName(characterNameOrUnitToken);
 		elseif not UnitIsVisible(characterNameOrUnitToken) then
 			characterID = TRP3_NameUtil.GetQualifiedNameFromString(characterNameOrUnitToken);
 		end
-	elseif UnitIsPlayer("target") then
+	elseif UnitIsHumanPlayer("target") then
 		-- If no name is provided, we use the target ID
 		characterID = TRP3_NameUtil.GetQualifiedName("target");
 	end

@@ -505,7 +505,7 @@ end
 ---
 -- Returns target type as first return value and boolean isMine as second.
 function TRP3_API.ui.misc.getTargetType(unitType)
-	if UnitIsPlayer(unitType) then
+	if UnitIsHumanPlayer(unitType) then
 		return TRP3_Enums.UNIT_TYPE.CHARACTER, getUnitID(unitType) == globals.player_id;
 	elseif TRP3_CompanionUtil.IsCompanionPetUnit(unitType) then
 		return TRP3_Enums.UNIT_TYPE.BATTLE_PET, UnitIsOwnerOrControllerOfUnit("player", unitType);

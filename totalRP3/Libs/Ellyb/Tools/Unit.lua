@@ -7,11 +7,9 @@ end
 
 -- WoW imports
 local UnitGUID = UnitGUID;
-local UnitIsPlayer = UnitIsPlayer;
 local UnitVehicleSeatCount = UnitVehicleSeatCount;
 local UnitExists = UnitExists;
 local UnitCanAttack = UnitCanAttack;
-local UnitFullName = UnitFullName;
 local UnitInParty = UnitInParty;
 local UnitInRaid = UnitInRaid;
 local strsplit = strsplit;
@@ -51,7 +49,7 @@ end
 
 ---@return boolean unitIsPlayer @ Returns true if the unit is a player, false if it is an NPC
 function Unit:IsPlayer()
-	return UnitIsPlayer(_private[self].rawUnitID)
+	return UnitIsHumanPlayer(_private[self].rawUnitID)
 end
 
 --- Check if the unit exists (useful for mouseover or target unit)

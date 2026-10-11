@@ -386,7 +386,7 @@ TRP3_API.register.inits.relationsInit = function()
 			configText = loc.REG_RELATION,
 			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
-				return UnitIsPlayer("target") and unitID ~= TRP3_API.globals.player_id and hasProfile(unitID);
+				return UnitIsHumanPlayer("target") and unitID ~= TRP3_API.globals.player_id and hasProfile(unitID);
 			end,
 			onClick = onTargetButtonClicked,
 			adapter = function(buttonStructure, unitID)

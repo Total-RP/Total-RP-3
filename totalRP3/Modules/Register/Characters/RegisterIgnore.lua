@@ -80,7 +80,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			configText = loc.TF_IGNORE,
 			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
-				return UnitIsPlayer("target") and unitID ~= TRP3_API.globals.player_id and not isIDIgnored(unitID);
+				return UnitIsHumanPlayer("target") and unitID ~= TRP3_API.globals.player_id and not isIDIgnored(unitID);
 			end,
 			onClick = function(unitID)
 				ignoreIDConfirm(unitID);
