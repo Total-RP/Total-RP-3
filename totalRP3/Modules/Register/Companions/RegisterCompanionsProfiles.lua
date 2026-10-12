@@ -242,7 +242,7 @@ function uiInitProfileList()
 end
 
 local function onActionSelected(value, button)
-	local profileID = button:GetParent().profileID;
+	local profileID = button.profileID or button:GetParent().profileID;
 	if value == 1 then
 		uiDeleteProfile(profileID);
 	elseif value == 2 then
@@ -284,12 +284,10 @@ local function onBoundClicked(button)
 	end);
 end
 
-local function onActionClicked(_, button)
-	TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
-		description:CreateButton(loc.PR_PROFILEMANAGER_RENAME, function() onActionSelected(2, button); end);
-		description:CreateButton(loc.PR_DUPLICATE_PROFILE, function() onActionSelected(3, button); end);
-		description:CreateButton("|cnRED_FONT_COLOR:" .. loc.PR_DELETE_PROFILE .. "|r", function() onActionSelected(1, button); end);
-	end);
+local function GenerateProfileActionMenu(button, description)
+	description:CreateButton(loc.PR_PROFILEMANAGER_RENAME, function() onActionSelected(2, button); end);
+	description:CreateButton(loc.PR_DUPLICATE_PROFILE, function() onActionSelected(3, button); end);
+	description:CreateButton("|cnRED_FONT_COLOR:" .. loc.PR_DELETE_PROFILE .. "|r", function() onActionSelected(1, button); end);
 end
 
 local function onOpenProfile(button)
@@ -500,6 +498,10 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
 	});
 
+	local function OnMenuButtonClick(_button, menuButton, _mouseButtonName)
+		TRP3_MenuUtil.CreateActionMenu(menuButton, GenerateProfileActionMenu);
+	end
+
 	local function OnMenuButtonTooltip(_, description)
 		local title = loc.CM_OPTIONS;
 		local text = nil;
@@ -512,13 +514,19 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 		local button = description:GetOwner();
 		local title = button.NameText:GetText();
 		local text = nil;
-		local instructions = {{"LCLICK", loc.CL_OPEN_COMPANION}, {"SHIFT-CLICK", loc.CL_TOOLTIP}};
+		local instructions = {
+			{ "LCLICK", loc.CL_OPEN_COMPANION },
+			{ "SHIFT-CLICK", loc.CL_TOOLTIP },
+			{ "RCLICK", loc.CM_OPTIONS_ADDITIONAL }
+		};
 
 		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
 	end
 
-	local function OnListElementClick(button)
-		if IsShiftKeyDown() then
+	local function OnListElementClick(button, mouseButtonName)
+		if mouseButtonName == "RightButton" then
+			TRP3_MenuUtil.CreateContextMenu(button, GenerateProfileActionMenu);
+		elseif IsShiftKeyDown() then
 			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_COMPANION_PROFILE, function(canBeImported)
 				TRP3_API.CompanionProfileChatLinksModule:InsertLink(button.profileID, canBeImported)
 			end);
@@ -529,9 +537,9 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 	end
 
 	local function OnListElementInitialize(button, profileID)
-		button:SetMenuButtonCallback(onActionClicked);
+		button:SetMenuButtonCallback(OnMenuButtonClick);
 		button:SetMenuButtonTooltip(OnMenuButtonTooltip);
-		button:SetScript("OnClick", OnListElementClick);
+		button:SetClickCallback(OnListElementClick);
 		button:SetTooltip(OnListElementTooltip);
 
 		button.BindButton:SetText(loc.REG_COMPANION_BOUNDS);

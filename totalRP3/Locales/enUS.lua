@@ -786,18 +786,6 @@ Link a pet/mount to an existing profile or create a new one:
 	PR_IMPORT_WILL_BE_IMPORTED = "Will be imported",
 	PR_IMPORT_EMPTY = "No importable profile",
 	PR_PROFILE_MANAGEMENT_TITLE = "Profile management",
-	PR_PROFILE_OPTIONS = "Profile options",
-	PR_PROFILE_OPTIONS_HELP = [[You can rename, duplicate, export, and delete profiles using the options in the dropdown menu.
-
-|cnGREEN_FONT_COLOR:Rename profile|r option allows you to rename the selected profile.
-
-|cnGREEN_FONT_COLOR:Duplicate profile|r option allows you to create a duplicate of the selected profile with a new name.
-
-|cnGREEN_FONT_COLOR:Export profile|r option generates a chunk of text containing the serialized profile data. You can copy (%s) and paste it somewhere else as a backup.
-
-We strongly recommend that you |cnGREEN_FONT_COLOR:copy the exported data below into a simple text editor|r, such as Notepad, that does |cnWARNING_FONT_COLOR:not alter special characters|r.
-
-|cnGREEN_FONT_COLOR:Delete profile|r option allows you to remove the selected profile.]],
 	PR_EXPORT_PROFILE = "Export profile",
 	PR_IMPORT_PROFILE = "Import profile",
 	PR_IMPORT_PROFILE_CHOICE_TT = "Import a profile |cnGREEN_FONT_COLOR:from a previous export|r.",

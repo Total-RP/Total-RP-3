@@ -705,8 +705,7 @@ end
 ---@param value string The selected action from PROFILEMANAGER_ACTIONS
 ---@param button Button The button that triggered the action.
 local function OnActionSelected(value, button)
-	local parent = button:GetParent();
-	local profileID = parent.profileID;
+	local profileID = button.profileID or button:GetParent().profileID;
 	local profile = profiles[profileID];
 	forceClose = true;
 
@@ -724,17 +723,12 @@ local function OnActionSelected(value, button)
 	end
 end
 
---- onActionClicked handles the action when a profile button is clicked.
----@param _ Frame The list element parent of the button.
----@param button Button The button that was clicked to trigger the menu.
-local function OnActionClicked(_, button)
-	TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
-		description:CreateTitle(loc.PR_PROFILE_MANAGEMENT_TITLE);
-		description:CreateButton(loc.PR_PROFILEMANAGER_RENAME, function() OnActionSelected(PROFILEMANAGER_ACTIONS.RENAME, button); end);
-		description:CreateButton(loc.PR_DUPLICATE_PROFILE, function() OnActionSelected(PROFILEMANAGER_ACTIONS.DUPLICATE, button); end);
-		description:CreateButton(loc.PR_EXPORT_PROFILE, function() OnActionSelected(PROFILEMANAGER_ACTIONS.EXPORT, button); end);
-		description:CreateButton("|cnRED_FONT_COLOR:" .. loc.PR_DELETE_PROFILE .. "|r", function() OnActionSelected(PROFILEMANAGER_ACTIONS.DELETE, button); end);
-	end);
+local function GenerateProfileActionMenu(button, description)
+	description:CreateTitle(loc.PR_PROFILE_MANAGEMENT_TITLE);
+	description:CreateButton(loc.PR_PROFILEMANAGER_RENAME, function() OnActionSelected(PROFILEMANAGER_ACTIONS.RENAME, button); end);
+	description:CreateButton(loc.PR_DUPLICATE_PROFILE, function() OnActionSelected(PROFILEMANAGER_ACTIONS.DUPLICATE, button); end);
+	description:CreateButton(loc.PR_EXPORT_PROFILE, function() OnActionSelected(PROFILEMANAGER_ACTIONS.EXPORT, button); end);
+	description:CreateButton("|cnRED_FONT_COLOR:" .. loc.PR_DELETE_PROFILE .. "|r", function() OnActionSelected(PROFILEMANAGER_ACTIONS.DELETE, button); end);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -828,8 +822,8 @@ function TRP3_API.profile.init()
 		end
 	end
 
-	local function OnHelpButtonTooltip(_, description)
-		TRP3_TooltipTemplates.CreateBasicTooltip(description, loc.PR_PROFILE_OPTIONS, loc.PR_PROFILE_OPTIONS_HELP:format(TRP3_API.Colors.Orange(TRP3_API.FormatShortcut("CTRL-C", TRP3_API.ShortcutType.System))));
+	local function OnMenuButtonClick(_button, menuButton, _mouseButtonName)
+		TRP3_MenuUtil.CreateActionMenu(menuButton, GenerateProfileActionMenu);
 	end
 
 	local function OnMenuButtonTooltip(_, description)
@@ -844,13 +838,19 @@ function TRP3_API.profile.init()
 		local button = description:GetOwner();
 		local title = button.NameText:GetText();
 		local text = nil;
-		local instructions = {{"LCLICK", loc.PR_PROFILEMANAGER_SWITCH}, {"SHIFT-CLICK", loc.CL_TOOLTIP}};
+		local instructions = {
+			{ "LCLICK", loc.PR_PROFILEMANAGER_SWITCH },
+			{ "SHIFT-CLICK", loc.CL_TOOLTIP },
+			{ "RCLICK", loc.CM_OPTIONS_ADDITIONAL }
+		};
 
 		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
 	end
 
-	local function OnListElementClick(button)
-		if IsShiftKeyDown() then
+	local function OnListElementClick(button, mouseButtonName)
+		if mouseButtonName == "RightButton" then
+			TRP3_MenuUtil.CreateContextMenu(button, GenerateProfileActionMenu);
+		elseif IsShiftKeyDown() then
 			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_PLAYER_PROFILE, function(canBeImported)
 				TRP3_API.ProfilesChatLinkModule:InsertLink(button.profileID, canBeImported);
 			end);
@@ -863,9 +863,9 @@ function TRP3_API.profile.init()
 	end
 
 	local function OnListElementInitialize(button, profileID)
-		button:SetMenuButtonCallback(OnActionClicked);
+		button:SetMenuButtonCallback(OnMenuButtonClick);
 		button:SetMenuButtonTooltip(OnMenuButtonTooltip);
-		button:SetScript("OnClick", OnListElementClick);
+		button:SetClickCallback(OnListElementClick);
 		button:SetTooltip(OnListElementTooltip);
 		DecorateProfileList(button, profileID);
 	end
@@ -1049,7 +1049,6 @@ function TRP3_API.profile.init()
 		end
 	end);
 
-	TRP3_ProfileManager.list:SetHelpCallback(OnHelpButtonTooltip);
 	TRP3_ProfileManager.list:SetSearchCallback(TRP3_FunctionUtil.Debounce(0.25, OnSearchTextChanged));
 
 	registerPage({
