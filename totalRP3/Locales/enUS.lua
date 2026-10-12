@@ -1075,6 +1075,7 @@ Changes your character status to the specified option:
 	MAP_BUTTON_SUBTITLE = "Click to show available scans",
 	MAP_BUTTON_SUBTITLE_OFFLINE = "Map scanning is unavailable right now: %s",
 	MAP_BUTTON_SUBTITLE_CONNECTING = "Map scanning is setting up. Please wait.",
+	MAP_BUTTON_SUBTITLE_RULESET_WARNING = "Scans may not detect all players in your current ruleset.",
 	MAP_BUTTON_NO_SCAN = "No scan available",
 	MAP_BUTTON_SCANNING = "Scanning",
 	MAP_SCAN_CHAR = "Scan for characters",

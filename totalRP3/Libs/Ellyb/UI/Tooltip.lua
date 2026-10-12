@@ -178,7 +178,7 @@ function Tooltip:Show()
 	for _, line in pairs(self:GetLines()) do
 		local r, g, b;
 		if line.customColor then
-			r, g, b = line.customColor:GetRGBAAsBytes();
+			r, g, b = line.customColor:GetRGB();
 		end
 		tooltip:AddLine(line.text, r, g, b, true);
 	end
@@ -187,7 +187,7 @@ function Tooltip:Show()
 	for _, line in pairs(self:GetTempLines()) do
 		local r, g, b;
 		if line.customColor then
-			r, g, b = line.customColor:GetRGBAAsBytes();
+			r, g, b = line.customColor:GetRGB();
 		end
 		tooltip:AddLine(line.text, r, g, b, true);
 	end
