@@ -13,9 +13,6 @@ function TRP3_ChatLinkTooltipMixin:OnLoad()
 	self:SetBorderColor(TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b);
 	self:SetCenterColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b);
 
-	---@type FontString
-	self.TitleLine = _G[self:GetName() .. "TextLeft1"];
-
 	-- Set tooltip title font size once the settings have been loaded
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
 		local fontSize = 16;
@@ -33,7 +30,7 @@ end
 
 function TRP3_ChatLinkTooltipMixin:SetTitleSize(fontSize)
 	TRP3_TooltipUtil.SetLineFontOptions(self, 1, fontSize);
-	self.TitleLine:SetWordWrap(false);
+	self:GetLeftLine(1):SetWordWrap(false);
 
 	if self:IsVisible() then
 		self:Refresh();
