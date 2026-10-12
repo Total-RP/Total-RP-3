@@ -28,6 +28,7 @@
 ## X-Curse-Project-ID: 75973
 ## X-Wago-ID: q96dnGOm
 ## X-WoWI-ID: 24113
+## X-GameType: [Game]
 
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
