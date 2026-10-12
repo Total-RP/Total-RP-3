@@ -105,6 +105,11 @@ TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, function()
 		:OnShow(function(tooltip)
 		tooltip:ClearTempLines();
 		tooltip:AddTempLine(WorldMapButton.subtitle)
+
+		if WOW_PROJECT_ID == WOW_PROJECT_CAMELOT then
+			tooltip:AddTempLine(" ")
+			tooltip:AddTempLine(loc.MAP_BUTTON_SUBTITLE_RULESET_WARNING, WARNING_FONT_COLOR)
+		end
 	end)
 	--}}}
 
