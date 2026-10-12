@@ -151,7 +151,6 @@ L = {
 	["CO_CHAT_MAIN_NPC_USE"] = "使用ＮＰＣ對話判讀",
 	["CO_CHAT_MAIN_OOC"] = "ＯＯＣ判讀",
 	["CO_CHAT_MAIN_OOC_COLOR"] = "ＯＯＣ顏色",
-	["CO_CHAT_MAIN_OOC_PATTERN"] = "ＯＯＣ判讀模式",
 	["CO_CHAT_MAIN_OOC_USE"] = "使用ＯＯＣ判讀",
 	["CO_CHAT_REMOVE_REALM"] = "移除角色名稱當中的伺服器名稱",
 	["CO_CHAT_USE"] = "使用聊天頻道",
@@ -302,8 +301,6 @@ L = {
 	["CO_TOOLTIP_COMMON"] = "共通設定",
 	["CO_TOOLTIP_CONTRAST"] = "增加顏色對比",
 	["CO_TOOLTIP_CONTRAST_TT"] = "當你使用自訂顏色時，增加顏色對比可以避免選擇了太暗的顏色。",
-	["CO_TOOLTIP_CROP_TEXT"] = "剪裁不合理的過長文本",
-	["CO_TOOLTIP_CROP_TEXT_TT"] = "角色卡提示欄中各欄位的字數有限，避免產生過長的情況。",
 	["CO_TOOLTIP_CURRENT"] = "顯示其他資訊",
 	["CO_TOOLTIP_CURRENT_SIZE"] = "其他資訊的最大長度",
 	["CO_TOOLTIP_FT"] = "顯示完整稱號",
@@ -420,10 +417,6 @@ L = {
 	["PR_DELETE_PROFILE"] = "刪除角色檔",
 	["PR_DUPLICATE_PROFILE"] = "複製角色檔",
 	["PR_EXPORT_PROFILE"] = "輸出角色檔",
-	["PR_EXPORT_TOO_LARGE"] = [=[此角色檔容量太大以致於無法輸出。
-
-角色檔容量: %0.2f kB
-最大: 20 kB]=],
 	["PR_IMPORT"] = "匯入",
 	["PR_IMPORT_CHAR_TAB"] = "角色輸入器",
 	["PR_IMPORT_EMPTY"] = "無法輸入角色檔",
