@@ -266,7 +266,7 @@ local function onBoundClicked(button)
 	local profileID = button:GetParent().profileID;
 	local profile = getCompanionProfiles()[profileID];
 
-	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+	TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
 		local boundTab = description:CreateButton(loc.REG_COMPANION_BOUND_TO);
 		if AddOn_TotalRP3.Ui.IsPetBrowserEnabled() then
 			boundTab:CreateButton(loc.REG_COMPANION_BIND_TO_PET, function() onActionSelected(7, button); end);
@@ -285,7 +285,7 @@ local function onBoundClicked(button)
 end
 
 local function onActionClicked(_, button)
-	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+	TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
 		description:CreateButton(loc.PR_PROFILEMANAGER_RENAME, function() onActionSelected(2, button); end);
 		description:CreateButton(loc.PR_DUPLICATE_PROFILE, function() onActionSelected(3, button); end);
 		description:CreateButton("|cnRED_FONT_COLOR:" .. loc.PR_DELETE_PROFILE .. "|r", function() onActionSelected(1, button); end);
@@ -536,7 +536,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOAD, functi
 
 		button.BindButton:SetText(loc.REG_COMPANION_BOUNDS);
 		button.BindButton:Show();
-		button.BindButton:SetScript("OnClick", onBoundClicked);
+		button.BindButton:SetScript("OnMouseDown", onBoundClicked);
 
 		decorateProfileList(button, profileID);
 	end

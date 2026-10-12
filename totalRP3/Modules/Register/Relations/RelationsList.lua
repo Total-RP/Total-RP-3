@@ -77,8 +77,8 @@ end
 TRP3_RelationsListActionButtonMixin = CreateFromMixins(TRP3_TooltipScriptMixin);
 
 function TRP3_RelationsListActionButtonMixin:OnMouseDown()
-	if self.actionCallback then
-		self.actionCallback(self);
+	if self.menuGenerator then
+		TRP3_MenuUtil.CreateActionMenu(self, self.menuGenerator);
 	end
 end
 
@@ -90,8 +90,8 @@ function TRP3_RelationsListActionButtonMixin:OnTooltipShow(description)
 	TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
 end
 
-function TRP3_RelationsListActionButtonMixin:SetActionCallback(callback)
-	self.actionCallback = callback;
+function TRP3_RelationsListActionButtonMixin:SetMenuGenerator(menuGenerator)
+	self.menuGenerator = menuGenerator;
 end
 
 TRP3_RelationsListElementMixin = CreateFromMixins(TRP3_TooltipScriptMixin);
@@ -102,7 +102,9 @@ end
 
 function TRP3_RelationsListElementMixin:OnClick(mouseButtonName)
 	if mouseButtonName == "RightButton" then
-		self:InvokeMenuCallback();
+		if self.menuGenerator then
+			TRP3_MenuUtil.CreateContextMenu(self, self.menuGenerator);
+		end
 	end
 end
 
@@ -140,7 +142,7 @@ function TRP3_RelationsListElementMixin:Init(relation, options)
 
 	self.relation = relation;
 	self.editCallback = options.editCallback;
-	self.menuCallback = options.menuCallback;
+	self.menuGenerator = function(owner, description) return options.menuGenerator(owner, description, relation); end;
 
 	self.Title:SetText(name);
 	self.Text:SetText(GeneratePreviewDescription(GetRelationDescription(relation), GeneratePreviewPlayerName(), options.targetName));
@@ -148,18 +150,12 @@ function TRP3_RelationsListElementMixin:Init(relation, options)
 
 	self:SetEnabled(CanEditRelation(relation));
 	self.Actions:SetShown(CanEditRelation(relation));
-	self.Actions:SetActionCallback(function(button) self:InvokeMenuCallback(button); end);
+	self.Actions:SetMenuGenerator(self.menuGenerator);
 end
 
 function TRP3_RelationsListElementMixin:InvokeEditCallback()
 	if self.editCallback then
 		self.editCallback(self, self.relation);
-	end
-end
-
-function TRP3_RelationsListElementMixin:InvokeMenuCallback(owner)
-	if self.menuCallback then
-		self.menuCallback(owner or self, self.relation);
 	end
 end
 
@@ -234,7 +230,7 @@ end
 function TRP3_RelationsListMixin:OnListElementInitialize(frame, relation)
 	frame:Init(relation, {
 		targetName = self:GetTargetNameForRelation(relation),
-		menuCallback = self.menuCallback,
+		menuGenerator = self.menuGenerator,
 		editCallback = self.editCallback,
 	});
 end
@@ -290,8 +286,8 @@ function TRP3_RelationsListMixin:SetEditCallback(callback)
 	self.editCallback = callback;
 end
 
-function TRP3_RelationsListMixin:SetMenuCallback(callback)
-	self.menuCallback = callback;
+function TRP3_RelationsListMixin:SetMenuGenerator(generator)
+	self.menuGenerator = generator;
 end
 
 function TRP3_RelationsListMixin:SetDataProviderFactory(factory)

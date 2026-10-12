@@ -596,7 +596,9 @@ stds.wow = {
 
 		Menu = {
 			fields = {
+				"GetManager",
 				"ModifyMenu",
+				"PopulateDescription",
 			},
 		},
 
@@ -604,9 +606,16 @@ stds.wow = {
 			fields = {
 				"CreateButton",
 				"CreateContextMenu",
+				"CreateRootMenuDescription",
 				"GetElementText",
 				"HideTooltipEx",
 				"ShowTooltipEx",
+			},
+		},
+
+		MenuVariants = {
+			fields = {
+				"GetDefaultContextMenuMixin",
 			},
 		},
 

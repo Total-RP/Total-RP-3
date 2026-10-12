@@ -789,7 +789,7 @@ local function onCharactersActionSelected(value)
 end
 
 local function onCharactersActions(button)
-	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+	TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
 		local purge = description:CreateButton(loc.REG_LIST_ACTIONS_PURGE);
 		purge:CreateButton(loc.REG_LIST_ACTIONS_PURGE_TIME, onCharactersActionSelected, "purge_time");
 		purge:CreateButton(loc.REG_LIST_ACTIONS_PURGE_UNLINKED, onCharactersActionSelected, "purge_unlinked");
@@ -999,7 +999,7 @@ local function onCompanionActionSelected(value)
 end
 
 local function onPetsActions(button)
-	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+	TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
 		local purge = description:CreateButton(loc.REG_LIST_ACTIONS_PURGE);
 		purge:CreateButton(loc.REG_LIST_ACTIONS_PURGE_ALL, onCompanionActionSelected, "purge_all");
 		if TableHasAnyEntries(selectedIDs) then

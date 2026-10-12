@@ -64,6 +64,31 @@ function TRP3_MenuUtil.CreateContextMenu(ownerRegion, menuGenerator)
 	return MenuUtil.CreateContextMenu(ownerRegion, WrappedMenuGenerator);
 end
 
+function TRP3_MenuUtil.CreateActionMenu(ownerRegion, menuGenerator)
+	local menuPoint = ownerRegion.menuPoint or "TOPLEFT";
+	local menuRelativePoint = ownerRegion.menuRelativePoint or "BOTTOMLEFT";
+	local menuPointX = ownerRegion.menuPointX or 0;
+	local menuPointY = ownerRegion.menuPointY or 0;
+	local menuAnchor = AnchorUtil.CreateAnchor(menuPoint, ownerRegion, menuRelativePoint, menuPointX, menuPointY);
+	local menuMixin = ownerRegion.menuMixin or MenuVariants.GetDefaultContextMenuMixin();
+	local menuDescription = MenuUtil.CreateRootMenuDescription(menuMixin);
+
+	local function WrappedMenuGenerator(ownerRegion, rootDescription)  -- luacheck: no redefined (ownerRegion)
+		TRP3_MenuUtil.PrepareRootMenuDescription(rootDescription);
+		return menuGenerator(ownerRegion, rootDescription);
+	end
+
+	Menu.PopulateDescription(WrappedMenuGenerator, ownerRegion, menuDescription);
+
+	local menu = Menu.GetManager():OpenMenu(ownerRegion, menuDescription, menuAnchor);
+
+	if menu then
+		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+	end
+
+	return menu;
+end
+
 function TRP3_MenuUtil.PrepareRootMenuDescription(rootDescription)
 	-- Resolving taint issues with dropdowns - if no minimum width is defined
 	-- then if tainted code is the first thing to open a custom menu the

@@ -816,7 +816,7 @@ local function onMusicEditClicked(button)
 		return;
 	end
 
-	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+	TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
 		description:CreateButton(loc.REG_PLAYER_ABOUT_MUSIC_SELECT, onMusicEditSelected, 1);
 		if draftData.MU then
 			description:CreateButton(loc.REG_PLAYER_ABOUT_MUSIC_REMOVE, onMusicEditSelected, 2);
@@ -1089,7 +1089,7 @@ function TRP3_API.register.inits.aboutInit()
 			TRP3_MenuTemplates.CreateIconContextMenu(self, handler, icon);
 		end
 	end);
-	TRP3_RegisterAbout_Edit_Music_Action:SetScript("OnClick", onMusicEditClicked);
+	TRP3_RegisterAbout_Edit_Music_Action:SetScript("OnMouseDown", onMusicEditClicked);
 	TRP3_RegisterAbout_Edit_Template2_Add:SetScript("OnClick", template2AddFrame);
 	TRP3_RegisterAbout_AboutPanel_EditButton:SetScript("OnClick", onEdit);
 	TRP3_RegisterAbout_Edit_SaveButton:SetScript("OnClick", onSave);

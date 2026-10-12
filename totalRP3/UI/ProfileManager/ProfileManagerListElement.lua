@@ -38,12 +38,12 @@ function TRP3_ProfileManagerListElementMixin:SetCountText(text)
 end
 
 function TRP3_ProfileManagerListElementMixin:SetMenuButtonCallback(callback)
-	local function OnClick(button, mouseButtonName)
+	local function OnMouseDown(button, mouseButtonName)
 		callback(self, button, mouseButtonName);
 	end
 
 	self.MenuButton:SetShown(callback ~= nil);
-	self.MenuButton:SetScript("OnClick", OnClick);
+	self.MenuButton:SetScript("OnMouseDown", OnMouseDown);
 end
 
 function TRP3_ProfileManagerListElementMixin:SetMenuButtonTooltip(callback)

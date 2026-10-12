@@ -140,7 +140,7 @@ TRP3_ColorBrowserMixin = {};
 function TRP3_ColorBrowserMixin:OnLoad()
 	self.CloseButton:SetScript("OnClick", function() self:OnCloseButtonClick(); end);
 	self.Content.AcceptButton:SetScript("OnClick", function() self:OnAcceptButtonClick(); end);
-	self.Content.PresetButton:SetScript("OnClick", function() self:OnPresetButtonClick(); end);
+	self.Content.PresetButton:SetScript("OnMouseDown", function() self:OnPresetButtonClick(); end);
 	self.Content.PreviewSwatch:SetScript("OnClick", function() self:OnPreviewSwatchClick(); end);
 	self.Content.ColorSelect:SetScript("OnColorSelect", function(_, r, g, b) self:OnColorWheelSelect(r, g, b); end);
 	self.Content.HexInput:RegisterCallback("OnColorInput", self.OnHexColorInput, self);
@@ -268,7 +268,7 @@ function TRP3_ColorBrowserMixin:OnPresetButtonClick()
 		rootDescription:CreateButton(L.BW_COLOR_PRESET_SAVE, OnPresetSaveClicked, self:GetSelectedColor());
 	end
 
-	TRP3_MenuUtil.CreateContextMenu(self, GeneratePresetMenu);
+	TRP3_MenuUtil.CreateActionMenu(self.Content.PresetButton, GeneratePresetMenu);
 end
 
 function TRP3_ColorBrowserMixin:OnPreviewSwatchClick()

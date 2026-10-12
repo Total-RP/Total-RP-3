@@ -295,12 +295,10 @@ local function ShowRelationEditor(_owner, relation)
 	onActionSelected(ACTIONS.EDIT .. relation.id);
 end
 
-local function ShowRelationActionMenu(owner, relation)
-	TRP3_MenuUtil.CreateContextMenu(owner, function(_, description)
-		description:CreateTitle(relation.name or loc:GetText("REG_RELATION_" .. relation.id));
-		description:CreateButton(loc.CO_RELATIONS_MENU_EDIT, onActionSelected, ACTIONS.EDIT .. relation.id);
-		description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CO_RELATIONS_MENU_DELETE .. "|r", onActionSelected, ACTIONS.DELETE .. relation.id);
-	end);
+local function GenerateRelationActionMenu(_owner, description, relation)
+	description:CreateTitle(relation.name or loc:GetText("REG_RELATION_" .. relation.id));
+	description:CreateButton(loc.CO_RELATIONS_MENU_EDIT, onActionSelected, ACTIONS.EDIT .. relation.id);
+	description:CreateButton("|cnRED_FONT_COLOR:" .. loc.CO_RELATIONS_MENU_DELETE .. "|r", onActionSelected, ACTIONS.DELETE .. relation.id);
 end
 
 local function saveCurrentRelation()
@@ -362,7 +360,7 @@ local function onRelationSelected(value)
 end
 
 local function onTargetButtonClicked(_, _, _, button)
-	TRP3_MenuUtil.CreateContextMenu(button, function(_, description)
+	TRP3_MenuUtil.CreateActionMenu(button, function(_, description)
 		local relations = TRP3_API.register.relation.getRelationList(true);
 		for _, thisRelation in ipairs(relations) do
 			description:CreateButton(thisRelation.name or loc["REG_RELATION_" .. thisRelation.id], onRelationSelected, thisRelation.id);
@@ -423,7 +421,7 @@ TRP3_API.register.inits.relationsInit = function()
 		end);
 		TRP3_API.ui.frame.setupEditBoxesNavigation({ TRP3_RelationsList.Editor.Content.Name, TRP3_RelationsList.Editor.Content.Description });
 		TRP3_RelationsList:SetEditCallback(ShowRelationEditor);
-		TRP3_RelationsList:SetMenuCallback(ShowRelationActionMenu);
+		TRP3_RelationsList:SetMenuGenerator(GenerateRelationActionMenu);
 
 		updateRelationsList();
 
