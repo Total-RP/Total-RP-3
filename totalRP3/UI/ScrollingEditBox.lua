@@ -51,6 +51,14 @@ function TRP3_ScrollingEditBoxMixin:OnChar(char)
 end
 
 function TRP3_ScrollingEditBoxMixin:OnCursorChanged(x, y, width, height, context)
+	-- Force-scroll the cursor into view. This works around a bug in the
+	-- base implementation where pressing enter in the editbox synthetically
+	-- inserts a newline character, causing the original OnCursorChanged
+	-- handler to fire with a non-keyboard context. This manifests as the
+	-- cursor clipping below the scrollable extent of the editbox.
+	local allowCursorClipping = false;
+	self.ScrollFrame:ScrollCursorIntoView(allowCursorClipping);
+
 	self:TriggerEvent("OnCursorChanged", x, y, width, height, context);
 end
 
