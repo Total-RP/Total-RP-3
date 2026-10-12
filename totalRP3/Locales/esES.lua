@@ -263,7 +263,6 @@ Por favor, ten en cuenta que cambiar esta configuración puede alterar tu experi
 	["CO_CHAT_MAIN_NPC_USE"] = "Usar detección de diálogo de PNJ",
 	["CO_CHAT_MAIN_OOC"] = "Detección FdR",
 	["CO_CHAT_MAIN_OOC_COLOR"] = "Color FdR",
-	["CO_CHAT_MAIN_OOC_PATTERN"] = "Patrón de detección de FdR",
 	["CO_CHAT_MAIN_OOC_USE"] = "Usar detección de FdR",
 	["CO_CHAT_MAIN_SPEECH"] = "Detección de voz",
 	["CO_CHAT_MAIN_SPEECH_USE"] = "Usar detección de voz",
@@ -475,8 +474,6 @@ Posibles estados:
 	["CO_TOOLTIP_COMMON"] = "Ajustes comunes",
 	["CO_TOOLTIP_CONTRAST"] = "Aumentar el contraste de color",
 	["CO_TOOLTIP_CONTRAST_TT"] = "Habilitar esta opción permitirá a Total RP 3 modificar los colores personalizados para hacer el texto más legible si el color es demasiado oscuro.",
-	["CO_TOOLTIP_CROP_TEXT"] = "Trunca textos excesivamente largos",
-	["CO_TOOLTIP_CROP_TEXT_TT"] = "Limita el número de caracteres que pueden ser expuestos por cada campo en información para prevenir textos excesivamente largos y posibles problemas en el diseño.",
 	["CO_TOOLTIP_CURRENT"] = "Mostrar información \"actual\"",
 	["CO_TOOLTIP_CURRENT_LINES"] = "Saltos de línea máximos en información \"Actualmente\"",
 	["CO_TOOLTIP_CURRENT_SIZE"] = "Longitud máxima de información \"actual\"",
@@ -988,23 +985,13 @@ Cambiar el nombre no cambiará ningún vínculo entre este perfil y tus mascotas
 	["PR_EMPTYNAME_PROFILE"] = "Nombre de perfil vacío.",
 	["PR_EXPORT_NAME"] = "Serie para el perfil %s (tamaño %0.2f kB)",
 	["PR_EXPORT_PROFILE"] = "Exportar perfil",
-	["PR_EXPORT_TOO_LARGE"] = [=[El perfil es demasiado grande y no puede ser exportado.
-
-Tamaño del perfil: %0.2f kB
-Máx.: 20 kB]=],
 	["PR_EXPORT_WARNING"] = "Recomendamos encarecidamente que |cnGREEN_FONT_COLOR:copies los datos exportados que aparecen a continuación en un editor de texto sencillo|r, como el Bloc de notas, que |cnWARNING_FONT_COLOR:no altere los caracteres especiales|r.",
 	["PR_EXPORT_WARNING_TITLE"] = "Atención:",
 	["PR_FINALIZE_PROFILE"] = "Crear perfil vacío",
 	["PR_IMPORT"] = "Importar",
 	["PR_IMPORT_CHAR_TAB"] = "Importar personajes",
 	["PR_IMPORT_EMPTY"] = "Sin perfiles importables",
-	["PR_IMPORT_EMPTY_EXPORT"] = "Serial del perfil vacío.",
 	["PR_IMPORT_ERROR"] = "Error al importar el perfil: %s",
-	["PR_IMPORT_ERROR_DECOMPRESS"] = "Error al descomprimir los datos PEM",
-	["PR_IMPORT_ERROR_DESERIALIZE_ACE"] = "Error al deserializar los datos de Ace",
-	["PR_IMPORT_ERROR_DESERIALIZE_CBOR"] = "Error al deserializar los datos de CBOR",
-	["PR_IMPORT_ERROR_PEM_DECODE"] = "Error al decodificar el bloque PEM",
-	["PR_IMPORT_ERROR_PEM_LABEL"] = "El bloque PEM tiene una cabecera no válida",
 	["PR_IMPORT_IMPORT_ALL"] = "Importar todo",
 	["PR_IMPORT_PETS_TAB"] = "Importar compañeros",
 	["PR_IMPORT_PROFILE"] = "Importar perfil",
@@ -1024,18 +1011,6 @@ Un |cffffff00"personaje del WoW"|r sólo puede ser vinculado a un solo perfil a 
 	["PR_PROFILE_IMPORTED"] = "Perfil %s importado.",
 	["PR_PROFILE_LOADED"] = "El perfil %s ha sido cargado.",
 	["PR_PROFILE_MANAGEMENT_TITLE"] = "Administración de perfiles",
-	["PR_PROFILE_OPTIONS"] = "Opciones del perfil",
-	["PR_PROFILE_OPTIONS_HELP"] = [=[Puedes renombrar, duplicar, exportar y eliminar perfiles mediante las opciones del menú desplegable.
-
-La opción |cnGREEN_FONT_COLOR:Renombrar perfil|r te permite cambiar el nombre del perfil seleccionado.
-
-La opción |cnGREEN_FONT_COLOR:Duplicar perfil|r te permite crear un duplicado del perfil seleccionado con un nombre nuevo.
-
-La opción |cnGREEN_FONT_COLOR:Exportar perfil|r genera un fragmento de texto que contiene los datos serializados del perfil. Puedes copiar (%s) y pegarlo en otro lugar como copia de seguridad.
-
-Recomendamos encarecidamente que |cnGREEN_FONT_COLOR:copies los datos exportados que aparecen a continuación en un editor de texto sencillo|r, como el Bloc de notas, que |cnWARNING_FONT_COLOR:no altere los caracteres especiales|r.
-
-La opción |cnGREEN_FONT_COLOR:Eliminar perfil|r te permite eliminar el perfil seleccionado.]=],
 	["PR_PROFILE_RENAMED"] = "Perfil %1$s renombrado a %2$s.",
 	["PR_PROFILEMANAGER_ACTIONS"] = "Acciones",
 	["PR_PROFILEMANAGER_ALREADY_IN_USE"] = "El nombre del perfil %s no está disponible.",
@@ -1666,7 +1641,6 @@ Cambia el estado de tu personaje a la opción especificada:
 	["UI_ICON_BROWSER"] = "Buscador de icono",
 	["UI_ICON_BROWSER_SEARCHING"] = "Buscando...",
 	["UI_ICON_COPY"] = "Copiar icono",
-	["UI_ICON_COPYNAME"] = "Copiar nombre de icono",
 	["UI_ICON_OPENBROWSER"] = "Abrir el buscador de iconos",
 	["UI_ICON_OPTIONS"] = "Mostrar opciones de icono",
 	["UI_ICON_PASTE"] = "Pegar icono",

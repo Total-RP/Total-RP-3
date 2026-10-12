@@ -164,7 +164,6 @@ Per favore ricorda che cambiare queste impostazioni potrebbero alterare la tua e
 	["CO_CHAT_MAIN_NPC_USE"] = "Usare rivelazione del parlare di NPC",
 	["CO_CHAT_MAIN_OOC"] = "Rivelazione OOC (fuori dal personaggio)",
 	["CO_CHAT_MAIN_OOC_COLOR"] = "Colore OOC",
-	["CO_CHAT_MAIN_OOC_PATTERN"] = "Modello della rivelazione OOC",
 	["CO_CHAT_REMOVE_REALM"] = "Rimuovere regno dai nomi dei giocatori",
 	["CO_CONFIGURATION"] = "Impostazioni",
 	["CO_GENERAL"] = "Impostazioni generali",
@@ -254,10 +253,6 @@ Questo messaggio apparirà solo una volta per sessione, e si può disattivarlo n
 	["PR_CREATE_PROFILE"] = "Crea profilo",
 	["PR_DELETE_PROFILE"] = "Cancella profilo",
 	["PR_DUPLICATE_PROFILE"] = "Duplica profilo",
-	["PR_EXPORT_TOO_LARGE"] = [=[Questo profilo è troppo grande e non può essere esportato.
-
-Grandezza del profilo: %0.2f kB
-Max: 20 kB]=],
 	["PR_IMPORT"] = "Importare",
 	["PR_IMPORT_CHAR_TAB"] = "importa personaggi",
 	["PR_IMPORT_IMPORT_ALL"] = "Importa tutto",
