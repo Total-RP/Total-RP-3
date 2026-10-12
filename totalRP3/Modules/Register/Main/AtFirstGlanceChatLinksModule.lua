@@ -9,7 +9,6 @@ local loc = TRP3_API.loc;
 local tcopy = TRP3_API.utils.table.copy;
 local Utils = TRP3_API.utils;
 local crop = TRP3_API.utils.str.crop;
-local shouldCropTexts = TRP3_API.ui.tooltip.shouldCropTexts;
 
 local GLANCE_TOOLTIP_CROP = 400;
 local GLANCE_TITLE_CROP = 150;
@@ -42,12 +41,8 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		if glance.IC and glance.IC ~= "" then
 			icon = glance.IC;
 		end
-		local TTText = glance.TX or "";
-		local glanceTitle = glance.TI or "...";
-		if shouldCropTexts() then
-			TTText = crop(TTText, GLANCE_TOOLTIP_CROP);
-			glanceTitle = crop(glanceTitle, GLANCE_TITLE_CROP);
-		end
+		local TTText = crop(glance.TX or "", GLANCE_TOOLTIP_CROP);
+		local glanceTitle = crop(glance.TI or "...", GLANCE_TITLE_CROP);
 
 		tooltipLines:SetTitle(Utils.str.icon(icon, 30) .. " " .. glanceTitle, TRP3_API.Colors.White);
 		tooltipLines:AddLine(TTText, TRP3_API.Colors.Orange);
