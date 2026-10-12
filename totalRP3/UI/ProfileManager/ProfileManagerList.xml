@@ -33,13 +33,6 @@
 					<Anchor point="TOP" y="-15"/>
 				</Anchors>
 			</Button>
-			<Button parentKey="HelpButton" inherits="TRP3_HelpButton" hidden="true">
-				<Size x="15" y="15"/>
-				<Anchors>
-					<Anchor point="TOP" y="-22"/>
-					<Anchor point="RIGHT" x="-15"/>
-				</Anchors>
-			</Button>
 			<EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" hidden="true">
 				<Size x="175" y="20"/>
 				<Anchors>

@@ -53,22 +53,6 @@ function TRP3_ProfileManagerListMixin:SetCreateCallback(callback)
 	self.CreateButton:SetScript("OnClick", OnClick);
 end
 
-function TRP3_ProfileManagerListMixin:SetHelpCallback(callback)
-	local function OnEnter(buttonFrame)
-		TRP3_TooltipUtil.ShowTooltip(buttonFrame, callback);
-	end
-
-	self.HelpButton:SetShown(callback ~= nil);
-	self.HelpButton:SetScript("OnLeave", TRP3_TooltipUtil.HideTooltip);
-	self.HelpButton:SetScript("OnEnter", OnEnter);
-
-	if callback then
-		self.SearchBox:SetPoint("RIGHT", self.HelpButton, "LEFT", -10, 0);
-	else
-		self.SearchBox:SetPoint("RIGHT", -15, 0);
-	end
-end
-
 function TRP3_ProfileManagerListMixin:SetSearchCallback(callback)
 	local function OnTextChanged(editbox)
 		SearchBoxTemplate_OnTextChanged(editbox);

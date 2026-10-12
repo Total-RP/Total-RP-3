@@ -37,6 +37,10 @@ function TRP3_ProfileManagerListElementMixin:SetCountText(text)
 	self.CountText:SetShown(text and text ~= "");
 end
 
+function TRP3_ProfileManagerListElementMixin:SetClickCallback(callback)
+	self:SetScript("OnClick", callback);
+end
+
 function TRP3_ProfileManagerListElementMixin:SetMenuButtonCallback(callback)
 	local function OnMouseDown(button, mouseButtonName)
 		callback(self, button, mouseButtonName);
