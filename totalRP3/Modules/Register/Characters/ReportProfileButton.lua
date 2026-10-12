@@ -16,7 +16,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		configText = loc.REG_REPORT_PLAYER_PROFILE,
 		onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 		condition = function(_, unitID)
-			return UnitIsPlayer("target") and unitID ~= TRP3_API.globals.player_id
+			return UnitIsHumanPlayer("target") and unitID ~= TRP3_API.globals.player_id
 		end,
 		onClick = function()
 			local playerID = TRP3_API.utils.str.getUnitID("target");

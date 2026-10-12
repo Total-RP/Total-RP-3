@@ -64,7 +64,7 @@ local function GetUnitRoleplayStatus(unitToken)
 		return nil;
 	elseif UnitIsUnit(unitToken, "player") then
 		player = AddOn_TotalRP3.Player.GetCurrentUser();
-	elseif UnitIsPlayer(unitToken) then
+	elseif UnitIsHumanPlayer(unitToken) then
 		local characterID = TRP3_API.utils.str.getUnitID(unitToken);
 
 		if characterID then
@@ -73,13 +73,16 @@ local function GetUnitRoleplayStatus(unitToken)
 	else
 		-- For companion units query the OOC state of their owner.
 		local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-		local characterID = select(2, TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType));
 
-		if characterID then
-			if characterID == TRP3_API.globals.player_id then
-				player = AddOn_TotalRP3.Player.GetCurrentUser();
-			else
-				player = GetOrCreatePlayerFromCharacterID(characterID);
+		if TRP3_API.ui.misc.isTargetTypeACompanion(unitType) then
+			local characterID = select(2, TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType));
+
+			if characterID then
+				if characterID == TRP3_API.globals.player_id then
+					player = AddOn_TotalRP3.Player.GetCurrentUser();
+				else
+					player = GetOrCreatePlayerFromCharacterID(characterID);
+				end
 			end
 		end
 	end
@@ -92,15 +95,20 @@ local function GetUnitRoleplayStatus(unitToken)
 end
 
 local function IsUnitIgnored(unitToken)
-	if UnitIsPlayer(unitToken) then
+	if UnitIsHumanPlayer(unitToken) then
 		local characterID = TRP3_API.utils.str.getUnitID(unitToken);
 		return TRP3_API.register.isIDIgnored(characterID);
 	else
 		-- For companion units query the ignore state of their owner.
 		local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-		local characterID = select(2, TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType));
-		return TRP3_API.register.isIDIgnored(characterID);
+
+		if TRP3_API.ui.misc.isTargetTypeACompanion(unitType) then
+			local characterID = select(2, TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType));
+			return TRP3_API.register.isIDIgnored(characterID);
+		end
 	end
+
+	return false;
 end
 
 local function IsUnitOutOfCharacter(unitToken)
@@ -109,7 +117,7 @@ local function IsUnitOutOfCharacter(unitToken)
 end
 
 local function IsNPCUnit(unitToken)
-	return not UnitIsPlayer(unitToken) and not UnitIsOtherPlayersPet(unitToken);
+	return not UnitIsHumanPlayer(unitToken) and not UnitIsOtherPlayersPet(unitToken);
 end
 
 local function ShouldCustomizeUnitNamePlate(unitToken)

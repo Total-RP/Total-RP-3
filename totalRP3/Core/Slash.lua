@@ -77,7 +77,7 @@ local DICE_SIGNAL = "DISN";
 local function isTargetValidForDiceRoll()
 	return UnitExists("target")
 		and not (UnitInParty("target") or UnitInRaid("target"))
-		and UnitIsPlayer("target")
+		and UnitIsHumanPlayer("target")
 		and UnitFactionGroup("player") == UnitFactionGroup("target");
 end
 

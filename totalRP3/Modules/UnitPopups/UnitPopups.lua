@@ -220,7 +220,7 @@ local function CreateOpenCharacterProfileButton(menuDescription, contextData)
 		local unit = contextData.unit;
 		local fullName = TRP3_UnitPopupUtil.GetCharacterIDFromName(contextData);
 
-		if UnitIsPlayer(unit) then
+		if UnitIsHumanPlayer(unit) then
 			TRP3_API.slash.openProfile(unit);
 		elseif fullName then
 			TRP3_API.slash.openProfile(fullName);

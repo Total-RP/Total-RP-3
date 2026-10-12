@@ -91,7 +91,7 @@ function TRP3_NamePlatesRequestMixin:Init(unit)
 end
 
 function TRP3_NamePlatesRequestMixin:IsValid()
-	return UnitExists(self.unit);
+	return UnitExists(self.unit) and UnitIsHumanPlayer(self.unit);
 end
 
 function TRP3_NamePlatesRequestMixin:GetUnit()

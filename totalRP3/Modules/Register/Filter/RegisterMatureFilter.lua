@@ -456,7 +456,7 @@ local function onStart()
 
 	registerConfigHandler(MATURE_FILTER_CONFIG, function()
 		local unitID = getUnitID("target");
-		if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
+		if UnitIsHumanPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 			local _, profileID = getUnitIDProfile(unitID);
 			TRP3_Addon:TriggerEvent(Events.REGISTER_DATA_UPDATED, unitID, profileID, nil);
 		end
@@ -543,7 +543,7 @@ local function onStart()
 			configText = loc.MATURE_FILTER_ADD_TO_SAFELIST_OPTION,
 			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
-				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
+				if UnitIsHumanPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 					local profileID = getUnitIDProfileID(unitID);
 					return profileID and TRP3_API.register.unitIDIsFilteredForMatureContent(unitID)
 				else
@@ -561,7 +561,7 @@ local function onStart()
 			configText = loc.MATURE_FILTER_REMOVE_FROM_SAFELIST_OPTION,
 			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
-				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
+				if UnitIsHumanPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 					local profile = getUnitIDProfile(unitID);
 					local profileID = getUnitIDProfileID(unitID);
 					return profileID and profile.hasMatureContent and isProfileSafeListed(profileID);
@@ -583,7 +583,7 @@ local function onStart()
 			configText = loc.MATURE_FILTER_FLAG_PLAYER_OPTION,
 			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
-				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
+				if UnitIsHumanPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 					local profile = getUnitIDProfile(unitID);
 					local profileID = getUnitIDProfileID(unitID);
 					return profileID and not profile.hasMatureContent and not isProfileSafeListed(profileID);
