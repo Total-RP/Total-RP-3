@@ -35,7 +35,6 @@ local CONFIG_REMOVE_REALM = "remove_realm";
 local CONFIG_NAME_COLOR = "chat_color";
 local CONFIG_NPC_TALK = "chat_npc_talk";
 local CONFIG_EMOTE = "chat_emote";
-local CONFIG_EMOTE_PATTERN = "chat_emote_pattern";
 local CONFIG_USAGE = "chat_use_";
 local CONFIG_OOC = "chat_ooc";
 local CONFIG_OOC_COLOR = "chat_ooc_color";
@@ -84,10 +83,6 @@ local function configDoEmoteDetection()
 	return getConfigValue(CONFIG_EMOTE);
 end
 
-local function configEmoteDetectionPattern()
-	return getConfigValue(CONFIG_EMOTE_PATTERN);
-end
-
 local function configDoOOCDetection()
 	return getConfigValue(CONFIG_OOC);
 end
@@ -114,7 +109,6 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_REMOVE_REALM, true);
 	registerConfigKey(CONFIG_NAME_COLOR, true);
 	registerConfigKey(CONFIG_EMOTE, true);
-	registerConfigKey(CONFIG_EMOTE_PATTERN, "(%*.-%*)");
 	registerConfigKey(CONFIG_OOC, true);
 	registerConfigKey(CONFIG_OOC_COLOR, "aaaaaa");
 	registerConfigKey(CONFIG_SPEECH, true);
@@ -129,13 +123,6 @@ local function createConfigPage()
 		{ loc.CO_CHAT_MAIN_NAMING_2, 2 },
 		{ loc.CO_CHAT_MAIN_NAMING_3, 3 },
 		{ loc.CO_CHAT_MAIN_NAMING_4, 4 },
-	}
-
-	local EMOTE_PATTERNS = {
-		{ "* Emote *", "(%*.-%*)" },
-		{ "** Emote **", "(%*%*.-%*%*)" },
-		{ "< Emote >", "(%<.-%>)" },
-		{ "* Emote * + < Emote >", "([%*%<].-[%*%>])" },
 	}
 
 	-- Build configuration page
@@ -208,15 +195,6 @@ local function createConfigPage()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_CHAT_MAIN_EMOTE_USE,
 				configKey = CONFIG_EMOTE,
-			},
-			{
-				inherit = "TRP3_ConfigDropDown",
-				widgetName = "TRP3_ConfigurationTooltip_Chat_EmotePattern",
-				title = loc.CO_CHAT_MAIN_EMOTE_PATTERN,
-				listContent = EMOTE_PATTERNS,
-				configKey = CONFIG_EMOTE_PATTERN,
-				listCancel = true,
-				dependentOnOptions = { CONFIG_EMOTE },
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -354,14 +332,65 @@ local function IsEmoticonParenthesis(text, index)
 	return false;
 end
 
-function TRP3_ChatFrameUtil.TransformOOCSpans(text, transform)
+local function IsEmoticonEmoteToken(text, index)
+	if index > 1 and string.find(text, "^[:=;][<>*]", index - 1) then
+		-- Mouths such as ":>", ":<", and ":*".
+		return true;
+	elseif index > 2 and (string.find(text, "^[:=;][%-^'~o][<>*]", index - 2)
+		or string.find(text, "^[:=;]%*[<>]", index - 2)) then
+		-- The same faces with a nose, such as ":->".
+		-- Don't treat ":**" as one face: the second star may close a span.
+		return true;
+	elseif index > 1 and string.find(text, "^[:=;]%*[()<>]", index - 1) then
+		-- A star used as a nose, such as ":*)".
+		return true;
+	elseif string.find(text, "^</?3", index) or string.find(text, "^>[:=;][()DPp]", index) then
+		-- Hearts and angry eyebrows, such as "<3", "</3", and ">:(".
+		return true;
+	end
+
+	-- Either eye in faces such as ">_<", "<.<", or "*_*".
+	local pattern;
+
+	if string.find(text, "^%*", index) then
+		pattern = "^%*[_%.%-]%*";
+	else
+		pattern = "^[<>][_%.%-][<>]";
+	end
+
+	-- In a face such as ">_<" the first find here is intended to catch the
+	-- leading ">". The second find is for when we're positioned at the
+	-- terminating "<".
+	if string.find(text, pattern, index) ~= nil then
+		return true;
+	elseif (index > 2 and string.find(text, pattern, index - 2) ~= nil) then
+		return true;
+	end
+
+	return false;
+end
+
+--- Transforms non-overlapping spans using inclusive indices into the original text.
+--- The finder returns the next span's start/end indices, or nil when none remain.
+--- Returned indices must satisfy searchStart <= startIndex <= endIndex <= #text.
+--- A nil or false replacement preserves the span; an empty string removes it.
+---@param text string
+---@param findNextSpan fun(text: string, searchStart: integer): integer?, integer?
+---@param transform fun(candidate: string, startIndex: integer, endIndex: integer): string|nil|false
+---@return string
+function TRP3_ChatFrameUtil.TransformSpans(text, transform, findNextSpan)
 	local parts = {};
-	local textLength = #text;
 	local searchStart = 1;
 	local lastEndIndex = 0;
 
-	local function AppendTransformedSpan(spanStart, endIndex)
-		-- Append any non-OOC text since the last match as-is, unless empty.
+	while searchStart <= #text do
+		local spanStart, endIndex = findNextSpan(text, searchStart);
+
+		if not spanStart then
+			break;
+		end
+
+		-- Append any preceding text since the last span as-is, unless empty.
 		if spanStart > lastEndIndex + 1 then
 			table.insert(parts, string.sub(text, lastEndIndex + 1, spanStart - 1));
 		end
@@ -373,6 +402,70 @@ function TRP3_ChatFrameUtil.TransformOOCSpans(text, transform)
 		lastEndIndex = endIndex;
 		searchStart = endIndex + 1;
 	end
+
+	-- Process the remaining tail of the string. We skip this if we didn't
+	-- locate any spans at all.
+	if lastEndIndex > 0 then
+		if lastEndIndex < #text then
+			table.insert(parts, string.sub(text, lastEndIndex + 1));
+		end
+
+		text = table.concat(parts);
+	end
+
+	return text;
+end
+
+local function FindNextEmoteSpan(text, searchStart)
+	local textLength = #text;
+
+	while searchStart <= textLength do
+		local spanStart = string.find(text, "[*<]", searchStart);
+
+		if not spanStart then
+			break;
+		end
+
+		searchStart = spanStart + 1;
+
+		if not IsEmoticonEmoteToken(text, spanStart) then
+			local opening;
+			local closing;
+
+			if string.find(text, "^%*", spanStart) then
+				-- Keep doubled (or longer) star delimiters in the same span.
+				opening = string.match(text, "^%*+", spanStart);
+				closing = opening;
+			else
+				opening = "<";
+				closing = ">";
+			end
+
+			searchStart = spanStart + #opening;
+			local endIndex = spanStart + #opening;
+
+			while endIndex <= textLength do
+				local plain = true;
+				endIndex = string.find(text, closing, endIndex, plain);
+
+				if not endIndex then
+					break;
+				elseif IsEmoticonEmoteToken(text, endIndex) then
+					endIndex = endIndex + 1;
+				else
+					return spanStart, endIndex + (#closing - 1);
+				end
+			end
+		end
+	end
+end
+
+function TRP3_ChatFrameUtil.TransformEmoteSpans(text, transform)
+	return TRP3_ChatFrameUtil.TransformSpans(text, transform, FindNextEmoteSpan);
+end
+
+local function FindNextOOCSpan(text, searchStart)
+	local textLength = #text;
 
 	while searchStart <= textLength do
 		local plain = true;
@@ -406,8 +499,7 @@ function TRP3_ChatFrameUtil.TransformOOCSpans(text, transform)
 					depth = depth - 1;
 
 					if depth == 0 then
-						AppendTransformedSpan(spanStart, index);
-						break;
+						return spanStart, index;
 					end
 				end
 
@@ -422,18 +514,10 @@ function TRP3_ChatFrameUtil.TransformOOCSpans(text, transform)
 			end
 		end
 	end
+end
 
-	-- Process the remaining tail of the string as IC text. Skip this if we
-	-- didn't find any OOC spans at all - the text can be returned unaltered.
-	if lastEndIndex > 0 then
-		if lastEndIndex < textLength then
-			table.insert(parts, string.sub(text, lastEndIndex + 1));
-		end
-
-		text = table.concat(parts);
-	end
-
-	return text;
+function TRP3_ChatFrameUtil.TransformOOCSpans(text, transform)
+	return TRP3_ChatFrameUtil.TransformSpans(text, transform, FindNextOOCSpan);
 end
 
 ---@param message string
@@ -449,7 +533,7 @@ local function detectEmoteAndOOC(message, isEmote)
 	do -- Emote/OOC/Speech replacement
 		if configDoEmoteDetection() then
 			local color = TRP3_API.chat.getEmoteDetectionColor();
-			message = message:gsub(configEmoteDetectionPattern(), function(content)
+			message = TRP3_ChatFrameUtil.TransformEmoteSpans(message, function(content)
 				return color:WrapTextInColorCode(content);
 			end);
 		end
@@ -659,8 +743,7 @@ function handleCharacterMessage(_, event, message, ...)
 
 	-- No yelled emote ?
 	if event == "CHAT_MSG_YELL" and configNoYelledEmote() then
-		message = message:gsub("%*.-%*", "");
-		message = message:gsub("%<.-%>", "");
+		message = TRP3_ChatFrameUtil.TransformEmoteSpans(message, function() return ""; end);
 	end
 
 	-- Colorize emote and OOC
