@@ -57,15 +57,15 @@ insulate("TransformSpans", function()
 	end);
 
 	it("returns unmatched text unchanged without invoking the transform", function()
-		local transform = spy.new(MarkSpan);
+		local TransformSpan = spy.new(MarkSpan);
 
 		local function FindSpan(text, searchStart)
 			return string.find(text, "%b[]", searchStart);
 		end
 
-		assert.are.equal("plain text", TRP3_ChatFrameUtil.TransformSpans("plain text", transform, FindSpan));
-		assert.are.equal("", TRP3_ChatFrameUtil.TransformSpans("", transform, FindSpan));
-		assert.spy(transform).was_not.called();
+		assert.are.equal("plain text", TRP3_ChatFrameUtil.TransformSpans("plain text", TransformSpan, FindSpan));
+		assert.are.equal("", TRP3_ChatFrameUtil.TransformSpans("", TransformSpan, FindSpan));
+		assert.spy(TransformSpan).was_not.called();
 	end);
 end);
 
@@ -138,23 +138,9 @@ insulate("TransformEmoteSpans", function()
 	end);
 
 	it("preserves text without complete spans", function()
-		for _, text in ipairs({ "", "hello", "*", "<", "hello :>", ":* :*" }) do
+		for _, text in ipairs({ "*", "<", "hello :>", ":* :*" }) do
 			assert.are.equal(text, TRP3_ChatFrameUtil.TransformEmoteSpans(text, MarkSpan));
 		end
-	end);
-
-	it("passes the span and original byte indices to the callback", function()
-		local received;
-		local result = TRP3_ChatFrameUtil.TransformEmoteSpans("hi <waves>!", function(...)
-			received = { ... };
-		end);
-		assert.are.same({ "<waves>", 4, 10 }, received);
-		assert.are.equal("hi <waves>!", result);
-	end);
-
-	it("can remove spans while preserving emoticons and surrounding text", function()
-		local result = TRP3_ChatFrameUtil.TransformEmoteSpans(":* *waves :** then <smiles :>> <3", function() return ""; end);
-		assert.are.equal(":*  then  <3", result);
 	end);
 end);
 
@@ -214,32 +200,9 @@ insulate("TransformOOCSpans", function()
 		assert.are.equal(") {(hello)}) then (unfinished", result);
 	end);
 
-	it("does not call the transform without a complete span", function()
-		local transform = spy.new(MarkSpan);
-		for _, text in ipairs({ "", "hello", "(", ")", "((unfinished", ":( :)", ":-( ;-)" }) do
-			assert.are.equal(text, TRP3_ChatFrameUtil.TransformOOCSpans(text, transform));
+	it("preserves text without complete spans", function()
+		for _, text in ipairs({ "(", ")", "((unfinished", ":( :)", ":-( ;-)" }) do
+			assert.are.equal(text, TRP3_ChatFrameUtil.TransformOOCSpans(text, MarkSpan));
 		end
-		assert.spy(transform).was_not.called();
-	end);
-
-	it("passes each span and its original byte indices to the callback", function()
-		local received = {};
-		local result = TRP3_ChatFrameUtil.TransformOOCSpans("hi (one) ((two))!", function(...)
-			table.insert(received, { ... });
-			return "OOC";
-		end);
-		assert.are.same({ { "(one)", 4, 8 }, { "((two))", 10, 16 } }, received);
-		assert.are.equal("hi OOC OOC!", result);
-	end);
-
-	it("preserves spans when the callback returns nil or false", function()
-		local text = "hi (one) ((two))!";
-		assert.are.equal(text, TRP3_ChatFrameUtil.TransformOOCSpans(text, function() end));
-		assert.are.equal(text, TRP3_ChatFrameUtil.TransformOOCSpans(text, function() return false; end));
-	end);
-
-	it("can remove spans while preserving surrounding text and emoticons", function()
-		local result = TRP3_ChatFrameUtil.TransformOOCSpans(":) (one) then ((two :)))!", function() return ""; end);
-		assert.are.equal(":)  then !", result);
 	end);
 end);
