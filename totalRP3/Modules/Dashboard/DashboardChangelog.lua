@@ -23,7 +23,7 @@ local CHANGELOG_TEXT = [[
   - The OOC pattern setting was removed as a result.
 - Improved profile importer error messaging, and made older profile imports more reliable when pasting extra characters before the exported string.
 - Improved profile exporter messaging, and removed exporter size limit.
-- The "Crop unreasonably long texts" option is now permanently enabled.
+- The "Crop unreasonably long texts" tooltip option is now permanently enabled.
 
 ## Fixed
 
@@ -34,6 +34,11 @@ local CHANGELOG_TEXT = [[
 - The icon browser will now reliably close on Escape no matter where it was opened from.
 - Fixed issues when using the default color picker on the About page.
 - Fixed notes and relations data being shared incorrectly when linking a profile.
+
+## Whatever this is
+
+- Added right-click menu options for recent allies.
+- Removed right-click menu options for recent allies (and other friendlist entries) until Blizzard fixes the taint issues with them.
 
 # Changelog version 3.4.3
 
