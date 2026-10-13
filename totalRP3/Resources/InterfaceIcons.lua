@@ -4,7 +4,7 @@
 local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 
 local DEFAULT_ICON_NAME = "inv_misc_questionmark";
-local DEFAULT_ICON_ID = LRPM12:ResolveIconID("inv_misc_questionmark");
+local DEFAULT_ICON_ID = 134400;
 
 ---@return TRP3.IconIdentifier?
 local function GetFirstValidIcon(...)
@@ -16,6 +16,10 @@ local function GetFirstValidIcon(...)
 		if iconID then
 			return iconID;
 		end
+
+		-- String conversion here to avoid errors in our later concat if all
+		-- lookups fail.
+		icons[index] = tostring(icons[index]);
 	end
 
 	securecallfunction(error, string.format("Failed to resolve icon ID (candidates: %s)", table.concat(icons, ", ")), 3);

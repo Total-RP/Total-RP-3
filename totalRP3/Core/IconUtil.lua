@@ -3,6 +3,8 @@
 
 local LRPM12 = LibStub:GetLibrary("LibRPMedia-1.2");
 
+local FAILSAFE_ICON_INFO = { file = TRP3_InterfaceIconIDs.Default };
+
 TRP3_IconUtil = {};
 
 ---@param icon TRP3.IconIdentifier?
@@ -63,6 +65,10 @@ function TRP3_IconUtil.SetTextureToIcon(texture, icon)
 		iconInfo = TRP3_IconUtil.GetIconInfo(TRP3_InterfaceIconIDs.Default);
 	end
 
+	if iconInfo == nil then
+		iconInfo = FAILSAFE_ICON_INFO;
+	end
+
 	if iconInfo.file then
 		texture:SetTexture(iconInfo.file);
 	elseif iconInfo.atlas then
@@ -76,6 +82,10 @@ function TRP3_IconUtil.SetCursor(icon)
 
 	if iconInfo == nil then
 		iconInfo = TRP3_IconUtil.GetIconInfo(TRP3_InterfaceIconIDs.Default);
+	end
+
+	if iconInfo == nil then
+		iconInfo = FAILSAFE_ICON_INFO;
 	end
 
 	if iconInfo.file then
