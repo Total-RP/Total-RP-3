@@ -1,3 +1,41 @@
+# Changelog version 3.5.0
+
+## Added
+
+- Added support for icons without official filenames, as well as class/race icons.
+- Icons can now be searched by ID.
+- When selecting an icon in the browser, typing the exact icon name or ID in the search bar and pressing Enter will automatically select that icon.
+- Added [time:...] and [weather:...] custom macro conditionals for automation.
+  - For more details, see [our doc on macro conditionals](https://github.com/Total-RP/Total-RP-3/wiki/Macro-conditionals)
+- The About tab will now be disabled when the profile contains no description or music theme.
+- When creating a new profile, pressing Enter will create the profile without needing to click the "Create profile" button.
+- Added a warning when music may not play due to sound settings.
+
+## Changed
+
+- The relations list has been visually improved, including better scrolling and drag-and-drop behaviour, more intuitive and readable example lines, and a tutorial structure.
+- Text search and sort functions across the addon now ignore accents and Unicode characters.
+- OOC detection was made smarter to handle smileys and nested parentheses.
+  - The OOC pattern setting was removed as a result.
+- Improved profile importer error messaging, and made older profile imports more reliable when pasting extra characters before the exported string.
+- Improved profile exporter messaging, and removed exporter size limit.
+- The "Crop unreasonably long texts" option is now permanently enabled.
+
+## Fixed
+
+- Creating a profile should once again automatically switch to it.
+- Fixed priority of pins on the map scan: players with relations are displayed above other pins, players on other war mode settings will no longer be forced above other pins.
+- Fixed issues with NPC emotes display when using Prat.
+- Fixed Lua error when using Prat while the Chat frames module is disabled.
+- The icon browser will now reliably close on Escape no matter where it was opened from.
+- Fixed issues when using the default color picker on the About page.
+- Fixed notes and relations data being shared incorrectly when linking a profile.
+
+## Whatever this is
+
+- Added right-click menu options for recent allies.
+- Removed right-click menu options for recent allies (and other friendlist entries) until Blizzard fixes the taint issues with them.
+
 # Changelog version 3.4.3
 
 ## Fixed
@@ -44,23 +82,3 @@
 ## Fixed
 
 - Fixed some errors related to patch 12.1 API changes.
-
-# Changelog version 3.3.8
-
-- Classic versions are now fully supported again, bringing them all improvements made since version 3.1.2, including Platynator support and tag search in the icon browser.
-
-# Changelog version 3.3.7
-
-## Added
-
-- Added 71 icons and 12 musics from patch 12.0.7.
-
-## Changed
-
-- Imported profiles will now reuse their IDs if possible, to avoid losing profile-specific notes as well as others losing notes and relations.
-
-## Fixed
-
-- Fixed conflicts with other chat addons (Chattery, Languages) when parsing chat tokens.
-- Fixed an error with pets in instances.
-- Fixed an error with nameplate colors in instances.
