@@ -8,7 +8,7 @@ local Ellyb = TRP3_API.Ellyb;
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 -- AddOn imports
-local Chomp = AddOn_Chomp;
+local Chomp = LibStub:GetLibrary("Chomp");
 
 -- Total RP 3 imports
 local Compression = AddOn_TotalRP3.Compression;

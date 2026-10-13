@@ -3,6 +3,8 @@
 
 -- luacheck: ignore
 
+SlashCmdList = {};
+
 function GetLocale()
 	return "enUS";
 end
@@ -51,6 +53,11 @@ function Mixin(object, ...)
 	end
 
 	return object;
+end
+
+C_ChatInfo = {};
+
+function C_ChatInfo.SwapChatChannelsByChannelIndex(_firstChannelIndex, _secondChannelIndex)
 end
 
 C_ColorUtil = {};

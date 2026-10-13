@@ -52,6 +52,15 @@ function CallbackHandler:New(registry)
 	return callbacks;
 end
 
+local Chomp = {}
+libraries["Chomp"] = Chomp;
+
+function Chomp:RegisterAddonPrefix(_prefix, _callback, _prefixSettings)
+end
+
+local LibDeflate = {}
+libraries["LibDeflate"] = LibDeflate;
+
 local LibRPMedia = {}
 libraries["LibRPMedia-1.2"] = LibRPMedia;
 

@@ -112,6 +112,20 @@ local ADDON_FILES = {
 	{ file = "totalRP3/Core/CompanionProviderStatic.lua", allowLoad = { Vanilla = true, TBC = true } },
 	"totalRP3/Core/Utils.lua",
 	"totalRP3/Core/ProfileUtil.lua",
+	"totalRP3/Core/UITools.lua",
+	"totalRP3/Core/Slash.lua",
+	"totalRP3/Core/MainStructure.lua",
+	"totalRP3/Core/Configuration.lua",
+	"totalRP3/Core/AdvancedSettings.lua",
+	"totalRP3/Core/Compression.lua",
+	"totalRP3/Core/CommunicationProtocol.lua",
+	"totalRP3/Core/CommunicationProtocolBroadcast.lua",
+	"totalRP3/Core/UIMain.lua",
+	"totalRP3/Core/Profiles.lua",
+	"totalRP3/Core/ProfilesChatLinksModule.lua",
+	"totalRP3/Core/ModuleManagement.lua",
+	"totalRP3/Core/Flyway.lua",
+	"totalRP3/Core/FlywayPatches.lua",
 };
 
 local function ShouldLoadFile(entry, gameType, family)
