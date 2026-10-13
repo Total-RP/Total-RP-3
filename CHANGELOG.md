@@ -19,7 +19,7 @@
   - The OOC pattern setting was removed as a result.
 - Improved profile importer error messaging, and made older profile imports more reliable when pasting extra characters before the exported string.
 - Improved profile exporter messaging, and removed exporter size limit.
-- The "Crop unreasonably long texts" option is now permanently enabled.
+- The "Crop unreasonably long texts" tooltip option is now permanently enabled.
 
 ## Fixed
 
