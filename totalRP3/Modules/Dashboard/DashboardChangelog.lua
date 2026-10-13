@@ -9,7 +9,7 @@ local CHANGELOG_TEXT = [[
 - Added support for icons without official filenames, as well as class/race icons.
 - Icons can now be searched by ID.
 - When selecting an icon in the browser, typing the exact icon name or ID in the search bar and pressing Enter will automatically select that icon.
-- Added [time:...] and [weather:...] custom macro conditionals for automation.
+- Added |cnGREEN_FONT_COLOR:[time:...]|r and |cnGREEN_FONT_COLOR:[weather:...]|r custom macro conditionals for automation.
   - For more details, see [our doc on macro conditionals](https://github.com/Total-RP/Total-RP-3/wiki/Macro-conditionals)
 - The About tab will now be disabled when the profile contains no description or music theme.
 - When creating a new profile, pressing Enter will create the profile without needing to click the "Create profile" button.
