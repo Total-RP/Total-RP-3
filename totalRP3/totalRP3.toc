@@ -74,6 +74,9 @@ Resources\[Game]\RaceIconAtlases.lua [AllowLoadGameType standard][ExcludeLoadGam
 Resources\InterfaceIcons.lua
 Resources\InterfaceAtlases.lua
 Resources\InterfaceSounds.lua
+Resources\[Family]\InterfaceSounds.lua [AllowLoadGameType classic]
+Resources\Forever\InterfaceSounds.lua [AllowLoadGameType forever][ExcludeLoadGameType classic, standard]
+Resources\[Game]\InterfaceSounds.lua [AllowLoadGameType standard][ExcludeLoadGameType classic]
 Resources\[Family]\CompanionData.lua [AllowLoadGameType vanilla, tbc]
 Resources\UI\Templates.xml
 

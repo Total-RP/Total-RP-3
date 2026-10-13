@@ -49,7 +49,12 @@ function MapScannersManager.launch(scanID)
 		end
 		scan:OnScanCompleted();
 		TRP3_API.MapDataProvider:OnScan(scan:GetData(), scan:GetDataProviderTemplate())
-		TRP3_API.ui.misc.playSoundKit(43493);
+
+		if fastrandom(1, 1000) == 1 then
+			TRP3_API.ui.misc.playSoundKit(TRP3_InterfaceSounds.MapScanAlternate);
+		else
+			TRP3_API.ui.misc.playSoundKit(TRP3_InterfaceSounds.MapScanComplete);
+		end
 	end
 
 
@@ -57,7 +62,7 @@ function MapScannersManager.launch(scanID)
 	scan:Scan();
 	C_Timer.After(scan.duration, OnScanTimerElapsed);
 	TRP3_API.WorldMapButton.startCooldown(scan.duration);
-	TRP3_API.ui.misc.playSoundKit(40216);
+	TRP3_API.ui.misc.playSoundKit(TRP3_InterfaceSounds.MapScanStart);
 end
 
 TRP3_API.MapScannersManager = MapScannersManager;
