@@ -131,9 +131,9 @@ describe("Locale markup diagnostics", function()
 
 	it("warns about unknown escapes and bare pipes", function()
 		assert.are.same({
-			{ severity = "warning", message = "unrecognized or unexpected WoW escape sequence |o" },
-			{ severity = "warning", message = "unrecognized or unexpected WoW escape sequence | " },
-			{ severity = "warning", message = "unrecognized or unexpected WoW escape sequence |" },
+			{ severity = "error", message = "unrecognized or unexpected WoW escape sequence |o" },
+			{ severity = "error", message = "unrecognized or unexpected WoW escape sequence | " },
+			{ severity = "error", message = "unrecognized or unexpected WoW escape sequence |" },
 		}, LocaleValidator.CheckText("Text", "|oText | Text |"));
 	end);
 end);
