@@ -496,7 +496,7 @@ local function IsPetUnit(unitToken)
 	-- are pets, and they report nil for UnitCreatureFamily too. For these
 	-- clients we'll just hardcode the creature ID and be done with it.
 
-	local unitGUID = UnitGUID(unitToken);
+	local unitGUID = scrubsecretvalues(UnitGUID(unitToken));
 	local guidType, _, _, _, _, creatureID = string.split("-", unitGUID or "", 7);
 
 	return guidType == "Creature" and (creatureID == "510" or creatureID == "37994");
