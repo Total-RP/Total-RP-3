@@ -250,7 +250,7 @@ Gardez à l'esprit que changer ces paramètres peut altérer votre expérience a
 	["CO_CHAT_MAIN_NPC_PREFIX_TT"] = [=[Si un message envoyé sur le canal /emote commence par ce préfixe, il sera interprété comme dialogue de PNJ.
 
 |cff00ff00Par défaut : "|| "
-(sans les " et avec un espace après le | )|r]=],
+(sans les " et avec un espace après le || )|r]=],
 	["CO_CHAT_MAIN_NPC_USE"] = "Utiliser la détection des dialogues de PNJ",
 	["CO_CHAT_MAIN_OOC"] = "Détection du HRP",
 	["CO_CHAT_MAIN_OOC_COLOR"] = "Couleur du HRP",
@@ -853,7 +853,7 @@ ou liez un profil existant dans l'onglet Profils
 pour modifier les informations de votre personnage.]=],
 	["PR_DELETE_PROFILE"] = "Supprimer le profil",
 	["PR_DUPLICATE_PROFILE"] = "Dupliquer le profil",
-	["PR_EXPORT_NAME"] = "Serial du profil %s (taille %0.2f Ko)",
+	["PR_EXPORT_NAME"] = "Serial du profil %s",
 	["PR_EXPORT_PROFILE"] = "Exporter le profil",
 	["PR_EXPORT_WARNING_TITLE"] = "Attention: ",
 	["PR_IMPORT"] = "Importer",

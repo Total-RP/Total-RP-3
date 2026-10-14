@@ -346,7 +346,7 @@ Ci sono diverse maniere per farlo:|c0000ff00
 	["REG_PLAYER_ICON"] = "Icona del personaggio",
 	["REG_PLAYER_IGNORE_WARNING"] = [=[Vuoi ignorare quei personaggi?
 
-|cffff990%s
+|cnWARNING_FONT_COLOR:%s|r
 
 È possibile inserire la ragione di seguito. Questa è una nota personale che servirà da promemoria.]=],
 	["REG_PLAYER_LASTNAME"] = "Cognome",
@@ -392,9 +392,7 @@ Ci sono diverse maniere per farlo:|c0000ff00
 	["REG_PLAYER_RACE_TT"] = "Qui va la razza del tuo personaggio. Non deve essere limitato a razze giocabili. Ci sono molte razze in Warcraft che possono assumere le forme più comuni...",
 	["REG_PLAYER_RESIDENCE"] = "Residenza",
 	["REG_PLAYER_RESIDENCE_SHOW"] = "Coordinate residenza",
-	["REG_PLAYER_RESIDENCE_SHOW_TT"] = [=[|cff00ff00%s
-
-|rClicca per vedere sulla mappa]=],
+	["REG_PLAYER_RESIDENCE_SHOW_TT"] = "Clicca per vedere sulla mappa",
 	["REG_PLAYER_STYLE_DEATH"] = "Accetto la morte del personaggio",
 	["REG_PLAYER_STYLE_INJURY"] = "Accetto lesioni al personaggio",
 	["REG_PLAYER_STYLE_PERMI"] = "Con il permesso del giocatore",
