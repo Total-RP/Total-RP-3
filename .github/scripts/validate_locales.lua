@@ -56,10 +56,10 @@ for _, path in ipairs(sortedPaths) do
 	print(string.format("Checking %-50s %s", path, status));
 
 	for _, diagnostic in ipairs(diagnostics) do
-		print(string.format("    %s:%d:%d: %s: %s", path, diagnostic.line, diagnostic.column, diagnostic.severity, diagnostic.message));
-
 		if os.getenv("GITHUB_ACTIONS") == "true" then
 			print(LocaleValidator.FormatAnnotation(path, diagnostic));
+		else
+			print(string.format("    %s:%d:%d: %s: %s", path, diagnostic.line, diagnostic.column, diagnostic.severity, diagnostic.message));
 		end
 	end
 
