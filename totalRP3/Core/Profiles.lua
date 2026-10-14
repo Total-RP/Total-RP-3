@@ -841,15 +841,20 @@ function TRP3_API.profile.init()
 		local instructions = {
 			{ "LCLICK", loc.PR_PROFILEMANAGER_SWITCH },
 			{ "SHIFT-CLICK", loc.CL_TOOLTIP },
-			{ "RCLICK", loc.CM_OPTIONS_ADDITIONAL }
 		};
+
+		if button.profileID ~= getConfigValue("default_profile_id") then
+			table.insert(instructions, { "RCLICK", loc.CM_OPTIONS_ADDITIONAL });
+		end
 
 		TRP3_TooltipTemplates.CreateInstructionTooltip(description, title, text, instructions);
 	end
 
 	local function OnListElementClick(button, mouseButtonName)
 		if mouseButtonName == "RightButton" then
-			TRP3_MenuUtil.CreateContextMenu(button, GenerateProfileActionMenu);
+			if button.profileID ~= getConfigValue("default_profile_id") then
+				TRP3_MenuUtil.CreateContextMenu(button, GenerateProfileActionMenu);
+			end
 		elseif IsShiftKeyDown() then
 			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_PLAYER_PROFILE, function(canBeImported)
 				TRP3_API.ProfilesChatLinkModule:InsertLink(button.profileID, canBeImported);
