@@ -62,7 +62,6 @@ describe("CapitalizeWords", function()
 	end);
 end);
 
-
 describe("GenerateIncrementalName", function()
 	it("returns an available prefix unchanged", function()
 		local function Predicate()
