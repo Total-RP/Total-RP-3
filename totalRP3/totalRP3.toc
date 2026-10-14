@@ -38,7 +38,6 @@ Libs\AceConsole-3.0\AceConsole-3.0.xml
 Libs\AceDB-3.0\AceDB-3.0.xml
 Libs\AceEvent-3.0\AceEvent-3.0.xml
 Libs\AceSerializer-3.0\AceSerializer-3.0.xml
-Libs\TaintLess\TaintLess.xml
 Libs\Chomp\Chomp.xml
 Libs\Ellyb\Ellyb.xml
 Libs\LibChatAnims\LibChatAnims.xml
