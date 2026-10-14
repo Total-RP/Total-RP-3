@@ -1436,39 +1436,6 @@ Change le statut de votre personnage en fonction de l'option spécifiée:
 	["TF_OPEN_CHARACTER"] = "Afficher la fiche du personnage",
 	["TF_OPEN_COMPANION"] = "Afficher la fiche du familier",
 	["TF_OPEN_MOUNT"] = "Afficher la fiche de la monture",
-	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
-{p:c}{col:6eff51}Version %s (build %s){/col}{/p}
-{p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
-
-{h2}{icon:INV_Eng_gizmo1:20} Créé par{/h2}
-- Morgane "{twitter*EllypseCelwe*Ellypse}" Parize
-- Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement
-
-{h2}{icon:QUEST_KHADGAR:20} Le reste de l'équipe{/h2}
-- Connor "{twitter*Saelorable*Sælorable}" Macleod (Contributeur)
-- {twitter*Solanya_*Solanya} (Community Manager)
-
-{h2}{icon:THUMBUP:20} Remerciements{/h2}
-{col:ffffff}Les logos et icône de la carte ont été réalisés par:{/col}
-- {link*https://apheliondusk.tumblr.com*AphelionDusk}
-
-{col:ffffff}Notre équipe de test:{/col}
-- Erzan
-- Calian
-- Kharess
-- Alnih
-- 611
-
-{col:ffffff}Merci à tous nos amis pour leur soutien:{/col}
-- Pour Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
-- Pour Ellypse: Les guildes Église du Saint Gamon, Maison Celwë'Belore, Mercenaires Atal'ai, et plus particulièrement Erzan, Elenna, Caleb, Siana and Adaeria
-
-{col:ffffff}Pour nous avoir aidés à créer la guilde Total RP sur Kirin Tor (EU):{/col}
-- Azane
-- Hellclaw
-- Leylou
-
-{col:ffffff}Merci à Horionne pour nous avoir envoyé son exemplaire du Gamer Culte Online #14 qui contient un article sur Total RP.{/col}]=],
 	["THANK_YOU_ROLE_AUTHOR"] = "Créateur",
 	["THANK_YOU_ROLE_COMMUNITY_MANAGER"] = "Community Manager",
 	["THANK_YOU_ROLE_CONTRIBUTOR"] = "Contributeur",

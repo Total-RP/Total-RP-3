@@ -1237,37 +1237,6 @@ Zum Beispiel kann du folgendes angeben: |c0000ff00schlank, dick or muskulös...|
 	["TF_OPEN_CHARACTER"] = "Charakterseite anzeigen",
 	["TF_OPEN_COMPANION"] = "Begleiterseite anzeigen",
 	["TF_OPEN_MOUNT"] = "Reittierseite anzeigen",
-	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
-{p:c}{col:6eff51}Version %s (build %s){/col}{/p}
-{p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}
-
-{h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
-- Morgane "{twitter*EllypseCelwe*Ellypse}" Parize
-- Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement
-
-
-{h2}{icon:THUMBUP:20} Danksagungen{/h2}
-{col:ffffff}Logo and minimap button icon:{/col}
-- {link*https://apheliondusk.tumblr.com*AphelionDusk}
-
-{col:ffffff}Unser Pre-Alpha QA Team:{/col}
-- Saelora
-- Erzan
-- Calian
-- Kharess
-- Alnih
-- 611
-
-{col:ffffff}Danke an alle unsere Freunde für Ihre Unterstützung in all diesen Jahren:{/col}
-- Für Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
-- Für Ellypse: The guilds Maison Celwë'Belore, Mercenaires Atal'ai, und ganz besonders Erzan, Elenna, Caleb, Siana and Adaeria
-
-{col:ffffff}Danke für die Hilfe die "Total RP Gilde" auf Kirin Tor (EU) zu erstellen:{/col}
-- Azane
-- Hellclaw
-- Leylou
-
-{col:ffffff}Danke an Horionne für das zusend einer Ausgabe von dem Magazin "Gamer Culte Online #14" mit einem Artikel über Total RP.{/col}]=],
 	["THANK_YOU_ROLE_AUTHOR"] = "Autor",
 	["THANK_YOU_ROLE_COMMUNITY_MANAGER"] = "Community Manager",
 	["THANK_YOU_ROLE_CONTRIBUTOR"] = "Mitwirkende(r)",
