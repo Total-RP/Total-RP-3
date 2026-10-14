@@ -93,7 +93,7 @@ local function CheckMarkup(text, diagnostics)
 				AddDiagnostic(diagnostics, "error", "malformed color escape; expected " .. expectation);
 			end
 		elseif escape ~= "|" and (escape == "" or not string.find("rnHhTtAaWw1234", escape, 1, true)) then
-			AddDiagnostic(diagnostics, "warning", "unrecognized or unexpected WoW escape sequence |" .. escape);
+			AddDiagnostic(diagnostics, "error", "unrecognized or unexpected WoW escape sequence |" .. escape);
 		end
 
 		offset = start + length;
