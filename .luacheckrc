@@ -441,6 +441,12 @@ stds.wow = {
 			},
 		},
 
+		C_StringUtil = {
+			fields = {
+				"EscapeLuaPatterns",
+			},
+		},
+
 		C_Texture = {
 			fields = {
 				"GetAtlasExists",

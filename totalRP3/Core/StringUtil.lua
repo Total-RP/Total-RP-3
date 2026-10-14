@@ -61,8 +61,15 @@ function TRP3_StringUtil.FindBestMatch(searchText, candidateList)
 end
 
 --- Returns the first name, starting with `prefix`, that satisfies `predicate`.
+---
 --- If the prefix is already available, it is returned unchanged; otherwise,
 --- numbered suffixes are appended until an available name is found.
+---
+--- The suffix string if specified is expected to contain a single plain `%d`
+--- placeholder. If the prefix already contains a matching suffix, counting
+--- continues from the existing number instead of appending another suffix.
+---
+--- Raises an error if the suffix generates the same rejected name again.
 ---@param predicate fun(name: string): boolean
 ---@param prefix string
 ---@param suffix string?
@@ -73,10 +80,29 @@ function TRP3_StringUtil.GenerateIncrementalName(predicate, prefix, suffix)
 	end
 
 	local name = prefix;
-	local count = 1;
+	local count = 2;
+
+	local suffixStart, suffixEnd = string.match(suffix, "^([^%%]*)%%d([^%%]*)$");
+
+	if suffixStart then
+		local escapedStart = C_StringUtil.EscapeLuaPatterns(suffixStart);
+		local escapedEnd = C_StringUtil.EscapeLuaPatterns(suffixEnd);
+		local baseName, number = string.match(prefix, "^(.-)" .. escapedStart .. "(%d+)" .. escapedEnd .. "$");
+
+		if number then
+			prefix = baseName;
+			count = tonumber(number) + 1;
+		end
+	end
 
 	while not predicate(name) do
-		name = prefix .. string.format(suffix, count);
+		local nextName = prefix .. string.format(suffix, count);
+
+		if nextName == name then
+			error("attempted to generate a duplicate incremental name (expected 'suffix' to have a format specifier)");
+		end
+
+		name = nextName;
 		count = count + 1;
 	end
 

@@ -104,6 +104,12 @@ C_Spell = {};
 function C_Spell.RequestLoadSpellData(_spellID)
 end
 
+C_StringUtil = {};
+
+function C_StringUtil.EscapeLuaPatterns(text)
+	return (string.gsub(text, "([%(%)%.%%%+%-%*%?%[%]%^%$])", "%%%1"));
+end
+
 C_Texture = {};
 
 function C_Texture.GetAtlasInfo(_atlasName)
