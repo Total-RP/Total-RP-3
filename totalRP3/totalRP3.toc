@@ -28,7 +28,11 @@
 ## X-Curse-Project-ID: 75973
 ## X-Wago-ID: q96dnGOm
 ## X-WoWI-ID: 24113
-## X-GameType: [Game]
+## X-GameType: Standard [AllowLoadGameType standard]
+## X-GameType: Camelot [AllowLoadGameType camelot]
+## X-GameType: Vanilla [AllowLoadGameType vanilla]
+## X-GameType: TBC [AllowLoadGameType tbc]
+## X-GameType: Mists [AllowLoadGameType mists]
 
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
