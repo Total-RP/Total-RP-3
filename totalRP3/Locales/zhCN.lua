@@ -821,13 +821,13 @@ This module modifies Blizzard player and target frames to use RP name and color,
 名称不能为空。
 
 这种复制不会改变您绑定到%s的宠物/坐骑。]=],
-	["PR_CO_PROFILEMANAGER_EDIT_POPUP"] = [=[请为这个同伴卡%s输入一个新名称。
+	["PR_CO_PROFILEMANAGER_EDIT_POPUP"] = [=[请为这个同伴卡%1$s输入一个新名称。
 名称不能为空。
 
-更改名称不会改变您绑定到%s的宠物/坐骑。]=],
+更改名称不会改变您绑定到%1$s的宠物/坐骑。]=],
 	["PR_CO_PROFILEMANAGER_TITLE"] = "同伴卡",
 	["PR_CO_UNUSED_PROFILE"] = "此同伴卡目前没有绑定到任何宠物或坐骑。",
-	["PR_CO_WARNING_RENAME"] = [=[|cff0000警告:|r强烈建议您在将您的宠物链接到一个同伴卡之前重命名你的宠物。
+	["PR_CO_WARNING_RENAME"] = [=[|cffff0000警告:|r强烈建议您在将您的宠物链接到一个同伴卡之前重命名你的宠物。
 
 现在链接吗？]=],
 	["PR_CREATE_PROFILE"] = "创建一个人物卡",
@@ -837,7 +837,7 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	以编辑你的角色信息]=],
 	["PR_DELETE_PROFILE"] = "删除人物卡",
 	["PR_DUPLICATE_PROFILE"] = "复制人物卡",
-	["PR_EXPORT_NAME"] = "资料 %s (大小 %0.2f kB)",
+	["PR_EXPORT_NAME"] = "资料 %s",
 	["PR_EXPORT_PROFILE"] = "导出数据",
 	["PR_EXPORT_WARNING_TITLE"] = "警告：",
 	["PR_IMPORT"] = "导入",
@@ -982,7 +982,7 @@ This module modifies Blizzard player and target frames to use RP name and color,
 	["REG_LIST_CHAR_TT_RELATION"] = [=[关系:
 |cff00ff00%s|r]=],
 	["REG_LIST_CHAR_TUTO_FILTER"] = "这些过滤器作用于以上的人物卡列表。|cnGREEN_FONT_COLOR:姓名过滤器|r将按你输入的姓名（IC或OOC的）过滤人物卡。|cnGREEN_FONT_COLOR:公会过滤器|r将按你输入的游戏性公会过滤人物卡。 |cnGREEN_FONT_COLOR:当前服务器过滤器|r将按你当前所在的服务器过滤人物卡。 |cnGREEN_FONT_COLOR:笔记过滤器|r将只显示你做过笔记的人物卡。",
-	["REG_LIST_CHAR_TUTO_LIST"] = "|cnGREEN_FONT_COLOR:第一列|r的勾选框可以让你选择多个角色并用左上角的按钮进行操作。 |cnGREEN_FONT_COLOR第二列|r 显示角色的名字。|cnGREEN_FONT_COLOR:第三列n|r 显示这些角色和你的角色的关系。|cnGREEN_FONT_COLOR:第四列|r显示了你的TRP3上次保存这些人物卡的时间。|cnGREEN_FONT_COLOR:第五列n|r显示了这是什么插件产生的人物卡(Total RP 3， MyRoleplay，等等). |cnGREEN_FONT_COLOR:最后一列|r是一些标签（忽略等）。",
+	["REG_LIST_CHAR_TUTO_LIST"] = "|cnGREEN_FONT_COLOR:第一列|r的勾选框可以让你选择多个角色并用左上角的按钮进行操作。 |cnGREEN_FONT_COLOR:第二列|r 显示角色的名字。|cnGREEN_FONT_COLOR:第三列n|r 显示这些角色和你的角色的关系。|cnGREEN_FONT_COLOR:第四列|r显示了你的TRP3上次保存这些人物卡的时间。|cnGREEN_FONT_COLOR:第五列n|r显示了这是什么插件产生的人物卡(Total RP 3， MyRoleplay，等等). |cnGREEN_FONT_COLOR:最后一列|r是一些标签（忽略等）。",
 	["REG_LIST_FILTERS"] = "过滤",
 	["REG_LIST_FILTERS_APPLY"] = "应用过滤器",
 	["REG_LIST_FILTERS_CLEAR"] = "清除过滤器",
@@ -1068,9 +1068,9 @@ This module modifies Blizzard player and target frames to use RP name and color,
 
 记住，即使你的角色的脸总是被隐藏起来，这可能还是值得一提的，以防万一。]=],
 	["REG_PLAYER_FIRSTNAME"] = "名",
-	["REG_PLAYER_FIRSTNAME_TT"] = [=[这是你角色的名字。这是一个必填项，如果你不输入名字，会使用默认的角色名字(|cffffff00%s|r)。
+	["REG_PLAYER_FIRSTNAME_TT"] = [=[这是你角色的名字。这是一个必填项，如果你不输入名字，会使用默认的角色名字(|cnGREEN_FONT_COLOR:%s|r)。
 
-你也可以使用一个|c0000ff0绰号|r!]=],
+你也可以使用一个|cnGREEN_FONT_COLOR:绰号|r!]=],
 	["REG_PLAYER_FULLTITLE"] = "全称",
 	["REG_PLAYER_FULLTITLE_TT"] = "你可以在这里写下你的角色全称。它可以是一个更长的头衔，也可以完全是另一个头衔。为了避免重复，请尽量不要输入相同的信息。",
 	["REG_PLAYER_GLANCE"] = "第一印象",
