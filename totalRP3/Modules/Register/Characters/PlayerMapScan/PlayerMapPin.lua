@@ -36,8 +36,8 @@ local PlayerNameSortKeyOptions = {
 function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(poiInfo.sender);
 	local hasWarModeActive = poiInfo.hasWarModeActive;
-	local shouldDifferentiateBetweenWarModes = getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES);
-	local hasSameWarModeAsPlayer = (not TRP3_API.utils.IsWarModeFeatureEnabled()) or hasWarModeActive == C_PvP.IsWarModeActive();
+	local shouldDifferentiateBetweenWarModes = TRP3_API.utils.IsWarModeFeatureEnabled() and getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES);
+	local hasSameWarModeAsPlayer = (hasWarModeActive == C_PvP.IsWarModeActive());
 	local playerName = player:GenerateFormattedName(TRP3_PlayerNameFormat.Plain);
 
 	local displayData = {
