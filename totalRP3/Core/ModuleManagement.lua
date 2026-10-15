@@ -63,8 +63,6 @@ TRP3_API.module.registerModule = function(moduleStructure)
 	end
 
 	MODULE_REGISTRATION[moduleStructure.id] = moduleStructure;
-
-	TRP3_API.Log("Module registered: " .. moduleStructure.id);
 end
 
 --- Initializing modules.

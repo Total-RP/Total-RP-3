@@ -3,58 +3,56 @@
 
 -- luacheck: ignore
 
-local SpecHelper = require("SpecHelper");
+local Environment = require("Environment");
+local AceSerializer = LibStub:GetLibrary("AceSerializer-3.0");
 
-insulate("DecodeAce", function()
-	local SerializedData = "^1^T^N1^N142^N2^SabcDEF^t^^";
-	local serializer;
+Environment.LoadAddOn();
 
-	setup(function()
-		serializer = {};
-		_G.LibStub = { GetLibrary = function() return serializer; end };
-		SpecHelper.LoadFile("totalRP3/Core/EncodingUtil.lua");
-	end);
+describe("DecodeAce", function()
+	local SERIALIZED_DATA = "^1^T^N1^N142^N2^SabcDEF^t^^";
+	local DESERIALIZED_DATA = "abcDEF";
 
 	before_each(function()
-		-- AceSerializer isn't tracked in the repository; this stand-in hands back what it was given.
-		function serializer:Deserialize(data) return true, data; end
+		local success = true;
+		stub(AceSerializer, "Deserialize", success, DESERIALIZED_DATA);
 	end);
 
 	it("passes valid data to AceSerializer for deserialization", function()
-		function serializer:Deserialize()
-			return true, "<Deserialized Data>";
-		end;
+		local actualData = TRP3_EncodingUtil.DecodeAce(SERIALIZED_DATA);
 
-		spy.on(serializer, "Deserialize");
-
-		local deserializedData = TRP3_EncodingUtil.DecodeAce(SerializedData);
-		assert.spy(serializer.Deserialize).called_with(serializer, SerializedData);
-		assert.are.equal(deserializedData, "<Deserialized Data>");
+		assert.stub(AceSerializer.Deserialize).called_with(AceSerializer, SERIALIZED_DATA);
+		assert.are.equal(actualData, DESERIALIZED_DATA);
 	end);
 
 	-- What copy-pasting from a browser, Discord or a word processor tends to add.
 	it("skips a non-breaking space pasted before the AceSerializer string", function()
-		assert.are.equal(SerializedData, TRP3_EncodingUtil.DecodeAce("\194\160" .. SerializedData));
+		local actualData = TRP3_EncodingUtil.DecodeAce("\194\160" .. SERIALIZED_DATA);
+		assert.are.equal(actualData, DESERIALIZED_DATA);
 	end);
 
 	it("skips a zero-width space pasted before the AceSerializer string", function()
-		assert.are.equal(SerializedData, TRP3_EncodingUtil.DecodeAce("\226\128\139" .. SerializedData));
+		local actualData = TRP3_EncodingUtil.DecodeAce("\226\128\139" .. SERIALIZED_DATA);
+		assert.are.equal(actualData, DESERIALIZED_DATA);
 	end);
 
 	it("skips a byte order mark pasted before the AceSerializer string", function()
-		assert.are.equal(SerializedData, TRP3_EncodingUtil.DecodeAce("\239\187\191" .. SerializedData));
+		local actualData = TRP3_EncodingUtil.DecodeAce("\239\187\191" .. SERIALIZED_DATA);
+		assert.are.equal(actualData, DESERIALIZED_DATA);
 	end);
 
 	it("skips a code fence pasted before the AceSerializer string", function()
-		assert.are.equal(SerializedData, TRP3_EncodingUtil.DecodeAce("```\n" .. SerializedData));
+		local actualData = TRP3_EncodingUtil.DecodeAce("```\n" .. SERIALIZED_DATA);
+		assert.are.equal(actualData, DESERIALIZED_DATA);
 	end);
 
 	it("skips a quote pasted before the AceSerializer string", function()
-		assert.are.equal(SerializedData, TRP3_EncodingUtil.DecodeAce("\"" .. SerializedData));
+		local actualData = TRP3_EncodingUtil.DecodeAce("\"" .. SERIALIZED_DATA);
+		assert.are.equal(actualData, DESERIALIZED_DATA);
 	end);
 
 	it("skips a message with a smiley pasted before the AceSerializer string", function()
-		assert.are.equal(SerializedData, TRP3_EncodingUtil.DecodeAce("Here it is ^^\n" .. SerializedData));
+		local actualData = TRP3_EncodingUtil.DecodeAce("Here it is ^^\n" .. SERIALIZED_DATA);
+		assert.are.equal(actualData, DESERIALIZED_DATA);
 	end);
 
 	it("returns nil when the data holds no AceSerializer string", function()
@@ -63,7 +61,11 @@ insulate("DecodeAce", function()
 	end);
 
 	it("raises the error of a malformed AceSerializer string", function()
-		function serializer:Deserialize() return false, "Supplied data is malformed"; end
-		assert.error_matches(function() TRP3_EncodingUtil.DecodeAce("look: ^1^Tbroken"); end, "Supplied data is malformed");
+		local ERROR_MESSAGE = "Supplied data is malformed";
+
+		local success = false;
+		stub(AceSerializer, "Deserialize", success, ERROR_MESSAGE);
+
+		assert.error_matches(function() TRP3_EncodingUtil.DecodeAce("look: ^1^Tbroken"); end, ERROR_MESSAGE);
 	end);
 end);

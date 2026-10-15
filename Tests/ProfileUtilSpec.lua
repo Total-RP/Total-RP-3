@@ -3,26 +3,17 @@
 
 -- luacheck: ignore
 
-local SpecHelper = require("SpecHelper");
+local Environment = require("Environment");
 
-insulate("DeserializeProfile", function()
-	setup(function()
-		-- Error keys stand in for their text, so a spec only sees which error is reported.
-		_G.TRP3_API = { loc = setmetatable({}, { __index = function(_, key) return key; end }) };
+Environment.LoadAddOn();
 
-		-- Only read by the file-level icon tables in ProfileUtil.lua.
-		_G.TRP3_InterfaceIconIDs = setmetatable({}, { __index = function(_, key) return key; end });
-		_G.AddOn_TotalRP3 = { Enums = { ROLEPLAY_EXPERIENCE = setmetatable({}, { __index = function(_, key) return key; end }) } };
-
-		SpecHelper.LoadFile("totalRP3/Core/ProfileUtil.lua", "totalRP3", TRP3_API);
-	end);
+describe("DeserializeProfile", function()
+	local VALID_DESERIALIZED_CBOR_RESULT = { 166, "id", {} };
 
 	before_each(function()
-		_G.TRP3_EncodingUtil = { DecodeAce = spy.new(function() end), DecodePEM = spy.new(function() end) };
-		_G.C_EncodingUtil = {
-			DecompressString = function(data) return data; end,
-			DeserializeCBOR = function() return { 166, "id", {} }; end,
-		};
+		TRP3_EncodingUtil.DecodeAce = spy.new(function() end);
+		TRP3_EncodingUtil.DecodePEM = spy.new(function() end);
+		C_EncodingUtil.DeserializeCBOR = spy.new(function() end);
 	end);
 
 	it("hands an older export to DecodeAce", function()
@@ -59,41 +50,34 @@ insulate("DeserializeProfile", function()
 
 	it("reports text where no export is found as unrecognized", function()
 		local _, reportedError = TRP3_ProfileUtil.DeserializeProfile("Hello, this is my profile!");
-		assert.are.equal("PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT", reportedError);
+		assert.are.equal(reportedError, TRP3_API.loc.PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT);
 
 		_, reportedError = TRP3_ProfileUtil.DeserializeProfile("-----BEGIN TRP3 PROFILE-----\nQUJD");
-		assert.are.equal("PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT", reportedError);
+		assert.are.equal(reportedError, TRP3_API.loc.PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT);
 	end);
 
 	it("reports a malformed older export as unrecognized", function()
 		TRP3_EncodingUtil.DecodeAce = spy.new(function() error("Supplied data is malformed"); end);
 		local _, reportedError = TRP3_ProfileUtil.DeserializeProfile("^1^Tbroken");
-		assert.are.equal("PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT", reportedError);
+		assert.are.equal(reportedError, TRP3_API.loc.PR_IMPORT_ERROR_UNRECOGNIZED_FORMAT);
 	end);
 
 	it("returns the flavor from the PEM headers", function()
-		TRP3_EncodingUtil.DecodePEM = function() return "TRP3 PROFILE", "data", { Flavor = "Forever" }; end;
+		TRP3_EncodingUtil.DecodePEM = spy.new(function() return "TRP3 PROFILE", "data", { Flavor = "Forever" }; end);
+		C_EncodingUtil.DeserializeCBOR = spy.new(function() return VALID_DESERIALIZED_CBOR_RESULT; end);
 		local _, _, _, flavor = TRP3_ProfileUtil.DeserializeProfile("-----BEGIN TRP3 PROFILE-----");
 		assert.are.equal("Forever", flavor);
 	end);
 
 	it("assumes Retail when the export has no flavor", function()
-		TRP3_EncodingUtil.DecodePEM = function() return "TRP3 PROFILE", "data", {}; end;
+		TRP3_EncodingUtil.DecodePEM = spy.new(function() return "TRP3 PROFILE", "data", {}; end);
+		C_EncodingUtil.DeserializeCBOR = spy.new(function() return VALID_DESERIALIZED_CBOR_RESULT; end);
 		local _, _, _, flavor = TRP3_ProfileUtil.DeserializeProfile("-----BEGIN TRP3 PROFILE-----");
 		assert.are.equal("Retail", flavor);
 	end);
 end);
 
 insulate("RemoveUnsharedFields", function()
-	setup(function()
-		-- Only read by the file-level tables in ProfileUtil.lua.
-		_G.TRP3_API = { loc = setmetatable({}, { __index = function(_, key) return key; end }) };
-		_G.TRP3_InterfaceIconIDs = setmetatable({}, { __index = function(_, key) return key; end });
-		_G.AddOn_TotalRP3 = { Enums = { ROLEPLAY_EXPERIENCE = setmetatable({}, { __index = function(_, key) return key; end }) } };
-
-		SpecHelper.LoadFile("totalRP3/Core/ProfileUtil.lua", "totalRP3", TRP3_API);
-	end);
-
 	it("removes the owner's notes and relations", function()
 		local profile = {
 			notes = { ["0123456789ABCDEF"] = "Owes me gold" },
