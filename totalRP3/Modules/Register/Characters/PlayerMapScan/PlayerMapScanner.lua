@@ -244,7 +244,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			if shouldAnswerToLocationRequest() then
 				local x, y = GetScanResponseCoordinates(mapID);
 				if x and y then
-					local hasWarModeActive = (not TRP3_API.utils.IsWarModeFeatureEnabled()) or C_PvP.IsWarModeActive();
+					local hasWarModeActive = TRP3_API.utils.IsWarModeFeatureEnabled() and C_PvP.IsWarModeActive();
 					local roleplayStatus = AddOn_TotalRP3.Player.GetCurrentUser():GetRoleplayStatus();
 
 					broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, hasWarModeActive, roleplayStatus);
