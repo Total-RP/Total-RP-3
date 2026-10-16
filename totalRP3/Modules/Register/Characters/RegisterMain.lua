@@ -821,7 +821,7 @@ function TRP3_API.register.init()
 			local player = AddOn_TotalRP3.Player.CreateFromProfileID(profileID);
 
 			menuItemID = TRP3_API.register.MENU_LIST_ID_TAB .. profileID;
-			menuItemText = player:GetFirstName() or player:GetName();
+			menuItemText = player:GetFullName() or player:GetName();
 		end
 
 		if menuItemID and menuItemText and TRP3_API.navigation.menu.isMenuRegistered(menuItemID) then
