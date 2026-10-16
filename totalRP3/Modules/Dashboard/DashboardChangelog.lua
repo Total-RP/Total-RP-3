@@ -2,6 +2,24 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.5.2
+
+## Added
+
+- Added 3 new backgrounds for the About page.
+- When creating/importing/duplicating a new profile, if a profile named with the default "Realm - Name" format already exists, a number is now added to the initial suggested name.
+- Added sounds for the map scan on Classic.
+
+## Changed
+
+- The directory entries on the left side of the main TRP window now display the full name rather than the first name.
+
+## Fixed
+
+- Fixed a Lua error when trying to display target names while they are secret.
+- Fixed a Lua error when hovering water elementals in combat on Forever.
+- Removed the ability to open the right-click menu on default profiles.
+
 # Changelog version 3.5.0
 
 ## Added
