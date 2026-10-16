@@ -497,13 +497,27 @@ local function SetupExportFrame(profileID, profile)
 	exportFrame.Content.ExportText:SetFocus();
 end
 
+local function GetDefaultProfileName()
+	local name = TRP3_API.globals.player;
+
+	if TRP3_NameUtil.ShouldDisplayRealmNames() then
+		name = TRP3_API.globals.player_realm .. " - " .. name;
+	end
+
+	return name;
+end
+
 --- SetupFinalizeFrame prepares the Finalize frame from the Profile Create flow.
 ---@param creationOption string chosen option (blank, import, duplicate).
 ---@param profileName string|nil Optional profile name to use instead of default.
 local function SetupFinalizeFrame(creationOption, profileName)
 	local frames = TRP3_ProfileCreateDialog.Frames;
 	local FinalizeFrame = frames.FinalizeFrame;
-	local name = profileName or TRP3_ProfileUtil.GetDefaultProfileName();
+	local name = profileName or GetDefaultProfileName();
+
+	if creationOption ~= PROFILEMANAGER_ACTIONS.RENAME then
+		name = TRP3_StringUtil.GenerateIncrementalName(IsProfileNameAvailable, name);
+	end
 
 	-- Set title based on creation option
 	local titles = {

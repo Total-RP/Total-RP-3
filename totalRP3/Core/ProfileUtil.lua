@@ -226,16 +226,6 @@ end
 
 TRP3_ProfileUtil = {};
 
-function TRP3_ProfileUtil.GetDefaultProfileName()
-	local name = TRP3_API.globals.player;
-
-	if TRP3_NameUtil.ShouldDisplayRealmNames() then
-		return string.join(" - ", TRP3_API.globals.player_realm, name);
-	end
-
-	return name;
-end
-
 -- Maps the TOC's X-GameType to the flavor name shown in exports.
 local FlavorNames = {
 	Standard = "Retail",

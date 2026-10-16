@@ -74,7 +74,7 @@ local function uiCreateProfile()
 		end
 	end,
 	nil,
-	loc.PR_CO_NEW_PROFILE
+	TRP3_StringUtil.GenerateIncrementalName(isProfileNameAvailable, loc.PR_CO_NEW_PROFILE)
 	);
 end
 
@@ -90,7 +90,7 @@ local function uiDuplicateProfile(profileID)
 		end
 	end,
 	nil,
-	profile.profileName
+	TRP3_StringUtil.GenerateIncrementalName(isProfileNameAvailable, profile.profileName)
 	);
 end
 
