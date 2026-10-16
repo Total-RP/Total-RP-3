@@ -79,6 +79,9 @@ local tiledBackgrounds = {
 	[52] = { bgFile = "interface\\glues\\characterselect\\glueannouncementpopupbackground", tile = true, tileSize = 256 },
 	[53] = { bgFile = "interface\\credits\\creditsscreenbackground11midnight", tile = true, tileSize = 512 },
 	[54] = { bgFile = "interface\\framegeneral\\uiframemidnightbackground", tile = true, tileSize = 256 },
+	[55] = { bgFile = "interface\\photosensitivitywarning\\photosensitivitywarningparchment", tile = true, tileSize = 512 },
+	[56] = { bgFile = "interface\\framegeneral\\uicommonbackgrounds", tile = true, tileSize = 256 },
+	[57] = { bgFile = "interface\\bankframe\\bankframebackgroundc60", tile = true, tileSize = 256 },
 };
 
 function TRP3_API.ui.frame.getTiledBackground(index)
