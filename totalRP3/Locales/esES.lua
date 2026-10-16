@@ -1554,11 +1554,11 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 	["SLASH_CMD_SET_HELP_EXAMPLE1"] = "Soñando con mariposas",
 	["SLASH_CMD_SET_HELP_EXAMPLE2"] = "Oso feliz; Elfo enfadado",
 	["SLASH_CMD_SET_SUCCESS"] = "Se ha actualizado correctamente el campo %1$q de tu perfil actual.",
-	["SLASH_CMD_STATUS_HELP"] = [=[Uso: |cff00ff00/trp3 status ic || ooc || toggle|r 
-Cambia el estado de tu personaje a la opción especificada: 
+	["SLASH_CMD_STATUS_HELP"] = [=[Uso: |cff00ff00/trp3 status ic || ooc || toggle|r
+Cambia el estado de tu personaje a la opción especificada:
 
-|cffff9900/trp3 status ic|r establecerá tu estado como |cff00ff00en rol|r. 
-|cffff9900/trp3 status ooc|r establecerá tu estado como |cffff0000fuera de rol|r. 
+|cffff9900/trp3 status ic|r establecerá tu estado como |cff00ff00en rol|r.
+|cffff9900/trp3 status ooc|r establecerá tu estado como |cffff0000fuera de rol|r.
 |cffff9900/trp3 status toggle|r cambiará tu estado al opuesto.]=],
 	["SLASH_CMD_STATUS_USAGE"] = "ep || fdp || mostrar/ocultar",
 	["TB_AFK_MODE"] = "Ausente",
@@ -1599,35 +1599,6 @@ Cambia el estado de tu personaje a la opción especificada:
 	["TF_OPEN_CHARACTER"] = "Mostrar página del personaje",
 	["TF_OPEN_COMPANION"] = "Mostrar página del compañero",
 	["TF_OPEN_MOUNT"] = "Mostrar página de montura",
-	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
-{p:c}{col:6eff51}Versión %s (build %s){/col}{/p}
-{p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}
-
-{h2}{icon:INV_Eng_gizmo1:20} Creado por{/h2}
-- Morgane "{twitter*EllypseCelwe*Ellypse}" Parize
-- Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement
-
-
-{h2}{icon:THUMBUP:20} Reconocimientos{/h2}
-{col:ffffff}Logo e icono del botón del minimapa:{/col}
-- {link*https://twitter.com/Kelandiir*@Kelandiir}
-
-{col:ffffff}Nuestro equipo PR pre-alpha:{/col}
-- Saelora
-- Erzan
-- Calian
-- Kharess
-- Alnih
-- 611
-
-{col:ffffff}Gracias a todos nuestros amigos por su apoyo todos estos años:{/col}
-- Para Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
-- Para Ellypse: Las hermandades Maison Celwë'Belore, Mercenaires Atal'ai, y más particularmente Erzan, Elenna, Caleb, Siana and Adaeria
-
-{col:ffffff}Por ayudarnos a crear la hermandad Total RP en Kirin Tor (EU):{/col}
-- Azane
-- Hellclaw
-- Leylou]=],
 	["THANK_YOU_ROLE_AUTHOR"] = "Autor",
 	["THANK_YOU_ROLE_COMMUNITY_MANAGER"] = "Administrador de la comunidad",
 	["THANK_YOU_ROLE_CONTRIBUTOR"] = "Colaborador",

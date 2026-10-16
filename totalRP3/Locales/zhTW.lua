@@ -768,33 +768,6 @@ L = {
 	["TF_OPEN_CHARACTER"] = "顯示角色頁面",
 	["TF_OPEN_COMPANION"] = "顯示夥伴頁面",
 	["TF_OPEN_MOUNT"] = "顯示坐騎頁面",
-	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
-{p:c}{col:6eff51}版本 %s (build %s){/col}{/p}
-{p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
-{p:c}{link*http://discord.totalrp3.info* 加入我們的Discord}{/p}
-
-{h2}{icon:INV_Eng_gizmo1:20} 作者：{/h2}
-%AUTHORS$s
-
-{h2}{icon:QUEST_KHADGAR:20} 其他工作人員：{/h2}
-%CONTRIBUTORS$s
-
-{h2}{icon:THUMBUP:20} 感謝{/h2}
-{col:ffffff}Logo 與小地圖按鈕:{/col}
-- {link*https://apheliondusk.tumblr.com*AphelionDusk}
-
-{col:ffffff}準預覽版本測試團隊：{/col}
-%TESTERS$s
-
-{col:ffffff}感謝所有朋友這些年的支持：{/col}
-- For Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
-- For Ellypse: The guilds Eglise du Saint Gamon, Maison Celwë'Belore, Mercenaires Atal'ai, and more particularly Erzan, Elenna, Caleb, Siana and Adaeria
-
-{col:ffffff}感謝EU Kirin Tor 在我們製作Total RP期間所提供的幫助：{/col}
-%GUILD_MEMBERS$s
-
-{col:ffffff}感謝 Horionne 寄給我們那本雜誌《Gamer Culte Online #14中有關角色扮演的文章。{/col}
-]=],
 	["THANK_YOU_ROLE_AUTHOR"] = "作者",
 	["THANK_YOU_ROLE_CONTRIBUTOR"] = "貢獻者",
 	["THANK_YOU_ROLE_GUILD_MEMBER"] = "公會成員",
