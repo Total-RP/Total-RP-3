@@ -862,7 +862,10 @@ local function writeTooltipForCharacter(targetID, targetType)
 			name = crop(name, TRP3_TooltipCroppingConstants.Name);
 			name = targetClassColor:WrapTextInColorCode(name);
 		end
-		tooltipBuilder:AddLine(loc.REG_TT_TARGET:format(name), colors.MAIN, getSubLineFontSize());
+
+		if name then
+			tooltipBuilder:AddLine(loc.REG_TT_TARGET:format(name), colors.MAIN, getSubLineFontSize());
+		end
 	end
 
 	--
