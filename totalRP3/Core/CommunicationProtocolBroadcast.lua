@@ -238,16 +238,20 @@ end
 local function onChannelJoin(_, _, arg2, _, _, _, _, _, _, arg9)
 	if not canaccessvalue(arg2) then return; end
 	if config_UseBroadcast() and arg2 and arg9 == config_BroadcastChannel() then
-		local unitName = TRP3_NameUtil.DecomposeQualifiedName(arg2);
-		connectedPlayers[unitName] = 1;
+		local unitName = TRP3_NameUtil.GetQualifiedNameFromString(arg2);
+		if unitName then
+			connectedPlayers[unitName] = 1;
+		end
 	end
 end
 
 local function onChannelLeave(_, _, arg2, _, _, _, _, _, _, arg9)
 	if not canaccessvalue(arg2) then return; end
 	if config_UseBroadcast() and arg2 and arg9 == config_BroadcastChannel() then
-		local unitName = TRP3_NameUtil.DecomposeQualifiedName(arg2);
-		connectedPlayers[unitName] = nil;
+		local unitName = TRP3_NameUtil.GetQualifiedNameFromString(arg2);
+		if unitName then
+			connectedPlayers[unitName] = nil;
+		end
 	end
 end
 
