@@ -78,7 +78,7 @@ function RealmQualifiedNameImpl.GetQualifiedNameFromString(nameString)
 		realm = realm and TRP3_StringUtil.CapitalizeWords(realm) or GetNormalizedRealmName();
 
 		if realm then
-			qualifiedName = RealmQualifiedNameImpl.ComposeQualifiedName(name, realm);
+			qualifiedName = string.join(REALM_SEPARATOR, name, realm);
 		end
 	end
 
