@@ -307,7 +307,7 @@ local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 ui_boundPlayerCompanion = function (companionID, profileID, targetType, defaultPetName)
 	local profile = getProfiles()[profileID];
 	local companionName = getCompanionNameFromSpellID(companionID);
-	if targetType == TRP3_Enums.UNIT_TYPE.PET and defaultPetName == companionID and PetCanBeAbandoned() then
+	if targetType == TRP3_Enums.UNIT_TYPE.PET and defaultPetName ~= nil and defaultPetName == companionID and PetCanBeAbandoned() then
 		showConfirmPopup(loc.PR_CO_WARNING_RENAME, function()
 			boundPlayerCompanion(companionID, profileID, targetType);
 			displayMessage(loc.REG_COMPANION_LINKED:format("|cff00ff00" .. companionName .. "|r", "|cff00ff00" .. profile.profileName .. "|r"));
