@@ -6,7 +6,9 @@ local cachedSummonedMountID = nil;
 local CompanionProviderJournal = {};
 
 function CompanionProviderJournal:CanRenameCompanionPets()
-	return true;
+	-- There's no API to detect whether renames are supported for journaled
+	-- pets, but capabilities differ between client flavors.
+	return WOW_PROJECT_ID == WOW_PROJECT_MAINLINE;
 end
 
 function CompanionProviderJournal:GetCompanionPetIDs()
