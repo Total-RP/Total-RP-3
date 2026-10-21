@@ -142,6 +142,7 @@ local Impl;
 ---@return string? fullName Full name, e.g. "John Stormwind".
 function TRP3_NameUtil.GetDisplayName(unitToken)
 	local name = Impl.NormalizeUnitName(UnitName(unitToken));
+	name = name or UNKNOWNOBJECT;
 	return name;
 end
 

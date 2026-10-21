@@ -95,9 +95,9 @@ insulate("realm-qualified names", function()
 		assert.are.equal("John", TRP3_NameUtil.GetDisplayName("target"));
 	end);
 
-	it("returns nil for an unknown display name", function()
+	it("returns a suitable default for an unknown display name", function()
 		stub(_G, "UnitName", function() return UNKNOWNOBJECT, "Stormwind" end);
-		assert.is_nil(TRP3_NameUtil.GetDisplayName("target"));
+		assert.are.equal(UNKNOWNOBJECT, TRP3_NameUtil.GetDisplayName("target"));
 	end);
 
 	it("gets an unmodified full name from a unit", function()
@@ -256,10 +256,10 @@ insulate("regional unique names", function()
 		assert.is_nil(realm);
 	end);
 
-	it("returns nil for inaccessible non-qualified name parts", function()
+	it("returns a suitable default for inaccessible non-qualified name parts", function()
 		stub(_G, "canaccessvalue", function(value) return value ~= "secret" end);
 		stub(_G, "UnitName", function() return "secret", "Stormwind" end);
-		assert.is_nil(TRP3_NameUtil.GetDisplayName("target"));
+		assert.are.equal(UNKNOWNOBJECT, TRP3_NameUtil.GetDisplayName("target"));
 	end);
 
 	it("does not append a conflicting second value to a full name", function()
