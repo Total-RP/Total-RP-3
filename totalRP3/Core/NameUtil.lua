@@ -139,9 +139,10 @@ local Impl;
 
 --- Get the display name for a unit token.
 ---@param unitToken UnitToken
----@return string? fullName Full name, e.g. "John Stormwind".
+---@return string fullName Full name, e.g. "John Stormwind".
 function TRP3_NameUtil.GetDisplayName(unitToken)
 	local name = Impl.NormalizeUnitName(UnitName(unitToken));
+	name = name or UNKNOWNOBJECT;
 	return name;
 end
 
