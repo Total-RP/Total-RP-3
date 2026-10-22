@@ -58,6 +58,9 @@ libraries["Chomp"] = Chomp;
 function Chomp:RegisterAddonPrefix(_prefix, _callback, _prefixSettings)
 end
 
+local LibChatFilter = {};
+libraries["LibChatFilter"] = LibChatFilter;
+
 local LibDeflate = {}
 libraries["LibDeflate"] = LibDeflate;
 
