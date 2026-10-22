@@ -618,7 +618,7 @@ function TRP3_API.slash.openProfile(...)
 		TRP3_API.register.openPageByUnitID(characterToOpen);
 		characterToOpen = "";
 	else
-		displayMessage(string.format(loc.PR_SLASH_OPEN_WAITING, characterID));
+		displayMessage(string.format(loc.PR_SLASH_OPEN_WAITING, Ambiguate(characterID, "none")));
 
 		-- If after 1 minute they didn't reply, abort
 		commandOpeningTimerHandle = C_Timer.NewTimer(60, function()
