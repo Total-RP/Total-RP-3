@@ -127,6 +127,12 @@ local ADDON_FILES = {
 	"totalRP3/Core/ModuleManagement.lua",
 	"totalRP3/Core/Flyway.lua",
 	"totalRP3/Core/FlywayPatches.lua",
+
+	-- Register
+	"totalRP3/Modules/Register/Characters/RegisterMain.lua",
+
+	-- ChatFrame
+	"totalRP3/Modules/ChatFrame/ChatFrame.lua",
 };
 
 local function ShouldLoadFile(entry, gameType, family)
