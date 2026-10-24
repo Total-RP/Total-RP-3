@@ -97,6 +97,7 @@ insulate("realm-qualified names", function()
 
 	it("returns a suitable default for an unknown display name", function()
 		stub(_G, "UnitName", function() return UNKNOWNOBJECT, "Stormwind" end);
+		stub(_G, "UnitExists", function() return true end);
 		assert.are.equal(UNKNOWNOBJECT, TRP3_NameUtil.GetDisplayName("target"));
 	end);
 
@@ -259,6 +260,7 @@ insulate("regional unique names", function()
 	it("returns a suitable default for inaccessible non-qualified name parts", function()
 		stub(_G, "canaccessvalue", function(value) return value ~= "secret" end);
 		stub(_G, "UnitName", function() return "secret", "Stormwind" end);
+		stub(_G, "UnitExists", function() return true end);
 		assert.are.equal(UNKNOWNOBJECT, TRP3_NameUtil.GetDisplayName("target"));
 	end);
 
