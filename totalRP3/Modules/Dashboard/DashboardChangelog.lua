@@ -2,6 +2,20 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.5.3
+
+## Changed
+- Similar to the OOC detection in patch 3.5.0, emote detection has been improved to handle smileys.
+  - The emote pattern setting was removed as a result.
+
+## Fixed
+- Fixed an exploit that could be used to remotely open the TRP window and display profiles on someone else's client.
+  - No information could be accessed, just mild annoyance.
+- Fixed a Lua error regarding nil realms during loading transitions.
+- Fixed a Lua error when names cannot be resolved (such as during instance encounters)
+- Fixed minor inconsistencies when checking that a pet has been renamed while linking companion profiles.
+- The message in chat when requesting someone's profile remotely no longer displays the realm if it is the same as your character.
+
 # Changelog version 3.5.2
 
 ## Added
