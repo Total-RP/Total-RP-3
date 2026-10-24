@@ -139,10 +139,12 @@ local Impl;
 
 --- Get the display name for a unit token.
 ---@param unitToken UnitToken
----@return string fullName Full name, e.g. "John Stormwind".
+---@return string? fullName Full name, e.g. "John Stormwind".
 function TRP3_NameUtil.GetDisplayName(unitToken)
 	local name = Impl.NormalizeUnitName(UnitName(unitToken));
 
+	-- In the event we read back a name that failed normalization - such as
+	-- a secret - default to "Unknown" if the unit fundamentally exists.
 	if name == nil and (UnitExists(unitToken) or UnitIsVisible(unitToken)) then
 		name = UNKNOWNOBJECT;
 	end
