@@ -157,10 +157,10 @@ local function getCompleteName(characteristicsTab, name, hideTitle)
 		return name;
 	end
 	local text = "";
-	if not hideTitle and characteristicsTab.TI and characteristicsTab.TI ~= "" then
+	if not hideTitle and stEtN(strtrim(characteristicsTab.TI or "")) then
 		text = strconcat(characteristicsTab.TI, " ");
 	end
-	if characteristicsTab.FN and characteristicsTab.FN ~= "" then
+	if stEtN(strtrim(characteristicsTab.FN or "")) then
 		text = strconcat(text, TRP3_NameUtil.ComposeFullName(characteristicsTab.FN, characteristicsTab.LN));
 	else
 		text = strconcat(text, name);
