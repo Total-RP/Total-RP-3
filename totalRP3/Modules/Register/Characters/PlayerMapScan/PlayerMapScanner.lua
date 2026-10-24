@@ -235,7 +235,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 			x, y = Map.getPlayerCoordinates();
 		end
 
-		return x, y;
+		return string.format("%.3f", x), string.format("%.3f", y);
 	end
 
 	--{{{ Broadcast commands
