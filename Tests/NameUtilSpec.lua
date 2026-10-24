@@ -95,6 +95,13 @@ insulate("realm-qualified names", function()
 		assert.are.equal("John", TRP3_NameUtil.GetDisplayName("target"));
 	end);
 
+	it("returns nil for a non-existent unit's display name", function()
+		stub(_G, "UnitName", function() return nil end);
+		stub(_G, "UnitExists", function() return false end);
+		stub(_G, "UnitIsVisible", function() return false end);
+		assert.is_nil(TRP3_NameUtil.GetDisplayName("target"));
+	end);
+
 	it("returns a suitable default for an unknown display name", function()
 		stub(_G, "UnitName", function() return UNKNOWNOBJECT, "Stormwind" end);
 		stub(_G, "UnitExists", function() return true end);
