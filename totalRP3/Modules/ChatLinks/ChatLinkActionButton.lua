@@ -30,7 +30,16 @@ function ChatLinkActionButton:initialize(actionID, buttonText, questionCommand, 
 	-- Register to answer questions
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(questionCommand, function(linkData, sender)
 		local link = TRP3_API.ChatLinksManager:GetSentLinkForIdentifier(linkData.linkID);
-		AddOn_TotalRP3.Communications.sendObject(answerCommand, link:GetData(), sender, "LOW", linkData.messageToken)
+		if not link then
+			return;
+		end
+
+		for _, actionButton in ipairs(link:GetActionButtons()) do
+			if actionButton.command == self:GetID() then
+				AddOn_TotalRP3.Communications.sendObject(answerCommand, link:GetData(), sender, "LOW", linkData.messageToken);
+				return;
+			end
+		end
 	end);
 
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(
