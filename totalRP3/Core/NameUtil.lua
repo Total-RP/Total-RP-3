@@ -49,7 +49,11 @@ function RealmQualifiedNameImpl.ComposeQualifiedName(name, realm)
 	name, realm = RealmQualifiedNameImpl.NormalizeUnitName(name, realm);
 
 	if name then
-		qualifiedName = string.join(REALM_SEPARATOR, name, realm or GetNormalizedRealmName());
+		realm = realm or GetNormalizedRealmName();
+
+		if realm then
+			qualifiedName = string.join(REALM_SEPARATOR, name, realm);
+		end
 	end
 
 	return qualifiedName;
@@ -59,22 +63,26 @@ function RealmQualifiedNameImpl.DecomposeQualifiedName(qualifiedName)
 	local name, realm = RealmQualifiedNameImpl.NormalizeUnitName(string.split(REALM_SEPARATOR, qualifiedName, 2));
 
 	if name and not realm then
-		realm = GetNormalizedRealmName();
+		name = nil;
 	end
 
 	return name, realm;
 end
 
-function RealmQualifiedNameImpl.GetQualifiedNameFromString(qualifiedName)
-	local name, realm = RealmQualifiedNameImpl.DecomposeQualifiedName(qualifiedName);
-	name = name and TRP3_StringUtil.CapitalizeWords(name) or nil;
+function RealmQualifiedNameImpl.GetQualifiedNameFromString(nameString)
+	local name, realm = RealmQualifiedNameImpl.NormalizeUnitName(string.split(REALM_SEPARATOR, nameString, 2));
+	local qualifiedName = nil;
 
-	if name and string.contains(name, SURNAME_SEPARATOR) then
-		return nil;
+	if name and not string.contains(name, SURNAME_SEPARATOR) then
+		name = TRP3_StringUtil.CapitalizeWords(name);
+		realm = realm and TRP3_StringUtil.CapitalizeWords(realm) or GetNormalizedRealmName();
+
+		if realm then
+			qualifiedName = string.join(REALM_SEPARATOR, name, realm);
+		end
 	end
 
-	realm = realm and TRP3_StringUtil.CapitalizeWords(realm) or nil;
-	return RealmQualifiedNameImpl.ComposeQualifiedName(name, realm);
+	return qualifiedName;
 end
 
 function RealmQualifiedNameImpl.ShouldDisplayRealmNames()

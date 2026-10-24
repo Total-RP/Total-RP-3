@@ -148,11 +148,11 @@ insulate("realm-qualified names", function()
 		assert.are.equal("Stormwind", realm);
 	end);
 
-	it("decomposes a qualified name without a realm", function()
+	it("returns nil when decomposing a name without a realm", function()
 		stub(_G, "GetNormalizedRealmName", function() return "Stormwind" end);
 		local name, realm = TRP3_NameUtil.DecomposeQualifiedName("John");
-		assert.are.equal("John", name);
-		assert.are.equal("Stormwind", realm);
+		assert.is_nil(name);
+		assert.is_nil(realm);
 	end);
 
 	it("normalizes spaces in a multi-word realm qualifier", function()
@@ -188,6 +188,18 @@ insulate("realm-qualified names", function()
 			return nil, nil, nil, nil, nil, "John", "Stormwind", nil;
 		end);
 		assert.are.equal("John-Stormwind", TRP3_NameUtil.GetQualifiedNameByGUID("guid"));
+	end);
+
+	it("returns nil when composing without a current realm", function()
+		stub(_G, "GetNormalizedRealmName", function() return nil end);
+		assert.is_nil(TRP3_NameUtil.ComposeQualifiedName("John", nil));
+	end);
+
+	it("returns nil when decomposing without a current realm", function()
+		stub(_G, "GetNormalizedRealmName", function() return nil end);
+		local name, realm = TRP3_NameUtil.DecomposeQualifiedName("John");
+		assert.is_nil(name);
+		assert.is_nil(realm);
 	end);
 end);
 
