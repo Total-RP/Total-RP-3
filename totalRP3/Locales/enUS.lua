@@ -1315,33 +1315,6 @@ This module modifies Blizzard player and target frames to use RP name and color,
 {col:f2bf1a}{link*https://www.curseforge.com/wow/addons/total-rp-3-unit-frames*Download on CurseForge}{/col}
 ]],
 
-	THANK_YOU_1 = [[{h1:c}Total RP 3{/h1}
-{p:c}{col:6eff51}Version %s (build %s){/col}{/p}
-{p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
-{p:c}{link*http://discord.totalrp3.info*Join us on Discord}{/p}
-
-{h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
-%AUTHORS$s
-
-{h2}{icon:QUEST_KHADGAR:20} The Rest of the Team{/h2}
-%CONTRIBUTORS$s
-
-{h2}{icon:THUMBUP:20} Acknowledgements{/h2}
-{col:ffffff}Logo and minimap button icon:{/col}
-- {link*https://twitter.com/Kelandiir*@Kelandiir}
-
-{col:ffffff}Our pre-alpha QA team:{/col}
-%TESTERS$s
-
-{col:ffffff}Thanks to all our friends for their support all these years:{/col}
-- For Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
-- For Ellypse: The guilds Eglise du Saint Gamon, Maison Celwë'Belore, Mercenaires Atal'ai, and more particularly Erzan, Elenna, Caleb, Siana and Adaeria
-
-{col:ffffff}For helping us creating the Total RP guild on Kirin Tor (EU):{/col}
-%GUILD_MEMBERS$s
-
-{col:ffffff}Thanks to Horionne for sending us the magazine Gamer Culte Online #14 with an article about Total RP.{/col}]],
-
 	MO_ADDON_NOT_INSTALLED = "The %s add-on is not installed, custom Total RP 3 integration disabled.",
 	MO_SCRIPT_ERROR = "This module encountered a fatal script error.",
 	MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that your tooltip preferences are applied to Total RP 3's tooltips.",

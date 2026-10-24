@@ -1363,38 +1363,6 @@ Por exemplo, ele pode ser |c0000ff00esbelto, gordo ou musculoso...|r. Ou ele pod
 	["TF_OPEN_CHARACTER"] = "Mostrar página do personagem",
 	["TF_OPEN_COMPANION"] = "Mostrar página do companheiro",
 	["TF_OPEN_MOUNT"] = "Exibir página de montarias",
-	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
-{p:c}{col:6eff51}Versão %s (build %s){/col}{/p}
-{p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
-{p:c}{link*http://discord.totalrp3.info*Junte-se a nós no Discord}{/p}
-
-{h2}{icon:INV_Eng_gizmo1:20} Criado por{/h2}
-- Morgane "{twitter*EllypseCelwe*Ellypse}" Parize
-- Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement
-
-
-{h2}{icon:THUMBUP:20} Reconhecimentos{/h2}
-{col:ffffff}Logo and minimap button icon:{/col}
-- {link*https://apheliondusk.tumblr.com*AphelionDusk}
-
-{col:ffffff}Nossa equipe de QA do pré-alpha:{/col}
-- Saelora
-- Erzan
-- Calian
-- Kharess
-- Alnih
-- 611
-
-{col:ffffff}Obrigado a todos os nossos amigos por seus suporte por todos esses anos:{/col}
-- Por Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
-- Por Ellypse: As guildas Église du Saint Gamon, Maison Celwë'Belore, Mercenaires Atal'ai, e mais particularmente Erzan, Elenna, Caleb, Siana e Adaeria
-
-{col:ffffff}Por nos ajudar a criar a guilda Total RP no Kirin Tor (EU):{/col}
-- Azane
-- Hellclaw
-- Leylou
-
-{col:ffffff}Agradecimentos a Horionne por nos enviar a revista Gamer Culte Online #14 com um artigo sobre o Total RP.{/col}]=],
 	["THANK_YOU_ROLE_AUTHOR"] = "Autor",
 	["THANK_YOU_ROLE_COMMUNITY_MANAGER"] = "Gerente da comunidade",
 	["THANK_YOU_ROLE_CONTRIBUTOR"] = "Contribuidor",

@@ -36,6 +36,11 @@ schema:
 # Synchronize translations; export enUS and import all others.
 translations: translations-export translations-import
 
+# Validate all non-enUS locales, or only the supplied locale file paths.
+[positional-arguments]
+translations-validate *files:
+    lua5.1 .github/scripts/validate_locales.lua "$@"
+
 # Export the enUS locale.
 translations-export:
     python3 {{ localization_script }} upload --locale enUS --project-id {{ cf_project_id }} --delete-missing-phrases <{{ locales_dir }}/enUS.lua
