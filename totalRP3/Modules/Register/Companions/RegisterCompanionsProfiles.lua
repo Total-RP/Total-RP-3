@@ -137,7 +137,8 @@ local function uiBoundTargetProfile(profileID)
 		local companionFullID = TRP3_API.ui.misc.getCompanionFullID("target", targetType);
 		local companionID = TRP3_API.ui.misc.getCompanionShortID("target", targetType);
 		if companionFullID then
-			ui_boundPlayerCompanion(companionID, profileID, targetType);
+			local defaultPetName = targetType == TRP3_Enums.UNIT_TYPE.PET and UnitCreatureFamily("target") or nil;
+			ui_boundPlayerCompanion(companionID, profileID, targetType, defaultPetName);
 			return;
 		end
 	end
@@ -146,7 +147,8 @@ end
 
 local function uiBindPetProfile(profileID)
 	TRP3_API.popup.showPetBrowser(profileID, function(petInfo)
-		ui_boundPlayerCompanion(petInfo.name, profileID, TRP3_Enums.UNIT_TYPE.PET);
+		local defaultPetName = petInfo.family;
+		ui_boundPlayerCompanion(petInfo.name, profileID, TRP3_Enums.UNIT_TYPE.PET, defaultPetName);
 	end);
 end
 
@@ -302,17 +304,18 @@ local boundPlayerCompanion = TRP3_API.companions.player.boundPlayerCompanion;
 local displayMessage = Utils.message.displayMessage;
 local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 
-ui_boundPlayerCompanion = function (companionID, profileID, targetType)
-	if targetType == TRP3_Enums.UNIT_TYPE.PET and UnitNameUnmodified("pet") == companionID and PetCanBeAbandoned() then
+ui_boundPlayerCompanion = function (companionID, profileID, targetType, defaultPetName)
+	local profile = getProfiles()[profileID];
+	local companionName = getCompanionNameFromSpellID(companionID);
+	if targetType == TRP3_Enums.UNIT_TYPE.PET and defaultPetName ~= nil and defaultPetName == companionID and PetCanBeAbandoned() then
 		showConfirmPopup(loc.PR_CO_WARNING_RENAME, function()
 			boundPlayerCompanion(companionID, profileID, targetType);
+			displayMessage(loc.REG_COMPANION_LINKED:format("|cff00ff00" .. companionName .. "|r", "|cff00ff00" .. profile.profileName .. "|r"));
 		end);
 	else
 		boundPlayerCompanion(companionID, profileID, targetType);
+		displayMessage(loc.REG_COMPANION_LINKED:format("|cff00ff00" .. companionName .. "|r", "|cff00ff00" .. profile.profileName .. "|r"));
 	end
-	local profile = getProfiles()[profileID];
-	local companionName = getCompanionNameFromSpellID(companionID);
-	displayMessage(loc.REG_COMPANION_LINKED:format("|cff00ff00" .. companionName .. "|r", "|cff00ff00" .. profile.profileName .. "|r"));
 	if getCurrentPageID() == TRP3_API.navigation.page.id.COMPANIONS_PROFILES then
 		uiInitProfileList();
 	end
