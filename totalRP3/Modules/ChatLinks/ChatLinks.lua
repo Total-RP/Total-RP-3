@@ -75,12 +75,25 @@ function ChatLinks:GetModuleByID(moduleID)
 	return chatLinksModules[moduleID];
 end
 
-function ChatLinks:HasRequestedAnyLinks(qualifiedName)
-	return requestedLinks[qualifiedName] == true;
+function ChatLinks:HasRequestedAnyLinks(playerName)
+	local MAX_CHAT_LINK_REQUEST_AGE = 300;
+
+	local qualifiedName = TRP3_NameUtil.GetQualifiedNameFromString(playerName);
+	local lastRequestTime = requestedLinks[qualifiedName];
+
+	if lastRequestTime then
+		return lastRequestTime >= (GetTime() - MAX_CHAT_LINK_REQUEST_AGE);
+	else
+		return false;
+	end
 end
 
-function ChatLinks:SetRequestedLink(qualifiedName)
-	requestedLinks[qualifiedName] = true;
+function ChatLinks:SetRequestedLink(playerName)
+	local qualifiedName = TRP3_NameUtil.GetQualifiedNameFromString(playerName);
+
+	if qualifiedName then
+		requestedLinks[qualifiedName] = GetTime();
+	end
 end
 
 TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
