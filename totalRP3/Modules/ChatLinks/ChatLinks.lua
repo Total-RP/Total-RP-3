@@ -52,6 +52,7 @@ ChatLinks.FORMAT = {
 
 ---@type ChatLink[]
 local sentLinks = {};
+local requestedLinks = {};
 
 ---@type ChatLinkModule[]
 local chatLinksModules = {};
@@ -72,6 +73,27 @@ end
 function ChatLinks:GetModuleByID(moduleID)
 	Ellyb.Assertions.isType(moduleID, "string", "moduleID");
 	return chatLinksModules[moduleID];
+end
+
+function ChatLinks:HasRequestedAnyLinks(playerName)
+	local MAX_CHAT_LINK_REQUEST_AGE = 300;
+
+	local qualifiedName = TRP3_NameUtil.GetQualifiedNameFromString(playerName);
+	local lastRequestTime = requestedLinks[qualifiedName];
+
+	if lastRequestTime then
+		return lastRequestTime >= (GetTime() - MAX_CHAT_LINK_REQUEST_AGE);
+	else
+		return false;
+	end
+end
+
+function ChatLinks:SetRequestedLink(playerName)
+	local qualifiedName = TRP3_NameUtil.GetQualifiedNameFromString(playerName);
+
+	if qualifiedName then
+		requestedLinks[qualifiedName] = GetTime();
+	end
 end
 
 TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
@@ -215,6 +237,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 				local itemName = linkContent:sub(separatorIndex + 1);
 
 				AddOn_TotalRP3.Communications.sendObject(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, itemName, playerName);
+				ChatLinks:SetRequestedLink(playerName);
 
 				TRP3_RefTooltip.itemName = itemName;
 				-- TODO Localization and better UI feedback
@@ -249,6 +272,10 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 	-- Register command prefix when received tooltip data
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(CHAT_LINKS_PROTOCOL_DATA_PREFIX, function(itemData, sender)
+		if not TRP3_API.ChatLinks:HasRequestedAnyLinks(sender) then
+			return;
+		end
+
 		if itemData == UNKNOWN_LINK then
 			showTooltip({
 				tooltipLines = {
