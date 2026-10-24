@@ -38,9 +38,17 @@ function ChatLinkActionButton:initialize(actionID, buttonText, questionCommand, 
 		-- Note: We cannot use GenerateClosure here since the OnAnswerCommandReceived method is overwritten at a
 		-- later time by the module created and the binding will target the wrong method.
 		function(data, sender, channel)
+			if not TRP3_API.ChatLinks:HasRequestedAnyLinks(sender) then
+				return;
+			end
+
 			self:OnAnswerCommandReceived(data, sender, channel);
 		end,
 		function(messageToken, sender, msgTotal, msgID)
+			if not TRP3_API.ChatLinks:HasRequestedAnyLinks(sender) then
+				return;
+			end
+
 			self:OnProgressDownload(messageToken, sender, msgTotal, msgID);
 		end
 	)
