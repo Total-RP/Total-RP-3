@@ -101,6 +101,7 @@ local ADDON_FILES = {
 	"totalRP3/Core/CVarUtil.lua",
 	"totalRP3/Core/SoundUtil.lua",
 	"totalRP3/Core/FunctionUtil.lua",
+	"totalRP3/Core/MathUtil.lua",
 	"totalRP3/Core/SortUtil.lua",
 	"totalRP3/Core/StringUtil.lua",
 	"totalRP3/Core/EncodingUtil.lua",

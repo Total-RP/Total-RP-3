@@ -132,7 +132,7 @@ local function onStart()
 		msp.my['HH'] = dataTab.RE;
 		msp.my['HB'] = dataTab.BP;
 		msp.my['NT'] = dataTab.FT;
-		msp.my['RS'] = tostring(dataTab.RS or AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN);
+		msp.my['RS'] = tostring(TRP3_MathUtil.NormalizeZero(dataTab.RS or AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN));
 		-- Clear fields that may or may not exist in the updated profile.
 		msp.my['MO'] = nil;
 		msp.my['NH'] = nil;
@@ -198,11 +198,11 @@ local function onStart()
 		msp.my['PE'] = table.concat(peeks);
 
 		local styleData = get("player/misc/ST");
-		msp.my['RI'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RI] or 0);
-		msp.my['RD'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RD] or 0);
-		msp.my['RR'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RR] or 0);
-		msp.my['RM'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RM] or 0);
-		msp.my['RO'] = styleData and tostring(styleData[RP_STYLE_FIELDS.RO] or 0);
+		msp.my['RI'] = styleData and tostring(TRP3_MathUtil.NormalizeZero(styleData[RP_STYLE_FIELDS.RI] or 0));
+		msp.my['RD'] = styleData and tostring(TRP3_MathUtil.NormalizeZero(styleData[RP_STYLE_FIELDS.RD] or 0));
+		msp.my['RR'] = styleData and tostring(TRP3_MathUtil.NormalizeZero(styleData[RP_STYLE_FIELDS.RR] or 0));
+		msp.my['RM'] = styleData and tostring(TRP3_MathUtil.NormalizeZero(styleData[RP_STYLE_FIELDS.RM] or 0));
+		msp.my['RO'] = styleData and tostring(TRP3_MathUtil.NormalizeZero(styleData[RP_STYLE_FIELDS.RO] or 0));
 	end
 
 	local function onProfileChanged()
@@ -349,7 +349,7 @@ local function onStart()
 
 		local misc = GetOrCreateTable(profile, "misc");
 		local styleData = GetOrCreateTable(misc, "ST");
-		styleData[styleKey] = tonumber(value) or 0;
+		styleData[styleKey] = TRP3_MathUtil.NormalizeZero(tonumber(value) or 0);
 	end
 
 	local function LoadRegisterProfile(characterID, char)
@@ -397,7 +397,7 @@ local function onStart()
 			char.field.NT = profile.characteristics.FT;  -- Full Title
 			char.field.IC = ResolveIconID(profile.characteristics.IC);  -- Icon
 			char.field.RA = profile.characteristics.RA;  -- Race
-			char.field.RS = tostring(profile.characteristics.RS or AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN);
+			char.field.RS = tostring(TRP3_MathUtil.NormalizeZero(profile.characteristics.RS or AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN));
 			char.field.AG = profile.characteristics.AG;  -- Age
 			char.field.AH = profile.characteristics.HE;  -- Height
 			char.field.AW = profile.characteristics.WE;  -- Weight
@@ -528,7 +528,7 @@ local function onStart()
 							value = value .. " cm";
 						end
 						if field == "RS" and value then
-							value = tonumber(value);
+							value = TRP3_MathUtil.NormalizeZero(tonumber(value));
 						end
 						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = value;
 						-- Hack for spaced name tolerated in MRP
@@ -604,7 +604,7 @@ local function onStart()
 								character.clientVersion = "0";
 							end
 						elseif field == "TR" then
-							character.isTrial = tonumber(value);
+							character.isTrial = TRP3_MathUtil.NormalizeZero(tonumber(value));
 						end
 					elseif MISC_FIELDS[field] then
 						if field == "PE" and value then
@@ -653,7 +653,7 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	msp.my['VA'] = "TotalRP3/" .. Globals.version_display;
-	msp.my['TR'] = tostring(AddOn_TotalRP3.Player.GetCurrentUser():GetAccountType());
+	msp.my['TR'] = tostring(TRP3_MathUtil.NormalizeZero(AddOn_TotalRP3.Player.GetCurrentUser():GetAccountType()));
 
 	-- Init others vernum
 	for _, profile in pairs(TRP3_API.register.getProfileList()) do
