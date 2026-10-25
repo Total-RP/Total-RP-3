@@ -61,6 +61,14 @@ TRP3_API.utils = {
 -- Make our shared table public so that our API is accessible to other add-ons and external modules
 _G.TRP3_API = TRP3_API;
 
+-- Positive zero value persisted in saved variables. This resolves issues with
+-- Lua's constant folding where the sign of all zero values in a chunk depends
+-- upon the sign of the first parsed zero constant. Our SVs can contain -0s
+-- from multiple possible sources (eg. saved frame offsets), which if loaded
+-- first will damage profile fields (eg. RS), and can poison register data
+-- over the network with propagation of -0 values.
+TRP3_AbsolutelyZero = 0;
+
 -- New public API, intended for external use
 ---@type AddOn_TotalRP3
 AddOn_TotalRP3 = {};
