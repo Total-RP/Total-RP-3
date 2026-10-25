@@ -236,7 +236,6 @@ Gardez à l'esprit que changer ces paramètres peut altérer votre expérience a
 	["CO_CHAT_MAIN"] = "Paramètres principaux de discussions",
 	["CO_CHAT_MAIN_COLOR"] = "Utiliser les couleurs personnalisées pour les noms",
 	["CO_CHAT_MAIN_EMOTE"] = "Détection des émotes",
-	["CO_CHAT_MAIN_EMOTE_PATTERN"] = "Schéma de détection des émotes",
 	["CO_CHAT_MAIN_EMOTE_USE"] = "Utiliser la détection des émotes",
 	["CO_CHAT_MAIN_EMOTE_YELL"] = "Pas d'émotes criées",
 	["CO_CHAT_MAIN_EMOTE_YELL_TT"] = "Ne pas afficher *emote* ou <emote> en /crier.",

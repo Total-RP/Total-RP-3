@@ -237,7 +237,6 @@ L = {
 	["CO_CHAT_MAIN"] = "聊天主设置",
 	["CO_CHAT_MAIN_COLOR"] = "名字使用自定义颜色",
 	["CO_CHAT_MAIN_EMOTE"] = "表情检测",
-	["CO_CHAT_MAIN_EMOTE_PATTERN"] = "表情检测模式",
 	["CO_CHAT_MAIN_EMOTE_USE"] = "使用表情检测",
 	["CO_CHAT_MAIN_EMOTE_YELL"] = "不允许喊叫表情",
 	["CO_CHAT_MAIN_EMOTE_YELL_TT"] = "不在喊叫时显示*表情*或<表情>",
