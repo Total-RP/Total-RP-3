@@ -202,7 +202,6 @@ Das Importieren des Inhaltes einer anderen Version könnte aufgrund von Inkompat
 	["CO_CHAT_MAIN"] = "Chat-Haupteinstellungen",
 	["CO_CHAT_MAIN_COLOR"] = "Benutzerdefinierte Farben für Namen",
 	["CO_CHAT_MAIN_EMOTE"] = "Emote-Erkennung",
-	["CO_CHAT_MAIN_EMOTE_PATTERN"] = "Vorlage zur Emote-Erkennung",
 	["CO_CHAT_MAIN_EMOTE_USE"] = "Benutze Emote-Erkennung",
 	["CO_CHAT_MAIN_EMOTE_YELL"] = "Keine geschriehenen Emotes",
 	["CO_CHAT_MAIN_EMOTE_YELL_TT"] = "Im Schreien Channel *emote* oder <emote> nicht zeigen.",

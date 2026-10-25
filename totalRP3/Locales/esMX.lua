@@ -116,7 +116,6 @@ L = {
 	["CO_CHAT_MAIN"] = "Ajustes de chat principal",
 	["CO_CHAT_MAIN_COLOR"] = "Usar colores personalizados para los nombres",
 	["CO_CHAT_MAIN_EMOTE"] = "Detección de emociones",
-	["CO_CHAT_MAIN_EMOTE_PATTERN"] = "Patrón de detección de emociones",
 	["CO_CHAT_MAIN_EMOTE_USE"] = "Usar detección de emociones",
 	["CO_CHAT_MAIN_EMOTE_YELL"] = "Emoción sin gritos",
 	["CO_CHAT_MAIN_EMOTE_YELL_TT"] = "No mostrar *emote* o <emote> en los gitos",

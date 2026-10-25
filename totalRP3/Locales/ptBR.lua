@@ -245,7 +245,6 @@ Importar conteúdo vindo de uma versão diferente pode causar problemas em casos
 	["CO_CHAT_MAIN"] = "Configurações principais de conversa",
 	["CO_CHAT_MAIN_COLOR"] = "Usar cores personalizadas para nomes",
 	["CO_CHAT_MAIN_EMOTE"] = "Detectar emotes",
-	["CO_CHAT_MAIN_EMOTE_PATTERN"] = "Padrão de detecção de emote",
 	["CO_CHAT_MAIN_EMOTE_USE"] = "Usar detecção de emote",
 	["CO_CHAT_MAIN_EMOTE_YELL"] = "Sem emote em grito",
 	["CO_CHAT_MAIN_EMOTE_YELL_TT"] = "Não mostrar *emote* ou <emote> em gritos.",
