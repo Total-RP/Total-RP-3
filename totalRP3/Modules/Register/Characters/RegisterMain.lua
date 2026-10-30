@@ -479,9 +479,9 @@ local function onInformationUpdated(profileID, infoType)
 		if not context.isPlayer and profileID == context.profileID then
 			if infoType == registerInfoTypes.ABOUT then
 				updateAboutTabState(context);
+				updateAboutTabIcon(context);
 				if tabGroup.current == 2 then
 					showAboutTab();
-					updateAboutTabIcon(context);
 				end
 			elseif (infoType == registerInfoTypes.CHARACTERISTICS or infoType == registerInfoTypes.CHARACTER) and tabGroup.current == 1 then
 				showCharacteristicsTab();
