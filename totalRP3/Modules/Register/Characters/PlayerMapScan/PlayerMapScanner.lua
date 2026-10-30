@@ -141,19 +141,10 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 	});
 	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
-		title = loc.CO_LOCATION_DISABLE_CLASSIC_PVP,
-		help = loc.CO_LOCATION_DISABLE_CLASSIC_PVP_TT,
+		title = loc.CO_LOCATION_DISABLE_PVP,
+		help = loc.CO_LOCATION_DISABLE_PVP_TT,
 		configKey = CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE,
 		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
-		showPredicate = function() return not TRP3_API.utils.IsWarModeFeatureEnabled(); end,
-	});
-	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
-		inherit = "TRP3_ConfigCheck",
-		title = loc.CO_LOCATION_DISABLE_WAR_MODE,
-		help = loc.CO_LOCATION_DISABLE_WAR_MODE_TT,
-		configKey = CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE,
-		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
-		showPredicate = function() return TRP3_API.utils.IsWarModeFeatureEnabled(); end,
 	});
 	table.insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
