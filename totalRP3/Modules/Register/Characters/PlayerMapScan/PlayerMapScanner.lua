@@ -29,10 +29,14 @@ local function shouldAnswerToLocationRequest()
 		return false;
 	end
 	if getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE) then
-		if not TRP3_API.utils.IsWarModeFeatureEnabled() then
-			return not UnitIsPVP("player");
-		elseif C_PvP.IsWarModeActive() then
-			return C_PvP.GetZonePVPInfo() == "sanctuary"
+		if not UnitIsPVPSanctuary("player") then
+			if UnitIsPVPFreeForAll("player") then
+				return false;
+			elseif UnitIsPVP("player") then
+				return false;
+			elseif TRP3_API.utils.IsWarModeFeatureEnabled() and C_PvP.IsWarModeActive() then
+				return false;
+			end
 		end
 	end
 	return true;

@@ -851,6 +851,8 @@ stds.wow = {
 		"UnitIsOtherPlayersPet",
 		"UnitIsOwnerOrControllerOfUnit",
 		"UnitIsPVP",
+		"UnitIsPVPFreeForAll",
+		"UnitIsPVPSanctuary",
 		"UnitIsUnit",
 		"UnitIsVisible",
 		"UnitLevel",
