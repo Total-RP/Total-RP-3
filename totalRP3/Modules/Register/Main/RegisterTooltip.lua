@@ -924,7 +924,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 	if showNotifications() then
 		local notifPieces = {};
 
-		if targetID ~= Globals.player_id and info.about and not info.about.read then
+		if targetID ~= Globals.player_id and TRP3_API.register.ui.shouldShowUnreadAboutIcon(info) then
 			table.insert(notifPieces, NEW_ABOUT_ICON);
 		end
 
