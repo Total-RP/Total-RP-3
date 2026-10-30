@@ -431,7 +431,7 @@ local function decorateCharacterLine(line, elementData)
 		leftTooltipTitle = Utils.str.icon(profile.characteristics.IC, ICON_SIZE) .. " " .. name;
 	end
 
-	local hasNewAbout = profile.about and not profile.about.read;
+	local hasNewAbout = TRP3_API.register.ui.shouldShowUnreadAboutIcon(profile);
 	local currentNotes = TRP3_API.profile.getPlayerCurrentProfile().notes or {};
 	local hasNotes = TRP3_Notes and TRP3_Notes[profileID] or currentNotes[profileID];
 	local isWalkupFriendly = profile.character and profile.character.WU == AddOn_TotalRP3.Enums.WALKUP.YES;
@@ -1656,7 +1656,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 
 				local tooltipLines = {};
 
-				if characterID ~= Globals.player_id and profile.about and not profile.about.read then
+				if characterID ~= Globals.player_id and TRP3_API.register.ui.shouldShowUnreadAboutIcon(profile) then
 					local icon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread-overlay";
 					table.insert(tooltipLines, TRP3_MarkupUtil.GenerateFileMarkup(icon, { size = 16 }) .. loc.REG_TT_NOTIF_LONG_TT);
 					buttonStructure.alert = true;
