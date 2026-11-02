@@ -236,7 +236,6 @@ Gardez à l'esprit que changer ces paramètres peut altérer votre expérience a
 	["CO_CHAT_MAIN"] = "Paramètres principaux de discussions",
 	["CO_CHAT_MAIN_COLOR"] = "Utiliser les couleurs personnalisées pour les noms",
 	["CO_CHAT_MAIN_EMOTE"] = "Détection des émotes",
-	["CO_CHAT_MAIN_EMOTE_PATTERN"] = "Schéma de détection des émotes",
 	["CO_CHAT_MAIN_EMOTE_USE"] = "Utiliser la détection des émotes",
 	["CO_CHAT_MAIN_EMOTE_YELL"] = "Pas d'émotes criées",
 	["CO_CHAT_MAIN_EMOTE_YELL_TT"] = "Ne pas afficher *emote* ou <emote> en /crier.",
@@ -829,7 +828,7 @@ Cette action est irréversible et toutes les informations liées à ce profil se
 Le nom ne peut pas être vide.
 
 Cette duplication ne change pas les familiers/montures liés à %s.]=],
-	["PR_CO_PROFILEMANAGER_EDIT_POPUP"] = [=[Veuillez entrer le nouveau nom pour ce profile %s.
+	["PR_CO_PROFILEMANAGER_EDIT_POPUP"] = [=[Veuillez entrer le nouveau nom pour ce profil %s.
 Le nom ne peut pas être vide.
 
 Changer le nom ne modifie pas les liens entre ce profil et vos familiers/montures.]=],
@@ -854,7 +853,7 @@ pour modifier les informations de votre personnage.]=],
 	["PR_IMPORT_IMPORT_ALL"] = "Tout importer",
 	["PR_IMPORT_PETS_TAB"] = "Importateur de compagnons",
 	["PR_IMPORT_PROFILE"] = "Importer le profil",
-	["PR_IMPORT_PROFILE_TT"] = "Veuillez coller le serial d'un profil dans la boîte de texte",
+	["PR_IMPORT_PROFILE_TT"] = "Veuillez coller (%s) le serial d'un profil dans la boîte de texte",
 	["PR_IMPORT_WILL_BE_IMPORTED"] = "Sera importé",
 	["PR_PROFILE"] = "Profil",
 	["PR_PROFILE_CREATED"] = "Profil %s créé.",
@@ -879,7 +878,7 @@ Cette action est irréversible et toutes les informations TRP3 liées à ce prof
 Ce nom ne peut pas être vide.
 
 Cette duplication ne changera pas les liens du personnage à %s.]=],
-	["PR_PROFILEMANAGER_EDIT_POPUP"] = [=[Veuillez entrer un nom pour le nouveau profil.
+	["PR_PROFILEMANAGER_EDIT_POPUP"] = [=[Veuillez entrer un nouveau nom pour le profil %s.
 Ce nom ne peut pas être vide.
 
 Changer le nom ne changera aucun lien entre ce profil et vos personnages.]=],
@@ -899,7 +898,7 @@ Remplacer le contenu du profil %s avec les données importées ?]=],
 	["PR_SLASH_OPEN_ABORTING"] = "|cffffff00Demande de profil abandonnée.|r",
 	["PR_SLASH_OPEN_EXAMPLE"] = "|cffffff00Utilisation de la commande:|r |cffcccccc/trp3 open|r |cffffff00pour ouvrir le profil de la cible ou |cffcccccc/trp3 open NomDuPersonnage-NomDuServeur|r |cffffff00pour ouvrir le profil d'un personnage précis.|r",
 	["PR_SLASH_OPEN_HELP"] = "Ouvre le profil d'un personnage via son nom ou la cible si aucun nom n'est indiqué.",
-	["PR_SLASH_OPEN_WAITING"] = "|cffffff00Demande de profil envoyé, veuillez patienter...|r",
+	["PR_SLASH_OPEN_WAITING"] = "|cffffff00Demande de profil envoyé à |cnGREEN_FONT_COLOR:%s|r, veuillez patienter...|r",
 	["PR_SLASH_SWITCH_HELP"] = "Passer à un autre profil via son nom.",
 	["PR_UNUSED_PROFILE"] = "Ce profil n'est actuellement lié à aucun personnage WoW.",
 	["REG_COMPANION"] = "Compagnon",

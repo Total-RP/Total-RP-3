@@ -256,7 +256,6 @@ Por favor, ten en cuenta que cambiar esta configuración puede alterar tu experi
 	["CO_CHAT_MAIN"] = "Ajustes de chat principal",
 	["CO_CHAT_MAIN_COLOR"] = "Usar colores personalizados para los nombres",
 	["CO_CHAT_MAIN_EMOTE"] = "Detección de emociones",
-	["CO_CHAT_MAIN_EMOTE_PATTERN"] = "Patrón de detección de emociones",
 	["CO_CHAT_MAIN_EMOTE_USE"] = "Usar detección de emociones",
 	["CO_CHAT_MAIN_EMOTE_YELL"] = "Emoción sin gritos",
 	["CO_CHAT_MAIN_EMOTE_YELL_TT"] = "No mostrar *emote* o <emote> en los gitos",
@@ -972,7 +971,7 @@ Al igual que los perfiles de los personajes, un |cff00ff00perfil de compañero|r
 El nombre no puede estar vacío.
 
 El duplicado no cambiará tus mascotas/monturas vinculadas a %s.]=],
-	["PR_CO_PROFILEMANAGER_EDIT_POPUP"] = [=[Por favor, introduce un nuevo nombre para este perfil.
+	["PR_CO_PROFILEMANAGER_EDIT_POPUP"] = [=[Por favor, introduce un nuevo nombre para este perfil %s.
 El nombre no puede estar vacío.
 
 Cambiar el nombre no cambiará ningún vínculo entre este perfil y tus mascotas/monturas.]=],
@@ -1003,7 +1002,7 @@ Cambiar el nombre no cambiará ningún vínculo entre este perfil y tus mascotas
 	["PR_IMPORT_PETS_TAB"] = "Importar compañeros",
 	["PR_IMPORT_PROFILE"] = "Importar perfil",
 	["PR_IMPORT_PROFILE_CHOICE_TT"] = "Importa un perfil |cnGREEN_FONT_COLOR:de una exportación anterior|r.",
-	["PR_IMPORT_PROFILE_TT"] = "Pegar aquí serie de perfil",
+	["PR_IMPORT_PROFILE_TT"] = "Pegar (%s) aquí serie de perfil",
 	["PR_IMPORT_WILL_BE_IMPORTED"] = "Se importarán",
 	["PR_PROFILE"] = "Perfil",
 	["PR_PROFILE_CREATED"] = "Perfil %s creado.",
@@ -1052,7 +1051,7 @@ Puede causar incompatibilidades.
 	["PR_SLASH_OPEN_ABORTING"] = "|cffffff00Petición de perfil abortada.|r",
 	["PR_SLASH_OPEN_EXAMPLE"] = "|cffffff00Uso del comando:|r |cffcccccc/trp3 open|r |cffffff00para abrir el perfil de tu objetivo o |cffcccccc/trp3 open CharacterName-RealmName|r |cffffff00para abrir el perfil de ese personaje.|r",
 	["PR_SLASH_OPEN_HELP"] = "Abrir el perfil de un personaje usando su nombre en el juego, o el perfil de tu objetivo si no se introduce ningún nombre.",
-	["PR_SLASH_OPEN_WAITING"] = "|cffffff00Solicitando perfil, por favor espera...|r",
+	["PR_SLASH_OPEN_WAITING"] = "|cffffff00Solicitando perfil |cnGREEN_FONT_COLOR:%s|r, por favor espera...|r",
 	["PR_SLASH_SWITCH_HELP"] = "Cambiar a otro perfil usando su nombre.",
 	["PR_UNUSED_PROFILE"] = "Este perfil actualmente no está vinculado a ningún personaje de WoW.",
 	["REG_COLOR_SWATCH_WARNING"] = "El |cnWARNING_FONT_COLOR:color del texto ha sido ajustado|r automáticamente para mejorar el contraste con el fondo de la página.|n|nEsta |cnGREEN_FONT_COLOR:muestra de color indica el color original|r elegido por el autor del perfil sin ajustes.",

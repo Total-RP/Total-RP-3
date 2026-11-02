@@ -147,7 +147,6 @@ Per favore ricorda che cambiare queste impostazioni potrebbero alterare la tua e
 	["CO_CHAT_MAIN"] = "Impostazioni principali della chiacchierata",
 	["CO_CHAT_MAIN_COLOR"] = "Usa colori personalizzati per i nomi",
 	["CO_CHAT_MAIN_EMOTE"] = "Rivelazione dell'azione",
-	["CO_CHAT_MAIN_EMOTE_PATTERN"] = "Modello della rivelazione dell'azione",
 	["CO_CHAT_MAIN_EMOTE_USE"] = "Usare la rivelazione dell'azione",
 	["CO_CHAT_MAIN_EMOTE_YELL"] = "Nessuna azione urlata ",
 	["CO_CHAT_MAIN_EMOTE_YELL_TT"] = "Non mostrare *emote* o <emote> quando urli.",

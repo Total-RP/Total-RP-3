@@ -133,7 +133,6 @@ L = {
 	["CO_CHAT_MAIN"] = "聊天室主設定",
 	["CO_CHAT_MAIN_COLOR"] = "顯示角色名稱客制化顏色",
 	["CO_CHAT_MAIN_EMOTE"] = "表情偵測",
-	["CO_CHAT_MAIN_EMOTE_PATTERN"] = "表情偵測模式",
 	["CO_CHAT_MAIN_EMOTE_USE"] = "使用表情偵測",
 	["CO_CHAT_MAIN_EMOTE_YELL"] = "不允許大喊表情",
 	["CO_CHAT_MAIN_EMOTE_YELL_TT"] = "大喊時，不顯示*表情* 或 <表情>",
@@ -437,7 +436,7 @@ L = {
 此名稱不可為空白。
 
 此檔案不會影響已綁定原檔 %s 的角色。]=],
-	["PR_PROFILEMANAGER_EDIT_POPUP"] = [=[請替您要複製的新檔案命名，
+	["PR_PROFILEMANAGER_EDIT_POPUP"] = [=[請替您要複製的新檔案命名 %s，
 此名稱不可為空白。
 
 改變名稱並不會連動改變角色與檔案之間的綁定關係。]=],
