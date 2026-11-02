@@ -455,7 +455,7 @@ end
 local function updateAboutTabIcon(context)
 	local unreadIcon = "Interface\\AddOns\\totalRP3\\Resources\\UI\\ui-icon-unread";
 	local aboutUnread = false;
-	if not context.isPlayer and context.profile.about and not context.profile.about.read then
+	if not context.isPlayer and TRP3_API.register.ui.shouldShowUnreadAboutIcon(context.profile) then
 		aboutUnread = true;
 	end
 
@@ -479,9 +479,9 @@ local function onInformationUpdated(profileID, infoType)
 		if not context.isPlayer and profileID == context.profileID then
 			if infoType == registerInfoTypes.ABOUT then
 				updateAboutTabState(context);
+				updateAboutTabIcon(context);
 				if tabGroup.current == 2 then
 					showAboutTab();
-					updateAboutTabIcon(context);
 				end
 			elseif (infoType == registerInfoTypes.CHARACTERISTICS or infoType == registerInfoTypes.CHARACTER) and tabGroup.current == 1 then
 				showCharacteristicsTab();
@@ -573,35 +573,10 @@ local function showDefaultTab()
 	TRP3_Addon:TriggerEvent(TRP3_Addon.Events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
 end
 
-local function getAboutDataExists(profile)
-	if profile and profile.about then
-		if profile.about.MU then
-			return true;
-		elseif profile.about.T1 and Utils.str.emptyToNil(profile.about.T1.TX) then
-			return true;
-		elseif profile.about.T2 and not TableIsEmpty(profile.about.T2) then
-			for _, frameTab in pairs(profile.about.T2) do
-				if Utils.str.emptyToNil(frameTab.TX) ~= nil then
-					return true;
-				end
-			end
-		elseif profile.about.T3 then
-			local T3 = profile.about.T3;
-
-			for _, frameTab in ipairs({ "PH", "PS", "HI" }) do
-				if T3[frameTab] and Utils.str.emptyToNil(T3[frameTab].TX) ~= nil then
-					return true;
-				end
-			end
-		end
-	end
-	return false;
-end
-
 function updateAboutTabState(context)
 	local ABOUT_TAB_INDEX = 2;
 	local isPlayerProfile = context.isPlayer;
-	local hasAboutData = getAboutDataExists(context.profile);
+	local hasAboutData = TRP3_API.register.ui.shouldShowAboutTab(context.profile);
 	local isTabSelected = tabGroup.current == ABOUT_TAB_INDEX;
 
 	tabGroup:SetTabEnabled(ABOUT_TAB_INDEX, isPlayerProfile or hasAboutData or isTabSelected);

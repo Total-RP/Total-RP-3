@@ -169,8 +169,15 @@ end
 ---@param dataTab table Given profile's about tab data.
 ---@return boolean # Whether the T1 frame has data in it.
 local function shouldShowTemplate1(dataTab)
-	local templateData = dataTab.T1 or {};
-	return templateData.TX and strtrim(templateData.TX):len() > 0;
+	local template = dataTab.T1;
+
+	if template then
+		if template.TX and string.trim(template.TX) ~= "" then
+			return true;
+		end
+	end
+
+	return false;
 end
 
 local function showTemplate1(dataTab)
@@ -198,12 +205,16 @@ local TEMPLATE2_PADDING = 30;
 ---@param dataTab table Given profile's about tab data.
 ---@return boolean # Whether at least one frame has data in it.
 local function shouldShowTemplate2(dataTab)
-	local templateData = dataTab.T2 or {};
-	for _, frameTab in pairs(templateData) do
-		if frameTab.TX and strtrim(frameTab.TX):len() > 0 then
-			return true;
+	local template = dataTab.T2;
+
+	if template then
+		for _, section in pairs(template) do
+			if section.TX and string.trim(section.TX) ~= "" then
+				return true;
+			end
 		end
 	end
+
 	return false;
 end
 
@@ -477,14 +488,18 @@ end
 ---@param dataTab table Given profile's about tab data.
 ---@return boolean # Whether at least one frame has data in it.
 local function shouldShowTemplate3(dataTab)
-	local templateData = dataTab.T3 or {};
-	local datas = {templateData.PH, templateData.PS, templateData.HI};
-	for i=1, 3 do
-		local data = datas[i] or {};
-		if data.TX and strtrim(data.TX):len() > 0 then
-			return true;
+	local template = dataTab.T3;
+
+	if template then
+		for _, key in ipairs({ "PH", "PS", "HI" }) do
+			local section = template[key];
+
+			if section and section.TX and string.trim(section.TX) ~= "" then
+				return true;
+			end
 		end
 	end
+
 	return false;
 end
 
@@ -780,10 +795,20 @@ end
 function TRP3_API.register.ui.shouldShowAboutTab(profile)
 	if profile and profile.about then
 		local dataTab = profile.about;
-		return (dataTab.TE == 1 and shouldShowTemplate1(dataTab))
-		or (dataTab.TE == 2 and shouldShowTemplate2(dataTab))
-		or (dataTab.TE == 3 and shouldShowTemplate3(dataTab));
+		return (dataTab.MU ~= nil)
+			or (dataTab.TE == 1 and shouldShowTemplate1(dataTab))
+			or (dataTab.TE == 2 and shouldShowTemplate2(dataTab))
+			or (dataTab.TE == 3 and shouldShowTemplate3(dataTab))
+			or false;
 	end
+	return false;
+end
+
+function TRP3_API.register.ui.shouldShowUnreadAboutIcon(profile)
+	if TRP3_API.register.ui.shouldShowAboutTab(profile) then
+		return not profile.about.read;
+	end
+
 	return false;
 end
 
