@@ -230,7 +230,8 @@ local function onStart()
 	local SUPPORTED_FIELDS = {
 		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
 		"IC", "CO", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE",
-		"HI", "TR", "MU", "RS", "PS", "PN", "PG", "PR",
+		"HI", "TR", "MU", "RS", "PS", "PN", "PG", "PR", "RI", "RD", "RR",
+		"RM", "RO"
 	};
 
 	local CHARACTERISTICS_FIELDS = {
@@ -346,7 +347,8 @@ local function onStart()
 			return;
 		end
 
-		local styleData = GetOrCreateTable(profile.misc, "ST");
+		local misc = GetOrCreateTable(profile, "misc");
+		local styleData = GetOrCreateTable(misc, "ST");
 		styleData[styleKey] = tonumber(value) or 0;
 	end
 
