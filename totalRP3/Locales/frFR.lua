@@ -886,7 +886,7 @@ Cette action est irréversible et toutes les informations TRP3 liées à ce prof
 Ce nom ne peut pas être vide.
 
 Cette duplication ne changera pas les liens du personnage à %s.]=],
-	["PR_PROFILEMANAGER_EDIT_POPUP"] = [=[Veuillez entrer un nom pour le nouveau profil.
+	["PR_PROFILEMANAGER_EDIT_POPUP"] = [=[Veuillez entrer un nouveau nom pour le profil %s.
 Ce nom ne peut pas être vide.
 
 Changer le nom ne changera aucun lien entre ce profil et vos personnages.]=],
