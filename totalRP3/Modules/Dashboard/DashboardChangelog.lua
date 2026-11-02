@@ -2,6 +2,18 @@
 -- SPDX-License-Identifier: Apache-2.0
 
 local CHANGELOG_TEXT = [[
+# Changelog version 3.5.4
+
+## Changed
+
+- The setting to disable map scan location while in PvP no longer hides location while in a sanctuary (for example main cities).
+  - On Retail, if the setting is enabled, the location is now also disabled when PvP is enabled outside of war mode.
+
+## Fixed
+
+- Fixed unread icon showing on the About tab even when no data is present and the tab is disabled.
+- Fixed an issue that could lead to invalid data getting sent to other RP addons.
+
 # Changelog version 3.5.3
 
 ## Changed
