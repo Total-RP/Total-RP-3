@@ -339,14 +339,8 @@ L = {
 	["CO_LOCATION"] = "定位设置",
 	["CO_LOCATION_ACTIVATE"] = "使用角色位置",
 	["CO_LOCATION_ACTIVATE_TT"] = "启用角色定位系统，允许您扫描世界地图上的其他totalRP用户，并允许他们找到您。",
-	["CO_LOCATION_DISABLE_CLASSIC_PVP"] = "当PVP状态开启时关闭定位功能",
-	["CO_LOCATION_DISABLE_CLASSIC_PVP_TT"] = "当你处于PVP状态时不再反馈其他玩家的定位请求，这可以防止其他玩家用定位系统追踪你。",
 	["CO_LOCATION_DISABLE_OOC"] = "当OOC时，禁用角色位置",
 	["CO_LOCATION_DISABLE_OOC_TT"] = "当您将RP状态设置为非角色扮演状态OOC时，您将不会响应来自其他玩家的位置请求。",
-	["CO_LOCATION_DISABLE_WAR_MODE"] = "战争模式禁用位置系统",
-	["CO_LOCATION_DISABLE_WAR_MODE_TT"] = [=[在启动战争模式并位于|cff69CCF0安全区|r外时，你不会对其他玩家的位置搜索发出回应。
-
-这可以防止恶意玩家搜索并击杀你。]=],
 	["CO_LOCATION_SHOW_DIFFERENT_WAR_MODES"] = "显示不同战争位面下的玩家",
 	["CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT"] = "和你在同一区域，但位于不同战争位面的玩家将仍然显示在地图上，但他们的图标透明度较高且有着一个特殊的标志。",
 	["CO_LOCATION_SHOW_OUT_OF_CHARACTER"] = "显示OOC玩家",

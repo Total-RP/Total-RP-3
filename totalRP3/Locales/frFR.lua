@@ -340,16 +340,8 @@ Cela provoquera un rechargement de l'interface.]=],
 	["CO_LOCATION"] = "Paramètres de position",
 	["CO_LOCATION_ACTIVATE"] = "Activer la position du personnage",
 	["CO_LOCATION_ACTIVATE_TT"] = "Active la fonctionnalité de position du personnage, vous permettant de lancer un scan afin d'afficher sur la carte les autres utilisateurs de Total RP ayant activé cette fonctionnalité. Cela leur permet aussi de vous scanner.",
-	["CO_LOCATION_DISABLE_CLASSIC_PVP"] = "Désactiver le scan si PvP",
-	["CO_LOCATION_DISABLE_CLASSIC_PVP_TT"] = [=[Vous ne répondrez pas aux requêtes de positions de personnages si vous êtes en mode PvP.
-
-Cette option est particulièrement utile pour éviter les abus du système pour vous traquer.]=],
 	["CO_LOCATION_DISABLE_OOC"] = "Désactiver le scan si HRP",
 	["CO_LOCATION_DISABLE_OOC_TT"] = "Vous ne répondrez pas aux requêtes de positions de personnages si vous êtes en statut HRP.",
-	["CO_LOCATION_DISABLE_WAR_MODE"] = "Désactiver le scan en Mode Guerre",
-	["CO_LOCATION_DISABLE_WAR_MODE_TT"] = [=[Vous ne réponderez plus aux demandes de localisation des autres joueurs quand vous avez le Mode Guerre activé et que vous n'êtes pas dans une zone |cff69CCF0Sanctuaire|r.
-
-Cette option est particulièrement utile pour éviter les abus utilisant le système de localisation de Total RP 3 pour vous traquer en JcJ.]=],
 	["CO_LOCATION_SHOW_DIFFERENT_WAR_MODES"] = "Afficher les joueurs dans un Mode Guerre différent",
 	["CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT"] = "Affiche les joueurs dans la zones même s'ils ne sont pas dans la même phase de Mode Guerre que vous, avec une légère transparence et une icône spéciale dans l'infobulle.",
 	["CO_LOCATION_SHOW_OUT_OF_CHARACTER"] = "Afficher les joueurs HRP",

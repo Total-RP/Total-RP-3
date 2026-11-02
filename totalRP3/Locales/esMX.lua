@@ -164,7 +164,6 @@ L = {
 	["CO_LOCATION"] = "Ajustes de rastreo",
 	["CO_LOCATION_ACTIVATE"] = "Habilitar la localización de personaje",
 	["CO_LOCATION_ACTIVATE_TT"] = "Habilita el sistema de localización de personaje, permite escanear y localizar en el mapa a otros usuarios del Total RP, y permite que ellos te localicen a ti.",
-	["CO_LOCATION_DISABLE_CLASSIC_PVP"] = "Deshabilitar la localización cuando esté marcado para JcJ",
 	["CO_LOCATION_DISABLE_OOC"] = "Desactivar rastreo en modo FdR",
 	["CO_LOCATION_SHOW_DIFFERENT_WAR_MODES"] = "Mostrar jugadores en diferente modo de guerra",
 	["CO_MAP_BUTTON"] = "Botón de escaneo de mapa",
