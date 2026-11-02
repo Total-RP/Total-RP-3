@@ -977,7 +977,7 @@ Al igual que los perfiles de los personajes, un |cff00ff00perfil de compañero|r
 El nombre no puede estar vacío.
 
 El duplicado no cambiará tus mascotas/monturas vinculadas a %s.]=],
-	["PR_CO_PROFILEMANAGER_EDIT_POPUP"] = [=[Por favor, introduce un nuevo nombre para este perfil.
+	["PR_CO_PROFILEMANAGER_EDIT_POPUP"] = [=[Por favor, introduce un nuevo nombre para este perfil %s.
 El nombre no puede estar vacío.
 
 Cambiar el nombre no cambiará ningún vínculo entre este perfil y tus mascotas/monturas.]=],
@@ -1553,11 +1553,11 @@ Si quieres denunciar el perfil de %s y no puedes marcarlo como objetivo tendrás
 	["SLASH_CMD_SET_HELP_EXAMPLE1"] = "Soñando con mariposas",
 	["SLASH_CMD_SET_HELP_EXAMPLE2"] = "Oso feliz; Elfo enfadado",
 	["SLASH_CMD_SET_SUCCESS"] = "Se ha actualizado correctamente el campo %1$q de tu perfil actual.",
-	["SLASH_CMD_STATUS_HELP"] = [=[Uso: |cff00ff00/trp3 status ic || ooc || toggle|r 
-Cambia el estado de tu personaje a la opción especificada: 
+	["SLASH_CMD_STATUS_HELP"] = [=[Uso: |cff00ff00/trp3 status ic || ooc || toggle|r
+Cambia el estado de tu personaje a la opción especificada:
 
-|cffff9900/trp3 status ic|r establecerá tu estado como |cff00ff00en rol|r. 
-|cffff9900/trp3 status ooc|r establecerá tu estado como |cffff0000fuera de rol|r. 
+|cffff9900/trp3 status ic|r establecerá tu estado como |cff00ff00en rol|r.
+|cffff9900/trp3 status ooc|r establecerá tu estado como |cffff0000fuera de rol|r.
 |cffff9900/trp3 status toggle|r cambiará tu estado al opuesto.]=],
 	["SLASH_CMD_STATUS_USAGE"] = "ep || fdp || mostrar/ocultar",
 	["TB_AFK_MODE"] = "Ausente",
