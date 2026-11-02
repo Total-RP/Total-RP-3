@@ -154,6 +154,8 @@ module.TryRegisterField("PS", {
 				value = trait.V2 / Globals.PSYCHO_MAX_VALUE_V2;
 			end
 
+			value = TRP3_MathUtil.NormalizeZero(value);
+
 			-- If there's an ID it's a built-in trait, otherwise it's custom
 			-- and thus needs the name/icon/color stuff.
 			if trait.ID
