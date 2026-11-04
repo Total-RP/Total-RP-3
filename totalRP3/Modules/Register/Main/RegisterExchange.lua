@@ -254,16 +254,15 @@ local function parseCompanionInfo(senderID, senderProfileID, petLine, petV1, pet
 end
 
 local function checkVersion(sender, senderVersion, senderVersionText, extendedVersion, extendedVersionText)
-	senderVersion = Utils.str.sanitizeVersion(senderVersion)
-	extendedVersion = Utils.str.sanitizeVersion(extendedVersion)
-
 	-- Record all versions for statistics purpose.
+	senderVersion = Utils.str.sanitizeVersion(senderVersion)
 	local versionIndex = senderVersion .. "-" .. senderVersionText;
 	newVersionAlerts[versionIndex] = newVersionAlerts[versionIndex] or {};
 	newVersionAlerts[versionIndex][sender] = senderVersion;
 
 	local extendedVersionIndex;
 	if extendedVersion and extendedVersionText then
+		extendedVersion = Utils.str.sanitizeVersion(extendedVersion)
 		extendedVersionIndex = extendedVersion .. "-" .. extendedVersionText;
 		extendedNewVersionAlerts[extendedVersionIndex] = extendedNewVersionAlerts[extendedVersionIndex] or {};
 		extendedNewVersionAlerts[extendedVersionIndex][sender] = extendedVersion;
