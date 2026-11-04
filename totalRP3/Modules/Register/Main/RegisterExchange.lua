@@ -255,16 +255,22 @@ end
 
 local function checkVersion(sender, senderVersion, senderVersionText, extendedVersion, extendedVersionText)
 	-- Record all versions for statistics purpose.
-	newVersionAlerts[senderVersionText] = newVersionAlerts[senderVersionText] or {};
-	newVersionAlerts[senderVersionText][sender] = senderVersion;
+	senderVersionText = Utils.str.sanitizeVersion(senderVersionText)
+	local versionIndex = senderVersion .. "-" .. senderVersionText;
+	newVersionAlerts[versionIndex] = newVersionAlerts[versionIndex] or {};
+	newVersionAlerts[versionIndex][sender] = senderVersion;
+
+	local extendedVersionIndex;
 	if extendedVersion and extendedVersionText then
-		extendedNewVersionAlerts[extendedVersionText] = extendedNewVersionAlerts[extendedVersionText] or {};
-		extendedNewVersionAlerts[extendedVersionText][sender] = extendedVersion;
+		extendedVersionText = Utils.str.sanitizeVersion(extendedVersionText)
+		extendedVersionIndex = extendedVersion .. "-" .. extendedVersionText;
+		extendedNewVersionAlerts[extendedVersionIndex] = extendedNewVersionAlerts[extendedVersionIndex] or {};
+		extendedNewVersionAlerts[extendedVersionIndex][sender] = extendedVersion;
 	end
 
 	-- Test for Total RP 3
 	if senderVersion > Globals.version and not has_seen_update_alert then
-		if CountTable(newVersionAlerts[senderVersionText]) >= 10 then
+		if CountTable(newVersionAlerts[versionIndex]) >= 10 then
 			local newVersionAlert = loc.NEW_VERSION:format(senderVersionText:sub(1, 15));
 			TRP3_UpdateFrame.popup.text:SetText(newVersionAlert);
 			TRP3_UpdateFrame:Show();
@@ -274,7 +280,7 @@ local function checkVersion(sender, senderVersion, senderVersionText, extendedVe
 
 	-- Test for Extended
 		if extendedVersion and extendedVersionText and Globals.extended_version and extendedVersion > Globals.extended_version and not has_seen_extended_update_alert then
-			if CountTable(extendedNewVersionAlerts[extendedVersionText]) >= 3 then
+			if CountTable(extendedNewVersionAlerts[extendedVersionIndex]) >= 10 then
 				Utils.message.displayMessage(loc.NEW_EXTENDED_VERSION:format(extendedVersionText));
 			has_seen_extended_update_alert = true;
 		end
