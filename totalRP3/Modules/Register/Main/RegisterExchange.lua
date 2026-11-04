@@ -255,14 +255,14 @@ end
 
 local function checkVersion(sender, senderVersion, senderVersionText, extendedVersion, extendedVersionText)
 	-- Record all versions for statistics purpose.
-	senderVersion = Utils.str.sanitizeVersion(senderVersion)
+	senderVersionText = Utils.str.sanitizeVersion(senderVersionText)
 	local versionIndex = senderVersion .. "-" .. senderVersionText;
 	newVersionAlerts[versionIndex] = newVersionAlerts[versionIndex] or {};
 	newVersionAlerts[versionIndex][sender] = senderVersion;
 
 	local extendedVersionIndex;
 	if extendedVersion and extendedVersionText then
-		extendedVersion = Utils.str.sanitizeVersion(extendedVersion)
+		extendedVersionText = Utils.str.sanitizeVersion(extendedVersionText)
 		extendedVersionIndex = extendedVersion .. "-" .. extendedVersionText;
 		extendedNewVersionAlerts[extendedVersionIndex] = extendedNewVersionAlerts[extendedVersionIndex] or {};
 		extendedNewVersionAlerts[extendedVersionIndex][sender] = extendedVersion;
