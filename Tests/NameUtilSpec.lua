@@ -288,6 +288,23 @@ insulate("regional unique names", function()
 		assert.are.equal("John Stormwind", TRP3_NameUtil.GetQualifiedName("target"));
 	end);
 
+	it("returns nil for a unit name without a family name", function()
+		stub(_G, "UnitNameUnmodified", function() return "John", nil end);
+		assert.is_nil(TRP3_NameUtil.GetQualifiedName("target"));
+	end);
+
+	it("returns nil when composing a name without a family name", function()
+		assert.is_nil(TRP3_NameUtil.ComposeQualifiedName("John", nil));
+	end);
+
+	it("keeps a single name for display and unmodified name lookups", function()
+		stub(_G, "UnitName", function() return "Guard", nil end);
+		stub(_G, "UnitNameUnmodified", function() return "John", nil end);
+		stub(_G, "UnitExists", function() return true end);
+		assert.are.equal("Guard", TRP3_NameUtil.GetDisplayName("target"));
+		assert.are.equal("John", TRP3_NameUtil.GetUnmodifiedName("player"));
+	end);
+
 	it("gets a regional name from a GUID", function()
 		stub(_G, "GetPlayerInfoByGUID", function()
 			return nil, nil, nil, nil, nil, "John", "Stormwind", nil;

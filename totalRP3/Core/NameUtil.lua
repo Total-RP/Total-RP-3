@@ -92,7 +92,7 @@ end
 ---@class TRP3.NameUtil.RegionalUniqueNameImpl : TRP3.NameUtil.Implementation
 local RegionalUniqueNameImpl = {};
 
-function RegionalUniqueNameImpl.NormalizeUnitName(givenName, familyName)
+function RegionalUniqueNameImpl.SplitRegionalName(givenName, familyName)
 	if not canaccessallvalues(givenName, familyName) then
 		givenName, familyName = nil, nil;
 	end
@@ -107,10 +107,23 @@ function RegionalUniqueNameImpl.NormalizeUnitName(givenName, familyName)
 		end
 	end
 
+	givenName = (givenName ~= "") and givenName or nil;
+	familyName = (familyName ~= "") and familyName or nil;
+	return givenName, familyName;
+end
+
+function RegionalUniqueNameImpl.NormalizeUnitName(givenName, familyName)
+	givenName, familyName = RegionalUniqueNameImpl.SplitRegionalName(givenName, familyName);
 	return NormalizeUnitName(TRP3_NameUtil.ComposeFullName(givenName, familyName));
 end
 
 function RegionalUniqueNameImpl.ComposeQualifiedName(givenName, familyName)
+	givenName, familyName = RegionalUniqueNameImpl.SplitRegionalName(givenName, familyName);
+
+	if not givenName or not familyName then
+		return nil;
+	end
+
 	return RegionalUniqueNameImpl.NormalizeUnitName(givenName, familyName);
 end
 
