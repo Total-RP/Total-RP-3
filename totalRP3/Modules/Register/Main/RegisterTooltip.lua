@@ -82,6 +82,14 @@ local ConfigKeys = {
 	PETS_INFO = "tooltip_pets_info",
 };
 
+local HealthDisplayOption = {
+	Hidden = 0,
+	Number = 1,
+	Percentage = 2,
+	Both = 3,
+	Bar = 4,
+};
+
 TRP3_TooltipCroppingConstants = {
 	Title = 100,
 	Name = 50,
@@ -506,6 +514,22 @@ local TOOLTIP_BLOCKED_IGNORED_COLOR = TRP3_API.Colors.Red;
 local TOOLTIP_BLOCKED_MATURE_COLOR = TRP3_API.CreateColor(1.00, 0.75, 0.86, 1.00);
 local TOOLTIP_BLOCKED_MAIN_COLOR = TRP3_API.CreateColor(1.00, 0.75, 0.00, 1.00);
 
+local function GetCharacterHealthBar()
+	local healthBar = TRP3_CharacterTooltip.StatusBar;
+
+	if healthBar and healthBar.SetWatch and healthBar.StopUpdates and healthBar.ClearWatch then
+		return healthBar;
+	end
+end
+
+local function ClearCharacterHealthBar()
+	local healthBar = GetCharacterHealthBar();
+
+	if healthBar then
+		healthBar:ClearWatch();
+	end
+end
+
 local function SetProgressSpinnerShown(tooltip, shown)
 	local spinner = tooltip.ProgressSpinner;
 
@@ -546,6 +570,8 @@ local function writeTooltipForCharacter(targetID, targetType)
 	---@type Player
 	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(targetID);
 	local profileID = player:GetProfileID();
+
+	ClearCharacterHealthBar();
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- BLOCKED
@@ -887,7 +913,7 @@ local function writeTooltipForCharacter(targetID, targetType)
 	--
 
 	local healthFormat = getConfigValue(ConfigKeys.CHARACT_HEALTH);
-	if healthFormat ~= 0 then
+	if healthFormat ~= HealthDisplayOption.Hidden and healthFormat ~= HealthDisplayOption.Bar then
 		local targetHP = UnitHealth(targetType);
 		local targetHPMax = UnitHealthMax(targetType);
 		-- Don't show health if full
@@ -901,11 +927,11 @@ local function writeTooltipForCharacter(targetID, targetType)
 			local targetHPMaxText = AbbreviateLargeNumbers(targetHPMax);
 
 			-- Number
-			if healthFormat == 1 then
+			if healthFormat == HealthDisplayOption.Number then
 				local rightText = string.format("%1$s/%2$s", targetHPText, targetHPMaxText);
 				lineText = string.format("%1$s: %2$s", HEALTH, colors.SECONDARY:WrapTextInColorCode(rightText));
 				-- Percentage
-			elseif healthFormat == 2 then
+			elseif healthFormat == HealthDisplayOption.Percentage then
 				local rightText = string.format("%1$s", percentHPText);
 				lineText = string.format("%1$s: %2$s", HEALTH, colors.SECONDARY:WrapTextInColorCode(rightText));
 				-- Both
@@ -982,6 +1008,18 @@ local function writeTooltipForCharacter(targetID, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	tooltipBuilder:Build();
+
+	if healthFormat == HealthDisplayOption.Bar then
+		local healthBar = GetCharacterHealthBar();
+
+		if healthBar then
+			local guid = UnitGUID(targetType);
+
+			if guid and canaccessvalue(guid) then
+				healthBar:SetWatch(guid);
+			end
+		end
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1271,6 +1309,12 @@ local function UpdateCharacterTooltipClampInsets()
 		top = top + TRP3_CompanionTooltip:GetHeight();
 	end
 
+	local healthBar = GetCharacterHealthBar();
+
+	if healthBar and healthBar:IsShown() then
+		bottom = -healthBar:GetHeight() - 1;
+	end
+
 	TRP3_CharacterTooltip:SetClampRectInsets(left, right, top, bottom);
 end
 
@@ -1380,6 +1424,12 @@ local function onUpdate(self, elapsed)
 		self.TimeSinceLastUpdate = 0;
 		if self.target and self.targetType and not self.isFading then
 			if self.target ~= getUnitID(self.targetType) or not getUnitID(self.targetType) then
+				local healthBar = GetCharacterHealthBar();
+
+				if healthBar then
+					healthBar:StopUpdates();
+				end
+
 				self.isFading = true;
 				self.target = nil;
 				if fadeOutEnabled() then
@@ -1553,10 +1603,18 @@ local function onModuleInit()
 
 	TRP3_CharacterTooltip.TimeSinceLastUpdate = 0;
 	TRP3_CharacterTooltip:SetScript("OnUpdate", onUpdate);
+	TRP3_CharacterTooltip:HookScript("OnHide", ClearCharacterHealthBar);
 	TRP3_CompanionTooltip.TimeSinceLastUpdate = 0;
 	TRP3_CompanionTooltip:SetScript("OnUpdate", onUpdateCompanion);
 	TRP3_CompanionTooltip:HookScript("OnShow", UpdateCharacterTooltipClampInsets);
 	TRP3_CompanionTooltip:HookScript("OnHide", UpdateCharacterTooltipClampInsets);
+
+	local healthBar = GetCharacterHealthBar();
+
+	if healthBar then
+		healthBar:HookScript("OnShow", UpdateCharacterTooltipClampInsets);
+		healthBar:HookScript("OnHide", UpdateCharacterTooltipClampInsets);
+	end
 
 	-- Config default value
 	local registerConfigKey = TRP3_API.configuration.registerConfigKey;
@@ -1586,7 +1644,7 @@ local function onModuleInit()
 	registerConfigKey(ConfigKeys.CHARACT_PRONOUNS, true);
 	registerConfigKey(ConfigKeys.CHARACT_VOICE_REFERENCE, true);
 	registerConfigKey(ConfigKeys.CHARACT_ZONE, true);
-	registerConfigKey(ConfigKeys.CHARACT_HEALTH, 0);
+	registerConfigKey(ConfigKeys.CHARACT_HEALTH, HealthDisplayOption.Hidden);
 	registerConfigKey(ConfigKeys.CHARACT_CURRENT_SIZE, 140);
 	registerConfigKey(ConfigKeys.CHARACT_RELATION_LINE, RelationLineOption.Simple);
 	registerConfigKey(ConfigKeys.CHARACT_RELATION, true);
@@ -1621,11 +1679,18 @@ local function onModuleInit()
 		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. OOC_ICON, TRP3_OOCIndicatorStyle.Icon}
 	};
 
+	local healthBarHelp = loc.CO_TOOLTIP_HEALTH_BAR_TT;
+
+	if not healthBar then
+		healthBarHelp = healthBarHelp .. "|n|n" .. loc.CO_TOOLTIP_HEALTH_BAR_UNAVAILABLE;
+	end
+
 	local HEALTH_FORMAT_TAB = {
-		{loc.CM_DO_NOT_SHOW, 0},
-		{loc.CO_TOOLTIP_HEALTH_NUMBER, 1},
-		{loc.CO_TOOLTIP_HEALTH_PERCENT, 2},
-		{loc.CO_TOOLTIP_HEALTH_BOTH, 3},
+		{loc.CM_DO_NOT_SHOW, HealthDisplayOption.Hidden},
+		{loc.CO_TOOLTIP_HEALTH_NUMBER, HealthDisplayOption.Number},
+		{loc.CO_TOOLTIP_HEALTH_PERCENT, HealthDisplayOption.Percentage},
+		{loc.CO_TOOLTIP_HEALTH_BOTH, HealthDisplayOption.Both},
+		{loc.CO_TOOLTIP_HEALTH_BAR, HealthDisplayOption.Bar, healthBarHelp, disabled = not healthBar},
 	};
 
 	-- Build configuration page
