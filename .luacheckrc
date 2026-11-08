@@ -590,6 +590,7 @@ stds.wow = {
 
 		InputUtil = {
 			fields = {
+				"IsGamepadUIEnabled",
 				"IsMouseOver",
 			}
 		},
