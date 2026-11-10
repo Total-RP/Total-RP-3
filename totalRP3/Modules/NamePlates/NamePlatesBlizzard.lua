@@ -518,6 +518,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateVisibility(nameplate)
 	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.ClassificationFrame, shouldShow);
 	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.healthBar, shouldShow);
 	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.LevelFrame, shouldShow);  -- Classic-only.
+	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.PlayerLevelDiffFrame, shouldShow);  -- Forever-only.
 	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.name, shouldShow);
 	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.RaidTargetFrame, shouldShow);
 	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.selectionHighlight, shouldShow);
