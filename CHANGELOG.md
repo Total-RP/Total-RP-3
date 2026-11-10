@@ -1,3 +1,21 @@
+# Changelog version 3.5.5
+
+## Added
+
+- Added a new variant to the "Show health" tooltip setting that allows to display health as a bar below the tooltip, identical to the one on the game's default tooltip.
+
+## Removed
+
+- The map scan feature has been disabled on Forever until it can be functional again.
+- Removed interact menu options on players while in Gamepad UI to reduce the amount of errors while using it.
+  - The remaining issues are out of our control and require fixes from Blizzard.
+
+## Fixed
+
+- Fixed the level frame still showing when setting nameplates to not display on specific units.
+- Fixed an issue that could cause the update frame to show incorrectly for an outdated version.
+- Fixed an occasional Lua error when the game would fail to retrieve the character's surname.
+
 # Changelog version 3.5.4
 
 ## Changed
