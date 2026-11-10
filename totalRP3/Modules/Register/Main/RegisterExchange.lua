@@ -262,8 +262,6 @@ local function checkVersion(sender, senderVersion, senderVersionText, extendedVe
 		extendedNewVersionAlerts[extendedVersionText][sender] = extendedVersion;
 	end
 
-	--print(sender .. " |cffffff00" .. senderVersion .. "|r |cff00ff00" .. senderVersionText .. "|r " .. CountTable(newVersionAlerts[versionIndex]))
-
 	-- Test for Total RP 3
 	if senderVersion > Globals.version and not has_seen_update_alert then
 		if CountTable(newVersionAlerts[senderVersionText]) >= 10 then
