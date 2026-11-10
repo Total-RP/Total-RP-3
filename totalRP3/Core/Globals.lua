@@ -75,7 +75,7 @@ TRP3_API.globals = {
 local WATER_ELEMENTAL_FAMILY = 49;
 
 TRP3_ClientFeatures = {
-	ChannelBroadcasts = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE or WOW_PROJECT_ID == WOW_PROJECT_CAMELOT),
+	ChannelBroadcasts = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE),
 	Transmogrification = C_GameRules.IsGameRuleActive(Enum.GameRule.TransmogEnabled),
 	WaterElementalWorkaround = (C_CreatureInfo.GetCreatureFamilyInfo(WATER_ELEMENTAL_FAMILY) == nil),
 	OldTooltipAPI = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE and WOW_PROJECT_ID ~= WOW_PROJECT_CAMELOT),

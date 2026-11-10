@@ -15,6 +15,12 @@
 		<Frames>
 			<Cooldown parentKey="Cooldown" setAllPoints="true" inherits="CooldownFrameTemplate" />
 		</Frames>
+		<DisabledTexture file="Interface\AchievementFrame\UI-Achievement-IconFrame">
+			<Size x="65" y="65"/>
+			<Anchors>
+				<Anchor point="CENTER" x="14" y="-14"/>
+			</Anchors>
+		</DisabledTexture>
 		<Scripts>
 			<PostClick/>
 		</Scripts>
