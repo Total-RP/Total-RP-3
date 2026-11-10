@@ -263,6 +263,7 @@ function TRP3_BlizzardNamePlates:InitializeUnitFrame(unitframe)
 	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.ClassificationFrame);
 	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.healthBar);
 	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.LevelFrame);  -- Classic-only.
+	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.PlayerLevelDiffFrame);  -- Forever-only.
 	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.name);
 	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.RaidTargetFrame);
 	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.selectionHighlight);
