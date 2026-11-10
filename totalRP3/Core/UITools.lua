@@ -239,6 +239,9 @@ function TRP3_API.ui.listbox.setupListBox(dropdown, rootMenuItems, onClickFuncti
 				elementDescription = menuDescription:CreateTitle(text);
 			elseif type(value) ~= "table" then
 				elementDescription = menuDescription:CreateRadio(text, IsSelectedElement, SetSelectedElement, elementData);
+				if elementData.disabled then
+					elementDescription:SetEnabled(false);
+				end
 			else
 				elementDescription = menuDescription:CreateButton(text);
 			end
