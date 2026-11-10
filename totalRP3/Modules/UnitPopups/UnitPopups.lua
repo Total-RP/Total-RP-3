@@ -155,6 +155,12 @@ function UnitPopupsModule:OnMenuOpen(owner, rootDescription, contextData)
 		return;  -- Owner of the menu is a protected probably-unit frame.
 	end
 
+	if InputUtil and InputUtil.IsGamepadUIEnabled and InputUtil.IsGamepadUIEnabled() then
+		-- Gamepad UI integration in Forever currently raises blocked action
+		-- errors on all menu integrations.
+		return;
+	end
+
 	local menuEntries = self.MenuEntries[contextData.which];
 
 	if menuEntries then
