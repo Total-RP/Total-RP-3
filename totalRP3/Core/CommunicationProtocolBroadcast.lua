@@ -258,7 +258,7 @@ end
 local function isBroadcastMessage(distributionType, channel)
 	if distributionType == "YELL" then
 		return true;
-	elseif distributionType == "CHANNEL" then
+	elseif distributionType == "CHANNEL" and TRP3_ClientFeatures.ChannelBroadcasts then
 		return string.lower(channel) == string.lower(config_BroadcastChannel())
 	elseif distributionType == "GUILD" then
 		return true;
