@@ -43,12 +43,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, function()
 			WorldMapButton:Show();
 		end
 
-		-- Disabling the button for now until Forever can support map scans
-		if WOW_PROJECT_ID == WOW_PROJECT_CAMELOT then
-			WorldMapButton:Disable();
-			WorldMapButton.Icon:SetDesaturated(true);
-		end
-
 		if newPosition then setConfigValue(CONFIG_MAP_BUTTON_POSITION, newPosition) end
 		local position = newPosition or getConfigValue(CONFIG_MAP_BUTTON_POSITION)
 
@@ -111,12 +105,6 @@ TRP3_API.RegisterCallback(TRP3_Addon, Events.WORKFLOW_ON_LOADED, function()
 		:OnShow(function(tooltip)
 		tooltip:ClearTempLines();
 		tooltip:AddTempLine(WorldMapButton.subtitle)
-
-		if WOW_PROJECT_ID == WOW_PROJECT_CAMELOT then
-			tooltip:AddTempLine(" ")
-			--tooltip:AddTempLine(loc.MAP_BUTTON_SUBTITLE_RULESET_WARNING, WARNING_FONT_COLOR)
-			tooltip:AddTempLine(loc.MAP_BUTTON_SUBTITLE_CAMELOT_DISABLED_WARNING, WARNING_FONT_COLOR)
-		end
 	end)
 	--}}}
 

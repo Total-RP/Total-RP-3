@@ -65,6 +65,12 @@ read_globals = {
 	"Plater",
 	"Platynator",
 	"Prat",
+	StoryveilProfileBridge = {
+		other_fields = true,
+		fields = {
+			OnTRP3MapLocation = { read_only = false },
+		},
+	},
 	"TinyTooltip",
 	"TipTac",
 	"xrpSaved",
@@ -241,8 +247,10 @@ stds.wow = {
 
 		C_ChatInfo = {
 			fields = {
+				"GetChannelRosterInfo",
 				"GetChannelShortcut",
 				"RegisterAddonMessagePrefix",
+				"SendAddonMessage",
 				"SendChatMessage",
 				"SwapChatChannelsByChannelIndex",
 			},
@@ -503,6 +511,12 @@ stds.wow = {
 					},
 				},
 
+				SendAddonMessageResult = {
+					fields = {
+						"Success",
+					},
+				},
+
 				CollationStrength = {
 					fields = {
 						"Primary",
@@ -747,6 +761,7 @@ stds.wow = {
 		"GetInventorySlotInfo",
 		"GetKeysArray",
 		"GetLanguageByIndex",
+		"GetNumDisplayChannels",
 		"GetLocale",
 		"GetMaxLevelForLatestExpansion",
 		"GetMinimapZoneText",
@@ -851,6 +866,7 @@ stds.wow = {
 		"UnitIsHumanPlayer",
 		"UnitIsOtherPlayersPet",
 		"UnitIsOwnerOrControllerOfUnit",
+		"UnitIsPlayer",
 		"UnitIsPVP",
 		"UnitIsPVPFreeForAll",
 		"UnitIsPVPSanctuary",
