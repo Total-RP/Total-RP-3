@@ -293,6 +293,36 @@ function TRP3_NameUtil.ShouldDisplayRealmNames()
 	return Impl.ShouldDisplayRealmNames();
 end
 
+--- Crop a name, optionally with a short title, to a maximum length.
+--- When omission is allowed and the title and name exceed the limit, the
+--- title is dropped and only the name is cropped.
+---
+---@param name string Name without title, e.g. "John Stormwind".
+---@param shortTitle string? Short title, e.g. "Sir".
+---@param maximumLength integer Maximum length in UTF-8 characters.
+---@param omitTitleFirst boolean Whether the title may be omitted to keep the name readable.
+---@return string text Cropped text, e.g. "Sir John Stormwind" or "John Stormw…".
+function TRP3_NameUtil.CropNameWithTitle(name, shortTitle, maximumLength, omitTitleFirst)
+	name = (name or ""):match("^%s*(.-)%s*$");
+	shortTitle = (shortTitle or ""):match("^%s*(.-)%s*$");
+
+	local text;
+
+	if shortTitle == "" or name == "" then
+		text = (name ~= "") and name or shortTitle;
+	else
+		local combined = shortTitle .. " " .. name;
+
+		if not omitTitleFirst or strlenutf8(combined) <= maximumLength then
+			text = combined;
+		else
+			text = name;
+		end
+	end
+
+	return TRP3_API.utils.str.crop(text, maximumLength);
+end
+
 ---@return TRP3.NameUtil.Mode
 function TRP3_NameUtil.GetCurrentMode()
 	if RegionalUniqueNamesEnabled and RegionalUniqueNamesEnabled() then

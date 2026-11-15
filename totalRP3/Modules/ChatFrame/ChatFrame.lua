@@ -41,6 +41,7 @@ local CONFIG_OOC_COLOR = "chat_ooc_color";
 local CONFIG_SPEECH = "chat_speech";
 local CONFIG_YELL_NO_EMOTE = "chat_yell_no_emote";
 local CONFIG_INSERT_FULL_RP_NAME = "chat_insert_full_rp_name";
+local CONFIG_CROP_TITLE_FIRST = "chat_crop_title_first";
 local CONFIG_SHOW_ICON = "chat_show_icon";
 local CONFIG_SHOW_OOC = "chat_show_ooc";
 local CONFIG_NPCSPEECH_REPLACEMENT = "chat_npcspeech_replacement";
@@ -114,6 +115,7 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_SPEECH, true);
 	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
 	registerConfigKey(CONFIG_INSERT_FULL_RP_NAME, true);
+	registerConfigKey(CONFIG_CROP_TITLE_FIRST, true);
 	registerConfigKey(CONFIG_SHOW_ICON, false);
 	registerConfigKey(CONFIG_SHOW_OOC, false);
 	registerConfigKey(CONFIG_NPCSPEECH_REPLACEMENT, true);
@@ -159,6 +161,12 @@ local function createConfigPage()
 				title = loc.CO_CHAT_INSERT_FULL_RP_NAME,
 				configKey = CONFIG_INSERT_FULL_RP_NAME,
 				help = loc.CO_CHAT_INSERT_FULL_RP_NAME_TT
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_CHAT_CROP_TITLE_FIRST,
+				configKey = CONFIG_CROP_TITLE_FIRST,
+				help = loc.CO_CHAT_CROP_TITLE_FIRST_HELP,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -754,10 +762,9 @@ function handleCharacterMessage(_, event, message, ...)
 	return false, message, ...;
 end
 
-local function getFullnameUsingChatMethod(info)
-	local characterName;
+local function GetDecomposedNameParts(info)
+	local parts = { name = nil, title = nil, cropSize = 45 };
 	local nameMethod = configNameMethod();
-	local cropSize = 45;
 
 	if nameMethod ~= 1 then
 		-- TRP3 names
@@ -765,26 +772,43 @@ local function getFullnameUsingChatMethod(info)
 
 		if characteristics.FN then
 			-- Use custom name if defined
-			characterName = characteristics.FN;
+			parts.name = characteristics.FN;
 		end
 
-		if nameMethod == 4 and characteristics.TI then
+		if nameMethod == 4 and characteristics.TI and parts.name then
 			-- With short title in front of the name
-			characterName = characteristics.TI .. " " .. characterName;
-			cropSize = cropSize + 25;
+			parts.title = characteristics.TI;
+			parts.cropSize = parts.cropSize + 25;
 		end
 
 		if (nameMethod == 3 or nameMethod == 4) and characteristics.LN then
 			-- With last name
-			characterName = TRP3_NameUtil.ComposeFullName(characterName, characteristics.LN);
+			parts.name = TRP3_NameUtil.ComposeFullName(parts.name, characteristics.LN);
 		end
 	end
 
-	if characterName then
-		characterName = TRP3_API.utils.str.crop(characterName, cropSize);
+	return parts;
+end
+
+local function GetUncroppedFullName(info)
+	local parts = GetDecomposedNameParts(info);
+
+	if not parts.name then
+		return nil;
 	end
 
-	return characterName;
+	return parts.title and strjoin(" ", parts.title, parts.name) or parts.name;
+end
+
+local function getFullnameUsingChatMethod(info)
+	local parts = GetDecomposedNameParts(info);
+
+	if not parts.name then
+		return nil;
+	end
+
+	local omitTitleFirst = TRP3_API.configuration.getValue(CONFIG_CROP_TITLE_FIRST);
+	return TRP3_NameUtil.CropNameWithTitle(parts.name, parts.title, parts.cropSize, omitTitleFirst);
 end
 TRP3_API.chat.getFullnameUsingChatMethod = getFullnameUsingChatMethod;
 
@@ -927,7 +951,11 @@ function hooking()
 			local textBefore = currentText:sub(1, currentCursorPosition - unitID:len());
 			local textAfter = currentText:sub(currentCursorPosition + 1);
 
-			local name = getFullnameForUnitUsingChatMethod(unitID);
+			local name = GetUncroppedFullName(getCharacterInfoTab(unitID));
+
+			if not name then
+				return
+			end
 
 			-- Replace the text of the edit box
 			editBox:SetText(textBefore .. name .. textAfter);

@@ -25,6 +25,29 @@ local function UpdateFontStringWidgetText(widget)
 	CallUnhookedMethod(widget, "SetText", desiredText);
 end
 
+local function PrependRoleplayStatus(text, displayInfo)
+	if text and displayInfo.roleplayStatus then
+		return TRP3_NamePlatesUtil.PrependRoleplayStatusToText(text, displayInfo.roleplayStatus);
+	end
+
+	return text;
+end
+
+local function GetTitleFittingNameText(widget, displayInfo)
+	-- Blizzard truncates name fontstrings at a fixed width, which is narrower
+	-- than our own length cap, so the title is omitted based on the rendered
+	-- result.
+
+	local fullText = PrependRoleplayStatus(displayInfo.nameUncropped, displayInfo);
+	CallUnhookedMethod(widget, "SetText", fullText);
+
+	if widget:IsTruncated() then
+		return PrependRoleplayStatus(displayInfo.nameWithoutTitle, displayInfo);
+	else
+		return fullText;
+	end
+end
+
 local function UpdateFontStringWidgetColor(widget)
 	local desiredColor = widget.TRP3_overrideColor or widget.TRP3_originalColor;
 	CallUnhookedMethod(widget, "SetVertexColor", desiredColor.r, desiredColor.g, desiredColor.b, desiredColor.a);
@@ -340,17 +363,19 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 	local overrideColor;
 
 	if displayInfo then
-		if displayInfo.name then
-			overrideText = displayInfo.name;
-		end
+		if TRP3_NamePlatesSettings.CropTitleFirst and displayInfo.nameWithoutTitle and displayInfo.title and displayInfo.title ~= "" then
+			overrideText = GetTitleFittingNameText(unitframe.name, displayInfo);
+		else
+			if displayInfo.name then
+				overrideText = displayInfo.name;
+			end
 
-		-- No cropping occurs after this point.
+			if displayInfo.roleplayStatus then
+				overrideText = overrideText or unitframe.name.TRP3_originalText;
 
-		if displayInfo.roleplayStatus then
-			overrideText = overrideText or unitframe.name.TRP3_originalText;
-
-			if overrideText then
-				overrideText = TRP3_NamePlatesUtil.PrependRoleplayStatusToText(overrideText, displayInfo.roleplayStatus);
+				if overrideText then
+					overrideText = TRP3_NamePlatesUtil.PrependRoleplayStatusToText(overrideText, displayInfo.roleplayStatus);
+				end
 			end
 		end
 

@@ -54,6 +54,7 @@ local DefaultSettings = {
 	MaximumNameLength = 30,
 	MaximumTitleLength = 30,
 	MaximumGuildNameLength = 30,
+	CropTitleFirst = true,
 	PreferredOOCIndicator = TRP3_OOCIndicatorStyle.Text,
 	ShowTargetUnit = true,
 	TooltipFullTitleColor = TRP3_API.Colors.White:GenerateHexColor(),
@@ -228,6 +229,12 @@ function TRP3_NamePlatesUtil.RegisterSettings()
 				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_TITLES,
 				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_TITLES_HELP,
 				configKey = MapSettingToConfigKey("CustomizeTitles"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_CROP_TITLE_FIRST,
+				help = L.NAMEPLATES_CONFIG_CROP_TITLE_FIRST_HELP,
+				configKey = MapSettingToConfigKey("CropTitleFirst"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

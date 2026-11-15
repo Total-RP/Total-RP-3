@@ -319,3 +319,49 @@ insulate("regional unique names", function()
 		assert.is_nil(TRP3_NameUtil.GetQualifiedNameByGUID("guid"));
 	end);
 end);
+
+insulate("title-aware name cropping", function()
+	setup(function()
+		Environment.LoadAddOn();
+
+		-- The UTF8 library isn't available in test cases currently, so pass
+		-- this call through to regular string.sub.
+		stub(string, "utf8sub", string.sub);
+	end);
+
+	it("keeps the short title when the combined text fits", function()
+		local maximumLength = 30;
+		local omitTitleFirst = true;
+		assert.are.equal("Sir John Stormwind", TRP3_NameUtil.CropNameWithTitle("John Stormwind", "Sir", maximumLength, omitTitleFirst));
+	end);
+
+	it("omits the short title when the combined text exceeds the limit", function()
+		local maximumLength = 15;
+		local omitTitleFirst = true;
+		assert.are.equal("John Stormwind", TRP3_NameUtil.CropNameWithTitle("John Stormwind", "Sir the Valiant", maximumLength, omitTitleFirst));
+	end);
+
+	it("crops the remaining name when omitting the title is not enough", function()
+		local maximumLength = 10;
+		local omitTitleFirst = true;
+		assert.are.equal("Johnathan…", TRP3_NameUtil.CropNameWithTitle("Johnathan Stormwindington", "Sir", maximumLength, omitTitleFirst));
+	end);
+
+	it("crops the combined text when title omission is disabled", function()
+		local maximumLength = 10;
+		local omitTitleFirst = false;
+		assert.are.equal("Sir John …", TRP3_NameUtil.CropNameWithTitle("John Stormwind", "Sir", maximumLength, omitTitleFirst));
+	end);
+
+	it("returns the name unchanged when there is no short title", function()
+		local maximumLength = 30;
+		local omitTitleFirst = true;
+		assert.are.equal("John Stormwind", TRP3_NameUtil.CropNameWithTitle("John Stormwind", nil, maximumLength, omitTitleFirst));
+	end);
+
+	it("trims surrounding whitespace from the name and title", function()
+		local maximumLength = 30;
+		local omitTitleFirst = true;
+		assert.are.equal("Sir John", TRP3_NameUtil.CropNameWithTitle("  John  ", "  Sir ", maximumLength, omitTitleFirst));
+	end);
+end);
