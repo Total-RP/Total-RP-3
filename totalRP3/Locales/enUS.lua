@@ -441,6 +441,8 @@ The description doesn't have to be limited to |cnGREEN_FONT_COLOR:physical descr
 	CO_TOOLTIP_GUILD = "Show guild info",
 	CO_TOOLTIP_PRONOUNS = "Show pronouns",
 	CO_TOOLTIP_TARGET = "Show target",
+	CO_TOOLTIP_CROP_TITLE_FIRST = "Hide titles if names are too long",
+	CO_TOOLTIP_CROP_TITLE_FIRST_HELP = "Hides the title first when a name and title are too long to fit in the tooltip heading, so the name stays readable.",
 	CO_TOOLTIP_TITLE = "Show title",
 	CO_TOOLTIP_CLIENT = "Show client version",
 	CO_TOOLTIP_CLIENT_TT = "Toggles the client version part of the notification line.",
@@ -608,6 +610,8 @@ Possible status:
 	CO_CHAT_MAIN_NAMING_3 = "First name + last name",
 	CO_CHAT_MAIN_NAMING_4 = "Short title + first name + last name",
 	CO_CHAT_REMOVE_REALM = "Remove realm from player names",
+	CO_CHAT_CROP_TITLE_FIRST = "Hide titles if names are too long",
+	CO_CHAT_CROP_TITLE_FIRST_HELP = "Hides the title first when a name and title are too long to fit, so the name stays readable.|n|n|cnGREEN_FONT_COLOR:Shift-Click|r to enter a player name into the chat always uses the full name and title.",
 	CO_CHAT_INSERT_FULL_RP_NAME = "Insert RP names on shift-click",
 	CO_CHAT_INSERT_FULL_RP_NAME_TT = [[Insert the complete RP name of a player when SHIFT-Clicking their name in the chat frame.
 
@@ -1470,6 +1474,8 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS_HELP = "If checked, overrides the color of name texts with the class color of a units' profile.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS = "Show custom health colors",
 	NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP = "If checked, overrides the color of health bars with the class color of a units' profile.",
+	NAMEPLATES_CONFIG_CROP_TITLE_FIRST = "Hide titles if names are too long",
+	NAMEPLATES_CONFIG_CROP_TITLE_FIRST_HELP = "Hides the title first when a name and title are too long to fit, so the name stays readable.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_TITLES = "Show prefix titles",
 	NAMEPLATES_CONFIG_CUSTOMIZE_TITLES_HELP = "If checked, shows the short title of a unit on nameplates before their name.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS = "Show roleplay status indicator",

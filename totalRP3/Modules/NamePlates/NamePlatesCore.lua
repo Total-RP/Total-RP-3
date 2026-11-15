@@ -27,10 +27,12 @@ local function GetOrCreateDisplayInfo(unitToken)
 	displayInfo.isRoleplayUnit = false;
 	displayInfo.name = nil;
 	displayInfo.nameUncropped = nil;
+	displayInfo.nameWithoutTitle = nil;
 	displayInfo.roleplayStatus = nil;
 	displayInfo.shouldColorHealth = nil;
 	displayInfo.shouldColorName = nil;
 	displayInfo.shouldHide = nil;
+	displayInfo.title = nil;
 
 	return displayInfo;
 end
@@ -208,12 +210,10 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 				displayInfo.name = player:GetRoleplayingName();
 			end
 
-			if TRP3_NamePlatesSettings.CustomizeTitles then
-				local prefix = player:GetTitle();
+			displayInfo.nameWithoutTitle = displayInfo.name;
 
-				if prefix then
-					displayInfo.name = strjoin(" ", prefix, displayInfo.name);
-				end
+			if TRP3_NamePlatesSettings.CustomizeTitles then
+				displayInfo.title = player:GetTitle();
 			end
 
 			if TRP3_NamePlatesUtil.IsFullTitleEnabled() then
@@ -221,7 +221,11 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 				displayInfo.fullTitleUncropped = displayInfo.fullTitle;
 			end
 
-			displayInfo.nameUncropped = displayInfo.name;
+			if displayInfo.title and displayInfo.title ~= "" then
+				displayInfo.nameUncropped = displayInfo.title .. " " .. displayInfo.name;
+			else
+				displayInfo.nameUncropped = displayInfo.name;
+			end
 		end
 
 		do  -- Colors
@@ -294,7 +298,7 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 	end
 
 	if displayInfo.name then
-		displayInfo.name = TRP3_NamePlatesUtil.GenerateCroppedNameText(displayInfo.name);
+		displayInfo.name = TRP3_NamePlatesUtil.GenerateCroppedNameText(displayInfo.name, displayInfo.title);
 	end
 
 	if displayInfo.fullTitle then
@@ -327,6 +331,7 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 			if TRP3_NamePlatesSettings.CustomizeNames ~= TRP3_NamePlateUnitNameDisplayMode.OriginalName then
 				displayInfo.name = profile.data.NA;
 				displayInfo.nameUncropped = displayInfo.name;
+				displayInfo.nameWithoutTitle = displayInfo.name;
 			end
 
 			if TRP3_NamePlatesSettings.CustomizeTitles then

@@ -5,8 +5,10 @@ TRP3_NamePlatesUtil = {};
 
 TRP3_NamePlatesUtil.OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15:15|t";
 
-function TRP3_NamePlatesUtil.GenerateCroppedNameText(name)
-	return TRP3_API.utils.str.crop(name, TRP3_NamePlatesSettings.MaximumNameLength);
+function TRP3_NamePlatesUtil.GenerateCroppedNameText(name, shortTitle)
+	local maximumLength = TRP3_NamePlatesSettings.MaximumNameLength;
+	local omitTitleFirst = TRP3_NamePlatesSettings.CropTitleFirst;
+	return TRP3_NameUtil.CropNameWithTitle(name, shortTitle, maximumLength, omitTitleFirst);
 end
 
 function TRP3_NamePlatesUtil.GenerateCroppedTitleText(fullTitle)
