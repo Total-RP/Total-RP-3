@@ -184,6 +184,11 @@ local POPUP_HEAD = "Total RP 3\n \n";
 
 -- Show a simple alert with a OK button.
 function TRP3_API.popup.showAlertPopup(text)
+	if TRP3_GamepadDialog.IsEnabled() then
+		TRP3_GamepadDialog.Show({ text = POPUP_HEAD..text });
+		return;
+	end
+
 	StaticPopupDialogs["TRP3_INFO"].text = POPUP_HEAD..text;
 	local dialog = StaticPopup_Show("TRP3_INFO");
 	if dialog then
@@ -193,6 +198,17 @@ function TRP3_API.popup.showAlertPopup(text)
 end
 
 function TRP3_API.popup.showConfirmPopup(text, onAccept, onCancel)
+	if TRP3_GamepadDialog.IsEnabled() then
+		TRP3_GamepadDialog.Show({
+			text = POPUP_HEAD..text,
+			acceptText = ACCEPT,
+			cancelText = CANCEL,
+			onAccept = onAccept,
+			onCancel = onCancel,
+		});
+		return;
+	end
+
 	text = string.gsub(text, "%%", "%%%%");
 	StaticPopupDialogs["TRP3_CONFIRM"].text = POPUP_HEAD..text.."\n\n";
 	StaticPopupDialogs["TRP3_CONFIRM"].trp3onAccept = onAccept;
@@ -205,6 +221,17 @@ function TRP3_API.popup.showConfirmPopup(text, onAccept, onCancel)
 end
 
 function TRP3_API.popup.showYesNoPopup(text, onAccept, onCancel)
+	if TRP3_GamepadDialog.IsEnabled() then
+		TRP3_GamepadDialog.Show({
+			text = POPUP_HEAD..text,
+			acceptText = YES,
+			cancelText = NO,
+			onAccept = onAccept,
+			onCancel = onCancel,
+		});
+		return;
+	end
+
 	text = string.gsub(text, "%%", "%%%%");
 	StaticPopupDialogs["TRP3_YES_NO"].text = POPUP_HEAD..text.."\n\n";
 	StaticPopupDialogs["TRP3_YES_NO"].trp3onAccept = onAccept;
@@ -217,6 +244,17 @@ function TRP3_API.popup.showYesNoPopup(text, onAccept, onCancel)
 end
 
 function TRP3_API.popup.showCustomYesNoPopup(text, yesText, noText, onAccept, onCancel)
+	if TRP3_GamepadDialog.IsEnabled() then
+		TRP3_GamepadDialog.Show({
+			text = text,
+			acceptText = yesText,
+			cancelText = noText,
+			onAccept = onAccept,
+			onCancel = onCancel,
+		});
+		return;
+	end
+
 	text = string.gsub(text, "%%", "%%%%");
 	StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].button1 = yesText;
 	StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].button2 = noText;
@@ -231,6 +269,19 @@ function TRP3_API.popup.showCustomYesNoPopup(text, yesText, noText, onAccept, on
 end
 
 function TRP3_API.popup.showTextInputPopup(text, onAccept, onCancel, default)
+	if TRP3_GamepadDialog.IsEnabled() then
+		TRP3_GamepadDialog.Show({
+			text = POPUP_HEAD..text,
+			acceptText = ACCEPT,
+			cancelText = CANCEL,
+			hasEditBox = true,
+			defaultValue = default,
+			onAccept = onAccept,
+			onCancel = onCancel,
+		});
+		return;
+	end
+
 	text = string.gsub(text, "%%", "%%%%");
 	StaticPopupDialogs["TRP3_INPUT_TEXT"].text = POPUP_HEAD..text.."\n\n";
 	StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onAccept = onAccept;
@@ -245,6 +296,20 @@ function TRP3_API.popup.showTextInputPopup(text, onAccept, onCancel, default)
 end
 
 function TRP3_API.popup.showNumberInputPopup(text, onAccept, onCancel, default)
+	if TRP3_GamepadDialog.IsEnabled() then
+		TRP3_GamepadDialog.Show({
+			text = POPUP_HEAD..text,
+			acceptText = ACCEPT,
+			cancelText = CANCEL,
+			hasEditBox = true,
+			isNumeric = true,
+			defaultValue = default or nil,
+			onAccept = onAccept,
+			onCancel = onCancel,
+		});
+		return;
+	end
+
 	text = string.gsub(text, "%%", "%%%%");
 	StaticPopupDialogs["TRP3_INPUT_NUMBER"].text = POPUP_HEAD..text.."\n\n";
 	StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onAccept = onAccept;

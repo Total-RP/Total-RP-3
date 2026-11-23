@@ -28,6 +28,11 @@ function TRP3_MenuUtil.SetElementTooltipScript(elementDescription, tooltipGenera
 end
 
 function TRP3_MenuUtil.AttachTexture(elementDescription, texture)
+	if TRP3_GamepadMenu.IsElementDescription(elementDescription) then
+		elementDescription:SetTexture(texture);
+		return;
+	end
+
 	local function Initializer(button)
 		local textureObject = button:AttachTexture();
 		textureObject:SetPoint("RIGHT");
@@ -45,6 +50,11 @@ function TRP3_MenuUtil.AttachTexture(elementDescription, texture)
 end
 
 function TRP3_MenuUtil.AttachIconTexture(elementDescription, icon)
+	if TRP3_GamepadMenu.IsElementDescription(elementDescription) then
+		elementDescription:SetIcon(icon);
+		return;
+	end
+
 	local function Initializer(button)
 		local textureObject = button:AttachTexture();
 		textureObject:SetPoint("RIGHT");
@@ -56,6 +66,13 @@ function TRP3_MenuUtil.AttachIconTexture(elementDescription, icon)
 end
 
 function TRP3_MenuUtil.CreateContextMenu(ownerRegion, menuGenerator)
+	if TRP3_GamepadMenu.IsEnabled() then
+		-- Blizzard's menus can't be opened by addons without errors while
+		-- the controller interface is shown; see GamepadMenu.lua.
+		TRP3_GamepadMenu.Open(ownerRegion, menuGenerator);
+		return nil;
+	end
+
 	local function WrappedMenuGenerator(ownerRegion, rootDescription)  -- luacheck: no redefined (ownerRegion)
 		TRP3_MenuUtil.PrepareRootMenuDescription(rootDescription);
 		return menuGenerator(ownerRegion, rootDescription);
@@ -70,6 +87,15 @@ function TRP3_MenuUtil.CreateActionMenu(ownerRegion, menuGenerator)
 	local menuPointX = ownerRegion.menuPointX or 0;
 	local menuPointY = ownerRegion.menuPointY or 0;
 	local menuAnchor = AnchorUtil.CreateAnchor(menuPoint, ownerRegion, menuRelativePoint, menuPointX, menuPointY);
+
+	if TRP3_GamepadMenu.IsEnabled() then
+		if not TRP3_GamepadMenu.WasJustClosed(ownerRegion) then
+			TRP3_GamepadMenu.Open(ownerRegion, menuGenerator, menuAnchor);
+		end
+
+		return nil;
+	end
+
 	local menuMixin = ownerRegion.menuMixin or MenuVariants.GetDefaultContextMenuMixin();
 	local menuDescription = MenuUtil.CreateRootMenuDescription(menuMixin);
 

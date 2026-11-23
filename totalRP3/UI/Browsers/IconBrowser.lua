@@ -680,7 +680,13 @@ function TRP3_IconBrowserMixin:OnLoad()
 	self.SearchBox:SetScript("OnEnterPressed", function() self:OnFilterEnterPressed(); end);
 	self.FilterDropdown:SetIsDefaultCallback(function() return not self.filterModel:IsFilteringAnyCategory(); end);
 	self.FilterDropdown:SetDefaultCallback(function() self:OnFilterDropdownResetClicked(); end);
-	self.FilterDropdown:SetupMenu(function(dropdown, rootDescription) self:SetupFilterDropdown(dropdown, rootDescription); end);
+
+	local function GenerateFilterMenu(dropdown, rootDescription)
+		self:SetupFilterDropdown(dropdown, rootDescription);
+	end
+
+	self.FilterDropdown:SetupMenu(GenerateFilterMenu);
+	TRP3_GamepadMenu.RegisterDropdownButton(self.FilterDropdown, GenerateFilterMenu);
 end
 
 function TRP3_IconBrowserMixin:OnShow()

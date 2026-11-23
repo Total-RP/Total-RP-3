@@ -231,6 +231,13 @@ function TRP3_ColorBrowserMixin:OnPresetButtonClick()
 			local text = preset.TX;
 			local color = TRP3_API.CreateColorFromTable(preset.CO);
 			local callback = OnPresetColorSelected;
+
+			if TRP3_GamepadMenu.IsElementDescription(menuDescription) then
+				local buttonDescription = menuDescription:CreateButton(text, callback, color);
+				buttonDescription:SetColorSwatch(color);
+				return buttonDescription;
+			end
+
 			local buttonDescription = TRP3_MenuTemplates.CreateColorSelectionButton(text, color, callback, color);
 
 			menuDescription:Insert(buttonDescription);

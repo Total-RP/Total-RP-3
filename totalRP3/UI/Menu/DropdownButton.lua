@@ -9,10 +9,14 @@ function TRP3_DropdownButtonMixin:OnLoad()
 end
 
 function TRP3_DropdownButtonMixin:IsMenuOpen()
-	return self.Button:IsMenuOpen();
+	return self.Button:IsMenuOpen() or TRP3_GamepadMenu.IsOpen(self.Button);
 end
 
 function TRP3_DropdownButtonMixin:CloseMenu()
+	if TRP3_GamepadMenu.IsOpen(self.Button) then
+		TRP3_GamepadMenu.Close();
+	end
+
 	self.Button:CloseMenu();
 end
 
@@ -87,6 +91,7 @@ function TRP3_DropdownButtonMixin:SetupMenu(menuGenerator)
 	end
 
 	self.Button:SetupMenu(WrappedMenuGenerator);
+	TRP3_GamepadMenu.RegisterDropdownButton(self.Button, menuGenerator);
 end
 
 function TRP3_DropdownButtonMixin:Update()

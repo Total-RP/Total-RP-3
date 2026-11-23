@@ -120,7 +120,24 @@ function TRP3_AutomationSettingsMixin:SetupActionDropdownMenu(menuDescription)
 	end
 end
 
+local function IsValidProfileName(profileName)
+	return string.trim(profileName) ~= "" and not TRP3_AutomationUtil.DoesProfileExist(profileName);
+end
+
 local function OnCreateProfileSelected()
+	if TRP3_GamepadDialog.IsEnabled() then
+		TRP3_GamepadDialog.Show({
+			text = L.AUTOMATION_PROFILE_CREATE_DIALOG_TITLE,
+			acceptText = L.AUTOMATION_PROFILE_CREATE_DIALOG_BUTTON1,
+			cancelText = CANCEL,
+			hasEditBox = true,
+			defaultValue = TRP3_AutomationUtil.GenerateProfileName(),
+			validate = IsValidProfileName,
+			onAccept = TRP3_AutomationUtil.SetCurrentProfile,
+		});
+		return;
+	end
+
 	StaticPopup_Show("TRP3_AUTOMATION_CREATE_PROFILE");
 end
 
@@ -133,6 +150,16 @@ local function OnCopyProfileSelected(profileName)
 	local textArg2 = profileName;
 	local data = profileName;
 
+	if TRP3_GamepadDialog.IsEnabled() then
+		TRP3_GamepadDialog.Show({
+			text = string.format(L.AUTOMATION_PROFILE_COPY_DIALOG_TITLE, textArg1, textArg2),
+			acceptText = L.AUTOMATION_PROFILE_COPY_DIALOG_BUTTON1,
+			cancelText = CANCEL,
+			onAccept = function() TRP3_AutomationUtil.CopyProfile(profileName); end,
+		});
+		return;
+	end
+
 	StaticPopup_Show("TRP3_AUTOMATION_COPY_PROFILE", textArg1, textArg2, data);
 end
 
@@ -141,6 +168,16 @@ local function OnDeleteProfileSelected(profileName)
 	local textArg2 = nil;
 	local data = profileName;
 
+	if TRP3_GamepadDialog.IsEnabled() then
+		TRP3_GamepadDialog.Show({
+			text = string.format(L.AUTOMATION_PROFILE_DELETE_DIALOG_TITLE, textArg1),
+			acceptText = DELETE,
+			cancelText = CANCEL,
+			onAccept = function() TRP3_AutomationUtil.DeleteProfile(profileName); end,
+		});
+		return;
+	end
+
 	StaticPopup_Show("TRP3_AUTOMATION_DELETE_PROFILE", textArg1, textArg2, data);
 end
 
@@ -148,6 +185,16 @@ local function OnResetProfileSelected()
 	local textArg1 = TRP3_AutomationUtil.GetCurrentProfile();
 	local textArg2 = nil;
 	local data = TRP3_AutomationUtil.GetCurrentProfile();
+
+	if TRP3_GamepadDialog.IsEnabled() then
+		TRP3_GamepadDialog.Show({
+			text = string.format(L.AUTOMATION_PROFILE_RESET_DIALOG_TITLE, textArg1),
+			acceptText = RESET,
+			cancelText = CANCEL,
+			onAccept = function() TRP3_AutomationUtil.ResetCurrentProfile(); end,
+		});
+		return;
+	end
 
 	StaticPopup_Show("TRP3_AUTOMATION_RESET_PROFILE", textArg1, textArg2, data);
 end
@@ -304,10 +351,6 @@ local function GetDialogButton1(dialog)
 end
 
 do
-	local function IsValidProfileName(profileName)
-		return string.trim(profileName) ~= "" and not TRP3_AutomationUtil.DoesProfileExist(profileName);
-	end
-
 	local function OnDialogAccept(self)
 		local profileName = GetDialogEditBox(self):GetText();
 

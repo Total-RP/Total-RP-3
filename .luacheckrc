@@ -620,6 +620,13 @@ stds.wow = {
 			},
 		},
 
+		MenuResponse = {
+			fields = {
+				"Open",
+				"Refresh",
+			},
+		},
+
 		MenuVariants = {
 			fields = {
 				"GetDefaultContextMenuMixin",
@@ -907,6 +914,7 @@ stds.wow = {
 		"GameFontNormalHuge",
 		"GameFontNormalHuge3",
 		"GameFontNormalLarge",
+		"GameFontNormalSmall",
 		"GameTooltip",
 		"GameTooltipHeaderText",
 		"GameTooltipText",

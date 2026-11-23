@@ -153,6 +153,7 @@ UI\Tooltip\TooltipUtil.lua
 UI\Tooltip\TooltipScript.lua
 UI\Tooltip\TooltipScript.xml
 UI\Menu\MenuConstants.lua
+UI\Menu\GamepadMenu.lua
 UI\Menu\MenuTemplates.lua
 UI\Menu\MenuUtil.lua
 UI\Menu\DropdownButton.lua
@@ -194,6 +195,7 @@ UI\Browsers\PetBrowser.lua
 UI\Browsers\PetBrowser.xml
 UI\Profiles.xml
 UI\Modules.xml
+UI\GamepadDialog.lua
 UI\Popup.lua
 
 totalRP3.lua
