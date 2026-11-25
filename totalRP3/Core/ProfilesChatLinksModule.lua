@@ -85,12 +85,7 @@ TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, func
 		local profile = data.profile;
 		-- Links from older versions still carry the sender's whole profile.
 		TRP3_ProfileUtil.RemoveUnsharedFields(profile);
-		local profileName = profile.profileName;
-		local i = 1;
-		while not TRP3_API.profile.isProfileNameAvailable(profileName) and i < 500 do
-			i = i + 1;
-			profileName = profileName .. " " .. i;
-		end
+		local profileName = TRP3_StringUtil.GenerateIncrementalName(TRP3_API.profile.isProfileNameAvailable, profile.profileName);
 		TRP3_API.profile.duplicateProfile(profile, profileName);
 		TRP3_API.navigation.openMainFrame();
 		TRP3_API.navigation.page.setPage("player_profiles", {});
