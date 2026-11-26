@@ -55,6 +55,7 @@ local ConfigKeys = {
 	CHARACT_GUILD = "tooltip_char_guild";
 	CHARACT_TARGET = "tooltip_char_target";
 	CHARACT_TITLE = "tooltip_char_title";
+	CHARACT_CROP_TITLE_FIRST = "tooltip_char_crop_title_first";
 	CHARACT_NOTIF = "tooltip_char_notif";
 	CHARACT_CLIENT = "tooltip_char_client";
 	CHARACT_CURRENT = "tooltip_char_current";
@@ -178,6 +179,10 @@ end
 
 local function showTitle()
 	return getConfigValue(ConfigKeys.CHARACT_TITLE);
+end
+
+local function cropTitleFirst()
+	return getConfigValue(ConfigKeys.CHARACT_CROP_TITLE_FIRST);
 end
 
 local function showNotifications()
@@ -604,8 +609,10 @@ local function writeTooltipForCharacter(targetID, targetType)
 	end
 
 
-	local completeName = getCompleteName(info.characteristics or {}, targetName, not showTitle());
-	completeName = crop(completeName, TRP3_TooltipCroppingConstants.Name);
+	local characteristics = info.characteristics or {};
+	local shortTitle = showTitle() and characteristics.TI or nil;
+	local completeName = getCompleteName(characteristics, targetName, true);
+	completeName = TRP3_NameUtil.CropNameWithTitle(completeName, shortTitle, TRP3_TooltipCroppingConstants.Name, cropTitleFirst());
 	completeName = color:WrapTextInColorCode(completeName);
 
 	-- OOC
@@ -1637,6 +1644,7 @@ local function onModuleInit()
 	registerConfigKey(ConfigKeys.CHARACT_GUILD, TooltipGuildDisplayOption.ShowWithCustomGuild);
 	registerConfigKey(ConfigKeys.CHARACT_TARGET, true);
 	registerConfigKey(ConfigKeys.CHARACT_TITLE, true);
+	registerConfigKey(ConfigKeys.CHARACT_CROP_TITLE_FIRST, true);
 	registerConfigKey(ConfigKeys.CHARACT_NOTIF, true);
 	registerConfigKey(ConfigKeys.CHARACT_CLIENT, true);
 	registerConfigKey(ConfigKeys.CHARACT_CURRENT, true);
@@ -1845,6 +1853,12 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_TITLE,
 				configKey = ConfigKeys.CHARACT_TITLE,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_CROP_TITLE_FIRST,
+				configKey = ConfigKeys.CHARACT_CROP_TITLE_FIRST,
+				help = loc.CO_TOOLTIP_CROP_TITLE_FIRST_HELP,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

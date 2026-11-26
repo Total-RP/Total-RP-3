@@ -75,6 +75,14 @@ function string.split(delimiters, value, limit)
 	return unpack(parts);
 end
 
+function string.trim(text)
+	return (text:gsub("^%s+", ""):gsub("%s+$", ""));
+end
+
+function strlenutf8(text)
+	return select(2, string.gsub(text, "[^\128-\191]", ""));
+end
+
 function table.wipe(tbl)
 	for k in pairs(tbl) do
 		tbl[k] = nil;
