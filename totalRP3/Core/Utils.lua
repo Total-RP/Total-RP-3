@@ -252,6 +252,15 @@ function Utils.str.sanitizeVersion(text)
 	return version;
 end
 
+function Utils.str.checkProfileID(profileID, isOnlyTRP)
+	if not profileID or type(profileID) ~= "string" then
+		return false;
+	end
+
+	-- Profile ID is meant to be 10 digits followed by 5 alphanumeric characters (of which the last one might be an asterisk for default profiles)
+	return profileID:find("^%d%d%d%d%d%d%d%d%d%d%w%w%w%w[%w%*]$") ~= nil or ((not isOnlyTRP) and profileID:find("^%[MSP%].+$)") ~= nil);
+end
+
 function Utils.str.crop(text, size)
 	text = string.trim(text or "");
 

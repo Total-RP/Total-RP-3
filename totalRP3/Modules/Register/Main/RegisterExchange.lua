@@ -366,6 +366,11 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	local roleplayExperience = structure[VERNUM_QUERY_INDEX_ROLEPLAY_EXPERIENCE];
 	local senderClassID = structure[VERNUM_QUERY_INDEX_CHARACTER_CLASS];
 
+	if not Utils.str.checkProfileID(senderProfileID) then
+		-- If the profile ID received is invalid, refuse to talk to that guy
+		return;
+	end
+
 	senderVersion = tonumber(senderVersion) or 0;
 	senderExtendedVersion = tonumber(senderExtendedVersion) or 0;
 

@@ -682,6 +682,11 @@ local function EvaluateImportData(forceImport)
 		return false;
 	end
 
+	if not Utils.str.checkProfileID(errorOrOldProfileID, true) then
+		-- Trying to import a profile with an invalid profile ID, override the ID with a valid one
+		errorOrOldProfileID = Utils.str.id();
+	end
+
 	local valid = true;
 
 	-- Check version compatibility
