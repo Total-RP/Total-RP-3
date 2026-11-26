@@ -479,3 +479,27 @@ TRP3_API.flyway.patches["25"] = function()
 		end
 	end
 end
+
+TRP3_API.flyway.patches["26"] = function()
+	-- v26 swaps out invalid profile IDs
+	local replacedProfileIDs = {};
+
+	if TRP3_Profiles then
+		for profileID, profile in pairs(TRP3_Profiles) do
+			if Utils.str.checkProfileID(profileID, true) == false then
+				local newProfileID = Utils.str.id();
+				TRP3_Profiles[newProfileID] = profile;
+				TRP3_Profiles[profileID] = nil;
+				replacedProfileIDs[profileID] = newProfileID;
+			end
+		end
+	end
+
+	if TRP3_Characters then
+		for _, character in pairs(TRP3_Characters) do
+			if replacedProfileIDs[character.profileID] then
+				character.profileID = replacedProfileIDs[character.profileID];
+			end
+		end
+	end
+end
