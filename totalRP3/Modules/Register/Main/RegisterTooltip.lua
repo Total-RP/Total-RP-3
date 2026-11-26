@@ -660,8 +660,6 @@ local function writeTooltipForCharacter(targetID, targetType)
 
 		if info.characteristics and info.characteristics.FT and info.characteristics.FT ~= "" then
 			fullTitle = info.characteristics.FT;
-		elseif UnitPVPName(targetType) ~= targetName then
-			fullTitle = UnitPVPName(targetType);
 		end
 
 		if fullTitle and fullTitle ~= "" then
