@@ -449,6 +449,9 @@ local function showMiscTab()
 end
 TRP3_API.register.ui.showMiscTab = showMiscTab;
 
+local GLANCE_EXCHANGE_MAX_TITLE_CHARS = 150;
+local GLANCE_EXCHANGE_MAX_TEXT_CHARS = 400;
+
 function TRP3_API.register.player.getMiscExchangeData()
 	local miscData = CopyTable(get("player/misc"));
 
@@ -456,8 +459,14 @@ function TRP3_API.register.player.getMiscExchangeData()
 	if miscData.PE then
 		for i=1,5 do
 			local index = tostring(i);
-			if miscData.PE[index] and miscData.PE[index].AC == false then
-				miscData.PE[index] = nil;
+			local glanceInfo = miscData.PE[index];
+			if glanceInfo then
+				if glanceInfo.AC == false then
+					miscData.PE[index] = nil;
+				else
+					glanceInfo.TI = TRP3_API.utils.str.crop(glanceInfo.TI or "", GLANCE_EXCHANGE_MAX_TITLE_CHARS);
+					glanceInfo.TX = TRP3_API.utils.str.crop(glanceInfo.TX or "", GLANCE_EXCHANGE_MAX_TEXT_CHARS);
+				end
 			end
 		end
 	end
